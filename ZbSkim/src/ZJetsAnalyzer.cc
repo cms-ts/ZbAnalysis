@@ -13,7 +13,7 @@
 //
 // Original Author:  Chiara La Licata
 //         Created:  Mon Feb 11 13:52:51 CET 2013
-// $Id$
+// $Id: ZJetsAnalyzer.cc,v 1.1 2013/03/06 10:48:36 clalicat Exp $
 //
 //
 
@@ -97,6 +97,8 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
       virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 
+      std::string pileup_;
+
       // ----------member data ---------------------------
 
       double ele_pt;
@@ -115,6 +117,8 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       double jet_phi;
  
       int NZ_ele, NZ_muon;     
+
+      int Nj;
 
       TH1F* h_NZ_ee;
       TH1F* h_NZ_mm;
@@ -147,9 +151,12 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       TH1F* h_fifth_jet_eta;
       TH1F* h_jet_pt_rescaled;
       TH1F* h_ht;
-  
+      TH1D* recoVTX_;
+      TH1D* recoVTX_w;
       TH1F* h_mm_inv;
       TH1F* h_ee_inv;
+
+      TH1F* h_PUweights;
 
       TH1F* h_pt_Z_ee;
       TH1F* h_pt_Z_mm;
@@ -179,7 +186,7 @@ using namespace pat;
 ZJetsAnalyzer::ZJetsAnalyzer(const edm::ParameterSet& iConfig)
 
 {
-
+	pileup_ = iConfig.getUntrackedParameter<std::string>("pileup", "S7");
 	edm::Service<TFileService> fs;
    	//now do what ever initialization is needed
 
@@ -194,7 +201,7 @@ ZJetsAnalyzer::ZJetsAnalyzer(const edm::ParameterSet& iConfig)
         h_first_muon_eta =  fs->make<TH1F>("first_muon_eta", "first_muon_eta;Eta ",16,-2.5,2.5);
         h_second_muon_eta =  fs->make<TH1F>("second_muon_eta", "second_muon_eta;Eta ",16,-2.5,2.5);
 
-	h_jet_mult = fs->make<TH1F>("jet_multiplicity", "jet_multiplicity;Nj",5,1.,6.);
+	h_jet_mult = fs->make<TH1F>("jet_multiplicity", "jet_multiplicity;Nj",8,0.5,8.5);
 	h_first_jet_pt = fs->make<TH1F>("first_jet_pt", "first_jet_pt;P_t [GeV]",15,30.,330.);
         h_second_jet_pt = fs->make<TH1F>("second_jet_pt", "second_jet_pt;P_t [GeV]",10,30.,330.);
         h_third_jet_pt = fs->make<TH1F>("third_jet_pt", "third_jet_pt;P_t [GeV]",8,30.,200.);
@@ -220,6 +227,8 @@ ZJetsAnalyzer::ZJetsAnalyzer(const edm::ParameterSet& iConfig)
 	h_NZ_mm = fs->make<TH1F>("NZ muon", "NZ muon",4,-0.5,3.5);
 
 	h_nEvent = fs->make<TH1F>("nEvent", "nEvent",4,-1.5,2.5);
+	h_PUweights   = fs->make<TH1F>("h_pu_weights", "h_pu_weights", 10, 0, 10);
+
 }
 
 
@@ -266,15 +275,48 @@ ZJetsAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
            }
 
            edm::LumiReWeighting LumiWeights_;
-           LumiWeights_ = edm::LumiReWeighting("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/analyzer/ZJetsAnalyzer/work/pileup_S7.root",
-                                               "/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/analyzer/ZJetsAnalyzer/work/pileup_2012.root", "pileup", "pileup");
+           LumiWeights_ = edm::LumiReWeighting("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/work/pileup/pileup_" + pileup_ + ".root",
+                                               "/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/work/pileup/pileup_2012.root", "pileup", "pileup");
+
+
 
            MyWeight = LumiWeights_.weight( Tnpv );
    }
 
 cout<<"weight="<<MyWeight<<endl;
+h_PUweights ->Fill(MyWeight);
 
+/*
+   //get vertices 
+    edm::Handle< std::vector<reco::Vertex> > vertices_h;
+    iEvent.getByLabel(edm::InputTag ("offlinePrimaryVertices"), vertices_h);
+    if (!vertices_h.isValid()) {
+	    //std::cout<<"empty vertex collection!!!\n";
+	    //return;
+    }
 
+    // require in the event that there is at least one reconstructed vertex
+    if(vertices_h->size()<=0) return;
+    // pick the first (i.e. highest sum pt) vertex
+    const reco::Vertex* theVertex=&(vertices_h->front());
+    // require that the vertex meets certain criteria
+    if(theVertex->ndof()<5) return;
+    if(fabs(theVertex->z())>24.0) return;
+    if(fabs(theVertex->position().rho())>2.0) return;
+
+    std::vector<reco::Vertex>::const_iterator itv;
+    int NVtx = 0;
+    // now, count vertices
+    for (itv = vertices_h->begin(); itv != vertices_h->end(); ++itv) {
+	    // require that the vertex meets certain criteria
+	    if(itv->ndof()<5) continue;
+	    if(fabs(itv->z())>50.0) continue;
+	    if(fabs(itv->position().rho())>2.0) continue;
+	    ++NVtx;
+    }
+    recoVTX_->Fill(float(NVtx));
+    recoVTX_w ->Fill(NVtx, MyWeight);
+*/
 
 //electrons collection
 edm::Handle<pat::ElectronCollection> Trigelectrons;
@@ -299,6 +341,10 @@ iEvent.getByLabel("zeleMatchedeleMatched", zee);
 
 bool ee_event=false;
 bool mm_event=false;
+ele_pt=0;
+muon_pt=0;
+ele_eta=0;
+muon_eta=0;
 
 
 //+++++++++ ELECTRONS
@@ -316,10 +362,9 @@ for(pat::ElectronCollection::const_iterator ele=Trigelectrons->begin(); ele!=Tri
 
 
 if(vect_ele_pt.size()!=0)
-	if(fabs(vect_ele_eta[0])<2.4 && fabs(vect_ele_eta[1])<2.4 && (fabs(vect_ele_eta[0])<1.44442 || fabs(vect_ele_eta[0]>1.5660)) && (fabs(vect_ele_eta[1])<1.4442 || fabs(vect_ele_eta[1])>1.5660))
+	if(fabs(vect_ele_eta[0])<2.4 && fabs(vect_ele_eta[1])<2.4 && (fabs(vect_ele_eta[0])<1.44442 || fabs(vect_ele_eta[0])>1.5660) && (fabs(vect_ele_eta[1])<1.4442 || fabs(vect_ele_eta[1])>1.5660))
 		if(vect_ele_pt[0]>25 && vect_ele_pt[1]>25)
 			ee_event=true;
-
 
 
 //+++++++++ MUONS
@@ -340,30 +385,29 @@ if(vect_muon_pt.size()!=0)
 				mm_event=true;
 
 
-
 //++++++++ JETS
 std::vector <double> vect_jet_pt;
 std::vector <double> vect_jet_eta;
 std::vector <double> vect_jet_phi;
 
-
+Nj=0;
 ht = 0;
+jet_pt=0;
+jet_eta=0;
+jet_phi=0;
 
-double Nj=0;
-
-//if((ee_event || mm_event) && (zmm->size()!=0 || zee->size()!=0)){
-if(zmm->size()!=0 || zee->size()!=0){
+ if((ee_event || mm_event) && (zmm->size()!=0 || zee->size()!=0)){
 	for(std::vector<pat::Jet>::const_iterator jet=jets->begin(); jet!=jets->end(); ++jet){
-		jet_pt = jet->pt();
-		jet_eta = jet->eta();
-		jet_phi = jet->phi();
-		if(jet_pt>30 && fabs(jet_eta)<2.4
+		if(jet->pt() > 30 && fabs(jet->eta()) < 2.4
 		   && jet->chargedEmEnergyFraction()<0.99
                	   && jet->neutralHadronEnergyFraction()<0.99
                	   && jet->neutralEmEnergyFraction()<0.99
               	   && jet->chargedHadronEnergyFraction()>0
                	   && jet->chargedMultiplicity()>0){
-			Nj++;
+			jet_pt = jet->pt();
+                	jet_eta = jet->eta();
+                	jet_phi = jet->phi();
+			++Nj;
 			ht = ht+jet_pt;
 			vect_jet_pt.push_back(jet_pt);
 			vect_jet_eta.push_back(jet_eta);
@@ -373,6 +417,7 @@ if(zmm->size()!=0 || zee->size()!=0){
 	}
 
 }
+
 
 int nEvent=-1;
 
@@ -384,11 +429,8 @@ h_nEvent->Fill(nEvent);
 if(ht!=0)
 	h_ht->Fill(ht,MyWeight);
 
-//if(vect_jet_pt.size()!=0){
-//	h_jet_mult->Fill(vect_jet_pt.size(),MyWeight);
-//}
-if(Nj!=0){
-        h_jet_mult->Fill(Nj,MyWeight);
+if(vect_jet_pt.size()!=0){
+	h_jet_mult->Fill(vect_jet_pt.size(),MyWeight);
 }
 
 if(vect_jet_pt.size()>0){
@@ -431,36 +473,6 @@ if(mm_event && vect_jet_pt.size()!=0 && zmm->size()!=0){
 }
 
 
-
-/*
-int check_sort=0;
-
-if(jets->size()>1)
-{
-	std::vector<pat::Jet>::const_iterator first_jet;
-	std::vector<pat::Jet>::const_iterator second_jet;
-	first_jet=jets->begin();
-	second_jet=jets->begin();
-	std::advance(second_jet,1);
-
-	while(second_jet!=jets->end()){
-		double first_jet_pt = first_jet->pt();
-		double second_jet_pt = second_jet->pt();
-		if(first_jet_pt < second_jet_pt){
-			check_sort=1;
-			cout << "++++++++primo jet pt =" << first_jet->pt() << endl;
-			cout << "++++++++secondo jet pt =" << second_jet->pt() << endl;
-		}
-	std::advance(first_jet,1);
-	std::advance(second_jet,1);
-	}
-}
-
-h_check_sort->Fill(check_sort);
-
-*/
-
-
 //+++++++++ Z in ee
 NZ_ele=0;
 
@@ -469,7 +481,7 @@ double phi_Z;
 double Delta_phi;
 
 
-if(zee->size()!=0 && Nj!=0 && ee_event){
+if(zee->size()!=0 && vect_jet_pt.size()!=0 && ee_event){
 
 	for (std::vector<reco::CompositeCandidate>::const_iterator Zit2 = zee->begin() ; Zit2 != zee->end(); ++Zit2){
 
@@ -490,9 +502,7 @@ if(zee->size()!=0 && Nj!=0 && ee_event){
 			h_ee_inv->Fill(diele_inv,MyWeight);
 			h_pt_Z_ee -> Fill(pt_Z,MyWeight);
 			h_delta_ee -> Fill(Delta_phi,MyWeight);
-			cout<<"mass ee="<<Zit2->mass()<<endl;
 		}
-		cout << "numero Z = " << NZ_ele << endl;
 
 	}
 
@@ -505,7 +515,7 @@ if(zee->size()!=0 && Nj!=0 && ee_event){
 //++++++++ Z in mm
 NZ_muon=0;
 
-if(zmm->size()!=0 && Nj!=0 && mm_event){
+if(zmm->size()!=0 && vect_jet_pt.size()!=0 && mm_event){
 
 	for (std::vector<reco::CompositeCandidate>::const_iterator Zit = zmm->begin() ; Zit != zmm->end(); ++Zit){
 
@@ -525,9 +535,8 @@ if(zmm->size()!=0 && Nj!=0 && mm_event){
 			h_mm_inv->Fill(dimuon_inv,MyWeight);
 			h_pt_Z_mm -> Fill(pt_Z,MyWeight);
                 	h_delta_mm -> Fill(Delta_phi,MyWeight);
-			cout<<"mass mm="<<Zit->mass()<<endl;
 		}
-		cout << "numero Z = " << NZ_muon << endl;
+
 	}
 
 }
