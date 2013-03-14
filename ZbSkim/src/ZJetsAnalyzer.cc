@@ -13,7 +13,7 @@
 //
 // Original Author:  Chiara La Licata
 //         Created:  Mon Feb 11 13:52:51 CET 2013
-// $Id: ZJetsAnalyzer.cc,v 1.2 2013/03/13 10:07:50 clalicat Exp $
+// $Id: ZJetsAnalyzer.cc,v 1.3 2013/03/14 09:22:06 clalicat Exp $
 //
 //
 
@@ -74,8 +74,8 @@
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "table.h"
-table MuonEff("muon_eff.txt");
-table EleEff("ele_eff.txt");
+table MuonEff("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/muon_eff.txt");
+table EleEff("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/ele_eff.txt");
 
 //
 // class declaration
@@ -121,6 +121,12 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       int NZ_ele, NZ_muon;     
 
       int Nj;
+
+      double scalFac_first_ele;
+      double scalFac_first_muon;
+      double scalFac_second_ele;
+      double scalFac_second_muon;
+
 
       TH1F* h_NZ_ee;
       TH1F* h_NZ_mm;
@@ -170,6 +176,10 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       TH2F* h_pt_first_vs_second;
       TH1F* h_check_sort;
 
+      TH1F* h_scalFactor_first_ele;
+      TH1F* h_scalFactor_first_muon;
+      TH1F* h_scalFactor_second_ele;
+      TH1F* h_scalFactor_second_muon;
       
 };
 
@@ -233,6 +243,10 @@ ZJetsAnalyzer::ZJetsAnalyzer(const edm::ParameterSet& iConfig)
 	h_nEvent = fs->make<TH1F>("nEvent", "nEvent",4,-1.5,2.5);
 	h_PUweights   = fs->make<TH1F>("h_pu_weights", "h_pu_weights", 10, 0, 10);
 
+	h_scalFactor_first_ele = fs->make<TH1F>("scaleFactor_first_ele", "scaleFactor_first_ele",90,0.6,1.5);
+	h_scalFactor_first_muon = fs->make<TH1F>("scaleFactor_first_muon", "scaleFactor_first_muon",90,0.6,1.5);
+	h_scalFactor_second_ele = fs->make<TH1F>("scaleFactor_second_ele", "scaleFactor_second_ele",90,0.6,1.5);
+        h_scalFactor_second_muon = fs->make<TH1F>("scaleFactor_second_muon", "scaleFactor_second_muon",90,0.6,1.5);
 
 }
 
@@ -258,39 +272,7 @@ ZJetsAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    using namespace std;
 
 
-//PU REWEIGHTING
-
-
-   MyWeight = 1.0;
-
-
-   Handle<std::vector< PileupSummaryInfo > >  PupInfo;
-
-   if (iEvent.getByLabel(edm::InputTag("addPileupInfo"), PupInfo)) {
-
-           std::vector<PileupSummaryInfo>::const_iterator PVI;
-
-           float Tnpv = -1;
-           for(PVI = PupInfo->begin(); PVI != PupInfo->end(); ++PVI) {
-                   int BX = PVI->getBunchCrossing();
-                   if(BX == 0) {
-                           Tnpv = PVI->getTrueNumInteractions();
-                           continue;
-                   }
-           }
-
-           edm::LumiReWeighting LumiWeights_;
-           LumiWeights_ = edm::LumiReWeighting("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/work/pileup/pileup_" + pileup_ + ".root",
-                                               "/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/work/pileup/pileup_2012.root", "pileup", "pileup");
-
-
-
-           MyWeight = LumiWeights_.weight( Tnpv );
-   }
-
-cout<<"weight="<<MyWeight<<endl;
-h_PUweights ->Fill(MyWeight);
-
+  
 /*
    //get vertices 
     edm::Handle< std::vector<reco::Vertex> > vertices_h;
@@ -344,6 +326,12 @@ edm::Handle<reco::CompositeCandidateCollection> zee;
 iEvent.getByLabel("zeleMatchedeleMatched", zee);
 
 
+scalFac_first_ele=1;
+scalFac_first_muon=1;
+scalFac_second_ele=1;
+scalFac_second_muon=1;
+
+
 bool ee_event=false;
 bool mm_event=false;
 ele_pt=0;
@@ -372,13 +360,7 @@ if(vect_ele_pt.size()!=0)
 			ee_event=true;
 
 
-if(ee_event){
-double scalFac = EleEff.Val(vect_ele_pt[0],vect_ele_eta[0]);
-cout << "EVENTO ELETTRONI" << endl;
-cout << "scalFac ele= " << scalFac << endl;
-cout << "pt ele = " << vect_ele_pt[0] << endl;
-cout << "eta ele = " << vect_ele_eta[0] << endl;
-}
+
 
 
 //+++++++++ MUONS
@@ -399,13 +381,6 @@ if(vect_muon_pt.size()!=0)
 				mm_event=true;
 
 
-if(mm_event){
-double scalFac = MuonEff.Val(vect_muon_pt[0],vect_muon_eta[0]);
-cout << "EVENTO MUONI" << endl;
-cout << "scalFac muon= " << scalFac << endl;
-cout << "pt muon = " << vect_muon_pt[0] << endl;
-cout << "eta muon = " << vect_muon_eta[0] << endl; 
-}
 
 //++++++++ JETS
 std::vector <double> vect_jet_pt;
@@ -439,6 +414,78 @@ jet_phi=0;
 	}
 
 }
+
+
+
+
+//PU REWEIGHTING
+
+
+   MyWeight = 1.0;
+
+
+   Handle<std::vector< PileupSummaryInfo > >  PupInfo;
+
+   if (iEvent.getByLabel(edm::InputTag("addPileupInfo"), PupInfo)) {
+
+           std::vector<PileupSummaryInfo>::const_iterator PVI;
+
+           float Tnpv = -1;
+           for(PVI = PupInfo->begin(); PVI != PupInfo->end(); ++PVI) {
+                   int BX = PVI->getBunchCrossing();
+                   if(BX == 0) {
+                           Tnpv = PVI->getTrueNumInteractions();
+                           continue;
+                   }
+           }
+
+           edm::LumiReWeighting LumiWeights_;
+           LumiWeights_ = edm::LumiReWeighting("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/work/pileup/pileup_" + pileup_ + ".root",
+                                               "/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/work/pileup/pileup_2012.root", "pileup", "pileup");
+
+
+
+           MyWeight = LumiWeights_.weight( Tnpv );
+
+	if(ee_event){
+		scalFac_first_ele = EleEff.Val(vect_ele_pt[0],vect_ele_eta[0]);
+		scalFac_second_ele = EleEff.Val(vect_ele_pt[1],vect_ele_eta[1]);
+	}
+
+	
+	if(mm_event){
+		scalFac_first_muon = MuonEff.Val(vect_muon_pt[0],vect_muon_eta[0]);
+		scalFac_second_muon = MuonEff.Val(vect_muon_pt[1],vect_muon_eta[1]);
+	}
+
+
+}
+
+if(scalFac_first_ele==0.0)
+scalFac_first_ele=1;
+if(scalFac_second_ele==0.0)
+scalFac_second_ele=1;
+if(scalFac_first_muon==0.0)
+scalFac_first_muon=1;
+if(scalFac_second_muon==0.0)
+scalFac_second_muon=1;
+
+
+h_scalFactor_first_ele->Fill(scalFac_first_ele);
+h_scalFactor_first_muon->Fill(scalFac_first_muon);
+h_scalFactor_second_ele->Fill(scalFac_second_ele);
+h_scalFactor_second_muon->Fill(scalFac_second_muon);
+
+
+cout<<"weight="<<MyWeight<<endl;
+h_PUweights ->Fill(MyWeight);
+
+if(ee_event)
+MyWeight=MyWeight*scalFac_first_ele*scalFac_second_ele;
+
+if(mm_event)
+MyWeight=MyWeight*scalFac_first_muon*scalFac_second_muon;
+
 
 
 int nEvent=-1;
