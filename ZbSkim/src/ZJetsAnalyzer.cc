@@ -13,7 +13,7 @@
 //
 // Original Author:  Chiara La Licata
 //         Created:  Mon Feb 11 13:52:51 CET 2013
-// $Id: ZJetsAnalyzer.cc,v 1.1 2013/03/06 10:48:36 clalicat Exp $
+// $Id: ZJetsAnalyzer.cc,v 1.2 2013/03/13 10:07:50 clalicat Exp $
 //
 //
 
@@ -73,7 +73,9 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
-
+#include "table.h"
+table MuonEff("muon_eff.txt");
+table EleEff("ele_eff.txt");
 
 //
 // class declaration
@@ -168,6 +170,7 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       TH2F* h_pt_first_vs_second;
       TH1F* h_check_sort;
 
+      
 };
 
 using namespace pat;
@@ -186,6 +189,7 @@ using namespace pat;
 ZJetsAnalyzer::ZJetsAnalyzer(const edm::ParameterSet& iConfig)
 
 {
+
 	pileup_ = iConfig.getUntrackedParameter<std::string>("pileup", "S7");
 	edm::Service<TFileService> fs;
    	//now do what ever initialization is needed
@@ -228,6 +232,7 @@ ZJetsAnalyzer::ZJetsAnalyzer(const edm::ParameterSet& iConfig)
 
 	h_nEvent = fs->make<TH1F>("nEvent", "nEvent",4,-1.5,2.5);
 	h_PUweights   = fs->make<TH1F>("h_pu_weights", "h_pu_weights", 10, 0, 10);
+
 
 }
 
@@ -367,6 +372,15 @@ if(vect_ele_pt.size()!=0)
 			ee_event=true;
 
 
+if(ee_event){
+double scalFac = EleEff.Val(vect_ele_pt[0],vect_ele_eta[0]);
+cout << "EVENTO ELETTRONI" << endl;
+cout << "scalFac ele= " << scalFac << endl;
+cout << "pt ele = " << vect_ele_pt[0] << endl;
+cout << "eta ele = " << vect_ele_eta[0] << endl;
+}
+
+
 //+++++++++ MUONS
 vector <double> vect_muon_pt;
 vector <double> vect_muon_eta;
@@ -384,6 +398,14 @@ if(vect_muon_pt.size()!=0)
                         if(vect_muon_pt[0]>25 && vect_muon_pt[1]>25)
 				mm_event=true;
 
+
+if(mm_event){
+double scalFac = MuonEff.Val(vect_muon_pt[0],vect_muon_eta[0]);
+cout << "EVENTO MUONI" << endl;
+cout << "scalFac muon= " << scalFac << endl;
+cout << "pt muon = " << vect_muon_pt[0] << endl;
+cout << "eta muon = " << vect_muon_eta[0] << endl; 
+}
 
 //++++++++ JETS
 std::vector <double> vect_jet_pt;
