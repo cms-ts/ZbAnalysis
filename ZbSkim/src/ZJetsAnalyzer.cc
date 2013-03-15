@@ -13,7 +13,7 @@
 //
 // Original Author:  Chiara La Licata
 //         Created:  Mon Feb 11 13:52:51 CET 2013
-// $Id: ZJetsAnalyzer.cc,v 1.3 2013/03/14 09:22:06 clalicat Exp $
+// $Id: ZJetsAnalyzer.cc,v 1.4 2013/03/14 16:15:33 clalicat Exp $
 //
 //
 
@@ -461,6 +461,7 @@ jet_phi=0;
 
 }
 
+/*
 if(scalFac_first_ele==0.0)
 scalFac_first_ele=1;
 if(scalFac_second_ele==0.0)
@@ -469,12 +470,13 @@ if(scalFac_first_muon==0.0)
 scalFac_first_muon=1;
 if(scalFac_second_muon==0.0)
 scalFac_second_muon=1;
-
+*/
 
 h_scalFactor_first_ele->Fill(scalFac_first_ele);
 h_scalFactor_first_muon->Fill(scalFac_first_muon);
 h_scalFactor_second_ele->Fill(scalFac_second_ele);
 h_scalFactor_second_muon->Fill(scalFac_second_muon);
+
 
 
 cout<<"weight="<<MyWeight<<endl;
