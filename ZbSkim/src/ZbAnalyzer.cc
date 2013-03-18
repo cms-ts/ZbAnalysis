@@ -13,7 +13,7 @@
 //
 // Original Author:  Vieri Candelise
 //         Created:  Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.2 2013/03/06 10:15:42 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.3 2013/03/18 12:59:22 vieri Exp $
 //
 //
 
@@ -75,8 +75,8 @@
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
-table MuonEff("/gpfs/cms/users/candelis/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/muon_eff.txt");
-table EleEff("/gpfs/cms/users/candelis/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/ele_eff.txt");
+table MuEff("/gpfs/cms/users/candelis/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/muon_eff.txt");
+table ElEff("/gpfs/cms/users/candelis/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/ele_eff.txt");
 
 class TTree;
 //
@@ -445,7 +445,7 @@ ZbAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 			   ee_event=true;
 
    if(ee_event){
-   	   double scalFac = EleEff.Val(vect_ele_pt[0],vect_ele_eta[0]);
+   	   double scalFac = ElEff.Val(vect_ele_pt[0],vect_ele_eta[0]);
    	   cout << "EVENTO ELETTRONI" << endl;
    	   cout << "scalFac ele= " << scalFac << endl;
    	   cout << "pt ele = " << vect_ele_pt[0] << endl;
@@ -471,7 +471,7 @@ ZbAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 			   mm_event=true;
 
    if(mm_event){
-   	   double scalFac = MuonEff.Val(vect_muon_pt[0],vect_muon_eta[0]);
+   	   double scalFac = MuEff.Val(vect_muon_pt[0],vect_muon_eta[0]);
    	   cout << "EVENTO MUONI" << endl;
    	   cout << "scalFac muon= " << scalFac << endl;
    	   cout << "pt muon = " << vect_muon_pt[0] << endl;
