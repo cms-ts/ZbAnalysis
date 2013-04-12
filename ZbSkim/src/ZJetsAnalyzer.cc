@@ -13,7 +13,7 @@
 //
 // Original Author:  Chiara La Licata
 //         Created:  Mon Feb 11 13:52:51 CET 2013
-// $Id: ZJetsAnalyzer.cc,v 1.4 2013/03/14 16:15:33 clalicat Exp $
+// $Id: ZJetsAnalyzer.cc,v 1.5 2013/03/15 08:31:21 clalicat Exp $
 //
 //
 
@@ -62,6 +62,7 @@
 #include "TH1F.h"
 #include "TH2F.h"
 #include "TProfile2D.h"
+#include "TProfile.h"
 #include "TFile.h"
 #include "TLorentzVector.h"
 #include "TTree.h"
@@ -74,8 +75,12 @@
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "table.h"
+#include "run_lumi.h" 
+
 table MuonEff("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/muon_eff.txt");
 table EleEff("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/ele_eff.txt");
+run_lumi RunLumi("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/lumi_run.txt");
+
 
 //
 // class declaration
@@ -100,6 +105,7 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 
       std::string pileup_;
+      std::string lepton_;
 
       // ----------member data ---------------------------
 
@@ -127,6 +133,11 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       double scalFac_second_ele;
       double scalFac_second_muon;
 
+      double run_number;
+      double lumiRun;
+
+      int NZ_ele_run;
+      int NZ_muon_run;
 
       TH1F* h_NZ_ee;
       TH1F* h_NZ_mm;
@@ -180,6 +191,8 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       TH1F* h_scalFactor_first_muon;
       TH1F* h_scalFactor_second_ele;
       TH1F* h_scalFactor_second_muon;
+      TH1F* h_runNumber;
+      //TProfile* h_Z_vs_runNumber; 
       
 };
 
@@ -201,6 +214,8 @@ ZJetsAnalyzer::ZJetsAnalyzer(const edm::ParameterSet& iConfig)
 {
 
 	pileup_ = iConfig.getUntrackedParameter<std::string>("pileup", "S7");
+	lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
+
 	edm::Service<TFileService> fs;
    	//now do what ever initialization is needed
 
@@ -248,6 +263,10 @@ ZJetsAnalyzer::ZJetsAnalyzer(const edm::ParameterSet& iConfig)
 	h_scalFactor_second_ele = fs->make<TH1F>("scaleFactor_second_ele", "scaleFactor_second_ele",90,0.6,1.5);
         h_scalFactor_second_muon = fs->make<TH1F>("scaleFactor_second_muon", "scaleFactor_second_muon",90,0.6,1.5);
 
+	h_runNumber = fs->make<TH1F>("Z vs runNumber","Z vs runNumber",18050,190640,208690);
+	run_number=0;
+	NZ_ele_run=0;
+	//h_Z_vs_runNumber  = fs->make<TProfile>("h_NZ_vs_runNumber","h_NZ_vs_runNumber",3900,190000,193900,0,50);
 }
 
 
@@ -326,6 +345,7 @@ edm::Handle<reco::CompositeCandidateCollection> zee;
 iEvent.getByLabel("zeleMatchedeleMatched", zee);
 
 
+
 scalFac_first_ele=1;
 scalFac_first_muon=1;
 scalFac_second_ele=1;
@@ -339,6 +359,14 @@ muon_pt=0;
 ele_eta=0;
 muon_eta=0;
 
+
+
+//run_number=iEvent.run();
+//if(run_number==iEvent.run())
+//cout << "UGUALE..." << endl;
+//if(run_number==0)
+//cout << "run number = " << run_number << endl;
+//cout << "run iEvent.run = " << iEvent.run() << endl;
 
 //+++++++++ ELECTRONS
 vector <double> vect_ele_pt;
@@ -359,10 +387,6 @@ if(vect_ele_pt.size()!=0)
 		if(vect_ele_pt[0]>25 && vect_ele_pt[1]>25)
 			ee_event=true;
 
-
-
-
-
 //+++++++++ MUONS
 vector <double> vect_muon_pt;
 vector <double> vect_muon_eta;
@@ -381,6 +405,8 @@ if(vect_muon_pt.size()!=0)
 				mm_event=true;
 
 
+  if (lepton_ == "electron" && !ee_event) return;
+  if (lepton_ == "muon" && !mm_event)     return;
 
 //++++++++ JETS
 std::vector <double> vect_jet_pt;
@@ -393,7 +419,7 @@ jet_pt=0;
 jet_eta=0;
 jet_phi=0;
 
- if((ee_event || mm_event) && (zmm->size()!=0 || zee->size()!=0)){
+ if((ee_event || mm_event) && (zmm->size()==1 || zee->size()==1)){
 	for(std::vector<pat::Jet>::const_iterator jet=jets->begin(); jet!=jets->end(); ++jet){
 		if(jet->pt() > 30 && fabs(jet->eta()) < 2.4
 		   && jet->chargedEmEnergyFraction()<0.99
@@ -414,8 +440,6 @@ jet_phi=0;
 	}
 
 }
-
-
 
 
 //PU REWEIGHTING
@@ -461,16 +485,7 @@ jet_phi=0;
 
 }
 
-/*
-if(scalFac_first_ele==0.0)
-scalFac_first_ele=1;
-if(scalFac_second_ele==0.0)
-scalFac_second_ele=1;
-if(scalFac_first_muon==0.0)
-scalFac_first_muon=1;
-if(scalFac_second_muon==0.0)
-scalFac_second_muon=1;
-*/
+
 
 h_scalFactor_first_ele->Fill(scalFac_first_ele);
 h_scalFactor_first_muon->Fill(scalFac_first_muon);
@@ -479,8 +494,9 @@ h_scalFactor_second_muon->Fill(scalFac_second_muon);
 
 
 
-cout<<"weight="<<MyWeight<<endl;
+//cout<<"weight="<<MyWeight<<endl;
 h_PUweights ->Fill(MyWeight);
+
 
 if(ee_event)
 MyWeight=MyWeight*scalFac_first_ele*scalFac_second_ele;
@@ -492,7 +508,7 @@ MyWeight=MyWeight*scalFac_first_muon*scalFac_second_muon;
 
 int nEvent=-1;
 
-if((zmm->size()!=0 || zee->size()!=0) && (ee_event || mm_event) && Nj!=0)
+if((zmm->size()==1 || zee->size()==1) && (ee_event || mm_event) && Nj!=0)
 nEvent=1;
 
 h_nEvent->Fill(nEvent);
@@ -529,14 +545,14 @@ if(vect_jet_pt.size()>4){
 	h_fifth_jet_eta->Fill(vect_jet_eta[4],MyWeight);
 }
 
-if(ee_event && vect_jet_pt.size()!=0 && zee->size()!=0){
+if(ee_event && vect_jet_pt.size()!=0 && zee->size()==1){
 	h_first_ele_pt->Fill(vect_ele_pt[0],MyWeight);
 	h_second_ele_pt->Fill(vect_ele_pt[1],MyWeight);
 	h_first_ele_eta->Fill(vect_ele_eta[0],MyWeight);
 	h_second_ele_eta->Fill(vect_ele_eta[1],MyWeight);
 }
 
-if(mm_event && vect_jet_pt.size()!=0 && zmm->size()!=0){
+if(mm_event && vect_jet_pt.size()!=0 && zmm->size()==1){
 	h_first_muon_pt->Fill(vect_muon_pt[0],MyWeight);
 	h_second_muon_pt->Fill(vect_muon_pt[1],MyWeight);
 	h_first_muon_eta->Fill(vect_muon_eta[0],MyWeight);
@@ -552,7 +568,7 @@ double phi_Z;
 double Delta_phi;
 
 
-if(zee->size()!=0 && vect_jet_pt.size()!=0 && ee_event){
+if(zee->size()==1 && vect_jet_pt.size()!=0 && ee_event){
 
 	for (std::vector<reco::CompositeCandidate>::const_iterator Zit2 = zee->begin() ; Zit2 != zee->end(); ++Zit2){
 
@@ -586,7 +602,7 @@ if(zee->size()!=0 && vect_jet_pt.size()!=0 && ee_event){
 //++++++++ Z in mm
 NZ_muon=0;
 
-if(zmm->size()!=0 && vect_jet_pt.size()!=0 && mm_event){
+if(zmm->size()==1 && vect_jet_pt.size()!=0 && mm_event){
 
 	for (std::vector<reco::CompositeCandidate>::const_iterator Zit = zmm->begin() ; Zit != zmm->end(); ++Zit){
 
@@ -612,7 +628,12 @@ if(zmm->size()!=0 && vect_jet_pt.size()!=0 && mm_event){
 
 }
 
+run_number=iEvent.run();
+lumiRun=RunLumi.luminosity(run_number);
 
+if(NZ_ele==1 || NZ_muon==1)
+//h_runNumber->Fill(run_number,1/lumiRun);
+h_runNumber->Fill(run_number);
 }
 
 
@@ -626,6 +647,8 @@ ZJetsAnalyzer::beginJob()
 void 
 ZJetsAnalyzer::endJob() 
 {
+//h_Z_vs_runNumber->Fill(run_number,NZ_ele_run);
+//h_runNumber->Fill(run_number);
 }
 
 // ------------ method called when starting to processes a run  ------------
