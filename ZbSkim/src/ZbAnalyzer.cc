@@ -13,7 +13,7 @@
 // 
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.5 2013/04/04 15:05:34 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.6 2013/04/12 07:50:40 vieri Exp $
 // 
 // 
 
@@ -287,12 +287,12 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig){
   w_bquarks = 	       fs->make < TH1F > ("bquarks", "bquarks", 50, 0, 1);
   w_tracks = 	       fs->make < TH1F > ("w_tracks", "w_tracks", 50, 0, 50); 
   flavours_ = 	       fs->make < TH1F > ("flavours", "jet flavours", 5, 0, 5);
-  w_MET = 	       fs->make < TH1F > ("w_MET_sign", "w_MET_sign", 50, 0, 250);
-  w_MET_sign = 	       fs->make < TH1F > ("w_MET", "w_MET", 25, 0, 25);
+  w_MET = 	       fs->make < TH1F > ("w_MET", "w_MET", 50, 0, 250);
+  w_MET_sign = 	       fs->make < TH1F > ("w_MET_sign", "w_MET_sign", 25, 0, 25);
   h_delta_ee =         fs->make < TH1F > ("w_delta_phi_ee", "w_delta_phi_ee", 12, 0, TMath::Pi ());
   h_delta_mm =         fs->make < TH1F > ("w_delta_phi_mm", "w_delta_phi_mm", 12, 0, TMath::Pi ());
-  h_pt_Z_ee =          fs->make < TH1F > ("Z_pt_ee", "Z_pt_ee;P_t [GeV]", 50, 0., 500.);
-  h_pt_Z_mm =          fs->make < TH1F > ("Z_pt_mm", "Z_pt_mm;P_t [GeV]", 50, 0., 500.);
+  h_pt_Z_ee =          fs->make < TH1F > ("Z_pt_ee", "Z_pt_ee;P_t [GeV]", 35, 0., 350.);
+  h_pt_Z_mm =          fs->make < TH1F > ("Z_pt_mm", "Z_pt_mm;P_t [GeV]", 35, 0., 350.);
   b_mm_inv = 	       fs->make < TH1F > ("b_mm_inv", "b_mm_inv", 60, 71, 112);
   b_ee_inv =           fs->make < TH1F > ("b_ee_inv", "b_ee_inv", 60, 71, 112);
 
@@ -559,6 +559,7 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	      ++Nj;
 	      jet_pt  = jet->pt ();
 	      jet_eta = jet->eta();
+	      jet_phi = jet->phi();
 
 	      vect_jet_pt.push_back (jet_pt);
 	      vect_jet_phi.push_back (jet_phi);
@@ -631,7 +632,7 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
   if ((ee_event || mm_event) && (zmm->size () != 0 || zee->size () != 0) && Nj != 0) {
     	  for (std::vector < pat::MET >::const_iterator m = met->begin (); m != met->end (); ++m) {
 		  w_MET->Fill (m->et (), MyWeight);
-		  significance = m->metSignificance();
+		  significance = m->significance();
 		  w_MET_sign->Fill(significance, MyWeight);
   	  }
   }
