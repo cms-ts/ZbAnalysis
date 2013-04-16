@@ -13,7 +13,7 @@
 // 
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.6 2013/04/12 07:50:40 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.7 2013/04/12 10:06:16 vieri Exp $
 // 
 // 
 
@@ -29,6 +29,7 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include <FWCore/Framework/interface/ESHandle.h>
 
 // system include files
 #include <string>
@@ -75,24 +76,19 @@
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
-table  MuEff  ("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/muon_eff.txt");
-table  ElEff  ("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/ele_eff.txt");
-table  BtEff  ("/gpfs/cms/users/candelis/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/btag_eff.txt");
+#include "JetMETCorrections/Objects/interface/JetCorrector.h"
+#include "DataFormats/PatCandidates/interface/JetCorrFactors.h"
+#include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
+#include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
+#include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
+table  MuSF  ("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/muon_eff.txt");
+table  ElSF  ("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/ele_eff.txt");
+table  BtSF  ("/gpfs/cms/users/candelis/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/btag_eff.txt");
 class TTree;
 // 
 // class declaration
 // 
-
-class GreaterPt
-{
-public:
-  bool operator() (const math::XYZTLorentzVector & a,const math::XYZTLorentzVector & b) {
-    return a.Pt () > b.Pt ();
-  }
-};
-
-
 
 class ZbAnalyzer:public  edm::EDAnalyzer {
 public:
@@ -100,10 +96,6 @@ public:
   ZbAnalyzer (const edm::ParameterSet &);
   ~
   ZbAnalyzer ();
-
-  static void
-  fillDescriptions (edm::ConfigurationDescriptions & descriptions);
-
 
 private:
 
@@ -126,6 +118,9 @@ private:
 
   std::string pileup_;
   std::string lepton_;
+  double par;
+  JetCorrectionUncertainty *jecUncDT;
+  JetCorrectionUncertainty *jecUncMC;
 
 
   // ----------member data ---------------------------
@@ -214,6 +209,7 @@ private:
   TH1F *    h_scalFactor_second_ele;
   TH1F *    h_scalFactor_second_muon;
 
+  TH1F *    h_JEC_uncert;
 };
 
 using namespace  pat;
@@ -238,9 +234,12 @@ struct Plots
 } plots_[N_JET_TYPES];
 
 
+
 // 
 // static data member definitions
 // 
+
+
 
 // 
 // constructors and destructor
@@ -249,6 +248,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig){
 
   pileup_ = iConfig.getUntrackedParameter < std::string > ("pileup", "S7");
   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
+  par  =    iConfig.getUntrackedParameter <double> ("JEC",  0);
 
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
@@ -300,6 +300,8 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig){
   h_scalFactor_first_muon  =    fs->make < TH1F > ("scaleFactor_first_muon",  "scaleFactor_first_muon", 90, 0.6, 1.5);
   h_scalFactor_second_ele  =    fs->make < TH1F > ("scaleFactor_second_ele",  "scaleFactor_second_ele", 90, 0.6, 1.5);
   h_scalFactor_second_muon =    fs->make < TH1F > ("scaleFactor_second_muon", "scaleFactor_second_muon", 90, 0.6, 1.5);
+
+  h_JEC_uncert             =    fs->make < TH1F > ("JEC uncert", "JEC uncert", 10, -0.5, 0.5);
 
   w_Afb = fs->make < TH1F > ("b_asymmetry", "b_asymmetry", 10, -1, 1);
 
@@ -477,11 +479,17 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 
   // ++++++ Pile-Up
 
+  JetCorrectionUncertainty * jecUnc;
+
+  jecUnc=jecUncDT;
+
   MyWeight = 1.0;
 
   Handle < std::vector < PileupSummaryInfo > >PupInfo;
 
   if (iEvent.getByLabel (edm::InputTag ("addPileupInfo"), PupInfo))  {
+
+      jecUnc=jecUncMC;
 
       std::vector < PileupSummaryInfo >::const_iterator PVI;
 
@@ -501,12 +509,12 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
       MyWeight = LumiWeights_.weight (Tnpv);
 
       if (ee_event){
-	  scalFac_first_e = ElEff.Val (vect_ele_pt[0], vect_ele_eta[0]);
-	  scalFac_second_e = ElEff.Val (vect_ele_pt[1], vect_ele_eta[1]);
+	  scalFac_first_e  =  ElSF.Val (vect_ele_pt[0], vect_ele_eta[0]);
+	  scalFac_second_e =  ElSF.Val (vect_ele_pt[1], vect_ele_eta[1]);
       }
       if (mm_event){
-	  scalFac_first_mu = MuEff.Val (vect_muon_pt[0], vect_muon_eta[0]);
-	  scalFac_second_mu = MuEff.Val (vect_muon_pt[1], vect_muon_eta[1]);
+	  scalFac_first_mu  = MuSF.Val (vect_muon_pt[0], vect_muon_eta[0]);
+	  scalFac_second_mu = MuSF.Val (vect_muon_pt[1], vect_muon_eta[1]);
       }
 
   }
@@ -550,16 +558,30 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
   vector < double >vect_jet_pt;
   vector < double >vect_jet_phi;
   vector < double >vect_jet_eta;
+  double sum2_up = 0;
+  double sum2_dw = 0;
 
   if ((ee_event || mm_event) && (zmm->size () != 0 || zee->size () != 0)) {
 
       for (std::vector < pat::Jet >::const_iterator jet = jets->begin (); jet != jets->end (); ++jet) {
+
 	  if (jet->pt () > 30 && fabs (jet->eta ()) < 2.4)
 	  {
+	      
+	      // JEC Uncertainty 
+	      
+	      jecUnc->setJetEta(jet_eta);
+	      jecUnc->setJetPt(jet_pt);
+	      double unc = jecUnc->getUncertainty(true);
+	      double cor = (1.0+unc*par);
+	      h_JEC_uncert -> Fill(unc); 
+	      cout<< "JEC syst =" << unc << endl;
+
 	      ++Nj;
-	      jet_pt  = jet->pt ();
-	      jet_eta = jet->eta();
-	      jet_phi = jet->phi();
+
+	      jet_pt  = jet->pt () * cor;
+	      jet_eta = jet->eta() * cor;
+	      jet_phi = jet->phi() * cor;
 
 	      vect_jet_pt.push_back (jet_pt);
 	      vect_jet_phi.push_back (jet_phi);
@@ -591,13 +613,14 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	       * plots_[flavour].dist->Fill(distance.value());
 	       * 
 	       */
+	
 
 	      // b studies
 
 	      discrCSV = jet->bDiscriminator ("combinedSecondaryVertexBJetTags");
       
 	      if (discrCSV > 0.89) {
-		      scalFac_b = BtEff.Val (jet_pt, jet_eta);
+		      scalFac_b = BtSF.Val (jet_pt, jet_eta);
 	      }
 
 
@@ -608,8 +631,8 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	      w_secondvtx_N->Fill (discrCSV, MyWeight);
 	      if (discrCSV > 0.89)    ++Nb;
 	      if (discrCSV > 0.89 && Nb != 0){
-    		      b_leading_pt = jet->pt ();
-		      b_leading_eta = jet->eta ();
+    		      b_leading_pt = jet_pt;
+		      b_leading_eta = jet_eta;
     		      if (fabs (b_leading_eta) > 0)  Nf++;
     		      if (fabs (b_leading_eta) < 0)  Nbk++;
     		      Afb = (Nf - Nbk) / (Nf + Nbk);
@@ -701,7 +724,7 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
     }
   }
 
-//}
+//par
 
   treeZb_->Fill();
   h_PUweights->Fill (MyWeight);
@@ -755,6 +778,8 @@ if (mm_event && vect_jet_pt.size () != 0 && zmm->size () != 0) {
 void
 ZbAnalyzer::beginJob ()
 {
+  jecUncDT = new JetCorrectionUncertainty("/gpfs/cms/users/candelis/work/Zb/Fall12_V7_DATA_Uncertainty_AK5PFchs.txt");
+  jecUncMC = new JetCorrectionUncertainty("/gpfs/cms/users/candelis/work/Zb/Fall12_V7_MC_Uncertainty_AK5PFchs.txt");
 }
 
 // ------------ method called once each job just after ending the event
@@ -762,6 +787,8 @@ ZbAnalyzer::beginJob ()
 void
 ZbAnalyzer::endJob ()
 {
+  delete jecUncDT;
+  delete jecUncMC;
 }
 
 // ------------ method called when starting to processes a run
@@ -792,20 +819,6 @@ void
 ZbAnalyzer::endLuminosityBlock (edm::LuminosityBlock const &,
 				edm::EventSetup const &)
 {
-}
-
-// ------------ method fills 'descriptions' with the allowed parameters
-// for the module ------------
-void
-ZbAnalyzer::fillDescriptions (edm::ConfigurationDescriptions & descriptions)
-{
-  // The following says we do not know what parameters are allowed so do 
-  // no validation
-  // Please change this to state exactly what you do use, even if it is
-  // no parameters
-  edm::ParameterSetDescription desc;
-  desc.setUnknown ();
-  descriptions.addDefault (desc);
 }
 
 // define this as a plug-in
