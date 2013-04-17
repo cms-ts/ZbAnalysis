@@ -1,0 +1,13 @@
+
+crab -report
+
+mergeJSON.py --output=total_electrons.json `ls DATA/Electrons/2012*/crab_0_130414_*/res/lumiSummary.json`
+mergeJSON.py --output=total_muons.json `ls DATA/Muons/2012*/crab_0_130414_*/res/lumiSummary.json`
+
+lumiCalc2.py overview -i total_electrons.json
+lumiCalc2.py overview -i total_muons.json
+
+pileupCalc.py -i total_electrons.json --inputLumiJSON /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions12/8TeV/PileUp/pileup_JSON_DCSONLY_190389-208686_corr.txt --calcMode true --minBiasXsec 69400 --maxPileupBin 60 --numPileupBins 60 pileup_2012_ee.root
+pileupCalc.py -i total_muons.json --inputLumiJSON /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions12/8TeV/PileUp/pileup_JSON_DCSONLY_190389-208686_corr.txt --calcMode true --minBiasXsec 69400 --maxPileupBin 60 --numPileupBins 60 pileup_2012_mm.root
+
+
