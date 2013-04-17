@@ -1,23 +1,45 @@
 #!/bin/sh
 
-root-5.34 -l -q -b DataMCComp.C\(\"w_jetmultiplicity\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"w_jet_pt\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"w_muon_pt\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"w_ele_pt\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"w_mm_inv\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"w_ee_inv\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"w_secondvtx_N\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"h_pu_weights\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"recoVTX\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"recoVTXw\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"bquarks\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"h_tracks\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"w_tracks\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"w_MET\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"w_bjetmultiplicity\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"w_bleading_pt\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"b_mm_inv\",1\)
-root-5.34 -l -q -b DataMCComp.C\(\"b_ee_inv\",1\)
+cd $CMS_PATH/slc5_amd64_gcc472/cms/cmssw/CMSSW_6_1_0
+SCRAM_ARCH=slc5_amd64_gcc472
+eval `scramv1 runtime -sh`
+cd -
 
+i=0
 
+while [ $i -le 1 ]; do
+  root -l -q -b DataMCComp.C\(\"w_jetmultiplicity\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"first_ele_pt\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"first_muon_pt\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"first_jet_pt\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_mm_inv\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_ee_inv\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_secondvtx_N\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"h_pu_weights\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"recoVTX\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"recoVTXw\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"bquarks\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"h_tracks\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_tracks\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_MET\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_bjetmultiplicity\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_bleading_pt\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"b_mm_inv\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"b_ee_inv\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_bleading_eta\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_delta_phi_mm\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_delta_phi_ee\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"Z_pt_ee\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"Z_pt_mm\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"Z_pt_ee_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"Z_pt_mm_b\",1,$i\) 
+#root -l -q -b DataMCComp.C\(\"b_asymmetry\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"first_muon_eta\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"first_ele_eta\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"numberOfZ\",1,$i\)
 
+  i=$((i+1))
+done
+
+exit
