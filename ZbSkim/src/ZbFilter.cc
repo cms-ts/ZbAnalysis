@@ -13,7 +13,7 @@
 //
 // Original Author:  Vieri Candelise
 //         Created:  Thu Nov  1 11:32:14 CET 2012
-// $Id$
+// $Id: ZbFilter.cc,v 1.1 2013/01/28 12:52:12 dellaric Exp $
 //
 //
 
@@ -63,8 +63,6 @@ class ZbFilter : public edm::EDFilter {
    public:
       explicit ZbFilter(const edm::ParameterSet&);
       ~ZbFilter();
-
-      static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
    private:
       virtual void beginJob() ;
@@ -119,17 +117,6 @@ bool
 ZbFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
-#ifdef THIS_IS_AN_EVENT_EXAMPLE
-   Handle<ExampleData> pIn;
-   iEvent.getByLabel("example",pIn);
-#endif
-
-#ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
-   ESHandle<SetupData> pSetup;
-   iSetup.get<SetupRecord>().get(pSetup);
-#endif
-
-int Nj=0;
 
    //get electron collection
    //edm::Handle<std::vector<reco::PFCandidate> > electrons;
@@ -205,14 +192,5 @@ ZbFilter::endLuminosityBlock(edm::LuminosityBlock&, edm::EventSetup const&)
   return true;
 }
 
-// ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
-void
-ZbFilter::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-  //The following says we do not know what parameters are allowed so do no validation
-  // Please change this to state exactly what you do use, even if it is no parameters
-  edm::ParameterSetDescription desc;
-  desc.setUnknown();
-  descriptions.addDefault(desc);
-}
 //define this as a plug-in
 DEFINE_FWK_MODULE(ZbFilter);
