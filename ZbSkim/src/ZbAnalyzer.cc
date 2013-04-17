@@ -13,7 +13,7 @@
 // 
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.7 2013/04/12 10:06:16 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.8 2013/04/16 15:18:10 vieri Exp $
 // 
 // 
 
@@ -92,29 +92,20 @@ class TTree;
 
 class ZbAnalyzer:public  edm::EDAnalyzer {
 public:
-  explicit
-  ZbAnalyzer (const edm::ParameterSet &);
-  ~
-  ZbAnalyzer ();
+  explicit ZbAnalyzer (const edm::ParameterSet &);
+  ~ZbAnalyzer ();
 
 private:
 
-  virtual void
-  beginJob ();
-  virtual void
-  analyze (const edm::Event &, const edm::EventSetup &);
-  virtual void
-  endJob ();
+  virtual void beginJob ();
+  virtual void analyze (const edm::Event &, const edm::EventSetup &);
+  virtual void endJob ();
 
-  virtual void
-  beginRun (edm::Run const &, edm::EventSetup const &);
-  virtual void
-  endRun (edm::Run const &, edm::EventSetup const &);
-  virtual void
-  beginLuminosityBlock (edm::LuminosityBlock const &,
+  virtual void beginRun (edm::Run const &, edm::EventSetup const &);
+  virtual void endRun (edm::Run const &, edm::EventSetup const &);
+  virtual void beginLuminosityBlock (edm::LuminosityBlock const &,
 			edm::EventSetup const &);
-  virtual void
-  endLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
+  virtual void endLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
 
   std::string pileup_;
   std::string lepton_;
@@ -144,7 +135,7 @@ private:
 
   double    b_mm_invmass;
   double    b_ee_invmass;
-  int        NZ,    NZ2;
+  int       NZ, NZ2;
   double    discrCSV;
   double    MyWeight;
   double    sFac;
@@ -155,10 +146,10 @@ private:
   double    scalFac_second_mu;
   double    scalFac_b;
   double    pt_Z;
-  double    Nf,    Nbk;
+  double    Nf, Nbk;
   double    Afb;
 
-  TTree *    treeZb_;
+  TTree *   treeZb_;
 
   TH1F *    h_jetmultiplicity;
   TH1F *    h_jet_pt;
@@ -198,6 +189,7 @@ private:
   TH1F *    w_MET_sign;
   TH1F *    w_MET_mtx;
   TH1F *    w_delta_phi_mm;
+  TH1F *    numberOfZ;
 
   TH1F *    b_mm_inv;
   TH1F *    b_ee_inv;
@@ -295,7 +287,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig){
   h_pt_Z_mm =          fs->make < TH1F > ("Z_pt_mm", "Z_pt_mm;P_t [GeV]", 35, 0., 350.);
   b_mm_inv = 	       fs->make < TH1F > ("b_mm_inv", "b_mm_inv", 60, 71, 112);
   b_ee_inv =           fs->make < TH1F > ("b_ee_inv", "b_ee_inv", 60, 71, 112);
-
+  
   h_scalFactor_first_ele   =    fs->make < TH1F > ("scaleFactor_first_ele",   "scaleFactor_first_ele", 90, 0.6, 1.5);
   h_scalFactor_first_muon  =    fs->make < TH1F > ("scaleFactor_first_muon",  "scaleFactor_first_muon", 90, 0.6, 1.5);
   h_scalFactor_second_ele  =    fs->make < TH1F > ("scaleFactor_second_ele",  "scaleFactor_second_ele", 90, 0.6, 1.5);
@@ -304,6 +296,8 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig){
   h_JEC_uncert             =    fs->make < TH1F > ("JEC uncert", "JEC uncert", 10, -0.5, 0.5);
 
   w_Afb = fs->make < TH1F > ("b_asymmetry", "b_asymmetry", 10, -1, 1);
+
+  numberOfZ = fs->make < TH1F > ("numberOfZ",   "numberOfZ", 5, 0, 5);
 
   treeZb_ = fs->make < TTree > ("ZbTree", "ZbTree");
   treeZb_->Branch ("Nj", &Nj);
@@ -431,7 +425,6 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
   vector < double >vect_ele_pt;
   vector < double >vect_ele_eta;
 
-
   for (pat::ElectronCollection::const_iterator ele = Trigelectrons->begin (); ele != Trigelectrons->end (); ++ele){   
 
     	  ele_pt = ele->pt ();
@@ -441,15 +434,18 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
     	  vect_ele_eta.push_back (ele_eta);
   }
 
-  if (vect_ele_pt.size () != 0){
-      	  if (fabs (vect_ele_eta[0]) < 2.4 && fabs (vect_ele_eta[1]) < 2.4 && (fabs (vect_ele_eta[0]) < 1.44442 || fabs (vect_ele_eta[0]) > 1.5660) && (fabs (vect_ele_eta[1]) < 1.4442 || fabs (vect_ele_eta[1]) > 1.5660)){
-	    	  if (vect_ele_pt[0] > 20 && vect_ele_pt[1] > 20){
+//  if (vect_ele_pt.size () >= 2){
+//      	  if (fabs (vect_ele_eta[0]) < 2.4 && fabs (vect_ele_eta[1]) < 2.4 && (fabs (vect_ele_eta[0]) < 1.442 || fabs (vect_ele_eta[0]) > 1.566) && (fabs (vect_ele_eta[1]) < 1.442 || fabs (vect_ele_eta[1]) > 1.566)){
+//	    	  if (vect_ele_pt[0] > 20 && vect_ele_pt[1] > 20){
+//			ee_event = true;
+//		  }
+//	  }
+//  }
 
-	ee_event = true;
-		  }
-	  }
+  if (zee->size () != 0) {
+	  ee_event = true;
+	  numberOfZ->Fill(zee->size ());
   }
-
 
   // +++++++++ MUONS
 
@@ -461,17 +457,21 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
       muon_pt = muon->pt ();
       muon_eta = muon->eta ();
 
-
       vect_muon_pt.push_back (muon_pt);
       vect_muon_eta.push_back (muon_eta);
   }
 
-  if (vect_muon_pt.size () != 0){
-      	  if (fabs (vect_muon_eta[0]) < 2.4 && fabs (vect_muon_eta[1]) < 2.4){
-	    	  if (vect_muon_pt[0] > 20 && vect_muon_pt[1] > 20){
-		  	  mm_event = true;
-		  }
-	  }
+//  if (vect_muon_pt.size () >= 2){
+//      	  if (fabs (vect_muon_eta[0]) < 2.4 && fabs (vect_muon_eta[1]) < 2.4){
+//	    	  if (vect_muon_pt[0] > 20 && vect_muon_pt[1] > 20){
+//			mm_event = true;
+//		  }
+//	  }
+//  }
+
+  if (zmm->size () != 0){
+	  mm_event = true;
+	  numberOfZ->Fill(zmm->size());
   }
 
   if (lepton_ == "electron" && !ee_event) return;
@@ -481,7 +481,7 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 
   JetCorrectionUncertainty * jecUnc;
 
-  jecUnc=jecUncDT;
+  jecUnc = jecUncDT;
 
   MyWeight = 1.0;
 
@@ -520,14 +520,14 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
   }
 
 
-  if (ee_event && zee->size () != 0)    MyWeight = MyWeight * scalFac_first_e * scalFac_second_e;
-  if (mm_event && zmm->size () != 0)    MyWeight = MyWeight * scalFac_first_mu * scalFac_second_mu;
+  if (ee_event) MyWeight = MyWeight * scalFac_first_e * scalFac_second_e;
+  if (mm_event) MyWeight = MyWeight * scalFac_first_mu * scalFac_second_mu;
 
 
   // ++++++++ VERTICES
 
   edm::Handle < std::vector < reco::Vertex > >vertices_h;
-  iEvent.getByLabel (edm::InputTag ("offlinePrimaryVertices"), vertices_h);
+  iEvent.getByLabel (edm::InputTag ("goodOfflinePrimaryVertices"), vertices_h);
   if (!vertices_h.isValid ()) {
       // std::cout<<"empty vertex collection!!!\n";
       // return;
@@ -558,30 +558,29 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
   vector < double >vect_jet_pt;
   vector < double >vect_jet_phi;
   vector < double >vect_jet_eta;
-  double sum2_up = 0;
-  double sum2_dw = 0;
 
-  if ((ee_event || mm_event) && (zmm->size () != 0 || zee->size () != 0)) {
+  if (ee_event || mm_event) {
 
       for (std::vector < pat::Jet >::const_iterator jet = jets->begin (); jet != jets->end (); ++jet) {
 
-	  if (jet->pt () > 30 && fabs (jet->eta ()) < 2.4)
-	  {
-	      
-	      // JEC Uncertainty 
-	      
-	      jecUnc->setJetEta(jet_eta);
-	      jecUnc->setJetPt(jet_pt);
-	      double unc = jecUnc->getUncertainty(true);
-	      double cor = (1.0+unc*par);
-	      h_JEC_uncert -> Fill(unc); 
-	      cout<< "JEC syst =" << unc << endl;
+	  jet_pt  = jet->pt ();
+	  jet_eta = jet->eta();
+	  jet_phi = jet->phi();
 
+	  // JEC Uncertainty 
+	      
+	  jecUnc->setJetPt(jet_pt);
+	  jecUnc->setJetEta(jet_eta);
+	  double unc = jecUnc->getUncertainty(true);
+	  double cor = (1.0+unc*par);
+	  h_JEC_uncert -> Fill(unc); 
+//	  cout<< "JEC syst =" << unc << endl;
+
+	  jet_pt  = jet->pt () * cor;
+
+	  if (jet_pt > 30) {
+	      
 	      ++Nj;
-
-	      jet_pt  = jet->pt () * cor;
-	      jet_eta = jet->eta() * cor;
-	      jet_phi = jet->phi() * cor;
 
 	      vect_jet_pt.push_back (jet_pt);
 	      vect_jet_phi.push_back (jet_phi);
@@ -614,7 +613,6 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	       * 
 	       */
 	
-
 	      // b studies
 
 	      discrCSV = jet->bDiscriminator ("combinedSecondaryVertexBJetTags");
@@ -622,7 +620,6 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	      if (discrCSV > 0.89) {
 		      scalFac_b = BtSF.Val (jet_pt, jet_eta);
 	      }
-
 
 	      if (fabs (jet->partonFlavour ()) == 5 && Nj > 0){
 		  w_bquarks->Fill (discrCSV, MyWeight);
@@ -651,8 +648,7 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
   // MET
 
   double significance = 0;
-  double sigmaX2 = 0;
-  if ((ee_event || mm_event) && (zmm->size () != 0 || zee->size () != 0) && Nj != 0) {
+  if ((ee_event || mm_event) && Nj != 0) {
     	  for (std::vector < pat::MET >::const_iterator m = met->begin (); m != met->end (); ++m) {
 		  w_MET->Fill (m->et (), MyWeight);
 		  significance = m->significance();
@@ -662,7 +658,7 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 
   // TRACKS
   
-  if ((ee_event || mm_event) && (zmm->size () != 0 || zee->size () != 0) && Nj != 0) {
+  if ((ee_event || mm_event) && Nj != 0) {
       for (std::vector < reco::Track >::const_iterator t = tracks->begin (); t != tracks->end (); ++t) {
     	      Ntracks = t->numberOfValidHits ();
       }
@@ -670,106 +666,100 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 
   // DIMUON Z
 
-  if (zmm->size () != 0 && Nj != 0 && mm_event) {
+  if (mm_event && Nj != 0) {
 
-     for (std::vector < reco::CompositeCandidate >::const_iterator Zit = zmm->begin (); Zit != zmm->end (); ++Zit) {
+    std::vector < reco::CompositeCandidate >::const_iterator Zit = zmm->begin ();
 
-	  NZ++;
+    dimuon_inv = Zit->mass ();
+    dimuon_phi = Zit->phi ();
+    pt_Z = Zit->pt ();
 
-	  dimuon_inv = Zit->mass ();
-	  dimuon_phi = Zit->phi ();
-	  pt_Z = Zit->pt ();
+    if (dimuon_inv != 0)  {
+	  h_mm_inv->Fill (dimuon_inv);
+    	  w_mm_inv->Fill (dimuon_inv, MyWeight);
+    	  if (Nb != 0) {
+		  b_mm_invmass = Zit->mass ();
+		  b_mm_inv->Fill (b_mm_invmass, MyWeight*scalFac_b);
+		  Delta_phi_mm = fabs (dimuon_phi - vect_jet_phi[0]);
+		  
+		  if (Delta_phi_mm > acos (-1)) Delta_phi_mm = 2 * acos (-1) - Delta_phi_mm;
 
-	  if (dimuon_inv != 0 && Nj > 0)  {
-		  h_mm_inv->Fill (dimuon_inv);
-    		  w_mm_inv->Fill (dimuon_inv, MyWeight);
-    		  if (Nb != 0 && discrCSV > 0.89 && dimuon_inv != 0) {
-			  b_mm_invmass = Zit->mass ();
-			  b_mm_inv->Fill (b_mm_invmass, MyWeight*scalFac_b);
-			  Delta_phi_mm = fabs (dimuon_phi - vect_jet_phi[0]);
-			  
-			  if (Delta_phi_mm > acos (-1)) Delta_phi_mm = 2 * acos (-1) - Delta_phi_mm;
-
-			  h_delta_mm->Fill (Delta_phi_mm, MyWeight*scalFac_b);
-			  h_pt_Z_mm->Fill (pt_Z, MyWeight*scalFac_b);
-	  	  }
-	  }
-     }
+		  h_delta_mm->Fill (Delta_phi_mm, MyWeight*scalFac_b);
+		  h_pt_Z_mm->Fill (pt_Z, MyWeight*scalFac_b);
+  	  }
+    }
   }
  
   // DIELECTRON Z
 
-  if (zee->size () != 0 && Nj != 0 && ee_event) {
+  if (ee_event && Nj != 0) {
 
-    for (std::vector <reco::CompositeCandidate >::const_iterator Zit2 = zee->begin (); Zit2 != zee->end (); ++Zit2){
+    std::vector <reco::CompositeCandidate >::const_iterator Zit2 = zee->begin ();
 
-	  NZ2++;
+    diele_inv = Zit2->mass ();
+    diele_phi = Zit2->phi ();
+    pt_Z = Zit2->pt ();
 
-	  diele_inv = Zit2->mass ();
-	  diele_phi = Zit2->phi ();
-	  pt_Z = Zit2->pt ();
-
-	  if (diele_inv != 0 && Nj > 0) {
-    		  h_ee_inv->Fill (diele_inv);
-    		  w_ee_inv->Fill (diele_inv, MyWeight);
-    		  if (Nb != 0 && discrCSV > 0.89 && diele_inv != 0){
-    			  b_ee_invmass = Zit2->mass ();
-    			  b_ee_inv->Fill (b_ee_invmass, MyWeight*scalFac_b);
-    			  Delta_phi_ee = fabs (diele_phi - vect_jet_phi[0]);
-    			  if (Delta_phi_ee > acos (-1))  Delta_phi_ee = 2 * acos (-1) - Delta_phi_ee;
-    			  h_delta_ee->Fill (Delta_phi_ee, MyWeight*scalFac_b);
-    			  h_pt_Z_ee->Fill (pt_Z, MyWeight*scalFac_b);
-    		  }
-	  }
+    if (diele_inv != 0) {
+    	  h_ee_inv->Fill (diele_inv);
+    	  w_ee_inv->Fill (diele_inv, MyWeight);
+    	  if (Nb != 0){
+    		  b_ee_invmass = Zit2->mass ();
+    		  b_ee_inv->Fill (b_ee_invmass, MyWeight*scalFac_b);
+    		  Delta_phi_ee = fabs (diele_phi - vect_jet_phi[0]);
+    		  if (Delta_phi_ee > acos (-1))  Delta_phi_ee = 2 * acos (-1) - Delta_phi_ee;
+    		  h_delta_ee->Fill (Delta_phi_ee, MyWeight*scalFac_b);
+    		  h_pt_Z_ee->Fill (pt_Z, MyWeight*scalFac_b);
+    	  }
     }
   }
 
-//par
-
   treeZb_->Fill();
-  h_PUweights->Fill (MyWeight);
 
-  h_scalFactor_first_ele->Fill (scalFac_first_e);
-  h_scalFactor_first_muon->Fill (scalFac_first_mu);
-  h_scalFactor_second_ele->Fill (scalFac_second_e);
-  h_scalFactor_second_muon->Fill (scalFac_second_mu);
+  if ((ee_event || mm_event) && Nj != 0) {
+    h_PUweights->Fill (MyWeight);
+  }
 
-  if (Nj > 0) {
+  if ((ee_event || mm_event) && Nj != 0) {
+    h_scalFactor_first_ele->Fill (scalFac_first_e);
+    h_scalFactor_first_muon->Fill (scalFac_first_mu);
+    h_scalFactor_second_ele->Fill (scalFac_second_e);
+    h_scalFactor_second_muon->Fill (scalFac_second_mu);
+  }
+
+  if ((ee_event || mm_event) && Nj != 0) {
       h_jetmultiplicity->Fill (Nj);
       w_jetmultiplicity->Fill (Nj, MyWeight);
   }
 
-if (ee_event && vect_jet_pt.size () != 0 && zee->size () != 0) {
+  if (ee_event && Nj != 0) {
   	w_first_ele_pt->Fill (vect_ele_pt[0], MyWeight);
-    	sf_first_ele_pt->Fill (vect_ele_pt[0],MyWeight / (scalFac_first_e * scalFac_second_e));
+    	sf_first_ele_pt->Fill (vect_ele_pt[0], MyWeight / (scalFac_first_e * scalFac_second_e));
   	w_second_ele_pt->Fill (vect_ele_pt[1], MyWeight);
  	w_first_ele_eta->Fill (vect_ele_eta[0], MyWeight);
 	w_second_ele_eta->Fill (vect_ele_eta[1], MyWeight);
-}
+  }
 
-if (mm_event && vect_jet_pt.size () != 0 && zmm->size () != 0) {
-
+  if (mm_event && Nj != 0) {
       w_first_muon_pt->Fill (vect_muon_pt[0], MyWeight);
       w_second_muon_pt->Fill (vect_muon_pt[1], MyWeight);
       w_first_muon_eta->Fill (vect_muon_eta[0], MyWeight);
       w_second_muon_eta->Fill (vect_muon_eta[1], MyWeight);
-
-}
-
-
-  h_secondvtx_N->Fill (discrCSV);
-  // w_secondvtx_N ->Fill(discrCSV, MyWeight);
-
-  h_tracks->Fill (Ntracks);
-  w_tracks->Fill (Ntracks, MyWeight);
-
-
-  if (Nb > 0) {
-      w_bmultiplicity->Fill (Nb, MyWeight*scalFac_b);
-      w_bleading_pt->Fill (b_leading_pt, MyWeight*scalFac_b);
-      w_bleading_eta->Fill (b_leading_eta, MyWeight*scalFac_b);
   }
 
+  if ((ee_event || mm_event) && Nj != 0) {
+    h_secondvtx_N->Fill (discrCSV);
+    // w_secondvtx_N ->Fill(discrCSV, MyWeight);
+
+    h_tracks->Fill (Ntracks);
+    w_tracks->Fill (Ntracks, MyWeight);
+
+    if (Nb != 0) {
+        w_bmultiplicity->Fill (Nb, MyWeight*scalFac_b);
+        w_bleading_pt->Fill (b_leading_pt, MyWeight*scalFac_b);
+        w_bleading_eta->Fill (b_leading_eta, MyWeight*scalFac_b);
+    }
+  }
 
 }
 
