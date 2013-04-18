@@ -2,7 +2,7 @@
 
 ulimit -c 0
 
-cd /gpfs/cms/users/candelis/CMSSW_5_3_7_patch4
+cd /gpfs/cms/users/candelis/CMSSW_5_3_9
 setenv SCRAM_ARCH slc5_amd64_gcc462
 eval `scramv1 runtime -sh`
 cd -
