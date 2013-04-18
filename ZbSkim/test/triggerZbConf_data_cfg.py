@@ -26,6 +26,15 @@ process.goodOfflinePrimaryVertices = cms.EDFilter("PrimaryVertexObjectFilter",
 
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
+process.load("PhysicsTools.PatUtils.patPFMETCorrections_cff")
+
+process.producePatPFMETCorrections.replace(
+    process.pfCandMETcorr,
+    process.type0PFMEtCorrection *
+    process.patPFMETtype0Corr *
+    process.pfCandMETcorr
+)
+
 ########### Run PF2PAT
 
 postfix = "PFlow"
@@ -49,15 +58,19 @@ useNoElectron = True # before jet top projection
 useNoJet      = True # before tau top projection
 useNoTau      = True # before MET top projection
 
-########## to turn on type-0+1 corrections
+########## to turn on MET type-0+1 corrections
+
+getattr(process,'patMETs'+postfix).metSource = cms.InputTag('patType1p2CorrectedPFMet'+postfix)
+
 getattr(process,'patType1CorrectedPFMet'+postfix).srcType1Corrections = cms.VInputTag(
     cms.InputTag("patPFJetMETtype1p2Corr"+postfix,"type1"),
     cms.InputTag("patPFMETtype0Corr"+postfix)
 )
 
-getattr(process,'patMETs'+postfix).metSource = cms.InputTag('patType1p2CorrectedPFMet'+postfix)
+########## to turn on MET x/y shift corrections
 
 process.pfMEtSysShiftCorr.parameter = process.pfMEtSysShiftCorrParameters_2012runAvsNvtx_data
+
 process.pfType1CorrectedMet.srcType1Corrections = cms.VInputTag(
 		    cms.InputTag('pfJetMETcorr', 'type1'),
 		        cms.InputTag('pfMEtSysShiftCorr')  
