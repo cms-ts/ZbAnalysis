@@ -62,6 +62,7 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 		if (title=="b_ee_inv") return;
 		if (title=="w_delta_phi_ee") return;
 		if (title=="Z_pt_ee") return;
+		if (title=="Z_pt_ee_b") return;
 	}
 	if (ilepton==1) {
 		if (title=="first_muon_pt") return;
@@ -70,6 +71,7 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 		if (title=="b_mm_inv") return;
 		if (title=="w_delta_phi_mm") return;
 		if (title=="Z_pt_mm") return;
+		if (title=="Z_pt_mm_b") return;
 	}
 
 	string path = "/gpfs/cms/users/candelis/work/Zb/data/" + version + "/";
