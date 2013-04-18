@@ -24,6 +24,8 @@ process.goodOfflinePrimaryVertices = cms.EDFilter("PrimaryVertexObjectFilter",
 		src=cms.InputTag('offlinePrimaryVertices')
 )
 
+process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
+
 ########### Run PF2PAT
 
 postfix = "PFlow"
@@ -101,7 +103,7 @@ process.goodJets = selectedPatJets.clone(
 
 ############## Making Z to mumu
 
-process.matchedMuons = selectedPatMuons.clone(
+process.matchedMuons0 = selectedPatMuons.clone(
 		src = cms.InputTag('selectedPatMuonsTriggerMatch'),
 		cut = cms.string(
 			'pt > 20 & abs(eta) < 2.4 &'
@@ -117,13 +119,13 @@ process.matchedMuons = selectedPatMuons.clone(
 		)
 )
 
-#process.matchedMuons = cms.EDProducer("MuScleFitPATMuonCorrector",
-#                         src = cms.InputTag("matchedMuons_temp"),
-#                         debug = cms.bool(False),
-#                         identifier = cms.string("Summer12_DR53X"),
-#                         applySmearing = cms.bool(True),
-#                         fakeSmearing = cms.bool(False)
-#)
+process.matchedMuons = cms.EDProducer("MuScleFitPATMuonCorrector",
+                         src = cms.InputTag("matchedMuons0"),
+                         debug = cms.bool(False),
+                         identifier = cms.string("Summer12_DR53X"),
+                         applySmearing = cms.bool(True),
+                         fakeSmearing = cms.bool(False)
+)
 
 process.zmuMatchedmuMatched = cms.EDProducer('CandViewShallowCloneCombiner',
 			          decay = cms.string('matchedMuons@+ matchedMuons@-'),
@@ -194,7 +196,7 @@ process.zeleMatchedeleMatched = cms.EDProducer('CandViewShallowCloneCombiner',
 
 ##############
 
-process.GlobalTag.globaltag = 'START53_V7G::All'
+process.GlobalTag.globaltag = 'START53_V18PR::All'
 process.source = cms.Source("PoolSource",
 	#fileNames = cms.untracked.vstring('/store/mc/Summer12/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/AODSIM/PU_S7_START50_V15-v1/0000/88AD6E87-E173-E111-9996-00E081791749.root')
 	fileNames = cms.untracked.vstring('file:88AD6E87-E173-E111-9996-00E081791749.root')
@@ -242,12 +244,14 @@ process.MyProcess = cms.EDFilter('ZbFilter')
 process.p = cms.Path(
    process.goodOfflinePrimaryVertices *
    getattr(process,"patPF2PATSequence"+postfix) *
+   process.recoTauClassicHPSSequence *
    process.goodJets *
    process.pfMEtSysShiftCorrSequence *
    process.producePFMETCorrections *
    process.patTrigger *
    process.selectedTriggeredPatMuons *
    process.selectedPatMuonsTriggerMatch *
+   process.matchedMuons0 *
    process.matchedMuons *
    process.zmuMatchedmuMatched *
    process.selectedTriggeredPatElectrons *
