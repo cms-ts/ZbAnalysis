@@ -32,15 +32,11 @@ if [ -d $WORKDIR/$VERSION/$JOBDIR ]; then
   echo "done"
 elif [ "$JOBDIR" == "data-all" ]; then
   N=`ls $WORKDIR/$VERSION/DoubleElectron*.root | grep -v merge | wc -l`
-  if [ $N -ge 2 ]; then
-    rm -f $WORKDIR/$VERSION/DoubleElectron_2012_merge.root
-    hadd $WORKDIR/$VERSION/DoubleElectron_2012_merge.root $WORKDIR/$VERSION/DoubleElectron_2012*.root 2>&1 | grep -v Target | grep -v Source
-  fi
+  rm -f $WORKDIR/$VERSION/DoubleElectron_2012_merge.root
+  hadd $WORKDIR/$VERSION/DoubleElectron_2012_merge.root $WORKDIR/$VERSION/DoubleElectron_2012*.root 2>&1 | grep -v Target | grep -v Source
   N=`ls $WORKDIR/$VERSION/DoubleMu*.root | grep -v merge | wc -l`
-  if [ $N -ge 2 ]; then
-    rm -f $WORKDIR/$VERSION/DoubleMu_2012_merge.root
-    hadd $WORKDIR/$VERSION/DoubleMu_2012_merge.root $WORKDIR/$VERSION/DoubleMu_2012*.root 2>&1 | grep -v Target | grep -v Source
-  fi
+  rm -f $WORKDIR/$VERSION/DoubleMu_2012_merge.root
+  hadd $WORKDIR/$VERSION/DoubleMu_2012_merge.root $WORKDIR/$VERSION/DoubleMu_2012*.root 2>&1 | grep -v Target | grep -v Source
 else
   echo 'ERROR: jobdir "'$JOBDIR'" does not exist !'
 fi

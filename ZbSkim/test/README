@@ -1,8 +1,8 @@
 
 crab -report
 
-mergeJSON.py --output=total_electrons.json `ls DATA/Electrons/2012*/crab_0_130414_*/res/lumiSummary.json`
-mergeJSON.py --output=total_muons.json `ls DATA/Muons/2012*/crab_0_130414_*/res/lumiSummary.json`
+mergeJSON.py --output=total_electrons.json `ls DATA/Electrons/2012*/crab_0_130418_*/res/lumiSummary.json`
+mergeJSON.py --output=total_muons.json `ls DATA/Muons/2012*/crab_0_130418_*/res/lumiSummary.json`
 
 lumiCalc2.py overview -i total_electrons.json
 lumiCalc2.py overview -i total_muons.json
