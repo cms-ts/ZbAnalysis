@@ -28,15 +28,13 @@ cd $WORKDIR
 if [ -d $WORKDIR/$VERSION/$JOBDIR ]; then
   echo 'Preparing '$WORKDIR/$VERSION/$JOBDIR.root
   rm -f $WORKDIR/$VERSION/$JOBDIR.root
-  hadd $WORKDIR/$VERSION/$JOBDIR.root $WORKDIR/$VERSION/$JOBDIR/LSFJOB_*/rootTuple_*.root 2>&1 | grep -v Target | grep -v Source
+  hadd -v 0 -n 10 $WORKDIR/$VERSION/$JOBDIR.root $WORKDIR/$VERSION/$JOBDIR/LSFJOB_*/rootTuple_*.root
   echo "done"
 elif [ "$JOBDIR" == "data-all" ]; then
-  N=`ls $WORKDIR/$VERSION/DoubleElectron*.root | grep -v merge | wc -l`
   rm -f $WORKDIR/$VERSION/DoubleElectron_2012_merge.root
-  hadd $WORKDIR/$VERSION/DoubleElectron_2012_merge.root $WORKDIR/$VERSION/DoubleElectron_2012*.root 2>&1 | grep -v Target | grep -v Source
-  N=`ls $WORKDIR/$VERSION/DoubleMu*.root | grep -v merge | wc -l`
+  hadd -v 0 -n 10 $WORKDIR/$VERSION/DoubleElectron_2012_merge.root $WORKDIR/$VERSION/DoubleElectron_2012*.root
   rm -f $WORKDIR/$VERSION/DoubleMu_2012_merge.root
-  hadd $WORKDIR/$VERSION/DoubleMu_2012_merge.root $WORKDIR/$VERSION/DoubleMu_2012*.root 2>&1 | grep -v Target | grep -v Source
+  hadd -v 0 -n 10 $WORKDIR/$VERSION/DoubleMu_2012_merge.root $WORKDIR/$VERSION/DoubleMu_2012*.root
 else
   echo 'ERROR: jobdir "'$JOBDIR'" does not exist !'
 fi
