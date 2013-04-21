@@ -31,9 +31,9 @@ CMSPrel (Float_t Lumi, TString _decaychannel, double x, double y)
   latexLabel->SetLineWidth (2);
   latexLabel->SetNDC ();
 
-  latexLabel->DrawLatex (x, y, "CMS Preliminary            #sqrt{s} = 8 TeV #int Ldt = 19.3 fb^{-1}");
+  latexLabel->DrawLatex (x, y, "CMS Preliminary            #sqrt{s} = 8 TeV #int Ldt = 19.6 fb^{-1}");
   //latexLabel->DrawLatex (x, y - 0.04,
-  //			 "#sqrt{s} = 8 TeV #int Ldt = 19.3 fb^{-1}");
+  //			 "#sqrt{s} = 8 TeV #int Ldt = 19.6 fb^{-1}");
   //latexLabel->DrawLatex (x, y - 0.08,
   //			 "anti-k_{T} (R = 0.5) PF Jets > 30 GeV ");
   //latexLabel->DrawLatex(x,0.18,(TString)Form("#int Ldt = %.3f fb^{-1}",Lumi));
