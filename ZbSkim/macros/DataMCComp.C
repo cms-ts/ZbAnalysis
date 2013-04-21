@@ -100,6 +100,18 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	if (title == "w_secondvtx_N"){
 		h_mc1b = (TH1F*)gDirectory->Get("bquarks");
 	}
+	if (title == "w_first_jet_pt"){
+		h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_pt");
+	}
+	if (title == "w_first_jet_eta"){
+		h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
+	}
+	if (title == "Z_pt_ee"){
+		h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_ee");
+	}
+	if (title == "Z_pt_mm"){
+		h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_mm");
+	}
 
 	if (ilepton==1) mc2->cd("demo_ee");
 	if (ilepton!=1) mc2->cd("demo_mm");
