@@ -294,7 +294,7 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	h_ratio->GetYaxis()->SetNdivisions(505);
 	h_ratio->GetYaxis()->SetTitleSize(0.09);
 	h_ratio->GetYaxis()->SetLabelSize(0.08);
-	h_ratio->GetYaxis()->SetRangeUser(0.0, 2.1);
+	h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
 	h_ratio->GetYaxis()->SetTitleOffset(0.3);
 	h_ratio->Divide(ht);
 	h_ratio->SetMarkerStyle(20);
