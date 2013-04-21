@@ -96,8 +96,11 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	if (ilepton==1) mc1->cd("demo_ee");
 	if (ilepton!=1) mc1->cd("demo_mm");
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
-	TH1F* h_csv = (TH1F*)gDirectory->Get("bquarks");
-	  
+	TH1F* h_mc1b = 0;
+	if (title == "w_secondvtx_N"){
+		h_mc1b = (TH1F*)gDirectory->Get("bquarks");
+	}
+
 	if (ilepton==1) mc2->cd("demo_ee");
 	if (ilepton!=1) mc2->cd("demo_mm");
 	TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
@@ -113,11 +116,11 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 //	if (ilepton==1) mc5->cd("demo_ee");
 //	if (ilepton!=1) mc5->cd("demo_mm");
 //	TH1F* h_mc5 = (TH1F*)gDirectory->Get(title.c_str());
-	 
+
 	if (ilepton==1) mc6->cd("demo_ee");
 	if (ilepton!=1) mc6->cd("demo_mm");
 	TH1F* h_mc6 = (TH1F*)gDirectory->Get(title.c_str());
-	
+
 	if (ilepton==1) mc7->cd("demo_ee");
 	if (ilepton!=1) mc7->cd("demo_mm");
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
@@ -126,11 +129,13 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	h_mc1 -> SetFillColor(kYellow-4);
 	//h_mc1 -> SetFillStyle(3004);
 
-	h_csv->SetLineColor(kYellow-4);
-	h_csv->SetFillColor(kYellow-4);
-	h_csv->SetFillStyle(3004);
+	if (h_mc1b) {
+		h_mc1b->SetLineColor(kBlack);
+		h_mc1b->SetFillColor(kOrange-2);
+		//h_mc1b->SetFillStyle(3004);
+	}
 
-	h_mc4 -> SetLineColor(kGray+3);
+	h_mc4 -> SetLineColor(kBlack);
 	h_mc4 -> SetFillColor(kGray+3);
 	//h_mc4 -> SetFillStyle(3004);
 
@@ -142,16 +147,16 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	h_mc3 -> SetFillColor(kGray+2);
 	//h_mc3 -> SetFillStyle(3004);
 	
-	h_mc6 -> SetLineColor(kGray+3);
+	h_mc6 -> SetLineColor(kBlack);
 	h_mc6 -> SetFillColor(kRed+2);
 	//h_mc6 -> SetFillStyle(3004);
 	 
-	h_mc7 -> SetLineColor(kGray+3);
+	h_mc7 -> SetLineColor(kBlack);
 	h_mc7 -> SetFillColor(kGray);
 	//h_mc7 -> SetFillStyle(3004);
 
 	h_mc1->Scale(norm1); 
-	h_csv->Scale(norm1);	
+	if (h_mc1b) h_mc1b->Scale(norm1);	
 	h_mc2->Scale(norm2);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
@@ -176,9 +181,9 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	hs->Add(h_mc4);
 	hs->Add(h_mc3);
 	hs->Add(h_mc2);
-	if(title == "w_secondvtx_N"){
-		h_mc1->Add(h_csv, -1);
-		hs->Add(h_csv);
+	if (h_mc1b){
+		h_mc1->Add(h_mc1b, -1);
+		hs->Add(h_mc1b);
 		hs->Add(h_mc1);
 	} else {
 		hs->Add(h_mc1);
@@ -218,15 +223,13 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	if(ilepton!=1) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
 
 	leg->AddEntry(h_mc1,"Z+jets","f");
+	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
 	leg->AddEntry(h_mc2,"t#bar{t}","f");
 	leg->AddEntry(h_mc3,"ZZ","f");
 	leg->AddEntry(h_mc4,"WZ","f");
 	leg->AddEntry(h_mc7,"W+jets", "f");
 	leg->AddEntry(h_mc6,"WW","f");
 //	leg->AddEntry(h_mc5,"QCD","f");
-	if(title== "w_secondvtx_N"){
-		leg->AddEntry(h_csv,"b quarks in Z+jets","f");
-	}
 	leg->Draw();
 
 	pad1->Update();
