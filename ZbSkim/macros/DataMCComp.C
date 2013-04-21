@@ -155,15 +155,6 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	h_mc7->Scale(norm7);
 	h_csv->Scale(norm1);	
 
-	THStack *hs = new THStack("hs","");
-//	hs->Add(h_mc5);
-	hs->Add(h_mc6);
-	hs->Add(h_mc7);
-	hs->Add(h_mc4);
-	hs->Add(h_mc3);
-	hs->Add(h_mc2);
-	hs->Add(h_mc1);
-
 	TH1F *ht = h_mc1->Clone("ht");
 	ht->Reset();
 	ht->Add(h_mc7);
@@ -173,6 +164,15 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	ht->Add(h_mc3);
 	ht->Add(h_mc2);
 	ht->Add(h_mc1);
+
+	THStack *hs = new THStack("hs","");
+//	hs->Add(h_mc5);
+	hs->Add(h_mc6);
+	hs->Add(h_mc7);
+	hs->Add(h_mc4);
+	hs->Add(h_mc3);
+	hs->Add(h_mc2);
+	hs->Add(h_mc1);
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();

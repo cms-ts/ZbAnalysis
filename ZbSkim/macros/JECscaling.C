@@ -22,13 +22,13 @@
 
 void JECscaling(){
 
-	TFile *data      = TFile::Open("/home/candelis/gpfs/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/data/v05/DoubleMu_2012_merge.root");
+	TFile *data      = TFile::Open("/home/candelis/gpfs/CMSSW_5_3_9/src/ZbAnalysis/ZbSkim/test/data/v05/DoubleMu_2012_merge.root");
 	data->cd("demo_mm");
-	TH1F  *jet1 = (TH1F*)gDirectory->Get("first_jet_pt");
+	TH1F  *jet1 = (TH1F*)gDirectory->Get("w_first_jet_pt");
 	data->cd("demo_mm_up");
-	TH1F  *jet2 = (TH1F*)gDirectory->Get("first_jet_pt");
+	TH1F  *jet2 = (TH1F*)gDirectory->Get("w_first_jet_pt");
 	data->cd("demo_mm_down");
-        TH1F  *jet3 = (TH1F*)gDirectory->Get("first_jet_pt");
+        TH1F  *jet3 = (TH1F*)gDirectory->Get("w_first_jet_pt");
 	
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();
