@@ -18,7 +18,6 @@ while [ $i -le 1 ]; do
   root -l -q -b DataMCComp.C\(\"h_pu_weights\",1,$i\)
   root -l -q -b DataMCComp.C\(\"recoVTX\",1,$i\)
   root -l -q -b DataMCComp.C\(\"recoVTXw\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"bquarks\",1,$i\)
   root -l -q -b DataMCComp.C\(\"h_tracks\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_tracks\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_MET\",1,$i\)
