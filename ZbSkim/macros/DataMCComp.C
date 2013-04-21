@@ -125,7 +125,11 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	h_mc1 -> SetLineColor(kBlack);
 	h_mc1 -> SetFillColor(kYellow-4);
 	//h_mc1 -> SetFillStyle(3004);
-	 
+
+	h_csv->SetLineColor(kYellow-4);
+	h_csv->SetFillColor(kYellow-4);
+	h_csv->SetFillStyle(3004);
+
 	h_mc4 -> SetLineColor(kGray+3);
 	h_mc4 -> SetFillColor(kGray+3);
 	//h_mc4 -> SetFillStyle(3004);
@@ -147,13 +151,13 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	//h_mc7 -> SetFillStyle(3004);
 
 	h_mc1->Scale(norm1); 
+	h_csv->Scale(norm1);	
 	h_mc2->Scale(norm2);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);
 	h_mc6->Scale(norm6);
 	h_mc7->Scale(norm7);
-	h_csv->Scale(norm1);	
 
 	TH1F *ht = h_mc1->Clone("ht");
 	ht->Reset();
@@ -172,7 +176,13 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	hs->Add(h_mc4);
 	hs->Add(h_mc3);
 	hs->Add(h_mc2);
-	hs->Add(h_mc1);
+	if(title == "w_secondvtx_N"){
+		h_mc1->Add(h_csv, -1);
+		hs->Add(h_csv);
+		hs->Add(h_mc1);
+	} else {
+		hs->Add(h_mc1);
+	}
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();
@@ -198,16 +208,6 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	h_data->SetMarkerSize (1.0);
 	//h_data->SetMaximum(1.2);
 
-	if(title== "w_secondvtx_N"){		
-		h_data->Draw("P");
-		h_mc1->Draw("same");
-		h_mc1->SetFillColor(kYellow-4);
-		h_csv->SetLineColor(kMagenta);
-		h_csv->SetFillColor(kMagenta);
-		h_csv->Draw("same");
-		h_csv->SetFillStyle(3004);
-	}
-
 	leg = new TLegend(0.68, 0.58, 0.88, 0.88);
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
@@ -217,7 +217,6 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	if(ilepton==1) leg->AddEntry(h_data,"Z(#rightarrow ee)+jets","p");
 	if(ilepton!=1) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
 
-	if(title != "w_secondvtx_N"){
 	leg->AddEntry(h_mc1,"Z+jets","f");
 	leg->AddEntry(h_mc2,"t#bar{t}","f");
 	leg->AddEntry(h_mc3,"ZZ","f");
@@ -225,11 +224,8 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	leg->AddEntry(h_mc7,"W+jets", "f");
 	leg->AddEntry(h_mc6,"WW","f");
 //	leg->AddEntry(h_mc5,"QCD","f");
-	}
 	if(title== "w_secondvtx_N"){
-	leg->AddEntry(h_csv,"b quarks in Z+jets","f");
-	leg->AddEntry(h_mc1, "Z+jets", "f");
-	leg->AddEntry(h_data, "DATA", "f");
+		leg->AddEntry(h_csv,"b quarks in Z+jets","f");
 	}
 	leg->Draw();
 
