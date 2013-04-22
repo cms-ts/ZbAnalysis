@@ -194,12 +194,10 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	hs->Add(h_mc3);
 	hs->Add(h_mc2);
 	if (h_mc1b){
-		h_mc1->Add(h_mc1b, -1);
+		h_mc1->Add(h_mc1b, -1.);
 		hs->Add(h_mc1b);
-		hs->Add(h_mc1);
-	} else {
-		hs->Add(h_mc1);
 	}
+	hs->Add(h_mc1);
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();
