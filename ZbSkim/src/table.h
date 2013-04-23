@@ -63,7 +63,7 @@ public:
   table (std::string filename)
   {
     std::ifstream file (filename.c_str ());
-    double dum, pt1, pt2, eta1, eta2, effi, errLw, errHi;
+    double pt1, pt2, eta1, eta2, effi, errLw, errHi;
     while (file >> pt1 >> pt2 >> eta1 >> eta2 >> effi >> errLw >> errHi)
       {
 	recd.push_back (record (pt1, pt2, eta1, eta2, effi, errLw, errHi));
