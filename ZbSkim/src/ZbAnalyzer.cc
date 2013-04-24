@@ -13,7 +13,7 @@
 // 
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.10 2013/04/17 13:28:55 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.11 2013/04/24 09:51:53 vieri Exp $
 // 
 // 
 
@@ -81,6 +81,7 @@
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
 #include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
+#include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
 
 table  MuSF  ("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/muon_eff.txt");
 table  ElSF  ("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/ele_eff.txt");
@@ -221,8 +222,13 @@ private:
  
   TH1F* SVTX_mass_jet;
   TH1F* SVTX_mass_trk;
+  TH1F* SVTX_mass;
   TH1F* SVTX_mass_jet_b;
   TH1F* SVTX_mass_trk_b;
+  TH1F* SVTX_mass_b;
+  TH1F* SVTX_mass_jet_c;
+  TH1F* SVTX_mass_trk_c;
+  TH1F* SVTX_mass_c;
 
 };
 
@@ -325,10 +331,15 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig){
   h_pt_Z_mm =          fs->make < TH1F > ("Z_pt_mm", "Z_pt_mm;P_t [GeV]", 35, 0., 350.);
   b_mm_inv = 	       fs->make < TH1F > ("b_mm_inv", "b_mm_inv", 60, 71, 112);
   b_ee_inv =           fs->make < TH1F > ("b_ee_inv", "b_ee_inv", 60, 71, 112);
-  SVTX_mass_jet =      fs->make < TH1F > ("SVTX_mass_jet", "SVTX_mass_jet", 20, 0, 10);
-  SVTX_mass_trk =      fs->make < TH1F > ("SVTX_mass_trk", "SVTX_mass_trk", 20, 0, 20);
-  SVTX_mass_jet_b =      fs->make < TH1F > ("SVTX_mass_jet_b", "SVTX_mass_jet_b", 20, 0, 10);
-  SVTX_mass_trk_b =      fs->make < TH1F > ("SVTX_mass_trk_b", "SVTX_mass_trk_b", 20, 0, 20);
+  SVTX_mass_jet =      fs->make < TH1F > ("SVTX_mass_jet", "SVTX_mass_jet", 40, 0, 10);
+  SVTX_mass_trk =      fs->make < TH1F > ("SVTX_mass_trk", "SVTX_mass_trk", 160, 0, 40);
+  SVTX_mass =          fs->make < TH1F > ("SVTX_mass", "SVTX_mass", 40, 0, 10);
+  SVTX_mass_jet_b =    fs->make < TH1F > ("SVTX_mass_jet_b", "SVTX_mass_jet_b", 40, 0, 10);
+  SVTX_mass_trk_b =    fs->make < TH1F > ("SVTX_mass_trk_b", "SVTX_mass_trk_b", 160, 0, 40);
+  SVTX_mass_b =        fs->make < TH1F > ("SVTX_mass_b", "SVTX_mass_b", 40, 0, 10);
+  SVTX_mass_jet_c =    fs->make < TH1F > ("SVTX_mass_jet_c", "SVTX_mass_jet_c", 40, 0, 10);
+  SVTX_mass_trk_c =    fs->make < TH1F > ("SVTX_mass_trk_c", "SVTX_mass_trk_c", 160, 0, 40);
+  SVTX_mass_c =        fs->make < TH1F > ("SVTX_mass_c", "SVTX_mass_c", 40, 0, 10);
 
   h_scalFactor_first_ele   =    fs->make < TH1F > ("scaleFactor_first_ele",   "scaleFactor_first_ele", 90, 0.6, 1.5);
   h_scalFactor_first_muon  =    fs->make < TH1F > ("scaleFactor_first_muon",  "scaleFactor_first_muon", 90, 0.6, 1.5);
@@ -433,7 +444,6 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
   bool ee_event = false;
   bool mm_event = false;
   int Ntracks = 0;
-  int Nmu = 0;
   Nj = 0;
   Nbk = 0;
   jet_pt = 0;
@@ -610,10 +620,13 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
   vector < double >vect_jet_phi;
   vector < double >vect_jet_eta;
   vector < double >vect_jet_discrCSV;
+  
   bool isb = false;
+  bool isc = false ;
 
   double sumVertexMassJet = 0.;
   double sumVertexMassTrk = 0.;
+  double sumVertexMass = 0.;
 
   if (ee_event || mm_event) {
 
@@ -684,13 +697,14 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	      vect_jet_discrCSV.push_back (discrCSV);
 
 	      if (fabs (jet->partonFlavour ()) == 5) isb = true;
+	      if (fabs (jet->partonFlavour ()) == 4) isc = true;
 
               h_secondvtx_N->Fill (discrCSV);
 	      w_secondvtx_N->Fill (discrCSV, MyWeight);
 
 	      //cout<<discrCSV<<endl;
 
-	      if (discrCSV > 0.89){
+	      if (discrCSV > 0.89*0){
 		   ++Nb;
 		   //cout<<Nb<<endl;
 
@@ -699,29 +713,67 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 		   if ( svTagInfos && svTagInfos->nVertices() > 0 ) {
 
 		     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecJet;
-		     reco::Vertex::trackRef_iterator kEndTracks = svTagInfos->secondaryVertex(0).tracks_end();
-		     for (reco::Vertex::trackRef_iterator trackIter = svTagInfos->secondaryVertex(0).tracks_begin(); trackIter != kEndTracks; ++trackIter ) {
+		     for (reco::Vertex::trackRef_iterator track = svTagInfos->secondaryVertex(0).tracks_begin(); track != svTagInfos->secondaryVertex(0).tracks_end(); ++track) {
 		        const double kPionMass = 0.13957018;
 		        ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > vec;
-		        vec.SetPx( (*trackIter)->px() );
-		        vec.SetPy( (*trackIter)->py() );
-		        vec.SetPz( (*trackIter)->pz() );
+		        vec.SetPx( (*track)->px() );
+		        vec.SetPy( (*track)->py() );
+		        vec.SetPz( (*track)->pz() );
 		        vec.SetM (kPionMass);
 		        sumVecJet += vec;
 		     }
 		     sumVertexMassJet += sumVecJet.M();
 
-		     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecTrk;
-		     for(size_t itrack=0; itrack < jet->associatedTracks().size(); ++itrack){
-		        const double kPionMass = 0.13957018;
-		        ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > vec;
-		        vec.SetPx( jet->associatedTracks()[itrack]->px() );
-		        vec.SetPy( jet->associatedTracks()[itrack]->py() );
-		        vec.SetPz( jet->associatedTracks()[itrack]->pz() );
-		        vec.SetM (kPionMass);
-		        sumVecTrk += vec;
-		      }
-		      sumVertexMassTrk += sumVecTrk.M();
+		   }
+
+		   ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecTrk;
+		   for (size_t itrack=0; itrack < jet->associatedTracks().size(); ++itrack){
+		      const double kPionMass = 0.13957018;
+		      ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > vec;
+		      vec.SetPx( jet->associatedTracks()[itrack]->px() );
+		      vec.SetPy( jet->associatedTracks()[itrack]->py() );
+		      vec.SetPz( jet->associatedTracks()[itrack]->pz() );
+		      vec.SetM (kPionMass);
+		      sumVecTrk += vec;
+		   }
+		   sumVertexMassTrk += sumVecTrk.M();
+
+/*
+		   if ( svTagInfos && svTagInfos->nVertices() > 0 ) {
+
+		     reco::TrackKinematics vertexKinematics;
+	    	     const reco::Vertex &vertex = svTagInfos->secondaryVertex(0);
+	  	     bool hasRefittedTracks = vertex.hasRefittedTracks();
+		     for (reco::TrackRefVector::const_iterator track = svTagInfos->vertexTracks(0).begin(); track != svTagInfos->vertexTracks(0).end(); ++track) {
+			      double w = svTagInfos->trackWeight(0, *track);
+			      if (w < 0.5)
+				      continue;
+			      if (hasRefittedTracks) {
+				      reco::Track actualTrack = vertex.refittedTrack(*track);
+				      vertexKinematics.add(actualTrack, w);
+
+			      } else {
+				      vertexKinematics.add(**track, w);
+			      }
+		     }
+		     bool useTrackWeights = true;
+		     math::XYZTLorentzVector vertexSum = useTrackWeights
+			      ? vertexKinematics.weightedVectorSum()
+			      : vertexKinematics.vectorSum();
+		     sumVertexMass += vertexSum.M();
+
+		   }
+*/
+
+		   if ( svTagInfos && svTagInfos->nVertices() > 0 ) {
+
+	    	     const reco::Vertex &vertex = svTagInfos->secondaryVertex(0);
+		     reco::TrackKinematics vertexKinematics(vertex);
+		     bool useTrackWeights = true;
+		     math::XYZTLorentzVector vertexSum = useTrackWeights
+			      ? vertexKinematics.weightedVectorSum()
+			      : vertexKinematics.vectorSum();
+		     sumVertexMass += vertexSum.M();
 
 		   }
 
@@ -729,16 +781,18 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	  }
       }
 
-      if (Nb) {
+      if (Nj != 0 && Nb != 0) {
 	sumVertexMassJet /= Nb;
 	sumVertexMassTrk /= Nb;
+	sumVertexMass /= Nb;
 
 	SVTX_mass_jet -> Fill(sumVertexMassJet);
 	SVTX_mass_trk -> Fill(sumVertexMassTrk);
-
-cout << "Nb = " << Nb << endl;
-cout << "sumVertexMassJet = " << sumVertexMassJet << endl;
-cout << "sumVertexMassTrk = " << sumVertexMassTrk << endl;
+	SVTX_mass -> Fill(sumVertexMass);
+	
+//	cout<<"VTX mass JET = "<< sumVertexMassJet << endl;
+//	cout<<"VTX mass TRK = "<< sumVertexMassTrk << endl;
+//	cout<<"VTX mass NEW = "<< sumVertexMass << endl;
       }
 
       if (Nj != 0) {
@@ -747,13 +801,21 @@ cout << "sumVertexMassTrk = " << sumVertexMassTrk << endl;
 	w_Ht->Fill(Ht, MyWeight);
         recoVTX_->Fill (float (NVtx));
         recoVTX_w->Fill (NVtx, MyWeight);
-        if (isb){
+      
+	if (Nb != 0 && isb){
 		w_bquarks->Fill (discrCSV, MyWeight);
 		b_first_jet_pt->Fill (jet_pt, MyWeight);
 		b_first_jet_eta->Fill (jet_eta, MyWeight);
-		SVTX_mass_trk_b->Fill(sumVertexMassTrk);
 		SVTX_mass_jet_b->Fill(sumVertexMassJet);
+		SVTX_mass_trk_b->Fill(sumVertexMassTrk);
+		SVTX_mass_b->Fill(sumVertexMass);
   	}
+
+	if (Nb != 0 && isc){
+		SVTX_mass_jet_c->Fill(sumVertexMassJet);
+		SVTX_mass_trk_c->Fill(sumVertexMassTrk);
+		SVTX_mass_c->Fill(sumVertexMass);
+	}
       }
 	      	  
       if(isMC){
@@ -811,7 +873,7 @@ cout << "sumVertexMassTrk = " << sumVertexMassTrk << endl;
     	  w_mm_inv->Fill (dimuon_inv, MyWeight);
           h_pt_Z_mm->Fill (pt_Z, MyWeight);
 	  
-	  if(isb){
+	  if (isb){
 		  b_pt_Z_mm->Fill(pt_Z, MyWeight);
 	          b_invMass_mm->Fill(dimuon_inv, MyWeight);
       	  }
@@ -843,7 +905,7 @@ cout << "sumVertexMassTrk = " << sumVertexMassTrk << endl;
     	  w_ee_inv->Fill (diele_inv, MyWeight);
           h_pt_Z_ee->Fill (pt_Z, MyWeight);
 	  
-	  if(isb){
+	  if (isb){
 		  b_pt_Z_ee->Fill(pt_Z, MyWeight);
 	          b_invMass_ee->Fill(diele_inv, MyWeight);
       	  }
