@@ -13,4 +13,5 @@
 <use name="DataFormats/PatCandidates" />
 <use name="PhysicsTools/PatUtils"/>
 <use name="PhysicsTools/Utilities"/>
+<use name="RecoBTag/SecondaryVertex"/>
 <flags EDM_PLUGIN="1"/>
