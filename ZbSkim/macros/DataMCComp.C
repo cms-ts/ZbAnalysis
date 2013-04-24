@@ -20,7 +20,7 @@
 
 #include <string.h>
 
-#include "LumiInfo_v05.h"
+#include "LumiInfo_v06.h"
 
 void DataMCComp(string& s="", int plot=0, int ilepton=0){
 
@@ -97,8 +97,21 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	if (ilepton!=1) mc1->cd("demo_mm");
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc1b = 0;
+	TH1F* h_mc1c = 0;
 	if (title == "w_secondvtx_N"){
 		h_mc1b = (TH1F*)gDirectory->Get("bquarks");
+	}
+	if (title == "SVTX_mass_jet"){
+		h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_jet_b");
+		h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_jet_c");
+	}
+	if (title == "SVTX_mass_trk"){
+		h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_trk_b");
+		h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_trk_c");
+	}
+	if (title == "SVTX_mass"){
+		h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_b");
+		h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_c");
 	}
 	if (title == "w_first_jet_pt"){
 		h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_pt");
@@ -111,6 +124,12 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	}
 	if (title == "Z_pt_mm"){
 		h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_mm");
+	}
+	if (title == "w_mm_inv"){
+		h_mc1b = (TH1F*)gDirectory->Get("b_invMass_mm");
+	}
+	if (title == "w_ee_inv"){
+		h_mc1b = (TH1F*)gDirectory->Get("b_invMass_ee");
 	}
 
 	if (ilepton==1) mc2->cd("demo_ee");
@@ -143,8 +162,13 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 
 	if (h_mc1b) {
 		h_mc1b->SetLineColor(kBlack);
-		h_mc1b->SetFillColor(kOrange-2);
-		//h_mc1b->SetFillStyle(3004);
+		h_mc1b->SetFillColor(kYellow-4);	
+		h_mc1b->SetFillStyle(3254);
+	}
+	if (h_mc1c) {
+		h_mc1c->SetLineColor(kBlack);
+		h_mc1c->SetFillColor(kYellow-4);
+		h_mc1c->SetFillStyle(3245);
 	}
 
 	h_mc4 -> SetLineColor(kBlack);
@@ -169,6 +193,7 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 
 	h_mc1->Scale(norm1); 
 	if (h_mc1b) h_mc1b->Scale(norm1);	
+	if (h_mc1c) h_mc1c->Scale(norm1);	
 	h_mc2->Scale(norm2);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
@@ -196,6 +221,10 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	if (h_mc1b){
 		h_mc1->Add(h_mc1b, -1.);
 		hs->Add(h_mc1b);
+	}
+	if (h_mc1c){
+		h_mc1->Add(h_mc1c, -1.);
+		hs->Add(h_mc1c);
 	}
 	hs->Add(h_mc1);
 
@@ -234,6 +263,7 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 
 	leg->AddEntry(h_mc1,"Z+jets","f");
 	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
+	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
 	leg->AddEntry(h_mc2,"t#bar{t}","f");
 	leg->AddEntry(h_mc3,"ZZ","f");
 	leg->AddEntry(h_mc4,"WZ","f");
@@ -257,6 +287,7 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	h_ratio->Sumw2();
       	h_ratio->SetStats(0);
 	h_ratio->SetTitle("");
+	h_ratio->SetStats(0);
 
 	if(title=="w_jetmultiplicity"){
 	h_ratio->GetXaxis ()->SetTitle("Number of jets");
@@ -286,10 +317,14 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	}else if(title=="w_bjetmultiplicity"){
 	h_ratio->GetXaxis ()->SetTitle("b quark jets multiplicity");
-	}else if(title=="w_bleading_pt"){
+	}else if(title=="w_first_jet_pt_b"){
 	h_ratio->GetXaxis ()->SetTitle("leading b quark p_{T} [GeV/c]");
-	}else if(title=="w_bleading_eta"){
+	}else if(title=="w_first_jet_eta_b"){
 	h_ratio->GetXaxis ()->SetTitle("leading b quark #eta");
+	}else if(title=="Z_pt_mm_b"){
+	h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
+	}else if(title=="Z_pt_ee_b"){
+	h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	}else if(title=="w_delta_phi_ee"){
 	h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
 	}else if(title=="w_delta_phi_mm"){
