@@ -13,7 +13,7 @@
 // 
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.11 2013/04/24 09:51:53 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.12 2013/04/24 21:38:34 dellaric Exp $
 // 
 // 
 
@@ -332,13 +332,13 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig){
   b_mm_inv = 	       fs->make < TH1F > ("b_mm_inv", "b_mm_inv", 60, 71, 112);
   b_ee_inv =           fs->make < TH1F > ("b_ee_inv", "b_ee_inv", 60, 71, 112);
   SVTX_mass_jet =      fs->make < TH1F > ("SVTX_mass_jet", "SVTX_mass_jet", 40, 0, 10);
-  SVTX_mass_trk =      fs->make < TH1F > ("SVTX_mass_trk", "SVTX_mass_trk", 160, 0, 40);
+  SVTX_mass_trk =      fs->make < TH1F > ("SVTX_mass_trk", "SVTX_mass_trk", 160, 0, 80);
   SVTX_mass =          fs->make < TH1F > ("SVTX_mass", "SVTX_mass", 40, 0, 10);
   SVTX_mass_jet_b =    fs->make < TH1F > ("SVTX_mass_jet_b", "SVTX_mass_jet_b", 40, 0, 10);
-  SVTX_mass_trk_b =    fs->make < TH1F > ("SVTX_mass_trk_b", "SVTX_mass_trk_b", 160, 0, 40);
+  SVTX_mass_trk_b =    fs->make < TH1F > ("SVTX_mass_trk_b", "SVTX_mass_trk_b", 160, 0, 80);
   SVTX_mass_b =        fs->make < TH1F > ("SVTX_mass_b", "SVTX_mass_b", 40, 0, 10);
   SVTX_mass_jet_c =    fs->make < TH1F > ("SVTX_mass_jet_c", "SVTX_mass_jet_c", 40, 0, 10);
-  SVTX_mass_trk_c =    fs->make < TH1F > ("SVTX_mass_trk_c", "SVTX_mass_trk_c", 160, 0, 40);
+  SVTX_mass_trk_c =    fs->make < TH1F > ("SVTX_mass_trk_c", "SVTX_mass_trk_c", 160, 0, 80);
   SVTX_mass_c =        fs->make < TH1F > ("SVTX_mass_c", "SVTX_mass_c", 40, 0, 10);
 
   h_scalFactor_first_ele   =    fs->make < TH1F > ("scaleFactor_first_ele",   "scaleFactor_first_ele", 90, 0.6, 1.5);
