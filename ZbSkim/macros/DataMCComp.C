@@ -206,7 +206,7 @@ if (ilepton<1 || ilepton>2) {
 	h_mc7 -> SetFillColor(kGray);
 	//h_mc7 -> SetFillStyle(3004);
 
-	h_mc1->Scale(norm1); 
+	h_mc1->Scale(norm1);
 	if (h_mc1b) h_mc1b->Scale(norm1);
 	if (h_mc1c) h_mc1c->Scale(norm1);
 	h_mc2->Scale(norm2);
@@ -341,7 +341,7 @@ if (ilepton<1 || ilepton>2) {
 
 	TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
 	pad2->SetTopMargin(0);
-	pad2->SetBottomMargin(0.3);		  	  
+	pad2->SetBottomMargin(0.3);
 	pad2->Draw();
 	pad2->cd();
       	h_ratio->SetStats(0);
@@ -396,7 +396,7 @@ if (ilepton<1 || ilepton>2) {
  	h_ratio->GetXaxis()->SetTitleSize(0.1);
 	h_ratio->GetXaxis()->SetLabelFont(42);
  	h_ratio->GetXaxis()->SetLabelSize(0.08);
-	h_ratio->GetXaxis()->SetTitleFont(42);	  
+	h_ratio->GetXaxis()->SetTitleFont(42);
 	h_ratio->GetYaxis()->SetTitle("Data/MC");
 	h_ratio->GetYaxis()->SetNdivisions(505);
 	h_ratio->GetYaxis()->SetTitleSize(0.09);
