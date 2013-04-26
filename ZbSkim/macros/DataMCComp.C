@@ -422,9 +422,9 @@ if (ilepton<1 || ilepton>2) {
 	  fitLabel->SetLineWidth(2);
 	  fitLabel->SetNDC();
 	  char buff[100];
-	  sprintf(buff, "f_{b}   = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	  sprintf(buff, "f_{b} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
 	  fitLabel->DrawLatex(0.68, 0.53, buff);
-	  sprintf(buff, "f_{c}   = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
+	  sprintf(buff, "f_{c} = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
 	  fitLabel->DrawLatex(0.68, 0.48, buff);
 	  fitLabel->Draw("same");
 	}
