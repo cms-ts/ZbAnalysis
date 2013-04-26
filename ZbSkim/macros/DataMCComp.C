@@ -22,63 +22,55 @@
 
 #include "LumiInfo_v06.h"
 
-void DataMCComp(string& s="", int plot=0, int ilepton=0){
+void DataMCComp(string& title="", int plot=0, int ilepton=1){
+
+int withBKG=1;
+
+if (ilepton<1 || ilepton>2) {
+  ilepton = 1 + ilepton % 2;
+  withBKG=0;
+}
 
 double Lumi2012;
 
-// if 1 --> electron; else muon
+if (ilepton==1) Lumi2012 = Lumi2012_ele;
+if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
-if(ilepton==1)
-	Lumi2012 = Lumi2012_ele;
-else
-	Lumi2012 = Lumi2012_muon;
+	double norm1 = ( (Lumi2012 * Xsec_dy ) / Ngen_dy);
+	double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
+	double norm3 = ( (Lumi2012 * Xsec_zz) / Ngen_zz);
+	double norm4 = ( (Lumi2012 * Xsec_wz) / Ngen_wz);
+	double norm5 = ( (Lumi2012 * Xsec_qcd) / Ngen_qcd);
+	double norm6 = ( (Lumi2012 * Xsec_ww) / Ngen_ww);
+	double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 
-double norm1 = ( (Lumi2012 * Xsec_dy ) / Ngen_dy);
-double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
-double norm3 = ( (Lumi2012 * Xsec_zz) / Ngen_zz);
-double norm4 = ( (Lumi2012 * Xsec_wz) / Ngen_wz);
-double norm5 = ( (Lumi2012 * Xsec_qcd) / Ngen_qcd);
-double norm6 = ( (Lumi2012 * Xsec_ww) / Ngen_ww);
-double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
+	if (title.empty()) title = "w_jetmultiplicity";
 
-	string title;
-	if (s.empty()) string title = "w_jetmultiplicity";
-	else title = s;
-
-	//string title = "w_jet_pt";
-	//string title = "w_ele_pt";
-	//string title = "w_muon_pt";
-	//string title = "w_mm_inv";
-	//string title = "w_ee_inv";
-	//string title = "w_secondvtx_N";
-	//string title = "w_pu_weights";
-	//string title = "recoVTX";
-	//string title = "recoVTXw"
-
-	if (ilepton!=1) {
-		if (title=="first_ele_pt") return;
-		if (title=="first_ele_eta") return;
-		if (title=="w_ee_inv") return;
-		if (title=="b_ee_inv") return;
-		if (title=="w_delta_phi_ee") return;
-		if (title=="Z_pt_ee") return;
-		if (title=="Z_pt_ee_b") return;
-	}
 	if (ilepton==1) {
-		if (title=="first_muon_pt") return;
-		if (title=="first_muon_eta") return;
-		if (title=="w_mm_inv") return;
-		if (title=="b_mm_inv") return;
-		if (title=="w_delta_phi_mm") return;
-		if (title=="Z_pt_mm") return;
-		if (title=="Z_pt_mm_b") return;
+	  if (title=="first_muon_pt") return;
+	  if (title=="first_muon_eta") return;
+	  if (title=="w_mm_inv") return;
+	  if (title=="b_mm_inv") return;
+	  if (title=="w_delta_phi_mm") return;
+	  if (title=="Z_pt_mm") return;
+	  if (title=="Z_pt_mm_b") return;
+	}
+	if (ilepton==2) {
+	  if (title=="first_ele_pt") return;
+	  if (title=="first_ele_eta") return;
+	  if (title=="w_ee_inv") return;
+	  if (title=="b_ee_inv") return;
+	  if (title=="w_delta_phi_ee") return;
+	  if (title=="Z_pt_ee") return;
+	  if (title=="Z_pt_ee_b") return;
 	}
 
-	string path = "/gpfs/cms/users/candelis/work/Zb/data/" + version + "/";
+	//string path = "/gpfs/cms/users/candelis/work/Zb/data/" + version + "/";
+	string path = "/gpfs/cms/users/candelis/work/Zb/GDR/data/" + version + "/";
 
 	if (ilepton==1)
 	  TFile *data = TFile::Open((path + "DoubleElectron_2012_merge.root").c_str()); //data file
-	else
+	if (ilepton==2)
 	  TFile *data = TFile::Open((path + "DoubleMu_2012_merge.root").c_str()); //data file
 
 	TFile *mc1 = TFile::Open((path + "DYJetsToLL.root").c_str());
@@ -90,11 +82,11 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	TFile *mc7 = TFile::Open((path + "Wj.root").c_str());
 
 	if (ilepton==1) data->cd("demo_ee");
-	if (ilepton!=1) data->cd("demo_mm");
+	if (ilepton==2) data->cd("demo_mm");
 	TH1F* h_data = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc1->cd("demo_ee");
-	if (ilepton!=1) mc1->cd("demo_mm");
+	if (ilepton==2) mc1->cd("demo_mm");
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc1b = 0;
 	TH1F* h_mc1c = 0;
@@ -133,27 +125,27 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	}
 
 	if (ilepton==1) mc2->cd("demo_ee");
-	if (ilepton!=1) mc2->cd("demo_mm");
+	if (ilepton==2) mc2->cd("demo_mm");
 	TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc3->cd("demo_ee");
-	if (ilepton!=1) mc3->cd("demo_mm");
+	if (ilepton==2) mc3->cd("demo_mm");
 	TH1F* h_mc3 = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc4->cd("demo_ee");
-	if (ilepton!=1) mc4->cd("demo_mm");
+	if (ilepton==2) mc4->cd("demo_mm");
 	TH1F* h_mc4 = (TH1F*)gDirectory->Get(title.c_str());
 
 //	if (ilepton==1) mc5->cd("demo_ee");
-//	if (ilepton!=1) mc5->cd("demo_mm");
+//	if (ilepton==2) mc5->cd("demo_mm");
 //	TH1F* h_mc5 = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc6->cd("demo_ee");
-	if (ilepton!=1) mc6->cd("demo_mm");
+	if (ilepton==2) mc6->cd("demo_mm");
 	TH1F* h_mc6 = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc7->cd("demo_ee");
-	if (ilepton!=1) mc7->cd("demo_mm");
+	if (ilepton==2) mc7->cd("demo_mm");
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 
 	h_mc1 -> SetLineColor(kBlack);
@@ -203,21 +195,32 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 
 	TH1F *ht = h_mc1->Clone("ht");
 	ht->Reset();
-	ht->Add(h_mc7);
-	ht->Add(h_mc6);
-//	ht->Add(h_mc5);
-	ht->Add(h_mc4);
-	ht->Add(h_mc3);
-	ht->Add(h_mc2);
+	if (withBKG) {
+	  ht->Add(h_mc7);
+	  ht->Add(h_mc6);
+//	  ht->Add(h_mc5);
+	  ht->Add(h_mc4);
+	  ht->Add(h_mc3);
+	  ht->Add(h_mc2);
+	} else {
+	  h_data->Add(h_mc7, -1.);
+	  h_data->Add(h_mc6, -1.);
+//	  h_data->Add(h_mc5, -1.);
+	  h_data->Add(h_mc4, -1.);
+	  h_data->Add(h_mc3, -1.);
+	  h_data->Add(h_mc2, -1.);
+	}
 	ht->Add(h_mc1);
 
 	THStack *hs = new THStack("hs","");
-//	hs->Add(h_mc5);
-	hs->Add(h_mc6);
-	hs->Add(h_mc7);
-	hs->Add(h_mc4);
-	hs->Add(h_mc3);
-	hs->Add(h_mc2);
+	if (withBKG) {
+//	  hs->Add(h_mc5);
+	  hs->Add(h_mc6);
+	  hs->Add(h_mc7);
+	  hs->Add(h_mc4);
+	  hs->Add(h_mc3);
+	  hs->Add(h_mc2);
+	}
 	if (h_mc1b){
 		h_mc1->Add(h_mc1b, -1.);
 		hs->Add(h_mc1b);
@@ -259,17 +262,19 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	leg->SetFillStyle(0);
 
 	if(ilepton==1) leg->AddEntry(h_data,"Z(#rightarrow ee)+jets","p");
-	if(ilepton!=1) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
+	if(ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
 
 	leg->AddEntry(h_mc1,"Z+jets","f");
 	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
 	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
-	leg->AddEntry(h_mc2,"t#bar{t}","f");
-	leg->AddEntry(h_mc3,"ZZ","f");
-	leg->AddEntry(h_mc4,"WZ","f");
-	leg->AddEntry(h_mc7,"W+jets", "f");
-	leg->AddEntry(h_mc6,"WW","f");
-//	leg->AddEntry(h_mc5,"QCD","f");
+	if (withBKG) {
+	  leg->AddEntry(h_mc2,"t#bar{t}","f");
+	  leg->AddEntry(h_mc3,"ZZ","f");
+	  leg->AddEntry(h_mc4,"WZ","f");
+	  leg->AddEntry(h_mc7,"W+jets", "f");
+	  leg->AddEntry(h_mc6,"WW","f");
+//	  leg->AddEntry(h_mc5,"QCD","f");
+	}
 	leg->Draw();
 
 	pad1->Update();
@@ -359,13 +364,15 @@ double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 	latexLabel->Draw("same");
 
 	if (plot){
-		if(ilepton==1) {
-			gSystem->mkdir(("electrons/" + version).c_str());
-			c1->SaveAs(("electrons/" + version + "/" + title + ".pdf").c_str());
-		} else {
-			gSystem->mkdir(("muons/" + version).c_str());
-			c1->SaveAs(("muons/" + version + "/" + title + ".pdf").c_str());
-		}
+	  if (!withBKG) title = title + "_noBKG";
+	  if(ilepton==1) {
+	    gSystem->mkdir(("electrons/" + version).c_str());
+	    c1->SaveAs(("electrons/" + version + "/" + title + ".pdf").c_str());
+	  }
+	  if (ilepton==2) {
+	    gSystem->mkdir(("muons/" + version).c_str());
+	    c1->SaveAs(("muons/" + version + "/" + title + ".pdf").c_str());
+	 }
 	}
 }
 

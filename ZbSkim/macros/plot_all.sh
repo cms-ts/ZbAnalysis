@@ -5,9 +5,8 @@ SCRAM_ARCH=slc5_amd64_gcc472
 eval `scramv1 runtime -sh`
 cd -
 
-i=0
-
-while [ $i -le 1 ]; do
+i=1
+while [ $i -le 4 ]; do
   root -l -q -b DataMCComp.C\(\"w_jetmultiplicity\",1,$i\)
   root -l -q -b DataMCComp.C\(\"first_ele_pt\",1,$i\)
   root -l -q -b DataMCComp.C\(\"first_muon_pt\",1,$i\)
@@ -33,12 +32,19 @@ while [ $i -le 1 ]; do
   root -l -q -b DataMCComp.C\(\"Z_pt_mm\",1,$i\)
   root -l -q -b DataMCComp.C\(\"Z_pt_ee_b\",1,$i\)
   root -l -q -b DataMCComp.C\(\"Z_pt_mm_b\",1,$i\) 
-#root -l -q -b DataMCComp.C\(\"b_asymmetry\",1,$i\)
+# root -l -q -b DataMCComp.C\(\"b_asymmetry\",1,$i\)
   root -l -q -b DataMCComp.C\(\"first_muon_eta\",1,$i\)
   root -l -q -b DataMCComp.C\(\"first_ele_eta\",1,$i\)
   root -l -q -b DataMCComp.C\(\"numberOfZ\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_Ht\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"w_Ht_b\",1,$i\)
+# root -l -q -b DataMCComp.C\(\"w_Ht_b\",1,$i\)
+# root -l -q -b DataMCComp.C\(\"b_invMass_ee\",1,$i\)
+# root -l -q -b DataMCComp.C\(\"b_invMass_mm\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"numberOfZ\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_Ht\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"SVTX_mass_jet\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"SVTX_mass_trk\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"SVTX_mass\",1,$i\)
 
   i=$((i+1))
 done
