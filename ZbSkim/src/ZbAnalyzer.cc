@@ -13,7 +13,7 @@
 // 
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.12 2013/04/24 21:38:34 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.13 2013/04/25 07:20:19 dellaric Exp $
 // 
 // 
 
@@ -331,15 +331,15 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig){
   h_pt_Z_mm =          fs->make < TH1F > ("Z_pt_mm", "Z_pt_mm;P_t [GeV]", 35, 0., 350.);
   b_mm_inv = 	       fs->make < TH1F > ("b_mm_inv", "b_mm_inv", 60, 71, 112);
   b_ee_inv =           fs->make < TH1F > ("b_ee_inv", "b_ee_inv", 60, 71, 112);
-  SVTX_mass_jet =      fs->make < TH1F > ("SVTX_mass_jet", "SVTX_mass_jet", 40, 0, 10);
+  SVTX_mass_jet =      fs->make < TH1F > ("SVTX_mass_jet", "SVTX_mass_jet", 70, 0, 7);
   SVTX_mass_trk =      fs->make < TH1F > ("SVTX_mass_trk", "SVTX_mass_trk", 160, 0, 80);
-  SVTX_mass =          fs->make < TH1F > ("SVTX_mass", "SVTX_mass", 40, 0, 10);
-  SVTX_mass_jet_b =    fs->make < TH1F > ("SVTX_mass_jet_b", "SVTX_mass_jet_b", 40, 0, 10);
+  SVTX_mass =          fs->make < TH1F > ("SVTX_mass", "SVTX_mass", 70, 0, 7);
+  SVTX_mass_jet_b =    fs->make < TH1F > ("SVTX_mass_jet_b", "SVTX_mass_jet_b", 70, 0, 7);
   SVTX_mass_trk_b =    fs->make < TH1F > ("SVTX_mass_trk_b", "SVTX_mass_trk_b", 160, 0, 80);
-  SVTX_mass_b =        fs->make < TH1F > ("SVTX_mass_b", "SVTX_mass_b", 40, 0, 10);
-  SVTX_mass_jet_c =    fs->make < TH1F > ("SVTX_mass_jet_c", "SVTX_mass_jet_c", 40, 0, 10);
+  SVTX_mass_b =        fs->make < TH1F > ("SVTX_mass_b", "SVTX_mass_b", 70, 0, 7);
+  SVTX_mass_jet_c =    fs->make < TH1F > ("SVTX_mass_jet_c", "SVTX_mass_jet_c", 70, 0, 7);
   SVTX_mass_trk_c =    fs->make < TH1F > ("SVTX_mass_trk_c", "SVTX_mass_trk_c", 160, 0, 80);
-  SVTX_mass_c =        fs->make < TH1F > ("SVTX_mass_c", "SVTX_mass_c", 40, 0, 10);
+  SVTX_mass_c =        fs->make < TH1F > ("SVTX_mass_c", "SVTX_mass_c", 70, 0, 7);
 
   h_scalFactor_first_ele   =    fs->make < TH1F > ("scaleFactor_first_ele",   "scaleFactor_first_ele", 90, 0.6, 1.5);
   h_scalFactor_first_muon  =    fs->make < TH1F > ("scaleFactor_first_muon",  "scaleFactor_first_muon", 90, 0.6, 1.5);
