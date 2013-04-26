@@ -233,8 +233,9 @@ if (ilepton<1 || ilepton>2) {
 	  h_mc1->SetBinError(i, norm1*TMath::Sqrt(y/norm1));
 	}
 
+	TH1F *h_data_fit = h_data->Clone("h_data_fit");
+	TF1 *f1 = new TF1("f1", func, 0.00, 1.00, 3);
 	if (doFit) {
-	  TH1F *h_data_fit = h_data->Clone("h_data_fit");
 	  if (!doBkg) {
 	    h_data_fit->Add(h_mc7, -1.);
 	    h_data_fit->Add(h_mc6, -1.);
@@ -250,7 +251,6 @@ if (ilepton<1 || ilepton>2) {
 	    e += h_mc1b->GetBinError(i)**2;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
-	  TF1 *f1 = new TF1("f1", func, 0.00, 1.00, 3);
 	  f1->SetParameters(1., 1., 1.);
 	  f1->SetParNames("f_uds", "f_b", "f_c");
 	  h_data_fit->Fit("f1");
@@ -416,6 +416,22 @@ if (ilepton<1 || ilepton>2) {
 
  	TLatex *latexLabel=CMSPrel(19.3,"",0.1,0.94); // make fancy label
 	latexLabel->Draw("same");
+
+	if (doFit) {
+	  TLatex *fitLabel = new TLatex();
+	  fitLabel->SetTextSize(0.0275);
+	  fitLabel->SetTextFont(42);
+	  fitLabel->SetLineWidth(2);
+	  fitLabel->SetNDC();
+	  char buff[100];
+	  sprintf(buff, "f_{uds} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	  fitLabel->DrawLatex(0.68, 0.58, buff);
+	  sprintf(buff, "f_{b}   = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
+	  fitLabel->DrawLatex(0.68, 0.53, buff);
+	  sprintf(buff, "f_{c}   = %5.3f #pm %5.3f", f1->GetParameter(2), f1->GetParError(2));
+	  fitLabel->DrawLatex(0.68, 0.48, buff);
+	  fitLabel->Draw("same");
+	}
 
 	if (plot) {
 	  if (doBkg) title = title + "_doBkg";
