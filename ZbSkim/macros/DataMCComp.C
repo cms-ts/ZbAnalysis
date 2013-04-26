@@ -33,7 +33,7 @@ double func(double* x, double* p) {
   float c_mc1 = h_mc1->GetBinContent(i);
   float c_mc1b = h_mc1b->GetBinContent(i);
   float c_mc1c = h_mc1c->GetBinContent(i);
-  return (1.0-(1.0-p[0])-(1.0-p[1]))*c_mc1 + p[0]*c_mc1b + p[1]*c_mc1c;
+  return (3.0-p[0]-p[1])*c_mc1 + p[0]*c_mc1b + p[1]*c_mc1c;
 }
 
 void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
@@ -250,7 +250,7 @@ if (ilepton<1 || ilepton>2) {
 	  f1->SetParameters(1.0, 1.0);
 	  f1->SetParNames("f_b", "f_c");
 	  h_data_fit->Fit("f1");
-	  h_mc1->Scale(1.0-(1.0-f1->GetParameter(0))-(1.0-f1->GetParameter(1)));
+	  h_mc1->Scale(3.0-f1->GetParameter(0)-f1->GetParameter(1));
 	  h_mc1b->Scale(f1->GetParameter(0));
 	  h_mc1c->Scale(f1->GetParameter(1));
 	}
