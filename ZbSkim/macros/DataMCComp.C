@@ -65,8 +65,7 @@ if (ilepton==2) Lumi2012 = Lumi2012_muon;
 	  if (title=="Z_pt_ee_b") return;
 	}
 
-	//string path = "/gpfs/cms/users/candelis/work/Zb/data/" + version + "/";
-	string path = "/gpfs/cms/users/candelis/work/Zb/GDR/data/" + version + "/";
+	string path = "/gpfs/cms/users/candelis/work/Zb/data/" + version + "/";
 
 	if (ilepton==1)
 	  TFile *data = TFile::Open((path + "DoubleElectron_2012_merge.root").c_str()); //data file
