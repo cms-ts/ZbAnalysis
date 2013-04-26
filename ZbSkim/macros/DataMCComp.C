@@ -316,8 +316,8 @@ if (ilepton<1 || ilepton>2) {
 	if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
 
 	leg->AddEntry(h_mc1,"Z+jets","f");
-	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
 	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
+	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
 	if (!doBkg) {
 	  leg->AddEntry(h_mc2,"t#bar{t}","f");
 	  leg->AddEntry(h_mc3,"ZZ","f");
