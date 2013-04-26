@@ -48,4 +48,14 @@ while [ $i -le 2 ]; do
   i=$((i+1))
 done
 
+i=1
+while [ $i -le 2 ]; do
+
+  root -l -q -b DataMCComp.C\(\"SVTX_mass\",1,$i,1,0\)
+  root -l -q -b DataMCComp.C\(\"SVTX_mass\",1,$i,0,1\)
+  root -l -q -b DataMCComp.C\(\"SVTX_mass\",1,$i,1,1\)
+
+  i=$((i+1))
+done
+
 exit

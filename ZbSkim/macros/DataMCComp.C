@@ -1,7 +1,10 @@
-#include "TLatex.h"
+#include <iostream>
+#include <sstream>
+#include <string.h>
 
 #include <TROOT.h>
 #include "TStyle.h"
+#include "TLatex.h"
 #include "TCanvas.h"
 #include "TLine.h"
 #include "TLegend.h"
@@ -10,31 +13,39 @@
 #include "TDirectory.h"
 #include "TLine.h"
 #include "TObject.h"
-#include <iostream>
-#include <sstream>
-#include "LumiLabel.C"
 #include "TH1.h"
 #include "TH2.h"
 #include "THStack.h"
 #include "TTree.h"
 
-#include <string.h>
-
+#include "LumiLabel.C"
 #include "LumiInfo_v06.h"
 
-void DataMCComp(string& title="", int plot=0, int ilepton=1){
+string path = "/gpfs/cms/users/candelis/work/Zb/data/" + version + "/";
 
-int withBKG=1;
+TH1F* h_data = 0;
+TH1F* h_mc1 = 0;
+TH1F* h_mc1b = 0;
+TH1F* h_mc1c = 0;
+
+double func(double* x, double* p) {
+  int i = h_mc1->GetXaxis()->FindBin(x[0]);
+  float c_mc1 = h_mc1->GetBinContent(i);
+  float c_mc1b = h_mc1b->GetBinContent(i);
+  float c_mc1c = h_mc1c->GetBinContent(i);
+  return p[0]*c_mc1 + p[1]*c_mc1b + p[2]*c_mc1c;
+}
+
+void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
 
 if (ilepton<1 || ilepton>2) {
   ilepton = 1 + ilepton % 2;
-  withBKG=0;
 }
 
-double Lumi2012;
+	double Lumi2012;
 
-if (ilepton==1) Lumi2012 = Lumi2012_ele;
-if (ilepton==2) Lumi2012 = Lumi2012_muon;
+	if (ilepton==1) Lumi2012 = Lumi2012_ele;
+	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
 	double norm1 = ( (Lumi2012 * Xsec_dy ) / Ngen_dy);
 	double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
@@ -65,12 +76,10 @@ if (ilepton==2) Lumi2012 = Lumi2012_muon;
 	  if (title=="Z_pt_ee_b") return;
 	}
 
-	string path = "/gpfs/cms/users/candelis/work/Zb/data/" + version + "/";
-
 	if (ilepton==1)
-	  TFile *data = TFile::Open((path + "DoubleElectron_2012_merge.root").c_str()); //data file
+	  TFile *data = TFile::Open((path + "DoubleElectron_2012_merge.root").c_str());
 	if (ilepton==2)
-	  TFile *data = TFile::Open((path + "DoubleMu_2012_merge.root").c_str()); //data file
+	  TFile *data = TFile::Open((path + "DoubleMu_2012_merge.root").c_str());
 
 	TFile *mc1 = TFile::Open((path + "DYJetsToLL.root").c_str());
 	TFile *mc2 = TFile::Open((path + "TTbar.root").c_str());
@@ -82,46 +91,46 @@ if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
 	if (ilepton==1) data->cd("demo_ee");
 	if (ilepton==2) data->cd("demo_mm");
-	TH1F* h_data = (TH1F*)gDirectory->Get(title.c_str());
+	h_data = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc1->cd("demo_ee");
 	if (ilepton==2) mc1->cd("demo_mm");
-	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
-	TH1F* h_mc1b = 0;
-	TH1F* h_mc1c = 0;
-	if (title == "w_secondvtx_N"){
-		h_mc1b = (TH1F*)gDirectory->Get("bquarks");
+	h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
+	if (title == "w_secondvtx_N") {
+	  h_mc1b = (TH1F*)gDirectory->Get("bquarks");
 	}
-	if (title == "SVTX_mass_jet"){
-		h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_jet_b");
-		h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_jet_c");
+	if (title == "SVTX_mass_jet") {
+	  h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_jet_b");
+	  h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_jet_c");
 	}
-	if (title == "SVTX_mass_trk"){
-		h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_trk_b");
-		h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_trk_c");
+	if (title == "SVTX_mass_trk") {
+	  h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_trk_b");
+	  h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_trk_c");
 	}
-	if (title == "SVTX_mass"){
-		h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_b");
-		h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_c");
+	if (title == "SVTX_mass") {
+	  h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_b");
+	  h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_c");
 	}
-	if (title == "w_first_jet_pt"){
-		h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_pt");
+	if (title == "w_first_jet_pt") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_pt");
 	}
-	if (title == "w_first_jet_eta"){
-		h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
+	if (title == "w_first_jet_eta") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
 	}
-	if (title == "Z_pt_ee"){
-		h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_ee");
+	if (title == "Z_pt_ee") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_ee");
 	}
-	if (title == "Z_pt_mm"){
-		h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_mm");
+	if (title == "Z_pt_mm") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_mm");
 	}
-	if (title == "w_mm_inv"){
-		h_mc1b = (TH1F*)gDirectory->Get("b_invMass_mm");
+	if (title == "w_mm_inv") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_mm");
 	}
-	if (title == "w_ee_inv"){
-		h_mc1b = (TH1F*)gDirectory->Get("b_invMass_ee");
+	if (title == "w_ee_inv") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_ee");
 	}
+
+	if (doFit && (h_mc1b==0 || h_mc1c==0)) return;
 
 	if (ilepton==1) mc2->cd("demo_ee");
 	if (ilepton==2) mc2->cd("demo_mm");
@@ -147,37 +156,52 @@ if (ilepton==2) Lumi2012 = Lumi2012_muon;
 	if (ilepton==2) mc7->cd("demo_mm");
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 
+	h_data -> Sumw2();
+
+	h_mc1 -> Sumw2();
 	h_mc1 -> SetLineColor(kBlack);
 	h_mc1 -> SetFillColor(kYellow-4);
 	//h_mc1 -> SetFillStyle(3004);
 
 	if (h_mc1b) {
-		h_mc1b->SetLineColor(kBlack);
-		h_mc1b->SetFillColor(kYellow-4);	
-		h_mc1b->SetFillStyle(3254);
+	  h_mc1b -> Sumw2();
+	  h_mc1b->SetLineColor(kBlack);
+	  h_mc1b->SetFillColor(kYellow-4);	
+	  h_mc1b->SetFillStyle(3254);
 	}
 	if (h_mc1c) {
-		h_mc1c->SetLineColor(kBlack);
-		h_mc1c->SetFillColor(kYellow-4);
-		h_mc1c->SetFillStyle(3245);
+	  h_mc1c -> Sumw2();
+	  h_mc1c->SetLineColor(kBlack);
+	  h_mc1c->SetFillColor(kYellow-4);
+	  h_mc1c->SetFillStyle(3245);
 	}
 
-	h_mc4 -> SetLineColor(kBlack);
-	h_mc4 -> SetFillColor(kGray+3);
-	//h_mc4 -> SetFillStyle(3004);
-
+	h_mc2 -> Sumw2();
 	h_mc2 -> SetLineColor(kBlack);
 	h_mc2 -> SetFillColor(kBlue);
 	//h_mc2 -> SetFillStyle(3004);
 
+	h_mc3 -> Sumw2();
 	h_mc3 -> SetLineColor(kBlack);
 	h_mc3 -> SetFillColor(kGray+2);
 	//h_mc3 -> SetFillStyle(3004);
-	
+
+	h_mc4 -> Sumw2();
+	h_mc4 -> SetLineColor(kBlack);
+	h_mc4 -> SetFillColor(kGray+3);
+	//h_mc4 -> SetFillStyle(3004);
+
+//	h_mc5 -> Sumw2();
+//	h_mc5 -> SetLineColor(kBlack);
+//	h_mc5 -> SetFillColor(kGray+3);
+//	//h_mc5 -> SetFillStyle(3004);
+
+	h_mc6 -> Sumw2();
 	h_mc6 -> SetLineColor(kBlack);
 	h_mc6 -> SetFillColor(kRed+2);
 	//h_mc6 -> SetFillStyle(3004);
-	 
+
+	h_mc7 -> Sumw2();
 	h_mc7 -> SetLineColor(kBlack);
 	h_mc7 -> SetFillColor(kGray);
 	//h_mc7 -> SetFillStyle(3004);
@@ -192,16 +216,7 @@ if (ilepton==2) Lumi2012 = Lumi2012_muon;
 	h_mc6->Scale(norm6);
 	h_mc7->Scale(norm7);
 
-	TH1F *ht = h_mc1->Clone("ht");
-	ht->Reset();
-	if (withBKG) {
-	  ht->Add(h_mc7);
-	  ht->Add(h_mc6);
-//	  ht->Add(h_mc5);
-	  ht->Add(h_mc4);
-	  ht->Add(h_mc3);
-	  ht->Add(h_mc2);
-	} else {
+	if (doBkg) {
 	  h_data->Add(h_mc7, -1.);
 	  h_data->Add(h_mc6, -1.);
 //	  h_data->Add(h_mc5, -1.);
@@ -209,10 +224,57 @@ if (ilepton==2) Lumi2012 = Lumi2012_muon;
 	  h_data->Add(h_mc3, -1.);
 	  h_data->Add(h_mc2, -1.);
 	}
+
+	for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+	  float y = h_mc1->GetBinContent(i);
+	  if (h_mc1b) y = y - h_mc1b->GetBinContent(i);
+	  if (h_mc1c) y = y - h_mc1c->GetBinContent(i);
+	  h_mc1->SetBinContent(i, y);
+	  h_mc1->SetBinError(i, norm1*TMath::Sqrt(y/norm1));
+	}
+
+	if (doFit) {
+	  TH1F *h_data_fit = h_data->Clone("h_data_fit");
+	  if (!doBkg) {
+	    h_data_fit->Add(h_mc7, -1.);
+	    h_data_fit->Add(h_mc6, -1.);
+//	    h_data_fit->Add(h_mc5, -1.);
+	    h_data_fit->Add(h_mc4, -1.);
+	    h_data_fit->Add(h_mc3, -1.);
+	    h_data_fit->Add(h_mc2, -1.);
+	  }
+	  for (int i=0; i<=h_data->GetNbinsX()+1; i++) {
+	    float e = h_data->GetBinError(i)**2;
+	    e += h_mc1->GetBinError(i)**2;
+	    e += h_mc1b->GetBinError(i)**2;
+	    e += h_mc1b->GetBinError(i)**2;
+	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
+	  }
+	  TF1 *f1 = new TF1("f1", func, 0.00, 1.00, 3);
+	  f1->SetParameters(1., 1., 1.);
+	  f1->SetParNames("f_uds", "f_b", "f_c");
+	  h_data_fit->Fit("f1");
+	  h_mc1->Scale(f1->GetParameter(0));
+	  h_mc1b->Scale(f1->GetParameter(1));
+	  h_mc1c->Scale(f1->GetParameter(2));
+	}
+
+	TH1F *ht = h_mc1->Clone("ht");
+	ht->Reset();
+	if (!doBkg) {
+	  ht->Add(h_mc7);
+	  ht->Add(h_mc6);
+//	  ht->Add(h_mc5);
+	  ht->Add(h_mc4);
+	  ht->Add(h_mc3);
+	  ht->Add(h_mc2);
+	}
+	if (h_mc1b) ht->Add(h_mc1b);
+	if (h_mc1c) ht->Add(h_mc1c);
 	ht->Add(h_mc1);
 
 	THStack *hs = new THStack("hs","");
-	if (withBKG) {
+	if (!doBkg) {
 //	  hs->Add(h_mc5);
 	  hs->Add(h_mc6);
 	  hs->Add(h_mc7);
@@ -220,14 +282,8 @@ if (ilepton==2) Lumi2012 = Lumi2012_muon;
 	  hs->Add(h_mc3);
 	  hs->Add(h_mc2);
 	}
-	if (h_mc1b){
-		h_mc1->Add(h_mc1b, -1.);
-		hs->Add(h_mc1b);
-	}
-	if (h_mc1c){
-		h_mc1->Add(h_mc1c, -1.);
-		hs->Add(h_mc1c);
-	}
+	if (h_mc1b) hs->Add(h_mc1b);
+	if (h_mc1c) hs->Add(h_mc1c);
 	hs->Add(h_mc1);
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
@@ -242,7 +298,7 @@ if (ilepton==2) Lumi2012 = Lumi2012_muon;
 	TH1F *h3=h_data->DrawCopy();
 	h3->SetMinimum(-100);
 
-	hs->Draw();
+	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
  	hs->GetXaxis()->SetLabelSize(0.08);
 	hs->GetXaxis()->SetTitleOffset (0.7);
@@ -260,13 +316,13 @@ if (ilepton==2) Lumi2012 = Lumi2012_muon;
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
 
-	if(ilepton==1) leg->AddEntry(h_data,"Z(#rightarrow ee)+jets","p");
-	if(ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
+	if (ilepton==1) leg->AddEntry(h_data,"Z(#rightarrow ee)+jets","p");
+	if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
 
 	leg->AddEntry(h_mc1,"Z+jets","f");
 	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
 	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
-	if (withBKG) {
+	if (!doBkg) {
 	  leg->AddEntry(h_mc2,"t#bar{t}","f");
 	  leg->AddEntry(h_mc3,"ZZ","f");
 	  leg->AddEntry(h_mc4,"WZ","f");
@@ -288,53 +344,52 @@ if (ilepton==2) Lumi2012 = Lumi2012_muon;
 	pad2->SetBottomMargin(0.3);		  	  
 	pad2->Draw();
 	pad2->cd();
-	h_ratio->Sumw2();
       	h_ratio->SetStats(0);
 	h_ratio->SetTitle("");
 	h_ratio->SetStats(0);
 
-	if(title=="w_jetmultiplicity"){
-	h_ratio->GetXaxis ()->SetTitle("Number of jets");
-	}else if(title=="w_mm_inv"){
-	h_ratio->GetXaxis ()->SetTitle("#mu^{+}#mu^{-} invariant mass [GeV/c^{2}]");
-	}else if(title=="w_ee_inv"){
-	h_ratio->GetXaxis ()->SetTitle("e^{+}e^{-} invariant mass [GeV/c^{2}]");
-	}else if(title=="first_muon_pt"){
-	h_ratio->GetXaxis ()->SetTitle("muon p_{T} [GeV/c]");
-	}else if(title=="first_ele_pt"){
-	h_ratio->GetXaxis ()->SetTitle("electron p_{T} [GeV/c]");
-	}else if(title=="first_jet_pt"){
-	h_ratio->GetXaxis ()->SetTitle("jet p_{T} [GeV/c]");
-	}else if(title=="w_secondvtx_N"){
-	h_ratio->GetXaxis ()->SetTitle("CSV discriminator");
-	}else if(title=="w_recoVTX"){
-	h_ratio->GetXaxis ()->SetTitle("Number of offline vertices");
-	}else if(title=="w_muon_pt"){
-	h_ratio->GetXaxis ()->SetTitle("muon p_{T} [GeV/c]");
-	}else if(title=="w_MET_sign"){
-	h_ratio->GetXaxis ()->SetTitle("MET [GeV/c]");
-	}else if(title=="w_MET"){
-	h_ratio->GetXaxis ()->SetTitle("MET Significance [GeV/c]");
-	}else if(title=="Z_pt_ee"){
-	h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
-	}else if(title=="Z_pt_mm"){
-	h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
-	}else if(title=="w_bjetmultiplicity"){
-	h_ratio->GetXaxis ()->SetTitle("b quark jets multiplicity");
-	}else if(title=="w_first_jet_pt_b"){
-	h_ratio->GetXaxis ()->SetTitle("leading b quark p_{T} [GeV/c]");
-	}else if(title=="w_first_jet_eta_b"){
-	h_ratio->GetXaxis ()->SetTitle("leading b quark #eta");
-	}else if(title=="Z_pt_mm_b"){
-	h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
-	}else if(title=="Z_pt_ee_b"){
-	h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
-	}else if(title=="w_delta_phi_ee"){
-	h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
-	}else if(title=="w_delta_phi_mm"){
-	h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
-	}else if((title=="b_ee_inv")||(title=="b_mm_inv")){
-	h_ratio->GetXaxis ()->SetTitle("Z mass + 1 b quark [GeV/c^{2}]");
+	if (title=="w_jetmultiplicity") {
+	  h_ratio->GetXaxis ()->SetTitle("Number of jets");
+	} else if (title=="w_mm_inv") {
+	  h_ratio->GetXaxis ()->SetTitle("#mu^{+}#mu^{-} invariant mass [GeV/c^{2}]");
+	} else if (title=="w_ee_inv") {
+	  h_ratio->GetXaxis ()->SetTitle("e^{+}e^{-} invariant mass [GeV/c^{2}]");
+	} else if (title=="first_muon_pt") {
+	  h_ratio->GetXaxis ()->SetTitle("muon p_{T} [GeV/c]");
+	} else if (title=="first_ele_pt") {
+	  h_ratio->GetXaxis ()->SetTitle("electron p_{T} [GeV/c]");
+	} else if (title=="first_jet_pt") {
+	  h_ratio->GetXaxis ()->SetTitle("jet p_{T} [GeV/c]");
+	} else if (title=="w_secondvtx_N") {
+	  h_ratio->GetXaxis ()->SetTitle("CSV discriminator");
+	} else if (title=="w_recoVTX") {
+	  h_ratio->GetXaxis ()->SetTitle("Number of offline vertices");
+	} else if (title=="w_muon_pt") {
+	  h_ratio->GetXaxis ()->SetTitle("muon p_{T} [GeV/c]");
+	} else if (title=="w_MET_sign") {
+	  h_ratio->GetXaxis ()->SetTitle("MET [GeV/c]");
+	} else if (title=="w_MET") {
+	  h_ratio->GetXaxis ()->SetTitle("MET Significance [GeV/c]");
+	} else if (title=="Z_pt_ee") {
+	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
+	} else if (title=="Z_pt_mm") {
+	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
+	} else if (title=="w_bjetmultiplicity") {
+	  h_ratio->GetXaxis ()->SetTitle("b quark jets multiplicity");
+	} else if (title=="w_first_jet_pt_b") {
+	  h_ratio->GetXaxis ()->SetTitle("leading b quark p_{T} [GeV/c]");
+	} else if (title=="w_first_jet_eta_b") {
+	  h_ratio->GetXaxis ()->SetTitle("leading b quark #eta");
+	} else if (title=="Z_pt_mm_b") {
+	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
+	} else if (title=="Z_pt_ee_b") {
+	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
+	} else if (title=="w_delta_phi_ee") {
+	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
+	} else if (title=="w_delta_phi_mm") {
+	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
+	} else if ((title=="b_ee_inv")||(title=="b_mm_inv")) {
+	  h_ratio->GetXaxis ()->SetTitle("Z mass + 1 b quark [GeV/c^{2}]");
 	}
 
 	h_ratio->GetXaxis()->SetTitleOffset(0.9);
@@ -362,9 +417,10 @@ if (ilepton==2) Lumi2012 = Lumi2012_muon;
  	TLatex *latexLabel=CMSPrel(19.3,"",0.1,0.94); // make fancy label
 	latexLabel->Draw("same");
 
-	if (plot){
-	  if (!withBKG) title = title + "_noBKG";
-	  if(ilepton==1) {
+	if (plot) {
+	  if (doBkg) title = title + "_doBkg";
+	  if (doFit) title = title + "_doFit";
+	  if (ilepton==1) {
 	    gSystem->mkdir(("electrons/" + version).c_str());
 	    c1->SaveAs(("electrons/" + version + "/" + title + ".pdf").c_str());
 	  }
