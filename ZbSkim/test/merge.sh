@@ -21,7 +21,6 @@ if [ ! -e $WORKDIR/$VERSION ]; then
 fi
 
 cd $CMS_PATH/slc5_amd64_gcc472/cms/cmssw/CMSSW_6_1_0
-SCRAM_ARCH=slc5_amd64_gcc472
 eval `scramv1 runtime -sh`
 cd $WORKDIR
 
