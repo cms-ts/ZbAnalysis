@@ -166,7 +166,7 @@ if (ilepton<1 || ilepton>2) {
 	if (h_mc1b) {
 	  h_mc1b -> Sumw2();
 	  h_mc1b->SetLineColor(kBlack);
-	  h_mc1b->SetFillColor(kYellow-4);	
+	  h_mc1b->SetFillColor(kYellow-4);
 	  h_mc1b->SetFillStyle(3254);
 	}
 	if (h_mc1c) {
@@ -207,8 +207,8 @@ if (ilepton<1 || ilepton>2) {
 	//h_mc7 -> SetFillStyle(3004);
 
 	h_mc1->Scale(norm1); 
-	if (h_mc1b) h_mc1b->Scale(norm1);	
-	if (h_mc1c) h_mc1c->Scale(norm1);	
+	if (h_mc1b) h_mc1b->Scale(norm1);
+	if (h_mc1c) h_mc1c->Scale(norm1);
 	h_mc2->Scale(norm2);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
@@ -303,7 +303,7 @@ if (ilepton<1 || ilepton>2) {
  	hs->GetXaxis()->SetLabelSize(0.08);
 	hs->GetXaxis()->SetTitleOffset (0.7);
 	hs->SetMinimum(8);
-	
+
 	h_data->Draw("EPX0SAMES");
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
