@@ -33,7 +33,7 @@ double func(double* x, double* p) {
   float c_mc1 = h_mc1->GetBinContent(i);
   float c_mc1b = h_mc1b->GetBinContent(i);
   float c_mc1c = h_mc1c->GetBinContent(i);
-  return (3.0-p[0]-p[1])*c_mc1 + p[0]*c_mc1b + p[1]*c_mc1c;
+  return p[0]*c_mc1 + p[1]*c_mc1b + p[2]*c_mc1c;
 }
 
 void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
@@ -232,9 +232,9 @@ if (ilepton<1 || ilepton>2) {
 	if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
 	if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
 
-	TH1F *h_data_fit = h_data->Clone("h_data_fit");
-	TF1 *f1 = new TF1("f1", func, 0.00, 1.00, 2);
+	TF1 *f1 = new TF1("f1", func, 0.00, 1.00, 3);
 	if (doFit) {
+	  TH1F *h_data_fit = h_data->Clone("h_data_fit");
 	  if (!doBkg) {
 	    h_data_fit->Add(h_mc7, -1.);
 	    h_data_fit->Add(h_mc6, -1.);
@@ -247,12 +247,12 @@ if (ilepton<1 || ilepton>2) {
 	    float e = h_data_fit->GetBinError(i)**2 + h_mc1->GetBinError(i)**2;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
-	  f1->SetParameters(1.0, 1.0);
-	  f1->SetParNames("f_b", "f_c");
+	  f1->SetParameters(1.0, 1.0, 1.0);
+	  f1->SetParNames("f_uds", "f_b", "f_c");
 	  h_data_fit->Fit("f1");
-	  h_mc1->Scale(3.0-f1->GetParameter(0)-f1->GetParameter(1));
-	  h_mc1b->Scale(f1->GetParameter(0));
-	  h_mc1c->Scale(f1->GetParameter(1));
+	  h_mc1->Scale(f1->GetParameter(0));
+	  h_mc1b->Scale(f1->GetParameter(1));
+	  h_mc1c->Scale(f1->GetParameter(2));
 	}
 
 	TH1F *ht = h_mc1->Clone("ht");
@@ -422,9 +422,11 @@ if (ilepton<1 || ilepton>2) {
 	  fitLabel->SetLineWidth(2);
 	  fitLabel->SetNDC();
 	  char buff[100];
-	  sprintf(buff, "f_{b} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	  sprintf(buff, "f_{uds} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	  fitLabel->DrawLatex(0.68, 0.58, buff);
+	  sprintf(buff, "f_{b}   = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
 	  fitLabel->DrawLatex(0.68, 0.53, buff);
-	  sprintf(buff, "f_{c} = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
+	  sprintf(buff, "f_{c}   = %5.3f #pm %5.3f", f1->GetParameter(2), f1->GetParError(2));
 	  fitLabel->DrawLatex(0.68, 0.48, buff);
 	  fitLabel->Draw("same");
 	}
