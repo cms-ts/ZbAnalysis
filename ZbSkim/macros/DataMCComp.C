@@ -306,7 +306,7 @@ if (ilepton<1 || ilepton>2) {
 	h_data->SetMarkerSize (1.0);
 	//h_data->SetMaximum(1.2);
 
-	leg = new TLegend(0.68, 0.58, 0.88, 0.88);
+	leg = new TLegend(0.62, 0.58, 0.88, 0.88);
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
