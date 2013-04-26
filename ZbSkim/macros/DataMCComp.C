@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string.h>
 
-#include <TROOT.h>
+#include "TROOT.h"
 #include "TStyle.h"
 #include "TLatex.h"
 #include "TCanvas.h"
@@ -226,12 +226,11 @@ if (ilepton<1 || ilepton>2) {
 	}
 
 	for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	  float y = h_mc1->GetBinContent(i);
-	  if (h_mc1b) y = y - h_mc1b->GetBinContent(i);
-	  if (h_mc1c) y = y - h_mc1c->GetBinContent(i);
-	  h_mc1->SetBinContent(i, y);
-	  h_mc1->SetBinError(i, norm1*TMath::Sqrt(y/norm1));
+	  if (h_mc1b) h_mc1b->SetBinError(i, 0.);
+	  if (h_mc1c) h_mc1c->SetBinError(i, 0.);
 	}
+	if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
+	if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
 
 	TH1F *h_data_fit = h_data->Clone("h_data_fit");
 	TF1 *f1 = new TF1("f1", func, 0.00, 1.00, 3);
@@ -244,14 +243,11 @@ if (ilepton<1 || ilepton>2) {
 	    h_data_fit->Add(h_mc3, -1.);
 	    h_data_fit->Add(h_mc2, -1.);
 	  }
-	  for (int i=0; i<=h_data->GetNbinsX()+1; i++) {
-	    float e = h_data->GetBinError(i)**2;
-	    e += h_mc1->GetBinError(i)**2;
-	    e += h_mc1b->GetBinError(i)**2;
-	    e += h_mc1b->GetBinError(i)**2;
+	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+	    float e = h_data_fit->GetBinError(i)**2 + h_mc1->GetBinError(i)**2;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
-	  f1->SetParameters(1., 1., 1.);
+	  f1->SetParameters(1.0, 1.0, 1.0);
 	  f1->SetParNames("f_uds", "f_b", "f_c");
 	  h_data_fit->Fit("f1");
 	  h_mc1->Scale(f1->GetParameter(0));
