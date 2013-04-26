@@ -6,7 +6,7 @@ eval `scramv1 runtime -sh`
 cd -
 
 i=1
-while [ $i -le 4 ]; do
+while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_jetmultiplicity\",1,$i\)
   root -l -q -b DataMCComp.C\(\"first_ele_pt\",1,$i\)
   root -l -q -b DataMCComp.C\(\"first_muon_pt\",1,$i\)
