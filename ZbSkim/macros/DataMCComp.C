@@ -344,7 +344,7 @@ if (ilepton<1 || ilepton>2) {
 	pad2->SetBottomMargin(0.3);
 	pad2->Draw();
 	pad2->cd();
-      	h_ratio->SetStats(0);
+	h_ratio->SetStats(0);
 	h_ratio->SetTitle("");
 	h_ratio->SetStats(0);
 
