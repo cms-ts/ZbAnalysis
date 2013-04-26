@@ -384,8 +384,10 @@ if (ilepton<1 || ilepton>2) {
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
 	} else if (title=="w_delta_phi_mm") {
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
-	} else if ((title=="b_ee_inv")||(title=="b_mm_inv")) {
+	} else if (title=="b_ee_inv"||title=="b_mm_inv") {
 	  h_ratio->GetXaxis ()->SetTitle("Z mass + 1 b quark [GeV/c^{2}]");
+	} else if (title=="SVTX_mass_jet"||title=="SVTX_mass_trk"||title=="SVTX_mass") {
+	  h_ratio->GetXaxis ()->SetTitle("SV mass [GeV/c^{2}]");
 	}
 
 	h_ratio->GetXaxis()->SetTitleOffset(0.9);
