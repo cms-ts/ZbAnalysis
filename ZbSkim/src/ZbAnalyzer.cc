@@ -13,7 +13,7 @@
 // 
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.13 2013/04/25 07:20:19 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.14 2013/04/26 14:08:48 dellaric Exp $
 // 
 // 
 
@@ -578,12 +578,11 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 
   }
 
-
   if (ee_event) MyWeight = MyWeight * scalFac_first_e * scalFac_second_e;
   if (mm_event) MyWeight = MyWeight * scalFac_first_mu * scalFac_second_mu;
 
-  if (ee_event)	  numberOfZ->Fill(zee->size ());
-  if (mm_event)	  numberOfZ->Fill(zmm->size());
+  if (ee_event)	  numberOfZ->Fill(zee->size (), MyWeight);
+  if (mm_event)	  numberOfZ->Fill(zmm->size(), MyWeight);
 
   // ++++++++ VERTICES
 
@@ -699,7 +698,7 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	      if (fabs (jet->partonFlavour ()) == 5) isb = true;
 	      if (fabs (jet->partonFlavour ()) == 4) isc = true;
 
-              h_secondvtx_N->Fill (discrCSV);
+              h_secondvtx_N->Fill (discrCSV, MyWeight);
 	      w_secondvtx_N->Fill (discrCSV, MyWeight);
 
 	      //cout<<discrCSV<<endl;
@@ -786,9 +785,9 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	sumVertexMassTrk /= Nb;
 	sumVertexMass /= Nb;
 
-	SVTX_mass_jet -> Fill(sumVertexMassJet);
-	SVTX_mass_trk -> Fill(sumVertexMassTrk);
-	SVTX_mass -> Fill(sumVertexMass);
+	SVTX_mass_jet -> Fill(sumVertexMassJet, MyWeight);
+	SVTX_mass_trk -> Fill(sumVertexMassTrk, MyWeight);
+	SVTX_mass -> Fill(sumVertexMass, MyWeight);
 	
 //	cout<<"VTX mass JET = "<< sumVertexMassJet << endl;
 //	cout<<"VTX mass TRK = "<< sumVertexMassTrk << endl;
@@ -799,22 +798,22 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
         w_first_jet_pt->Fill (vect_jet_pt[0], MyWeight);
         w_first_jet_eta->Fill (vect_jet_eta[0], MyWeight);
 	w_Ht->Fill(Ht, MyWeight);
-        recoVTX_->Fill (float (NVtx));
+        recoVTX_->Fill (NVtx);
         recoVTX_w->Fill (NVtx, MyWeight);
       
 	if (Nb != 0 && isb){
 		w_bquarks->Fill (discrCSV, MyWeight);
 		b_first_jet_pt->Fill (jet_pt, MyWeight);
 		b_first_jet_eta->Fill (jet_eta, MyWeight);
-		SVTX_mass_jet_b->Fill(sumVertexMassJet);
-		SVTX_mass_trk_b->Fill(sumVertexMassTrk);
-		SVTX_mass_b->Fill(sumVertexMass);
+		SVTX_mass_jet_b->Fill(sumVertexMassJet, MyWeight);
+		SVTX_mass_trk_b->Fill(sumVertexMassTrk, MyWeight);
+		SVTX_mass_b->Fill(sumVertexMass, MyWeight);
   	}
 
 	if (Nb != 0 && isc){
-		SVTX_mass_jet_c->Fill(sumVertexMassJet);
-		SVTX_mass_trk_c->Fill(sumVertexMassTrk);
-		SVTX_mass_c->Fill(sumVertexMass);
+		SVTX_mass_jet_c->Fill(sumVertexMassJet, MyWeight);
+		SVTX_mass_trk_c->Fill(sumVertexMassTrk, MyWeight);
+		SVTX_mass_c->Fill(sumVertexMass, MyWeight);
 	}
       }
 	      	  
