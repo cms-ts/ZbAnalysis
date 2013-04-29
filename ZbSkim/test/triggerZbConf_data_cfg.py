@@ -177,7 +177,7 @@ removeCleaningFromTriggerMatching(process)
 process.matchedElectrons = selectedPatElectrons.clone(
 		     src = cms.InputTag('selectedPatElectronsTriggerMatch'),
 		     cut = cms.string(
-			'pt > 20 & abs(eta) < 2.4 &'
+			'ecalDrivenMomentum.pt > 20 & abs(eta) < 2.4 &'
 			'(('
 			 'abs(superCluster.eta) < 1.442 &'
 			 'abs(deltaEtaSuperClusterTrackAtVtx) < 0.004 &'
