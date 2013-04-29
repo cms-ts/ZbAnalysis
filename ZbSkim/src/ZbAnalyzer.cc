@@ -13,7 +13,7 @@
 // 
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.14 2013/04/26 14:08:48 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.15 2013/04/28 06:53:06 dellaric Exp $
 // 
 // 
 
@@ -698,7 +698,7 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	      if (fabs (jet->partonFlavour ()) == 5) isb = true;
 	      if (fabs (jet->partonFlavour ()) == 4) isc = true;
 
-              h_secondvtx_N->Fill (discrCSV, MyWeight);
+              h_secondvtx_N->Fill (discrCSV);
 	      w_secondvtx_N->Fill (discrCSV, MyWeight);
 
 	      //cout<<discrCSV<<endl;
