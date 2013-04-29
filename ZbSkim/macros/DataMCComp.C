@@ -29,7 +29,7 @@ TH1F* h_mc1b = 0;
 TH1F* h_mc1c = 0;
 
 double func(double* x, double* p) {
-  int i = h_mc1->GetXaxis()->FindBin(x[0]);
+  int i = h_data->GetXaxis()->FindBin(x[0]);
   float c_mc1 = h_mc1->GetBinContent(i);
   float c_mc1b = h_mc1b->GetBinContent(i);
   float c_mc1c = h_mc1c->GetBinContent(i);
@@ -225,12 +225,14 @@ if (ilepton<1 || ilepton>2) {
 	  h_data->Add(h_mc2, -1.);
 	}
 
-	for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	  if (h_mc1b) h_mc1b->SetBinError(i, 0.);
-	  if (h_mc1c) h_mc1c->SetBinError(i, 0.);
-	}
 	if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
 	if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
+	for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+	  float e = h_mc1->GetBinError(i)**2;
+	  if (h_mc1b) e = e - h_mc1b->GetBinError(i)**2;
+	  if (h_mc1c) e = e - h_mc1c->GetBinError(i)**2;
+	  h_data->SetBinError(i, TMath::Sqrt(e));
+	}
 
 	TF1 *f1 = new TF1("f1", func, 0.00, 1.00, 3);
 	if (doFit) {
@@ -245,6 +247,8 @@ if (ilepton<1 || ilepton>2) {
 	  }
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
 	    float e = h_data_fit->GetBinError(i)**2 + h_mc1->GetBinError(i)**2;
+	    if (h_mc1b) e = e + h_mc1b->GetBinError(i)**2;
+	    if (h_mc1c) e = e + h_mc1c->GetBinError(i)**2;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
 	  f1->SetParameters(1.0, 1.0, 1.0);
