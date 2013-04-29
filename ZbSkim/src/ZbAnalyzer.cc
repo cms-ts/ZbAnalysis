@@ -13,7 +13,7 @@
 // 
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.15 2013/04/28 06:53:06 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.16 2013/04/29 06:07:11 dellaric Exp $
 // 
 // 
 
@@ -191,6 +191,7 @@ private:
   TH1F *    w_mm_inv;
   TH1F *    w_ee_inv;
   TH1F *    w_secondvtx_N;
+  TH1F *    w_secondvtx_N_c;
   TH1F *    w_bquarks;
   TH1F *    w_tracks;
   TH1F *    flavours_;
@@ -318,6 +319,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig){
   w_mm_inv = 	       fs->make < TH1F > ("w_mm_inv", "w_mm_inv", 60, 71, 112);
   w_ee_inv = 	       fs->make < TH1F > ("w_ee_inv", "w_ee_inv", 60, 71, 112);
   w_secondvtx_N =      fs->make < TH1F > ("w_secondvtx_N", "w_secondvtx_N", 50, 0, 1);
+  w_secondvtx_N_c =      fs->make < TH1F > ("w_secondvtx_N_c", "w_secondvtx_N_c", 50, 0, 1);
   w_bquarks = 	       fs->make < TH1F > ("bquarks", "bquarks", 50, 0, 1);
   w_tracks = 	       fs->make < TH1F > ("w_tracks", "w_tracks", 50, 0, 50); 
   flavours_ = 	       fs->make < TH1F > ("flavours", "jet flavours", 5, 0, 5);
@@ -340,6 +342,8 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig){
   SVTX_mass_jet_c =    fs->make < TH1F > ("SVTX_mass_jet_c", "SVTX_mass_jet_c", 70, 0, 7);
   SVTX_mass_trk_c =    fs->make < TH1F > ("SVTX_mass_trk_c", "SVTX_mass_trk_c", 160, 0, 80);
   SVTX_mass_c =        fs->make < TH1F > ("SVTX_mass_c", "SVTX_mass_c", 70, 0, 7);
+
+ 
 
   h_scalFactor_first_ele   =    fs->make < TH1F > ("scaleFactor_first_ele",   "scaleFactor_first_ele", 90, 0.6, 1.5);
   h_scalFactor_first_muon  =    fs->make < TH1F > ("scaleFactor_first_muon",  "scaleFactor_first_muon", 90, 0.6, 1.5);
@@ -573,9 +577,12 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
       if (mm_event){
 	  scalFac_first_mu  = MuSF.Val (vect_muon_pt[0], vect_muon_eta[0]);
 	  scalFac_second_mu = MuSF.Val (vect_muon_pt[1], vect_muon_eta[1]);
+	  //cout<<vect_muon_pt[0]<<vect_muon_eta[0]<< " mu  SF =" << scalFac_first_mu <<endl;
+
       } 
 
 
+	
   }
 
   if (ee_event) MyWeight = MyWeight * scalFac_first_e * scalFac_second_e;
@@ -701,9 +708,10 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
               h_secondvtx_N->Fill (discrCSV);
 	      w_secondvtx_N->Fill (discrCSV, MyWeight);
 
+
 	      //cout<<discrCSV<<endl;
 
-	      if (discrCSV > 0.89*0){
+	      if (discrCSV > 0.89){
 		   ++Nb;
 		   //cout<<Nb<<endl;
 
@@ -785,9 +793,9 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	sumVertexMassTrk /= Nb;
 	sumVertexMass /= Nb;
 
-	SVTX_mass_jet -> Fill(sumVertexMassJet, MyWeight);
-	SVTX_mass_trk -> Fill(sumVertexMassTrk, MyWeight);
-	SVTX_mass -> Fill(sumVertexMass, MyWeight);
+	SVTX_mass_jet -> Fill(sumVertexMassJet, MyWeight*scalFac_b);
+	SVTX_mass_trk -> Fill(sumVertexMassTrk, MyWeight*scalFac_b);
+	SVTX_mass -> Fill(sumVertexMass, MyWeight*scalFac_b);
 	
 //	cout<<"VTX mass JET = "<< sumVertexMassJet << endl;
 //	cout<<"VTX mass TRK = "<< sumVertexMassTrk << endl;
@@ -802,24 +810,26 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
         recoVTX_w->Fill (NVtx, MyWeight);
       
 	if (Nb != 0 && isb){
-		w_bquarks->Fill (discrCSV, MyWeight);
-		b_first_jet_pt->Fill (jet_pt, MyWeight);
-		b_first_jet_eta->Fill (jet_eta, MyWeight);
-		SVTX_mass_jet_b->Fill(sumVertexMassJet, MyWeight);
-		SVTX_mass_trk_b->Fill(sumVertexMassTrk, MyWeight);
-		SVTX_mass_b->Fill(sumVertexMass, MyWeight);
+		w_bquarks->Fill (discrCSV, MyWeight*scalFac_b);
+		b_first_jet_pt->Fill (jet_pt, MyWeight*scalFac_b);
+		b_first_jet_eta->Fill (jet_eta, MyWeight*scalFac_b);
+		SVTX_mass_jet_b->Fill(sumVertexMassJet, MyWeight*scalFac_b);
+		SVTX_mass_trk_b->Fill(sumVertexMassTrk, MyWeight*scalFac_b);
+		SVTX_mass_b->Fill(sumVertexMass, MyWeight*scalFac_b);
   	}
 
 	if (Nb != 0 && isc){
-		SVTX_mass_jet_c->Fill(sumVertexMassJet, MyWeight);
-		SVTX_mass_trk_c->Fill(sumVertexMassTrk, MyWeight);
-		SVTX_mass_c->Fill(sumVertexMass, MyWeight);
+		SVTX_mass_jet_c->Fill(sumVertexMassJet, MyWeight*scalFac_b);
+		SVTX_mass_trk_c->Fill(sumVertexMassTrk, MyWeight*scalFac_b);
+		SVTX_mass_c->Fill(sumVertexMass, MyWeight*scalFac_b);
+	        w_secondvtx_N_c ->Fill (discrCSV, MyWeight*scalFac_b);
+
 	}
       }
 	      	  
-      if(isMC){
-//	      scalFac_b = BtSF.Val (vect_jet_pt[0], vect_jet_eta[0]);
-	      //cout<<scalFac_b<<endl;
+      if(isMC && Nb!= 0){
+	      scalFac_b = BtSF.Val(jet_pt, jet_eta);
+	      cout<<jet_pt<<jet_eta<<"   SFb ="<<scalFac_b<<endl;
       }
 
       if (Nb != 0) {
