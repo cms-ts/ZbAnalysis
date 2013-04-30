@@ -13,7 +13,7 @@
 // 
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.16 2013/04/29 06:07:11 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.17 2013/04/29 15:22:28 vieri Exp $
 // 
 // 
 
@@ -787,6 +787,11 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	      }
 	  }
       }
+      
+      if(isMC && Nb!= 0){
+	      scalFac_b = BtSF.Val(jet_pt, jet_eta);
+	      //cout<<jet_pt<<jet_eta<<"   SFb ="<<scalFac_b<<endl;
+      }
 
       if (Nj != 0 && Nb != 0) {
 	sumVertexMassJet /= Nb;
@@ -827,10 +832,7 @@ ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) 
 	}
       }
 	      	  
-      if(isMC && Nb!= 0){
-	      scalFac_b = BtSF.Val(jet_pt, jet_eta);
-	      cout<<jet_pt<<jet_eta<<"   SFb ="<<scalFac_b<<endl;
-      }
+
 
       if (Nb != 0) {
 	      
