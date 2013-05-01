@@ -23,17 +23,18 @@
 
 string path = "/gpfs/cms/users/candelis/work/Zb/data/" + version + "/";
 
-TH1F* h_data = 0;
-TH1F* h_mc1 = 0;
-TH1F* h_mc1b = 0;
-TH1F* h_mc1c = 0;
+TH1F* h_data_fit = 0;
+TH1F* h_mc_fit0 = 0;
+TH1F* h_mc_fit1 = 0;
+TH1F* h_mc_fit2 = 0;
 
 double func(double* x, double* p) {
-  int i = h_data->GetXaxis()->FindBin(x[0]);
-  float c_mc1 = h_mc1->GetBinContent(i);
-  float c_mc1b = h_mc1b->GetBinContent(i);
-  float c_mc1c = h_mc1c->GetBinContent(i);
-  return p[0]*c_mc1 + p[1]*c_mc1b + p[2]*c_mc1c;
+  double val = 0.0;
+  int i = h_data_fit->GetXaxis()->FindBin(x[0]);
+  if (h_mc_fit0) val = val + p[0]*h_mc_fit0->GetBinContent(i);
+  if (h_mc_fit1) val = val + p[1]*h_mc_fit1->GetBinContent(i);
+  if (h_mc_fit2) val = val + p[2]*h_mc_fit2->GetBinContent(i);
+  return val;
 }
 
 void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
@@ -91,13 +92,20 @@ if (ilepton<1 || ilepton>2) {
 
 	if (ilepton==1) data->cd("demo_ee");
 	if (ilepton==2) data->cd("demo_mm");
-	h_data = (TH1F*)gDirectory->Get(title.c_str());
+	TH1F* h_data = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc1->cd("demo_ee");
 	if (ilepton==2) mc1->cd("demo_mm");
-	h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
+	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
+	TH1F* h_mc1b = 0;
+	TH1F* h_mc1c = 0;
 	if (title == "w_secondvtx_N") {
-	  h_mc1b = (TH1F*)gDirectory->Get("bquarks");
+	  h_mc1b = (TH1F*)gDirectory->Get("w_secondvtx_N_b");
+	  h_mc1c = (TH1F*)gDirectory->Get("w_secondvtx_N_c");
+	}
+	if (title == "w_MET") {
+	  h_mc1b = (TH1F*)gDirectory->Get("w_MET_b");
+	  h_mc1c = (TH1F*)gDirectory->Get("w_MET_c");
 	}
 	if (title == "SVTX_mass_jet") {
 	  h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_jet_b");
@@ -114,13 +122,19 @@ if (ilepton<1 || ilepton>2) {
 	if (title == "w_first_jet_pt") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_pt");
 	}
+	if (title == "w_first_jet_pt_b") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_pt");
+	}
 	if (title == "w_first_jet_eta") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
 	}
-	if (title == "Z_pt_ee") {
+	if (title == "w_first_jet_eta_b") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
+	}
+	if (title == "Z_pt_ee_b") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_ee");
 	}
-	if (title == "Z_pt_mm") {
+	if (title == "Z_pt_mm_b") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_mm");
 	}
 	if (title == "w_mm_inv") {
@@ -129,8 +143,6 @@ if (ilepton<1 || ilepton>2) {
 	if (title == "w_ee_inv") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_ee");
 	}
-
-	if (doFit && (h_mc1b==0 || h_mc1c==0)) return;
 
 	if (ilepton==1) mc2->cd("demo_ee");
 	if (ilepton==2) mc2->cd("demo_mm");
@@ -156,6 +168,9 @@ if (ilepton<1 || ilepton>2) {
 	if (ilepton==2) mc7->cd("demo_mm");
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 
+	if (doFit==1 && (h_mc1==0 || h_mc2==0)) return;
+	if (doFit==2 && (h_mc1==0 || h_mc1b==0 || h_mc1c==0)) return;
+
 	h_data -> Sumw2();
 
 	h_mc1 -> Sumw2();
@@ -172,7 +187,7 @@ if (ilepton<1 || ilepton>2) {
 	if (h_mc1c) {
 	  h_mc1c -> Sumw2();
 	  h_mc1c->SetLineColor(kBlack);
-	  h_mc1c->SetFillColor(kYellow-4);
+	  h_mc1c->SetFillColor(kOrange);
 	  h_mc1c->SetFillStyle(3245);
 	}
 
@@ -231,12 +246,35 @@ if (ilepton<1 || ilepton>2) {
 	  float e = h_mc1->GetBinError(i)**2;
 	  if (h_mc1b) e = e - h_mc1b->GetBinError(i)**2;
 	  if (h_mc1c) e = e - h_mc1c->GetBinError(i)**2;
-	  h_data->SetBinError(i, TMath::Sqrt(e));
+	  h_mc1->SetBinError(i, TMath::Sqrt(e));
 	}
 
-	TF1 *f1 = new TF1("f1", func, 0.00, 1.00, 3);
-	if (doFit) {
-	  TH1F *h_data_fit = h_data->Clone("h_data_fit");
+	TF1 *f1 = new TF1("f1", func, 0.00, 100.00, 3);
+	if (doFit==1) {
+	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
+	  if (!doBkg) {
+	    h_data_fit->Add(h_mc7, -1.);
+	    h_data_fit->Add(h_mc6, -1.);
+//	    h_data_fit->Add(h_mc5, -1.);
+	    h_data_fit->Add(h_mc4, -1.);
+	    h_data_fit->Add(h_mc3, -1.);
+	  }
+	  h_mc_fit0 = h_mc2;
+	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+	    float e = h_data_fit->GetBinError(i)**2;
+	    e = e + h_mc_fit0->GetBinError(i)**2;
+	    if (title=="w_MET" && h_data_fit->GetXaxis()->GetBinCenter(i) < 125.) e = 1.e10;
+	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
+	  }
+	  f1->SetParameters(1.0, 0.0, 0.0);
+	  f1->SetParNames("f_ttbar", "dummy", "dummy");
+	  f1->FixParameter(1, 0.0);
+	  f1->FixParameter(2, 0.0);
+	  h_data_fit->Fit("f1");
+	  h_mc_fit0->Scale(f1->GetParameter(0));
+	}
+	if (doFit==2) {
+	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
 	    h_data_fit->Add(h_mc7, -1.);
 	    h_data_fit->Add(h_mc6, -1.);
@@ -245,18 +283,22 @@ if (ilepton<1 || ilepton>2) {
 	    h_data_fit->Add(h_mc3, -1.);
 	    h_data_fit->Add(h_mc2, -1.);
 	  }
+	  h_mc_fit0 = h_mc1;
+	  h_mc_fit1 = h_mc1b;
+	  h_mc_fit2 = h_mc1c;
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-	    float e = h_data_fit->GetBinError(i)**2 + h_mc1->GetBinError(i)**2;
-	    if (h_mc1b) e = e + h_mc1b->GetBinError(i)**2;
-	    if (h_mc1c) e = e + h_mc1c->GetBinError(i)**2;
+	    float e = h_data_fit->GetBinError(i)**2;
+	    e = e + h_mc_fit0->GetBinError(i)**2;
+	    e = e + h_mc_fit1->GetBinError(i)**2;
+	    e = e + h_mc_fit2->GetBinError(i)**2;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
 	  f1->SetParameters(1.0, 1.0, 1.0);
 	  f1->SetParNames("f_uds", "f_b", "f_c");
 	  h_data_fit->Fit("f1");
-	  h_mc1->Scale(f1->GetParameter(0));
-	  h_mc1b->Scale(f1->GetParameter(1));
-	  h_mc1c->Scale(f1->GetParameter(2));
+	  h_mc_fit0->Scale(f1->GetParameter(0));
+	  h_mc_fit1->Scale(f1->GetParameter(1));
+	  h_mc_fit2->Scale(f1->GetParameter(2));
 	}
 
 	TH1F *ht = h_mc1->Clone("ht");
@@ -308,7 +350,7 @@ if (ilepton<1 || ilepton>2) {
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
 	h_data->SetMarkerSize (1.0);
-	//h_data->SetMaximum(1.2);
+	h_data->SetStats(0);
 
 	leg = new TLegend(0.62, 0.58, 0.88, 0.88);
 	leg->SetBorderSize(0);
@@ -370,6 +412,8 @@ if (ilepton<1 || ilepton>2) {
 	  h_ratio->GetXaxis ()->SetTitle("MET [GeV/c]");
 	} else if (title=="w_MET") {
 	  h_ratio->GetXaxis ()->SetTitle("MET Significance [GeV/c]");
+	} else if (title=="w_Ht") {
+	  h_ratio->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
 	} else if (title=="Z_pt_ee") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="Z_pt_mm") {
@@ -426,12 +470,18 @@ if (ilepton<1 || ilepton>2) {
 	  fitLabel->SetLineWidth(2);
 	  fitLabel->SetNDC();
 	  char buff[100];
-	  sprintf(buff, "f_{uds} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
-	  fitLabel->DrawLatex(0.68, 0.58, buff);
-	  sprintf(buff, "f_{b}   = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
-	  fitLabel->DrawLatex(0.68, 0.53, buff);
-	  sprintf(buff, "f_{c}   = %5.3f #pm %5.3f", f1->GetParameter(2), f1->GetParError(2));
-	  fitLabel->DrawLatex(0.68, 0.48, buff);
+	  if (doFit==1) {
+	    sprintf(buff, "f_{ttbar} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	    fitLabel->DrawLatex(0.68, 0.58, buff);
+	  }
+	  if (doFit==2) {
+	    sprintf(buff, "f_{uds} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	    fitLabel->DrawLatex(0.68, 0.58, buff);
+	    sprintf(buff, "f_{b}   = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
+	    fitLabel->DrawLatex(0.68, 0.53, buff);
+	    sprintf(buff, "f_{c}   = %5.3f #pm %5.3f", f1->GetParameter(2), f1->GetParError(2));
+	    fitLabel->DrawLatex(0.68, 0.48, buff);
+	  }
 	  fitLabel->Draw("same");
 	}
 
