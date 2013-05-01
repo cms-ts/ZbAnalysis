@@ -27,14 +27,14 @@ cd $WORKDIR
 if [ -d $WORKDIR/$VERSION/$JOBDIR ]; then
   echo 'Preparing '$WORKDIR/$VERSION/$JOBDIR.root
   rm -f $WORKDIR/$VERSION/$JOBDIR.root
-  hadd -v 0 $WORKDIR/$VERSION/$JOBDIR.root $WORKDIR/$VERSION/$JOBDIR/LSFJOB_*/rootTuple_*.root
+  hadd -T -v 0 $WORKDIR/$VERSION/$JOBDIR.root $WORKDIR/$VERSION/$JOBDIR/LSFJOB_*/rootTuple_*.root
 elif [ "$JOBDIR" == "data-all" ]; then
   echo 'Preparing '$WORKDIR/$VERSION/DoubleElectron_2012_merge.root
   rm -f $WORKDIR/$VERSION/DoubleElectron_2012_merge.root
-  hadd -v 0 $WORKDIR/$VERSION/DoubleElectron_2012_merge.root $WORKDIR/$VERSION/DoubleElectron_2012*.root
+  hadd -T -v 0 $WORKDIR/$VERSION/DoubleElectron_2012_merge.root $WORKDIR/$VERSION/DoubleElectron_2012*.root
   echo 'Preparing '$WORKDIR/$VERSION/DoubleMu_2012_merge.root
   rm -f $WORKDIR/$VERSION/DoubleMu_2012_merge.root
-  hadd -v 0 $WORKDIR/$VERSION/DoubleMu_2012_merge.root $WORKDIR/$VERSION/DoubleMu_2012*.root
+  hadd -T -v 0 $WORKDIR/$VERSION/DoubleMu_2012_merge.root $WORKDIR/$VERSION/DoubleMu_2012*.root
 else
   echo 'ERROR: jobdir "'$JOBDIR'" does not exist !'
 fi
