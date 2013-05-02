@@ -407,9 +407,9 @@ if (ilepton<1 || ilepton>2) {
 	  h_ratio->GetXaxis ()->SetTitle("Number of offline vertices");
 	} else if (title=="w_muon_pt") {
 	  h_ratio->GetXaxis ()->SetTitle("muon p_{T} [GeV/c]");
-	} else if (title=="w_MET_sign") {
-	  h_ratio->GetXaxis ()->SetTitle("MET [GeV/c]");
 	} else if (title=="w_MET") {
+	  h_ratio->GetXaxis ()->SetTitle("MET [GeV/c]");
+	} else if (title=="w_MET_sign") {
 	  h_ratio->GetXaxis ()->SetTitle("MET Significance [GeV/c]");
 	} else if (title=="w_Ht") {
 	  h_ratio->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
