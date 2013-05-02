@@ -7,13 +7,14 @@
 
  Description: [one line class summary]
 
- Implementation: [Notes on implementation]
+ Implementation:
+     [Notes on implementation]
 
 */
 // 
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.18 2013/04/30 08:39:44 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.19 2013/05/01 21:25:53 dellaric Exp $
 // 
 // 
 
@@ -39,7 +40,6 @@
 #include <string>
 
 // user include files
-#include "table.h"
 #include "DataFormats/JetReco/interface/Jet.h"
 #include "DataFormats/BTauReco/interface/JetTag.h"
 #include "DataFormats/JetReco/interface/PFJetCollection.h"
@@ -78,6 +78,7 @@
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
 
+#include "table.h"
 table  MuSF  ("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/muon_eff.txt");
 table  ElSF  ("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/ele_eff.txt");
 table  BtSF  ("/gpfs/cms/users/candelis/CMSSW_5_3_9/src/ZbAnalysis/ZbSkim/test/btag_eff.txt");
@@ -277,7 +278,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   h_PUweights = fs->make < TH1F > ("h_pu_weights", "h_pu_weights", 10, 0, 10);
   recoVTX_ = fs->make < TH1D > ("recoVTX", "No. reconstructed vertices", 40, 0., 40.);
   recoVTX_w = fs->make < TH1D > ("recoVTXw", "No. reconstructed vertices weighted", 40, 0., 40.);
-  h_tracks = fs->make < TH1F > ("h_tracks", "h_tracks", 100, 0, 200);
+  h_tracks = fs->make < TH1F > ("h_tracks", "h_tracks", 100, 0, 500);
 
   // b fraction before btagging histograms
 
@@ -315,7 +316,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   w_secondvtx_N =      fs->make < TH1F > ("w_secondvtx_N", "w_secondvtx_N", 50, 0, 1);
   w_secondvtx_N_b =    fs->make < TH1F > ("w_secondvtx_N_b", "w_secondvtx_N_b", 50, 0, 1);
   w_secondvtx_N_c =    fs->make < TH1F > ("w_secondvtx_N_c", "w_secondvtx_N_c", 50, 0, 1);
-  w_tracks = 	       fs->make < TH1F > ("w_tracks", "w_tracks", 50, 0, 50); 
+  w_tracks = 	       fs->make < TH1F > ("w_tracks", "w_tracks", 100, 0, 500); 
   flavours_ = 	       fs->make < TH1F > ("flavours", "jet flavours", 5, 0, 5);
   w_MET = 	       fs->make < TH1F > ("w_MET", "w_MET", 50, 0, 250);
   w_MET_sign = 	       fs->make < TH1F > ("w_MET_sign", "w_MET_sign", 50, 0, 50);
