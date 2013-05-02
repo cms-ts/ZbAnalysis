@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.24 2013/05/02 14:36:56 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.25 2013/05/02 14:39:50 dellaric Exp $
 //
 //
 
@@ -122,7 +122,6 @@ private:
 
    ***************************************************/
 
-
   int       Nj, Nb;
   double    jet_pt;
   double    jet_eta;
@@ -159,66 +158,66 @@ private:
   double    Nf, Nbk;
   double    Afb;
 
-  TTree *   treeZb_;
+  TTree*    treeZb_;
 
-  TH1F *    h_jetmultiplicity;
-  TH1F *    h_jet_pt;
-  TH1F *    h_ele_pt;
-  TH1F *    h_muon_pt;
-  TH1F *    h_mm_inv;
-  TH1F *    h_ee_inv;
-  TH1F *    h_secondvtx_N;
-  TH1F *    h_PUweights;
-  TH1F *    h_tracks;
-  TH1D *    recoVTX_;
-  TH1D *    recoVTX_w;
+  TH1F*     h_jetmultiplicity;
+  TH1F*     h_jet_pt;
+  TH1F*     h_ele_pt;
+  TH1F*     h_muon_pt;
+  TH1F*     h_mm_inv;
+  TH1F*     h_ee_inv;
+  TH1F*     h_secondvtx_N;
+  TH1F*     h_PUweights;
+  TH1F*     h_tracks;
+  TH1F*     recoVTX_;
+  TH1F*     recoVTX_w;
 
-  TH1F *    w_first_jet_pt;      // leading jet of any type
-  TH1F *    w_first_jet_eta;
-  TH1F *    w_first_jet_pt_b;    // leading jet with at least 1 b in the event
-  TH1F *    w_first_jet_eta_b;
-  TH1F *    w_first_bjet_pt;     // leading bjet
-  TH1F *    w_first_ele_pt;
-  TH1F *    w_second_ele_pt;
-  TH1F *    w_first_muon_pt;
-  TH1F *    w_second_muon_pt;
-  TH1F *    w_first_ele_eta;
-  TH1F *    w_second_ele_eta;
-  TH1F *    w_first_muon_eta;
-  TH1F *    w_second_muon_eta;
-  TH1F *    h_delta_ee;
-  TH1F *    h_delta_mm;
-  TH1F *    h_pt_Z_ee_b;
-  TH1F *    h_pt_Z_mm_b;
-  TH1F *    h_pt_Z_ee;
-  TH1F *    h_pt_Z_mm;
-  TH1F *    w_jetmultiplicity;
-  TH1F *    sf_first_ele_pt;
-  TH1F *    w_jetmultiplicity_b;
-  TH1F *    w_mm_inv;
-  TH1F *    w_ee_inv;
-  TH1F *    w_mm_inv_b;
-  TH1F *    w_ee_inv_b;
-  TH1F *    w_secondvtx_N;
-  TH1F *    b_secondvtx_N;
-  TH1F *    w_tracks;
-  TH1F *    flavours_;
-  TH1F *    w_MET;
-  TH1F *    w_MET_sign;
-  TH1F *    b_MET;
+  TH1F*     w_first_jet_pt;      // leading jet of any type
+  TH1F*     w_first_jet_eta;
+  TH1F*     w_first_jet_pt_b;    // leading jet with at least 1 b in the event
+  TH1F*     w_first_jet_eta_b;
+  TH1F*     w_first_bjet_pt;     // leading bjet
+  TH1F*     w_first_ele_pt;
+  TH1F*     w_second_ele_pt;
+  TH1F*     w_first_muon_pt;
+  TH1F*     w_second_muon_pt;
+  TH1F*     w_first_ele_eta;
+  TH1F*     w_second_ele_eta;
+  TH1F*     w_first_muon_eta;
+  TH1F*     w_second_muon_eta;
+  TH1F*     h_delta_ee;
+  TH1F*     h_delta_mm;
+  TH1F*     h_pt_Z_ee_b;
+  TH1F*     h_pt_Z_mm_b;
+  TH1F*     h_pt_Z_ee;
+  TH1F*     h_pt_Z_mm;
+  TH1F*     w_jetmultiplicity;
+  TH1F*     sf_first_ele_pt;
+  TH1F*     w_jetmultiplicity_b;
+  TH1F*     w_mm_inv;
+  TH1F*     w_ee_inv;
+  TH1F*     w_mm_inv_b;
+  TH1F*     w_ee_inv_b;
+  TH1F*     w_secondvtx_N;
+  TH1F*     b_secondvtx_N;
+  TH1F*     w_tracks;
+  TH1F*     flavours_;
+  TH1F*     w_MET;
+  TH1F*     w_MET_sign;
+  TH1F*     b_MET;
 
-  TH1F *    w_delta_phi_mm;
-  TH1F *    numberOfZ;
-  TH1F *    w_Ht;
-  TH1F *    w_Ht_b;
+  TH1F*     w_delta_phi_mm;
+  TH1F*     numberOfZ;
+  TH1F*     w_Ht;
+  TH1F*     w_Ht_b;
 
-  TH1F *    w_Afb;
-  TH1F *    h_scalFactor_first_ele;
-  TH1F *    h_scalFactor_first_muon;
-  TH1F *    h_scalFactor_second_ele;
-  TH1F *    h_scalFactor_second_muon;
+  TH1F*     w_Afb;
+  TH1F*     h_scalFactor_first_ele;
+  TH1F*     h_scalFactor_first_muon;
+  TH1F*     h_scalFactor_second_ele;
+  TH1F*     h_scalFactor_second_muon;
 
-  TH1F *    h_JEC_uncert;
+  TH1F*     h_JEC_uncert;
   
   TH1F*     SVTX_mass_jet;
   TH1F*	    SVTX_mass_trk;
@@ -232,20 +231,20 @@ private:
   TH1F*     b_invMass_ee;
   TH1F*     b_invMass_mm;
 
-  TH1F* b_SVTX_mass_jet;
-  TH1F* b_SVTX_mass_trk;
-  TH1F* b_SVTX_mass;
+  TH1F*     b_SVTX_mass_jet;
+  TH1F*     b_SVTX_mass_trk;
+  TH1F*     b_SVTX_mass;
   
-  TH1F* c_SVTX_mass_jet;
-  TH1F* c_SVTX_mass_trk;
-  TH1F* c_SVTX_mass;
-  TH1F* c_MET;
-  TH1F* c_secondvtx_N;
+  TH1F*     c_SVTX_mass_jet;
+  TH1F*     c_SVTX_mass_trk;
+  TH1F*     c_SVTX_mass;
+  TH1F*     c_MET;
+  TH1F*     c_secondvtx_N;
   
-  TH1F* c_pt_Z_ee;
-  TH1F* c_pt_Z_mm;
-  TH1F* c_invMass_ee;
-  TH1F* c_invMass_mm;
+  TH1F*     c_pt_Z_ee;
+  TH1F*     c_pt_Z_mm;
+  TH1F*     c_invMass_ee;
+  TH1F*     c_invMass_mm;
 
 };
 
@@ -254,6 +253,7 @@ using namespace  pat;
 //
 // constants, enums and typedefs
 //
+
 enum Flavour {
   ALL_JETS = 0,
   UDSG_JETS,
@@ -262,6 +262,7 @@ enum Flavour {
   NONID_JETS,
   N_JET_TYPES
 };
+
 struct Plots {
   TH1 *    nVertices;
   TH1 *  deltaR, *  mass, *  dist, *  distErr, *    distSig;
@@ -294,8 +295,8 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   h_ee_inv =          fs->make < TH1F > ("h_ee_inv", "h_ee_inv", 60, 60, 120);
   h_secondvtx_N =     fs->make < TH1F > ("h_secondvtx_N", "h_secondvtx_N", 50, 0, 1);
   h_PUweights =       fs->make < TH1F > ("h_pu_weights", "h_pu_weights", 10, 0, 10);
-  recoVTX_ =          fs->make < TH1D > ("recoVTX", "No. reconstructed vertices", 40, 0., 40.);
-  recoVTX_w =         fs->make < TH1D > ("recoVTXw", "No. reconstructed vertices weighted", 40, 0., 40.);
+  recoVTX_ =          fs->make < TH1F > ("recoVTX", "No. reconstructed vertices", 40, 0., 40.);
+  recoVTX_w =         fs->make < TH1F > ("recoVTXw", "No. reconstructed vertices weighted", 40, 0., 40.);
   h_tracks =          fs->make < TH1F > ("h_tracks", "h_tracks", 100, 0, 2500);
 
   // b fraction before btagging histograms
@@ -864,7 +865,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     w_first_bjet_pt->Fill (vect_bjets_pt[0], MyWeight*scalFac_b);
     if(mm_event) w_mm_inv_b->Fill(dimuon_inv, MyWeight*scalFac_b);
     if(ee_event) w_ee_inv_b->Fill(diele_inv, MyWeight*scalFac_b);
-
 
     if (fabs (vect_jet_eta[0]) > 0) Nf++;
     if (fabs (vect_jet_eta[0]) < 0) Nbk++;
