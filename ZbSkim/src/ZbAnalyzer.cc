@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.20 2013/05/02 05:52:36 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.21 2013/05/02 07:28:32 dellaric Exp $
 //
 //
 
@@ -644,14 +644,14 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         h_secondvtx_N->Fill (discrCSV);
         w_secondvtx_N->Fill (discrCSV, MyWeight);
 
-        vect_bjets_pt.push_back(jet_pt);
-
         //cout<<discrCSV<<endl;
 
         if (discrCSV > 0.89){
 
 	  ++Nb;
 	  //cout<<Nb<<endl;
+
+          vect_bjets_pt.push_back(jet_pt);
 
 	  reco::SecondaryVertexTagInfo const * svTagInfos = jet->tagInfoSecondaryVertex("secondaryVertex");
 
@@ -827,11 +827,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     h_PUweights->Fill (MyWeight);
   }
 
-  if ((ee_event || mm_event) && Nj != 0) {
+  if (ee_event && Nj != 0) {
     h_scalFactor_first_ele->Fill (scalFac_first_e);
     h_scalFactor_second_ele->Fill (scalFac_second_e);
   }
-  if ((ee_event || mm_event) && Nj != 0) {
+  if (mm_event && Nj != 0) {
     h_scalFactor_first_muon->Fill (scalFac_first_mu);
     h_scalFactor_second_muon->Fill (scalFac_second_mu);
   }
