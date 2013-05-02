@@ -1,8 +1,8 @@
 // -*- C++ -*-
-// 
+//
 // Package: ZbAnalyzer
 // Class: ZbAnalyzer
-// 
+//
 /**\class ZbAnalyzer ZbAnalyzer.cc ZbAnalysis/ZbAnalyzer/src/ZbAnalyzer.cc
 
  Description: [one line class summary]
@@ -11,12 +11,12 @@
      [Notes on implementation]
 
 */
-// 
+//
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.19 2013/05/01 21:25:53 dellaric Exp $
-// 
-// 
+// $Id: ZbAnalyzer.cc,v 1.20 2013/05/02 05:52:36 dellaric Exp $
+//
+//
 
 // system include files
 #include <memory>
@@ -85,9 +85,9 @@ table  BtSF  ("/gpfs/cms/users/candelis/CMSSW_5_3_9/src/ZbAnalysis/ZbSkim/test/b
 
 class TTree;
 
-// 
+//
 // class declaration
-// 
+//
 
 class ZbAnalyzer:public  edm::EDAnalyzer {
 public:
@@ -167,7 +167,7 @@ private:
   TH1F *    w_first_jet_eta;
   TH1F *    w_first_jet_pt_b;    // leading jet with at least 1 b in the event
   TH1F *    w_first_jet_eta_b;
-  TH1F *    w_first_bjet_pt;     // leading bjet  
+  TH1F *    w_first_bjet_pt;     // leading bjet
   TH1F *    w_first_ele_pt;
   TH1F *    w_second_ele_pt;
   TH1F *    w_first_muon_pt;
@@ -194,8 +194,8 @@ private:
   TH1F *    flavours_;
   TH1F *    w_MET;
   TH1F *    w_MET_sign;
-  TH1F *    w_MET_b; 
-  TH1F *    w_MET_c; 
+  TH1F *    w_MET_b;
+  TH1F *    w_MET_c;
   TH1F *    w_delta_phi_mm;
   TH1F *    numberOfZ;
   TH1F *    w_Ht;
@@ -211,14 +211,14 @@ private:
 
   TH1F *    h_JEC_uncert;
 
-  TH1F* b_jetmultiplicity;   
-  TH1F* b_first_jet_pt;         
-  TH1F* b_first_jet_eta;     
-  TH1F* b_pt_Z_ee;              
-  TH1F* b_pt_Z_mm;              
+  TH1F* b_jetmultiplicity;
+  TH1F* b_first_jet_pt;
+  TH1F* b_first_jet_eta;
+  TH1F* b_pt_Z_ee;
+  TH1F* b_pt_Z_mm;
   TH1F* b_invMass_ee;
   TH1F* b_invMass_mm;
- 
+
   TH1F* SVTX_mass_jet;
   TH1F* SVTX_mass_trk;
   TH1F* SVTX_mass;
@@ -233,9 +233,9 @@ private:
 
 using namespace  pat;
 
-// 
+//
 // constants, enums and typedefs
-// 
+//
 enum Flavour {
   ALL_JETS = 0,
   UDSG_JETS,
@@ -251,14 +251,14 @@ struct Plots {
 } plots_[N_JET_TYPES];
 
 
-// 
+//
 // static data member definitions
-// 
+//
 
 
-// 
+//
 // constructors and destructor
-// 
+//
 ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
 
   pileup_ = iConfig.getUntrackedParameter < std::string > ("pileup", "S7");
@@ -278,7 +278,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   h_PUweights = fs->make < TH1F > ("h_pu_weights", "h_pu_weights", 10, 0, 10);
   recoVTX_ = fs->make < TH1D > ("recoVTX", "No. reconstructed vertices", 40, 0., 40.);
   recoVTX_w = fs->make < TH1D > ("recoVTXw", "No. reconstructed vertices weighted", 40, 0., 40.);
-  h_tracks = fs->make < TH1F > ("h_tracks", "h_tracks", 100, 0, 500);
+  h_tracks = fs->make < TH1F > ("h_tracks", "h_tracks", 100, 0, 1000);
 
   // b fraction before btagging histograms
 
@@ -316,7 +316,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   w_secondvtx_N =      fs->make < TH1F > ("w_secondvtx_N", "w_secondvtx_N", 50, 0, 1);
   w_secondvtx_N_b =    fs->make < TH1F > ("w_secondvtx_N_b", "w_secondvtx_N_b", 50, 0, 1);
   w_secondvtx_N_c =    fs->make < TH1F > ("w_secondvtx_N_c", "w_secondvtx_N_c", 50, 0, 1);
-  w_tracks = 	       fs->make < TH1F > ("w_tracks", "w_tracks", 100, 0, 500); 
+  w_tracks = 	       fs->make < TH1F > ("w_tracks", "w_tracks", 100, 0, 1000);
   flavours_ = 	       fs->make < TH1F > ("flavours", "jet flavours", 5, 0, 5);
   w_MET = 	       fs->make < TH1F > ("w_MET", "w_MET", 50, 0, 250);
   w_MET_sign = 	       fs->make < TH1F > ("w_MET_sign", "w_MET_sign", 50, 0, 50);
@@ -397,9 +397,9 @@ ZbAnalyzer::~ZbAnalyzer () {
 
 }
 
-// 
+//
 // member functions
-// 
+//
 
 // ------------ method called for each event ------------
 void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) {
@@ -478,7 +478,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   vector < double >vect_ele_pt;
   vector < double >vect_ele_eta;
 
-  for (pat::ElectronCollection::const_iterator ele = Trigelectrons->begin (); ele != Trigelectrons->end (); ++ele){   
+  for (pat::ElectronCollection::const_iterator ele = Trigelectrons->begin (); ele != Trigelectrons->end (); ++ele){
     ele_pt = ele->pt ();
     ele_eta = ele->eta ();
     vect_ele_pt.push_back (ele_pt);
@@ -516,7 +516,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   Handle < std::vector < PileupSummaryInfo > >PupInfo;
 
   if (iEvent.getByLabel (edm::InputTag ("addPileupInfo"), PupInfo))  {
-      
+
     isMC = true;
     jecUnc = jecUncMC;
 
@@ -546,7 +546,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       scalFac_second_mu = MuSF.Val (vect_muon_pt[1], vect_muon_eta[1]);
       //cout<<vect_muon_pt[0]<<vect_muon_eta[0]<< " mu  SF =" << scalFac_first_mu <<endl;
 
-    } 
+    }
 
   }
 
@@ -582,7 +582,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       if (fabs (itv->z ()) > 50.0)	continue;
       if (fabs (itv->position ().rho ()) > 2.0)	continue;
       ++NVtx;
-  } 
+  }
 
   // +++++++++ JETS
 
@@ -606,34 +606,34 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       jet_pt  = jet->pt ();
       jet_eta = jet->eta();
       jet_phi = jet->phi();
-   
+
       // for events with a generated b
       b_pt    = jet->pt ();
       b_eta   = jet->eta();
 
       Ht += jet_pt;
 
-      // JEC Uncertainty 
+      // JEC Uncertainty
 
       jecUnc->setJetPt(jet_pt);
       jecUnc->setJetEta(jet_eta);
       double unc = jecUnc->getUncertainty(true);
       double cor = (1.0+unc*par);
-      h_JEC_uncert -> Fill(unc); 
+      h_JEC_uncert -> Fill(unc);
 //      cout<< "JEC syst =" << unc << endl;
 
       jet_pt  = jet->pt () * cor;
 
       if (jet_pt > 30) {
-	      
+
         ++Nj;
 
         vect_jet_pt.push_back (jet_pt);
         vect_jet_phi.push_back (jet_phi);
         vect_jet_eta.push_back (jet_eta);
-	      
+
         // b studies
-	  
+
         discrCSV = jet->bDiscriminator ("combinedSecondaryVertexBJetTags");
 
         vect_jet_discrCSV.push_back (discrCSV);
@@ -698,7 +698,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       }
 
     }
-  
+
     if (isMC && Nb != 0) {
       scalFac_b = BtSF.Val(jet_pt, jet_eta);
       //cout<<jet_pt<<jet_eta<<"   SFb ="<<scalFac_b<<endl;
@@ -712,14 +712,14 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       SVTX_mass_jet -> Fill(sumVertexMassJet, MyWeight*scalFac_b);
       SVTX_mass_trk -> Fill(sumVertexMassTrk, MyWeight*scalFac_b);
       SVTX_mass -> Fill(sumVertexMass, MyWeight*scalFac_b);
-	
+
 //      cout<<"VTX mass JET = "<< sumVertexMassJet << endl;
 //      cout<<"VTX mass TRK = "<< sumVertexMassTrk << endl;
 //      cout<<"VTX mass NEW = "<< sumVertexMass << endl;
     }
 
   }
- 
+
   // DIMUON Z
 
   if (mm_event && Nj != 0) {
@@ -729,11 +729,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     pt_Z = (*zmm)[0].pt();
 
     if (dimuon_inv != 0)  {
-  
+
       h_mm_inv->Fill (dimuon_inv);
       w_mm_inv->Fill (dimuon_inv, MyWeight);
       h_pt_Z_mm->Fill (pt_Z, MyWeight);
- 
+
       if (Nb != 0) {
         b_mm_invmass = (*zmm)[0].mass();
         b_mm_inv->Fill (b_mm_invmass, MyWeight*scalFac_b);
@@ -744,7 +744,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       }
     }
   }
- 
+
   // DIELECTRON Z
 
   if (ee_event && Nj != 0) {
@@ -757,7 +757,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       h_ee_inv->Fill (diele_inv);
       w_ee_inv->Fill (diele_inv, MyWeight);
       h_pt_Z_ee->Fill (pt_Z, MyWeight);
-  
+
       if (Nb != 0) {
         b_ee_invmass = (*zee)[0].mass();
         b_ee_inv->Fill (b_ee_invmass, MyWeight*scalFac_b);
