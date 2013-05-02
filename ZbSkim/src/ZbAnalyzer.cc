@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.23 2013/05/02 14:02:04 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.24 2013/05/02 14:36:56 dellaric Exp $
 //
 //
 
@@ -287,16 +287,16 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   edm::Service < TFileService > fs;
 
   h_jetmultiplicity = fs->make < TH1F > ("h_jetmultiplicity", "h_jetmultiplicity", 8, 0.5, 8.5);
-  h_jet_pt = fs->make < TH1F > ("h_jet_pt", "h_jet_pt", 20, 30, 530);
-  h_ele_pt = fs->make < TH1F > ("h_ele_pt", "h_ele_pt", 20, 30, 530);
-  h_muon_pt = fs->make < TH1F > ("h_muon_pt", "h_muon_pt", 100, 0, 250);
-  h_mm_inv = fs->make < TH1F > ("h_mm_inv", "h_mm_inv", 60, 60, 120);
-  h_ee_inv = fs->make < TH1F > ("h_ee_inv", "h_ee_inv", 60, 60, 120);
-  h_secondvtx_N = fs->make < TH1F > ("h_secondvtx_N", "h_secondvtx_N", 50, 0, 1);
-  h_PUweights = fs->make < TH1F > ("h_pu_weights", "h_pu_weights", 10, 0, 10);
-  recoVTX_ = fs->make < TH1D > ("recoVTX", "No. reconstructed vertices", 40, 0., 40.);
-  recoVTX_w = fs->make < TH1D > ("recoVTXw", "No. reconstructed vertices weighted", 40, 0., 40.);
-  h_tracks = fs->make < TH1F > ("h_tracks", "h_tracks", 100, 0, 2500);
+  h_jet_pt =          fs->make < TH1F > ("h_jet_pt", "h_jet_pt", 20, 30, 530);
+  h_ele_pt =          fs->make < TH1F > ("h_ele_pt", "h_ele_pt", 20, 30, 530);
+  h_muon_pt =         fs->make < TH1F > ("h_muon_pt", "h_muon_pt", 100, 0, 250);
+  h_mm_inv =          fs->make < TH1F > ("h_mm_inv", "h_mm_inv", 60, 60, 120);
+  h_ee_inv =          fs->make < TH1F > ("h_ee_inv", "h_ee_inv", 60, 60, 120);
+  h_secondvtx_N =     fs->make < TH1F > ("h_secondvtx_N", "h_secondvtx_N", 50, 0, 1);
+  h_PUweights =       fs->make < TH1F > ("h_pu_weights", "h_pu_weights", 10, 0, 10);
+  recoVTX_ =          fs->make < TH1D > ("recoVTX", "No. reconstructed vertices", 40, 0., 40.);
+  recoVTX_w =         fs->make < TH1D > ("recoVTXw", "No. reconstructed vertices weighted", 40, 0., 40.);
+  h_tracks =          fs->make < TH1F > ("h_tracks", "h_tracks", 100, 0, 2500);
 
   // b fraction before btagging histograms
 
@@ -305,65 +305,64 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_first_jet_eta =    fs->make < TH1F > ("b_first_jet_eta",   "b_first_jet_eta", 16, -2.5, 2.5);
   b_pt_Z_ee =          fs->make < TH1F > ("b_pt_Z_ee",         "b_pt_Z_ee", 70, 0., 700.);
   b_pt_Z_mm =          fs->make < TH1F > ("b_pt_Z_mm",         "b_pt_Z_mm", 70, 0., 700.);
-  b_invMass_ee =       fs->make < TH1F > ("b_invMass_ee", 	"b_invMass_ee", 80, 71, 111);
-  b_invMass_mm =       fs->make < TH1F > ("b_invMass_mm", 	"b_invMass_mm", 80, 71, 111);
+  b_invMass_ee =       fs->make < TH1F > ("b_invMass_ee",      "b_invMass_ee", 80, 71, 111);
+  b_invMass_mm =       fs->make < TH1F > ("b_invMass_mm",      "b_invMass_mm", 80, 71, 111);
 
   c_pt_Z_ee =          fs->make < TH1F > ("c_pt_Z_ee",         "c_pt_Z_ee", 70, 0., 700.);
   c_pt_Z_mm =          fs->make < TH1F > ("c_pt_Z_mm",         "c_pt_Z_mm", 70, 0., 700.);
   c_invMass_ee =       fs->make < TH1F > ("c_invMass_ee",      "c_invMass_ee", 80, 71, 111);
   c_invMass_mm =       fs->make < TH1F > ("c_invMass_mm",      "c_invMass_mm", 80, 71, 111);
 
-
-  w_ee_inv_b =       fs->make < TH1F > ("w_ee_inv_b", "w_ee_inv_b", 80, 71, 111);
-  w_mm_inv_b =       fs->make < TH1F > ("w_mm_inv_b", "w_mm_inv_b", 80, 71, 111);
+  w_ee_inv_b =         fs->make < TH1F > ("w_ee_inv_b", "w_ee_inv_b", 80, 71, 111);
+  w_mm_inv_b =         fs->make < TH1F > ("w_mm_inv_b", "w_mm_inv_b", 80, 71, 111);
 
   // weighted histograms
-  w_first_jet_pt =   fs->make < TH1F > ("w_first_jet_pt", "w_first_jet_pt;P_t [GeV]", 50, 30., 700.);
-  w_first_bjet_pt =  fs->make < TH1F > ("w_first_bjet_pt", "w_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
-  w_first_jet_eta =  fs->make < TH1F > ("w_first_jet_eta", "w_first_jet_eta;eta", 16, -2.5, 2.5);
-  w_first_ele_pt =   fs->make < TH1F > ("first_ele_pt", "first_ele_pt;P_t [GeV]", 35, 0., 350.);
-  w_second_ele_pt =  fs->make < TH1F > ("second_ele_pt", "second_ele_pt;P_t [GeV]", 35, 0., 350.);
-  w_first_muon_pt =  fs->make < TH1F > ("first_muon_pt", "first_muon_pt;P_t [GeV]", 35, 0., 350.);
-  w_second_muon_pt = fs->make < TH1F > ("second_muon_pt", "second_muon_pt;P_t [GeV]", 35, 0., 350.);
-  w_first_ele_eta =  fs->make < TH1F > ("first_ele_eta", "first_ele_eta;Eta ", 16, -2.5, 2.5);
-  w_second_ele_eta = fs->make < TH1F > ("second_ele_eta", "second_ele_eta;Eta ", 16, -2.5, 2.5);
-  w_first_muon_eta = fs->make < TH1F > ("first_muon_eta", "first_muon_eta;Eta ", 16, -2.5, 2.5);
-  w_second_muon_eta =fs->make < TH1F > ("second_muon_eta", "second_muon_eta;Eta ", 16, -2.5, 2.5);
+  w_first_jet_pt =    fs->make < TH1F > ("w_first_jet_pt", "w_first_jet_pt;P_t [GeV]", 50, 30., 700.);
+  w_first_bjet_pt =   fs->make < TH1F > ("w_first_bjet_pt", "w_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
+  w_first_jet_eta =   fs->make < TH1F > ("w_first_jet_eta", "w_first_jet_eta;eta", 16, -2.5, 2.5);
+  w_first_ele_pt =    fs->make < TH1F > ("first_ele_pt", "first_ele_pt;P_t [GeV]", 35, 0., 350.);
+  w_second_ele_pt =   fs->make < TH1F > ("second_ele_pt", "second_ele_pt;P_t [GeV]", 35, 0., 350.);
+  w_first_muon_pt =   fs->make < TH1F > ("first_muon_pt", "first_muon_pt;P_t [GeV]", 35, 0., 350.);
+  w_second_muon_pt =  fs->make < TH1F > ("second_muon_pt", "second_muon_pt;P_t [GeV]", 35, 0., 350.);
+  w_first_ele_eta =   fs->make < TH1F > ("first_ele_eta", "first_ele_eta;Eta ", 16, -2.5, 2.5);
+  w_second_ele_eta =  fs->make < TH1F > ("second_ele_eta", "second_ele_eta;Eta ", 16, -2.5, 2.5);
+  w_first_muon_eta =  fs->make < TH1F > ("first_muon_eta", "first_muon_eta;Eta ", 16, -2.5, 2.5);
+  w_second_muon_eta = fs->make < TH1F > ("second_muon_eta", "second_muon_eta;Eta ", 16, -2.5, 2.5);
 
   w_Ht = fs->make<TH1F>("w_Ht", "w_Ht [GeV]",50,30.,1500.);
   w_Ht_b = fs->make<TH1F>("w_Ht_b", "w_Ht [GeV]",50,30.,1500.);
 
-  w_jetmultiplicity =  fs->make < TH1F > ("w_jetmultiplicity", "w_jetmultiplicity", 8, 0.5, 8.5);
-  sf_first_ele_pt =    fs->make < TH1F > ("sf_first_ele_pt", "sf_first_ele_pt", 100, 0., 200.);
-  w_jetmultiplicity_b =fs->make < TH1F > ("w_jetmultiplicity_b", "w_jetmultiplicity_b", 5, 0.5, 5.5);
-  w_first_jet_pt_b =   fs->make < TH1F > ("w_first_jet_pt_b", "w_first_jet_pt_b", 50, 30, 700);
-  w_first_jet_eta_b =  fs->make < TH1F > ("w_first_jet_eta_b", "w_first_jet_eta_b", 16, -2.5, 2.5);
-  w_mm_inv = 	       fs->make < TH1F > ("w_mm_inv", "w_mm_inv", 80, 71, 111);
-  w_ee_inv = 	       fs->make < TH1F > ("w_ee_inv", "w_ee_inv", 80, 71, 111);
-  w_secondvtx_N =      fs->make < TH1F > ("w_secondvtx_N", "w_secondvtx_N", 50, 0, 1);
-  b_secondvtx_N =    fs->make < TH1F > ("b_secondvtx_N", "b_secondvtx_N", 50, 0, 1);
-  c_secondvtx_N =    fs->make < TH1F > ("c_secondvtx_N", "w_secondvtx_N", 50, 0, 1);
-  w_tracks = 	       fs->make < TH1F > ("w_tracks", "w_tracks", 100, 0, 2500);
-  flavours_ = 	       fs->make < TH1F > ("flavours", "jet flavours", 5, 0, 5);
-  w_MET = 	       fs->make < TH1F > ("w_MET", "w_MET", 50, 0, 250);
-  w_MET_sign = 	       fs->make < TH1F > ("w_MET_sign", "w_MET_sign", 50, 0, 50);
-  b_MET    = 	       fs->make < TH1F > ("b_MET", "b_MET", 50, 0, 250);
-  c_MET    = 	       fs->make < TH1F > ("c_MET", "c_MET", 50, 0, 250);
-  h_delta_ee =         fs->make < TH1F > ("w_delta_phi_ee", "w_delta_phi_ee", 12, 0, TMath::Pi ());
-  h_delta_mm =         fs->make < TH1F > ("w_delta_phi_mm", "w_delta_phi_mm", 12, 0, TMath::Pi ());
-  h_pt_Z_ee_b =        fs->make < TH1F > ("Z_pt_ee_b", "Z_pt_ee_b;P_t [GeV]", 70, 0., 700.);
-  h_pt_Z_mm_b =        fs->make < TH1F > ("Z_pt_mm_b", "Z_pt_mm_b;P_t [GeV]", 70, 0., 700.);
-  h_pt_Z_ee =          fs->make < TH1F > ("Z_pt_ee", "Z_pt_ee;P_t [GeV]", 70, 0., 700.);
-  h_pt_Z_mm =          fs->make < TH1F > ("Z_pt_mm", "Z_pt_mm;P_t [GeV]", 70, 0., 700.);
-  SVTX_mass_jet =      fs->make < TH1F > ("SVTX_mass_jet", "SVTX_mass_jet", 70, 0, 7);
-  SVTX_mass_trk =      fs->make < TH1F > ("SVTX_mass_trk", "SVTX_mass_trk", 160, 0, 80);
-  SVTX_mass =          fs->make < TH1F > ("SVTX_mass", "SVTX_mass", 70, 0, 7);
-  b_SVTX_mass_jet =    fs->make < TH1F > ("b_SVTX_mass_jet", "b_SVTX_mass_jet", 70, 0, 7);
-  b_SVTX_mass_trk =    fs->make < TH1F > ("b_SVTX_mass_trk", "b_SVTX_mass_trk", 160, 0, 80);
-  b_SVTX_mass =        fs->make < TH1F > ("b_SVTX_mass",     "b_SVTX_mass", 70, 0, 7);
-  c_SVTX_mass_jet =    fs->make < TH1F > ("c_SVTX_mass_jet", "c_SVTX_mass_jet", 70, 0, 7);
-  c_SVTX_mass_trk =    fs->make < TH1F > ("c_SVTX_mass_trk", "c_SVTX_mass_trk", 160, 0, 80);
-  c_SVTX_mass =        fs->make < TH1F > ("c_SVTX_mass",     "c_SVTX_mass", 70, 0, 7);
+  w_jetmultiplicity =   fs->make < TH1F > ("w_jetmultiplicity", "w_jetmultiplicity", 8, 0.5, 8.5);
+  sf_first_ele_pt =     fs->make < TH1F > ("sf_first_ele_pt", "sf_first_ele_pt", 100, 0., 200.);
+  w_jetmultiplicity_b = fs->make < TH1F > ("w_jetmultiplicity_b", "w_jetmultiplicity_b", 5, 0.5, 5.5);
+  w_first_jet_pt_b =    fs->make < TH1F > ("w_first_jet_pt_b", "w_first_jet_pt_b", 50, 30, 700);
+  w_first_jet_eta_b =   fs->make < TH1F > ("w_first_jet_eta_b", "w_first_jet_eta_b", 16, -2.5, 2.5);
+  w_mm_inv = 	        fs->make < TH1F > ("w_mm_inv", "w_mm_inv", 80, 71, 111);
+  w_ee_inv = 	        fs->make < TH1F > ("w_ee_inv", "w_ee_inv", 80, 71, 111);
+  w_secondvtx_N =       fs->make < TH1F > ("w_secondvtx_N", "w_secondvtx_N", 50, 0, 1);
+  b_secondvtx_N =       fs->make < TH1F > ("b_secondvtx_N", "b_secondvtx_N", 50, 0, 1);
+  c_secondvtx_N =       fs->make < TH1F > ("c_secondvtx_N", "w_secondvtx_N", 50, 0, 1);
+  w_tracks = 	        fs->make < TH1F > ("w_tracks", "w_tracks", 100, 0, 2500);
+  flavours_ = 	        fs->make < TH1F > ("flavours", "jet flavours", 5, 0, 5);
+  w_MET = 	        fs->make < TH1F > ("w_MET", "w_MET", 50, 0, 250);
+  w_MET_sign = 	        fs->make < TH1F > ("w_MET_sign", "w_MET_sign", 50, 0, 50);
+  b_MET    = 	        fs->make < TH1F > ("b_MET", "b_MET", 50, 0, 250);
+  c_MET    = 	        fs->make < TH1F > ("c_MET", "c_MET", 50, 0, 250);
+  h_delta_ee =          fs->make < TH1F > ("w_delta_phi_ee", "w_delta_phi_ee", 12, 0, TMath::Pi ());
+  h_delta_mm =          fs->make < TH1F > ("w_delta_phi_mm", "w_delta_phi_mm", 12, 0, TMath::Pi ());
+  h_pt_Z_ee_b =         fs->make < TH1F > ("Z_pt_ee_b", "Z_pt_ee_b;P_t [GeV]", 70, 0., 700.);
+  h_pt_Z_mm_b =         fs->make < TH1F > ("Z_pt_mm_b", "Z_pt_mm_b;P_t [GeV]", 70, 0., 700.);
+  h_pt_Z_ee =           fs->make < TH1F > ("Z_pt_ee", "Z_pt_ee;P_t [GeV]", 70, 0., 700.);
+  h_pt_Z_mm =           fs->make < TH1F > ("Z_pt_mm", "Z_pt_mm;P_t [GeV]", 70, 0., 700.);
+  SVTX_mass_jet =       fs->make < TH1F > ("SVTX_mass_jet", "SVTX_mass_jet", 70, 0, 7);
+  SVTX_mass_trk =       fs->make < TH1F > ("SVTX_mass_trk", "SVTX_mass_trk", 160, 0, 80);
+  SVTX_mass =           fs->make < TH1F > ("SVTX_mass", "SVTX_mass", 70, 0, 7);
+  b_SVTX_mass_jet =     fs->make < TH1F > ("b_SVTX_mass_jet", "b_SVTX_mass_jet", 70, 0, 7);
+  b_SVTX_mass_trk =     fs->make < TH1F > ("b_SVTX_mass_trk", "b_SVTX_mass_trk", 160, 0, 80);
+  b_SVTX_mass =         fs->make < TH1F > ("b_SVTX_mass",     "b_SVTX_mass", 70, 0, 7);
+  c_SVTX_mass_jet =     fs->make < TH1F > ("c_SVTX_mass_jet", "c_SVTX_mass_jet", 70, 0, 7);
+  c_SVTX_mass_trk =     fs->make < TH1F > ("c_SVTX_mass_trk", "c_SVTX_mass_trk", 160, 0, 80);
+  c_SVTX_mass =         fs->make < TH1F > ("c_SVTX_mass",     "c_SVTX_mass", 70, 0, 7);
 
   h_scalFactor_first_ele   =    fs->make < TH1F > ("scaleFactor_first_ele",   "scaleFactor_first_ele", 90, 0.6, 1.5);
   h_scalFactor_first_muon  =    fs->make < TH1F > ("scaleFactor_first_muon",  "scaleFactor_first_muon", 90, 0.6, 1.5);
