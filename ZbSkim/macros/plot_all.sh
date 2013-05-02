@@ -23,8 +23,8 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_jetmultiplicity_b\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_jet_pt_b\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_bjet_pt\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"b_mm_inv\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"b_ee_inv\",1,$i\)
+# root -l -q -b DataMCComp.C\(\"b_mm_inv\",1,$i\)
+# root -l -q -b DataMCComp.C\(\"b_ee_inv\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_jet_eta_b\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_delta_phi_mm\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_delta_phi_ee\",1,$i\)
@@ -45,6 +45,8 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"SVTX_mass_jet\",1,$i\)
   root -l -q -b DataMCComp.C\(\"SVTX_mass_trk\",1,$i\)
   root -l -q -b DataMCComp.C\(\"SVTX_mass\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_mm_inv_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_ee_inv_b\",1,$i\)
 
   i=$((i+1))
 done

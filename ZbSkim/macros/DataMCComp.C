@@ -100,24 +100,24 @@ if (ilepton<1 || ilepton>2) {
 	TH1F* h_mc1b = 0;
 	TH1F* h_mc1c = 0;
 	if (title == "w_secondvtx_N") {
-	  h_mc1b = (TH1F*)gDirectory->Get("w_secondvtx_N_b");
-	  h_mc1c = (TH1F*)gDirectory->Get("w_secondvtx_N_c");
+	  h_mc1b = (TH1F*)gDirectory->Get("b_secondvtx_N");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_secondvtx_N");
 	}
 	if (title == "w_MET") {
 	  h_mc1b = (TH1F*)gDirectory->Get("w_MET_b");
 	  h_mc1c = (TH1F*)gDirectory->Get("w_MET_c");
 	}
 	if (title == "SVTX_mass_jet") {
-	  h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_jet_b");
-	  h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_jet_c");
+	  h_mc1b = (TH1F*)gDirectory->Get("b_SVTX_mass_jet");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_SVTX_mass_jet");
 	}
 	if (title == "SVTX_mass_trk") {
-	  h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_trk_b");
-	  h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_trk_c");
+	  h_mc1b = (TH1F*)gDirectory->Get("b_SVTX_mass_trk");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_SVTX_mass_trk");
 	}
 	if (title == "SVTX_mass") {
-	  h_mc1b = (TH1F*)gDirectory->Get("SVTX_mass_b");
-	  h_mc1c = (TH1F*)gDirectory->Get("SVTX_mass_c");
+	  h_mc1b = (TH1F*)gDirectory->Get("b_SVTX_mass");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_SVTX_mass");
 	}
 	if (title == "w_first_jet_pt") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_pt");
@@ -133,15 +133,19 @@ if (ilepton<1 || ilepton>2) {
 	}
 	if (title == "Z_pt_ee_b") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_ee");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_pt_Z_ee");
 	}
 	if (title == "Z_pt_mm_b") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_mm");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_pt_Z_mm");
 	}
-	if (title == "w_mm_inv") {
+	if (title == "w_mm_inv_b") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_mm");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_invMass_mm");
 	}
-	if (title == "w_ee_inv") {
+	if (title == "w_ee_inv_b") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_ee");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_invMass_ee");
 	}
 
 	if (ilepton==1) mc2->cd("demo_ee");
@@ -431,8 +435,8 @@ if (ilepton<1 || ilepton>2) {
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
 	} else if (title=="w_delta_phi_mm") {
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
-	} else if (title=="b_ee_inv"||title=="b_mm_inv") {
-	  h_ratio->GetXaxis ()->SetTitle("Z mass + 1 b quark [GeV/c^{2}]");
+	} else if (title=="w_ee_inv_b"||title=="w_mm_inv_b") {
+	  h_ratio->GetXaxis ()->SetTitle("Z mass + (#ge 1 b quark) [GeV/c^{2}]");
 	} else if (title=="SVTX_mass_jet"||title=="SVTX_mass_trk"||title=="SVTX_mass") {
 	  h_ratio->GetXaxis ()->SetTitle("SV mass [GeV/c^{2}]");
 	}
