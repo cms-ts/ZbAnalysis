@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.22 2013/05/02 07:56:17 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.23 2013/05/02 14:02:04 vieri Exp $
 //
 //
 
@@ -308,8 +308,8 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_invMass_ee =       fs->make < TH1F > ("b_invMass_ee", 	"b_invMass_ee", 80, 71, 111);
   b_invMass_mm =       fs->make < TH1F > ("b_invMass_mm", 	"b_invMass_mm", 80, 71, 111);
 
-  c_pt_Z_ee =          fs->make < TH1F > ("c_pt_Z_ee",         "c_pt_Z_ee", 35, 0., 350.);
-  c_pt_Z_mm =          fs->make < TH1F > ("c_pt_Z_mm",         "c_pt_Z_mm", 35, 0., 350.);
+  c_pt_Z_ee =          fs->make < TH1F > ("c_pt_Z_ee",         "c_pt_Z_ee", 70, 0., 700.);
+  c_pt_Z_mm =          fs->make < TH1F > ("c_pt_Z_mm",         "c_pt_Z_mm", 70, 0., 700.);
   c_invMass_ee =       fs->make < TH1F > ("c_invMass_ee",      "c_invMass_ee", 80, 71, 111);
   c_invMass_mm =       fs->make < TH1F > ("c_invMass_mm",      "c_invMass_mm", 80, 71, 111);
 
