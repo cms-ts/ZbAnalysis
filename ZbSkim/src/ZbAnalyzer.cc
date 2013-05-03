@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.29 2013/05/03 21:14:42 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.30 2013/05/03 21:36:04 dellaric Exp $
 //
 //
 
@@ -325,14 +325,14 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   w_first_bjet_pt =     fs->make < TH1F > ("w_first_bjet_pt", "w_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
   w_first_bjet_eta =    fs->make < TH1F > ("w_first_bjet_eta", "w_first_bjet_eta", 16, -2.5, 2.5);
   w_first_jet_eta =     fs->make < TH1F > ("w_first_jet_eta", "w_first_jet_eta;eta", 16, -2.5, 2.5);
-  w_first_ele_pt =      fs->make < TH1F > ("first_ele_pt", "first_ele_pt;P_t [GeV]", 35, 0., 350.);
-  w_second_ele_pt =     fs->make < TH1F > ("second_ele_pt", "second_ele_pt;P_t [GeV]", 35, 0., 350.);
-  w_first_muon_pt =     fs->make < TH1F > ("first_muon_pt", "first_muon_pt;P_t [GeV]", 35, 0., 350.);
-  w_second_muon_pt =    fs->make < TH1F > ("second_muon_pt", "second_muon_pt;P_t [GeV]", 35, 0., 350.);
-  w_first_ele_eta =     fs->make < TH1F > ("first_ele_eta", "first_ele_eta;Eta ", 16, -2.5, 2.5);
-  w_second_ele_eta =    fs->make < TH1F > ("second_ele_eta", "second_ele_eta;Eta ", 16, -2.5, 2.5);
-  w_first_muon_eta =    fs->make < TH1F > ("first_muon_eta", "first_muon_eta;Eta ", 16, -2.5, 2.5);
-  w_second_muon_eta =   fs->make < TH1F > ("second_muon_eta", "second_muon_eta;Eta ", 16, -2.5, 2.5);
+  w_first_ele_pt =      fs->make < TH1F > ("w_first_ele_pt", "first_ele_pt;P_t [GeV]", 35, 0., 350.);
+  w_second_ele_pt =     fs->make < TH1F > ("w_second_ele_pt", "second_ele_pt;P_t [GeV]", 35, 0., 350.);
+  w_first_muon_pt =     fs->make < TH1F > ("w_first_muon_pt", "first_muon_pt;P_t [GeV]", 35, 0., 350.);
+  w_second_muon_pt =    fs->make < TH1F > ("w_second_muon_pt", "second_muon_pt;P_t [GeV]", 35, 0., 350.);
+  w_first_ele_eta =     fs->make < TH1F > ("w_first_ele_eta", "first_ele_eta;Eta ", 16, -2.5, 2.5);
+  w_second_ele_eta =    fs->make < TH1F > ("w_second_ele_eta", "second_ele_eta;Eta ", 16, -2.5, 2.5);
+  w_first_muon_eta =    fs->make < TH1F > ("w_first_muon_eta", "first_muon_eta;Eta ", 16, -2.5, 2.5);
+  w_second_muon_eta =   fs->make < TH1F > ("w_second_muon_eta", "second_muon_eta;Eta ", 16, -2.5, 2.5);
 
   w_Ht =                fs->make<TH1F>("w_Ht", "w_Ht [GeV]",50,30.,1500.);
   w_Ht_b =              fs->make<TH1F>("w_Ht_b", "w_Ht [GeV]",50,30.,1500.);
