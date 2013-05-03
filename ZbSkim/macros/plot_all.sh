@@ -9,17 +9,17 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp.C\(\"h_pu_weights\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_secondvtx_N\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"recoVTX\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"recoVTXw\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"h_recoVTX\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_recoVTX\",1,$i\)
   root -l -q -b DataMCComp.C\(\"h_tracks\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_tracks\",1,$i\)
 
-  root -l -q -b DataMCComp.C\(\"first_ele_pt\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"first_ele_eta\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"first_muon_pt\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"first_muon_eta\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_first_ele_pt\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_first_ele_eta\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_first_muon_pt\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_first_muon_eta\",1,$i\)
 
-  root -l -q -b DataMCComp.C\(\"numberOfZ\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_numberOfZ\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_mass_ee\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_mass_mm\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_mass_mm_b\",1,$i\)
@@ -30,6 +30,7 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_jetmultiplicity\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_jet_pt\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_jet_eta\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_second_jet_pt\",1,$i\)
 
   root -l -q -b DataMCComp.C\(\"w_MET\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,$i\)
