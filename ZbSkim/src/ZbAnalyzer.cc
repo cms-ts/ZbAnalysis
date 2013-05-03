@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.30 2013/05/03 21:36:04 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.31 2013/05/03 21:37:15 dellaric Exp $
 //
 //
 
@@ -334,8 +334,8 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   w_first_muon_eta =    fs->make < TH1F > ("w_first_muon_eta", "first_muon_eta;Eta ", 16, -2.5, 2.5);
   w_second_muon_eta =   fs->make < TH1F > ("w_second_muon_eta", "second_muon_eta;Eta ", 16, -2.5, 2.5);
 
-  w_Ht =                fs->make<TH1F>("w_Ht", "w_Ht [GeV]",50,30.,1500.);
-  w_Ht_b =              fs->make<TH1F>("w_Ht_b", "w_Ht [GeV]",50,30.,1500.);
+  w_Ht =                fs->make < TH1F > ("w_Ht", "w_Ht [GeV]", 50, 30., 1500.);
+  w_Ht_b =              fs->make < TH1F > ("w_Ht_b", "w_Ht [GeV]", 50, 30., 1500.);
 
   w_jetmultiplicity =   fs->make < TH1F > ("w_jetmultiplicity", "w_jetmultiplicity", 8, 0.5, 8.5);
   sf_first_ele_pt =     fs->make < TH1F > ("sf_first_ele_pt", "sf_first_ele_pt", 100, 0., 200.);
