@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.27 2013/05/03 13:22:49 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.28 2013/05/03 16:05:00 dellaric Exp $
 //
 //
 
@@ -116,9 +116,9 @@ private:
 
   /****************** LEGEND *************************
 
-   plotname_b  => at least a b in the event, Nb !=0
-   b_plotname  => b quark fraction, isb
-   c_plotname  => c quark fraction, isc
+   w_plotname_b => at least a b in the event, Nb > 0
+   b_plotname   => b quark fraction, isb
+   c_plotname   => c quark fraction, isc
 
    ***************************************************/
 
@@ -128,12 +128,13 @@ private:
   double    jet_phi;
   double    b_pt;
   double    b_eta;
+  double    b_phi;
   double    ele_pt;
   double    ele_eta;
   double    muon_pt;
   double    muon_eta;
-  double    diele_inv;
-  double    dimuon_inv;
+  double    diele_mass;
+  double    dimuon_mass;
   double    diele_phi;
   double    dimuon_phi;
   double    Delta_phi_ee;
@@ -142,8 +143,8 @@ private:
   double    b_leading_eta;
 
   double    Ht, Ht_b;
-  double    b_mm_invmass;
-  double    b_ee_invmass;
+  double    b_mm_mass;
+  double    b_ee_mass;
   int       NZ, NZ2;
   double    discrCSV;
   double    MyWeight;
@@ -164,8 +165,8 @@ private:
   TH1F*     h_jet_pt;
   TH1F*     h_ele_pt;
   TH1F*     h_muon_pt;
-  TH1F*     h_mm_inv;
-  TH1F*     h_ee_inv;
+  TH1F*     h_mass_mm;
+  TH1F*     h_mass_ee;
   TH1F*     h_secondvtx_N;
   TH1F*     h_PUweights;
   TH1F*     h_tracks;
@@ -196,10 +197,10 @@ private:
   TH1F*     w_jetmultiplicity;
   TH1F*     sf_first_ele_pt;
   TH1F*     w_jetmultiplicity_b;
-  TH1F*     w_mm_inv;
-  TH1F*     w_ee_inv;
-  TH1F*     w_invMass_mm_b;
-  TH1F*     w_invMass_ee_b;
+  TH1F*     w_mass_mm;
+  TH1F*     w_mass_ee;
+  TH1F*     w_mass_mm_b;
+  TH1F*     w_mass_ee_b;
   TH1F*     w_secondvtx_N;
   TH1F*     b_secondvtx_N;
   TH1F*     w_tracks;
@@ -230,8 +231,8 @@ private:
   TH1F*     b_first_jet_eta;
   TH1F*     b_pt_Z_ee;
   TH1F*     b_pt_Z_mm;
-  TH1F*     b_invMass_ee;
-  TH1F*     b_invMass_mm;
+  TH1F*     b_mass_ee;
+  TH1F*     b_mass_mm;
 
   TH1F*     b_SVTX_mass_jet;
   TH1F*     b_SVTX_mass_trk;
@@ -245,8 +246,8 @@ private:
   
   TH1F*     c_pt_Z_ee;
   TH1F*     c_pt_Z_mm;
-  TH1F*     c_invMass_ee;
-  TH1F*     c_invMass_mm;
+  TH1F*     c_mass_ee;
+  TH1F*     c_mass_mm;
 
 };
 
@@ -266,9 +267,9 @@ enum Flavour {
 };
 
 struct Plots {
-  TH1 *    nVertices;
-  TH1 *  deltaR, *  mass, *  dist, *  distErr, *    distSig;
-  TH1 *  nTracks, *    chi2;
+  TH1 * nVertices;
+  TH1 * deltaR, * mass, * dist, * distErr, * distSig;
+  TH1 * nTracks, * chi2;
 } plots_[N_JET_TYPES];
 
 
@@ -289,61 +290,61 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
 
-  h_jetmultiplicity = fs->make < TH1F > ("h_jetmultiplicity", "h_jetmultiplicity", 8, 0.5, 8.5);
-  h_jet_pt =          fs->make < TH1F > ("h_jet_pt", "h_jet_pt", 20, 30, 530);
-  h_ele_pt =          fs->make < TH1F > ("h_ele_pt", "h_ele_pt", 20, 30, 530);
-  h_muon_pt =         fs->make < TH1F > ("h_muon_pt", "h_muon_pt", 100, 0, 250);
-  h_mm_inv =          fs->make < TH1F > ("h_mm_inv", "h_mm_inv", 60, 60, 120);
-  h_ee_inv =          fs->make < TH1F > ("h_ee_inv", "h_ee_inv", 60, 60, 120);
-  h_secondvtx_N =     fs->make < TH1F > ("h_secondvtx_N", "h_secondvtx_N", 50, 0, 1);
-  h_PUweights =       fs->make < TH1F > ("h_pu_weights", "h_pu_weights", 10, 0, 10);
-  recoVTX_ =          fs->make < TH1F > ("recoVTX", "No. reconstructed vertices", 40, 0., 40.);
-  recoVTX_w =         fs->make < TH1F > ("recoVTXw", "No. reconstructed vertices weighted", 40, 0., 40.);
-  h_tracks =          fs->make < TH1F > ("h_tracks", "h_tracks", 100, 0, 2500);
+  h_jetmultiplicity =   fs->make < TH1F > ("h_jetmultiplicity", "h_jetmultiplicity", 8, 0.5, 8.5);
+  h_jet_pt =            fs->make < TH1F > ("h_jet_pt", "h_jet_pt", 20, 30, 530);
+  h_ele_pt =            fs->make < TH1F > ("h_ele_pt", "h_ele_pt", 20, 30, 530);
+  h_muon_pt =           fs->make < TH1F > ("h_muon_pt", "h_muon_pt", 100, 0, 250);
+  h_mass_mm =           fs->make < TH1F > ("h_mass_mm", "h_mass_mm", 60, 60, 120);
+  h_mass_ee =           fs->make < TH1F > ("h_mass_ee", "h_mass_ee", 60, 60, 120);
+  h_secondvtx_N =       fs->make < TH1F > ("h_secondvtx_N", "h_secondvtx_N", 50, 0, 1);
+  h_PUweights =         fs->make < TH1F > ("h_pu_weights", "h_pu_weights", 10, 0, 10);
+  recoVTX_ =            fs->make < TH1F > ("recoVTX", "No. reconstructed vertices", 40, 0., 40.);
+  recoVTX_w =           fs->make < TH1F > ("recoVTXw", "No. reconstructed vertices weighted", 40, 0., 40.);
+  h_tracks =            fs->make < TH1F > ("h_tracks", "h_tracks", 100, 0, 2500);
 
   // b fraction before btagging histograms
 
-  b_jetmultiplicity =  fs->make < TH1F > ("b_jetmultiplicity", "b_jetmultiplicity", 8, 0.5, 8.5);
-  b_first_jet_pt =     fs->make < TH1F > ("b_first_jet_pt",    "b_first_jet_pt", 50, 30., 700.);
-  b_first_jet_eta =    fs->make < TH1F > ("b_first_jet_eta",   "b_first_jet_eta", 16, -2.5, 2.5);
-  b_pt_Z_ee =          fs->make < TH1F > ("b_pt_Z_ee",         "b_pt_Z_ee", 70, 0., 700.);
-  b_pt_Z_mm =          fs->make < TH1F > ("b_pt_Z_mm",         "b_pt_Z_mm", 70, 0., 700.);
-  b_invMass_ee =       fs->make < TH1F > ("b_invMass_ee",      "b_invMass_ee", 80, 71, 111);
-  b_invMass_mm =       fs->make < TH1F > ("b_invMass_mm",      "b_invMass_mm", 80, 71, 111);
+  b_jetmultiplicity =   fs->make < TH1F > ("b_jetmultiplicity", "b_jetmultiplicity", 8, 0.5, 8.5);
+  b_first_jet_pt =      fs->make < TH1F > ("b_first_jet_pt",    "b_first_jet_pt", 50, 30., 700.);
+  b_first_jet_eta =     fs->make < TH1F > ("b_first_jet_eta",   "b_first_jet_eta", 16, -2.5, 2.5);
+  b_pt_Z_ee =           fs->make < TH1F > ("b_pt_Z_ee",         "b_pt_Z_ee", 70, 0., 700.);
+  b_pt_Z_mm =           fs->make < TH1F > ("b_pt_Z_mm",         "b_pt_Z_mm", 70, 0., 700.);
+  b_mass_ee =           fs->make < TH1F > ("b_mass_ee",      "b_mass_ee", 80, 71, 111);
+  b_mass_mm =           fs->make < TH1F > ("b_mass_mm",      "b_mass_mm", 80, 71, 111);
 
-  c_pt_Z_ee =          fs->make < TH1F > ("c_pt_Z_ee",         "c_pt_Z_ee", 70, 0., 700.);
-  c_pt_Z_mm =          fs->make < TH1F > ("c_pt_Z_mm",         "c_pt_Z_mm", 70, 0., 700.);
-  c_invMass_ee =       fs->make < TH1F > ("c_invMass_ee",      "c_invMass_ee", 80, 71, 111);
-  c_invMass_mm =       fs->make < TH1F > ("c_invMass_mm",      "c_invMass_mm", 80, 71, 111);
+  c_pt_Z_ee =           fs->make < TH1F > ("c_pt_Z_ee",         "c_pt_Z_ee", 70, 0., 700.);
+  c_pt_Z_mm =           fs->make < TH1F > ("c_pt_Z_mm",         "c_pt_Z_mm", 70, 0., 700.);
+  c_mass_ee =           fs->make < TH1F > ("c_mass_ee",      "c_mass_ee", 80, 71, 111);
+  c_mass_mm =           fs->make < TH1F > ("c_mass_mm",      "c_mass_mm", 80, 71, 111);
 
-  w_invMass_ee_b =         fs->make < TH1F > ("w_invMass_ee_b", "w_invMass_mm_b", 80, 71, 111);
-  w_invMass_mm_b =         fs->make < TH1F > ("w_invMass_mm_b", "w_invMass_mm_b", 80, 71, 111);
+  w_mass_ee_b =         fs->make < TH1F > ("w_mass_ee_b", "w_mass_mm_b", 80, 71, 111);
+  w_mass_mm_b =         fs->make < TH1F > ("w_mass_mm_b", "w_mass_mm_b", 80, 71, 111);
 
   // weighted histograms
-  w_first_jet_pt =    fs->make < TH1F > ("w_first_jet_pt", "w_first_jet_pt;P_t [GeV]", 50, 30., 700.);
-  w_second_jet_pt =    fs->make < TH1F > ("w_second_jet_pt", "w_second_jet_pt;P_t [GeV]", 50, 30., 700.);
-  w_first_bjet_pt =   fs->make < TH1F > ("w_first_bjet_pt", "w_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
-  w_first_bjet_eta =   fs->make < TH1F > ("w_first_bjet_eta", "w_first_bjet_eta", 16, -2.5, 2.5);
-  w_first_jet_eta =   fs->make < TH1F > ("w_first_jet_eta", "w_first_jet_eta;eta", 16, -2.5, 2.5);
-  w_first_ele_pt =    fs->make < TH1F > ("first_ele_pt", "first_ele_pt;P_t [GeV]", 35, 0., 350.);
-  w_second_ele_pt =   fs->make < TH1F > ("second_ele_pt", "second_ele_pt;P_t [GeV]", 35, 0., 350.);
-  w_first_muon_pt =   fs->make < TH1F > ("first_muon_pt", "first_muon_pt;P_t [GeV]", 35, 0., 350.);
-  w_second_muon_pt =  fs->make < TH1F > ("second_muon_pt", "second_muon_pt;P_t [GeV]", 35, 0., 350.);
-  w_first_ele_eta =   fs->make < TH1F > ("first_ele_eta", "first_ele_eta;Eta ", 16, -2.5, 2.5);
-  w_second_ele_eta =  fs->make < TH1F > ("second_ele_eta", "second_ele_eta;Eta ", 16, -2.5, 2.5);
-  w_first_muon_eta =  fs->make < TH1F > ("first_muon_eta", "first_muon_eta;Eta ", 16, -2.5, 2.5);
-  w_second_muon_eta = fs->make < TH1F > ("second_muon_eta", "second_muon_eta;Eta ", 16, -2.5, 2.5);
+  w_first_jet_pt =      fs->make < TH1F > ("w_first_jet_pt", "w_first_jet_pt;P_t [GeV]", 50, 30., 700.);
+  w_second_jet_pt =     fs->make < TH1F > ("w_second_jet_pt", "w_second_jet_pt;P_t [GeV]", 50, 30., 700.);
+  w_first_bjet_pt =     fs->make < TH1F > ("w_first_bjet_pt", "w_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
+  w_first_bjet_eta =    fs->make < TH1F > ("w_first_bjet_eta", "w_first_bjet_eta", 16, -2.5, 2.5);
+  w_first_jet_eta =     fs->make < TH1F > ("w_first_jet_eta", "w_first_jet_eta;eta", 16, -2.5, 2.5);
+  w_first_ele_pt =      fs->make < TH1F > ("first_ele_pt", "first_ele_pt;P_t [GeV]", 35, 0., 350.);
+  w_second_ele_pt =     fs->make < TH1F > ("second_ele_pt", "second_ele_pt;P_t [GeV]", 35, 0., 350.);
+  w_first_muon_pt =     fs->make < TH1F > ("first_muon_pt", "first_muon_pt;P_t [GeV]", 35, 0., 350.);
+  w_second_muon_pt =    fs->make < TH1F > ("second_muon_pt", "second_muon_pt;P_t [GeV]", 35, 0., 350.);
+  w_first_ele_eta =     fs->make < TH1F > ("first_ele_eta", "first_ele_eta;Eta ", 16, -2.5, 2.5);
+  w_second_ele_eta =    fs->make < TH1F > ("second_ele_eta", "second_ele_eta;Eta ", 16, -2.5, 2.5);
+  w_first_muon_eta =    fs->make < TH1F > ("first_muon_eta", "first_muon_eta;Eta ", 16, -2.5, 2.5);
+  w_second_muon_eta =   fs->make < TH1F > ("second_muon_eta", "second_muon_eta;Eta ", 16, -2.5, 2.5);
 
-  w_Ht = fs->make<TH1F>("w_Ht", "w_Ht [GeV]",50,30.,1500.);
-  w_Ht_b = fs->make<TH1F>("w_Ht_b", "w_Ht [GeV]",50,30.,1500.);
+  w_Ht =                fs->make<TH1F>("w_Ht", "w_Ht [GeV]",50,30.,1500.);
+  w_Ht_b =              fs->make<TH1F>("w_Ht_b", "w_Ht [GeV]",50,30.,1500.);
 
   w_jetmultiplicity =   fs->make < TH1F > ("w_jetmultiplicity", "w_jetmultiplicity", 8, 0.5, 8.5);
   sf_first_ele_pt =     fs->make < TH1F > ("sf_first_ele_pt", "sf_first_ele_pt", 100, 0., 200.);
   w_jetmultiplicity_b = fs->make < TH1F > ("w_jetmultiplicity_b", "w_jetmultiplicity_b", 5, 0.5, 5.5);
   w_first_jet_pt_b =    fs->make < TH1F > ("w_first_jet_pt_b", "w_first_jet_pt_b", 50, 30, 700);
   w_first_jet_eta_b =   fs->make < TH1F > ("w_first_jet_eta_b", "w_first_jet_eta_b", 16, -2.5, 2.5);
-  w_mm_inv = 	        fs->make < TH1F > ("w_mm_inv", "w_mm_inv", 80, 71, 111);
-  w_ee_inv = 	        fs->make < TH1F > ("w_ee_inv", "w_ee_inv", 80, 71, 111);
+  w_mass_mm = 	        fs->make < TH1F > ("w_mass_mm", "w_mass_mm", 80, 71, 111);
+  w_mass_ee = 	        fs->make < TH1F > ("w_mass_ee", "w_mass_ee", 80, 71, 111);
   w_secondvtx_N =       fs->make < TH1F > ("w_secondvtx_N", "w_secondvtx_N", 50, 0, 1);
   b_secondvtx_N =       fs->make < TH1F > ("b_secondvtx_N", "b_secondvtx_N", 50, 0, 1);
   c_secondvtx_N =       fs->make < TH1F > ("c_secondvtx_N", "w_secondvtx_N", 50, 0, 1);
@@ -359,9 +360,9 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   w_pt_Z_mm_b =         fs->make < TH1F > ("w_pt_Z_mm_b", "w_pt_Z_mm_b", 70, 0., 700.);
   w_pt_Z_ee =           fs->make < TH1F > ("w_pt_Z_ee", "w_pt_Z_ee;P_t [GeV]", 70, 0., 700.);
   w_pt_Z_mm =           fs->make < TH1F > ("w_pt_Z_mm", "w_pt_Z_mm;P_t [GeV]", 70, 0., 700.);
-  w_SVTX_mass_jet =       fs->make < TH1F > ("w_SVTX_mass_jet", "w_SVTX_mass_jet", 70, 0, 7);
-  w_SVTX_mass_trk =       fs->make < TH1F > ("w_SVTX_mass_trk", "w_SVTX_mass_trk", 160, 0, 80);
-  w_SVTX_mass =           fs->make < TH1F > ("w_SVTX_mass", "w_SVTX_mass", 70, 0, 7);
+  w_SVTX_mass_jet =     fs->make < TH1F > ("w_SVTX_mass_jet", "w_SVTX_mass_jet", 70, 0, 7);
+  w_SVTX_mass_trk =     fs->make < TH1F > ("w_SVTX_mass_trk", "w_SVTX_mass_trk", 160, 0, 80);
+  w_SVTX_mass =         fs->make < TH1F > ("w_SVTX_mass", "w_SVTX_mass", 70, 0, 7);
   b_SVTX_mass_jet =     fs->make < TH1F > ("b_SVTX_mass_jet", "b_SVTX_mass_jet", 70, 0, 7);
   b_SVTX_mass_trk =     fs->make < TH1F > ("b_SVTX_mass_trk", "b_SVTX_mass_trk", 160, 0, 80);
   b_SVTX_mass =         fs->make < TH1F > ("b_SVTX_mass",     "b_SVTX_mass", 70, 0, 7);
@@ -369,23 +370,23 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_SVTX_mass_trk =     fs->make < TH1F > ("c_SVTX_mass_trk", "c_SVTX_mass_trk", 160, 0, 80);
   c_SVTX_mass =         fs->make < TH1F > ("c_SVTX_mass",     "c_SVTX_mass", 70, 0, 7);
 
-  h_scalFactor_first_ele   =    fs->make < TH1F > ("scaleFactor_first_ele",   "scaleFactor_first_ele", 90, 0.6, 1.5);
-  h_scalFactor_first_muon  =    fs->make < TH1F > ("scaleFactor_first_muon",  "scaleFactor_first_muon", 90, 0.6, 1.5);
-  h_scalFactor_second_ele  =    fs->make < TH1F > ("scaleFactor_second_ele",  "scaleFactor_second_ele", 90, 0.6, 1.5);
-  h_scalFactor_second_muon =    fs->make < TH1F > ("scaleFactor_second_muon", "scaleFactor_second_muon", 90, 0.6, 1.5);
+  h_scalFactor_first_ele =   fs->make < TH1F > ("scaleFactor_first_ele",   "scaleFactor_first_ele", 90, 0.6, 1.5);
+  h_scalFactor_first_muon =  fs->make < TH1F > ("scaleFactor_first_muon",  "scaleFactor_first_muon", 90, 0.6, 1.5);
+  h_scalFactor_second_ele =  fs->make < TH1F > ("scaleFactor_second_ele",  "scaleFactor_second_ele", 90, 0.6, 1.5);
+  h_scalFactor_second_muon = fs->make < TH1F > ("scaleFactor_second_muon", "scaleFactor_second_muon", 90, 0.6, 1.5);
 
-  h_JEC_uncert             =    fs->make < TH1F > ("JEC uncert", "JEC uncert", 10, -0.5, 0.5);
+  h_JEC_uncert =             fs->make < TH1F > ("JEC uncert", "JEC uncert", 10, -0.5, 0.5);
 
-  w_Afb = fs->make < TH1F > ("b_asymmetry", "b_asymmetry", 10, -1, 1);
+  w_Afb =                    fs->make < TH1F > ("b_asymmetry", "b_asymmetry", 10, -1, 1);
 
-  numberOfZ = fs->make < TH1F > ("numberOfZ",   "numberOfZ", 5, 0, 5);
+  numberOfZ =                fs->make < TH1F > ("numberOfZ",   "numberOfZ", 5, 0, 5);
 
   treeZb_ = fs->make < TTree > ("ZbTree", "ZbTree");
   treeZb_->Branch ("Nj", &Nj);
   treeZb_->Branch ("jet_pt", &jet_pt);
   treeZb_->Branch ("muon_pt", &muon_pt);
-  treeZb_->Branch ("dimuon_inv", &dimuon_inv);
-  treeZb_->Branch ("diele_inv", &diele_inv);
+  treeZb_->Branch ("dimuon_mass", &dimuon_mass);
+  treeZb_->Branch ("diele_mass", &diele_mass);
   treeZb_->Branch ("weights_pu", &MyWeight);
 
   for (unsigned int i = 0; i < N_JET_TYPES; i++)    {
@@ -445,7 +446,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   iEvent.getByLabel ("matchedElectrons", electrons);
 
   // Get jet collection
-  edm::Handle < std::vector < pat::Jet > >jets;
+  edm::Handle < std::vector < pat::Jet > > jets;
   iEvent.getByLabel ("goodJets", jets);
 
   // Get the Z->mm collection
@@ -457,11 +458,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   iEvent.getByLabel ("zeleMatchedeleMatched", zee);
 
   // Get tracks
-  edm::Handle < std::vector < reco::Track > >tracks;
+  edm::Handle < std::vector < reco::Track > > tracks;
   iEvent.getByLabel ("generalTracks", tracks);
 
   // Get MET
-  edm::Handle < std::vector < pat::MET > >met;
+  edm::Handle < std::vector < pat::MET > > met;
   iEvent.getByLabel (edm::InputTag ("patMETsPFlow"), met);
 
   bool ee_event = false;
@@ -472,15 +473,16 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   Nbk = 0;
   jet_pt = 0;
   jet_eta = 0;
+  jet_phi = 0;
   b_pt = 0;
   b_eta = 0;
-  jet_phi = 0;
+  b_phi = 0;
   ele_pt = 0;
   ele_eta = 0;
-  muon_eta = 0;
   muon_pt = 0;
-  diele_inv = 0;
-  dimuon_inv = 0;
+  muon_eta = 0;
+  diele_mass = 0;
+  dimuon_mass = 0;
   NZ = 0;
   NZ2 = 0;
   discrCSV = 0;
@@ -488,8 +490,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   b_leading_eta = 0;
   Delta_phi_mm = 0;
   Delta_phi_ee = 0;
-  b_mm_invmass = 0;
-  b_ee_invmass = 0;
+  b_mm_mass = 0;
+  b_ee_mass = 0;
   Nf = 0;
   Nb = 0;
   Afb = 0;
@@ -504,10 +506,10 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   // +++++++++ ELECTRONS
 
-  vector < double >vect_ele_pt;
-  vector < double >vect_ele_eta;
+  vector < double > vect_ele_pt;
+  vector < double > vect_ele_eta;
 
-  for (pat::ElectronCollection::const_iterator ele = electrons->begin (); ele != electrons->end (); ++ele){
+  for (pat::ElectronCollection::const_iterator ele = electrons->begin (); ele != electrons->end (); ++ele) {
     ele_pt = ele->pt ();
     ele_eta = ele->eta ();
 //
@@ -522,8 +524,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   // +++++++++ MUONS
 
-  vector < double >vect_muon_pt;
-  vector < double >vect_muon_eta;
+  vector < double > vect_muon_pt;
+  vector < double > vect_muon_eta;
 
   for (pat::MuonCollection::const_iterator muon = muons->begin (); muon != muons->end (); ++muon) {
     muon_pt = muon->pt ();
@@ -546,7 +548,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   MyWeight = 1.0;
 
-  Handle < std::vector < PileupSummaryInfo > >PupInfo;
+  Handle < std::vector < PileupSummaryInfo > > PupInfo;
 
   if (iEvent.getByLabel (edm::InputTag ("addPileupInfo"), PupInfo))  {
 
@@ -570,11 +572,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
     MyWeight = LumiWeights_.weight (Tnpv);
 
-    if (ee_event){
+    if (ee_event) {
       scalFac_first_e  =  ElSF.Val (vect_ele_pt[0], vect_ele_eta[0]);
       scalFac_second_e =  ElSF.Val (vect_ele_pt[1], vect_ele_eta[1]);
     }
-    if (mm_event){
+    if (mm_event) {
       scalFac_first_mu  = MuSF.Val (vect_muon_pt[0], vect_muon_eta[0]);
       scalFac_second_mu = MuSF.Val (vect_muon_pt[1], vect_muon_eta[1]);
       //cout<<vect_muon_pt[0]<<vect_muon_eta[0]<< " mu  SF =" << scalFac_first_mu <<endl;
@@ -586,12 +588,12 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   if (ee_event) MyWeight = MyWeight * scalFac_first_e * scalFac_second_e;
   if (mm_event) MyWeight = MyWeight * scalFac_first_mu * scalFac_second_mu;
 
-  if (ee_event) numberOfZ->Fill(zee->size (), MyWeight);
-  if (mm_event) numberOfZ->Fill(zmm->size(), MyWeight);
+  if (ee_event) numberOfZ->Fill (zee->size (), MyWeight);
+  if (mm_event) numberOfZ->Fill (zmm->size(), MyWeight);
 
   // ++++++++ VERTICES
 
-  edm::Handle < std::vector < reco::Vertex > >vertices_h;
+  edm::Handle < std::vector < reco::Vertex > > vertices_h;
   iEvent.getByLabel (edm::InputTag ("goodOfflinePrimaryVertices"), vertices_h);
 //  if (!vertices_h.isValid ()) {
 //    std::cout<<"empty vertex collection!!!\n";
@@ -617,16 +619,15 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       ++NVtx;
   }
 
-  // +++++++++ JETS
+  // ++++++++ JETS
 
-  vector < double >vect_jet_pt;
-  vector < double >vect_jet_phi;
-  vector < double >vect_jet_eta;
-  vector < double >vect_jet_discrCSV;
-  vector < double >vect_bjets_pt;
-  vector < double >vect_bjets_phi;
-  vector < double >vect_bjets_eta;
-
+  vector < double > vect_jet_pt;
+  vector < double > vect_jet_phi;
+  vector < double > vect_jet_eta;
+  vector < double > vect_jet_discrCSV;
+  vector < double > vect_bjets_pt;
+  vector < double > vect_bjets_phi;
+  vector < double > vect_bjets_eta;
 
   bool isb = false;
   bool isc = false ;
@@ -644,8 +645,9 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       jet_phi = jet->phi();
 
       // for events with a generated b
-      b_pt    = jet->pt ();
-      b_eta   = jet->eta();
+      b_pt  = jet->pt ();
+      b_eta = jet->eta();
+      b_phi = jet->phi();
 
       Ht += jet_pt;
 
@@ -655,7 +657,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       jecUnc->setJetEta(jet_eta);
       double unc = jecUnc->getUncertainty(true);
       double cor = (1.0+unc*par);
-      h_JEC_uncert -> Fill(unc);
+      h_JEC_uncert->Fill (unc);
 //      cout<< "JEC syst =" << unc << endl;
 
       jet_pt  = jet->pt () * cor;
@@ -682,7 +684,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
         //cout<<discrCSV<<endl;
 
-        if (discrCSV > 0.89){
+        if (discrCSV > 0.89) {
 
 	  ++Nb;
 	  //cout<<Nb<<endl;
@@ -710,7 +712,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 	  }
 
 	  ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecTrk;
-	  for (size_t itrack=0; itrack < jet->associatedTracks().size(); ++itrack){
+	  for (size_t itrack=0; itrack < jet->associatedTracks().size(); ++itrack) {
 	    const double kPionMass = 0.13957018;
 	    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > vec;
 	    vec.SetPx( jet->associatedTracks()[itrack]->px() );
@@ -737,19 +739,19 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
     }
 
-    if (isMC && Nb != 0) {
+    if (isMC && Nb > 0) {
       scalFac_b = BtSF.Val(jet_pt, jet_eta);
       //cout<<jet_pt<<jet_eta<<"   SFb ="<<scalFac_b<<endl;
     }
 
-    if (Nj != 0 && Nb != 0) {
+    if (Nj > 0 && Nb > 0) {
       sumVertexMassJet /= Nb;
       sumVertexMassTrk /= Nb;
       sumVertexMass /= Nb;
 
-      w_SVTX_mass_jet -> Fill(sumVertexMassJet, MyWeight*scalFac_b);
-      w_SVTX_mass_trk -> Fill(sumVertexMassTrk, MyWeight*scalFac_b);
-      w_SVTX_mass -> Fill(sumVertexMass, MyWeight*scalFac_b);
+      w_SVTX_mass_jet->Fill (sumVertexMassJet, MyWeight*scalFac_b);
+      w_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
+      w_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
 
 //      cout<<"VTX mass JET = "<< sumVertexMassJet << endl;
 //      cout<<"VTX mass TRK = "<< sumVertexMassTrk << endl;
@@ -758,23 +760,30 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   }
 
-  // DIMUON Z
+  // ++++++++ MET
 
-  if (mm_event && Nj != 0) {
+  if ((ee_event || mm_event) && Nj > 0) {
+    w_MET->Fill (met->empty() ? 0 : (*met)[0].et(), MyWeight);
+    w_MET_sign->Fill (met->empty() ? 0 : (*met)[0].significance(), MyWeight);
+  }
 
-    dimuon_inv = (*zmm)[0].mass();
+  // ++++++++ DIMUON Z
+
+  if (mm_event && Nj > 0) {
+
+    dimuon_mass = (*zmm)[0].mass();
     dimuon_phi = (*zmm)[0].phi();
     pt_Z = (*zmm)[0].pt();
 
-    if (dimuon_inv != 0)  {
+    if (dimuon_mass != 0)  {
 
-      h_mm_inv->Fill (dimuon_inv);
-      w_mm_inv->Fill (dimuon_inv, MyWeight);
+      h_mass_mm->Fill (dimuon_mass);
+      w_mass_mm->Fill (dimuon_mass, MyWeight);
       w_pt_Z_mm->Fill (pt_Z, MyWeight);
 
-      if (Nb != 0) {
-        b_mm_invmass = dimuon_inv;
-        w_invMass_mm_b->Fill (b_mm_invmass, MyWeight*scalFac_b);
+      if (Nb > 0) {
+        b_mm_mass = dimuon_mass;
+        w_mass_mm_b->Fill (b_mm_mass, MyWeight*scalFac_b);
         Delta_phi_mm = fabs (dimuon_phi - vect_bjets_phi[0]);
         if (Delta_phi_mm > acos (-1)) Delta_phi_mm = 2 * acos (-1) - Delta_phi_mm;
         h_delta_mm->Fill (Delta_phi_mm, MyWeight*scalFac_b);
@@ -783,28 +792,28 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     }
   }
 
-  // DIELECTRON Z
+  // ++++++++ DIELECTRON Z
 
-  if (ee_event && Nj != 0) {
+  if (ee_event && Nj > 0) {
 
-    diele_inv = (*zee)[0].mass();
+    diele_mass = (*zee)[0].mass();
     diele_phi = (*zee)[0].phi();
     pt_Z = (*zee)[0].pt();
 //
 //    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > z;
 //    z = (*electrons)[0].ecalDrivenMomentum()+(*electrons)[1].ecalDrivenMomentum();
-//    diele_inv = z.mass();
+//    diele_mass = z.mass();
 //    diele_phi = z.phi();
 //    pt_Z = z.pt();
 
-    if (diele_inv != 0) {
-      h_ee_inv->Fill (diele_inv);
-      w_ee_inv->Fill (diele_inv, MyWeight);
+    if (diele_mass != 0) {
+      h_mass_ee->Fill (diele_mass);
+      w_mass_ee->Fill (diele_mass, MyWeight);
       w_pt_Z_ee->Fill (pt_Z, MyWeight);
 
-      if (Nb != 0) {
-        b_ee_invmass = diele_inv;
-        w_invMass_ee_b->Fill (b_ee_invmass, MyWeight*scalFac_b);
+      if (Nb > 0) {
+        b_ee_mass = diele_mass;
+        w_mass_ee_b->Fill (b_ee_mass, MyWeight*scalFac_b);
         Delta_phi_ee = fabs (diele_phi - vect_bjets_phi[0]);
         if (Delta_phi_ee > acos (-1)) Delta_phi_ee = 2 * acos (-1) - Delta_phi_ee;
         h_delta_ee->Fill (Delta_phi_ee, MyWeight*scalFac_b);
@@ -813,93 +822,86 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     }
   }
 
-  // MET
-
-  if ((ee_event || mm_event) && Nj != 0) {
-    w_MET->Fill (met->empty() ? 0 : (*met)[0].et(), MyWeight);
-    w_MET_sign->Fill(met->empty() ? 0 : (*met)[0].significance(), MyWeight);
-  }
-
-  if ((ee_event || mm_event) && Nj != 0) {
+  if ((ee_event || mm_event) && Nj > 0) {
     w_first_jet_pt->Fill (vect_jet_pt[0], MyWeight);
-    w_second_jet_pt->Fill (vect_jet_pt[1], MyWeight);
+    if (Nj > 1) w_second_jet_pt->Fill (vect_jet_pt[1], MyWeight);
     w_first_jet_eta->Fill (vect_jet_eta[0], MyWeight);
-    w_Ht->Fill(Ht, MyWeight);
+    w_Ht->Fill (Ht, MyWeight);
     recoVTX_->Fill (NVtx);
     recoVTX_w->Fill (NVtx, MyWeight);
   }
 
-  if ((ee_event || mm_event) && Nb != 0 && isb){
+  if ((ee_event || mm_event) && Nb > 0 && isb) {
     b_first_jet_pt->Fill (jet_pt, MyWeight*scalFac_b);
     b_first_jet_eta->Fill (jet_eta, MyWeight*scalFac_b);
     if (ee_event) {
-      b_pt_Z_ee->Fill(pt_Z, MyWeight*scalFac_b);
-      b_invMass_ee->Fill(diele_inv, MyWeight*scalFac_b);
+      b_pt_Z_ee->Fill (pt_Z, MyWeight*scalFac_b);
+      b_mass_ee->Fill (diele_mass, MyWeight*scalFac_b);
     }
     if (mm_event) {
-      b_pt_Z_mm->Fill(pt_Z, MyWeight*scalFac_b);
-      b_invMass_mm->Fill(dimuon_inv, MyWeight*scalFac_b);
+      b_pt_Z_mm->Fill (pt_Z, MyWeight*scalFac_b);
+      b_mass_mm->Fill (dimuon_mass, MyWeight*scalFac_b);
     }
 
-    b_MET->Fill(met->empty() ? 0 : (*met)[0].et(), MyWeight*scalFac_b);
-    b_secondvtx_N->Fill(discrCSV, MyWeight*scalFac_b);
-    b_SVTX_mass_jet->Fill(sumVertexMassJet, MyWeight*scalFac_b);
-    b_SVTX_mass_trk->Fill(sumVertexMassTrk, MyWeight*scalFac_b);
-    b_SVTX_mass->Fill(sumVertexMass, MyWeight*scalFac_b);
+    b_MET->Fill (met->empty() ? 0 : (*met)[0].et(), MyWeight*scalFac_b);
+    b_secondvtx_N->Fill (discrCSV, MyWeight*scalFac_b);
+    b_SVTX_mass_jet->Fill (sumVertexMassJet, MyWeight*scalFac_b);
+    b_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
+    b_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
   }
 
-  if ((ee_event || mm_event) && Nb != 0 && isc){
-   c_MET        ->Fill(met->empty() ? 0 : (*met)[0].et(), MyWeight*scalFac_b);
-   c_secondvtx_N->Fill(discrCSV, MyWeight*scalFac_b);
-   c_SVTX_mass_jet->Fill(sumVertexMassJet, MyWeight*scalFac_b);
-   c_SVTX_mass_trk->Fill(sumVertexMassTrk, MyWeight*scalFac_b);
-   c_SVTX_mass    ->Fill(sumVertexMass, MyWeight*scalFac_b);
+  if ((ee_event || mm_event) && Nb > 0 && isc) {
+   c_MET->Fill (met->empty() ? 0 : (*met)[0].et(), MyWeight*scalFac_b);
+   c_secondvtx_N->Fill (discrCSV, MyWeight*scalFac_b);
+   c_SVTX_mass_jet->Fill (sumVertexMassJet, MyWeight*scalFac_b);
+   c_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
+   c_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
     if (mm_event) {
-      c_pt_Z_mm->Fill(pt_Z, MyWeight*scalFac_b);
-      c_invMass_mm->Fill(dimuon_inv, MyWeight*scalFac_b);
+      c_pt_Z_mm->Fill (pt_Z, MyWeight*scalFac_b);
+      c_mass_mm->Fill (dimuon_mass, MyWeight*scalFac_b);
     }
     if (ee_event) {
-      c_pt_Z_ee->Fill(pt_Z, MyWeight*scalFac_b);
-      c_invMass_ee->Fill(diele_inv, MyWeight*scalFac_b);
+      c_pt_Z_ee->Fill (pt_Z, MyWeight*scalFac_b);
+      c_mass_ee->Fill (diele_mass, MyWeight*scalFac_b);
     }
 
   }
 
-  if ((ee_event || mm_event) && Nb != 0) {
+  if ((ee_event || mm_event) && Nb > 0) {
     w_jetmultiplicity_b->Fill (Nb, MyWeight*scalFac_b);
-    w_Ht_b->Fill(Ht, MyWeight*scalFac_b);
+    w_Ht_b->Fill (Ht, MyWeight*scalFac_b);
     w_first_jet_pt_b->Fill (vect_jet_pt[0], MyWeight*scalFac_b);
     w_first_jet_eta_b->Fill (vect_jet_eta[0], MyWeight*scalFac_b);
     w_first_bjet_pt->Fill (vect_bjets_pt[0], MyWeight*scalFac_b);
     w_first_bjet_eta->Fill (vect_bjets_eta[0], MyWeight*scalFac_b);
-    if(mm_event) w_invMass_mm_b->Fill(dimuon_inv, MyWeight*scalFac_b);
-    if(ee_event) w_invMass_ee_b->Fill(diele_inv, MyWeight*scalFac_b);
+    if (mm_event) w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
+    if (ee_event) w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
 
     if (fabs (vect_bjets_eta[0]) > 0) Nf++;
     if (fabs (vect_bjets_eta[0]) < 0) Nbk++;
-    Afb = (Nf - Nbk) / (Nf + Nbk);
+    if ((Nf+Nbk) != 0) Afb = (Nf - Nbk) / (Nf + Nbk);
     w_Afb->Fill (Afb, MyWeight*scalFac_b);
   }
 
-  if ((ee_event || mm_event) && Nj != 0) {
+  if ((ee_event || mm_event) && Nj > 0) {
     h_PUweights->Fill (MyWeight);
   }
 
-  if (ee_event && Nj != 0) {
+  if (ee_event && Nj > 0) {
     h_scalFactor_first_ele->Fill (scalFac_first_e);
     h_scalFactor_second_ele->Fill (scalFac_second_e);
   }
-  if (mm_event && Nj != 0) {
+  if (mm_event && Nj > 0) {
     h_scalFactor_first_muon->Fill (scalFac_first_mu);
     h_scalFactor_second_muon->Fill (scalFac_second_mu);
   }
 
-  if ((ee_event || mm_event) && Nj != 0) {
+  if ((ee_event || mm_event) && Nj > 0) {
     h_jetmultiplicity->Fill (Nj);
     w_jetmultiplicity->Fill (Nj, MyWeight);
   }
 
-  if (ee_event && Nj != 0) {
+  if (ee_event && Nj > 0) {
     w_first_ele_pt->Fill (vect_ele_pt[0], MyWeight);
     sf_first_ele_pt->Fill (vect_ele_pt[0], MyWeight / (scalFac_first_e * scalFac_second_e));
     w_second_ele_pt->Fill (vect_ele_pt[1], MyWeight);
@@ -907,14 +909,14 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     w_second_ele_eta->Fill (vect_ele_eta[1], MyWeight);
   }
 
-  if (mm_event && Nj != 0) {
+  if (mm_event && Nj > 0) {
     w_first_muon_pt->Fill (vect_muon_pt[0], MyWeight);
     w_second_muon_pt->Fill (vect_muon_pt[1], MyWeight);
     w_first_muon_eta->Fill (vect_muon_eta[0], MyWeight);
     w_second_muon_eta->Fill (vect_muon_eta[1], MyWeight);
   }
 
-  if ((ee_event || mm_event) && Nj != 0) {
+  if ((ee_event || mm_event) && Nj > 0) {
     Ntracks = tracks->size();
     h_tracks->Fill (Ntracks);
     w_tracks->Fill (Ntracks, MyWeight);

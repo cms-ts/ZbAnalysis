@@ -59,22 +59,12 @@ if (ilepton<1 || ilepton>2) {
 	if (title.empty()) title = "w_jetmultiplicity";
 
 	if (ilepton==1) {
-	  if (title=="first_muon_pt") return;
-	  if (title=="first_muon_eta") return;
-	  if (title=="w_mm_inv") return;
-	  if (title=="b_mm_inv") return;
-	  if (title=="w_delta_phi_mm") return;
-	  if (title=="Z_pt_mm") return;
-	  if (title=="Z_pt_mm_b") return;
+	  if (title.find("muon")!=string::npos) return;
+	  if (title.find("mm")!=string::npos) return;
 	}
 	if (ilepton==2) {
-	  if (title=="first_ele_pt") return;
-	  if (title=="first_ele_eta") return;
-	  if (title=="w_ee_inv") return;
-	  if (title=="b_ee_inv") return;
-	  if (title=="w_delta_phi_ee") return;
-	  if (title=="Z_pt_ee") return;
-	  if (title=="Z_pt_ee_b") return;
+	  if (title.find("ele")!=string::npos) return;
+	  if (title.find("ee")!=string::npos) return;
 	}
 
 	if (ilepton==1)
@@ -97,8 +87,9 @@ if (ilepton<1 || ilepton>2) {
 	if (ilepton==1) mc1->cd("demo_ee");
 	if (ilepton==2) mc1->cd("demo_mm");
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
-	TH1F* h_mc1b = 0;
-	TH1F* h_mc1c = 0;
+	TH1F* h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
+	TH1F* h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
+/*
 	if (title == "w_secondvtx_N") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_secondvtx_N");
 	  h_mc1c = (TH1F*)gDirectory->Get("c_secondvtx_N");
@@ -138,30 +129,31 @@ if (ilepton<1 || ilepton>2) {
 	if (title == "w_first_bjet_eta") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
 	}
-	if (title == "w_Z_pt_ee") { // si lo so
+	if (title == "w_pt_Z_ee") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_ee");
 	  h_mc1c = (TH1F*)gDirectory->Get("c_pt_Z_ee");
 	}
-	if (title == "w_Z_pt_mm") {
+	if (title == "w_pt_Z_mm") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_mm");
 	  h_mc1c = (TH1F*)gDirectory->Get("c_pt_Z_mm");
 	}
-	if (title == "w_invMass_mm") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_mm");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_invMass_mm");
+	if (title == "w_mass_mm") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_mass_mm");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_mass_mm");
 	}
-	if (title == "w_invMass_ee") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_ee");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_invMass_ee");
+	if (title == "w_mass_ee") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_mass_ee");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_mass_ee");
 	}
-	if (title == "w_invMass_mm_b") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_mm");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_invMass_mm");
+	if (title == "w_mass_mm_b") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_mass_mm");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_mass_mm");
 	}
-	if (title == "w_invMass_ee_b") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_ee");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_invMass_ee");
+	if (title == "w_mass_ee_b") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_mass_ee");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_mass_ee");
 	}
+*/
 
 	if (ilepton==1) mc2->cd("demo_ee");
 	if (ilepton==2) mc2->cd("demo_mm");
@@ -410,9 +402,9 @@ if (ilepton<1 || ilepton>2) {
 
 	if (title=="w_jetmultiplicity") {
 	  h_ratio->GetXaxis ()->SetTitle("Number of jets");
-	} else if (title=="w_mm_inv") {
+	} else if (title=="w_mm_mass") {
 	  h_ratio->GetXaxis ()->SetTitle("#mu^{+}#mu^{-} invariant mass [GeV/c^{2}]");
-	} else if (title=="w_ee_inv") {
+	} else if (title=="w_ee_mass") {
 	  h_ratio->GetXaxis ()->SetTitle("e^{+}e^{-} invariant mass [GeV/c^{2}]");
 	} else if (title=="first_muon_pt") {
 	  h_ratio->GetXaxis ()->SetTitle("muon p_{T} [GeV/c]");
@@ -450,7 +442,7 @@ if (ilepton<1 || ilepton>2) {
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
 	} else if (title=="w_delta_phi_mm") {
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
-	} else if (title=="w_ee_inv_b"||title=="w_mm_inv_b") {
+	} else if (title=="w_ee_mass_b"||title=="w_mm_mass_b") {
 	  h_ratio->GetXaxis ()->SetTitle("Z mass + (#ge 1 b quark) [GeV/c^{2}]");
 	} else if (title=="SVTX_mass_jet"||title=="SVTX_mass_trk"||title=="SVTX_mass") {
 	  h_ratio->GetXaxis ()->SetTitle("SV mass [GeV/c^{2}]");
