@@ -361,7 +361,7 @@ if (ilepton<1 || ilepton>2) {
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
 	h_data->SetMarkerSize (1.0);
-	h_data->SetStats(0);
+	//h_data->SetStats(0);
 
 	leg = new TLegend(0.62, 0.58, 0.88, 0.88);
 	leg->SetBorderSize(0);
