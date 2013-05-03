@@ -104,18 +104,18 @@ if (ilepton<1 || ilepton>2) {
 	  h_mc1c = (TH1F*)gDirectory->Get("c_secondvtx_N");
 	}
 	if (title == "w_MET") {
-	  h_mc1b = (TH1F*)gDirectory->Get("w_MET_b");
-	  h_mc1c = (TH1F*)gDirectory->Get("w_MET_c");
+	  h_mc1b = (TH1F*)gDirectory->Get("b_MET");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_MET");
 	}
-	if (title == "SVTX_mass_jet") {
+	if (title == "w_SVTX_mass_jet") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_SVTX_mass_jet");
 	  h_mc1c = (TH1F*)gDirectory->Get("c_SVTX_mass_jet");
 	}
-	if (title == "SVTX_mass_trk") {
+	if (title == "w_SVTX_mass_trk") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_SVTX_mass_trk");
 	  h_mc1c = (TH1F*)gDirectory->Get("c_SVTX_mass_trk");
 	}
-	if (title == "SVTX_mass") {
+	if (title == "w_SVTX_mass") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_SVTX_mass");
 	  h_mc1c = (TH1F*)gDirectory->Get("c_SVTX_mass");
 	}
@@ -127,23 +127,38 @@ if (ilepton<1 || ilepton>2) {
 	}
 	if (title == "w_first_jet_eta") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_first_jet_eta");
 	}
 	if (title == "w_first_jet_eta_b") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
 	}
-	if (title == "Z_pt_ee_b") {
+	if (title == "w_first_bjet_pt") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_pt");
+	}
+	if (title == "w_first_bjet_eta") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
+	}
+	if (title == "w_Z_pt_ee") { // si lo so
 	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_ee");
 	  h_mc1c = (TH1F*)gDirectory->Get("c_pt_Z_ee");
 	}
-	if (title == "Z_pt_mm_b") {
+	if (title == "w_Z_pt_mm") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_mm");
 	  h_mc1c = (TH1F*)gDirectory->Get("c_pt_Z_mm");
 	}
-	if (title == "w_mm_inv_b") {
+	if (title == "w_invMass_mm") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_mm");
 	  h_mc1c = (TH1F*)gDirectory->Get("c_invMass_mm");
 	}
-	if (title == "w_ee_inv_b") {
+	if (title == "w_invMass_ee") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_ee");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_invMass_ee");
+	}
+	if (title == "w_invMass_mm_b") {
+	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_mm");
+	  h_mc1c = (TH1F*)gDirectory->Get("c_invMass_mm");
+	}
+	if (title == "w_invMass_ee_b") {
 	  h_mc1b = (TH1F*)gDirectory->Get("b_invMass_ee");
 	  h_mc1c = (TH1F*)gDirectory->Get("c_invMass_ee");
 	}
@@ -354,7 +369,7 @@ if (ilepton<1 || ilepton>2) {
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
 	h_data->SetMarkerSize (1.0);
-	//h_data->SetStats(0);
+	h_data->SetStats(0);
 
 	leg = new TLegend(0.62, 0.58, 0.88, 0.88);
 	leg->SetBorderSize(0);
