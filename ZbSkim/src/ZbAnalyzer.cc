@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.26 2013/05/02 18:42:56 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.27 2013/05/03 13:22:49 vieri Exp $
 //
 //
 
@@ -357,8 +357,8 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   h_delta_mm =          fs->make < TH1F > ("w_delta_phi_mm", "w_delta_phi_mm", 12, 0, TMath::Pi ());
   w_pt_Z_ee_b =         fs->make < TH1F > ("w_pt_Z_ee_b", "w_pt_Z_ee_b", 70, 0., 700.);
   w_pt_Z_mm_b =         fs->make < TH1F > ("w_pt_Z_mm_b", "w_pt_Z_mm_b", 70, 0., 700.);
-  w_pt_Z_ee =           fs->make < TH1F > ("w_Z_pt_ee", "w_Z_pt_ee;P_t [GeV]", 70, 0., 700.);
-  w_pt_Z_mm =           fs->make < TH1F > ("w_Z_pt_mm", "w_Z_pt_mm;P_t [GeV]", 70, 0., 700.);
+  w_pt_Z_ee =           fs->make < TH1F > ("w_pt_Z_ee", "w_pt_Z_ee;P_t [GeV]", 70, 0., 700.);
+  w_pt_Z_mm =           fs->make < TH1F > ("w_pt_Z_mm", "w_pt_Z_mm;P_t [GeV]", 70, 0., 700.);
   w_SVTX_mass_jet =       fs->make < TH1F > ("w_SVTX_mass_jet", "w_SVTX_mass_jet", 70, 0, 7);
   w_SVTX_mass_trk =       fs->make < TH1F > ("w_SVTX_mass_trk", "w_SVTX_mass_trk", 160, 0, 80);
   w_SVTX_mass =           fs->make < TH1F > ("w_SVTX_mass", "w_SVTX_mass", 70, 0, 7);
