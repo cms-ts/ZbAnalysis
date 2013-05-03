@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.28 2013/05/03 16:05:00 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.29 2013/05/03 21:14:42 dellaric Exp $
 //
 //
 
@@ -170,8 +170,8 @@ private:
   TH1F*     h_secondvtx_N;
   TH1F*     h_PUweights;
   TH1F*     h_tracks;
-  TH1F*     recoVTX_;
-  TH1F*     recoVTX_w;
+  TH1F*     h_recoVTX;
+  TH1F*     w_recoVTX;
 
   TH1F*     w_first_jet_pt;      // leading jet of any type
   TH1F*     w_second_jet_pt;
@@ -204,13 +204,12 @@ private:
   TH1F*     w_secondvtx_N;
   TH1F*     b_secondvtx_N;
   TH1F*     w_tracks;
-  TH1F*     flavours_;
   TH1F*     w_MET;
   TH1F*     w_MET_sign;
   TH1F*     b_MET;
 
   TH1F*     w_delta_phi_mm;
-  TH1F*     numberOfZ;
+  TH1F*     w_numberOfZ;
   TH1F*     w_Ht;
   TH1F*     w_Ht_b;
 
@@ -298,8 +297,8 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   h_mass_ee =           fs->make < TH1F > ("h_mass_ee", "h_mass_ee", 60, 60, 120);
   h_secondvtx_N =       fs->make < TH1F > ("h_secondvtx_N", "h_secondvtx_N", 50, 0, 1);
   h_PUweights =         fs->make < TH1F > ("h_pu_weights", "h_pu_weights", 10, 0, 10);
-  recoVTX_ =            fs->make < TH1F > ("recoVTX", "No. reconstructed vertices", 40, 0., 40.);
-  recoVTX_w =           fs->make < TH1F > ("recoVTXw", "No. reconstructed vertices weighted", 40, 0., 40.);
+  h_recoVTX =           fs->make < TH1F > ("h_recoVTX", "No. reconstructed vertices", 40, 0., 40.);
+  w_recoVTX =           fs->make < TH1F > ("w_recoVTX", "No. reconstructed vertices weighted", 40, 0., 40.);
   h_tracks =            fs->make < TH1F > ("h_tracks", "h_tracks", 100, 0, 2500);
 
   // b fraction before btagging histograms
@@ -349,7 +348,6 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_secondvtx_N =       fs->make < TH1F > ("b_secondvtx_N", "b_secondvtx_N", 50, 0, 1);
   c_secondvtx_N =       fs->make < TH1F > ("c_secondvtx_N", "w_secondvtx_N", 50, 0, 1);
   w_tracks = 	        fs->make < TH1F > ("w_tracks", "w_tracks", 100, 0, 2500);
-  flavours_ = 	        fs->make < TH1F > ("flavours", "jet flavours", 5, 0, 5);
   w_MET = 	        fs->make < TH1F > ("w_MET", "w_MET", 50, 0, 250);
   w_MET_sign = 	        fs->make < TH1F > ("w_MET_sign", "w_MET_sign", 50, 0, 50);
   b_MET    = 	        fs->make < TH1F > ("b_MET", "b_MET", 50, 0, 250);
@@ -379,7 +377,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
 
   w_Afb =                    fs->make < TH1F > ("b_asymmetry", "b_asymmetry", 10, -1, 1);
 
-  numberOfZ =                fs->make < TH1F > ("numberOfZ",   "numberOfZ", 5, 0, 5);
+  w_numberOfZ =              fs->make < TH1F > ("w_numberOfZ", "w_numberOfZ", 5, 0, 5);
 
   treeZb_ = fs->make < TTree > ("ZbTree", "ZbTree");
   treeZb_->Branch ("Nj", &Nj);
@@ -588,8 +586,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   if (ee_event) MyWeight = MyWeight * scalFac_first_e * scalFac_second_e;
   if (mm_event) MyWeight = MyWeight * scalFac_first_mu * scalFac_second_mu;
 
-  if (ee_event) numberOfZ->Fill (zee->size (), MyWeight);
-  if (mm_event) numberOfZ->Fill (zmm->size(), MyWeight);
+  if (ee_event) w_numberOfZ->Fill (zee->size(), MyWeight);
+  if (mm_event) w_numberOfZ->Fill (zmm->size(), MyWeight);
 
   // ++++++++ VERTICES
 
@@ -827,8 +825,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     if (Nj > 1) w_second_jet_pt->Fill (vect_jet_pt[1], MyWeight);
     w_first_jet_eta->Fill (vect_jet_eta[0], MyWeight);
     w_Ht->Fill (Ht, MyWeight);
-    recoVTX_->Fill (NVtx);
-    recoVTX_w->Fill (NVtx, MyWeight);
+    h_recoVTX->Fill (NVtx);
+    w_recoVTX->Fill (NVtx, MyWeight);
   }
 
   if ((ee_event || mm_event) && Nb > 0 && isb) {
