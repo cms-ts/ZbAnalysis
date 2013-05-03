@@ -62,10 +62,13 @@ for D in $DIRS; do
       fi
 
       E=`grep "Begin Fatal Exception" $F`
-
       if [ ! -z "$E" ]; then
         echo "ERROR: exception in "$F
-#        grep 'open file file:' $F
+      fi
+
+      E=`grep "fatal system signal" $F`
+      if [ ! -z "$E" ]; then
+        echo "ERROR: fatal system signal in "$F
       fi
 
     fi
