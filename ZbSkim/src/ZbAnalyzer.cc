@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.37 2013/05/04 11:59:47 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.38 2013/05/04 14:44:05 dellaric Exp $
 //
 //
 
@@ -147,8 +147,6 @@ private:
   double    b_leading_eta;
 
   double    Ht, Ht_b;
-  double    b_ee_mass;
-  double    b_mm_mass;
   double    discrCSV;
   double    MyWeight;
   double    sFac;
@@ -609,10 +607,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   discrCSV = 0;
   b_leading_pt = 0;
   b_leading_eta = 0;
-  delta_phi_mm = 0;
   delta_phi_ee = 0;
-  b_mm_mass = 0;
-  b_ee_mass = 0;
+  delta_phi_mm = 0;
   Nf = 0;
   Nb = 0;
   Afb = 0;
@@ -870,7 +866,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     sumVertexMass /= Nb;
 //    cout << "VTX mass JET = " << sumVertexMassJet << endl;
 //    cout << "VTX mass TRK = " << sumVertexMassTrk << endl;
-//    cout << "VTX mass NEW = " §<< sumVertexMass << endl;
+//    cout << "VTX mass NEW = " << sumVertexMass << endl;
   }
 
   if ((ee_event || mm_event) && Nj > 0 && Nb > 0) {
@@ -915,18 +911,17 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       w_mass_ee->Fill (diele_mass, MyWeight);
       w_pt_Z_ee->Fill (diele_pt, MyWeight);
       if (Nb > 0) {
-        b_ee_mass = diele_mass;
-        w_mass_ee_b->Fill (b_ee_mass, MyWeight*scalFac_b);
+        w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
         delta_phi_ee = fabs (diele_phi - vect_bjets_phi[0]);
         if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
         w_delta_ee->Fill (delta_phi_ee, MyWeight*scalFac_b);
         w_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
         if (isb) {
-          b_mass_ee->Fill (b_ee_mass, MyWeight*scalFac_b);
+          b_mass_ee->Fill (diele_mass, MyWeight*scalFac_b);
           b_pt_Z_ee->Fill (diele_pt, MyWeight*scalFac_b);
         }
         if (isc) {
-          c_mass_ee->Fill (b_ee_mass, MyWeight*scalFac_b);
+          c_mass_ee->Fill (diele_mass, MyWeight*scalFac_b);
           c_pt_Z_ee->Fill (diele_pt, MyWeight*scalFac_b);
         }
       }
@@ -945,18 +940,17 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       w_mass_mm->Fill (dimuon_mass, MyWeight);
       w_pt_Z_mm->Fill (dimuon_pt, MyWeight);
       if (Nb > 0) {
-        b_mm_mass = dimuon_mass;
-        w_mass_mm_b->Fill (b_mm_mass, MyWeight*scalFac_b);
+        w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
         delta_phi_mm = fabs (dimuon_phi - vect_bjets_phi[0]);
         if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
         w_delta_mm->Fill (delta_phi_mm, MyWeight*scalFac_b);
         w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
         if (isb) {
-          b_mass_mm->Fill (b_mm_mass, MyWeight*scalFac_b);
+          b_mass_mm->Fill (dimuon_mass, MyWeight*scalFac_b);
           b_pt_Z_mm->Fill (dimuon_pt, MyWeight*scalFac_b);
         }
         if (isc) {
-          c_mass_mm->Fill (b_mm_mass, MyWeight*scalFac_b);
+          c_mass_mm->Fill (dimuon_mass, MyWeight*scalFac_b);
           c_pt_Z_mm->Fill (dimuon_pt, MyWeight*scalFac_b);
         }
       }
@@ -978,8 +972,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if (ee_event && Nj > 0) {
     w_first_ele_pt->Fill (vect_ele_pt[0], MyWeight);
-    w_second_ele_pt->Fill (vect_ele_pt[1], MyWeight);
     w_first_ele_eta->Fill (vect_ele_eta[0], MyWeight);
+    w_second_ele_pt->Fill (vect_ele_pt[1], MyWeight);
     w_second_ele_eta->Fill (vect_ele_eta[1], MyWeight);
 
     h_sf_first_ele_pt->Fill (vect_ele_pt[0], MyWeight / (scalFac_first_e * scalFac_second_e));
@@ -995,8 +989,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if (mm_event && Nj > 0) {
     w_first_muon_pt->Fill (vect_muon_pt[0], MyWeight);
-    w_second_muon_pt->Fill (vect_muon_pt[1], MyWeight);
     w_first_muon_eta->Fill (vect_muon_eta[0], MyWeight);
+    w_second_muon_pt->Fill (vect_muon_pt[1], MyWeight);
     w_second_muon_eta->Fill (vect_muon_eta[1], MyWeight);
   }
 
