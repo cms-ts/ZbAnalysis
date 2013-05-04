@@ -22,10 +22,15 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_numberOfZ\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_mass_ee\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_mass_mm\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"w_mass_mm_b\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"w_mass_ee_b\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_pt_Z_ee\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_pt_Z_mm\",1,$i\)
+
+  root -l -q -b DataMCComp.C\(\"w_mass_mm_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_mass_ee_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_pt_Z_ee_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_pt_Z_mm_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_delta_phi_ee_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_delta_phi_mm_b\",1,$i\)
 
   root -l -q -b DataMCComp.C\(\"w_jetmultiplicity\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_jet_pt\",1,$i\)
@@ -55,9 +60,6 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_second_bjet_eta\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_third_bjet_pt\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_third_bjet_eta\",1,$i\)
-
-  root -l -q -b DataMCComp.C\(\"w_delta_phi_ee_b\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"w_delta_phi_mm_b\",1,$i\)
 
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass_jet\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass_trk\",1,$i\)
