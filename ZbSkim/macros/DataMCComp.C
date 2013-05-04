@@ -240,6 +240,7 @@ if (ilepton<1 || ilepton>2) {
 	    e = e + h_mc_fit0->GetBinError(i)**2;
 	    e = e + h_mc_fit1->GetBinError(i)**2;
 	    e = e + h_mc_fit2->GetBinError(i)**2;
+	    if (title=="w_secondvtx_N" && h_data_fit->GetXaxis()->GetBinCenter(i) < 0.89) e = 1.e10;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
 	  f1->SetParameters(1.0, 1.0, 1.0);
