@@ -373,6 +373,10 @@ if (ilepton<1 || ilepton>2) {
 	  h_ratio->GetXaxis ()->SetTitle("subleading b quark p_{T} [GeV/c]");
 	} else if (title=="w_second_jet_eta_b") {
 	  h_ratio->GetXaxis ()->SetTitle("subleading b quark #eta");
+	} else if (title=="w_third_jet_pt_b") {
+	  h_ratio->GetXaxis ()->SetTitle("subsubleading b quark p_{T} [GeV/c]");
+	} else if (title=="w_third_jet_eta_b") {
+	  h_ratio->GetXaxis ()->SetTitle("subsubleading b quark #eta");
 	} else if (title=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_delta_phi_ee"||title=="w_delta_phi_mm") {

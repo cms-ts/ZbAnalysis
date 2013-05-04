@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.33 2013/05/04 08:04:32 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.34 2013/05/04 09:00:30 dellaric Exp $
 //
 //
 
@@ -187,12 +187,16 @@ private:
   TH1F*     w_first_jet_eta_b;
   TH1F*     w_second_jet_pt_b;
   TH1F*     w_second_jet_eta_b;
+  TH1F*     w_third_jet_pt_b;
+  TH1F*     w_third_jet_eta_b;
 
   TH1F*     w_bjetmultiplicity;
   TH1F*     w_first_bjet_pt;     // leading b jet
   TH1F*     w_first_bjet_eta;
   TH1F*     w_second_bjet_pt;
   TH1F*     w_second_bjet_eta;
+  TH1F*     w_third_bjet_pt;
+  TH1F*     w_third_bjet_eta;
 
   TH1F*     w_first_ele_pt;
   TH1F*     w_second_ele_pt;
@@ -329,12 +333,16 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   w_first_jet_eta_b =   fs->make < TH1F > ("w_first_jet_eta_b",  "w_first_jet_eta_b", 16, -2.5, 2.5);
   w_second_jet_pt_b =   fs->make < TH1F > ("w_second_jet_pt_b",  "w_second_jet_pt_b", 50, 30, 700);
   w_second_jet_eta_b =  fs->make < TH1F > ("w_second_jet_eta_b", "w_second_jet_eta_b", 16, -2.5, 2.5);
+  w_third_jet_pt_b =    fs->make < TH1F > ("w_third_jet_pt_b",   "w_third_jet_pt_b", 50, 30, 700);
+  w_third_jet_eta_b =   fs->make < TH1F > ("w_third_jet_eta_b",  "w_third_jet_eta_b", 16, -2.5, 2.5);
 
   w_bjetmultiplicity =  fs->make < TH1F > ("w_bjetmultiplicity", "w_bjetmultiplicity", 5, 0.5, 5.5);
   w_first_bjet_pt =     fs->make < TH1F > ("w_first_bjet_pt",    "w_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
   w_first_bjet_eta =    fs->make < TH1F > ("w_first_bjet_eta",   "w_first_bjet_eta", 16, -2.5, 2.5);
   w_second_bjet_pt =    fs->make < TH1F > ("w_second_bjet_pt",   "w_second_bjet_pt;P_t [GeV]", 50, 30., 700.);
   w_second_bjet_eta =   fs->make < TH1F > ("w_second_bjet_eta",  "w_second_bjet_eta", 16, -2.5, 2.5);
+  w_third_bjet_pt =     fs->make < TH1F > ("w_third_bjet_pt",    "w_third_bjet_pt;P_t [GeV]", 50, 30., 700.);
+  w_third_bjet_eta =    fs->make < TH1F > ("w_third_bjet_eta",   "w_third_bjet_eta", 16, -2.5, 2.5);
 
   w_first_ele_pt =      fs->make < TH1F > ("w_first_ele_pt",    "first_ele_pt;P_t [GeV]", 35, 0., 350.);
   w_second_ele_pt =     fs->make < TH1F > ("w_second_ele_pt",   "second_ele_pt;P_t [GeV]", 35, 0., 350.);
@@ -849,6 +857,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if ((ee_event || mm_event) && Nj > 0) {
     w_first_jet_pt->Fill (vect_jet_pt[0], MyWeight);
+    w_first_jet_eta->Fill (vect_jet_eta[0], MyWeight);
     if (Nj > 1) {
       w_second_jet_pt->Fill (vect_jet_pt[1], MyWeight);
       w_second_jet_eta->Fill (vect_jet_eta[1], MyWeight);
@@ -857,7 +866,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       w_third_jet_pt->Fill (vect_jet_pt[2], MyWeight);
       w_third_jet_eta->Fill (vect_jet_eta[2], MyWeight);
     }
-    w_first_jet_eta->Fill (vect_jet_eta[0], MyWeight);
     w_Ht->Fill (Ht, MyWeight);
     h_recoVTX->Fill (NVtx);
     w_recoVTX->Fill (NVtx, MyWeight);
@@ -911,6 +919,12 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       w_second_jet_eta_b->Fill (vect_jet_eta[1], MyWeight*scalFac_b);
       w_second_bjet_pt->Fill (vect_bjets_pt[1], MyWeight*scalFac_b);
       w_second_bjet_eta->Fill (vect_bjets_eta[1], MyWeight*scalFac_b);
+    }
+    if (Nb > 2) {
+      w_third_jet_pt_b->Fill (vect_jet_pt[2], MyWeight*scalFac_b);
+      w_third_jet_eta_b->Fill (vect_jet_eta[2], MyWeight*scalFac_b);
+      w_third_bjet_pt->Fill (vect_bjets_pt[2], MyWeight*scalFac_b);
+      w_third_bjet_eta->Fill (vect_bjets_eta[2], MyWeight*scalFac_b);
     }
     if (mm_event) w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
     if (ee_event) w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
