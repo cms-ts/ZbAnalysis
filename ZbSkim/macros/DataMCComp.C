@@ -219,7 +219,7 @@ if (ilepton<1 || ilepton>2) {
 	  f1->SetParNames("f_ttbar", "dummy", "dummy");
 	  f1->FixParameter(1, 0.0);
 	  f1->FixParameter(2, 0.0);
-	  h_data_fit->Fit("f1");
+	  h_data_fit->Fit("f1", "Q0");
 	  h_mc_fit0->Scale(f1->GetParameter(0));
 	}
 	if (doFit==2) {
@@ -245,7 +245,7 @@ if (ilepton<1 || ilepton>2) {
 	  }
 	  f1->SetParameters(1.0, 1.0, 1.0);
 	  f1->SetParNames("f_uds", "f_b", "f_c");
-	  h_data_fit->Fit("f1");
+	  h_data_fit->Fit("f1", "Q0");
 	  h_mc_fit0->Scale(f1->GetParameter(0));
 	  h_mc_fit1->Scale(f1->GetParameter(1));
 	  h_mc_fit2->Scale(f1->GetParameter(2));
