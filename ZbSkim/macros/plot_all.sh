@@ -38,11 +38,16 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_Ht\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_Ht_b\",1,$i\)
 
-  root -l -q -b DataMCComp.C\(\"w_jetmultiplicity_b\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_jet_pt_b\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_jet_eta_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_second_jet_pt_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_second_jet_eta_b\",1,$i\)
+
+  root -l -q -b DataMCComp.C\(\"w_bjetmultiplicity\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_bjet_pt\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_bjet_eta\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_second_bjet_pt\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_second_bjet_eta\",1,$i\)
 
   root -l -q -b DataMCComp.C\(\"w_delta_phi_ee\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_delta_phi_mm\",1,$i\)

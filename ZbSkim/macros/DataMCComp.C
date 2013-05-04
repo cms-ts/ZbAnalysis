@@ -89,71 +89,6 @@ if (ilepton<1 || ilepton>2) {
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
 	TH1F* h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
-/*
-	if (title == "w_secondvtx_N") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_secondvtx_N");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_secondvtx_N");
-	}
-	if (title == "w_MET") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_MET");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_MET");
-	}
-	if (title == "w_SVTX_mass_jet") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_SVTX_mass_jet");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_SVTX_mass_jet");
-	}
-	if (title == "w_SVTX_mass_trk") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_SVTX_mass_trk");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_SVTX_mass_trk");
-	}
-	if (title == "w_SVTX_mass") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_SVTX_mass");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_SVTX_mass");
-	}
-	if (title == "w_first_jet_pt") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_pt");
-	}
-	if (title == "w_first_jet_pt_b") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_pt");
-	}
-	if (title == "w_first_jet_eta") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_first_jet_eta");
-	}
-	if (title == "w_first_jet_eta_b") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
-	}
-	if (title == "w_first_bjet_pt") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_pt");
-	}
-	if (title == "w_first_bjet_eta") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_first_jet_eta");
-	}
-	if (title == "w_pt_Z_ee") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_ee");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_pt_Z_ee");
-	}
-	if (title == "w_pt_Z_mm") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_pt_Z_mm");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_pt_Z_mm");
-	}
-	if (title == "w_mass_mm") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_mass_mm");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_mass_mm");
-	}
-	if (title == "w_mass_ee") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_mass_ee");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_mass_ee");
-	}
-	if (title == "w_mass_mm_b") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_mass_mm");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_mass_mm");
-	}
-	if (title == "w_mass_ee_b") {
-	  h_mc1b = (TH1F*)gDirectory->Get("b_mass_ee");
-	  h_mc1c = (TH1F*)gDirectory->Get("c_mass_ee");
-	}
-*/
 
 	if (ilepton==1) mc2->cd("demo_ee");
 	if (ilepton==2) mc2->cd("demo_mm");
@@ -405,15 +340,13 @@ if (ilepton<1 || ilepton>2) {
 
 	if (title=="w_jetmultiplicity") {
 	  h_ratio->GetXaxis ()->SetTitle("Number of jets");
-	} else if (title=="w_mm_mass") {
-	  h_ratio->GetXaxis ()->SetTitle("#mu^{+}#mu^{-} invariant mass [GeV/c^{2}]");
-	} else if (title=="w_ee_mass") {
-	  h_ratio->GetXaxis ()->SetTitle("e^{+}e^{-} invariant mass [GeV/c^{2}]");
-	} else if (title=="first_muon_pt") {
+	} else if (title=="w_mass_ee"||title=="w_mass_mm") {
+	  h_ratio->GetXaxis ()->SetTitle("invariant mass [GeV/c^{2}]");
+	} else if (title=="w_first_muon_pt") {
 	  h_ratio->GetXaxis ()->SetTitle("muon p_{T} [GeV/c]");
-	} else if (title=="first_ele_pt") {
+	} else if (title=="w_first_ele_pt") {
 	  h_ratio->GetXaxis ()->SetTitle("electron p_{T} [GeV/c]");
-	} else if (title=="first_jet_pt") {
+	} else if (title=="w_first_jet_pt") {
 	  h_ratio->GetXaxis ()->SetTitle("jet p_{T} [GeV/c]");
 	} else if (title=="w_secondvtx_N") {
 	  h_ratio->GetXaxis ()->SetTitle("CSV discriminator");
@@ -427,9 +360,7 @@ if (ilepton<1 || ilepton>2) {
 	  h_ratio->GetXaxis ()->SetTitle("MET Significance [GeV/c]");
 	} else if (title=="w_Ht") {
 	  h_ratio->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
-	} else if (title=="Z_pt_ee") {
-	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
-	} else if (title=="Z_pt_mm") {
+	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_bjetmultiplicity") {
 	  h_ratio->GetXaxis ()->SetTitle("b quark jets multiplicity");
@@ -437,16 +368,16 @@ if (ilepton<1 || ilepton>2) {
 	  h_ratio->GetXaxis ()->SetTitle("leading b quark p_{T} [GeV/c]");
 	} else if (title=="w_first_jet_eta_b") {
 	  h_ratio->GetXaxis ()->SetTitle("leading b quark #eta");
-	} else if (title=="Z_pt_mm_b") {
+	} else if (title=="w_second_jet_pt_b") {
+	  h_ratio->GetXaxis ()->SetTitle("subleading b quark p_{T} [GeV/c]");
+	} else if (title=="w_second_jet_eta_b") {
+	  h_ratio->GetXaxis ()->SetTitle("subleading b quark #eta");
+	} else if (title=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
-	} else if (title=="Z_pt_ee_b") {
-	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
-	} else if (title=="w_delta_phi_ee") {
+	} else if (title=="w_delta_phi_ee"||title=="w_delta_phi_mm") {
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
-	} else if (title=="w_delta_phi_mm") {
-	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
-	} else if (title=="w_ee_mass_b"||title=="w_mm_mass_b") {
-	  h_ratio->GetXaxis ()->SetTitle("Z mass + (#ge 1 b quark) [GeV/c^{2}]");
+	} else if (title=="w_mass_ee_b"||title=="w_mm_mass_b") {
+	  h_ratio->GetXaxis ()->SetTitle("Z mass + (#geq 1 b quark) [GeV/c^{2}]");
 	} else if (title=="SVTX_mass_jet"||title=="SVTX_mass_trk"||title=="SVTX_mass") {
 	  h_ratio->GetXaxis ()->SetTitle("SV mass [GeV/c^{2}]");
 	}
