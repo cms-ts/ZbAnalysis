@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.41 2013/05/04 16:47:47 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.42 2013/05/04 17:09:38 dellaric Exp $
 //
 //
 
@@ -866,13 +866,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 //    cout << "VTX mass NEW = " << sumVertexMass << endl;
   }
 
-  if ((ee_event || mm_event) && Nj > 0 && Nb > 0) {
-    if (isMC) {
-      scalFac_b = BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]);
-      //cout << vect_bjets_pt[0] << " " << vect_bjets_eta[0] <<"   SFb = " << scalFac_b << endl;
-    }
-  }
-
   // ++++++++ MET & HT PLOTS
 
   float met = mets->empty() ? 0 : (*mets)[0].et();
@@ -886,7 +879,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if ((ee_event || mm_event) && Nj > 0) {
     w_Ht->Fill (Ht, MyWeight);
-    if (Nb > 0) w_Ht_b->Fill (Ht, MyWeight*scalFac_b);
+    if (Nb > 0) {
+      scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
+      //cout << vect_bjets_pt[0] << " " << vect_bjets_eta[0] <<"   SFb = " << scalFac_b << endl;
+      w_Ht_b->Fill (Ht, MyWeight*scalFac_b);
+    }
   }
 
   // ++++++++ DIELECTRON Z PLOTS
@@ -907,6 +904,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       w_mass_ee->Fill (diele_mass, MyWeight);
       w_pt_Z_ee->Fill (diele_pt, MyWeight);
       if (Nb > 0) {
+        scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
         w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
         w_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
         delta_phi_ee = fabs (diele_phi - vect_bjets_phi[0]);
@@ -938,6 +936,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       w_mass_mm->Fill (dimuon_mass, MyWeight);
       w_pt_Z_mm->Fill (dimuon_pt, MyWeight);
       if (Nb > 0) {
+        scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
         w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
         w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
         delta_phi_mm = fabs (dimuon_phi - vect_bjets_phi[0]);
@@ -980,6 +979,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   if (ee_event && Nj > 0 && Nb > 0) {
+    scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
     w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
     if (isb) b_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
     if (isc) c_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
@@ -995,6 +995,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   if (mm_event && Nj > 0 && Nb > 0) {
+    scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
     w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
     if (isb) b_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
     if (isc) c_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
@@ -1003,6 +1004,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   // ++++++++ SVTX MASS PLOTS
 
   if ((ee_event || mm_event) && Nj > 0 && Nb > 0) {
+    scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
     w_SVTX_mass_jet->Fill (sumVertexMassJet, MyWeight*scalFac_b);
     w_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
     w_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
@@ -1066,6 +1068,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   // ++++++++ B JETS PLOTS
 
   if ((ee_event || mm_event) && Nj > 0 && Nb > 0) {
+    scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
     w_bjetmultiplicity->Fill (Nb, MyWeight*scalFac_b);
     w_first_jet_pt_b->Fill (vect_jets_pt[0], MyWeight*scalFac_b);
     w_first_jet_eta_b->Fill (vect_jets_eta[0], MyWeight*scalFac_b);
@@ -1088,6 +1091,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   if ((ee_event || mm_event) && Nj > 1 && Nb > 1) {
+    scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0])*BtSF.Val(vect_bjets_pt[1], vect_bjets_eta[1]) : 1;
     w_second_jet_pt_b->Fill (vect_jets_pt[1], MyWeight*scalFac_b);
     w_second_jet_eta_b->Fill (vect_jets_eta[1], MyWeight*scalFac_b);
     w_second_bjet_pt->Fill (vect_bjets_pt[1], MyWeight*scalFac_b);
@@ -1107,6 +1111,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   if ((ee_event || mm_event) && Nj > 2 && Nb > 2) {
+    scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0])*BtSF.Val(vect_bjets_pt[1], vect_bjets_eta[1])*BtSF.Val(vect_bjets_pt[2], vect_bjets_eta[2]) : 1;
     w_third_jet_pt_b->Fill (vect_jets_pt[2], MyWeight*scalFac_b);
     w_third_jet_eta_b->Fill (vect_jets_eta[2], MyWeight*scalFac_b);
     w_third_bjet_pt->Fill (vect_bjets_pt[2], MyWeight*scalFac_b);
@@ -1128,6 +1133,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   // ++++++++ EXTRA PLOTS
 
   if ((ee_event || mm_event) && Nj > 0 && Nb > 0) {
+    scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
     if (fabs (vect_bjets_eta[0]) > 0) Nf++;
     if (fabs (vect_bjets_eta[0]) < 0) Nbk++;
     if ((Nf+Nbk) != 0) Afb = (Nf - Nbk) / (Nf + Nbk);
