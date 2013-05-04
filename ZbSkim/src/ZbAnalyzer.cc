@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.32 2013/05/03 21:43:16 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.33 2013/05/04 08:04:32 dellaric Exp $
 //
 //
 
@@ -907,8 +907,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     w_first_bjet_pt->Fill (vect_bjets_pt[0], MyWeight*scalFac_b);
     w_first_bjet_eta->Fill (vect_bjets_eta[0], MyWeight*scalFac_b);
     if (Nb > 1) {
-      w_first_jet_pt_b->Fill (vect_jet_pt[1], MyWeight*scalFac_b);
-      w_first_jet_eta_b->Fill (vect_jet_eta[1], MyWeight*scalFac_b);
+      w_second_jet_pt_b->Fill (vect_jet_pt[1], MyWeight*scalFac_b);
+      w_second_jet_eta_b->Fill (vect_jet_eta[1], MyWeight*scalFac_b);
       w_second_bjet_pt->Fill (vect_bjets_pt[1], MyWeight*scalFac_b);
       w_second_bjet_eta->Fill (vect_bjets_eta[1], MyWeight*scalFac_b);
     }
