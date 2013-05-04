@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.39 2013/05/04 16:28:56 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.40 2013/05/04 16:41:53 dellaric Exp $
 //
 //
 
@@ -788,7 +788,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         w_secondvtx_N->Fill (discrCSV, MyWeight);
         scalFac_b = 1;
         if (isMC) {
-          scalFac_b = BtSF.Val(vect_jets_pt[0], vect_jets_eta[0]);
+          scalFac_b = BtSF.Val(jet_pt, jet_eta);
         }
         if (isb) {
           b_secondvtx_N->Fill (discrCSV, MyWeight*scalFac_b);
