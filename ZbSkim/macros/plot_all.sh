@@ -65,6 +65,11 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass_trk\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i\)
 
+  root -l -q -b DataMCComp.C\(\"h_scaleFactor_first_ele\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"h_scaleFactor_second_ele\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"h_scaleFactor_first_muon\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"h_scaleFactor_second_muon\",1,$i\)
+
   i=$((i+1))
 done
 
