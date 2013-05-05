@@ -409,7 +409,7 @@ if (ilepton<1 || ilepton>2) {
 
 	c1->cd();
 
- 	TLatex *latexLabel=CMSPrel(19.3,"",0.1,0.94); // make fancy label
+ 	TLatex *latexLabel=CMSPrel(19.6,"",0.1,0.96); // make fancy label
 	latexLabel->Draw("same");
 
 	if (doFit) {
