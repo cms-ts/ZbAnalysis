@@ -75,6 +75,8 @@ if (ilepton<1 || ilepton>2) {
 	if (ilepton==2) mc1->cd("demo_mm");
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc1_b = (TH1F*)gDirectory->Get((title + "_b").c_str());
+	TH1F* h_mc1b_b = (TH1F*)gDirectory->Get(("b" + title.substr(1) + "_b").c_str());
+	TH1F* h_mc1c_b = (TH1F*)gDirectory->Get(("c" + title.substr(1) + "_b").c_str());
 
 	if (ilepton==1) mc2->cd("demo_ee");
 	if (ilepton==2) mc2->cd("demo_mm");
@@ -109,39 +111,22 @@ if (ilepton<1 || ilepton>2) {
 	h_data -> Sumw2();
 
 	h_mc1 -> Sumw2();
-	h_mc1 -> SetLineColor(kBlack);
-	h_mc1 -> SetFillColor(kYellow-4);
-	//h_mc1 -> SetFillStyle(3004);
-
 	h_mc2 -> Sumw2();
-	h_mc2 -> SetLineColor(kBlack);
-	h_mc2 -> SetFillColor(kBlue);
-	//h_mc2 -> SetFillStyle(3004);
-
 	h_mc3 -> Sumw2();
-	h_mc3 -> SetLineColor(kBlack);
-	h_mc3 -> SetFillColor(kGray+2);
-	//h_mc3 -> SetFillStyle(3004);
-
 	h_mc4 -> Sumw2();
-	h_mc4 -> SetLineColor(kBlack);
-	h_mc4 -> SetFillColor(kGray+3);
-	//h_mc4 -> SetFillStyle(3004);
-
 //	h_mc5 -> Sumw2();
-//	h_mc5 -> SetLineColor(kBlack);
-//	h_mc5 -> SetFillColor(kGray+3);
-//	//h_mc5 -> SetFillStyle(3004);
-
 	h_mc6 -> Sumw2();
-	h_mc6 -> SetLineColor(kBlack);
-	h_mc6 -> SetFillColor(kRed+2);
-	//h_mc6 -> SetFillStyle(3004);
-
 	h_mc7 -> Sumw2();
-	h_mc7 -> SetLineColor(kBlack);
-	h_mc7 -> SetFillColor(kGray);
-	//h_mc7 -> SetFillStyle(3004);
+
+	h_mc1_b -> Sumw2();
+	if (h_mc1b_b) h_mc1b_b -> Sumw2();
+	if (h_mc1c_b) h_mc1c_b -> Sumw2();
+	h_mc2_b -> Sumw2();
+	h_mc3_b -> Sumw2();
+	h_mc4_b -> Sumw2();
+//	h_mc5_b -> Sumw2();
+	h_mc6_b -> Sumw2();
+	h_mc7_b -> Sumw2();
 
 	h_mc1->Scale(norm1);
 	h_mc2->Scale(norm2);
@@ -151,41 +136,83 @@ if (ilepton<1 || ilepton>2) {
 	h_mc6->Scale(norm6);
 	h_mc7->Scale(norm7);
 
-	TH1F *ht = h_data->Clone("ht");
-	ht->Add(h_mc7, -1);
-	ht->Add(h_mc6, -1);
-//	ht->Add(h_mc5, -1);
-	ht->Add(h_mc4, -1);
-	ht->Add(h_mc3, -1);
-	ht->Add(h_mc2, -1);
+	h_mc1_b->Scale(norm1);
+	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
+	if (h_mc1c_b) h_mc1c_b->Scale(norm1);
+	h_mc2_b->Scale(norm2);
+	h_mc3_b->Scale(norm3);
+	h_mc4_b->Scale(norm4);
+//	h_mc5_b->Scale(norm5);
+	h_mc6_b->Scale(norm6);
+	h_mc7_b->Scale(norm7);
 
-	TH1F *ht_b = h_data_b->Clone("ht_b");
-	ht_b->Add(h_mc7_b, -1);
-	ht_b->Add(h_mc6_b, -1);
-//	ht_b->Add(h_mc5_b, -1);
-	ht_b->Add(h_mc4_b, -1);
-	ht_b->Add(h_mc3_b, -1);
-	ht_b->Add(h_mc2_b, -1);
+	h_data->Add(h_mc7, -1.);
+	h_data->Add(h_mc6, -1.);
+//	h_data->Add(h_mc5, -1.);
+	h_data->Add(h_mc4, -1.);
+	h_data->Add(h_mc3, -1.);
+	h_data->Add(h_mc2, -1.);
 
-	ht_b->Divide(ht);
+	h_data_b->Add(h_mc7_b, -1.);
+	h_data_b->Add(h_mc6_b, -1.);
+//	h_data_b->Add(h_mc5_b, -1.);
+	h_data_b->Add(h_mc4_b, -1.);
+	h_data_b->Add(h_mc3_b, -1.);
+	h_data_b->Add(h_mc2_b, -1.);
 
-	h_mc1_b->Divide(h_mc1);
+	TH1F *h_mc1uds_b = h_mc1_b->Clone("h_mc1c_uds");
+	if (h_mc1b_b) h_mc1uds_b->Add(h_mc1b_b, -1.);
+	if (h_mc1c_b) h_mc1uds_b->Add(h_mc1c_b, -1.);
+	for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
+	  float e = h_mc1uds_b->GetBinError(i)**2;
+	  if (h_mc1b_b) e = e - h_mc1b_b->GetBinError(i)**2;
+	  if (h_mc1c_b) e = e - h_mc1c_b->GetBinError(i)**2;
+	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
+	}
+
+	h_data_b->Add(h_mc1c_b, -1.);
+	h_data_b->Add(h_mc1uds_b, -1.);
+
+	h_data_b->Divide(h_data);
+	h_data_b->Scale(100.);
+
+	h_mc1b_b->Divide(h_mc1);
+	h_mc1b_b->Scale(100.);
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();
 
-	ht_b->Draw("EPX0");
-	ht_b->GetYaxis()->SetTitle("Events");
-	ht_b->SetMarkerColor(kBlack);
-	ht_b->SetMarkerStyle(20);
-	ht_b->SetMarkerSize (1.0);
-	ht_b->GetXaxis()->SetRangeUser(0, 100);
-	ht_b->GetYaxis()->SetRangeUser(0, 0.02);
+	h_data_b->SetTitle("");
+	if (title=="w_first_jet_pt") {
+	  h_data_b->GetXaxis ()->SetTitle("leading jet p_{T} [GeV/c]");
+	  h_data_b->GetXaxis()->SetRangeUser(0, 150);
+	  h_data_b->GetYaxis()->SetRangeUser(0, 10);
+	} else if (title=="w_first_jet_eta") {
+	  h_data_b->GetXaxis ()->SetTitle("leading jet #eta");
+	  h_data_b->GetYaxis()->SetRangeUser(0, 4);
+	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm") {
+	  h_data_b->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
+	  h_data_b->GetXaxis()->SetRangeUser(0, 200);
+	  h_data_b->GetYaxis()->SetRangeUser(0, 5);
+	} else if (title=="w_Ht") {
+	  h_data_b->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
+	  h_data_b->GetXaxis()->SetRangeUser(0, 300);
+	  h_data_b->GetYaxis()->SetRangeUser(0, 8);
+	}
 
-	h_mc1_b->SetLineColor(kRed);
-	h_mc1_b->Draw("LSAME");
+	h_data_b->Draw("EPX0");
+	h_data_b->GetYaxis()->SetTitle("#sigma_{Z+b-jets}/#sigma_{Z+jets} [%]");
+	h_data_b->GetYaxis()->SetTitleOffset(1.2);
+	h_data_b->GetXaxis()->SetTitleOffset(1.3);
+	h_data_b->SetMarkerColor(kBlack);
+	h_data_b->SetMarkerStyle(20);
+	h_data_b->SetMarkerSize (1.0);
+	h_data_b->SetStats(0);
 
-	leg = new TLegend(0.68, 0.58, 0.88, 0.88);
+	h_mc1b_b->SetLineColor(kRed);
+	h_mc1b_b->Draw("HSAME");
+
+	leg = new TLegend(0.58, 0.08, 0.78, 0.38);
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
@@ -200,7 +227,7 @@ if (ilepton<1 || ilepton>2) {
 
 	c1->cd();
 
- 	TLatex *latexLabel=CMSPrel(19.3,"",0.1,0.94); // make fancy label
+ 	TLatex *latexLabel=CMSPrel(19.6,"",0.1,0.94); // make fancy label
 	latexLabel->Draw("same");
 
 	if (plot) {
