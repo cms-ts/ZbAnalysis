@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.45 2013/05/05 06:25:08 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.46 2013/05/05 06:36:29 dellaric Exp $
 //
 //
 
@@ -323,14 +323,14 @@ private:
 
   TH1F*     w_Afb;
 
-  TH1F*     h_scalFactor_first_ele;
-  TH1F*     b_scalFactor_first_ele;
-  TH1F*     h_scalFactor_first_muon;
-  TH1F*     b_scalFactor_first_muon;
-  TH1F*     h_scalFactor_second_ele;
-  TH1F*     b_scalFactor_second_ele;
-  TH1F*     h_scalFactor_second_muon;
-  TH1F*     b_scalFactor_second_muon;
+  TH1F*     h_scaleFactor_first_ele;
+  TH1F*     b_scaleFactor_first_ele;
+  TH1F*     h_scaleFactor_first_muon;
+  TH1F*     b_scaleFactor_first_muon;
+  TH1F*     h_scaleFactor_second_ele;
+  TH1F*     b_scaleFactor_second_ele;
+  TH1F*     h_scaleFactor_second_muon;
+  TH1F*     b_scaleFactor_second_muon;
 
   TH1F*     h_JEC_uncert;
 
@@ -538,16 +538,16 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
 
   w_Afb =               fs->make < TH1F > ("b_asymmetry",       "b_asymmetry", 10, -1, 1);
 
-  h_scalFactor_first_ele =   fs->make < TH1F > ("h_scaleFactor_first_ele",   "h_scaleFactor_first_ele", 90, 0.6, 1.5);
-  b_scalFactor_first_ele =   fs->make < TH1F > ("b_scaleFactor_first_ele",   "b_scaleFactor_first_ele", 90, 0.6, 1.5);
-  h_scalFactor_first_muon =  fs->make < TH1F > ("h_scaleFactor_first_muon",  "h_scaleFactor_first_muon", 90, 0.6, 1.5);
-  b_scalFactor_first_muon =  fs->make < TH1F > ("b_scaleFactor_first_muon",  "b_scaleFactor_first_muon", 90, 0.6, 1.5);
-  h_scalFactor_second_ele =  fs->make < TH1F > ("h_scaleFactor_second_ele",  "h_scaleFactor_second_ele", 90, 0.6, 1.5);
-  b_scalFactor_second_ele =  fs->make < TH1F > ("b_scaleFactor_second_ele",  "b_scaleFactor_second_ele", 90, 0.6, 1.5);
-  h_scalFactor_second_muon = fs->make < TH1F > ("h_scaleFactor_second_muon", "h_scaleFactor_second_muon", 90, 0.6, 1.5);
-  b_scalFactor_second_muon = fs->make < TH1F > ("b_scaleFactor_second_muon", "b_scaleFactor_second_muon", 90, 0.6, 1.5);
+  h_JEC_uncert =        fs->make < TH1F > ("JEC uncert", "JEC uncert", 10, -0.5, 0.5);
 
-  h_JEC_uncert =             fs->make < TH1F > ("JEC uncert",  "JEC uncert", 10, -0.5, 0.5);
+  h_scaleFactor_first_ele =   fs->make < TH1F > ("h_scaleFactor_first_ele",   "h_scaleFactor_first_ele", 50, 0.9, 1.1);
+  b_scaleFactor_first_ele =   fs->make < TH1F > ("b_scaleFactor_first_ele",   "b_scaleFactor_first_ele", 50, 0.9, 1.1);
+  h_scaleFactor_first_muon =  fs->make < TH1F > ("h_scaleFactor_first_muon",  "h_scaleFactor_first_muon", 50, 0.9, 1.1);
+  b_scaleFactor_first_muon =  fs->make < TH1F > ("b_scaleFactor_first_muon",  "b_scaleFactor_first_muon", 50, 0.9, 1.1);
+  h_scaleFactor_second_ele =  fs->make < TH1F > ("h_scaleFactor_second_ele",  "h_scaleFactor_second_ele", 50, 0.9, 1.1);
+  b_scaleFactor_second_ele =  fs->make < TH1F > ("b_scaleFactor_second_ele",  "b_scaleFactor_second_ele", 50, 0.9, 1.1);
+  h_scaleFactor_second_muon = fs->make < TH1F > ("h_scaleFactor_second_muon", "h_scaleFactor_second_muon", 50, 0.9, 1.1);
+  b_scaleFactor_second_muon = fs->make < TH1F > ("b_scaleFactor_second_muon", "b_scaleFactor_second_muon", 50, 0.9, 1.1);
 
   treeZb_ = fs->make < TTree > ("ZbTree", "ZbTree");
   treeZb_->Branch ("Nj", &Nj);
@@ -1240,19 +1240,19 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   if (ee_event && Nj > 0) {
-    h_scalFactor_first_ele->Fill (scalFac_first_e, MyWeight / (scalFac_first_e * scalFac_second_e));
-    h_scalFactor_second_ele->Fill (scalFac_second_e, MyWeight / (scalFac_first_e * scalFac_second_e));
+    h_scaleFactor_first_ele->Fill (scalFac_first_e, MyWeight / (scalFac_first_e * scalFac_second_e));
+    h_scaleFactor_second_ele->Fill (scalFac_second_e, MyWeight / (scalFac_first_e * scalFac_second_e));
     if (isb) {
-      b_scalFactor_first_ele->Fill (scalFac_first_e, MyWeight / (scalFac_first_e * scalFac_second_e));
-      b_scalFactor_second_ele->Fill (scalFac_second_e, MyWeight / (scalFac_first_e * scalFac_second_e));
+      b_scaleFactor_first_ele->Fill (scalFac_first_e, MyWeight / (scalFac_first_e * scalFac_second_e));
+      b_scaleFactor_second_ele->Fill (scalFac_second_e, MyWeight / (scalFac_first_e * scalFac_second_e));
     }
   }
   if (mm_event && Nj > 0) {
-    h_scalFactor_first_muon->Fill (scalFac_first_m, MyWeight / (scalFac_first_m * scalFac_second_m));
-    h_scalFactor_second_muon->Fill (scalFac_second_m, MyWeight / (scalFac_first_m * scalFac_second_m));
+    h_scaleFactor_first_muon->Fill (scalFac_first_m, MyWeight / (scalFac_first_m * scalFac_second_m));
+    h_scaleFactor_second_muon->Fill (scalFac_second_m, MyWeight / (scalFac_first_m * scalFac_second_m));
     if (isb) {
-      b_scalFactor_first_muon->Fill (scalFac_first_m, MyWeight / (scalFac_first_m * scalFac_second_m));
-      b_scalFactor_second_muon->Fill (scalFac_second_m, MyWeight / (scalFac_first_m * scalFac_second_m));
+      b_scaleFactor_first_muon->Fill (scalFac_first_m, MyWeight / (scalFac_first_m * scalFac_second_m));
+      b_scaleFactor_second_muon->Fill (scalFac_second_m, MyWeight / (scalFac_first_m * scalFac_second_m));
     }
   }
 
