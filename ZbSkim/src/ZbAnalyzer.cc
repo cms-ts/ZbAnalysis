@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.44 2013/05/05 06:18:55 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.45 2013/05/05 06:25:08 dellaric Exp $
 //
 //
 
@@ -827,12 +827,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         vect_jets_phi.push_back (jet_phi);
         vect_jets_eta.push_back (jet_eta);
 
-        // b studies
-
-        discrCSV = jet->bDiscriminator ("combinedSecondaryVertexBJetTags");
-
-        vect_jets_discrCSV.push_back (discrCSV);
-
         if (isMC && fabs (jet->partonFlavour ()) == 5) {
           isb = true;
           vect_jets_isb.push_back (true);
@@ -846,6 +840,10 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
           vect_jets_isc.push_back (false);
         }
 
+        discrCSV = jet->bDiscriminator ("combinedSecondaryVertexBJetTags");
+
+        vect_jets_discrCSV.push_back (discrCSV);
+
         h_secondvtx_N->Fill (discrCSV);
         w_secondvtx_N->Fill (discrCSV, MyWeight);
         if (isb) b_secondvtx_N->Fill (discrCSV, MyWeight);
@@ -856,7 +854,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         if (discrCSV > 0.89) {
 
 	  ++Nb;
-	  //cout<<Nb<<endl;
+	  //cout << Nb << endl;
 
           bjet_pt  = jet->pt ();
           bjet_eta = jet->eta();
@@ -865,6 +863,17 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
           vect_bjets_pt.push_back(bjet_pt);
           vect_bjets_phi.push_back(bjet_phi);
           vect_bjets_eta.push_back(bjet_eta);
+
+          if (isMC && fabs (jet->partonFlavour ()) == 5) {
+            vect_bjets_isb.push_back (true);
+          } else {
+            vect_bjets_isb.push_back (false);
+          }
+          if (isMC && fabs (jet->partonFlavour ()) == 4) {
+            vect_bjets_isc.push_back (true);
+          } else {
+            vect_bjets_isc.push_back (false);
+          }
 
 	  reco::SecondaryVertexTagInfo const * svTagInfos = jet->tagInfoSecondaryVertex("secondaryVertex");
 
