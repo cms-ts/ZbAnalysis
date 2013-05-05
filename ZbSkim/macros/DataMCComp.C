@@ -340,7 +340,7 @@ if (ilepton<1 || ilepton>2) {
 	h_ratio->SetStats(0);
 
 	if (title=="w_jetmultiplicity") {
-	  h_ratio->GetXaxis ()->SetTitle("Number of jets");
+	  h_ratio->GetXaxis ()->SetTitle("jet multiplicity");
 	} else if (title=="w_mass_ee"||title=="w_mass_mm") {
 	  h_ratio->GetXaxis ()->SetTitle("invariant mass [GeV/c^{2}]");
 	} else if (title=="w_first_muon_pt") {
@@ -364,7 +364,7 @@ if (ilepton<1 || ilepton>2) {
 	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_bjetmultiplicity") {
-	  h_ratio->GetXaxis ()->SetTitle("b-jet jets multiplicity");
+	  h_ratio->GetXaxis ()->SetTitle("b-jet multiplicity");
 	} else if (title=="w_first_jet_pt_b") {
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
 	} else if (title=="w_first_jet_eta_b") {
