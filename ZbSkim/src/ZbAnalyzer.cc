@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.48 2013/05/05 08:03:50 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.49 2013/05/05 08:06:28 dellaric Exp $
 //
 //
 
@@ -755,9 +755,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   if (ee_event) MyWeight = MyWeight * scalFac_first_e * scalFac_second_e;
   if (mm_event) MyWeight = MyWeight * scalFac_first_m * scalFac_second_m;
 
-  if (ee_event) w_numberOfZ->Fill (zee->size(), MyWeight);
-  if (mm_event) w_numberOfZ->Fill (zmm->size(), MyWeight);
-
   // ++++++++ VERTICES
 
   edm::Handle < vector < reco::Vertex > > vertices_h;
@@ -965,6 +962,12 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   // ++++++++ DIELECTRON Z PLOTS
 
+  if (ee_event) {
+    w_numberOfZ->Fill (zee->size(), MyWeight);
+    if (isb) b_numberOfZ->Fill (zee->size(), MyWeight);
+    if (isc) c_numberOfZ->Fill (zee->size(), MyWeight);
+  }
+
   if (ee_event && Nj > 0) {
     diele_mass = (*zee)[0].mass();
     diele_phi = (*zee)[0].phi();
@@ -980,6 +983,14 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       h_mass_ee->Fill (diele_mass);
       w_mass_ee->Fill (diele_mass, MyWeight);
       w_pt_Z_ee->Fill (diele_pt, MyWeight);
+      if (isb) {
+        b_mass_ee->Fill (diele_mass, MyWeight);
+        b_pt_Z_ee->Fill (diele_pt, MyWeight);
+      }
+      if (isc) {
+        c_mass_ee->Fill (diele_mass, MyWeight);
+        c_pt_Z_ee->Fill (diele_pt, MyWeight);
+      }
       if (Nb > 0) {
         scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
         w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
@@ -1003,6 +1014,12 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   // ++++++++ DIMUON Z PLOTS
 
+  if (mm_event) {
+    w_numberOfZ->Fill (zmm->size(), MyWeight);
+    if (isb) b_numberOfZ->Fill (zmm->size(), MyWeight);
+    if (isc) c_numberOfZ->Fill (zmm->size(), MyWeight);
+  }
+
   if (mm_event && Nj > 0) {
     dimuon_mass = (*zmm)[0].mass();
     dimuon_phi = (*zmm)[0].phi();
@@ -1012,6 +1029,14 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       h_mass_mm->Fill (dimuon_mass);
       w_mass_mm->Fill (dimuon_mass, MyWeight);
       w_pt_Z_mm->Fill (dimuon_pt, MyWeight);
+      if (isb) {
+        b_mass_mm->Fill (dimuon_mass, MyWeight);
+        b_pt_Z_mm->Fill (dimuon_pt, MyWeight);
+      }
+      if (isc) {
+        c_mass_mm->Fill (dimuon_mass, MyWeight);
+        c_pt_Z_mm->Fill (dimuon_pt, MyWeight);
+      }
       if (Nb > 0) {
         scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
         w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
