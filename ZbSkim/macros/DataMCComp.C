@@ -364,21 +364,21 @@ if (ilepton<1 || ilepton>2) {
 	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_bjetmultiplicity") {
-	  h_ratio->GetXaxis ()->SetTitle("b quark jets multiplicity");
+	  h_ratio->GetXaxis ()->SetTitle("b-jet jets multiplicity");
 	} else if (title=="w_first_jet_pt_b") {
-	  h_ratio->GetXaxis ()->SetTitle("leading b quark p_{T} [GeV/c]");
+	  h_ratio->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
 	} else if (title=="w_first_jet_eta_b") {
-	  h_ratio->GetXaxis ()->SetTitle("leading b quark #eta");
+	  h_ratio->GetXaxis ()->SetTitle("leading b-jet #eta");
 	} else if (title=="w_second_jet_pt_b") {
-	  h_ratio->GetXaxis ()->SetTitle("subleading b quark p_{T} [GeV/c]");
+	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet p_{T} [GeV/c]");
 	} else if (title=="w_second_jet_eta_b") {
-	  h_ratio->GetXaxis ()->SetTitle("subleading b quark #eta");
+	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet #eta");
 	} else if (title=="w_third_jet_pt_b") {
-	  h_ratio->GetXaxis ()->SetTitle("subsubleading b quark p_{T} [GeV/c]");
+	  h_ratio->GetXaxis ()->SetTitle("subsubleading b-jet p_{T} [GeV/c]");
 	} else if (title=="w_third_jet_eta_b") {
-	  h_ratio->GetXaxis ()->SetTitle("subsubleading b quark #eta");
+	  h_ratio->GetXaxis ()->SetTitle("subsubleading b-jet #eta");
 	} else if (title=="w_mass_ee_b"||title=="w_mm_mass_b") {
-	  h_ratio->GetXaxis ()->SetTitle("Z mass + (#geq 1 b quark) [GeV/c^{2}]");
+	  h_ratio->GetXaxis ()->SetTitle("Z mass + (#geq 1 b-jet) [GeV/c^{2}]");
 	} else if (title=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b") {
