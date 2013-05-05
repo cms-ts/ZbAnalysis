@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.46 2013/05/05 06:36:29 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.47 2013/05/05 07:02:42 dellaric Exp $
 //
 //
 
@@ -108,7 +108,7 @@ private:
 
   std::string pileup_;
   std::string lepton_;
-  double par;
+  double par_;
   JetCorrectionUncertainty *jecUncDT_;
   JetCorrectionUncertainty *jecUncMC_;
   edm::LumiReWeighting LumiWeights_;
@@ -314,7 +314,11 @@ private:
   TH1F*     c_SVTX_mass;
   
   TH1F*     w_Ht;
+  TH1F*     b_Ht;
+  TH1F*     c_Ht;
   TH1F*     w_Ht_b; // at least one b jet in the event
+  TH1F*     b_Ht_b;
+  TH1F*     c_Ht_b;
 
   TH1F*     w_MET;
   TH1F*     b_MET;
@@ -370,7 +374,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
 
   pileup_ = iConfig.getUntrackedParameter < std::string > ("pileup", "S7");
   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
-  par  =    iConfig.getUntrackedParameter <double> ("JEC",  0);
+  par_ =    iConfig.getUntrackedParameter <double> ("JEC",  0);
 
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
@@ -529,7 +533,11 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_SVTX_mass =         fs->make < TH1F > ("c_SVTX_mass",       "c_SVTX_mass;Mass [GeV]", 70, 0, 7);
 
   w_Ht =                fs->make < TH1F > ("w_Ht",              "w_Ht [GeV]", 50, 30., 1500.);
+  b_Ht =                fs->make < TH1F > ("b_Ht",              "b_Ht [GeV]", 50, 30., 1500.);
+  c_Ht =                fs->make < TH1F > ("c_Ht",              "c_Ht [GeV]", 50, 30., 1500.);
   w_Ht_b =              fs->make < TH1F > ("w_Ht_b",            "w_Ht [GeV]", 50, 30., 1500.);
+  b_Ht_b =              fs->make < TH1F > ("b_Ht_b",            "b_Ht [GeV]", 50, 30., 1500.);
+  c_Ht_b =              fs->make < TH1F > ("c_Ht_b",            "c_Ht [GeV]", 50, 30., 1500.);
 
   w_MET =               fs->make < TH1F > ("w_MET",             "w_MET;MET [GeV]", 50, 0, 250);
   b_MET =               fs->make < TH1F > ("b_MET",             "b_MET;MET [GeV]", 50, 0, 250);
@@ -813,7 +821,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       jecUnc->setJetPt(jet_pt);
       jecUnc->setJetEta(jet_eta);
       double unc = jecUnc->getUncertainty(true);
-      double cor = (1.0+unc*par);
+      double cor = (1.0+unc*par_);
       h_JEC_uncert->Fill (unc);
 //      cout<< "JEC syst =" << unc << endl;
 
@@ -944,10 +952,14 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if ((ee_event || mm_event) && Nj > 0) {
     w_Ht->Fill (Ht, MyWeight);
+    if (isb) b_Ht->Fill (Ht, MyWeight);
+    if (isc) c_Ht->Fill (Ht, MyWeight);
     if (Nb > 0) {
       scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
       //cout << vect_bjets_pt[0] << " " << vect_bjets_eta[0] <<"   SFb = " << scalFac_b << endl;
       w_Ht_b->Fill (Ht, MyWeight*scalFac_b);
+      if (isb) b_Ht_b->Fill (Ht, MyWeight*scalFac_b);
+      if (isc) c_Ht_b->Fill (Ht, MyWeight*scalFac_b);
     }
   }
 
