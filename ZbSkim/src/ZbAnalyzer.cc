@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.43 2013/05/04 20:45:26 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.44 2013/05/05 06:18:55 dellaric Exp $
 //
 //
 
@@ -833,13 +833,13 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
         vect_jets_discrCSV.push_back (discrCSV);
 
-        if (fabs (jet->partonFlavour ()) == 5) {
+        if (isMC && fabs (jet->partonFlavour ()) == 5) {
           isb = true;
           vect_jets_isb.push_back (true);
         } else {
           vect_jets_isb.push_back (false);
         }
-        if (fabs (jet->partonFlavour ()) == 4) {
+        if (isMC && fabs (jet->partonFlavour ()) == 4) {
           isc = true;
           vect_jets_isc.push_back (true);
         } else {
