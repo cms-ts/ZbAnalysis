@@ -116,7 +116,7 @@ if (ilepton<1 || ilepton>2) {
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc7_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (title.find("_jet_")!=string::npos) {
+	if (title_b.find("_jet_")!=string::npos) {
 	  title.insert(title.find("_jet_")+1, "b");
 	}
 
@@ -195,20 +195,27 @@ if (ilepton<1 || ilepton>2) {
 	c1->cd();
 
 	h_data_b->SetTitle("");
-	if (title=="w_first_bjet_pt") {
+	if (title=="w_first_jet_pt") {
+	  h_data_b->GetXaxis ()->SetTitle("leading jet p_{T} [GeV/c]");
+	  h_data_b->GetXaxis()->SetRangeUser(0, 200);
+	  h_data_b->GetYaxis()->SetRangeUser(0, 8);
+	} else if (title=="w_first_jet_eta") {
+	  h_data_b->GetXaxis ()->SetTitle("leading jet #eta");
+	  h_data_b->GetYaxis()->SetRangeUser(0, 4);
+	} else if (title=="w_first_bjet_pt") {
 	  h_data_b->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
-	  h_data_b->GetXaxis()->SetRangeUser(0, 150);
+	  h_data_b->GetXaxis()->SetRangeUser(0, 200);
 	  h_data_b->GetYaxis()->SetRangeUser(0, 8);
 	} else if (title=="w_first_bjet_eta") {
 	  h_data_b->GetXaxis ()->SetTitle("leading b-jet #eta");
 	  h_data_b->GetYaxis()->SetRangeUser(0, 4);
 	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm") {
 	  h_data_b->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
-	  h_data_b->GetXaxis()->SetRangeUser(0, 200);
+	  h_data_b->GetXaxis()->SetRangeUser(0, 150);
 	  h_data_b->GetYaxis()->SetRangeUser(0, 5);
 	} else if (title=="w_Ht") {
 	  h_data_b->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
-	  h_data_b->GetXaxis()->SetRangeUser(0, 300);
+	  h_data_b->GetXaxis()->SetRangeUser(0, 250);
 	  h_data_b->GetYaxis()->SetRangeUser(0, 8);
 	}
 
