@@ -56,7 +56,7 @@ for D in $DIRS; do
     echo $ERRORS
     for E in $ERRORS; do
       ls -lt $DIR/$D/patTuple_${E}_*_*.root
-      ls $DIR/$D/patTuple_${E}_*_*.root | head -1 | sed -e 's;/gpfs/grid/srm;lcg-del -l srm://gridsrm.ts.infn.it;'
+      ls -lt $DIR/$D/patTuple_${E}_*_*.root | tail -1 | awk '{print $9}' | sed -e 's;/gpfs/grid/srm;lcg-del -l srm://gridsrm.ts.infn.it;'
     done
     rm /tmp/l1 /tmp/l2
   fi
