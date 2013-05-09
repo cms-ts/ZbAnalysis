@@ -177,7 +177,7 @@ removeCleaningFromTriggerMatching(process)
 process.matchedElectrons = selectedPatElectrons.clone(
 		     src = cms.InputTag('selectedPatElectronsTriggerMatch'),
 		     cut = cms.string(
-			'ecalDrivenMomentum.pt > 20 & abs(eta) < 2.4 &'
+			'pt > 20 & abs(eta) < 2.4 &'
 			'(('
 			 'abs(superCluster.eta) < 1.442 &'
 			 'abs(deltaEtaSuperClusterTrackAtVtx) < 0.004 &'
@@ -209,7 +209,7 @@ process.zeleMatchedeleMatched = cms.EDProducer('CandViewShallowCloneCombiner',
 
 ##############
 
-process.GlobalTag.globaltag = 'START53_V18PR::All'
+process.GlobalTag.globaltag = 'START53_V21::All'
 process.source = cms.Source("PoolSource",
 	#fileNames = cms.untracked.vstring('/store/mc/Summer12/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/AODSIM/PU_S7_START50_V15-v1/0000/88AD6E87-E173-E111-9996-00E081791749.root')
 	fileNames = cms.untracked.vstring('file:88AD6E87-E173-E111-9996-00E081791749.root')
