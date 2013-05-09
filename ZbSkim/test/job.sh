@@ -6,7 +6,7 @@ cd /gpfs/cms/users/candelis/CMSSW_5_3_9
 eval `scramv1 runtime -sh`
 cd -
 
-cp /gpfs/cms/users/candelis/work/ZbSKim/test/demoanalyzer_cfg.py job.py
+cp /gpfs/cms/users/candelis/work/ZbSkim/test/demoanalyzer_cfg.py job.py
 
 pileup=$1
 echo "process.demo_ee.pileup = cms.untracked.string('"$pileup"')" >> job.py
