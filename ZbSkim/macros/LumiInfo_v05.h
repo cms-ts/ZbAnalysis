@@ -7,7 +7,7 @@ double Lumi2012_muon = 19619.0; // full 2012 muons luminosity
 
 // single period lumi, same for electrons and muons dataset in 1/picobarn
 
-double Lumi_2012A_Jul13 =  808.472;
+double Lumi_2012A_13Jul =  808.472;
 double Lumi_2012A_06Ago =   82.136;
 double Lumi_2012B_13Jul = 4429.000;
 double Lumi_2012C_11Dec =  134.242;
