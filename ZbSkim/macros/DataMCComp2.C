@@ -21,7 +21,7 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v06.h"
 
-string path = "/gpfs/cms/users/candelis/work/Zb/data/" + version + "/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/" + version + "/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1) {
 
@@ -246,7 +246,7 @@ if (ilepton<1 || ilepton>2) {
 
 	c1->cd();
 
- 	TLatex *latexLabel=CMSPrel(19.6,"",0.1,0.94); // make fancy label
+ 	TLatex *latexLabel=CMSPrel(19.6,"",0.15,0.94); // make fancy label
 	latexLabel->Draw("same");
 
 	if (plot) {
