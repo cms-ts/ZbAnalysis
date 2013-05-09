@@ -13,7 +13,7 @@ if [ ! -z "$2" ]; then
   VERSION=$2
 fi
 
-WORKDIR=/gpfs/cms/users/candelis/work/Zb/data
+WORKDIR=/gpfs/cms/users/candelis/work/ZbSkim/test/data
 
 if [ ! -e $WORKDIR/$VERSION ]; then
   echo 'ERROR: version "'$VERSION'" does not exist !'

@@ -22,7 +22,7 @@ fi
 SUBDIR=""
 [ "$USER" == "dellaric" ] && SUBDIR="GDR"
 
-DIR=/gpfs/cms/users/candelis/work/Zb/$SUBDIR/data/$VERSION/
+DIR=/gpfs/cms/users/candelis/work/ZbSkim/test/$SUBDIR/data/$VERSION/
 
 if [ ! -e $DIR ]; then
   echo "ERROR: $DIR does not exist !"

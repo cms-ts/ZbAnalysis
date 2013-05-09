@@ -9,9 +9,9 @@ VERSION=v06
 
 DATADIR=/gpfs/grid/srm/cms/store/user/vieri/grid
 
-WORKDIR=/gpfs/cms/users/candelis/work/Zb
+WORKDIR=/gpfs/cms/users/candelis/work/ZbSkim/test
 
-OUTDIR=/gpfs/cms/users/candelis/work/Zb/data
+OUTDIR=/gpfs/cms/users/candelis/work/ZbSkim/test/data
 
 if [ $# -eq 0 ]; then
   echo 'Usage: submit.sh jobdir [version]'
