@@ -13,7 +13,7 @@
 //
 // Original Author:  Chiara La Licata
 //         Created:  Mon Feb 11 13:52:51 CET 2013
-// $Id: ZJetsAnalyzer.cc,v 1.5 2013/03/15 08:31:21 clalicat Exp $
+// $Id: ZJetsAnalyzer.cc,v 1.6 2013/04/12 07:34:07 clalicat Exp $
 //
 //
 
@@ -77,10 +77,9 @@
 #include "table.h"
 #include "run_lumi.h" 
 
-table MuonEff("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/muon_eff.txt");
-table EleEff("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/ele_eff.txt");
-run_lumi RunLumi("/gpfs/cms/users/lalicata/CMSSW_5_3_7_patch4/src/ZbAnalysis/ZbSkim/test/lumi_run.txt");
-
+table EleEff("/gpfs/cms/users/candelis/work/ZbSkim/test/ele_eff.txt");
+table MuonEff("/gpfs/cms/users/candelis/work/ZbSkim/test/muon_eff.txt");
+run_lumi RunLumi("/gpfs/cms/users/candelis/work/ZbSkim/test/lumi_run.txt");
 
 //
 // class declaration
