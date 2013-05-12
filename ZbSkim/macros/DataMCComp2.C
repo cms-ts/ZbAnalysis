@@ -246,7 +246,7 @@ if (ilepton<1 || ilepton>2) {
 
 	c1->cd();
 
- 	TLatex *latexLabel=CMSPrel(19.6,"",0.15,0.94); // make fancy label
+ 	TLatex *latexLabel = CMSPrel(Lumi2012,"",0.15,0.94);
 	latexLabel->Draw("same");
 
 	if (plot) {
