@@ -1,30 +1,53 @@
 #!/bin/sh
 
-./merge.sh DoubleElectron_2012A_13Jul12 $1
-./merge.sh DoubleElectron_2012A_06Aug12 $1
-./merge.sh DoubleElectron_2012B_13Jul12 $1
-./merge.sh DoubleElectron_2012C $1
-./merge.sh DoubleElectron_2012C_11Dec12 $1
-./merge.sh DoubleElectron_2012C_24Aug12 $1
-./merge.sh DoubleElectron_2012D $1
-./merge.sh DoubleElectron_2012D_16Jan13 $1
+VERSION=v06
 
-./merge.sh DoubleMu_2012A_13Jul12 $1
-./merge.sh DoubleMu_2012A_06Aug12 $1
-./merge.sh DoubleMu_2012B_13Jul12 $1
-./merge.sh DoubleMu_2012C $1
-./merge.sh DoubleMu_2012C_11Dec12 $1
-./merge.sh DoubleMu_2012C_24Aug12 $1
-./merge.sh DoubleMu_2012D $1
-./merge.sh DoubleMu_2012D_16Jan13 $1
+if [ ! -z "$1" ]; then
+  VERSION=$1
+fi
 
-./merge.sh data-all $1
+if [ "${VERSION}" \< "v07" ]; then
 
-./merge.sh DYJetsToLL $1
-./merge.sh QCD $1
-./merge.sh TTbar $1
-./merge.sh ZZ $1
-./merge.sh WZ $1
-./merge.sh Wj $1
-./merge.sh WW $1
+  ./merge.sh DoubleElectron_2012A_13Jul12 $VERSION
+  ./merge.sh DoubleElectron_2012A_06Aug12 $VERSION
+  ./merge.sh DoubleElectron_2012B_13Jul12 $VERSION
+  ./merge.sh DoubleElectron_2012C $VERSION
+  ./merge.sh DoubleElectron_2012C_11Dec12 $VERSION
+  ./merge.sh DoubleElectron_2012C_24Aug12 $VERSION
+  ./merge.sh DoubleElectron_2012D $VERSION
+  ./merge.sh DoubleElectron_2012D_16Jan13 $VERSION
 
+  ./merge.sh DoubleMu_2012A_13Jul12 $VERSION
+  ./merge.sh DoubleMu_2012A_06Aug12 $VERSION
+  ./merge.sh DoubleMu_2012B_13Jul12 $VERSION
+  ./merge.sh DoubleMu_2012C $VERSION
+  ./merge.sh DoubleMu_2012C_11Dec12 $VERSION
+  ./merge.sh DoubleMu_2012C_24Aug12 $VERSION
+  ./merge.sh DoubleMu_2012D $VERSION
+  ./merge.sh DoubleMu_2012D_16Jan13 $VERSION
+
+else
+
+  ./merge.sh DoubleElectron_2012A_22Jan13 $VERSION
+  ./merge.sh DoubleElectron_2012B_22Jan13 $VERSION
+  ./merge.sh DoubleElectron_2012C_22Jan13 $VERSION
+  ./merge.sh DoubleElectron_2012D_22Jan13 $VERSION
+
+  ./merge.sh DoubleMu_2012A_22Jan13 $VERSION
+  ./merge.sh DoubleMuParked_2012B_22Jan13 $VERSION
+  ./merge.sh DoubleMuParked_2012C_22Jan13 $VERSION
+  ./merge.sh DoubleMuParked_2012D_22Jan13 $VERSION
+
+fi
+
+./merge.sh data-all $VERSION
+
+./merge.sh DYJetsToLL $VERSION
+./merge.sh QCD $VERSION
+./merge.sh TTbar $VERSION
+./merge.sh ZZ $VERSION
+./merge.sh WZ $VERSION
+./merge.sh Wj $VERSION
+./merge.sh WW $VERSION
+
+exit
