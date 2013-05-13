@@ -19,7 +19,7 @@
 #include "TTree.h"
 
 #include "LumiLabel.C"
-#include "LumiInfo_v07.h"
+#include "LumiInfo_v06.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/" + version + "/";
 
@@ -118,7 +118,6 @@ if (ilepton<1 || ilepton>2) {
 	if (doFit==2 && (h_mc1==0 || h_mc1b==0 || h_mc1c==0)) return;
 
 	h_data -> Sumw2();
-
 	h_mc1 -> Sumw2();
 	h_mc1 -> SetLineColor(kBlack);
 	h_mc1 -> SetFillColor(kYellow-4);
@@ -241,7 +240,7 @@ if (ilepton<1 || ilepton>2) {
 	    e = e + h_mc_fit0->GetBinError(i)**2;
 	    e = e + h_mc_fit1->GetBinError(i)**2;
 	    e = e + h_mc_fit2->GetBinError(i)**2;
-	    if (title=="w_secondvtx_N" && h_data_fit->GetXaxis()->GetBinCenter(i) < 0.89) e = 1.e10;
+	    /*if (title=="w_secondvtx_N" && h_data_fit->GetXaxis()->GetBinCenter(i) < 0.89) e = 1.e10;*/
 	    if (title=="w_SVTX_mass" && h_data_fit->GetXaxis()->GetBinCenter(i) < 0.25) e = 1.e10;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
