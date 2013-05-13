@@ -19,7 +19,7 @@
 #include "TTree.h"
 
 #include "LumiLabel.C"
-#include "LumiInfo_v06.h"
+#include "LumiInfo_v07.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/" + version + "/";
 
@@ -34,7 +34,7 @@ double func(double* x, double* p) {
   if (h_mc_fit0) val = val + p[0]*h_mc_fit0->GetBinContent(i);
   if (h_mc_fit1) val = val + p[1]*h_mc_fit1->GetBinContent(i);
   if (h_mc_fit2) val = val + p[2]*h_mc_fit2->GetBinContent(i);
-  return val;
+  return p[3]*val;
 }
 
 void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
@@ -195,7 +195,7 @@ if (ilepton<1 || ilepton>2) {
 	  h_mc1->SetBinError(i, TMath::Sqrt(e));
 	}
 
-	TF1 *f1 = new TF1("f1", func, 0.00, 100.00, 3);
+	TF1 *f1 = new TF1("f1", func, 0.00, 100.00, 4);
 	if (doFit==1) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
@@ -215,10 +215,11 @@ if (ilepton<1 || ilepton>2) {
 	    if (title=="w_MET" && h_data_fit->GetXaxis()->GetBinCenter(i) < 125.) e = 1.e10;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
-	  f1->SetParameters(1.0, 0.0, 0.0);
+	  f1->SetParameters(1.0, 0.0, 0.0, 1.0);
 	  f1->SetParNames("f_ttbar", "dummy", "dummy");
 	  f1->FixParameter(1, 0.0);
 	  f1->FixParameter(2, 0.0);
+	  f1->FixParameter(3, 1.0);
 	  h_data_fit->Fit("f1", "Q0");
 	  h_mc_fit0->Scale(f1->GetParameter(0));
 	}
@@ -244,12 +245,13 @@ if (ilepton<1 || ilepton>2) {
 	    if (title=="w_SVTX_mass" && h_data_fit->GetXaxis()->GetBinCenter(i) < 0.25) e = 1.e10;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
-	  f1->SetParameters(1.0, 1.0, 1.0);
-	  f1->SetParNames("f_uds", "f_b", "f_c");
+	  f1->SetParameters(1.0, 1.0, 1.0, 1.0);
+	  f1->SetParNames("f_uds", "f_b", "f_c", "f_tot");
+	  f1->FixParameter(3, 1.0);
 	  h_data_fit->Fit("f1", "Q0");
-	  h_mc_fit0->Scale(f1->GetParameter(0));
-	  h_mc_fit1->Scale(f1->GetParameter(1));
-	  h_mc_fit2->Scale(f1->GetParameter(2));
+	  h_mc_fit0->Scale(f1->GetParameter(0)*f1->GetParameter(3));
+	  h_mc_fit1->Scale(f1->GetParameter(1)*f1->GetParameter(3));
+	  h_mc_fit2->Scale(f1->GetParameter(2)*f1->GetParameter(3));
 	}
 
 	TH1F *ht = h_mc1->Clone("ht");
@@ -301,7 +303,7 @@ if (ilepton<1 || ilepton>2) {
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
 	h_data->SetMarkerSize (1.0);
-	h_data->SetStats(0);
+	//h_data->SetStats(0);
 
 	leg = new TLegend(0.62, 0.58, 0.88, 0.88);
 	leg->SetBorderSize(0);
@@ -433,6 +435,8 @@ if (ilepton<1 || ilepton>2) {
 	    fitLabel->DrawLatex(0.68, 0.53, buff);
 	    sprintf(buff, "f_{c}   = %5.3f #pm %5.3f", f1->GetParameter(2), f1->GetParError(2));
 	    fitLabel->DrawLatex(0.68, 0.48, buff);
+	    //sprintf(buff, "f_{tot} = %5.3f #pm %5.3f", f1->GetParameter(3), f1->GetParError(3));
+	    //fitLabel->DrawLatex(0.68, 0.43, buff);
 	  }
 	  fitLabel->Draw("same");
 	}
