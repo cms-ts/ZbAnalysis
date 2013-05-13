@@ -21,7 +21,7 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v06.h"
 
-string path = "/gpfs/cms/users/candelis/work/Zb/data/" + version + "/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/" + version + "/";
 
 TH1F* h_data_fit = 0;
 TH1F* h_mc_fit0 = 0;
@@ -241,6 +241,7 @@ if (ilepton<1 || ilepton>2) {
 	    e = e + h_mc_fit1->GetBinError(i)**2;
 	    e = e + h_mc_fit2->GetBinError(i)**2;
 	    if (title=="w_secondvtx_N" && h_data_fit->GetXaxis()->GetBinCenter(i) < 0.89) e = 1.e10;
+	    if (title=="w_SVTX_mass" && h_data_fit->GetXaxis()->GetBinCenter(i) < 0.25) e = 1.e10;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
 	  f1->SetParameters(1.0, 1.0, 1.0);
@@ -300,7 +301,7 @@ if (ilepton<1 || ilepton>2) {
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
 	h_data->SetMarkerSize (1.0);
-	//h_data->SetStats(0);
+	h_data->SetStats(0);
 
 	leg = new TLegend(0.62, 0.58, 0.88, 0.88);
 	leg->SetBorderSize(0);
@@ -385,6 +386,8 @@ if (ilepton<1 || ilepton>2) {
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
 	} else if (title=="SVTX_mass_jet"||title=="SVTX_mass_trk"||title=="SVTX_mass") {
 	  h_ratio->GetXaxis ()->SetTitle("SV mass [GeV/c^{2}]");
+	} else if (title=="w_BJP"||title=="w_BPJ") {
+	  h_ratio->GetXaxis ()->SetTitle("JP Discriminator");
 	}
 
 	h_ratio->GetXaxis()->SetTitleOffset(0.9);
@@ -409,7 +412,7 @@ if (ilepton<1 || ilepton>2) {
 
 	c1->cd();
 
- 	TLatex *latexLabel=CMSPrel(19.6,"",0.1,0.96); // make fancy label
+ 	TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
 	latexLabel->Draw("same");
 
 	if (doFit) {
