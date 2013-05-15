@@ -34,7 +34,7 @@ double func(double* x, double* p) {
   if (h_mc_fit0) val = val + p[0]*h_mc_fit0->GetBinContent(i);
   if (h_mc_fit1) val = val + p[1]*h_mc_fit1->GetBinContent(i);
   if (h_mc_fit2) val = val + p[2]*h_mc_fit2->GetBinContent(i);
-  return p[3]*val;
+  return val;
 }
 
 void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
@@ -118,6 +118,7 @@ if (ilepton<1 || ilepton>2) {
 	if (doFit==2 && (h_mc1==0 || h_mc1b==0 || h_mc1c==0)) return;
 
 	h_data -> Sumw2();
+
 	h_mc1 -> Sumw2();
 	h_mc1 -> SetLineColor(kBlack);
 	h_mc1 -> SetFillColor(kYellow-4);
@@ -194,7 +195,7 @@ if (ilepton<1 || ilepton>2) {
 	  h_mc1->SetBinError(i, TMath::Sqrt(e));
 	}
 
-	TF1 *f1 = new TF1("f1", func, 0.00, 100.00, 4);
+	TF1 *f1 = new TF1("f1", func, 0.00, 100.00, 3);
 	if (doFit==1) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
@@ -214,11 +215,10 @@ if (ilepton<1 || ilepton>2) {
 	    if (title=="w_MET" && h_data_fit->GetXaxis()->GetBinCenter(i) < 125.) e = 1.e10;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
-	  f1->SetParameters(1.0, 0.0, 0.0, 1.0);
-	  f1->SetParNames("f_ttbar", "dummy", "dummy");
+	  f1->SetParameters(1.0, 0.0, 0.0);
+	  f1->SetParNames("c(ttbar)", "dummy", "dummy");
 	  f1->FixParameter(1, 0.0);
 	  f1->FixParameter(2, 0.0);
-	  f1->FixParameter(3, 1.0);
 	  h_data_fit->Fit("f1", "Q0");
 	  h_mc_fit0->Scale(f1->GetParameter(0));
 	}
@@ -240,17 +240,16 @@ if (ilepton<1 || ilepton>2) {
 	    e = e + h_mc_fit0->GetBinError(i)**2;
 	    e = e + h_mc_fit1->GetBinError(i)**2;
 	    e = e + h_mc_fit2->GetBinError(i)**2;
-	    /*if (title=="w_secondvtx_N" && h_data_fit->GetXaxis()->GetBinCenter(i) < 0.89) e = 1.e10;*/
+	    if (title=="w_secondvtx_N" && h_data_fit->GetXaxis()->GetBinCenter(i) < 0.89) e = 1.e10;
 	    if (title=="w_SVTX_mass" && h_data_fit->GetXaxis()->GetBinCenter(i) < 0.25) e = 1.e10;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
-	  f1->SetParameters(1.0, 1.0, 1.0, 1.0);
-	  f1->SetParNames("f_uds", "f_b", "f_c", "f_tot");
-	  f1->FixParameter(3, 1.0);
+	  f1->SetParameters(1.0, 1.0, 1.0);
+	  f1->SetParNames("c(uds)", "c(b)", "c(c)");
 	  h_data_fit->Fit("f1", "Q0");
-	  h_mc_fit0->Scale(f1->GetParameter(0)*f1->GetParameter(3));
-	  h_mc_fit1->Scale(f1->GetParameter(1)*f1->GetParameter(3));
-	  h_mc_fit2->Scale(f1->GetParameter(2)*f1->GetParameter(3));
+	  h_mc_fit0->Scale(f1->GetParameter(0));
+	  h_mc_fit1->Scale(f1->GetParameter(1));
+	  h_mc_fit2->Scale(f1->GetParameter(2));
 	}
 
 	TH1F *ht = h_mc1->Clone("ht");
@@ -304,7 +303,12 @@ if (ilepton<1 || ilepton>2) {
 	h_data->SetMarkerSize (1.0);
 	//h_data->SetStats(0);
 
-	leg = new TLegend(0.62, 0.58, 0.88, 0.88);
+	TLegend *leg;
+	if (doBkg) {
+	  leg = new TLegend(0.62, 0.75, 0.88, 0.88);
+	} else {
+	  leg = new TLegend(0.62, 0.58, 0.88, 0.88);
+	}
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
@@ -424,18 +428,28 @@ if (ilepton<1 || ilepton>2) {
 	  fitLabel->SetNDC();
 	  char buff[100];
 	  if (doFit==1) {
-	    sprintf(buff, "f_{ttbar} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	    sprintf(buff, "c_{ttbar} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
 	    fitLabel->DrawLatex(0.68, 0.58, buff);
 	  }
 	  if (doFit==2) {
-	    sprintf(buff, "f_{uds} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	    sprintf(buff, "c_{uds} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	    fitLabel->DrawLatex(0.38, 0.58, buff);
+	    sprintf(buff, "c_{b}   = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
+	    fitLabel->DrawLatex(0.38, 0.53, buff);
+	    sprintf(buff, "c_{c}   = %5.3f #pm %5.3f", f1->GetParameter(2), f1->GetParError(2));
+	    fitLabel->DrawLatex(0.38, 0.48, buff);
+	    float f_uds = 100*h_mc_fit0->Integral()/(h_mc_fit0->Integral()+h_mc_fit1->Integral()+h_mc_fit2->Integral());
+	    float ef_uds = f_uds*(f1->GetParError(0)/f1->GetParameter(0));
+	    sprintf(buff, "f_{uds} = %4.1f #pm %3.1f %%", f_uds, ef_uds);
 	    fitLabel->DrawLatex(0.68, 0.58, buff);
-	    sprintf(buff, "f_{b}   = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
+	    float f_b = 100*h_mc_fit1->Integral()/(h_mc_fit0->Integral()+h_mc_fit1->Integral()+h_mc_fit2->Integral());
+	    float ef_b = f_b*(f1->GetParError(1)/f1->GetParameter(1));
+	    sprintf(buff, "f_{b}   = %4.1f #pm %3.1f %%", f_b, ef_b);
 	    fitLabel->DrawLatex(0.68, 0.53, buff);
-	    sprintf(buff, "f_{c}   = %5.3f #pm %5.3f", f1->GetParameter(2), f1->GetParError(2));
+	    float f_c = 100*h_mc_fit2->Integral()/(h_mc_fit0->Integral()+h_mc_fit1->Integral()+h_mc_fit2->Integral());
+	    float ef_c = f_c*(f1->GetParError(2)/f1->GetParameter(2));
+	    sprintf(buff, "f_{c}   = %4.1f #pm %3.1f %%", f_c, ef_c);
 	    fitLabel->DrawLatex(0.68, 0.48, buff);
-	    //sprintf(buff, "f_{tot} = %5.3f #pm %5.3f", f1->GetParameter(3), f1->GetParError(3));
-	    //fitLabel->DrawLatex(0.68, 0.43, buff);
 	  }
 	  fitLabel->Draw("same");
 	}
