@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.52 2013/05/05 19:55:59 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.53 2013/05/12 20:06:14 dellaric Exp $
 //
 //
 
@@ -148,6 +148,7 @@ private:
 
   double    Ht, Ht_b;
   double    discrCSV;
+  double    discrBJP, discrJBP; 
   double    MyWeight;
   double    sFac;
   double    sFacErr;
@@ -300,8 +301,14 @@ private:
 
   TH1F*     h_secondvtx_N;
   TH1F*     w_secondvtx_N;
+  TH1F*     w_secondvtx_N_zoom;
+  TH1F*     w_secondvtx_N_mass;
   TH1F*     b_secondvtx_N;
+  TH1F*     b_secondvtx_N_zoom;
+  TH1F*     b_secondvtx_N_mass;
   TH1F*     c_secondvtx_N;
+  TH1F*     c_secondvtx_N_zoom;
+  TH1F*     c_secondvtx_N_mass;
 
   TH1F*     w_SVTX_mass_jet;
   TH1F*     b_SVTX_mass_jet;
@@ -313,6 +320,13 @@ private:
   TH1F*     b_SVTX_mass;
   TH1F*     c_SVTX_mass;
   
+  TH1F*     w_BJP;
+  TH1F*     w_JBP;
+  TH1F*     b_BJP;
+  TH1F*     b_JBP;
+  TH1F*     c_BJP;
+  TH1F*     c_JBP;
+
   TH1F*     w_Ht;
   TH1F*     b_Ht;
   TH1F*     c_Ht;
@@ -519,8 +533,17 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
 
   h_secondvtx_N =       fs->make < TH1F > ("h_secondvtx_N",     "h_secondvtx_N", 50, 0, 1);
   w_secondvtx_N =       fs->make < TH1F > ("w_secondvtx_N",     "w_secondvtx_N", 50, 0, 1);
-  b_secondvtx_N =       fs->make < TH1F > ("b_secondvtx_N",     "b_secondvtx_N", 50, 0, 1);
-  c_secondvtx_N =       fs->make < TH1F > ("c_secondvtx_N",     "w_secondvtx_N", 50, 0, 1);
+  w_secondvtx_N_zoom =  fs->make < TH1F > ("w_secondvtx_N_zoom",  "w_secondvtx_N_zoom", 25, 0.5, 1);
+  w_secondvtx_N_mass =  fs->make < TH1F > ("w_secondvtx_N_mass",  "w_secondvtx_N_mass", 50, 0, 1);
+  
+  b_secondvtx_N =         fs->make < TH1F > ("b_secondvtx_N",       "b_secondvtx_N", 50, 0, 1);
+  b_secondvtx_N_mass =    fs->make < TH1F > ("b_secondvtx_N_mass",  "b_secondvtx_N_mass", 50, 0, 1);
+  b_secondvtx_N_zoom =    fs->make < TH1F > ("b_secondvtx_N_zoom",  "b_secondvtx_N_zoom", 25, 0.5, 1);
+  
+  c_secondvtx_N =         fs->make < TH1F > ("c_secondvtx_N",       "c_secondvtx_N", 50, 0, 1);
+  c_secondvtx_N_mass =    fs->make < TH1F > ("c_secondvtx_N_mass",  "c_secondvtx_N_mass", 50, 0, 1);
+  c_secondvtx_N_zoom =    fs->make < TH1F > ("c_secondvtx_N_zoom",  "c_secondvtx_N_zoom", 25, 0.5, 1);
+  
 
   w_SVTX_mass_jet =     fs->make < TH1F > ("w_SVTX_mass_jet",   "w_SVTX_mass_jet;Mass [GeV]", 70, 0, 7);
   b_SVTX_mass_jet =     fs->make < TH1F > ("b_SVTX_mass_jet",   "b_SVTX_mass_jet;Mass [GeV]", 70, 0, 7);
@@ -528,9 +551,16 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   w_SVTX_mass_trk =     fs->make < TH1F > ("w_SVTX_mass_trk",   "w_SVTX_mass_trk;Mass [GeV]", 160, 0, 80);
   b_SVTX_mass_trk =     fs->make < TH1F > ("b_SVTX_mass_trk",   "b_SVTX_mass_trk;Mass [GeV]", 160, 0, 80);
   c_SVTX_mass_trk =     fs->make < TH1F > ("c_SVTX_mass_trk",   "c_SVTX_mass_trk;Mass [GeV]", 160, 0, 80);
-  w_SVTX_mass =         fs->make < TH1F > ("w_SVTX_mass",       "w_SVTX_mass;Mass [GeV]", 70, 0, 7);
-  b_SVTX_mass =         fs->make < TH1F > ("b_SVTX_mass",       "b_SVTX_mass;Mass [GeV]", 70, 0, 7);
-  c_SVTX_mass =         fs->make < TH1F > ("c_SVTX_mass",       "c_SVTX_mass;Mass [GeV]", 70, 0, 7);
+  w_SVTX_mass     =     fs->make < TH1F > ("w_SVTX_mass",       "w_SVTX_mass;Mass [GeV]", 70, 0, 7);
+  b_SVTX_mass     =     fs->make < TH1F > ("b_SVTX_mass",       "b_SVTX_mass;Mass [GeV]", 70, 0, 7);
+  c_SVTX_mass     =     fs->make < TH1F > ("c_SVTX_mass",       "c_SVTX_mass;Mass [GeV]", 70, 0, 7);
+
+  w_BJP  =     fs->make < TH1F > ("w_BJP",   "w_BJP", 80, 0, 8);    
+  w_JBP  =     fs->make < TH1F > ("w_JBP",   "w_JBP", 50, 0, 5);
+  b_BJP  =     fs->make < TH1F > ("b_BJP",   "b_BJP", 80, 0, 8);
+  b_JBP  =     fs->make < TH1F > ("b_JBP",   "b_JBP", 50, 0, 5);
+  c_BJP  =     fs->make < TH1F > ("c_BJP",   "c_BJP", 80, 0, 8);
+  c_JBP  =     fs->make < TH1F > ("c_JBP",   "c_JBP", 50, 0, 5);
 
   w_Ht =                fs->make < TH1F > ("w_Ht",              "w_Ht [GeV]", 50, 30., 1500.);
   b_Ht =                fs->make < TH1F > ("b_Ht",              "b_Ht [GeV]", 50, 30., 1500.);
@@ -786,9 +816,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   vector < double > vect_jets_pt;
   vector < double > vect_jets_phi;
   vector < double > vect_jets_eta;
-  vector < bool > vect_jets_isb;
-  vector < bool > vect_jets_isc;
-  vector < double > vect_jets_discrCSV;
+  vector < bool >   vect_jets_isb;
+  vector < bool >   vect_jets_isc;
 
   vector < double > vect_bjets_pt;
   vector < double > vect_bjets_phi;
@@ -846,17 +875,52 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         }
 
         discrCSV = jet->bDiscriminator ("combinedSecondaryVertexBJetTags");
+	discrBJP = jet->bDiscriminator ("jetBProbabilityBJetTags");
+        discrJBP = jet->bDiscriminator ("jetProbabilityBJetTags");
 
-        vect_jets_discrCSV.push_back (discrCSV);
+	reco::SecondaryVertexTagInfo const * svTagInfos = jet->tagInfoSecondaryVertex("secondaryVertex");
 
         h_secondvtx_N->Fill (discrCSV);
         w_secondvtx_N->Fill (discrCSV, MyWeight);
-        if (isb) b_secondvtx_N->Fill (discrCSV, MyWeight);
-        if (isc) c_secondvtx_N->Fill (discrCSV, MyWeight);
+        w_secondvtx_N_zoom->Fill (discrCSV, MyWeight);
 
-        //cout << discrCSV << endl;
+	if (isb){
+	  b_secondvtx_N->Fill (discrCSV, MyWeight);
+	  b_secondvtx_N_zoom->Fill (discrCSV, MyWeight);
+	}
+	if (isc){
+	  c_secondvtx_N->Fill (discrCSV, MyWeight);
+	  c_secondvtx_N_zoom->Fill (discrCSV, MyWeight);
+	}
+  	  
+	if ( svTagInfos && svTagInfos->nVertices() > 0 ) {
+	  w_secondvtx_N_mass->Fill (discrCSV, MyWeight);
+
+ 	  if (isb){
+	    b_secondvtx_N_mass->Fill (discrCSV, MyWeight);
+	  }
+  	  if (isc){
+	    c_secondvtx_N_mass->Fill (discrCSV, MyWeight);
+	  }
+	}
+
+	//cout << discrCSV << endl;
 
         if (discrCSV > 0.89) {
+        
+	  vect_jets_discrBJP.push_back (discrBJP);
+	  vect_jets_discrJBP.push_back (discrJBP);
+          w_BJP->Fill (discrBJP, MyWeight); 
+          w_JBP->Fill (discrJBP, MyWeight);
+
+	  if(isb){
+  	     b_BJP->Fill (discrBJP, MyWeight);
+  	     b_JBP->Fill (discrJBP, MyWeight);
+	  }
+	  if(isc){
+	     c_BJP->Fill (discrBJP, MyWeight);
+	     c_JBP->Fill (discrJBP, MyWeight);
+	  }
 
 	  ++Nb;
 	  //cout << Nb << endl;
@@ -880,10 +944,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
             vect_bjets_isc.push_back (false);
           }
 
-	  reco::SecondaryVertexTagInfo const * svTagInfos = jet->tagInfoSecondaryVertex("secondaryVertex");
-
 	  if ( svTagInfos && svTagInfos->nVertices() > 0 ) {
-
 	    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecJet;
 	    for (reco::Vertex::trackRef_iterator track = svTagInfos->secondaryVertex(0).tracks_begin(); track != svTagInfos->secondaryVertex(0).tracks_end(); ++track) {
 	      const double kPionMass = 0.13957018;
@@ -895,7 +956,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 	      sumVecJet += vec;
 	    }
 	    sumVertexMassJet += sumVecJet.M();
-
 	  }
 
 	  ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecTrk;
