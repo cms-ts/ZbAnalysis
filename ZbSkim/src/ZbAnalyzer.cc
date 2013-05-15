@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.53 2013/05/12 20:06:14 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.54 2013/05/15 07:21:09 dellaric Exp $
 //
 //
 
@@ -908,8 +908,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
         if (discrCSV > 0.89) {
         
-	  vect_jets_discrBJP.push_back (discrBJP);
-	  vect_jets_discrJBP.push_back (discrJBP);
           w_BJP->Fill (discrBJP, MyWeight); 
           w_JBP->Fill (discrJBP, MyWeight);
 
