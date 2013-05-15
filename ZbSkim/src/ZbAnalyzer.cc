@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.57 2013/05/15 08:56:31 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.58 2013/05/15 15:19:46 dellaric Exp $
 //
 //
 
@@ -992,13 +992,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   // ++++++++ MET & HT PLOTS
 
-  float met = mets->empty() ? 0 : (*mets)[0].et();
-
   if ((ee_event || mm_event) && Nj > 0) {
-    w_MET->Fill (met, MyWeight);
-    if (isb) b_MET->Fill (met, MyWeight);
-    if (isc) c_MET->Fill (met, MyWeight);
-    w_MET_sign->Fill (met, MyWeight);
+    w_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
+    if (isb) b_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
+    if (isc) c_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
+    w_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
   }
 
   if ((ee_event || mm_event) && Nj > 0) {
