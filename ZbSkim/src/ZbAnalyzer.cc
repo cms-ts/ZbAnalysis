@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.56 2013/05/15 08:35:22 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.57 2013/05/15 08:56:31 dellaric Exp $
 //
 //
 
@@ -148,7 +148,8 @@ private:
 
   double    Ht, Ht_b;
   double    discrCSV;
-  double    discrBJP, discrJBP; 
+  double    discrBJP;
+  double    discrJBP; 
   double    MyWeight;
   double    sFac;
   double    sFacErr;
@@ -817,12 +818,15 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   vector < double > vect_jets_eta;
   vector < bool >   vect_jets_isb;
   vector < bool >   vect_jets_isc;
+  vector < double > vect_jets_discrCSV;
 
   vector < double > vect_bjets_pt;
   vector < double > vect_bjets_phi;
   vector < double > vect_bjets_eta;
   vector < bool > vect_bjets_isb;
   vector < bool > vect_bjets_isc;
+  vector < double > vect_jets_discrBJP;
+  vector < double > vect_jets_discrJBP;
 
   bool isb = false;
   bool isc = false;
@@ -874,8 +878,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         }
 
         discrCSV = jet->bDiscriminator ("combinedSecondaryVertexBJetTags");
-	discrBJP = jet->bDiscriminator ("jetBProbabilityBJetTags");
-        discrJBP = jet->bDiscriminator ("jetProbabilityBJetTags");
+
+	vect_jets_discrCSV.push_back (discrCSV);
 
 	reco::SecondaryVertexTagInfo const * svTagInfos = jet->tagInfoSecondaryVertex("secondaryVertex");
 
@@ -905,18 +909,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 	//cout << discrCSV << endl;
 
         if (discrCSV > 0.89) {
-        
-          w_BJP->Fill (discrBJP, MyWeight); 
-          w_JBP->Fill (discrJBP, MyWeight);
-
-	  if(isb){
-  	     b_BJP->Fill (discrBJP, MyWeight);
-  	     b_JBP->Fill (discrJBP, MyWeight);
-	  }
-	  if(isc){
-	     c_BJP->Fill (discrBJP, MyWeight);
-	     c_JBP->Fill (discrJBP, MyWeight);
-	  }
 
 	  ++Nb;
 	  //cout << Nb << endl;
@@ -939,6 +931,12 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
           } else {
             vect_bjets_isc.push_back (false);
           }
+
+	  discrBJP = jet->bDiscriminator ("jetBProbabilityBJetTags");
+          discrJBP = jet->bDiscriminator ("jetProbabilityBJetTags");
+
+	  vect_jets_discrBJP.push_back (discrBJP);
+	  vect_jets_discrJBP.push_back (discrJBP);
 
 	  if ( svTagInfos && svTagInfos->nVertices() > 0 ) {
 	    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecJet;
@@ -1197,6 +1195,22 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       c_SVTX_mass_jet->Fill (sumVertexMassJet, MyWeight*scalFac_b);
       c_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
       c_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
+    }
+  }
+
+  // ++++++++ BJP/JBP PLOTS
+
+  if ((ee_event || mm_event) && Nj > 0 && Nb > 0) {
+    scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
+    w_BJP->Fill (vect_jets_discrBJP[0], MyWeight*scalFac_b); 
+    w_JBP->Fill (vect_jets_discrJBP[0], MyWeight*scalFac_b);
+    if (isb){
+      b_BJP->Fill (vect_jets_discrBJP[0], MyWeight*scalFac_b);
+      b_JBP->Fill (vect_jets_discrJBP[0], MyWeight*scalFac_b);
+    }
+    if (isc){
+      c_BJP->Fill (vect_jets_discrBJP[0], MyWeight*scalFac_b);
+      c_JBP->Fill (vect_jets_discrJBP[0], MyWeight*scalFac_b);
     }
   }
 
