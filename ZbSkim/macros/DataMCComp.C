@@ -305,9 +305,21 @@ if (ilepton<1 || ilepton>2) {
 
 	TLegend *leg;
 	if (doBkg) {
-	  leg = new TLegend(0.62, 0.75, 0.88, 0.88);
+	  if (h_mc1c && h_mc1b) {
+	    leg = new TLegend(0.62, 0.747, 0.88, 0.88);
+	  } else if (h_mc1c || h_mc1b) {
+	    leg = new TLegend(0.62, 0.780, 0.88, 0.88);
+	  } else {
+	    leg = new TLegend(0.62, 0.813, 0.88, 0.88);
+	  }
 	} else {
-	  leg = new TLegend(0.62, 0.58, 0.88, 0.88);
+	  if (h_mc1c && h_mc1b) {
+	    leg = new TLegend(0.62, 0.580, 0.88, 0.88);
+	  } else if (h_mc1c || h_mc1b) {
+	    leg = new TLegend(0.62, 0.613, 0.88, 0.88);
+	  } else {
+	    leg = new TLegend(0.62, 0.647, 0.88, 0.88);
+	  }
 	}
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
@@ -405,7 +417,7 @@ if (ilepton<1 || ilepton>2) {
 	h_ratio->GetYaxis()->SetTitleSize(0.09);
 	h_ratio->GetYaxis()->SetLabelSize(0.08);
 	h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
-	h_ratio->GetYaxis()->SetTitleOffset(0.3);
+	h_ratio->GetYaxis()->SetTitleOffset(0.4);
 	h_ratio->Divide(ht);
 	h_ratio->SetMarkerStyle(20);
 	h_ratio->Draw("EPX0");
