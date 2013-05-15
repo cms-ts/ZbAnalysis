@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.54 2013/05/15 07:21:09 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.55 2013/05/15 07:46:08 dellaric Exp $
 //
 //
 
@@ -555,12 +555,12 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_SVTX_mass     =     fs->make < TH1F > ("b_SVTX_mass",       "b_SVTX_mass;Mass [GeV]", 70, 0, 7);
   c_SVTX_mass     =     fs->make < TH1F > ("c_SVTX_mass",       "c_SVTX_mass;Mass [GeV]", 70, 0, 7);
 
-  w_BJP  =     fs->make < TH1F > ("w_BJP",   "w_BJP", 80, 0, 8);    
-  w_JBP  =     fs->make < TH1F > ("w_JBP",   "w_JBP", 50, 0, 5);
-  b_BJP  =     fs->make < TH1F > ("b_BJP",   "b_BJP", 80, 0, 8);
-  b_JBP  =     fs->make < TH1F > ("b_JBP",   "b_JBP", 50, 0, 5);
-  c_BJP  =     fs->make < TH1F > ("c_BJP",   "c_BJP", 80, 0, 8);
-  c_JBP  =     fs->make < TH1F > ("c_JBP",   "c_JBP", 50, 0, 5);
+  w_BJP  =     fs->make < TH1F > ("w_BJP",   "w_BJP", 80, 0, 10);    
+  w_JBP  =     fs->make < TH1F > ("w_JBP",   "w_JBP", 50, 0, 3);
+  b_BJP  =     fs->make < TH1F > ("b_BJP",   "b_BJP", 80, 0, 10);
+  b_JBP  =     fs->make < TH1F > ("b_JBP",   "b_JBP", 50, 0, 3);
+  c_BJP  =     fs->make < TH1F > ("c_BJP",   "c_BJP", 80, 0, 10);
+  c_JBP  =     fs->make < TH1F > ("c_JBP",   "c_JBP", 50, 0, 3);
 
   w_Ht =                fs->make < TH1F > ("w_Ht",              "w_Ht [GeV]", 50, 30., 1500.);
   b_Ht =                fs->make < TH1F > ("b_Ht",              "b_Ht [GeV]", 50, 30., 1500.);
