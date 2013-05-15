@@ -22,7 +22,7 @@
 
 void JECscaling(){
 
-	TFile *data      = TFile::Open("/home/candelis/gpfs/CMSSW_5_3_9/src/ZbAnalysis/ZbSkim/test/data/v05/DoubleMu_2012_merge.root");
+	TFile *data      = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/test/data/v06/DoubleMu_2012_merge.root");
 	data->cd("demo_mm");
 	TH1F  *jet1 = (TH1F*)gDirectory->Get("w_first_jet_pt");
 	data->cd("demo_mm_up");
@@ -59,6 +59,8 @@ void JECscaling(){
 	leg->AddEntry(jet3,"jet p_{T} JEC down","l");
 	leg->Draw();
 
+	double x = (jet3->Integral() / jet2->Integral());
+	std::cout<<"JEC syst =" << x << endl; 
 	c1->Update();
 
 
