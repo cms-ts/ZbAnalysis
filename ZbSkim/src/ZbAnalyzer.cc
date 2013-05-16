@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.59 2013/05/15 15:58:59 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.60 2013/05/15 18:27:00 dellaric Exp $
 //
 //
 
@@ -906,9 +906,9 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
           bjet_eta = jet->eta();
           bjet_phi = jet->phi();
 
-          vect_bjets_pt.push_back(bjet_pt);
-          vect_bjets_phi.push_back(bjet_phi);
-          vect_bjets_eta.push_back(bjet_eta);
+          vect_bjets_pt.push_back (bjet_pt);
+          vect_bjets_phi.push_back (bjet_phi);
+          vect_bjets_eta.push_back (bjet_eta);
 
           if (isMC && fabs (jet->partonFlavour ()) == 5) {
             vect_bjets_isb.push_back (true);
