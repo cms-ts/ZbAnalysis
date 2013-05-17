@@ -210,6 +210,16 @@ process.zeleMatchedeleMatched = cms.EDProducer('CandViewShallowCloneCombiner',
 ##############
 
 process.GlobalTag.globaltag = 'START53_V21::All'
+
+process.GlobalTag.toGet = cms.VPSet(
+  cms.PSet(record = cms.string("BTagTrackProbability2DRcd"),
+       tag = cms.string("TrackProbabilityCalibration_2D_MC53X_v2"),
+       connect = cms.untracked.string("frontier://FrontierPrep/CMS_COND_BTAU")),
+  cms.PSet(record = cms.string("BTagTrackProbability3DRcd"),
+       tag = cms.string("TrackProbabilityCalibration_3D_MC53X_v2"),
+       connect = cms.untracked.string("frontier://FrontierPrep/CMS_COND_BTAU"))
+)
+
 process.source = cms.Source("PoolSource",
 	#fileNames = cms.untracked.vstring('/store/mc/Summer12/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/AODSIM/PU_S7_START50_V15-v1/0000/88AD6E87-E173-E111-9996-00E081791749.root')
 	fileNames = cms.untracked.vstring('file:88AD6E87-E173-E111-9996-00E081791749.root')
