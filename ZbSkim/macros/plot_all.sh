@@ -8,7 +8,6 @@ i=1
 while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp.C\(\"h_pu_weights\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"w_secondvtx_N\",1,$i\)
   root -l -q -b DataMCComp.C\(\"h_recoVTX\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_recoVTX\",1,$i\)
   root -l -q -b DataMCComp.C\(\"h_tracks\",1,$i\)
@@ -61,19 +60,25 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_third_bjet_pt\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_third_bjet_eta\",1,$i\)
 
-  root -l -q -b DataMCComp.C\(\"w_SVTX_mass_jet\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"w_SVTX_mass_trk\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i\)
-
   root -l -q -b DataMCComp.C\(\"h_scaleFactor_first_ele\",1,$i\)
   root -l -q -b DataMCComp.C\(\"h_scaleFactor_second_ele\",1,$i\)
   root -l -q -b DataMCComp.C\(\"h_scaleFactor_first_muon\",1,$i\)
   root -l -q -b DataMCComp.C\(\"h_scaleFactor_second_muon\",1,$i\)
 
+  root -l -q -b DataMCComp.C\(\"w_SVTX_mass_jet\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_SVTX_mass_trk\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i\)
+
+  root -l -q -b DataMCComp.C\(\"w_secondvtx_N\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_secondvtx_N_zoom\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"w_secondvtx_N_mass\",1,$i\)
+
   root -l -q -b DataMCComp.C\(\"w_BJP\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_JBP\",1,$i\)
+
+  root -l -q -b DataMCComp.C\(\"w_secondvtx_N_mass\",1,$i\)
+
+  root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,$i\)
 
   i=$((i+1))
 done
@@ -83,6 +88,10 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp.C\(\"w_MET\",1,$i,0,1\)
 
+  root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,1,0\)
+  root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,0,2\)
+  root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,1,2\)
+  
   root -l -q -b DataMCComp.C\(\"w_secondvtx_N_zoom\",1,$i,1,0\)
   root -l -q -b DataMCComp.C\(\"w_secondvtx_N_zoom\",1,$i,0,2\)
   root -l -q -b DataMCComp.C\(\"w_secondvtx_N_zoom\",1,$i,1,2\)
@@ -95,14 +104,18 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_BJP\",1,$i,0,2\)
   root -l -q -b DataMCComp.C\(\"w_BJP\",1,$i,1,2\)
 
+  root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,$i,1,0\)
+  root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,$i,0,2\)
+  root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,$i,1,2\)
+
   root -l -q -b DataMCComp.C\(\"w_JBP\",1,$i,1,0\)
   root -l -q -b DataMCComp.C\(\"w_JBP\",1,$i,0,2\)
   root -l -q -b DataMCComp.C\(\"w_JBP\",1,$i,1,2\)
 
-  root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,1,0\)
-  root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,0,2\)
-  root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,1,2\)
-  
+  root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,$i,1,0\)
+  root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,$i,0,2\)
+  root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,$i,1,2\)
+
   i=$((i+1))
 done
 
