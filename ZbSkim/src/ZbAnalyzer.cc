@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.61 2013/05/16 06:06:55 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.62 2013/05/17 06:14:31 dellaric Exp $
 //
 //
 
@@ -556,15 +556,15 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_secondvtx_N_zoom =    fs->make < TH1F > ("c_secondvtx_N_zoom",  "c_secondvtx_N_zoom", 20, 0.89, 1);
   c_secondvtx_N_mass =    fs->make < TH1F > ("c_secondvtx_N_mass",  "c_secondvtx_N_mass", 20, 0.89, 1);
 
-  w_SVTX_mass_jet =     fs->make < TH1F > ("w_SVTX_mass_jet",   "w_SVTX_mass_jet;Mass [GeV]", 70, 0, 7);
-  b_SVTX_mass_jet =     fs->make < TH1F > ("b_SVTX_mass_jet",   "b_SVTX_mass_jet;Mass [GeV]", 70, 0, 7);
-  c_SVTX_mass_jet =     fs->make < TH1F > ("c_SVTX_mass_jet",   "c_SVTX_mass_jet;Mass [GeV]", 70, 0, 7);
+  w_SVTX_mass_jet =     fs->make < TH1F > ("w_SVTX_mass_jet",   "w_SVTX_mass_jet;Mass [GeV]", 80, 0, 6);
+  b_SVTX_mass_jet =     fs->make < TH1F > ("b_SVTX_mass_jet",   "b_SVTX_mass_jet;Mass [GeV]", 80, 0, 6);
+  c_SVTX_mass_jet =     fs->make < TH1F > ("c_SVTX_mass_jet",   "c_SVTX_mass_jet;Mass [GeV]", 80, 0, 6);
   w_SVTX_mass_trk =     fs->make < TH1F > ("w_SVTX_mass_trk",   "w_SVTX_mass_trk;Mass [GeV]", 160, 0, 80);
   b_SVTX_mass_trk =     fs->make < TH1F > ("b_SVTX_mass_trk",   "b_SVTX_mass_trk;Mass [GeV]", 160, 0, 80);
   c_SVTX_mass_trk =     fs->make < TH1F > ("c_SVTX_mass_trk",   "c_SVTX_mass_trk;Mass [GeV]", 160, 0, 80);
-  w_SVTX_mass     =     fs->make < TH1F > ("w_SVTX_mass",       "w_SVTX_mass;Mass [GeV]", 70, 0, 7);
-  b_SVTX_mass     =     fs->make < TH1F > ("b_SVTX_mass",       "b_SVTX_mass;Mass [GeV]", 70, 0, 7);
-  c_SVTX_mass     =     fs->make < TH1F > ("c_SVTX_mass",       "c_SVTX_mass;Mass [GeV]", 70, 0, 7);
+  w_SVTX_mass     =     fs->make < TH1F > ("w_SVTX_mass",       "w_SVTX_mass;Mass [GeV]", 80, 0, 6);
+  b_SVTX_mass     =     fs->make < TH1F > ("b_SVTX_mass",       "b_SVTX_mass;Mass [GeV]", 80, 0, 6);
+  c_SVTX_mass     =     fs->make < TH1F > ("c_SVTX_mass",       "c_SVTX_mass;Mass [GeV]", 80, 0, 6);
 
   w_BJP       =     fs->make < TH1F > ("w_BJP",   "w_BJP", 80, 0, 10);
   w_JBP       =     fs->make < TH1F > ("w_JBP",   "w_JBP", 50, 0, 3);
