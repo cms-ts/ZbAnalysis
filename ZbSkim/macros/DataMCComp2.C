@@ -31,6 +31,19 @@ if (ilepton<1 || ilepton>2) {
 
 	double Lumi2012;
 
+	if(ilepton==1){
+
+	double f_b = 0.798;
+	double f_c = 2.118; 
+	double f_l = 1.354;
+	}
+	if (ilepton==2) {
+	
+	double f_b = 0.793;
+	double f_c = 1.925; 
+	double f_l = 1.611;
+	}
+
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
@@ -172,9 +185,9 @@ if (ilepton<1 || ilepton>2) {
 	h_data_b->Add(h_mc3_b, -1.);
 	h_data_b->Add(h_mc2_b, -1.);
 
-	TH1F *h_mc1uds_b = h_mc1_b->Clone("h_mc1c_uds");
-	if (h_mc1b_b) h_mc1uds_b->Add(h_mc1b_b, -1.);
-	if (h_mc1c_b) h_mc1uds_b->Add(h_mc1c_b, -1.);
+	TH1F *h_mc1uds_b = h_mc1_b->Clone("h_mc1uds_b");
+	if (h_mc1b_b) h_mc1uds_b->Add(h_mc1b_b, -1);
+	if (h_mc1c_b) h_mc1uds_b->Add(h_mc1c_b, -1);
 	for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
 	  float e = h_mc1uds_b->GetBinError(i)**2;
 	  if (h_mc1b_b) e = e - h_mc1b_b->GetBinError(i)**2;
@@ -182,8 +195,9 @@ if (ilepton<1 || ilepton>2) {
 	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
-	h_data_b->Add(h_mc1c_b, -1.);
-	h_data_b->Add(h_mc1uds_b, -1.);
+	h_data_b->Add(h_mc1c_b, -f_c);
+	h_data_b->Add(h_mc1uds_b, -f_l);
+	h_mc1b_b->Scale(f_b);
 
 	h_data_b->Divide(h_data);
 	h_data_b->Scale(100.);
@@ -219,17 +233,22 @@ if (ilepton<1 || ilepton>2) {
 	  h_data_b->GetYaxis()->SetRangeUser(0, 8);
 	}
 
-	h_data_b->Draw("EPX0");
+	h_data_b->Draw("EP");
 	h_data_b->GetYaxis()->SetTitle("#sigma_{Z+b-jets}/#sigma_{Z+jets} [%]");
 	h_data_b->GetYaxis()->SetTitleOffset(1.2);
 	h_data_b->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b->SetMarkerColor(kBlack);
+	h_data_b->SetLineColor(kBlack);
 	h_data_b->SetMarkerStyle(20);
 	h_data_b->SetMarkerSize (1.0);
 	h_data_b->SetStats(0);
 
 	h_mc1b_b->SetLineColor(kRed);
-	h_mc1b_b->Draw("HSAME");
+	h_mc1b_b->SetMarkerColor(kRed);
+	h_mc1b_b->SetMarkerStyle(20);
+	h_mc1b_b->SetMarkerSize (1.0);
+	h_mc1b_b->Draw("HISTSAME");
+	h_mc1b_b->SetStats(0);
 
 	leg = new TLegend(0.58, 0.08, 0.78, 0.38);
 	leg->SetBorderSize(0);
@@ -237,8 +256,9 @@ if (ilepton<1 || ilepton>2) {
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
 
-	if (ilepton==1) leg->AddEntry(h_data,"Z(#rightarrow ee)+jets","p");
-	if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
+	if (ilepton==1) leg->AddEntry(h_data_b,"Z(#rightarrow ee)+jets DATA","p");
+	if (ilepton==2) leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu)+jets DATA","p");
+	leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee)+jets MC","l");
 
 	leg->Draw();
 
