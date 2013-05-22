@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.62 2013/05/17 06:14:31 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.63 2013/05/17 08:09:00 dellaric Exp $
 //
 //
 
@@ -58,6 +58,7 @@
 #include "TH1F.h"
 #include "TH2F.h"
 #include "TProfile2D.h"
+#include "TProfile.h"
 #include "TFile.h"
 #include "TLorentzVector.h"
 #include "TTree.h"
@@ -132,6 +133,7 @@ private:
   double    bjet_eta;
   double    bjet_phi;
   double    ele_pt;
+  double    ele_pt2;
   double    ele_eta;
   double    muon_pt;
   double    muon_eta;
@@ -160,13 +162,18 @@ private:
   double    scalFac_b;
   double    Nf, Nbk;
   double    Afb;
+  double    diff;
 
   TTree*    treeZb_;
+
+  TProfile* ele_diff;
 
   TH1F*     h_jetmultiplicity;
   TH1F*     h_jet_pt;
   TH1F*     h_ele_pt;
   TH1F*     h_muon_pt;
+
+  TH1F*     diff_ele;
 
   TH1F*     h_pu_weights;
   TH1F*     h_tracks;
@@ -408,6 +415,9 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   h_ele_pt =            fs->make < TH1F > ("h_ele_pt",          "h_ele_pt;P_t [GeV]", 20, 30, 530);
   h_muon_pt =           fs->make < TH1F > ("h_muon_pt",         "h_muon_pt;P_t [GeV]", 100, 0, 250);
 
+  diff_ele =            fs->make < TH1F > ("ecalVSpf",         "ecalVSpf", 100, -5, 5);
+  ele_diff =            fs->make < TProfile > ("hprof", "ecaldriven versus pf",100,-2.5,2.5,-1,1);              
+
   h_pu_weights =        fs->make < TH1F > ("h_pu_weights",      "h_pu_weights;PU weight", 10, 0, 10);
 
   h_tracks =            fs->make < TH1F > ("h_tracks",          "h_tracks;N_tracks", 100, 0, 2500);
@@ -437,9 +447,9 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_third_jet_eta =     fs->make < TH1F > ("b_third_jet_eta",   "b_third_jet_eta;Eta", 16, -2.5, 2.5);
   c_third_jet_eta =     fs->make < TH1F > ("c_third_jet_eta",   "c_third_jet_eta;Eta", 16, -2.5, 2.5);
 
-  w_first_jet_pt_b =    fs->make < TH1F > ("w_first_jet_pt_b",   "w_first_jet_pt_b;P_t [GeV]", 50, 30., 700.);
-  b_first_jet_pt_b =    fs->make < TH1F > ("b_first_jet_pt_b",   "b_first_jet_pt_b;P_t [GeV]", 50, 30., 700.);
-  c_first_jet_pt_b =    fs->make < TH1F > ("c_first_jet_pt_b",   "c_first_jet_pt_b;P_t [GeV]", 50, 30., 700.);
+  w_first_jet_pt_b =    fs->make < TH1F > ("w_first_jet_pt_b",   "w_first_jet_pt_b;P_t [GeV]", 50, 30., 500.);
+  b_first_jet_pt_b =    fs->make < TH1F > ("b_first_jet_pt_b",   "b_first_jet_pt_b;P_t [GeV]", 50, 30., 500.);
+  c_first_jet_pt_b =    fs->make < TH1F > ("c_first_jet_pt_b",   "c_first_jet_pt_b;P_t [GeV]", 50, 30., 500.);
   w_first_jet_eta_b =   fs->make < TH1F > ("w_first_jet_eta_b",  "w_first_jet_eta_b;Eta", 16, -2.5, 2.5);
   b_first_jet_eta_b =   fs->make < TH1F > ("b_first_jet_eta_b",  "b_first_jet_eta_b;Eta", 16, -2.5, 2.5);
   c_first_jet_eta_b =   fs->make < TH1F > ("c_first_jet_eta_b",  "c_first_jet_eta_b;Eta", 16, -2.5, 2.5);
@@ -517,12 +527,12 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   w_mass_mm = 	        fs->make < TH1F > ("w_mass_mm",         "w_mass_mm;Mass [GeV]", 80, 71, 111);
   b_mass_mm =           fs->make < TH1F > ("b_mass_mm",         "b_mass_mm;Mass [GeV]", 80, 71, 111);
   c_mass_mm =           fs->make < TH1F > ("c_mass_mm",         "c_mass_mm;Mass [GeV]", 80, 71, 111);
-  w_pt_Z_ee =           fs->make < TH1F > ("w_pt_Z_ee",         "w_pt_Z_ee;P_t [GeV]", 70, 0., 700.);
-  b_pt_Z_ee =           fs->make < TH1F > ("b_pt_Z_ee",         "b_pt_Z_ee;P_t [GeV]", 70, 0., 700.);
-  c_pt_Z_ee =           fs->make < TH1F > ("c_pt_Z_ee",         "c_pt_Z_ee;P_t [GeV]", 70, 0., 700.);
-  w_pt_Z_mm =           fs->make < TH1F > ("w_pt_Z_mm",         "w_pt_Z_mm;P_t [GeV]", 70, 0., 700.);
-  b_pt_Z_mm =           fs->make < TH1F > ("b_pt_Z_mm",         "b_pt_Z_mm;P_t [GeV]", 70, 0., 700.);
-  c_pt_Z_mm =           fs->make < TH1F > ("c_pt_Z_mm",         "c_pt_Z_mm;P_t [GeV]", 70, 0., 700.);
+  w_pt_Z_ee =           fs->make < TH1F > ("w_pt_Z_ee",         "w_pt_Z_ee;P_t [GeV]", 40, 0., 400.);
+  b_pt_Z_ee =           fs->make < TH1F > ("b_pt_Z_ee",         "b_pt_Z_ee;P_t [GeV]", 40, 0., 400.);
+  c_pt_Z_ee =           fs->make < TH1F > ("c_pt_Z_ee",         "c_pt_Z_ee;P_t [GeV]", 40, 0., 400.);
+  w_pt_Z_mm =           fs->make < TH1F > ("w_pt_Z_mm",         "w_pt_Z_mm;P_t [GeV]", 40, 0., 400.);
+  b_pt_Z_mm =           fs->make < TH1F > ("b_pt_Z_mm",         "b_pt_Z_mm;P_t [GeV]", 40, 0., 400.);
+  c_pt_Z_mm =           fs->make < TH1F > ("c_pt_Z_mm",         "c_pt_Z_mm;P_t [GeV]", 40, 0., 400.);
 
   w_mass_ee_b =         fs->make < TH1F > ("w_mass_ee_b",       "w_mass_mm_b;Mass [GeV]", 80, 71, 111);
   b_mass_ee_b =         fs->make < TH1F > ("b_mass_ee_b",       "b_mass_mm_b;Mass [GeV]", 80, 71, 111);
@@ -530,12 +540,12 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   w_mass_mm_b =         fs->make < TH1F > ("w_mass_mm_b",       "w_mass_mm_b;Mass [GeV]", 80, 71, 111);
   b_mass_mm_b =         fs->make < TH1F > ("b_mass_mm_b",       "b_mass_mm_b;Mass [GeV]", 80, 71, 111);
   c_mass_mm_b =         fs->make < TH1F > ("c_mass_mm_b",       "c_mass_mm_b;Mass [GeV]", 80, 71, 111);
-  w_pt_Z_ee_b =         fs->make < TH1F > ("w_pt_Z_ee_b",       "w_pt_Z_ee_b;P_t [GeV]", 70, 0., 700.);
-  b_pt_Z_ee_b =         fs->make < TH1F > ("b_pt_Z_ee_b",       "b_pt_Z_ee_b;P_t [GeV]", 70, 0., 700.);
-  c_pt_Z_ee_b =         fs->make < TH1F > ("c_pt_Z_ee_b",       "c_pt_Z_ee_b;P_t [GeV]", 70, 0., 700.);
-  w_pt_Z_mm_b =         fs->make < TH1F > ("w_pt_Z_mm_b",       "w_pt_Z_mm_b;P_t [GeV]", 70, 0., 700.);
-  b_pt_Z_mm_b =         fs->make < TH1F > ("b_pt_Z_mm_b",       "b_pt_Z_mm_b;P_t [GeV]", 70, 0., 700.);
-  c_pt_Z_mm_b =         fs->make < TH1F > ("c_pt_Z_mm_b",       "c_pt_Z_mm_b;P_t [GeV]", 70, 0., 700.);
+  w_pt_Z_ee_b =         fs->make < TH1F > ("w_pt_Z_ee_b",       "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
+  b_pt_Z_ee_b =         fs->make < TH1F > ("b_pt_Z_ee_b",       "b_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
+  c_pt_Z_ee_b =         fs->make < TH1F > ("c_pt_Z_ee_b",       "c_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
+  w_pt_Z_mm_b =         fs->make < TH1F > ("w_pt_Z_mm_b",       "w_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
+  b_pt_Z_mm_b =         fs->make < TH1F > ("b_pt_Z_mm_b",       "b_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
+  c_pt_Z_mm_b =         fs->make < TH1F > ("c_pt_Z_mm_b",       "c_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
   w_delta_ee_b =        fs->make < TH1F > ("w_delta_phi_ee_b",  "w_delta_phi_ee_b", 12, 0, TMath::Pi ());
   b_delta_ee_b =        fs->make < TH1F > ("b_delta_phi_ee_b",  "b_delta_phi_ee_b", 12, 0, TMath::Pi ());
   c_delta_ee_b =        fs->make < TH1F > ("c_delta_phi_ee_b",  "c_delta_phi_ee_b", 12, 0, TMath::Pi ());
@@ -580,12 +590,12 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_BJP_mass  =     fs->make < TH1F > ("c_BJP_mass",   "c_BJP_mass", 80, 0, 10);
   c_JBP_mass  =     fs->make < TH1F > ("c_JBP_mass",   "c_JBP_mass", 50, 0, 3);
 
-  w_Ht =                fs->make < TH1F > ("w_Ht",              "w_Ht [GeV]", 50, 30., 1500.);
-  b_Ht =                fs->make < TH1F > ("b_Ht",              "b_Ht [GeV]", 50, 30., 1500.);
-  c_Ht =                fs->make < TH1F > ("c_Ht",              "c_Ht [GeV]", 50, 30., 1500.);
-  w_Ht_b =              fs->make < TH1F > ("w_Ht_b",            "w_Ht [GeV]", 50, 30., 1500.);
-  b_Ht_b =              fs->make < TH1F > ("b_Ht_b",            "b_Ht [GeV]", 50, 30., 1500.);
-  c_Ht_b =              fs->make < TH1F > ("c_Ht_b",            "c_Ht [GeV]", 50, 30., 1500.);
+  w_Ht =                fs->make < TH1F > ("w_Ht",              "w_Ht [GeV]", 50, 30., 1000.);
+  b_Ht =                fs->make < TH1F > ("b_Ht",              "b_Ht [GeV]", 50, 30., 1000.);
+  c_Ht =                fs->make < TH1F > ("c_Ht",              "c_Ht [GeV]", 50, 30., 1000.);
+  w_Ht_b =              fs->make < TH1F > ("w_Ht_b",            "w_Ht [GeV]", 50, 30., 1000.);
+  b_Ht_b =              fs->make < TH1F > ("b_Ht_b",            "b_Ht [GeV]", 50, 30., 1000.);
+  c_Ht_b =              fs->make < TH1F > ("c_Ht_b",            "c_Ht [GeV]", 50, 30., 1000.);
 
   w_MET =               fs->make < TH1F > ("w_MET",             "w_MET;MET [GeV]", 50, 0, 250);
   b_MET =               fs->make < TH1F > ("b_MET",             "b_MET;MET [GeV]", 50, 0, 250);
@@ -702,6 +712,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   bjet_eta = 0;
   bjet_phi = 0;
   ele_pt = 0;
+  ele_pt2 = 0;
   ele_eta = 0;
   muon_pt = 0;
   muon_eta = 0;
@@ -735,9 +746,13 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     ele_pt = ele->pt ();
     ele_eta = ele->eta ();
 
-//    ele_pt = ele->ecalDrivenMomentum().pt ();
+    ele_pt2 = ele->ecalDrivenMomentum().pt ();
 //    ele_eta = ele->ecalDrivenMomentum().eta ();
 
+    diff = ele_pt-ele_pt2;
+    diff_ele->Fill(diff);
+    ele_diff->Fill(ele_eta, diff,1);
+ 
     vect_ele_pt.push_back (ele_pt);
     vect_ele_eta.push_back (ele_eta);
   }
@@ -906,7 +921,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 	if (isb) {
 	  b_secondvtx_N->Fill (discrCSV, MyWeight);
 	}
-	if (isc) {
+	if (isc && !isb) {
 	  c_secondvtx_N->Fill (discrCSV, MyWeight);
 	}
 
@@ -941,7 +956,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 	  if (isb) {
 	    b_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
 	  }
-	  if (isc) {
+	  if (isc && !isb) {
 	    c_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
 	  }
 
@@ -1010,20 +1025,20 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   if ((ee_event || mm_event) && Nj > 0) {
     w_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
     if (isb) b_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
-    if (isc) c_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
+    if (isc && !isb) c_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
     w_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
   }
 
   if ((ee_event || mm_event) && Nj > 0) {
     w_Ht->Fill (Ht, MyWeight);
     if (isb) b_Ht->Fill (Ht, MyWeight);
-    if (isc) c_Ht->Fill (Ht, MyWeight);
+    if (isc && !isb) c_Ht->Fill (Ht, MyWeight);
     if (Nb > 0) {
       scalFac_b = isMC ? BtSF.Val(vect_bjets_pt[0], vect_bjets_eta[0]) : 1;
       //cout << vect_bjets_pt[0] << " " << vect_bjets_eta[0] <<"   SFb = " << scalFac_b << endl;
       w_Ht_b->Fill (Ht, MyWeight*scalFac_b);
       if (isb) b_Ht_b->Fill (Ht, MyWeight*scalFac_b);
-      if (isc) c_Ht_b->Fill (Ht, MyWeight*scalFac_b);
+      if (isc && !isb) c_Ht_b->Fill (Ht, MyWeight*scalFac_b);
     }
   }
 
@@ -1032,7 +1047,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   if (ee_event) {
     w_numberOfZ->Fill (zee->size(), MyWeight);
     if (isb) b_numberOfZ->Fill (zee->size(), MyWeight);
-    if (isc) c_numberOfZ->Fill (zee->size(), MyWeight);
+    if (isc && !isb) c_numberOfZ->Fill (zee->size(), MyWeight);
   }
 
   if (ee_event && Nj > 0) {
@@ -1054,7 +1069,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         b_mass_ee->Fill (diele_mass, MyWeight);
         b_pt_Z_ee->Fill (diele_pt, MyWeight);
       }
-      if (isc) {
+      if (isc && !isb) {
         c_mass_ee->Fill (diele_mass, MyWeight);
         c_pt_Z_ee->Fill (diele_pt, MyWeight);
       }
@@ -1070,7 +1085,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
           b_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
           b_delta_ee_b->Fill (delta_phi_ee, MyWeight*scalFac_b);
         }
-        if (isc) {
+        if (isc && !isb) {
           c_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
           c_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
           c_delta_ee_b->Fill (delta_phi_ee, MyWeight*scalFac_b);
@@ -1084,7 +1099,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   if (mm_event) {
     w_numberOfZ->Fill (zmm->size(), MyWeight);
     if (isb) b_numberOfZ->Fill (zmm->size(), MyWeight);
-    if (isc) c_numberOfZ->Fill (zmm->size(), MyWeight);
+    if (isc && !isb) c_numberOfZ->Fill (zmm->size(), MyWeight);
   }
 
   if (mm_event && Nj > 0) {
@@ -1100,7 +1115,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         b_mass_mm->Fill (dimuon_mass, MyWeight);
         b_pt_Z_mm->Fill (dimuon_pt, MyWeight);
       }
-      if (isc) {
+      if (isc && !isb) {
         c_mass_mm->Fill (dimuon_mass, MyWeight);
         c_pt_Z_mm->Fill (dimuon_pt, MyWeight);
       }
@@ -1116,7 +1131,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
           b_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
           b_delta_mm_b->Fill (delta_phi_mm, MyWeight*scalFac_b);
         }
-        if (isc) {
+        if (isc && !isb) {
           c_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
           c_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
           c_delta_mm_b->Fill (delta_phi_mm, MyWeight*scalFac_b);
@@ -1149,7 +1164,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       b_second_ele_pt->Fill (vect_ele_pt[1], MyWeight);
       b_second_ele_eta->Fill (vect_ele_eta[1], MyWeight);
     }
-    if (isc) {
+    if (isc && !isb) {
       c_first_ele_pt->Fill (vect_ele_pt[0], MyWeight);
       c_first_ele_eta->Fill (vect_ele_eta[0], MyWeight);
       c_second_ele_pt->Fill (vect_ele_pt[1], MyWeight);
@@ -1162,7 +1177,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
     w_first_ele_pt_b->Fill (vect_ele_pt[0], MyWeight*scalFac_b);
     if (isb) b_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
-    if (isc) c_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
+    if (isc && !isb) c_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
   }
 
   // ++++++++ MUONS PLOTS
@@ -1178,7 +1193,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       b_second_muon_pt->Fill (vect_muon_pt[1], MyWeight);
       b_second_muon_eta->Fill (vect_muon_eta[1], MyWeight);
     }
-    if (isc) {
+    if (isc && !isb) {
       c_first_muon_pt->Fill (vect_muon_pt[0], MyWeight);
       c_first_muon_eta->Fill (vect_muon_eta[0], MyWeight);
       c_second_muon_pt->Fill (vect_muon_pt[1], MyWeight);
@@ -1191,7 +1206,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
     w_first_muon_pt_b ->Fill (vect_muon_pt[0], MyWeight*scalFac_b);
     if (isb) b_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
-    if (isc) c_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
+    if (isc && !isb) c_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
   }
 
   // ++++++++ SVTX MASS PLOTS
@@ -1206,7 +1221,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       b_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
       b_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
     }
-    if (isc) {
+    if (isc && !isb) {
       c_SVTX_mass_jet->Fill (sumVertexMassJet, MyWeight*scalFac_b);
       c_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
       c_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
@@ -1221,7 +1236,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     if (isb) {
       b_secondvtx_N_mass->Fill (vect_bjets_discrCSV[0], MyWeight*scalFac_b);
     }
-    if (isc) {
+    if (isc && !isb) {
       c_secondvtx_N_mass->Fill (vect_bjets_discrCSV[0], MyWeight*scalFac_b);
     }
   }
@@ -1244,7 +1259,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         b_JBP_mass->Fill (vect_bjets_discrJBP[0], MyWeight*scalFac_b);
       }
     }
-    if (isc) {
+    if (isc && !isb) {
       c_BJP->Fill (vect_bjets_discrBJP[0], MyWeight*scalFac_b);
       c_JBP->Fill (vect_bjets_discrJBP[0], MyWeight*scalFac_b);
       if (sumVertexMass > 0.0) {
