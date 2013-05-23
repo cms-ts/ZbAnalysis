@@ -29,20 +29,22 @@ if (ilepton<1 || ilepton>2) {
   ilepton = 1 + ilepton % 2;
 }
 
-	double Lumi2012;
+	double c_b;
+	double c_c; 
+	double c_l;
 
-	if(ilepton==1){
-
-	double f_b = 0.798;
-	double f_c = 2.118; 
-	double f_l = 1.354;
+	if (ilepton==1) {
+	  c_b = 0.798;
+	  c_c = 2.118; 
+	  c_l = 1.354;
 	}
 	if (ilepton==2) {
-	
-	double f_b = 0.793;
-	double f_c = 1.925; 
-	double f_l = 1.611;
+	  c_b = 0.793;
+	  c_c = 1.925; 
+	  c_l = 1.611;
 	}
+
+	double Lumi2012;
 
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
@@ -195,9 +197,12 @@ if (ilepton<1 || ilepton>2) {
 	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
-	h_data_b->Add(h_mc1c_b, -f_c);
-	h_data_b->Add(h_mc1uds_b, -f_l);
-	h_mc1b_b->Scale(f_b);
+	h_mc1uds_b->Scale(c_l);
+	h_mc1b_b->Scale(c_b);
+	h_mc1c_b->Scale(c_c);
+
+	h_data_b->Add(h_mc1c_b, -1.);
+	h_data_b->Add(h_mc1uds_b, -1.);
 
 	h_data_b->Divide(h_data);
 	h_data_b->Scale(100.);
