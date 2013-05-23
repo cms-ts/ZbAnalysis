@@ -87,6 +87,7 @@ i=1
 while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp.C\(\"w_MET\",1,$i,0,1\)
+  root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,$i,0,1\)
 
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,1,0\)
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,0,2\)
