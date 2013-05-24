@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.64 2013/05/22 15:34:15 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.65 2013/05/23 12:03:54 dellaric Exp $
 //
 //
 
@@ -741,14 +741,23 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   for (pat::ElectronCollection::const_iterator ele = electrons->begin (); ele != electrons->end (); ++ele) {
 
-    vect_ele.push_back (*ele);
+    if (ele->pt()>=20) {
+//    if (ele->ecalDrivenMomentum().pt()>=20) {
+      vect_ele.push_back (*ele);
+    }
 
     ecaldriven->Fill(ele->pt() - ele->ecalDrivenMomentum().pt());
     ecaldriven2->Fill(ele->eta(), ele->pt() - ele->ecalDrivenMomentum().pt());
- 
+
   }
 
-  if (zee->size () != 0) ee_event = true;
+  if (vect_ele.size()>=2) {
+    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > y;
+    y = vect_ele[0].p4()+vect_ele[1].p4();
+//    y = vect_ele[0].ecalDrivenMomentum()+vect_ele[1].ecalDrivenMomentum();
+    diele_mass = y.mass();
+    if (diele_mass>71 && diele_mass<111) ee_event = true;
+  }
 
   // +++++++++ MUONS
 
@@ -760,7 +769,12 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   }
 
-  if (zmm->size () != 0) mm_event = true;
+  if (vect_muon.size()>=2) {
+    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > y;
+    y = vect_muon[0].p4()+vect_muon[1].p4();
+    dimuon_mass = y.mass();
+    if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
+  }
 
   if (lepton_ == "electron" && !ee_event) return;
   if (lepton_ == "muon" && !mm_event)     return;
