@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.65 2013/05/23 12:03:54 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.67 2013/05/24 07:53:14 vieri Exp $
 //
 //
 
@@ -106,6 +106,13 @@ private:
   virtual void endRun (edm::Run const &, edm::EventSetup const &);
   virtual void beginLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
   virtual void endLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
+
+  struct order_ele { bool operator() (const pat::Electron &ele1, const pat::Electron &ele2) const {
+//      if (ele1.pt() < ele1.pt()) return false;
+//      if (ele1.ecalDrivenMomentum().pt() < ele1.ecalDrivenMomentum().pt()) return false;
+      return true;
+    }
+  };
 
   std::string pileup_;
   std::string lepton_;
@@ -223,6 +230,7 @@ private:
   TH1F*     w_bjetmultiplicity;
   TH1F*     b_bjetmultiplicity;
   TH1F*     c_bjetmultiplicity;
+
   TH1F*     w_first_bjet_pt;     // leading b jet
   TH1F*     b_first_bjet_pt;
   TH1F*     c_first_bjet_pt;
@@ -345,6 +353,7 @@ private:
   TH1F*     w_Ht;
   TH1F*     b_Ht;
   TH1F*     c_Ht;
+
   TH1F*     w_Ht_b; // at least one b jet in the event
   TH1F*     b_Ht_b;
   TH1F*     c_Ht_b;
@@ -751,10 +760,12 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   }
 
+  std::sort( vect_ele.begin(), vect_ele.end(), order_ele() );
+
   if (vect_ele.size()>=2) {
     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > y;
-    y = vect_ele[0].p4()+vect_ele[1].p4();
-//    y = vect_ele[0].ecalDrivenMomentum()+vect_ele[1].ecalDrivenMomentum();
+    y = vect_ele[0].p4() + vect_ele[1].p4();
+//    y = vect_ele[0].ecalDrivenMomentum() + vect_ele[1].ecalDrivenMomentum();
     diele_mass = y.mass();
     if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
@@ -771,7 +782,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if (vect_muon.size()>=2) {
     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > y;
-    y = vect_muon[0].p4()+vect_muon[1].p4();
+    y = vect_muon[0].p4() + vect_muon[1].p4();
     dimuon_mass = y.mass();
     if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
   }
@@ -836,31 +847,24 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   // require that the vertex meets certain criteria
   if (theVertex->ndof () < 5)    return;
-  if (fabs (theVertex->z ()) > 24.0)    return;
-  if (fabs (theVertex->position ().rho ()) > 2.0)    return;
+  if (fabs(theVertex->z ()) > 24.0)    return;
+  if (fabs(theVertex->position ().rho ()) > 2.0)    return;
 
   // now, count vertices
   int NVtx = 0;
   for (vector < reco::Vertex >::const_iterator itv = vertices_h->begin (); itv != vertices_h->end (); ++itv) {
     // require that the vertex meets certain criteria
     if (itv->ndof () < 5)	continue;
-    if (fabs (itv->z ()) > 50.0)	continue;
-    if (fabs (itv->position ().rho ()) > 2.0)	continue;
+    if (fabs(itv->z ()) > 50.0)	continue;
+    if (fabs(itv->position ().rho ()) > 2.0)	continue;
     ++NVtx;
   }
 
   // ++++++++ JETS
 
   vector < pat::Jet > vect_jets;
-  vector < bool >     vect_jets_isb;
-  vector < bool >     vect_jets_isc;
 
   vector < pat::Jet > vect_bjets;
-  vector < bool >     vect_bjets_isb;
-  vector < bool >     vect_bjets_isc;
-  vector < double >   vect_bjets_discrCSV;
-  vector < double >   vect_bjets_discrBJP;
-  vector < double >   vect_bjets_discrJBP;
 
   bool isb = false;
   bool isc = false;
@@ -896,20 +900,10 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
         vect_jets.push_back (*jet);
 
-        if (isMC && fabs (jet->partonFlavour ()) == 5) {
-          isb = true;
-          vect_jets_isb.push_back (true);
-        } else {
-          vect_jets_isb.push_back (false);
-        }
-        if (isMC && fabs (jet->partonFlavour ()) == 4) {
-          isc = true;
-          vect_jets_isc.push_back (true);
-        } else {
-          vect_jets_isc.push_back (false);
-        }
+        if (isMC && fabs(jet->partonFlavour ()) == 5) isb = true;
+        if (isMC && fabs(jet->partonFlavour ()) == 4) isc = true;
 
-        discrCSV = jet->bDiscriminator ("combinedSecondaryVertexBJetTags");
+        discrCSV = jet->bDiscriminator("combinedSecondaryVertexBJetTags");
 
 	reco::SecondaryVertexTagInfo const * svTagInfos = jet->tagInfoSecondaryVertex("secondaryVertex");
 
@@ -935,17 +929,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
           vect_bjets.push_back (*jet);
 
-          if (isMC && fabs (jet->partonFlavour ()) == 5) {
-            vect_bjets_isb.push_back (true);
-          } else {
-            vect_bjets_isb.push_back (false);
-          }
-          if (isMC && fabs (jet->partonFlavour ()) == 4) {
-            vect_bjets_isc.push_back (true);
-          } else {
-            vect_bjets_isc.push_back (false);
-          }
-
 	  scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
 	  w_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
 	  if (isb) {
@@ -954,14 +937,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 	  if (isc && !isb) {
 	    c_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
 	  }
-
-	  vect_bjets_discrCSV.push_back (discrCSV);
-
-	  discrBJP = jet->bDiscriminator ("jetBProbabilityBJetTags");
-	  discrJBP = jet->bDiscriminator ("jetProbabilityBJetTags");
-
-	  vect_bjets_discrBJP.push_back (discrBJP);
-	  vect_bjets_discrJBP.push_back (discrJBP);
 
 	  if ( svTagInfos && svTagInfos->nVertices() > 0 ) {
 	    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecJet;
@@ -1069,7 +1044,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
         w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
         w_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
-        delta_phi_ee = fabs (diele_phi - vect_bjets[0].phi());
+        delta_phi_ee = fabs(diele_phi - vect_bjets[0].phi());
         if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
         w_delta_ee_b->Fill (delta_phi_ee, MyWeight*scalFac_b);
         if (isb) {
@@ -1118,7 +1093,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
         w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
         w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
-        delta_phi_mm = fabs (dimuon_phi - vect_bjets[0].phi());
+        delta_phi_mm = fabs(dimuon_phi - vect_bjets[0].phi());
         if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
         w_delta_mm_b->Fill (delta_phi_mm, MyWeight*scalFac_b);
         if (isb) {
@@ -1227,12 +1202,12 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if ((ee_event || mm_event) && Nj > 0 && Nb > 0 && sumVertexMass > 0.0 ) {
     scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
-    w_secondvtx_N_mass->Fill (vect_bjets_discrCSV[0], MyWeight*scalFac_b);
+    w_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
     if (isb) {
-      b_secondvtx_N_mass->Fill (vect_bjets_discrCSV[0], MyWeight*scalFac_b);
+      b_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
     }
     if (isc && !isb) {
-      c_secondvtx_N_mass->Fill (vect_bjets_discrCSV[0], MyWeight*scalFac_b);
+      c_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
     }
   }
 
@@ -1240,26 +1215,26 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if ((ee_event || mm_event) && Nj > 0 && Nb > 0) {
     scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
-    w_BJP->Fill (vect_bjets_discrBJP[0], MyWeight*scalFac_b);
-    w_JBP->Fill (vect_bjets_discrJBP[0], MyWeight*scalFac_b);
+    w_BJP->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
+    w_JBP->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
     if (sumVertexMass > 0.0) {
-      w_BJP_mass->Fill (vect_bjets_discrBJP[0], MyWeight*scalFac_b);
-      w_JBP_mass->Fill (vect_bjets_discrJBP[0], MyWeight*scalFac_b);
+      w_BJP_mass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
+      w_JBP_mass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
     }
     if (isb) {
-      b_BJP->Fill (vect_bjets_discrBJP[0], MyWeight*scalFac_b);
-      b_JBP->Fill (vect_bjets_discrJBP[0], MyWeight*scalFac_b);
+      b_BJP->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
+      b_JBP->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
       if (sumVertexMass > 0.0) {
-        b_BJP_mass->Fill (vect_bjets_discrBJP[0], MyWeight*scalFac_b);
-        b_JBP_mass->Fill (vect_bjets_discrJBP[0], MyWeight*scalFac_b);
+        b_BJP_mass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
+        b_JBP_mass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
       }
     }
     if (isc && !isb) {
-      c_BJP->Fill (vect_bjets_discrBJP[0], MyWeight*scalFac_b);
-      c_JBP->Fill (vect_bjets_discrJBP[0], MyWeight*scalFac_b);
+      c_BJP->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
+      c_JBP->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
       if (sumVertexMass > 0.0) {
-        c_BJP_mass->Fill (vect_bjets_discrBJP[0], MyWeight*scalFac_b);
-        c_JBP_mass->Fill (vect_bjets_discrJBP[0], MyWeight*scalFac_b);
+        c_BJP_mass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
+        c_JBP_mass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
       }
     }
   }
@@ -1271,12 +1246,12 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     w_jetmultiplicity->Fill (Nj, MyWeight);
     w_first_jet_pt->Fill (vect_jets[0].pt(), MyWeight);
     w_first_jet_eta->Fill (vect_jets[0].eta(), MyWeight);
-    if (vect_jets_isb[0]) {
+    if (isMC && fabs(vect_jets[0].partonFlavour()) == 5) {
       b_jetmultiplicity->Fill (Nj, MyWeight);
       b_first_jet_pt->Fill (vect_jets[0].pt(), MyWeight);
       b_first_jet_eta->Fill (vect_jets[0].eta(), MyWeight);
     }
-    if (vect_jets_isc[0]) {
+    if (isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_jetmultiplicity->Fill (Nj, MyWeight);
       c_first_jet_pt->Fill (vect_jets[0].pt(), MyWeight);
       c_first_jet_eta->Fill (vect_jets[0].eta(), MyWeight);
@@ -1286,11 +1261,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   if ((ee_event || mm_event) && Nj > 1) {
     w_second_jet_pt->Fill (vect_jets[1].pt(), MyWeight);
     w_second_jet_eta->Fill (vect_jets[1].eta(), MyWeight);
-    if (vect_jets_isb[1]) {
+    if (isMC && fabs(vect_jets[1].partonFlavour()) == 5) {
       b_second_jet_pt->Fill (vect_jets[1].pt(), MyWeight);
       b_second_jet_eta->Fill (vect_jets[1].eta(), MyWeight);
     }
-    if (vect_jets_isc[1]) {
+    if (isMC && fabs(vect_jets[1].partonFlavour()) == 4) {
       c_second_jet_pt->Fill (vect_jets[1].pt(), MyWeight);
       c_second_jet_eta->Fill (vect_jets[1].eta(), MyWeight);
     }
@@ -1299,11 +1274,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   if ((ee_event || mm_event) && Nj > 2) {
     w_third_jet_pt->Fill (vect_jets[2].pt(), MyWeight);
     w_third_jet_eta->Fill (vect_jets[2].eta(), MyWeight);
-    if (vect_jets_isb[2]) {
+    if (isMC && fabs(vect_jets[2].partonFlavour()) == 5) {
       b_third_jet_pt->Fill (vect_jets[2].pt(), MyWeight);
       b_third_jet_eta->Fill (vect_jets[2].eta(), MyWeight);
     }
-    if (vect_jets_isb[2]) {
+    if (isMC && fabs(vect_jets[2].partonFlavour()) == 4) {
       c_third_jet_pt->Fill (vect_jets[2].pt(), MyWeight);
       c_third_jet_eta->Fill (vect_jets[2].eta(), MyWeight);
     }
@@ -1318,21 +1293,21 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight*scalFac_b);
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight*scalFac_b);
-    if (vect_jets_isb[0]) {
+    if (isMC && fabs(vect_jets[0].partonFlavour()) == 5) {
       b_bjetmultiplicity->Fill (Nb, MyWeight*scalFac_b);
       b_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight*scalFac_b);
       b_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight*scalFac_b);
     }
-    if (vect_bjets_isb[0]) {
+    if (isMC && fabs(vect_bjets[0].partonFlavour()) == 5) {
       b_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
       b_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight*scalFac_b);
     }
-    if (vect_jets_isc[0]) {
+    if (isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_bjetmultiplicity->Fill (Nb, MyWeight*scalFac_b);
       c_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight*scalFac_b);
       c_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight*scalFac_b);
     }
-    if (vect_bjets_isc[0]) {
+    if (isMC && fabs(vect_bjets[0].partonFlavour()) == 4) {
       c_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
       c_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight*scalFac_b);
     }
@@ -1344,19 +1319,19 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     w_second_jet_eta_b->Fill (vect_jets[1].eta(), MyWeight*scalFac_b);
     w_second_bjet_pt->Fill (vect_bjets[1].pt(), MyWeight*scalFac_b);
     w_second_bjet_eta->Fill (vect_bjets[1].eta(), MyWeight*scalFac_b);
-    if (vect_jets_isb[1]) {
+    if (isMC && fabs(vect_jets[1].partonFlavour()) == 5) {
       b_second_jet_pt_b->Fill (vect_jets[1].pt(), MyWeight*scalFac_b);
       b_second_jet_eta_b->Fill (vect_jets[1].eta(), MyWeight*scalFac_b);
     }
-    if (vect_bjets_isb[1]) {
+    if (isMC && fabs(vect_bjets[1].partonFlavour()) == 5) {
       b_second_bjet_pt->Fill (vect_bjets[1].pt(), MyWeight*scalFac_b);
       b_second_bjet_eta->Fill (vect_bjets[1].eta(), MyWeight*scalFac_b);
     }
-    if (vect_jets_isc[1]) {
+    if (isMC && fabs(vect_jets[1].partonFlavour()) == 4) {
       c_second_jet_pt_b->Fill (vect_jets[1].pt(), MyWeight*scalFac_b);
       c_second_jet_eta_b->Fill (vect_jets[1].eta(), MyWeight*scalFac_b);
     }
-    if (vect_bjets_isc[1]) {
+    if (isMC && fabs(vect_bjets[1].partonFlavour()) == 4) {
       c_second_bjet_pt->Fill (vect_bjets[1].pt(), MyWeight*scalFac_b);
       c_second_bjet_eta->Fill (vect_bjets[1].eta(), MyWeight*scalFac_b);
     }
@@ -1368,19 +1343,19 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     w_third_jet_eta_b->Fill (vect_jets[2].eta(), MyWeight*scalFac_b);
     w_third_bjet_pt->Fill (vect_bjets[2].pt(), MyWeight*scalFac_b);
     w_third_bjet_eta->Fill (vect_bjets[2].eta(), MyWeight*scalFac_b);
-    if (vect_jets_isb[2]) {
+    if (isMC && fabs(vect_jets[2].partonFlavour()) == 5) {
       b_third_jet_pt_b->Fill (vect_jets[2].pt(), MyWeight*scalFac_b);
       b_third_jet_eta_b->Fill (vect_jets[2].eta(), MyWeight*scalFac_b);
     }
-    if (vect_bjets_isb[2]) {
+    if (isMC && fabs(vect_bjets[2].partonFlavour()) == 5) {
       b_third_bjet_pt->Fill (vect_bjets[2].pt(), MyWeight*scalFac_b);
       b_third_bjet_eta->Fill (vect_bjets[2].eta(), MyWeight*scalFac_b);
     }
-    if (vect_jets_isc[2]) {
+    if (isMC && fabs(vect_jets[2].partonFlavour()) == 4) {
       c_third_jet_pt_b->Fill (vect_jets[2].pt(), MyWeight*scalFac_b);
       c_third_jet_eta_b->Fill (vect_jets[2].eta(), MyWeight*scalFac_b);
     }
-    if (vect_bjets_isc[2]) {
+    if (isMC && fabs(vect_bjets[2].partonFlavour()) == 4) {
       c_third_bjet_pt->Fill (vect_bjets[2].pt(), MyWeight*scalFac_b);
       c_third_bjet_eta->Fill (vect_bjets[2].eta(), MyWeight*scalFac_b);
     }
