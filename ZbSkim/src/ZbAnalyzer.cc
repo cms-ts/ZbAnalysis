@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.67 2013/05/24 07:53:14 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.68 2013/05/24 08:41:23 dellaric Exp $
 //
 //
 
@@ -150,6 +150,8 @@ private:
   double    dimuon_mass;
   double    dimuon_phi;
   double    dimuon_pt;
+  double    delta_phi_ee_b;
+  double    delta_phi_mm_b;
   double    delta_phi_ee;
   double    delta_phi_mm;
   double    b_leading_pt;
@@ -311,9 +313,12 @@ private:
   TH1F*     w_delta_ee_b;
   TH1F*     b_delta_ee_b;
   TH1F*     c_delta_ee_b;
+  TH1F*     w_delta_ee;
   TH1F*     w_delta_mm_b;
   TH1F*     b_delta_mm_b;
   TH1F*     c_delta_mm_b;
+  TH1F*     w_delta_mm;
+
 
   TH1F*     h_secondvtx_N;
   TH1F*     w_secondvtx_N;
@@ -383,21 +388,6 @@ using namespace  pat;
 //
 // constants, enums and typedefs
 //
-
-enum Flavour {
-  ALL_JETS = 0,
-  UDSG_JETS,
-  C_JETS,
-  B_JETS,
-  NONID_JETS,
-  N_JET_TYPES
-};
-
-struct Plots {
-  TH1 * nVertices;
-  TH1 * deltaR, * mass, * dist, * distErr, * distSig;
-  TH1 * nTracks, * chi2;
-} plots_[N_JET_TYPES];
 
 
 //
@@ -554,9 +544,11 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_pt_Z_mm_b =         fs->make < TH1F > ("b_pt_Z_mm_b",       "b_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
   c_pt_Z_mm_b =         fs->make < TH1F > ("c_pt_Z_mm_b",       "c_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
   w_delta_ee_b =        fs->make < TH1F > ("w_delta_phi_ee_b",  "w_delta_phi_ee_b", 12, 0, TMath::Pi ());
+  w_delta_ee =          fs->make < TH1F > ("w_delta_phi_ee",    "w_delta_phi_ee", 12, 0, TMath::Pi ());
   b_delta_ee_b =        fs->make < TH1F > ("b_delta_phi_ee_b",  "b_delta_phi_ee_b", 12, 0, TMath::Pi ());
   c_delta_ee_b =        fs->make < TH1F > ("c_delta_phi_ee_b",  "c_delta_phi_ee_b", 12, 0, TMath::Pi ());
   w_delta_mm_b =        fs->make < TH1F > ("w_delta_phi_mm_b",  "w_delta_phi_mm_b", 12, 0, TMath::Pi ());
+  w_delta_mm =          fs->make < TH1F > ("w_delta_phi_mm",    "w_delta_phi_mm", 12, 0, TMath::Pi ());
   b_delta_mm_b =        fs->make < TH1F > ("b_delta_phi_mm_b",  "b_delta_phi_mm_b", 12, 0, TMath::Pi ());
   c_delta_mm_b =        fs->make < TH1F > ("c_delta_phi_mm_b",  "c_delta_phi_mm_b", 12, 0, TMath::Pi ());
 
@@ -630,35 +622,6 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   treeZb_->Branch ("diele_mass", &diele_mass);
   treeZb_->Branch ("weights_pu", &MyWeight);
 
-  for (unsigned int i = 0; i < N_JET_TYPES; i++)    {
-      Plots & plots = plots_[i];
-      const char *flavour, *name;
-
-      switch ((Flavour) i) {
-	case ALL_JETS:
-	  flavour = "all jets";
-	  name = "all";
-	  break;
-	case UDSG_JETS:
-	  flavour = "light flavour jets";
-	  name = "udsg";
-	  break;
-	case C_JETS:
-	  flavour = "charm jets";
-	  name = "c";
-	  break;
-	case B_JETS:
-	  flavour = "bottom jets";
-	  name = "b";
-	  break;
-	default:
-	  flavour = "unidentified jets";
-	  name = "ni";
-	  break;
-      }
-      plots.dist = fs->make < TH1F > (Form ("dist_%s", name), Form ("Transverse distance between PV and SV in %s", flavour), 100, 0, 2);
-
-    }
 }
 
 ZbAnalyzer::~ZbAnalyzer () {
@@ -730,6 +693,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   discrJBP = 0;
   b_leading_pt = 0;
   b_leading_eta = 0;
+  delta_phi_ee_b = 0;
+  delta_phi_mm_b = 0;
   delta_phi_ee = 0;
   delta_phi_mm = 0;
   Nf = 0;
@@ -1027,11 +992,15 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     diele_mass = z.mass();
     diele_phi = z.phi();
     diele_pt = z.pt();
+    delta_phi_ee = fabs(diele_phi - vect_jets[0].phi());
+    if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
 
     if (diele_mass != 0) {
       h_mass_ee->Fill (diele_mass);
       w_mass_ee->Fill (diele_mass, MyWeight);
       w_pt_Z_ee->Fill (diele_pt, MyWeight);
+      w_delta_ee->Fill (delta_phi_ee, MyWeight);
+
       if (isb) {
         b_mass_ee->Fill (diele_mass, MyWeight);
         b_pt_Z_ee->Fill (diele_pt, MyWeight);
@@ -1044,18 +1013,18 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
         w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
         w_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
-        delta_phi_ee = fabs(diele_phi - vect_bjets[0].phi());
-        if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
-        w_delta_ee_b->Fill (delta_phi_ee, MyWeight*scalFac_b);
+        delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
+        if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
+        w_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
         if (isb) {
           b_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
           b_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
-          b_delta_ee_b->Fill (delta_phi_ee, MyWeight*scalFac_b);
+          b_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
         }
         if (isc && !isb) {
           c_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
           c_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
-          c_delta_ee_b->Fill (delta_phi_ee, MyWeight*scalFac_b);
+          c_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
         }
       }
     }
@@ -1076,11 +1045,15 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     dimuon_mass = z.mass();
     dimuon_phi = z.phi();
     dimuon_pt = z.pt();
+    delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi());
+    if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
 
     if (dimuon_mass != 0)  {
       h_mass_mm->Fill (dimuon_mass);
       w_mass_mm->Fill (dimuon_mass, MyWeight);
       w_pt_Z_mm->Fill (dimuon_pt, MyWeight);
+      w_delta_mm->Fill (delta_phi_mm, MyWeight);
+
       if (isb) {
         b_mass_mm->Fill (dimuon_mass, MyWeight);
         b_pt_Z_mm->Fill (dimuon_pt, MyWeight);
@@ -1093,18 +1066,18 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
         scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
         w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
         w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
-        delta_phi_mm = fabs(dimuon_phi - vect_bjets[0].phi());
-        if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
-        w_delta_mm_b->Fill (delta_phi_mm, MyWeight*scalFac_b);
+        delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
+        if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
+        w_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
         if (isb) {
           b_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
           b_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
-          b_delta_mm_b->Fill (delta_phi_mm, MyWeight*scalFac_b);
+          b_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
         }
         if (isc && !isb) {
           c_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
           c_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
-          c_delta_mm_b->Fill (delta_phi_mm, MyWeight*scalFac_b);
+          c_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
         }
       }
     }
