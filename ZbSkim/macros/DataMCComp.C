@@ -206,8 +206,8 @@ if (ilepton<1 || ilepton>2) {
 	    h_data_fit->Add(h_mc3, -1.);
 	  }
 	  h_data_fit->Add(h_mc1, -1.);
-	  h_data_fit->Add(h_mc1b, -1.);
-	  h_data_fit->Add(h_mc1c, -1.);
+	  if (h_mc1b) h_data_fit->Add(h_mc1b, -1.);
+	  if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
 	  h_mc_fit0 = h_mc2;
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
 	    float e = h_data_fit->GetBinError(i)**2;
