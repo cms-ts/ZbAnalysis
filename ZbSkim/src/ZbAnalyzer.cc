@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.68 2013/05/24 08:41:23 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.69 2013/05/24 13:48:59 vieri Exp $
 //
 //
 
@@ -61,7 +61,6 @@
 #include "TProfile.h"
 #include "TFile.h"
 #include "TLorentzVector.h"
-#include "TTree.h"
 #include "DataFormats/PatCandidates/interface/TriggerEvent.h"
 #include "PhysicsTools/PatUtils/interface/TriggerHelper.h"
 #include "PhysicsTools/CandUtils/interface/CandCombiner.h"
@@ -82,8 +81,6 @@
 table ElSF ("/gpfs/cms/users/candelis/work/ZbSkim/test/ele_eff.txt");
 table MuSF ("/gpfs/cms/users/candelis/work/ZbSkim/test/muon_eff.txt");
 table BtSF ("/gpfs/cms/users/candelis/work/ZbSkim/test/btag_eff.txt");
-
-class TTree;
 
 //
 // class declaration
@@ -171,8 +168,6 @@ private:
   double    scalFac_b;
   double    Nf, Nbk;
   double    Afb;
-
-  TTree*    treeZb_;
 
   TH1F*     h_jetmultiplicity;
   TH1F*     h_jet_pt;
@@ -444,9 +439,9 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_third_jet_eta =     fs->make < TH1F > ("b_third_jet_eta",   "b_third_jet_eta;Eta", 16, -2.5, 2.5);
   c_third_jet_eta =     fs->make < TH1F > ("c_third_jet_eta",   "c_third_jet_eta;Eta", 16, -2.5, 2.5);
 
-  w_first_jet_pt_b =    fs->make < TH1F > ("w_first_jet_pt_b",   "w_first_jet_pt_b;P_t [GeV]", 50, 30., 500.);
-  b_first_jet_pt_b =    fs->make < TH1F > ("b_first_jet_pt_b",   "b_first_jet_pt_b;P_t [GeV]", 50, 30., 500.);
-  c_first_jet_pt_b =    fs->make < TH1F > ("c_first_jet_pt_b",   "c_first_jet_pt_b;P_t [GeV]", 50, 30., 500.);
+  w_first_jet_pt_b =    fs->make < TH1F > ("w_first_jet_pt_b",   "w_first_jet_pt_b;P_t [GeV]", 50, 30., 700.);
+  b_first_jet_pt_b =    fs->make < TH1F > ("b_first_jet_pt_b",   "b_first_jet_pt_b;P_t [GeV]", 50, 30., 700.);
+  c_first_jet_pt_b =    fs->make < TH1F > ("c_first_jet_pt_b",   "c_first_jet_pt_b;P_t [GeV]", 50, 30., 700.);
   w_first_jet_eta_b =   fs->make < TH1F > ("w_first_jet_eta_b",  "w_first_jet_eta_b;Eta", 16, -2.5, 2.5);
   b_first_jet_eta_b =   fs->make < TH1F > ("b_first_jet_eta_b",  "b_first_jet_eta_b;Eta", 16, -2.5, 2.5);
   c_first_jet_eta_b =   fs->make < TH1F > ("c_first_jet_eta_b",  "c_first_jet_eta_b;Eta", 16, -2.5, 2.5);
@@ -613,14 +608,6 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_scaleFactor_second_ele =  fs->make < TH1F > ("b_scaleFactor_second_ele",  "b_scaleFactor_second_ele", 50, 0.95, 1.05);
   h_scaleFactor_second_muon = fs->make < TH1F > ("h_scaleFactor_second_muon", "h_scaleFactor_second_muon", 50, 0.95, 1.05);
   b_scaleFactor_second_muon = fs->make < TH1F > ("b_scaleFactor_second_muon", "b_scaleFactor_second_muon", 50, 0.95, 1.05);
-
-  treeZb_ = fs->make < TTree > ("ZbTree", "ZbTree");
-  treeZb_->Branch ("Nj", &Nj);
-  treeZb_->Branch ("jet_pt", &jet_pt);
-  treeZb_->Branch ("muon_pt", &muon_pt);
-  treeZb_->Branch ("dimuon_mass", &dimuon_mass);
-  treeZb_->Branch ("diele_mass", &diele_mass);
-  treeZb_->Branch ("weights_pu", &MyWeight);
 
 }
 
@@ -1360,8 +1347,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       b_scaleFactor_second_muon->Fill (scalFac_second_m, MyWeight / (scalFac_first_m * scalFac_second_m));
     }
   }
-
-  treeZb_->Fill();
 
 }
 
