@@ -142,7 +142,7 @@ process.matchedMuons = cms.EDProducer("MuScleFitPATMuonCorrector",
 
 process.zmuMatchedmuMatched = cms.EDProducer('CandViewShallowCloneCombiner',
 			          decay = cms.string('matchedMuons@+ matchedMuons@-'),
-				  cut   = cms.string('mass > 71.0 & mass < 111.0'),
+				  cut   = cms.string('mass > 60.0 & mass < 120.0'),
 				  name  = cms.string('Zmumatchedmumatched'),
 				  roles = cms.vstring('matched1', 'matched2')
 				  )
@@ -177,7 +177,7 @@ removeCleaningFromTriggerMatching(process)
 process.matchedElectrons = selectedPatElectrons.clone(
 		     src = cms.InputTag('selectedPatElectronsTriggerMatch'),
 		     cut = cms.string(
-			'pt > 20 & abs(eta) < 2.4 &'
+			'pt > 10 & abs(eta) < 2.4 &'
 			'(('
 			 'abs(superCluster.eta) < 1.442 &'
 			 'abs(deltaEtaSuperClusterTrackAtVtx) < 0.004 &'
@@ -202,7 +202,7 @@ process.matchedElectrons = selectedPatElectrons.clone(
 
 process.zeleMatchedeleMatched = cms.EDProducer('CandViewShallowCloneCombiner',
 			            decay = cms.string('matchedElectrons@+ matchedElectrons@-'),
-				    cut   = cms.string('mass > 71.0 & mass < 111.0'),
+				    cut   = cms.string('mass > 60.0 & mass < 120.0'),
 				    name  = cms.string('Zelematchedelematched'),
 				    roles = cms.vstring('matched1', 'matched2')
 				    )
