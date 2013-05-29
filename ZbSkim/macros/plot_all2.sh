@@ -14,6 +14,8 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp2.C\(\"w_pt_Z_ee\",1,$i\)
   root -l -q -b DataMCComp2.C\(\"w_pt_Z_mm\",1,$i\)
   root -l -q -b DataMCComp2.C\(\"w_Ht\",1,$i\)
+  root -l -q -b DataMCComp2.C\(\"w_delta_phi_mm\",1,$i\)
+  root -l -q -b DataMCComp2.C\(\"w_delta_phi_ee\",1,$i\)
 
   i=$((i+1))
 done
