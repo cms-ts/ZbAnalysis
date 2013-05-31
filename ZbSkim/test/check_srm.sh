@@ -3,6 +3,14 @@
 VERSION=v01
 USER=$USER
 
+do_check=1
+if [ ! -z "$1" ]; then
+  if [ "$1" == "-n" ]; then
+    do_check=0
+    shift
+  fi
+fi
+
 do_size=0
 if [ ! -z "$1" ]; then
   if [ "$1" == "-s" ]; then
@@ -48,18 +56,20 @@ for D in $DIRS; do
 
   printf "%30s\t%s%6i%10s\n" $D ":" $N2 $SIZE
 
-  if [ "$N1" -gt "$N2" ]; then
-    echo "ERROR: possible duplicate in "$D" : "$N1" != "$N2
-    ls $DIR/$D/ | awk -F_ '{print $2}' | sort > /tmp/l1
-    ls $DIR/$D/ | awk -F_ '{print $2}' | sort | uniq > /tmp/l2
-    ERRORS=`diff /tmp/l1 /tmp/l2 | grep -v d | sed -e 's/<//' | sed -e 's/ //g'`
-    echo $ERRORS
-    for E in $ERRORS; do
-      ls -lt $DIR/$D/patTuple_${E}_*_*.root
-      ls -lt $DIR/$D/patTuple_${E}_*_*.root | tail -1 | awk '{print $9}' | sed -e 's;/gpfs/grid/srm;lcg-del -l srm://gridsrm.ts.infn.it;'
-    done
-    rm /tmp/l1 /tmp/l2
-  fi
+  if [ $do_check -eq 1 ]; then
+
+    if [ "$N1" -gt "$N2" ]; then
+      echo "ERROR: possible duplicate in "$D" : "$N1" != "$N2
+      ls $DIR/$D/ | awk -F_ '{print $2}' | sort > /tmp/l1
+      ls $DIR/$D/ | awk -F_ '{print $2}' | sort | uniq > /tmp/l2
+      ERRORS=`diff /tmp/l1 /tmp/l2 | grep -v d | sed -e 's/<//' | sed -e 's/ //g'`
+      echo $ERRORS
+      for E in $ERRORS; do
+        ls -lt $DIR/$D/patTuple_${E}_*_*.root
+        ls -lt $DIR/$D/patTuple_${E}_*_*.root | tail -1 | awk '{print $9}' | sed -e 's;/gpfs/grid/srm;lcg-del -l srm://gridsrm.ts.infn.it;'
+      done
+      rm /tmp/l1 /tmp/l2
+    fi
 
   FILES=`ls $DIR/$D/`
 
@@ -73,6 +83,8 @@ for D in $DIRS; do
     fi
 
   done
+
+  fi
 
 done
 
