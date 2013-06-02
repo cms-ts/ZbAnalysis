@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.69 2013/05/24 13:48:59 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.70 2013/05/29 12:53:23 vieri Exp $
 //
 //
 
@@ -1085,18 +1085,18 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if (ee_event && Nj > 0) {
     w_first_ele_pt->Fill (vect_ele[0].pt(), MyWeight);
-    w_first_ele_eta->Fill (vect_ele[1].eta(), MyWeight);
+    w_first_ele_eta->Fill (vect_ele[0].eta(), MyWeight);
     w_second_ele_pt->Fill (vect_ele[1].pt(), MyWeight);
     w_second_ele_eta->Fill (vect_ele[1].eta(), MyWeight);
     if (isb) {
       b_first_ele_pt->Fill (vect_ele[0].pt(), MyWeight);
-      b_first_ele_eta->Fill (vect_ele[1].eta(), MyWeight);
+      b_first_ele_eta->Fill (vect_ele[0].eta(), MyWeight);
       b_second_ele_pt->Fill (vect_ele[1].pt(), MyWeight);
       b_second_ele_eta->Fill (vect_ele[1].eta(), MyWeight);
     }
     if (isc && !isb) {
       c_first_ele_pt->Fill (vect_ele[0].pt(), MyWeight);
-      c_first_ele_eta->Fill (vect_ele[1].eta(), MyWeight);
+      c_first_ele_eta->Fill (vect_ele[0].eta(), MyWeight);
       c_second_ele_pt->Fill (vect_ele[1].pt(), MyWeight);
       c_second_ele_eta->Fill (vect_ele[1].eta(), MyWeight);
     }
