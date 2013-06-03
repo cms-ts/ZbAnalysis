@@ -7,15 +7,11 @@
 
    effi
 
-
    The information called Err() is the average of the sixth and seventh columns
 
    errLow, errHi
 
-   */
-
-
-
+*/
 
 #include <cmath>
 #include <iostream>
@@ -24,7 +20,6 @@
 #include <sstream>
 #include <vector>
 #include <string>
-
 
 class table
 {
@@ -39,15 +34,15 @@ public:
     double effi;
     double erlw;
     double erhi;
-      record ():ptLow (0), ptHi (0), etaLow (0), etaHi (0), effi (0),
-      erlw (0), erhi (0)
+    record() :
+      ptLow (0), ptHi (0), etaLow (0), etaHi (0), effi (0), erlw (0), erhi (0)
     {
       std::cout << "record: Setting everything to zero !!!\n";
     }
     record (double pt1, double pt2,
 	    double eta1, double eta2,
-	    double eff, double erl, double erh):ptLow (pt1), ptHi (pt2),
-      etaLow (eta1), etaHi (eta2), effi (eff), erlw (erl), erhi (erh)
+	    double eff, double erl, double erh) :
+      ptLow (pt1), ptHi (pt2), etaLow (eta1), etaHi (eta2), effi (eff), erlw (erl), erhi (erh)
     {
     }
     bool belongTo (double pt, double eta)
@@ -85,7 +80,6 @@ public:
     return hiPtBin;
   }
 
-
   double Val (double pt, double eta)
   {
     double hiPtBin = 0;
@@ -100,7 +94,6 @@ public:
       }
     return hiPtBin;
   }
-
 
 private:
   table ()
