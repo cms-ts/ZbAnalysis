@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.73 2013/06/03 08:09:47 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.74 2013/06/03 08:55:37 dellaric Exp $
 //
 //
 
@@ -78,9 +78,10 @@
 #include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
 
 #include "table.h"
-table ElSF ("/gpfs/cms/users/candelis/work/ZbSkim/test/ele_eff.txt");
-table MuSF ("/gpfs/cms/users/candelis/work/ZbSkim/test/muon_eff.txt");
-table BtSF ("/gpfs/cms/users/candelis/work/ZbSkim/test/btag_eff.txt");
+table ElSF  ("/gpfs/cms/users/candelis/work/ZbSkim/test/ele_eff.txt");
+table ElSF2 ("/gpfs/cms/users/candelis/work/ZbSkim/test/ele_eff2.txt");
+table MuSF  ("/gpfs/cms/users/candelis/work/ZbSkim/test/muon_eff.txt");
+table BtSF  ("/gpfs/cms/users/candelis/work/ZbSkim/test/btag_eff.txt");
 
 //
 // class declaration
@@ -785,8 +786,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     MyWeight = LumiWeights_.weight (Tnpv);
 
     if (ee_event) {
-      scalFac_first_e  =  ElSF.Val (vect_ele[iele0].pt(), vect_ele[iele0].eta());
-      scalFac_second_e =  ElSF.Val (vect_ele[iele1].pt(), vect_ele[iele1].eta());
+      scalFac_first_e  =  ElSF.Val (vect_ele[iele0].pt(), vect_ele[iele0].eta()) * ElSF2.Val (vect_ele[iele0].pt(), vect_ele[iele0].eta());
+      scalFac_second_e =  ElSF.Val (vect_ele[iele1].pt(), vect_ele[iele1].eta()) * ElSF2.Val (vect_ele[iele1].pt(), vect_ele[iele1].eta());
     }
     if (mm_event) {
       scalFac_first_m  = MuSF.Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta());
