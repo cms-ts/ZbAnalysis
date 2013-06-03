@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.71 2013/06/02 07:25:17 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.72 2013/06/03 07:51:15 dellaric Exp $
 //
 //
 
@@ -717,7 +717,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   int iele0=0;
   int iele1=0;
 
-  for (unsigned int i=0; i<vect_ele.size(); ++i) {
+  for (unsigned int i=1; i<vect_ele.size(); ++i) {
     if (vect_ele[i].charge()==-vect_ele[iele0].charge() && iele1==0) iele1=i;
   }
 
@@ -742,7 +742,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   int imuon0=0;
   int imuon1=0;
 
-  for (unsigned int i=0; i<vect_muon.size(); ++i) {
+  for (unsigned int i=1; i<vect_muon.size(); ++i) {
     if (vect_muon[i].charge()==-vect_muon[imuon0].charge() && imuon1==0) imuon1=i;
   }
 
