@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.70 2013/05/29 12:53:23 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.71 2013/06/02 07:25:17 dellaric Exp $
 //
 //
 
@@ -714,10 +714,17 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   std::sort( vect_ele.begin(), vect_ele.end(), order_ele() );
 
-  if (vect_ele.size()>=2) {
+  int iele0=0;
+  int iele1=0;
+
+  for (unsigned int i=0; i<vect_ele.size(); ++i) {
+    if (vect_ele[i].charge()==-vect_ele[iele0].charge() && iele1==0) iele1=i;
+  }
+
+  if (iele1!=0) {
     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > y;
-    y = vect_ele[0].p4() + vect_ele[1].p4();
-//    y = vect_ele[0].ecalDrivenMomentum() + vect_ele[1].ecalDrivenMomentum();
+    y = vect_ele[iele0].p4() + vect_ele[iele1].p4();
+//    y = vect_ele[iele0].ecalDrivenMomentum() + vect_ele[iele1].ecalDrivenMomentum();
     diele_mass = y.mass();
     if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
@@ -732,9 +739,16 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   }
 
-  if (vect_muon.size()>=2) {
+  int imuon0=0;
+  int imuon1=0;
+
+  for (unsigned int i=0; i<vect_muon.size(); ++i) {
+    if (vect_muon[i].charge()==-vect_muon[imuon0].charge() && imuon1==0) imuon1=i;
+  }
+
+  if (imuon1!=0) {
     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > y;
-    y = vect_muon[0].p4() + vect_muon[1].p4();
+    y = vect_muon[imuon0].p4() + vect_muon[imuon1].p4();
     dimuon_mass = y.mass();
     if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
   }
@@ -771,13 +785,13 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     MyWeight = LumiWeights_.weight (Tnpv);
 
     if (ee_event) {
-      scalFac_first_e  =  ElSF.Val (vect_ele[0].pt(), vect_ele[0].eta());
-      scalFac_second_e =  ElSF.Val (vect_ele[1].pt(), vect_ele[1].eta());
+      scalFac_first_e  =  ElSF.Val (vect_ele[iele0].pt(), vect_ele[iele0].eta());
+      scalFac_second_e =  ElSF.Val (vect_ele[iele1].pt(), vect_ele[iele1].eta());
     }
     if (mm_event) {
-      scalFac_first_m  = MuSF.Val (vect_muon[0].pt(), vect_muon[0].eta());
-      scalFac_second_m = MuSF.Val (vect_muon[1].pt(), vect_muon[1].eta());
-      //cout<<vect_muon[0].pt()<<vect_muon[0].eta()<< " mu  SF =" << scalFac_first_m <<endl;
+      scalFac_first_m  = MuSF.Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta());
+      scalFac_second_m = MuSF.Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta());
+      //cout<<vect_muon[imuon0].pt()<<vect_muon[imuon0].eta()<< " mu  SF =" << scalFac_first_m <<endl;
 
     }
 
@@ -973,8 +987,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if (ee_event && Nj > 0) {
     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > z;
-    z = vect_ele[0].p4()+vect_ele[1].p4();
-//    z = vect_ele[0].ecalDrivenMomentum()+vect_ele[1].ecalDrivenMomentum();
+    z = vect_ele[iele0].p4()+vect_ele[iele1].p4();
+//    z = vect_ele[iele0].ecalDrivenMomentum()+vect_ele[iele1].ecalDrivenMomentum();
 
     diele_mass = z.mass();
     diele_phi = z.phi();
@@ -1027,7 +1041,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if (mm_event && Nj > 0) {
     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > z;
-    z = vect_muon[0].p4()+vect_muon[1].p4();
+    z = vect_muon[imuon0].p4()+vect_muon[imuon1].p4();
 
     dimuon_mass = z.mass();
     dimuon_phi = z.phi();
@@ -1084,28 +1098,28 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   // ++++++++  ELECTRONS PLOTS
 
   if (ee_event && Nj > 0) {
-    w_first_ele_pt->Fill (vect_ele[0].pt(), MyWeight);
-    w_first_ele_eta->Fill (vect_ele[0].eta(), MyWeight);
-    w_second_ele_pt->Fill (vect_ele[1].pt(), MyWeight);
-    w_second_ele_eta->Fill (vect_ele[1].eta(), MyWeight);
+    w_first_ele_pt->Fill (vect_ele[iele0].pt(), MyWeight);
+    w_first_ele_eta->Fill (vect_ele[iele0].eta(), MyWeight);
+    w_second_ele_pt->Fill (vect_ele[iele1].pt(), MyWeight);
+    w_second_ele_eta->Fill (vect_ele[iele1].eta(), MyWeight);
     if (isb) {
-      b_first_ele_pt->Fill (vect_ele[0].pt(), MyWeight);
-      b_first_ele_eta->Fill (vect_ele[0].eta(), MyWeight);
-      b_second_ele_pt->Fill (vect_ele[1].pt(), MyWeight);
-      b_second_ele_eta->Fill (vect_ele[1].eta(), MyWeight);
+      b_first_ele_pt->Fill (vect_ele[iele0].pt(), MyWeight);
+      b_first_ele_eta->Fill (vect_ele[iele0].eta(), MyWeight);
+      b_second_ele_pt->Fill (vect_ele[iele1].pt(), MyWeight);
+      b_second_ele_eta->Fill (vect_ele[iele1].eta(), MyWeight);
     }
     if (isc && !isb) {
-      c_first_ele_pt->Fill (vect_ele[0].pt(), MyWeight);
-      c_first_ele_eta->Fill (vect_ele[0].eta(), MyWeight);
-      c_second_ele_pt->Fill (vect_ele[1].pt(), MyWeight);
-      c_second_ele_eta->Fill (vect_ele[1].eta(), MyWeight);
+      c_first_ele_pt->Fill (vect_ele[iele0].pt(), MyWeight);
+      c_first_ele_eta->Fill (vect_ele[iele0].eta(), MyWeight);
+      c_second_ele_pt->Fill (vect_ele[iele1].pt(), MyWeight);
+      c_second_ele_eta->Fill (vect_ele[iele1].eta(), MyWeight);
     }
   }
 
   if (ee_event && Nj > 0 && Nb > 0) {
     scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
     w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
-    w_first_ele_pt_b->Fill (vect_ele[0].pt(), MyWeight*scalFac_b);
+    w_first_ele_pt_b->Fill (vect_ele[iele0].pt(), MyWeight*scalFac_b);
     if (isb) b_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
     if (isc && !isb) c_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
   }
@@ -1113,28 +1127,28 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   // ++++++++ MUONS PLOTS
 
   if (mm_event && Nj > 0) {
-    w_first_muon_pt->Fill (vect_muon[0].pt(), MyWeight);
-    w_first_muon_eta->Fill (vect_muon[0].eta(), MyWeight);
-    w_second_muon_pt->Fill (vect_muon[1].pt(), MyWeight);
-    w_second_muon_eta->Fill (vect_muon[1].eta(), MyWeight);
+    w_first_muon_pt->Fill (vect_muon[imuon0].pt(), MyWeight);
+    w_first_muon_eta->Fill (vect_muon[imuon0].eta(), MyWeight);
+    w_second_muon_pt->Fill (vect_muon[imuon1].pt(), MyWeight);
+    w_second_muon_eta->Fill (vect_muon[imuon1].eta(), MyWeight);
     if (isb) {
-      b_first_muon_pt->Fill (vect_muon[0].pt(), MyWeight);
-      b_first_muon_eta->Fill (vect_muon[0].eta(), MyWeight);
-      b_second_muon_pt->Fill (vect_muon[1].pt(), MyWeight);
-      b_second_muon_eta->Fill (vect_muon[1].eta(), MyWeight);
+      b_first_muon_pt->Fill (vect_muon[imuon0].pt(), MyWeight);
+      b_first_muon_eta->Fill (vect_muon[imuon0].eta(), MyWeight);
+      b_second_muon_pt->Fill (vect_muon[imuon1].pt(), MyWeight);
+      b_second_muon_eta->Fill (vect_muon[imuon1].eta(), MyWeight);
     }
     if (isc && !isb) {
-      c_first_muon_pt->Fill (vect_muon[0].pt(), MyWeight);
-      c_first_muon_eta->Fill (vect_muon[0].eta(), MyWeight);
-      c_second_muon_pt->Fill (vect_muon[1].pt(), MyWeight);
-      c_second_muon_eta->Fill (vect_muon[1].eta(), MyWeight);
+      c_first_muon_pt->Fill (vect_muon[imuon0].pt(), MyWeight);
+      c_first_muon_eta->Fill (vect_muon[imuon0].eta(), MyWeight);
+      c_second_muon_pt->Fill (vect_muon[imuon1].pt(), MyWeight);
+      c_second_muon_eta->Fill (vect_muon[imuon1].eta(), MyWeight);
     }
   }
 
   if (mm_event && Nj > 0 && Nb > 0) {
     scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
     w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
-    w_first_muon_pt_b ->Fill (vect_muon[0].pt(), MyWeight*scalFac_b);
+    w_first_muon_pt_b ->Fill (vect_muon[imuon0].pt(), MyWeight*scalFac_b);
     if (isb) b_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
     if (isc && !isb) c_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
   }
