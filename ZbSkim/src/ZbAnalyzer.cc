@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.74 2013/06/03 08:55:37 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.75 2013/06/03 18:37:33 dellaric Exp $
 //
 //
 
@@ -106,7 +106,6 @@ private:
   virtual void endLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
 
   struct order_ele { bool operator() (const pat::Electron &ele1, const pat::Electron &ele2) const {
-//      if (ele1.pt() < ele1.pt()) return false;
 //      if (ele1.ecalDrivenMomentum().pt() < ele1.ecalDrivenMomentum().pt()) return false;
       return true;
     }
