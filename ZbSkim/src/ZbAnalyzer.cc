@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.75 2013/06/03 18:37:33 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.76 2013/06/03 20:05:04 dellaric Exp $
 //
 //
 
@@ -481,14 +481,14 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_third_bjet_eta =    fs->make < TH1F > ("c_third_bjet_eta",   "c_third_bjet_eta;Eta", 16, -2.5, 2.5);
 
   w_first_ele_pt =      fs->make < TH1F > ("w_first_ele_pt",    "w_first_ele_pt;P_t [GeV]", 50, 0., 450.);
-  w_first_ele_pt_b =      fs->make < TH1F > ("w_first_ele_pt_b",    "w_first_ele_pt_b;P_t [GeV]", 50, 0., 450.);
+  w_first_ele_pt_b =    fs->make < TH1F > ("w_first_ele_pt_b",  "w_first_ele_pt_b;P_t [GeV]", 50, 0., 450.);
   b_first_ele_pt =      fs->make < TH1F > ("b_first_ele_pt",    "b_first_ele_pt;P_t [GeV]", 50, 0., 450.);
   c_first_ele_pt =      fs->make < TH1F > ("c_first_ele_pt",    "c_first_ele_pt;P_t [GeV]", 50, 0., 450.);
   w_second_ele_pt =     fs->make < TH1F > ("w_second_ele_pt",   "w_second_ele_pt;P_t [GeV]", 50, 0., 450.);
   b_second_ele_pt =     fs->make < TH1F > ("b_second_ele_pt",   "b_second_ele_pt;P_t [GeV]", 50, 0., 450.);
   c_second_ele_pt =     fs->make < TH1F > ("c_second_ele_pt",   "c_second_ele_pt;P_t [GeV]", 50, 0., 450.);
   w_first_muon_pt =     fs->make < TH1F > ("w_first_muon_pt",   "w_first_muon_pt;P_t [GeV]", 50, 0., 450.);
-  w_first_muon_pt_b =   fs->make < TH1F > ("w_first_muon_pt_b",   "w_first_muon_pt_b [GeV]", 50, 0., 450.);
+  w_first_muon_pt_b =   fs->make < TH1F > ("w_first_muon_pt_b", "w_first_muon_pt_b [GeV]", 50, 0., 450.);
   b_first_muon_pt =     fs->make < TH1F > ("b_first_muon_pt",   "b_first_muon_pt;P_t [GeV]", 50, 0., 450.);
   c_first_muon_pt =     fs->make < TH1F > ("c_first_muon_pt",   "c_first_muon_pt;P_t [GeV]", 50, 0., 450.);
   w_second_muon_pt =    fs->make < TH1F > ("w_second_muon_pt",  "w_second_muon_pt;P_t [GeV]", 50, 0., 450.);
@@ -1102,17 +1102,29 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     w_first_ele_eta->Fill (vect_ele[iele0].eta(), MyWeight);
     w_second_ele_pt->Fill (vect_ele[iele1].pt(), MyWeight);
     w_second_ele_eta->Fill (vect_ele[iele1].eta(), MyWeight);
+//    w_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
+//    w_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
+//    w_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
+//    w_second_ele_eta->Fill (vect_ele[iele1].ecalDrivenMomentum().eta(), MyWeight);
     if (isb) {
       b_first_ele_pt->Fill (vect_ele[iele0].pt(), MyWeight);
       b_first_ele_eta->Fill (vect_ele[iele0].eta(), MyWeight);
       b_second_ele_pt->Fill (vect_ele[iele1].pt(), MyWeight);
       b_second_ele_eta->Fill (vect_ele[iele1].eta(), MyWeight);
+//      b_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
+//      b_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
+//      b_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
+//      b_second_ele_eta->Fill (vect_ele[iele1].ecalDrivenMomentum().eta(), MyWeight);
     }
     if (isc && !isb) {
       c_first_ele_pt->Fill (vect_ele[iele0].pt(), MyWeight);
       c_first_ele_eta->Fill (vect_ele[iele0].eta(), MyWeight);
       c_second_ele_pt->Fill (vect_ele[iele1].pt(), MyWeight);
       c_second_ele_eta->Fill (vect_ele[iele1].eta(), MyWeight);
+//      c_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
+//      c_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
+//      c_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
+//      c_second_ele_eta->Fill (vect_ele[iele1].ecalDrivenMomentum().eta(), MyWeight);
     }
   }
 
@@ -1120,6 +1132,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
     w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
     w_first_ele_pt_b->Fill (vect_ele[iele0].pt(), MyWeight*scalFac_b);
+//    w_first_ele_pt_b->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight*scalFac_b);
     if (isb) b_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
     if (isc && !isb) c_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
   }
