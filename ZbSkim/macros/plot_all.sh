@@ -19,6 +19,13 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_first_muon_eta\",1,$i\)
 
   root -l -q -b DataMCComp.C\(\"w_numberOfZ\",1,$i\)
+
+  root -l -q -b DataMCComp.C\(\"w_mass_ee_wide\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_mass_mm_wide\",1,$i\)
+
+  root -l -q -b DataMCComp.C\(\"w_mass_ee_b_wide\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_mass_mm_b_wide\",1,$i\)
+
   root -l -q -b DataMCComp.C\(\"w_mass_ee\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_mass_mm\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_pt_Z_ee\",1,$i\)
@@ -88,6 +95,12 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp.C\(\"w_MET\",1,$i,0,1\)
   root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,$i,0,1\)
+
+  root -l -q -b DataMCComp.C\(\"w_mass_ee_wide\",1,$i,0,1\)
+  root -l -q -b DataMCComp.C\(\"w_mass_mm_wide\",1,$i,0,1\)
+
+  root -l -q -b DataMCComp.C\(\"w_mass_ee_b_wide\",1,$i,0,1\)
+  root -l -q -b DataMCComp.C\(\"w_mass_mm_b_wide\",1,$i,0,1\)
 
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,1,0\)
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,0,2\)
