@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.76 2013/06/03 20:05:04 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.77 2013/06/04 06:08:56 dellaric Exp $
 //
 //
 
@@ -105,11 +105,15 @@ private:
   virtual void beginLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
   virtual void endLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
 
+#define ECALDRIVEN 0
+
+#if ECALDRIVEN
   struct order_ele { bool operator() (const pat::Electron &ele1, const pat::Electron &ele2) const {
-//      if (ele1.ecalDrivenMomentum().pt() < ele1.ecalDrivenMomentum().pt()) return false;
+      if (ele1.ecalDrivenMomentum().pt() < ele1.ecalDrivenMomentum().pt()) return false;
       return true;
     }
   };
+#endif
 
   std::string pileup_;
   std::string lepton_;
@@ -702,8 +706,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   for (pat::ElectronCollection::const_iterator ele = electrons->begin (); ele != electrons->end (); ++ele) {
 
+#if ECALDRIVEN
+    if (ele->ecalDrivenMomentum().pt()>=20) {
+#else
     if (ele->pt()>=20) {
-//    if (ele->ecalDrivenMomentum().pt()>=20) {
+#endif
       vect_ele.push_back (*ele);
     }
 
@@ -712,7 +719,9 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   }
 
+#if ECALDRIVEN
   std::sort( vect_ele.begin(), vect_ele.end(), order_ele() );
+#endif
 
   int iele0=0;
   int iele1=0;
@@ -723,8 +732,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if (iele1!=0) {
     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > y;
+#if ECALDRIVEN
+    y = vect_ele[iele0].ecalDrivenMomentum() + vect_ele[iele1].ecalDrivenMomentum();
+#else
     y = vect_ele[iele0].p4() + vect_ele[iele1].p4();
-//    y = vect_ele[iele0].ecalDrivenMomentum() + vect_ele[iele1].ecalDrivenMomentum();
+#endif
     diele_mass = y.mass();
     if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
@@ -987,8 +999,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if (ee_event && Nj > 0) {
     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > z;
+#if ECALDRIVEN
+    z = vect_ele[iele0].ecalDrivenMomentum()+vect_ele[iele1].ecalDrivenMomentum();
+#else
     z = vect_ele[iele0].p4()+vect_ele[iele1].p4();
-//    z = vect_ele[iele0].ecalDrivenMomentum()+vect_ele[iele1].ecalDrivenMomentum();
+#endif
 
     diele_mass = z.mass();
     diele_phi = z.phi();
@@ -1098,41 +1113,53 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   // ++++++++  ELECTRONS PLOTS
 
   if (ee_event && Nj > 0) {
+#if ECALDRIVEN
+    w_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
+    w_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
+    w_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
+    w_second_ele_eta->Fill (vect_ele[iele1].ecalDrivenMomentum().eta(), MyWeight);
+#else
     w_first_ele_pt->Fill (vect_ele[iele0].pt(), MyWeight);
     w_first_ele_eta->Fill (vect_ele[iele0].eta(), MyWeight);
     w_second_ele_pt->Fill (vect_ele[iele1].pt(), MyWeight);
     w_second_ele_eta->Fill (vect_ele[iele1].eta(), MyWeight);
-//    w_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
-//    w_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
-//    w_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
-//    w_second_ele_eta->Fill (vect_ele[iele1].ecalDrivenMomentum().eta(), MyWeight);
+#endif
     if (isb) {
+#if ECALDRIVEN
+      b_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
+      b_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
+      b_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
+      b_second_ele_eta->Fill (vect_ele[iele1].ecalDrivenMomentum().eta(), MyWeight);
+#else
       b_first_ele_pt->Fill (vect_ele[iele0].pt(), MyWeight);
       b_first_ele_eta->Fill (vect_ele[iele0].eta(), MyWeight);
       b_second_ele_pt->Fill (vect_ele[iele1].pt(), MyWeight);
       b_second_ele_eta->Fill (vect_ele[iele1].eta(), MyWeight);
-//      b_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
-//      b_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
-//      b_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
-//      b_second_ele_eta->Fill (vect_ele[iele1].ecalDrivenMomentum().eta(), MyWeight);
+#endif
     }
     if (isc && !isb) {
+#if ECALDRIVEN
+      c_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
+      c_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
+      c_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
+      c_second_ele_eta->Fill (vect_ele[iele1].ecalDrivenMomentum().eta(), MyWeight);
+#else
       c_first_ele_pt->Fill (vect_ele[iele0].pt(), MyWeight);
       c_first_ele_eta->Fill (vect_ele[iele0].eta(), MyWeight);
       c_second_ele_pt->Fill (vect_ele[iele1].pt(), MyWeight);
       c_second_ele_eta->Fill (vect_ele[iele1].eta(), MyWeight);
-//      c_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
-//      c_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
-//      c_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
-//      c_second_ele_eta->Fill (vect_ele[iele1].ecalDrivenMomentum().eta(), MyWeight);
+#endif
     }
   }
 
   if (ee_event && Nj > 0 && Nb > 0) {
     scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
     w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
+#if ECALDRIVEN
+    w_first_ele_pt_b->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight*scalFac_b);
+#else
     w_first_ele_pt_b->Fill (vect_ele[iele0].pt(), MyWeight*scalFac_b);
-//    w_first_ele_pt_b->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight*scalFac_b);
+#endif
     if (isb) b_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
     if (isc && !isb) c_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
   }
