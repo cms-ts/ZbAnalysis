@@ -209,7 +209,7 @@ process.zeleMatchedeleMatched = cms.EDProducer('CandViewShallowCloneCombiner',
 
 ##############
 
-process.GlobalTag.globaltag = 'START53_V21::All'
+process.GlobalTag.globaltag = 'START53_V23::All'
 
 process.GlobalTag.toGet = cms.VPSet(
   cms.PSet(record = cms.string("BTagTrackProbability2DRcd"),
