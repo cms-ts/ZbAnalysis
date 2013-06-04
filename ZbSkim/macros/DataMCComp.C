@@ -213,6 +213,7 @@ if (ilepton<1 || ilepton>2) {
 	    float e = h_data_fit->GetBinError(i)**2;
 	    e = e + h_mc_fit0->GetBinError(i)**2;
 	    if (title=="w_MET" && h_data_fit->GetXaxis()->GetBinCenter(i) < 125.) e = 1.e10;
+	    if (title=="w_MET_sign" && h_data_fit->GetXaxis()->GetBinCenter(i) < 50.) e = 1.e10;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
 	  f1->SetParameters(1.0, 0.0, 0.0);
