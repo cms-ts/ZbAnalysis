@@ -18,7 +18,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.69 2013/05/24 13:48:59 vieri Exp $
+// $Id: GenbAnalyzer.cc,v 1.1 2013/06/05 09:38:45 vieri Exp $
 //
 //
 
@@ -152,25 +152,16 @@ private:
   TH1F*     h_jet_pt;
   TH1F*     h_ele_pt;
   TH1F*     h_muon_pt;
-
+  TH1F*     b_pt_Z_mm_b;
+  TH1F*     b_pt_Z_ee_b;
   TH1F*     h_pu_weights;
 
   TH1F*     w_jetmultiplicity;
   TH1F*     w_first_jet_pt;      // leading jet of any type
   TH1F*     w_first_jet_eta;
-  TH1F*     w_second_jet_pt;
-  TH1F*     w_second_jet_eta;
-  TH1F*     w_third_jet_pt;
-  TH1F*     w_third_jet_eta;
-  TH1F*     w_first_jet_pt_b;    // leading jet with at least one b jet in the event
-  TH1F*     w_first_jet_eta_b;
-  TH1F*     w_second_jet_pt_b;
-  TH1F*     w_second_jet_eta_b;
-  TH1F*     w_third_jet_pt_b;
-  TH1F*     w_third_jet_eta_b;
+  TH1F*     w_first_bjet_pt;
 
   TH1F*     w_bjetmultiplicity;
-
 
   TH1F*     w_first_ele_pt;
   TH1F*     w_dressed_ele_pt;
@@ -184,7 +175,7 @@ private:
   TH1F*     w_delta_ee_b;
   TH1F*     w_delta_mm_b;
   TH1F*     w_delta_mm;
- 
+  TH1F*     w_first_bjet_eta; 
   TH2F*     dR_ele1;
   TH2F*     dR_ele2;
 
@@ -213,13 +204,20 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
 
-  w_jetmultiplicity =   fs->make < TH1F > ("w_jetmultiplicity", "w_jetmultiplicity;N_jets", 8, 0.5, 8.5);
-  w_first_ele_pt =      fs->make < TH1F > ("w_first_ele_pt",    "w_first_ele_pt;P_t [GeV]", 50, 0., 450.);
-  w_dressed_ele_pt =    fs->make < TH1F > ("w_dressed_ele_pt",  "w_dressed_ele_pt;P_t [GeV]", 50, 0., 450.);
-  w_first_muon_pt =     fs->make < TH1F > ("w_first_muon_pt",   "w_first_muon_pt;P_t [GeV]", 50, 0., 450.);
+  w_jetmultiplicity =   fs->make < TH1F > ("w_jetmultiplicity", "w_jetmultiplicity;", 8, 0.5, 8.5);
+  w_first_ele_pt =      fs->make < TH1F > ("w_first_ele_pt",    "w_first_ele_pt; [GeV]", 50, 0., 450.);
+  w_dressed_ele_pt =    fs->make < TH1F > ("w_dressed_ele_pt",  "w_dressed_ele_pt; [GeV]", 50, 0., 450.);
+  w_first_muon_pt =     fs->make < TH1F > ("w_first_muon_pt",   "w_first_muon_pt; [GeV]", 50, 0., 450.);
   dR_ele1 =             fs->make < TH2F > ("dR_ele1",   "dR_ele1", 10, 0., 1, 100, 0., 100.);
   dR_ele2 =             fs->make < TH2F > ("dR_ele2",   "dR_ele2", 10, 0., 1, 100, 0., 100.);
-  
+  w_bjetmultiplicity =  fs->make < TH1F > ("w_bjetmultiplicity", "w_bjetmultiplicity;N_bjets", 5, 0.5, 5.5);
+  w_first_bjet_pt =     fs->make < TH1F > ("w_first_bjet_pt",    "w_first_bjet_pt; [GeV]", 50, 0., 450.); 
+  w_first_bjet_eta =    fs->make < TH1F > ("w_first_bjet_eta",   "w_first_bjet_eta", 16, -2.5, 2.5);
+  b_pt_Z_ee_b =         fs->make < TH1F > ("b_pt_Z_ee_b",       "b_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
+  b_pt_Z_mm_b =         fs->make < TH1F > ("b_pt_Z_mm_b",       "b_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
+  w_mass_ee_b =         fs->make < TH1F > ("w_mass_ee_b",       "w_mass_ee_b;Mass [GeV]", 80, 71., 111.);
+  w_mass_mm_b =         fs->make < TH1F > ("w_mass_mm_b",       "w_mass_mm_b;Mass [GeV]", 80, 71., 111.);
+
 }
 GenbAnalyzer::~GenbAnalyzer () {
 
@@ -305,6 +303,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
     TLorentzVector y;
     y = vect_ele[iele0] + vect_ele[iele1];
     diele_mass = y.M();
+    diele_pt = y.Pt();
     if (diele_mass>71 && diele_mass<111) {
     ee_event = true;
     }
@@ -359,6 +358,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
     TLorentzVector y;
     y = vect_muon[imuon0] + vect_muon[imuon1];
     dimuon_mass = y.M();
+    dimuon_pt = y.Pt();
     if (dimuon_mass>71 && dimuon_mass<111){
 	    mm_event = true;
     }
@@ -490,6 +490,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 					       }
 					    }
 				    	    if(isb) {
+						    Nb++;
 						    vect_bjets.push_back(*jet2);
 						    cout<<"gen jet: "<<jet2->momentum()<<endl;
 					    }
@@ -523,7 +524,6 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   // ++++++++  ELECTRONS PLOTS
   if (ee_event && Nj > 0) w_first_ele_pt->Fill (vect_ele[iele0].  Pt(), MyWeight);
-  if (ee_event && Nj > 0) w_dressed_ele_pt->Fill (vect_ele[iele0].Pt(), MyWeight);
 
   // ++++++++ MUONS PLOTS
   if (mm_event && Nj > 0) w_first_muon_pt->Fill (vect_muon[imuon0].Pt(), MyWeight);
@@ -532,9 +532,21 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   if ((ee_event || mm_event) && Nj > 0) w_jetmultiplicity->Fill (Nj, MyWeight);
 
   // ++++++++ B JETS PLOTS
+     if(isb && mm_event){
 
-}
-
+    	  w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
+	  w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
+	  w_bjetmultiplicity->Fill (Nb, MyWeight); 
+	  b_pt_Z_mm_b->Fill (dimuon_pt, MyWeight);
+	  w_mass_mm_b->Fill (dimuon_mass, MyWeight);
+     	  }else if(isb && ee_event){    
+	  w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
+	  w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
+	  w_bjetmultiplicity->Fill (Nb, MyWeight);
+	  b_pt_Z_ee_b->Fill (diele_pt, MyWeight);
+	  w_mass_ee_b->Fill (diele_mass, MyWeight);
+	  }
+     }
 // ------------ method called once each job just before starting event loop ------------
 void GenbAnalyzer::beginJob () {
   LumiWeights_ = edm::LumiReWeighting("/gpfs/cms/users/candelis/work/ZbSkim/test/pileup/pileup_" + pileup_ + ".root", "/gpfs/cms/users/candelis/work/ZbSkim/test/pileup/pileup_2012.root", "pileup", "pileup");
