@@ -15,8 +15,13 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp.C\(\"w_first_ele_pt\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_ele_eta\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_second_ele_pt\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_second_ele_eta\",1,$i\)
+
   root -l -q -b DataMCComp.C\(\"w_first_muon_pt\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_muon_eta\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_second_muon_pt\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_second_muon_eta\",1,$i\)
 
   root -l -q -b DataMCComp.C\(\"w_numberOfZ\",1,$i\)
 
