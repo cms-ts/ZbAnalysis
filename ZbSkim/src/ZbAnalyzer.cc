@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.79 2013/06/04 20:04:41 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.80 2013/06/05 05:41:12 dellaric Exp $
 //
 //
 
@@ -108,8 +108,8 @@ private:
 #define ECALDRIVEN 0
 
 #if ECALDRIVEN
-  struct order_ele { bool operator() (const pat::Electron &ele1, const pat::Electron &ele2) const {
-      if (ele1.ecalDrivenMomentum().pt() < ele1.ecalDrivenMomentum().pt()) return false;
+  struct order { bool operator() (const pat::Electron &ele1, const pat::Electron &ele2) const {
+      if (ele1.ecalDrivenMomentum().pt() < ele2.ecalDrivenMomentum().pt()) return false;
       return true;
     }
   };
@@ -748,7 +748,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
 #if ECALDRIVEN
-  std::sort( vect_ele.begin(), vect_ele.end(), order_ele() );
+  std::sort( vect_ele.begin(), vect_ele.end(), order() );
 #endif
 
   int iele0=0;
