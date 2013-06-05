@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.78 2013/06/04 07:43:24 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.79 2013/06/04 20:04:41 dellaric Exp $
 //
 //
 
@@ -766,6 +766,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     z = vect_ele[iele0].p4() + vect_ele[iele1].p4();
 #endif
     diele_mass = z.mass();
+    diele_phi = z.phi();
+    diele_pt = z.pt();
     if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
 
@@ -790,6 +792,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > z;
     z = vect_muon[imuon0].p4() + vect_muon[imuon1].p4();
     dimuon_mass = z.mass();
+    dimuon_phi = z.phi();
+    dimuon_pt = z.pt();
     if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
   }
 
@@ -1030,13 +1034,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   // ++++++++ DIELECTRON Z PLOTS
 
   if (iele1!=0 && Nj > 0) {
-    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > z;
-#if ECALDRIVEN
-    z = vect_ele[iele0].ecalDrivenMomentum() + vect_ele[iele1].ecalDrivenMomentum();
-#else
-    z = vect_ele[iele0].p4() + vect_ele[iele1].p4();
-#endif
-    diele_mass = z.mass();
     if (diele_mass != 0) {
       w_mass_ee_wide->Fill (diele_mass, MyWeight);
       if (isb) {
@@ -1069,16 +1066,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   if (ee_event && Nj > 0) {
-    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > z;
-#if ECALDRIVEN
-    z = vect_ele[iele0].ecalDrivenMomentum()+vect_ele[iele1].ecalDrivenMomentum();
-#else
-    z = vect_ele[iele0].p4()+vect_ele[iele1].p4();
-#endif
-
-    diele_mass = z.mass();
-    diele_phi = z.phi();
-    diele_pt = z.pt();
     delta_phi_ee = fabs(diele_phi - vect_jets[0].phi());
     if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
 
@@ -1119,9 +1106,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   // ++++++++ DIMUON Z PLOTS
 
   if (imuon1!=0 && Nj > 0) {
-    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > z;
-    z = vect_muon[imuon0].p4() + vect_muon[imuon1].p4();
-    dimuon_mass = z.mass();
     if (dimuon_mass != 0) {
       w_mass_mm_wide->Fill (dimuon_mass, MyWeight);
       if (isb) {
@@ -1154,12 +1138,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   if (mm_event && Nj > 0) {
-    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > z;
-    z = vect_muon[imuon0].p4()+vect_muon[imuon1].p4();
-
-    dimuon_mass = z.mass();
-    dimuon_phi = z.phi();
-    dimuon_pt = z.pt();
     delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi());
     if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
 
