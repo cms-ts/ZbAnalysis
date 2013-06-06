@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.80 2013/06/05 05:41:12 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.81 2013/06/05 08:07:47 dellaric Exp $
 //
 //
 
@@ -581,16 +581,16 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
 
   h_secondvtx_N =       fs->make < TH1F > ("h_secondvtx_N",     "h_secondvtx_N", 50, 0, 1);
   w_secondvtx_N =       fs->make < TH1F > ("w_secondvtx_N",     "w_secondvtx_N", 50, 0, 1);
-  w_secondvtx_N_zoom =  fs->make < TH1F > ("w_secondvtx_N_zoom",  "w_secondvtx_N_zoom", 20, 0.89, 1);
-  w_secondvtx_N_mass =  fs->make < TH1F > ("w_secondvtx_N_mass",  "w_secondvtx_N_mass", 20, 0.89, 1);
+  w_secondvtx_N_zoom =  fs->make < TH1F > ("w_secondvtx_N_zoom",  "w_secondvtx_N_zoom", 20, 0.898, 1);
+  w_secondvtx_N_mass =  fs->make < TH1F > ("w_secondvtx_N_mass",  "w_secondvtx_N_mass", 20, 0.898, 1);
 
   b_secondvtx_N =         fs->make < TH1F > ("b_secondvtx_N",       "b_secondvtx_N", 50, 0, 1);
-  b_secondvtx_N_zoom =    fs->make < TH1F > ("b_secondvtx_N_zoom",  "b_secondvtx_N_zoom", 20, 0.89, 1);
-  b_secondvtx_N_mass =    fs->make < TH1F > ("b_secondvtx_N_mass",  "b_secondvtx_N_mass", 20, 0.89, 1);
+  b_secondvtx_N_zoom =    fs->make < TH1F > ("b_secondvtx_N_zoom",  "b_secondvtx_N_zoom", 20, 0.898, 1);
+  b_secondvtx_N_mass =    fs->make < TH1F > ("b_secondvtx_N_mass",  "b_secondvtx_N_mass", 20, 0.898, 1);
 
   c_secondvtx_N =         fs->make < TH1F > ("c_secondvtx_N",       "c_secondvtx_N", 50, 0, 1);
-  c_secondvtx_N_zoom =    fs->make < TH1F > ("c_secondvtx_N_zoom",  "c_secondvtx_N_zoom", 20, 0.89, 1);
-  c_secondvtx_N_mass =    fs->make < TH1F > ("c_secondvtx_N_mass",  "c_secondvtx_N_mass", 20, 0.89, 1);
+  c_secondvtx_N_zoom =    fs->make < TH1F > ("c_secondvtx_N_zoom",  "c_secondvtx_N_zoom", 20, 0.898, 1);
+  c_secondvtx_N_mass =    fs->make < TH1F > ("c_secondvtx_N_mass",  "c_secondvtx_N_mass", 20, 0.898, 1);
 
   w_SVTX_mass_jet =     fs->make < TH1F > ("w_SVTX_mass_jet",   "w_SVTX_mass_jet;Mass [GeV]", 80, 0, 6);
   b_SVTX_mass_jet =     fs->make < TH1F > ("b_SVTX_mass_jet",   "b_SVTX_mass_jet;Mass [GeV]", 80, 0, 6);
@@ -926,7 +926,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 	}
       }
 
-      if (discrCSV > 0.89) {
+      if (discrCSV > 0.898) {
 
 	++Nb;
 	//cout << Nb << endl;
