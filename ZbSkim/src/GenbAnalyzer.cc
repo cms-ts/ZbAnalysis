@@ -18,7 +18,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.1 2013/06/05 09:38:45 vieri Exp $
+// $Id: GenbAnalyzer.cc,v 1.2 2013/06/05 14:37:14 vieri Exp $
 //
 //
 
@@ -121,6 +121,8 @@ private:
   int       Nj, Nb;
   double    jet_pt;
   double    jet_eta;
+  double    jet_pt2;
+  double    jet_eta2;
   double    jet_phi;
   double    ele_pt;
   double    ele_pt2;
@@ -210,7 +212,7 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_first_muon_pt =     fs->make < TH1F > ("w_first_muon_pt",   "w_first_muon_pt; [GeV]", 50, 0., 450.);
   dR_ele1 =             fs->make < TH2F > ("dR_ele1",   "dR_ele1", 10, 0., 1, 100, 0., 100.);
   dR_ele2 =             fs->make < TH2F > ("dR_ele2",   "dR_ele2", 10, 0., 1, 100, 0., 100.);
-  w_bjetmultiplicity =  fs->make < TH1F > ("w_bjetmultiplicity", "w_bjetmultiplicity;N_bjets", 5, 0.5, 5.5);
+  w_bjetmultiplicity =  fs->make < TH1F > ("w_bjetmultiplicity", "w_bjetmultiplicity;N_bjets", 5, 0, 5);
   w_first_bjet_pt =     fs->make < TH1F > ("w_first_bjet_pt",    "w_first_bjet_pt; [GeV]", 50, 0., 450.); 
   w_first_bjet_eta =    fs->make < TH1F > ("w_first_bjet_eta",   "w_first_bjet_eta", 16, -2.5, 2.5);
   b_pt_Z_ee_b =         fs->make < TH1F > ("b_pt_Z_ee_b",       "b_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
@@ -425,18 +427,22 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   bool isb = false;
   bool isc = false;
+  int nb=0;
+
   Nj=0;
   Nb=0;
   deltaPhi1=0;
   deltaPhi2=0;
   deltaR1 = 0;
   deltaR2 = 0;
+  jet_pt2 = 0;
+  jet_eta2= 0;
 
   if (ee_event || mm_event) {
 
-      for (vector<reco::GenJet>::const_iterator jet=gJets->begin();jet!=gJets->end();++jet){
-	
-	  isb = false;  
+     for (vector<reco::GenJet>::const_iterator jet=gJets->begin();jet!=gJets->end();++jet){
+
+          isb = false;  
 	  jet_pt  = jet->pt ();
  	  jet_eta = jet->eta();
 	  jet_phi = jet->phi();
@@ -458,17 +464,18 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 	  if (ee_event) deltaR2= sqrt( deltaPhi2*deltaPhi2  + pow(jet->eta()-vect_ele[iele1]. Eta(),2) );	   
           if (mm_event) deltaR2= sqrt( deltaPhi2*deltaPhi2  + pow(jet->eta()-vect_muon[imuon1].Eta(),2) );
 	  
-          if (jet_pt > 30 && fabs(jet_eta) < 2.5 && deltaR1<0.3 && deltaR2<0.3) {
+          if (jet_pt > 30 && fabs(jet_eta) < 2.5 && deltaR1<1 && deltaR2<1 ) {
 	      ++Nj;
 	      vect_jets.push_back (*jet);
 	  }
 
       }
               /*loop over gen particles, find the b*/
+ 
 
-	      int nb=0;
 	      for( std::vector <reco::GenParticle>::const_iterator thepart =genPart->begin();thepart != genPart->end(); thepart++) {
-		    if( (int) (abs(thepart->pdgId() / 100)%10 ) == 5 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 5 ){
+		
+		      if( (int) (abs(thepart->pdgId() / 100)%10 ) == 5 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 5 ){
 		      nb++;
 		      bool bdaughter = false; // b candidate has no daughters
 		      for(int i=0; i < abs(thepart->numberOfDaughters()); i++){
@@ -476,33 +483,35 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 				      bdaughter=true; // b daughter found
 			      }
 		      }
- 		          if(!bdaughter){
+ 		           if(!bdaughter){
 			        TLorentzVector B;
 				B.SetPtEtaPhiM(thepart->pt(),thepart->eta(),thepart->phi(),thepart->mass());
     				    int njet=0;
 				    for (vector<reco::GenJet>::const_iterator jet2=gJets->begin();jet2!=gJets->end();++jet2){	   
-				    njet++;
-				    double Rmin(9999.);
+					 jet_pt2  = jet2->pt ();
+					 jet_eta2 = jet2->eta();
+					 njet++;
+     					 double Rmin(9999.);
 				       	    if(ROOT::Math::VectorUtil::DeltaR(jet2->momentum(),B)<0.5){
 				       	       if(ROOT::Math::VectorUtil::DeltaR(jet2->momentum(),B)<Rmin){
    						       Rmin = ROOT::Math::VectorUtil::DeltaR(jet2->momentum(),B);
    					               isb=true;
 					       }
-					    }
-				    	    if(isb) {
-						    Nb++;
-						    vect_bjets.push_back(*jet2);
-						    cout<<"gen jet: "<<jet2->momentum()<<endl;
-					    }
-				    }
+   					    }
+   					      if(jet_pt2 > 30 && fabs(jet_eta2) < 2.5){
+						     Nb++;
+					    	     vect_bjets.push_back(*jet2);
+					           //cout<<"gen jet: "<<vect_bjets[0].pt()<<endl;
+				              }
+  				    }
 			  }
-		    }
+  		      }
 	      }
   }
 
 
   // Get reco jet collection and print the reco b jets for check
-
+  /*
   edm::Handle < vector < pat::Jet > > jets;
   iEvent.getByLabel ("goodJets", jets);
 
@@ -512,6 +521,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 	     		     cout<<"reco jet: "<<jet->momentum()<<endl;
      		     }
 	     }
+  */
 
   // ++++++++ DIELECTRON Z PLOTS
 
@@ -523,30 +533,33 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   if(ee_event && Nj > 0) dR_ele2->Fill(deltaR2, vect_ele[iele1].Pt());
 
   // ++++++++  ELECTRONS PLOTS
-  if (ee_event && Nj > 0) w_first_ele_pt->Fill (vect_ele[iele0].  Pt(), MyWeight);
+  if (ee_event && Nj > 0) w_first_ele_pt->Fill (vect_ele[iele0].Pt(), MyWeight);
 
   // ++++++++ MUONS PLOTS
   if (mm_event && Nj > 0) w_first_muon_pt->Fill (vect_muon[imuon0].Pt(), MyWeight);
 
-  // ++++++++ JETS PLOTS
+  // ++++++++ JETS PLOTS/
   if ((ee_event || mm_event) && Nj > 0) w_jetmultiplicity->Fill (Nj, MyWeight);
 
   // ++++++++ B JETS PLOTS
-     if(isb && mm_event){
 
-    	  w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
-	  w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
-	  w_bjetmultiplicity->Fill (Nb, MyWeight); 
-	  b_pt_Z_mm_b->Fill (dimuon_pt, MyWeight);
-	  w_mass_mm_b->Fill (dimuon_mass, MyWeight);
-     	  }else if(isb && ee_event){    
+   if(mm_event && Nb>0){
 	  w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
 	  w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
-	  w_bjetmultiplicity->Fill (Nb, MyWeight);
+	  b_pt_Z_mm_b->Fill (dimuon_pt, MyWeight);
+	  w_mass_mm_b->Fill (dimuon_mass, MyWeight);
+   }
+   if(ee_event && Nb>0){
+	  w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
+	  w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
 	  b_pt_Z_ee_b->Fill (diele_pt, MyWeight);
 	  w_mass_ee_b->Fill (diele_mass, MyWeight);
-	  }
-     }
+   }
+	
+   	  if (ee_event || mm_event) w_bjetmultiplicity->Fill (nb, MyWeight); 
+
+} 
+
 // ------------ method called once each job just before starting event loop ------------
 void GenbAnalyzer::beginJob () {
   LumiWeights_ = edm::LumiReWeighting("/gpfs/cms/users/candelis/work/ZbSkim/test/pileup/pileup_" + pileup_ + ".root", "/gpfs/cms/users/candelis/work/ZbSkim/test/pileup/pileup_2012.root", "pileup", "pileup");
