@@ -41,7 +41,8 @@ void SFb(){
 		float x = (ptmin[i]+ptmax[i])/2.;
 		SFb = (0.927563+(1.55479e-05*x))+(-1.90666e-07*(x*x));
 		if(i<16){
-			std::cout<< ptmin[i]<<"<"<<"pT"<<"<"<< ptmax[i] <<"         "<< "SFb = " << SFb <<" +- "<< SFb_error[i] << std::endl;
+//			std::cout<< ptmin[i]<<"<"<<"pT"<<"<"<< ptmax[i] <<"         "<< "SFb = " << SFb <<" +- "<< SFb_error[i] << std::endl;
+			std::cout<< ptmin[i]<<"    "<<ptmax[i]<<"      -2.4       2.4       "<<SFb<<"  "<<SFb_error[i]<<" "<<SFb_error[i]<<std::endl;
 		}
 	}
 }
