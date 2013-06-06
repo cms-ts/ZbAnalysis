@@ -19,12 +19,11 @@ if [ ! -z "$2" ]; then
   USER=$2
 fi
 
-SUBDIR=""
-[ "$USER" == "dellaric" ] && SUBDIR=GDR
+DIR=/gpfs/cms/users/candelis/work/ZbSkim/test/data/$VERSION/
 
-DIR=/gpfs/cms/users/candelis/work/ZbSkim/test/$SUBDIR/data/$VERSION/
+[ "$USER" == "dellaric" ] && DIR=/gpfs/cms/users/candelis/work/ZbSkim/test/GDR/data/$VERSION/
 
-[ "$USER" == "lalicata" ] && DIR=/gpfs/cms/users/lalicata/CMSSW_5_3_9/src/ZbAnalysis/ZbSkim/test/data/$VERSION
+[ "$USER" == "lalicata" ] && DIR=/gpfs/cms/users/lalicata/CMSSW_5_3_9/src/ZbAnalysis/ZbSkim/test/data/$VERSION/
 
 if [ ! -e $DIR ]; then
   echo "ERROR: $DIR does not exist !"
