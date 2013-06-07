@@ -3,6 +3,14 @@
 VERSION=v01
 USER=$USER
 
+do_check=1
+if [ ! -z "$1" ]; then
+  if [ "$1" == "-n" ]; then
+    do_check=0
+    shift
+  fi
+fi
+
 do_size=0
 if [ ! -z "$1" ]; then
   if [ "$1" == "-s" ]; then
@@ -62,14 +70,15 @@ for D in $DIRS; do
         ls -lt $F
       fi
 
-      E=`grep "Begin Fatal Exception" $F`
-      if [ ! -z "$E" ]; then
-        echo "ERROR: exception in "$F
-      fi
-
-      E=`grep "fatal system signal" $F`
-      if [ ! -z "$E" ]; then
-        echo "ERROR: fatal system signal in "$F
+      if [ $do_check -eq 1 ]; then
+        E=`grep "Begin Fatal Exception" $F`
+        if [ ! -z "$E" ]; then
+          echo "ERROR: exception in "$F
+        fi
+        E=`grep "fatal system signal" $F`
+        if [ ! -z "$E" ]; then
+          echo "ERROR: fatal system signal in "$F
+        fi
       fi
 
     fi
