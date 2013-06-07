@@ -135,7 +135,7 @@ process.matchedMuons0 = selectedPatMuons.clone(
 process.matchedMuons = cms.EDProducer("MuScleFitPATMuonCorrector",
                          src = cms.InputTag("matchedMuons0"),
                          debug = cms.bool(False),
-                         identifier = cms.string("Summer12_DR53X"),
+                         identifier = cms.string("Summer12_DR53X_smearReReco"),
                          applySmearing = cms.bool(True),
                          fakeSmearing = cms.bool(False)
 )
