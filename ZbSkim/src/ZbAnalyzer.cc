@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.81 2013/06/05 08:07:47 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.82 2013/06/06 13:01:11 dellaric Exp $
 //
 //
 
@@ -107,7 +107,7 @@ private:
 
 #define ECALDRIVEN 0
 
-#if ECALDRIVEN
+#if ECALDRIVEN>0
   struct order { bool operator() (const pat::Electron &ele1, const pat::Electron &ele2) const {
       if (ele1.ecalDrivenMomentum().pt() < ele2.ecalDrivenMomentum().pt()) return false;
       return true;
@@ -734,7 +734,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   for (pat::ElectronCollection::const_iterator ele = electrons->begin (); ele != electrons->end (); ++ele) {
 
-#if ECALDRIVEN
+#if ECALDRIVEN>0
     if (ele->ecalDrivenMomentum().pt()>=20) {
 #else
     if (ele->pt()>=20) {
@@ -747,7 +747,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   }
 
-#if ECALDRIVEN
+#if ECALDRIVEN>0
   std::sort( vect_ele.begin(), vect_ele.end(), order() );
 #endif
 
@@ -760,7 +760,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if (iele1!=0) {
     ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > z;
-#if ECALDRIVEN
+#if ECALDRIVEN>1
     z = vect_ele[iele0].ecalDrivenMomentum() + vect_ele[iele1].ecalDrivenMomentum();
 #else
     z = vect_ele[iele0].p4() + vect_ele[iele1].p4();
@@ -1189,7 +1189,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   // ++++++++  ELECTRONS PLOTS
 
   if (ee_event && Nj > 0) {
-#if ECALDRIVEN
+#if ECALDRIVEN>1
     w_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
     w_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
     w_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
@@ -1201,7 +1201,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     w_second_ele_eta->Fill (vect_ele[iele1].eta(), MyWeight);
 #endif
     if (isb) {
-#if ECALDRIVEN
+#if ECALDRIVEN>1
       b_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
       b_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
       b_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
@@ -1214,7 +1214,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 #endif
     }
     if (isc && !isb) {
-#if ECALDRIVEN
+#if ECALDRIVEN>1
       c_first_ele_pt->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight);
       c_first_ele_eta->Fill (vect_ele[iele0].ecalDrivenMomentum().eta(), MyWeight);
       c_second_ele_pt->Fill (vect_ele[iele1].ecalDrivenMomentum().pt(), MyWeight);
@@ -1231,7 +1231,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   if (ee_event && Nj > 0 && Nb > 0) {
     scalFac_b = isMC ? BtSF.Val(vect_bjets[0].pt(), vect_bjets[0].eta()) : 1;
     w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
-#if ECALDRIVEN
+#if ECALDRIVEN>1
     w_first_ele_pt_b->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight*scalFac_b);
 #else
     w_first_ele_pt_b->Fill (vect_ele[iele0].pt(), MyWeight*scalFac_b);
