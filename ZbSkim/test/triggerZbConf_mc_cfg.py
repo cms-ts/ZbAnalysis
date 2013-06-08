@@ -116,8 +116,16 @@ process.goodJets = selectedPatJets.clone(
 
 ############## Making Z to mumu
 
-process.matchedMuons0 = selectedPatMuons.clone(
-		src = cms.InputTag('selectedPatMuonsTriggerMatch'),
+process.matchedMuons0 = cms.EDProducer("MuScleFitPATMuonCorrector",
+                         src = cms.InputTag("selectedPatMuonsTriggerMatch"),
+                         debug = cms.bool(False),
+                         identifier = cms.string("Summer12_DR53X_smearReReco"),
+                         applySmearing = cms.bool(True),
+                         fakeSmearing = cms.bool(False)
+)
+
+process.matchedMuons = selectedPatMuons.clone(
+		src = cms.InputTag('matchedMuons0'),
 		cut = cms.string(
 			'pt > 20 & abs(eta) < 2.4 &'
 			'isGlobalMuon & isPFMuon &'
@@ -130,14 +138,6 @@ process.matchedMuons0 = selectedPatMuons.clone(
 			'(pfIsolationR04().sumChargedHadronPt + max(pfIsolationR04().sumNeutralHadronEt + pfIsolationR04().sumPhotonEt - 0.5*pfIsolationR04().sumPUPt,0.0))/pt < 0.2 &'
 			'triggerObjectMatches.size > 0'
 		)
-)
-
-process.matchedMuons = cms.EDProducer("MuScleFitPATMuonCorrector",
-                         src = cms.InputTag("matchedMuons0"),
-                         debug = cms.bool(False),
-                         identifier = cms.string("Summer12_DR53X_smearReReco"),
-                         applySmearing = cms.bool(True),
-                         fakeSmearing = cms.bool(False)
 )
 
 process.zmuMatchedmuMatched = cms.EDProducer('CandViewShallowCloneCombiner',
