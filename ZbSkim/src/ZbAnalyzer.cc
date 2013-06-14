@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.84 2013/06/14 08:13:07 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.85 2013/06/14 14:48:55 vieri Exp $
 //
 //
 
@@ -61,6 +61,7 @@
 #include "TProfile.h"
 #include "TFile.h"
 #include "TLorentzVector.h"
+#include "TRandom3.h"
 #include "DataFormats/PatCandidates/interface/TriggerEvent.h"
 #include "PhysicsTools/PatUtils/interface/TriggerHelper.h"
 #include "PhysicsTools/CandUtils/interface/CandCombiner.h"
@@ -137,8 +138,9 @@ private:
   JetCorrectionUncertainty *jecUncMC_;
   edm::LumiReWeighting LumiWeights_;
 
-  // ----------member data ---------------------------
+  TRandom3 * gRandom_;
 
+  // ----------member data ---------------------------
 
   /****************** LEGEND *************************
 
@@ -751,6 +753,36 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   Ht = 0;
   Ht_b = 0;
 
+  // ++++++ Pile-Up
+
+  bool isMC = false;
+  JetCorrectionUncertainty* jecUnc;
+
+  jecUnc = jecUncDT_;
+
+  MyWeight = 1.0;
+
+  Handle < vector < PileupSummaryInfo > > PupInfo;
+
+  if (iEvent.getByLabel (edm::InputTag ("addPileupInfo"), PupInfo))  {
+
+    isMC = true;
+    jecUnc = jecUncMC_;
+
+    float Tnpv = -1;
+
+    for (vector < PileupSummaryInfo >::const_iterator PVI = PupInfo->begin (); PVI != PupInfo->end (); ++PVI) {
+      int BX = PVI->getBunchCrossing ();
+      if (BX == 0) {
+        Tnpv = PVI->getTrueNumInteractions ();
+        continue;
+      }
+    }
+
+    MyWeight = LumiWeights_.weight (Tnpv);
+
+  }
+
   // +++++++++ ELECTRONS
 
   vector < pat::Electron > vect_ele;
@@ -791,6 +823,13 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     diele_mass = z.mass();
     diele_phi = z.phi();
     diele_pt = z.pt();
+//
+//    if (isMC) {
+//      double smear = gRandom_->Gaus(0, 1.0);
+//      diele_mass = 1.0023 * diele_mass + smear;
+//      diele_pt = 1.0023 * diele_pt + smear;
+//    }
+//
     if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
 
@@ -823,48 +862,19 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   ee_event = ee_event && (lepton_ == "electron");
   mm_event = mm_event && (lepton_ == "muon");
 
-  // ++++++ Pile-Up
-
-  bool isMC = false;
-  JetCorrectionUncertainty* jecUnc;
-
-  jecUnc = jecUncDT_;
-
-  MyWeight = 1.0;
-
-  Handle < vector < PileupSummaryInfo > > PupInfo;
-
-  if (iEvent.getByLabel (edm::InputTag ("addPileupInfo"), PupInfo))  {
-
-    isMC = true;
-    jecUnc = jecUncMC_;
-
-    float Tnpv = -1;
-
-    for (vector < PileupSummaryInfo >::const_iterator PVI = PupInfo->begin (); PVI != PupInfo->end (); ++PVI) {
-      int BX = PVI->getBunchCrossing ();
-      if (BX == 0) {
-        Tnpv = PVI->getTrueNumInteractions ();
-        continue;
-      }
-    }
-
-    MyWeight = LumiWeights_.weight (Tnpv);
-
+  if (isMC) {
     if (ee_event) {
       scalFac_first_e  =  ElSF.Val (vect_ele[iele0].pt(), vect_ele[iele0].eta()) * ElSF2.Val (vect_ele[iele0].pt(), vect_ele[iele0].eta());
       scalFac_second_e =  ElSF.Val (vect_ele[iele1].pt(), vect_ele[iele1].eta()) * ElSF2.Val (vect_ele[iele1].pt(), vect_ele[iele1].eta());
+      MyWeight = MyWeight * scalFac_first_e * scalFac_second_e;
     }
     if (mm_event) {
       scalFac_first_m  = MuSF.Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta());
       scalFac_second_m = MuSF.Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta());
+      MyWeight = MyWeight * scalFac_first_m * scalFac_second_m;
       //cout<<vect_muon[imuon0].pt()<<vect_muon[imuon0].eta()<< " mu  SF =" << scalFac_first_m <<endl;
     }
-
   }
-
-  if (ee_event) MyWeight = MyWeight * scalFac_first_e * scalFac_second_e;
-  if (mm_event) MyWeight = MyWeight * scalFac_first_m * scalFac_second_m;
 
   // ++++++++ VERTICES
 
@@ -892,31 +902,21 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     ++NVtx;
   }
 
-  // ++++++++ LOOP OVER GEN P
+  // ++++++++ LOOP OVER GEN PARTICLES
 
   bool isb = false;
   bool isc = false;
 
- if (isMC) {
-   for (std::vector <reco::GenParticle>::const_iterator thepart =genPart->begin();thepart != genPart->end(); thepart++) {		     
-           if ((int) (abs(thepart->pdgId() / 100)%10 ) == 5 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 5 ){
-      		   for (int i=0; i < abs(thepart->numberOfDaughters()); i++){		      	   
-			   if ((int) (abs(thepart->daughter(i)->pdgId() / 100)%10 ) == 5 || (int) (abs( thepart->daughter(i)->pdgId() / 1000)%10 ) == 5 ) {
-      				   isb=true;
-      			   }
-      		   }
-	   }
-           if ((int) (abs(thepart->pdgId() / 100)%10 ) == 4 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 4 ){
-      		   for (int i=0; i < abs(thepart->numberOfDaughters()); i++){		      	   
-			   if ((int) (abs(thepart->daughter(i)->pdgId() / 100)%10 ) == 4 || (int) (abs( thepart->daughter(i)->pdgId() / 1000)%10 ) == 4 ) {
-      				   isc=true;
-      			   }
-      		   }
-	   }
-   }
- }
-
- if (isb && isc) isc=false;
+  if (isMC) {
+    for (std::vector <reco::GenParticle>::const_iterator thepart = genPart->begin(); thepart != genPart->end(); thepart++) {
+      if ((int) (abs(thepart->pdgId() / 100) % 10) == 5 || (int) (abs(thepart->pdgId() / 1000) % 10) == 5) {
+        isb = true;
+      }
+      if ((int) (abs(thepart->pdgId() / 100) % 10 ) == 4 || (int) (abs(thepart->pdgId() / 1000) % 10) == 4) {
+        isc = true;
+      }
+    }
+  }
 
   // ++++++++ JETS
 
@@ -1536,12 +1536,15 @@ void ZbAnalyzer::beginJob () {
   jecUncMC_ = new JetCorrectionUncertainty("/gpfs/cms/users/candelis/work/ZbSkim/test/Fall12_V7_MC_Uncertainty_AK5PFchs.txt");
   LumiWeights_ = edm::LumiReWeighting("/gpfs/cms/users/candelis/work/ZbSkim/test/pileup/pileup_" + pileup_ + ".root", "/gpfs/cms/users/candelis/work/ZbSkim/test/pileup/pileup_2012.root", "pileup", "pileup");
 
+  gRandom_ = new TRandom3();
 }
 
 // ------------ method called once each job just after ending the event loop ------------
 void ZbAnalyzer::endJob () {
   delete jecUncDT_;
   delete jecUncMC_;
+
+  delete gRandom_;
 }
 
 // ------------ method called when starting to processes a run ------------
