@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.83 2013/06/08 06:15:48 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.84 2013/06/14 08:13:07 vieri Exp $
 //
 //
 
@@ -893,54 +893,30 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   // ++++++++ LOOP OVER GEN P
+
   bool isb = false;
   bool isc = false;
 
-   for( std::vector <reco::GenParticle>::const_iterator thepart =genPart->begin();thepart != genPart->end(); thepart++) {		     
-           if( (int) (abs(thepart->pdgId() / 100)%10 ) == 5 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 5 ){
-      		   bool bdaughter = false; // b candidate has no daughters     
-      		   for(int i=0; i < abs(thepart->numberOfDaughters()); i++){		      	   
-			   if( (int) (abs(thepart->daughter(i)->pdgId() / 100)%10 ) == 5 || (int) (abs( thepart->daughter(i)->pdgId() / 1000)%10 ) == 5 ) {
-      				   bdaughter=true; // b daughter found
+ if (isMC) {
+   for (std::vector <reco::GenParticle>::const_iterator thepart =genPart->begin();thepart != genPart->end(); thepart++) {		     
+           if ((int) (abs(thepart->pdgId() / 100)%10 ) == 5 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 5 ){
+      		   for (int i=0; i < abs(thepart->numberOfDaughters()); i++){		      	   
+			   if ((int) (abs(thepart->daughter(i)->pdgId() / 100)%10 ) == 5 || (int) (abs( thepart->daughter(i)->pdgId() / 1000)%10 ) == 5 ) {
+      				   isb=true;
       			   }
       		   }
-      		   if(!bdaughter){
-      			   TLorentzVector B;     
-      			   B.SetPtEtaPhiM(thepart->pt(),thepart->eta(),thepart->phi(),thepart->mass());     
-      			   for (vector<reco::GenJet>::const_iterator jet2=gJets->begin();jet2!=gJets->end();++jet2){
-      				   double Rmin(9999.);   
-      				   if(ROOT::Math::VectorUtil::DeltaR(jet2->momentum(),B)<0.1){
-					   if(ROOT::Math::VectorUtil::DeltaR(jet2->momentum(),B)<Rmin){
-      						   Rmin = ROOT::Math::VectorUtil::DeltaR(jet2->momentum(),B);
-      						   isb=true;
-      					   }
-				   }
-			   }
-		   }
 	   }
-           if( (int) (abs(thepart->pdgId() / 100)%10 ) == 4 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 4 ){
-      		   bool cdaughter = false; // c candidate has no daughters     
-      		   for(int i=0; i < abs(thepart->numberOfDaughters()); i++){		      	   
-			   if( (int) (abs(thepart->daughter(i)->pdgId() / 100)%10 ) == 4 || (int) (abs( thepart->daughter(i)->pdgId() / 1000)%10 ) == 4 ) {
-      				   cdaughter=true; // b daughter found
+           if ((int) (abs(thepart->pdgId() / 100)%10 ) == 4 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 4 ){
+      		   for (int i=0; i < abs(thepart->numberOfDaughters()); i++){		      	   
+			   if ((int) (abs(thepart->daughter(i)->pdgId() / 100)%10 ) == 4 || (int) (abs( thepart->daughter(i)->pdgId() / 1000)%10 ) == 4 ) {
+      				   isc=true;
       			   }
       		   }
-      		   if(!cdaughter){
-      			   TLorentzVector C;     
-      			   C.SetPtEtaPhiM(thepart->pt(),thepart->eta(),thepart->phi(),thepart->mass());     
-      			   for (vector<reco::GenJet>::const_iterator jet2=gJets->begin();jet2!=gJets->end();++jet2){
-      				   double Rmin_c(9999.);   
-      				   if(ROOT::Math::VectorUtil::DeltaR(jet2->momentum(),C)<0.1){
-					   if(ROOT::Math::VectorUtil::DeltaR(jet2->momentum(),C)<Rmin_c){
-      						   Rmin_c = ROOT::Math::VectorUtil::DeltaR(jet2->momentum(),C);
-      						   isc=true;
-      					   }
-				   }
-			   }
-		   }
 	   }
    }
-   if(isc && (!isb)) isb=false;
+ }
+
+ if (isb && isc) isc=false;
 
   // ++++++++ JETS
 
