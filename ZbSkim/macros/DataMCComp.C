@@ -288,9 +288,6 @@ if (ilepton<1 || ilepton>2) {
 	pad1->cd();
 	pad1->SetLogy();
 
-	TH1F *h3=h_data->DrawCopy();
-	h3->SetMinimum(-100);
-
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
  	hs->GetXaxis()->SetLabelSize(0.08);
