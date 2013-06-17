@@ -56,6 +56,9 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_MET\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,$i\)
 
+  root -l -q -b DataMCComp.C\(\"w_MET_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_MET_sign_b\",1,$i\)
+
   root -l -q -b DataMCComp.C\(\"w_Ht\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_Ht_b\",1,$i\)
 
@@ -102,6 +105,9 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp.C\(\"w_MET\",1,$i,0,1\)
   root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,$i,0,1\)
+
+  root -l -q -b DataMCComp.C\(\"w_MET_b\",1,$i,0,1\)
+  root -l -q -b DataMCComp.C\(\"w_MET_sign_b\",1,$i,0,1\)
 
   root -l -q -b DataMCComp.C\(\"w_mass_ee_wide\",1,$i,0,2\)
   root -l -q -b DataMCComp.C\(\"w_mass_mm_wide\",1,$i,0,2\)
