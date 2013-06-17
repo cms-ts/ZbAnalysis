@@ -231,6 +231,36 @@ if (ilepton<1 || ilepton>2) {
 //	    h_data_fit->Add(h_mc5, -1.);
 	    h_data_fit->Add(h_mc4, -1.);
 	    h_data_fit->Add(h_mc3, -1.);
+	  }
+	  h_mc_fit0 = h_mc1;
+	  if (h_mc1b) h_mc_fit0->Add(h_mc1b, 1.);
+	  if (h_mc1c) h_mc_fit0->Add(h_mc1c, 1.);
+	  h_mc_fit1 = h_mc2;
+	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+	    float e = h_data_fit->GetBinError(i)**2;
+	    e = e + h_mc_fit0->GetBinError(i)**2;
+	    e = e + h_mc_fit1->GetBinError(i)**2;
+	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
+	  }
+	  f1->SetParameters(1.0, 1.0, 0.0);
+	  f1->SetParNames("c(Z+jets)", "c(ttbar)", "dummy");
+	  f1->FixParameter(2, 0.0);
+	  h_data_fit->Fit("f1", "Q0");
+	  if (h_mc1b) h_mc_fit0->Add(h_mc1b, -1.);
+	  if (h_mc1c) h_mc_fit0->Add(h_mc1c, -1.);
+	  h_mc_fit0->Scale(f1->GetParameter(0));
+	  if (h_mc1b) h_mc1b->Scale(f1->GetParameter(0));
+	  if (h_mc1c) h_mc1c->Scale(f1->GetParameter(0));
+	  h_mc_fit1->Scale(f1->GetParameter(1));
+	}
+	if (doFit==3) {
+	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
+	  if (!doBkg) {
+	    h_data_fit->Add(h_mc7, -1.);
+	    h_data_fit->Add(h_mc6, -1.);
+//	    h_data_fit->Add(h_mc5, -1.);
+	    h_data_fit->Add(h_mc4, -1.);
+	    h_data_fit->Add(h_mc3, -1.);
 	    h_data_fit->Add(h_mc2, -1.);
 	  }
 	  h_mc_fit0 = h_mc1;
@@ -441,6 +471,12 @@ if (ilepton<1 || ilepton>2) {
 	    fitLabel->DrawLatex(0.68, 0.58, buff);
 	  }
 	  if (doFit==2) {
+	    sprintf(buff, "c_{Z+jets} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	    fitLabel->DrawLatex(0.68, 0.58, buff);
+	    sprintf(buff, "c_{ttbar} = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
+	    fitLabel->DrawLatex(0.68, 0.53, buff);
+	  }
+	  if (doFit==3) {
 	    sprintf(buff, "c_{uds} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
 	    fitLabel->DrawLatex(0.38, 0.58, buff);
 	    sprintf(buff, "c_{b}   = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
