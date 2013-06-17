@@ -19,7 +19,7 @@
 #include "TTree.h"
 
 #include "LumiLabel.C"
-#include "LumiInfo_v08.h"
+#include "LumiInfo_v09.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/" + version + "/";
 

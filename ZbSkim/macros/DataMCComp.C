@@ -19,7 +19,7 @@
 #include "TTree.h"
 
 #include "LumiLabel.C"
-#include "LumiInfo_v08.h"
+#include "LumiInfo_v09.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/" + version + "/";
 
@@ -316,7 +316,7 @@ if (ilepton<1 || ilepton>2) {
 	pad1->SetBottomMargin(0.001);
 	pad1->Draw();
 	pad1->cd();
-	pad1->SetLogy();
+	//pad1->SetLogy();
 
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
@@ -328,7 +328,7 @@ if (ilepton<1 || ilepton>2) {
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
 	h_data->SetMarkerSize (1.0);
-	//h_data->SetStats(0);
+	h_data->SetStats(0);
 
 	TLegend *leg;
 	if (doBkg) {
