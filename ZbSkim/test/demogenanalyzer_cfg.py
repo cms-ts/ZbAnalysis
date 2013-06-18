@@ -94,13 +94,6 @@ process.demo3_mm = cms.EDAnalyzer('GenbAnalyzer',
 	lepton  = cms.untracked.string("muon"),
 )
 
-process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
-process.printTree = cms.EDAnalyzer("ParticleListDrawer",
-	maxEventsToPrint = cms.untracked.int32(-1),
-	printVertex = cms.untracked.bool(False),
-	src = cms.InputTag("genParticles")
-)
-
 process.TFileService = cms.Service("TFileService",
 	fileName = cms.string('ZbTree.root')
 )
