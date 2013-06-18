@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.85 2013/06/14 14:48:55 vieri Exp $
+// $Id: ZbAnalyzer.cc,v 1.86 2013/06/14 18:08:10 dellaric Exp $
 //
 //
 
@@ -121,8 +121,8 @@ private:
 #endif
 
   double btagSF(bool isMC, double flavour, double pt, double eta) {
-	  if(isMC == false) return 1.0;
-	  if(flavour == 5 || flavour == 4){
+	  if (isMC == false) return 1.0;
+	  if (flavour == 5 || flavour == 4) {
 		  return BtSF.Val(pt, eta);
 	  } else {  
 		  return LtSF.Val(pt, eta);
@@ -134,6 +134,7 @@ private:
   std::string pileup_;
   std::string lepton_;
   double par_;
+  bool usePartonFlavour_;
   JetCorrectionUncertainty *jecUncDT_;
   JetCorrectionUncertainty *jecUncMC_;
   edm::LumiReWeighting LumiWeights_;
@@ -433,7 +434,9 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
 
   pileup_ = iConfig.getUntrackedParameter < std::string > ("pileup", "S7");
   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
-  par_ =    iConfig.getUntrackedParameter <double> ("JEC",  0);
+  par_ =    iConfig.getUntrackedParameter <double> ("JEC", 0);
+
+  usePartonFlavour_ = iConfig.getUntrackedParameter <bool> ("usePartonFlavour", false);
 
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
@@ -968,7 +971,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 	}
       }
 
-      if (discrCSV > 0.898) {
+      if (discrCSV > 0.898 || (usePartonFlavour_ && jet->partonFlavour()==5)) {
 
 	++Nb;
 	//cout << Nb << endl;
