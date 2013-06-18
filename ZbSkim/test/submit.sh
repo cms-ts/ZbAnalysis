@@ -5,7 +5,7 @@
 #QUEUE=normal
 QUEUE=normal_io
 
-VERSION=v08
+VERSION=v09
 
 DATADIR=/gpfs/grid/srm/cms/store/user/vieri/grid
 
