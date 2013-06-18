@@ -84,9 +84,26 @@ process.demo2_mm = cms.EDAnalyzer('ZJetsAnalyzer',
 	lepton  = cms.untracked.string("muon")
 )
 
+process.demo3_ee = cms.EDAnalyzer('GenbAnalyzer',
+	pileup  = cms.untracked.string("S10"),
+	lepton  = cms.untracked.string("electrons"),
+)
+
+process.demo3_mm = cms.EDAnalyzer('GenbAnalyzer',
+	pileup  = cms.untracked.string("S10"),
+	lepton  = cms.untracked.string("muon"),
+)
+
+process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+process.printTree = cms.EDAnalyzer("ParticleListDrawer",
+	maxEventsToPrint = cms.untracked.int32(-1),
+	printVertex = cms.untracked.bool(False),
+	src = cms.InputTag("genParticles")
+)
+
 process.TFileService = cms.Service("TFileService",
 	fileName = cms.string('ZbTree.root')
 )
 
-process.p = cms.Path(process.filter*process.demo_ee*process.demo_ee_up*process.demo_ee_down*process.demo_mm*process.demo_mm_up*process.demo_mm_down*process.demo_ee_btag*process.demo_mm_btag*process.demo2_ee*process.demo2_mm)
+process.p = cms.Path(process.filter*process.demo_ee*process.demo_ee_up*process.demo_ee_down*process.demo_mm*process.demo_mm_up*process.demo_mm_down*process.demo2_ee*process.demo2_mm*process.demo3_ee*process.demo3_mm)
 
