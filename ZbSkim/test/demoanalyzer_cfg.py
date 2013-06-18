@@ -11,7 +11,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source = cms.Source("PoolSource",
 	# replace 'myfile.root' with the source file you want to use
         fileNames = cms.untracked.vstring(
-		'file:patTuple.root'
+		'file:patTuple_1_1_IPe.root'
         )
 )
 
@@ -21,68 +21,72 @@ process.filter = cms.EDFilter('ZbFilter'
 process.demo_ee = cms.EDAnalyzer('ZbAnalyzer',
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("electron"),
-	JEC     = cms.untracked.double(0)
+	JEC     = cms.untracked.double(0),
+	usePartonFlavour = cms.untracked.bool(False)
 )
 
 process.demo_ee_up = cms.EDAnalyzer('ZbAnalyzer',
 	pileup     = cms.untracked.string("S10"),
 	lepton     = cms.untracked.string("electron"),
-	JEC        = cms.untracked.double(1)
+	JEC        = cms.untracked.double(1),
+	usePartonFlavour = cms.untracked.bool(False)
 )
 
 process.demo_ee_down = cms.EDAnalyzer('ZbAnalyzer',
 	pileup       = cms.untracked.string("S10"),
 	lepton 	     = cms.untracked.string("electron"),
-	JEC    	     = cms.untracked.double(-1)
+	JEC    	     = cms.untracked.double(-1),
+	usePartonFlavour = cms.untracked.bool(False)
 )
 
 process.demo_mm = cms.EDAnalyzer('ZbAnalyzer',
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("muon"),
-	JEC     = cms.untracked.double(0)
+	JEC     = cms.untracked.double(0),
+	usePartonFlavour = cms.untracked.bool(False)
 )
 
 process.demo_mm_up = cms.EDAnalyzer('ZbAnalyzer',
 	pileup 	   = cms.untracked.string("S10"),
 	lepton 	   = cms.untracked.string("muon"),
-	JEC    	   = cms.untracked.double(1)
+	JEC    	   = cms.untracked.double(1),
+	usePartonFlavour = cms.untracked.bool(False)
 )
 
 process.demo_mm_down = cms.EDAnalyzer('ZbAnalyzer',
 	pileup 	     = cms.untracked.string("S10"),
 	lepton 	     = cms.untracked.string("muon"),
-	JEC    	     = cms.untracked.double(-1)
+	JEC    	     = cms.untracked.double(-1),
+	usePartonFlavour = cms.untracked.bool(False)
 )
 
-process.demo2 = cms.EDAnalyzer('ZJetsAnalyzer',
-	pileup = cms.untracked.string("S10")
+process.demo_ee_btag = cms.EDAnalyzer('ZbAnalyzer',
+        pileup  = cms.untracked.string("S10"),
+        lepton  = cms.untracked.string("electron"),
+        JEC     = cms.untracked.double(0),
+	usePartonFlavour = cms.untracked.bool(True)
 )
 
-process.demo2_ee = cms.EDAnalyzer('ZbAnalyzer',
+process.demo_mm_btag = cms.EDAnalyzer('ZbAnalyzer',
+        pileup  = cms.untracked.string("S10"),
+        lepton  = cms.untracked.string("muon"),
+        JEC     = cms.untracked.double(0),
+	usePartonFlavour = cms.untracked.bool(True)
+)
+
+process.demo2_ee = cms.EDAnalyzer('ZJetsAnalyzer',
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("electron"),
 )
 
-process.demo2_mm = cms.EDAnalyzer('ZbAnalyzer',
+process.demo2_mm = cms.EDAnalyzer('ZJetsAnalyzer',
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("muon"),
 )
 
-process.bjettag = cms.EDAnalyzer('PatBJetTagAnalyzer',
-	jets = cms.InputTag( "goodJets" ),
-	jetPtCut = cms.double( 30. ),
-	jetEtaCut = cms.double( 2.5 )
-)
-
-process.bjetvtx = cms.EDAnalyzer('PatBJetVertexAnalyzer',
-        jets = cms.InputTag( "goodJets" ),
-        jetPtCut = cms.double( 30. ),
-        jetEtaCut = cms.double( 2.5 )
-)
-
 process.TFileService = cms.Service("TFileService",
-		                  fileName = cms.string('ZbTree.root')
-			          )
+	fileName = cms.string('ZbTree.root')
+)
 
-process.p = cms.Path(process.filter*process.demo_ee*process.demo_mm*process.demo2*process.demo_mm_up*process.demo_mm_down*process.demo_ee_up*process.demo_ee_down*process.demo2_ee*process.demo2_mm)
-#process.p = cms.Path(process.filter*process.demo*process.bjettag*process.bjetvtx)
+process.p = cms.Path(process.filter*process.demo_ee*process.demo_ee_up*process.demo_ee_down*process.demo_mm*process.demo_mm_up*process.demo_mm_down*process.demo_ee_btag*process.demo_mm_btag*process.demo2_ee*process.demo2_mm)
+
