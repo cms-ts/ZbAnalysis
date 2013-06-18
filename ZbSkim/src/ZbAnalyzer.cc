@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.86 2013/06/14 18:08:10 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.87 2013/06/18 13:36:39 dellaric Exp $
 //
 //
 
@@ -399,6 +399,13 @@ private:
   TH1F*     b_MET;
   TH1F*     c_MET;
   TH1F*     w_MET_sign;
+  
+  TH1F*     w_MET_b;
+  TH1F*     b_MET_b;
+  TH1F*     c_MET_b;
+  TH1F*     w_MET_sign_b;
+  TH1F*     b_MET_sign_b;
+  TH1F*     c_MET_sign_b;
 
   TH1F*     w_Afb;
 
@@ -648,6 +655,13 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_MET =               fs->make < TH1F > ("b_MET",             "b_MET;MET [GeV]", 50, 0., 250.);
   c_MET =               fs->make < TH1F > ("c_MET",             "c_MET;MET [GeV]", 50, 0., 250.);
   w_MET_sign = 	        fs->make < TH1F > ("w_MET_sign",        "w_MET_sign;MET significance [GeV]", 50, 0., 100.);
+  
+  w_MET_b =               fs->make < TH1F > ("w_MET_b",         "w_MET_b;MET [GeV]", 50, 0., 250.);
+  b_MET_b =               fs->make < TH1F > ("b_MET_b",         "b_MET_b;MET [GeV]", 50, 0., 250.);
+  c_MET_b =               fs->make < TH1F > ("c_MET",           "c_MET_b;MET [GeV]", 50, 0., 250.);
+  w_MET_sign_b = 	  fs->make < TH1F > ("w_MET_sign",      "w_MET_sign_b;MET significance [GeV]", 50, 0., 100.);
+  b_MET_sign_b = 	  fs->make < TH1F > ("b_MET_sign_b",    "b_MET_sign_b;MET significance [GeV]", 50, 0., 100.);
+  c_MET_sign_b = 	  fs->make < TH1F > ("c_MET_sign_b",    "c_MET_sign_b;MET significance [GeV]", 50, 0., 100.);
 
   w_Afb =               fs->make < TH1F > ("b_asymmetry",       "b_asymmetry", 10, -1, 1);
 
@@ -1067,11 +1081,17 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
       //cout << vect_bjets[0].pt() << " " << vect_bjets[0].eta() <<"   SFb = " << scalFac_b << endl;
       w_Ht_b->Fill (Ht, MyWeight*scalFac_b);
+      w_MET_b->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight*scalFac_b);
+      w_MET_sign_b->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight*scalFac_b);
       if (isb) {
         b_Ht_b->Fill (Ht, MyWeight*scalFac_b);
+	b_MET_b->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight*scalFac_b);
+	b_MET_sign_b->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight*scalFac_b);
       }
       if (isc && !isb) {
         c_Ht_b->Fill (Ht, MyWeight*scalFac_b);
+	c_MET_b->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight*scalFac_b);
+	c_MET_sign_b->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight*scalFac_b);
       }
     }
   }
