@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.87 2013/06/18 13:36:39 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.88 2013/06/18 13:37:45 dellaric Exp $
 //
 //
 
@@ -1099,23 +1099,21 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   // ++++++++ DIELECTRON Z PLOTS
 
   if (iele1!=0 && Nj > 0) {
-    if (diele_mass != 0) {
-      w_mass_ee_wide->Fill (diele_mass, MyWeight);
+    w_mass_ee_wide->Fill (diele_mass, MyWeight);
+    if (isb) {
+      b_mass_ee_wide->Fill (diele_mass, MyWeight);
+    }
+    if (isc && !isb) {
+      c_mass_ee_wide->Fill (diele_mass, MyWeight);
+    }
+    if (Nb > 0) {
+      scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
+      w_mass_ee_b_wide->Fill (diele_mass, MyWeight*scalFac_b);
       if (isb) {
-        b_mass_ee_wide->Fill (diele_mass, MyWeight);
+        b_mass_ee_b_wide->Fill (diele_mass, MyWeight*scalFac_b);
       }
       if (isc && !isb) {
-        c_mass_ee_wide->Fill (diele_mass, MyWeight);
-      }
-      if (Nb > 0) {
-        scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-        w_mass_ee_b_wide->Fill (diele_mass, MyWeight*scalFac_b);
-        if (isb) {
-          b_mass_ee_b_wide->Fill (diele_mass, MyWeight*scalFac_b);
-        }
-        if (isc && !isb) {
-          c_mass_ee_b_wide->Fill (diele_mass, MyWeight*scalFac_b);
-        }
+        c_mass_ee_b_wide->Fill (diele_mass, MyWeight*scalFac_b);
       }
     }
   }
@@ -1134,36 +1132,34 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     delta_phi_ee = fabs(diele_phi - vect_jets[0].phi());
     if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
 
-    if (diele_mass != 0) {
-      h_mass_ee->Fill (diele_mass);
-      w_mass_ee->Fill (diele_mass, MyWeight);
-      w_pt_Z_ee->Fill (diele_pt, MyWeight);
-      w_delta_ee->Fill (delta_phi_ee, MyWeight);
+    h_mass_ee->Fill (diele_mass);
+    w_mass_ee->Fill (diele_mass, MyWeight);
+    w_pt_Z_ee->Fill (diele_pt, MyWeight);
+    w_delta_ee->Fill (delta_phi_ee, MyWeight);
+    if (isb) {
+      b_mass_ee->Fill (diele_mass, MyWeight);
+      b_pt_Z_ee->Fill (diele_pt, MyWeight);
+    }
+    if (isc && !isb) {
+      c_mass_ee->Fill (diele_mass, MyWeight);
+      c_pt_Z_ee->Fill (diele_pt, MyWeight);
+    }
+    if (Nb > 0) {
+      scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
+      w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
+      w_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
+      delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
+      if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
+      w_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
       if (isb) {
-        b_mass_ee->Fill (diele_mass, MyWeight);
-        b_pt_Z_ee->Fill (diele_pt, MyWeight);
+        b_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
+        b_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
+        b_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
       }
       if (isc && !isb) {
-        c_mass_ee->Fill (diele_mass, MyWeight);
-        c_pt_Z_ee->Fill (diele_pt, MyWeight);
-      }
-      if (Nb > 0) {
-        scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-        w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
-        w_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
-        delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
-        if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
-        w_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
-        if (isb) {
-          b_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
-          b_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
-          b_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
-        }
-        if (isc && !isb) {
-          c_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
-          c_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
-          c_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
-        }
+        c_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
+        c_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
+        c_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
       }
     }
   }
@@ -1171,23 +1167,21 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   // ++++++++ DIMUON Z PLOTS
 
   if (imuon1!=0 && Nj > 0) {
-    if (dimuon_mass != 0) {
-      w_mass_mm_wide->Fill (dimuon_mass, MyWeight);
+    w_mass_mm_wide->Fill (dimuon_mass, MyWeight);
+    if (isb) {
+      b_mass_mm_wide->Fill (dimuon_mass, MyWeight);
+    }
+    if (isc && !isb) {
+      c_mass_mm_wide->Fill (dimuon_mass, MyWeight);
+    }
+    if (Nb > 0) {
+      scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
+      w_mass_mm_b_wide->Fill (dimuon_mass, MyWeight*scalFac_b);
       if (isb) {
-        b_mass_mm_wide->Fill (dimuon_mass, MyWeight);
+        b_mass_mm_b_wide->Fill (dimuon_mass, MyWeight*scalFac_b);
       }
       if (isc && !isb) {
-        c_mass_mm_wide->Fill (dimuon_mass, MyWeight);
-      }
-      if (Nb > 0) {
-        scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-	w_mass_mm_b_wide->Fill (dimuon_mass, MyWeight*scalFac_b);
-        if (isb) {
-          b_mass_mm_b_wide->Fill (dimuon_mass, MyWeight*scalFac_b);
-        }
-        if (isc && !isb) {
-          c_mass_mm_b_wide->Fill (dimuon_mass, MyWeight*scalFac_b);
-        }
+        c_mass_mm_b_wide->Fill (dimuon_mass, MyWeight*scalFac_b);
       }
     }
   }
@@ -1206,36 +1200,34 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi());
     if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
 
-    if (dimuon_mass != 0)  {
-      h_mass_mm->Fill (dimuon_mass);
-      w_mass_mm->Fill (dimuon_mass, MyWeight);
-      w_pt_Z_mm->Fill (dimuon_pt, MyWeight);
-      w_delta_mm->Fill (delta_phi_mm, MyWeight);
+    h_mass_mm->Fill (dimuon_mass);
+    w_mass_mm->Fill (dimuon_mass, MyWeight);
+    w_pt_Z_mm->Fill (dimuon_pt, MyWeight);
+    w_delta_mm->Fill (delta_phi_mm, MyWeight);
+    if (isb) {
+      b_mass_mm->Fill (dimuon_mass, MyWeight);
+      b_pt_Z_mm->Fill (dimuon_pt, MyWeight);
+    }
+    if (isc && !isb) {
+      c_mass_mm->Fill (dimuon_mass, MyWeight);
+      c_pt_Z_mm->Fill (dimuon_pt, MyWeight);
+    }
+      if (Nb > 0) {
+      scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
+      w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
+      w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
+      delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
+      if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
+      w_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
       if (isb) {
-        b_mass_mm->Fill (dimuon_mass, MyWeight);
-        b_pt_Z_mm->Fill (dimuon_pt, MyWeight);
+        b_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
+        b_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
+        b_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
       }
       if (isc && !isb) {
-        c_mass_mm->Fill (dimuon_mass, MyWeight);
-        c_pt_Z_mm->Fill (dimuon_pt, MyWeight);
-      }
-      if (Nb > 0) {
-        scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-	w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
-        w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
-        delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
-        if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
-        w_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
-        if (isb) {
-          b_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
-          b_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
-          b_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
-        }
-        if (isc && !isb) {
-          c_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
-          c_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
-          c_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
-        }
+        c_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
+        c_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
+        c_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
       }
     }
   }
