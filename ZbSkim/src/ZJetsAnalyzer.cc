@@ -13,7 +13,7 @@
 //
 // Original Author:  Chiara La Licata
 //         Created:  Mon Feb 11 13:52:51 CET 2013
-// $Id: ZJetsAnalyzer.cc,v 1.6 2013/04/12 07:34:07 clalicat Exp $
+// $Id: ZJetsAnalyzer.cc,v 1.7 2013/05/11 07:40:01 dellaric Exp $
 //
 //
 
@@ -381,7 +381,7 @@ for(pat::ElectronCollection::const_iterator ele=Trigelectrons->begin(); ele!=Tri
 }
 
 
-if(vect_ele_pt.size()!=0)
+if(vect_ele_pt.size()>1)
 	if(fabs(vect_ele_eta[0])<2.4 && fabs(vect_ele_eta[1])<2.4 && (fabs(vect_ele_eta[0])<1.44442 || fabs(vect_ele_eta[0])>1.5660) && (fabs(vect_ele_eta[1])<1.4442 || fabs(vect_ele_eta[1])>1.5660))
 		if(vect_ele_pt[0]>25 && vect_ele_pt[1]>25)
 			ee_event=true;
@@ -398,7 +398,7 @@ for(pat::MuonCollection::const_iterator muon=Trigmuons->begin(); muon!=Trigmuons
 	vect_muon_eta.push_back(muon_eta);
 }
 
-if(vect_muon_pt.size()!=0)
+if(vect_muon_pt.size()>1)
 	if(fabs(vect_muon_eta[0])<2.4 && fabs(vect_muon_eta[1])<2.4)
                         if(vect_muon_pt[0]>25 && vect_muon_pt[1]>25)
 				mm_event=true;
