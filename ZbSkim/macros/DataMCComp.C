@@ -1,23 +1,3 @@
-#include <iostream>
-#include <sstream>
-#include <string.h>
-
-#include "TROOT.h"
-#include "TStyle.h"
-#include "TLatex.h"
-#include "TCanvas.h"
-#include "TLine.h"
-#include "TLegend.h"
-#include "TPaveStats.h"
-#include "TFile.h"
-#include "TDirectory.h"
-#include "TLine.h"
-#include "TObject.h"
-#include "TH1.h"
-#include "TH2.h"
-#include "THStack.h"
-#include "TTree.h"
-
 #include "LumiLabel.C"
 #include "LumiInfo_v09.h"
 
