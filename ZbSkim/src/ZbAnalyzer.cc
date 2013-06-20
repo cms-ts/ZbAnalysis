@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.88 2013/06/18 13:37:45 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.89 2013/06/19 09:23:44 dellaric Exp $
 //
 //
 
@@ -856,7 +856,9 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   for (pat::MuonCollection::const_iterator muon = muons->begin (); muon != muons->end (); ++muon) {
 
-    vect_muon.push_back (*muon);
+    if (muon->pt()>=20) {
+      vect_muon.push_back (*muon);
+    }
 
   }
 
