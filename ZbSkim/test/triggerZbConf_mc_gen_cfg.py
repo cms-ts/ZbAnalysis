@@ -262,15 +262,27 @@ getattr(process,"pfNoTau"+postfix).enable = useNoTau
 getattr(process,"pfNoElectron"+postfix).enable = useNoElectron
 
 process.dump = cms.EDAnalyzer("EventContentAnalyzer")
-process.MyProcess = cms.EDFilter('ZbFilter')
 process.demo3_ee = cms.EDAnalyzer('GenbAnalyzer',
-			pileup  = cms.untracked.string("S10"),
-				lepton  = cms.untracked.string("electron"),
-		)
+	pileup  = cms.untracked.string("S10"),
+	lepton  = cms.untracked.string("electron"),
+)
 process.demo3_mm = cms.EDAnalyzer('GenbAnalyzer',
-			pileup  = cms.untracked.string("S10"),
-				lepton  = cms.untracked.string("muon"),
-		)
+	pileup  = cms.untracked.string("S10"),
+	lepton  = cms.untracked.string("muon"),
+)
+process.MyProcess = cms.EDFilter('ZbFilter')
+process.demo_ee = cms.EDAnalyzer('ZbAnalyzer',
+        pileup  = cms.untracked.string("S10"),
+        lepton  = cms.untracked.string("electron"),
+        JEC     = cms.untracked.double(0),
+        usePartonFlavour = cms.untracked.bool(False)
+)
+process.demo_mm = cms.EDAnalyzer('ZbAnalyzer',
+        pileup  = cms.untracked.string("S10"),
+        lepton  = cms.untracked.string("muon"),
+        JEC     = cms.untracked.double(0),
+        usePartonFlavour = cms.untracked.bool(False)
+)
 
 process.p = cms.Path(
    process.goodOfflinePrimaryVertices *
@@ -290,7 +302,8 @@ process.p = cms.Path(
    process.matchedElectrons *
    process.zeleMatchedeleMatched *
    process.demo3_ee * process.demo3_mm *
-   process.MyProcess 
+   process.MyProcess *
+   process.demo_ee * process.demo_mm
    #process.dump
    )
 
