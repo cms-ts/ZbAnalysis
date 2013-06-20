@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.4 2013/06/20 06:59:26 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.5 2013/06/20 11:51:04 dellaric Exp $
 //
 //
 
@@ -259,7 +259,10 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   iEvent.getByLabel ("genParticles", genPart);
      	
   edm::Handle<vector<reco::GenJet> > gJets;
-  iEvent.getByLabel(edm::InputTag("selectedPatJetsPFlow","genJets"), gJets); 
+  iEvent.getByLabel(edm::InputTag("ak5GenJetsNoNu",""), gJets);
+  if (! gJets.isValid()) {
+    iEvent.getByLabel(edm::InputTag("selectedPatJetsPFlow","genJets"), gJets);
+  }
 
   bool ee_event = false;
   bool mm_event    = false;
