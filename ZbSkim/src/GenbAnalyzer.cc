@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.5 2013/06/20 11:51:04 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.6 2013/06/20 16:26:10 dellaric Exp $
 //
 //
 
@@ -375,9 +375,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
    int imuon1=0;
 
    for (unsigned int i=1; i<vect_muon.size(); ++i) {
-
 	   if (vect_muon[i].E()*vect_muon[imuon0].E()<0 && imuon1==0) imuon1=i;
-  
 	   vect_muon[i].SetE(fabs(vect_muon[i].E()));
    }
    if (vect_muon.size()!=0) vect_muon[imuon0].SetE(fabs(vect_muon[imuon0].E()));
