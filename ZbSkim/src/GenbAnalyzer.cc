@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.3 2013/06/06 14:50:06 vieri Exp $
+// $Id: GenbAnalyzer.cc,v 1.4 2013/06/20 06:59:26 dellaric Exp $
 //
 //
 
@@ -391,8 +391,8 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
     }
   }
 
-  if (lepton_ == "electron" && !ee_event) return;
-  if (lepton_ == "muon" && !mm_event)     return;
+  ee_event = ee_event && (lepton_ == "electron");
+  mm_event = mm_event && (lepton_ == "muon");
 
   // ++++++ Pile-Up reweighting
 
