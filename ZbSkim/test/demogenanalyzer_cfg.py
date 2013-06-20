@@ -86,7 +86,7 @@ process.demo2_mm = cms.EDAnalyzer('ZJetsAnalyzer',
 
 process.demo3_ee = cms.EDAnalyzer('GenbAnalyzer',
 	pileup  = cms.untracked.string("S10"),
-	lepton  = cms.untracked.string("electrons"),
+	lepton  = cms.untracked.string("electron"),
 )
 
 process.demo3_mm = cms.EDAnalyzer('GenbAnalyzer',
