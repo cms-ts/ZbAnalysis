@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.11 2013/06/21 11:22:52 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.12 2013/06/21 14:04:33 dellaric Exp $
 //
 //
 
@@ -269,9 +269,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   bool ee_event = false;
   bool mm_event    = false;
-  bool isDressed   = false;
-  bool isDressedMu = false;
-  
+
   jet_pt = 0;
   jet_eta = 0;
   jet_phi = 0;
@@ -400,14 +398,11 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   // ++++++ Pile-Up reweighting
 
-  bool isMC = false;
   MyWeight = 1.0;
 
   Handle < vector < PileupSummaryInfo > > PupInfo;
 
   if (iEvent.getByLabel (edm::InputTag ("addPileupInfo"), PupInfo))  {
-
-    isMC = true;
 
     float Tnpv = -1;
 
@@ -455,7 +450,6 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   vector < pat::Jet > vect_bjets;
 
   bool isb = false;
-  bool isc = false;
   int nb=0;
 
   Nj=0;
