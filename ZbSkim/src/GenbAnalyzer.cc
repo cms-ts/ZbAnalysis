@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.8 2013/06/21 06:19:43 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.9 2013/06/21 06:57:04 dellaric Exp $
 //
 //
 
@@ -597,7 +597,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   }
        
   if ((ee_event || mm_event) && Nb>0 && Nj>0){
-       	  w_bjetmultiplicity->Fill (nb, MyWeight); 
+       	  w_bjetmultiplicity->Fill (Nb, MyWeight); 
        	  w_Ht_b->Fill (Ht, MyWeight);
   }
   if (ee_event && Nj > 0 && Nb > 0) {
