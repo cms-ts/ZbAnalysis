@@ -13,7 +13,7 @@
 //
 // Original Author:  Chiara La Licata
 //         Created:  Mon Feb 11 13:52:51 CET 2013
-// $Id: ZJetsAnalyzer.cc,v 1.8 2013/06/20 06:58:40 dellaric Exp $
+// $Id: ZJetsAnalyzer.cc,v 1.9 2013/06/21 06:19:21 dellaric Exp $
 //
 //
 
@@ -77,12 +77,12 @@
 #include "table.h"
 #include "run_lumi.h" 
 
-std::string gpfs_path = "/gpfs/cms/users/candelis/work/ZbSkim/test/";
-//std::string gpfs_path = "./";
+#define GPFS_PATH "/gpfs/cms/users/candelis/work/ZbSkim/test/"
+//#define GPFS_PATH "./"
 
-table EleEff(gpfs_path + "ele_eff.txt");
-table MuonEff(gpfs_path + "muon_eff.txt");
-run_lumi RunLumi(gpfs_path + "lumi_run.txt");
+table EleEff(GPFS_PATH "ele_eff.txt");
+table MuonEff(GPFS_PATH "muon_eff.txt");
+run_lumi RunLumi(GPFS_PATH "lumi_run.txt");
 
 //
 // class declaration
@@ -466,8 +466,8 @@ jet_phi=0;
            }
 
            edm::LumiReWeighting LumiWeights_;
-           LumiWeights_ = edm::LumiReWeighting(gpfs_path + "pileup_" + pileup_ + ".root",
-                                               gpfs_path + "pileup_2012.root", "pileup", "pileup");
+           LumiWeights_ = edm::LumiReWeighting(GPFS_PATH "pileup_" + pileup_ + ".root",
+                                               GPFS_PATH "pileup_2012.root", "pileup", "pileup");
 
 
 

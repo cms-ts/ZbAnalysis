@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.7 2013/06/20 20:00:35 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.8 2013/06/21 06:19:43 dellaric Exp $
 //
 //
 
@@ -83,8 +83,8 @@
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
 
-std::string gpfs_path = "/gpfs/cms/users/candelis/work/ZbSkim/test/";
-//std::string gpfs_path = "./";
+#define GPFS_PATH "/gpfs/cms/users/candelis/work/ZbSkim/test/"
+//#define GPFS_PATH "./"
 
 //
 // class declaration
@@ -616,7 +616,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
 // ------------ method called once each job just before starting event loop ------------
 void GenbAnalyzer::beginJob () {
-  LumiWeights_ = edm::LumiReWeighting(gpfs_path + "pileup_" + pileup_ + ".root", gpfs_path + "pileup_2012.root", "pileup", "pileup");
+  LumiWeights_ = edm::LumiReWeighting(GPFS_PATH "pileup_" + pileup_ + ".root", GPFS_PATH "pileup_2012.root", "pileup", "pileup");
 
 }
 
