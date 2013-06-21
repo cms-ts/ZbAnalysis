@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.89 2013/06/19 09:23:44 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.90 2013/06/20 16:35:11 dellaric Exp $
 //
 //
 
@@ -82,11 +82,15 @@
 #include "Math/VectorUtil.h"
 
 #include "table.h"
-table ElSF  ("/gpfs/cms/users/candelis/work/ZbSkim/test/ele_eff.txt");
-table ElSF2 ("/gpfs/cms/users/candelis/work/ZbSkim/test/ele_eff2.txt");
-table MuSF  ("/gpfs/cms/users/candelis/work/ZbSkim/test/muon_eff.txt");
-table BtSF  ("/gpfs/cms/users/candelis/work/ZbSkim/test/btag_eff.txt");   //btagging scale factors SFb = SFc
-table LtSF  ("/gpfs/cms/users/candelis/work/ZbSkim/test/light_eff.txt");  //light flavour scale factors
+
+std::string gpfs_path = "/gpfs/cms/users/candelis/work/ZbSkim/test/";
+//std::string gpfs_path = "./";
+
+table ElSF  (gpfs_path + "ele_eff.txt");
+table ElSF2 (gpfs_path + "ele_eff2.txt");
+table MuSF  (gpfs_path + "muon_eff.txt");
+table BtSF  (gpfs_path + "btag_eff.txt");   //btagging scale factors SFb = SFc
+table LtSF  (gpfs_path + "light_eff.txt");  //light flavour scale factors
 
 //
 // class declaration
@@ -1549,9 +1553,9 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
 // ------------ method called once each job just before starting event loop ------------
 void ZbAnalyzer::beginJob () {
-  jecUncDT_ = new JetCorrectionUncertainty("/gpfs/cms/users/candelis/work/ZbSkim/test/Fall12_V7_DATA_Uncertainty_AK5PFchs.txt");
-  jecUncMC_ = new JetCorrectionUncertainty("/gpfs/cms/users/candelis/work/ZbSkim/test/Fall12_V7_MC_Uncertainty_AK5PFchs.txt");
-  LumiWeights_ = edm::LumiReWeighting("/gpfs/cms/users/candelis/work/ZbSkim/test/pileup/pileup_" + pileup_ + ".root", "/gpfs/cms/users/candelis/work/ZbSkim/test/pileup/pileup_2012.root", "pileup", "pileup");
+  jecUncDT_ = new JetCorrectionUncertainty(gpfs_path + "Fall12_V7_DATA_Uncertainty_AK5PFchs.txt");
+  jecUncMC_ = new JetCorrectionUncertainty(gpfs_path + "Fall12_V7_MC_Uncertainty_AK5PFchs.txt");
+  LumiWeights_ = edm::LumiReWeighting(gpfs_path + "pileup_" + pileup_ + ".root", gpfs_path + "pileup_2012.root", "pileup", "pileup");
 
   gRandom_ = new TRandom3();
 }
