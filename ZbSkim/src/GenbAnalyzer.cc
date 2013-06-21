@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.9 2013/06/21 06:57:04 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.10 2013/06/21 09:31:21 dellaric Exp $
 //
 //
 
@@ -83,9 +83,6 @@
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
 
-#define GPFS_PATH "/gpfs/cms/users/candelis/work/ZbSkim/test/"
-//#define GPFS_PATH "./"
-
 //
 // class declaration
 //
@@ -121,6 +118,8 @@ private:
 
   std::string pileup_;
   std::string lepton_;
+  std::string path_;
+
   edm::LumiReWeighting LumiWeights_;
 
   // ----------member data ---------------------------
@@ -211,6 +210,7 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
 
   pileup_ = iConfig.getUntrackedParameter < std::string > ("pileup", "S7");
   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
+  path_ =   iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
 
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
@@ -616,7 +616,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
 // ------------ method called once each job just before starting event loop ------------
 void GenbAnalyzer::beginJob () {
-  LumiWeights_ = edm::LumiReWeighting(GPFS_PATH "pileup_" + pileup_ + ".root", GPFS_PATH "pileup_2012.root", "pileup", "pileup");
+  LumiWeights_ = edm::LumiReWeighting(path_ + "pileup_" + pileup_ + ".root", path_ + "pileup_2012.root", "pileup", "pileup");
 
 }
 

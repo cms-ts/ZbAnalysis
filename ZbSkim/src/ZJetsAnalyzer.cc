@@ -13,7 +13,7 @@
 //
 // Original Author:  Chiara La Licata
 //         Created:  Mon Feb 11 13:52:51 CET 2013
-// $Id: ZJetsAnalyzer.cc,v 1.9 2013/06/21 06:19:21 dellaric Exp $
+// $Id: ZJetsAnalyzer.cc,v 1.10 2013/06/21 06:57:04 dellaric Exp $
 //
 //
 
@@ -74,15 +74,9 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+
 #include "table.h"
 #include "run_lumi.h" 
-
-#define GPFS_PATH "/gpfs/cms/users/candelis/work/ZbSkim/test/"
-//#define GPFS_PATH "./"
-
-table EleEff(GPFS_PATH "ele_eff.txt");
-table MuonEff(GPFS_PATH "muon_eff.txt");
-run_lumi RunLumi(GPFS_PATH "lumi_run.txt");
 
 //
 // class declaration
@@ -108,6 +102,14 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
 
       std::string pileup_;
       std::string lepton_;
+      std::string path_;
+
+      edm::LumiReWeighting LumiWeights_;
+
+      table* EleEff_;
+      table* MuonEff_;
+
+      run_lumi* RunLumi_;
 
       // ----------member data ---------------------------
 
@@ -217,6 +219,7 @@ ZJetsAnalyzer::ZJetsAnalyzer(const edm::ParameterSet& iConfig)
 
 	pileup_ = iConfig.getUntrackedParameter<std::string>("pileup", "S7");
 	lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
+        path_ =   iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
 
 	edm::Service<TFileService> fs;
    	//now do what ever initialization is needed
@@ -465,23 +468,17 @@ jet_phi=0;
                    }
            }
 
-           edm::LumiReWeighting LumiWeights_;
-           LumiWeights_ = edm::LumiReWeighting(GPFS_PATH "pileup_" + pileup_ + ".root",
-                                               GPFS_PATH "pileup_2012.root", "pileup", "pileup");
-
-
-
            MyWeight = LumiWeights_.weight( Tnpv );
 
 	if(ee_event){
-		scalFac_first_ele = EleEff.Val(vect_ele_pt[0],vect_ele_eta[0]);
-		scalFac_second_ele = EleEff.Val(vect_ele_pt[1],vect_ele_eta[1]);
+		scalFac_first_ele = EleEff_->Val(vect_ele_pt[0],vect_ele_eta[0]);
+		scalFac_second_ele = EleEff_->Val(vect_ele_pt[1],vect_ele_eta[1]);
 	}
 
 	
 	if(mm_event){
-		scalFac_first_muon = MuonEff.Val(vect_muon_pt[0],vect_muon_eta[0]);
-		scalFac_second_muon = MuonEff.Val(vect_muon_pt[1],vect_muon_eta[1]);
+		scalFac_first_muon = MuonEff_->Val(vect_muon_pt[0],vect_muon_eta[0]);
+		scalFac_second_muon = MuonEff_->Val(vect_muon_pt[1],vect_muon_eta[1]);
 	}
 
 
@@ -631,7 +628,7 @@ if(zmm->size()==1 && vect_jet_pt.size()!=0 && mm_event){
 }
 
 run_number=iEvent.run();
-lumiRun=RunLumi.luminosity(run_number);
+lumiRun=RunLumi_->luminosity(run_number);
 
 if(NZ_ele==1 || NZ_muon==1)
 //h_runNumber->Fill(run_number,1/lumiRun);
@@ -643,6 +640,12 @@ h_runNumber->Fill(run_number);
 void 
 ZJetsAnalyzer::beginJob()
 {
+  LumiWeights_ = edm::LumiReWeighting(path_ + "pileup_" + pileup_ + ".root", path_ + "pileup_2012.root", "pileup", "pileup");
+
+  EleEff_  = new table(path_ + "ele_eff.txt");
+  MuonEff_ = new table(path_ + "muon_eff.txt");
+
+  RunLumi_ = new run_lumi(path_ + "lumi_run.txt");
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
@@ -651,6 +654,11 @@ ZJetsAnalyzer::endJob()
 {
 //h_Z_vs_runNumber->Fill(run_number,NZ_ele_run);
 //h_runNumber->Fill(run_number);
+
+  delete EleEff_;
+  delete MuonEff_;
+
+  delete RunLumi_;
 }
 
 // ------------ method called when starting to processes a run  ------------

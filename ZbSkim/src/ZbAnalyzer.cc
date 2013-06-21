@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.91 2013/06/21 06:19:43 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.92 2013/06/21 06:57:04 dellaric Exp $
 //
 //
 
@@ -79,18 +79,8 @@
 #include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
-#include "Math/VectorUtil.h"
 
 #include "table.h"
-
-#define GPFS_PATH "/gpfs/cms/users/candelis/work/ZbSkim/test/"
-//#define GPFS_PATH "./"
-
-table ElSF  (GPFS_PATH "ele_eff.txt");
-table ElSF2 (GPFS_PATH "ele_eff2.txt");
-table MuSF  (GPFS_PATH "muon_eff.txt");
-table BtSF  (GPFS_PATH "btag_eff.txt");   //btagging scale factors SFb = SFc
-table LtSF  (GPFS_PATH "light_eff.txt");  //light flavour scale factors
 
 //
 // class declaration
@@ -127,9 +117,9 @@ private:
   double btagSF(bool isMC, double flavour, double pt, double eta) {
 	  if (isMC == false) return 1.0;
 	  if (flavour == 5 || flavour == 4) {
-		  return BtSF.Val(pt, eta);
+		  return BtSF_->Val(pt, eta);
 	  } else {  
-		  return LtSF.Val(pt, eta);
+		  return LtSF_->Val(pt, eta);
 	  } 
 	  return 1.0;
   }
@@ -139,9 +129,17 @@ private:
   std::string lepton_;
   double par_;
   bool usePartonFlavour_;
+  std::string path_;
+
   JetCorrectionUncertainty *jecUncDT_;
   JetCorrectionUncertainty *jecUncMC_;
   edm::LumiReWeighting LumiWeights_;
+
+  table* ElSF_;
+  table* ElSF2_;
+  table* MuSF_;
+  table* BtSF_;
+  table* LtSF_;
 
   TRandom3 * gRandom_;
 
@@ -446,6 +444,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   pileup_ = iConfig.getUntrackedParameter < std::string > ("pileup", "S7");
   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
   par_ =    iConfig.getUntrackedParameter <double> ("JEC", 0);
+  path_ =   iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
 
   usePartonFlavour_ = iConfig.getUntrackedParameter <bool> ("usePartonFlavour", false);
 
@@ -887,13 +886,13 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if (isMC) {
     if (ee_event) {
-      scalFac_first_e  =  ElSF.Val (vect_ele[iele0].pt(), vect_ele[iele0].eta()) * ElSF2.Val (vect_ele[iele0].pt(), vect_ele[iele0].eta());
-      scalFac_second_e =  ElSF.Val (vect_ele[iele1].pt(), vect_ele[iele1].eta()) * ElSF2.Val (vect_ele[iele1].pt(), vect_ele[iele1].eta());
+      scalFac_first_e  =  ElSF_->Val (vect_ele[iele0].pt(), vect_ele[iele0].eta()) * ElSF2_->Val (vect_ele[iele0].pt(), vect_ele[iele0].eta());
+      scalFac_second_e =  ElSF_->Val (vect_ele[iele1].pt(), vect_ele[iele1].eta()) * ElSF2_->Val (vect_ele[iele1].pt(), vect_ele[iele1].eta());
       MyWeight = MyWeight * scalFac_first_e * scalFac_second_e;
     }
     if (mm_event) {
-      scalFac_first_m  = MuSF.Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta());
-      scalFac_second_m = MuSF.Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta());
+      scalFac_first_m  = MuSF_->Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta());
+      scalFac_second_m = MuSF_->Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta());
       MyWeight = MyWeight * scalFac_first_m * scalFac_second_m;
       //cout<<vect_muon[imuon0].pt()<<vect_muon[imuon0].eta()<< " mu  SF =" << scalFac_first_m <<endl;
     }
@@ -1553,9 +1552,15 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
 // ------------ method called once each job just before starting event loop ------------
 void ZbAnalyzer::beginJob () {
-  jecUncDT_ = new JetCorrectionUncertainty(GPFS_PATH "Fall12_V7_DATA_Uncertainty_AK5PFchs.txt");
-  jecUncMC_ = new JetCorrectionUncertainty(GPFS_PATH "Fall12_V7_MC_Uncertainty_AK5PFchs.txt");
-  LumiWeights_ = edm::LumiReWeighting(GPFS_PATH "pileup_" + pileup_ + ".root", GPFS_PATH "pileup_2012.root", "pileup", "pileup");
+  jecUncDT_ = new JetCorrectionUncertainty(path_ + "Fall12_V7_DATA_Uncertainty_AK5PFchs.txt");
+  jecUncMC_ = new JetCorrectionUncertainty(path_ + "Fall12_V7_MC_Uncertainty_AK5PFchs.txt");
+  LumiWeights_ = edm::LumiReWeighting(path_ + "pileup_" + pileup_ + ".root", path_ + "pileup_2012.root", "pileup", "pileup");
+
+  ElSF_  = new table(path_ + "ele_eff.txt");
+  ElSF2_ = new table(path_ + "ele_eff2.txt");
+  MuSF_  = new table(path_ + "muon_eff.txt");
+  BtSF_  = new table(path_ + "btag_eff.txt");   //btagging scale factors SFb = SFc
+  LtSF_  = new table(path_ + "light_eff.txt");  //light flavour scale factors
 
   gRandom_ = new TRandom3();
 }
@@ -1564,6 +1569,12 @@ void ZbAnalyzer::beginJob () {
 void ZbAnalyzer::endJob () {
   delete jecUncDT_;
   delete jecUncMC_;
+
+  delete ElSF_;
+  delete ElSF2_;
+  delete MuSF_;
+  delete BtSF_;
+  delete LtSF_;
 
   delete gRandom_;
 }
