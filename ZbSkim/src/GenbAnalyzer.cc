@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.10 2013/06/21 09:31:21 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.11 2013/06/21 11:22:52 dellaric Exp $
 //
 //
 
@@ -616,7 +616,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
 // ------------ method called once each job just before starting event loop ------------
 void GenbAnalyzer::beginJob () {
-  LumiWeights_ = edm::LumiReWeighting(path_ + "pileup_" + pileup_ + ".root", path_ + "pileup_2012.root", "pileup", "pileup");
+  LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileup_ + ".root", path_ + "/" + "pileup_2012.root", "pileup", "pileup");
 
 }
 

@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.92 2013/06/21 06:57:04 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.93 2013/06/21 11:22:52 dellaric Exp $
 //
 //
 
@@ -1552,15 +1552,15 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
 // ------------ method called once each job just before starting event loop ------------
 void ZbAnalyzer::beginJob () {
-  jecUncDT_ = new JetCorrectionUncertainty(path_ + "Fall12_V7_DATA_Uncertainty_AK5PFchs.txt");
-  jecUncMC_ = new JetCorrectionUncertainty(path_ + "Fall12_V7_MC_Uncertainty_AK5PFchs.txt");
-  LumiWeights_ = edm::LumiReWeighting(path_ + "pileup_" + pileup_ + ".root", path_ + "pileup_2012.root", "pileup", "pileup");
+  jecUncDT_ = new JetCorrectionUncertainty(path_ + "/" + "Fall12_V7_DATA_Uncertainty_AK5PFchs.txt");
+  jecUncMC_ = new JetCorrectionUncertainty(path_ + "/" + "Fall12_V7_MC_Uncertainty_AK5PFchs.txt");
+  LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileup_ + ".root", path_ + "/" + "pileup_2012.root", "pileup", "pileup");
 
-  ElSF_  = new table(path_ + "ele_eff.txt");
-  ElSF2_ = new table(path_ + "ele_eff2.txt");
-  MuSF_  = new table(path_ + "muon_eff.txt");
-  BtSF_  = new table(path_ + "btag_eff.txt");   //btagging scale factors SFb = SFc
-  LtSF_  = new table(path_ + "light_eff.txt");  //light flavour scale factors
+  ElSF_  = new table(path_ + "/" + "ele_eff.txt");
+  ElSF2_ = new table(path_ + "/" + "ele_eff2.txt");
+  MuSF_  = new table(path_ + "/" + "muon_eff.txt");
+  BtSF_  = new table(path_ + "/" + "btag_eff.txt");   //btagging scale factors SFb = SFc
+  LtSF_  = new table(path_ + "/" + "light_eff.txt");  //light flavour scale factors
 
   gRandom_ = new TRandom3();
 }

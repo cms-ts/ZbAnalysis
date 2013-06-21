@@ -13,7 +13,7 @@
 //
 // Original Author:  Chiara La Licata
 //         Created:  Mon Feb 11 13:52:51 CET 2013
-// $Id: ZJetsAnalyzer.cc,v 1.10 2013/06/21 06:57:04 dellaric Exp $
+// $Id: ZJetsAnalyzer.cc,v 1.11 2013/06/21 11:22:52 dellaric Exp $
 //
 //
 
@@ -640,10 +640,10 @@ h_runNumber->Fill(run_number);
 void 
 ZJetsAnalyzer::beginJob()
 {
-  LumiWeights_ = edm::LumiReWeighting(path_ + "pileup_" + pileup_ + ".root", path_ + "pileup_2012.root", "pileup", "pileup");
+  LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileup_ + ".root", path_ + "/" + "pileup_2012.root", "pileup", "pileup");
 
-  EleEff_  = new table(path_ + "ele_eff.txt");
-  MuonEff_ = new table(path_ + "muon_eff.txt");
+  EleEff_  = new table(path_ + "/" + "ele_eff.txt");
+  MuonEff_ = new table(path_ + "/" + "muon_eff.txt");
 
   RunLumi_ = new run_lumi(path_ + "lumi_run.txt");
 }
