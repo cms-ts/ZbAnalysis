@@ -263,21 +263,25 @@ getattr(process,"pfNoElectron"+postfix).enable = useNoElectron
 
 process.dump = cms.EDAnalyzer("EventContentAnalyzer")
 process.demo3_ee = cms.EDAnalyzer('GenbAnalyzer',
+	path = cms.untracked.string("."),
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("electron"),
 )
 process.demo3_mm = cms.EDAnalyzer('GenbAnalyzer',
+	path = cms.untracked.string("."),
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("muon"),
 )
 process.MyProcess = cms.EDFilter('ZbFilter')
 process.demo_ee = cms.EDAnalyzer('ZbAnalyzer',
+	path = cms.untracked.string("."),
         pileup  = cms.untracked.string("S10"),
         lepton  = cms.untracked.string("electron"),
         JEC     = cms.untracked.double(0),
         usePartonFlavour = cms.untracked.bool(False)
 )
 process.demo_mm = cms.EDAnalyzer('ZbAnalyzer',
+	path = cms.untracked.string("."),
         pileup  = cms.untracked.string("S10"),
         lepton  = cms.untracked.string("muon"),
         JEC     = cms.untracked.double(0),
