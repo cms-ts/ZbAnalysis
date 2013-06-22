@@ -315,8 +315,8 @@ process.out.fileName = 'patTuple.root'
 process.outpath = cms.EndPath()
 
 process.TFileService = cms.Service("TFileService",
-			                  fileName = cms.string('ZbTree.root')
-  			          )
+	fileName = cms.string('rootTuple.root')
+)
 
 from PhysicsTools.PatAlgos.patEventContent_cff import patEventContent
 from PhysicsTools.PatAlgos.patEventContent_cff import patExtraAodEventContent
