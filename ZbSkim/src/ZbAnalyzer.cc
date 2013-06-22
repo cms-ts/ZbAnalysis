@@ -14,24 +14,12 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.93 2013/06/21 11:22:52 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.94 2013/06/21 14:04:33 dellaric Exp $
 //
 //
 
 // system include files
 #include <memory>
-
-// user include files
-#include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
-
-#include "FWCore/Framework/interface/Event.h"
-#include "FWCore/Framework/interface/MakerMacros.h"
-
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
-#include <FWCore/Framework/interface/ESHandle.h>
-
-// system include files
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -39,6 +27,12 @@
 #include <stddef.h>
 
 // user include files
+#include "FWCore/Framework/interface/Frameworkfwd.h"
+#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/Framework/interface/ESHandle.h"
 #include "DataFormats/JetReco/interface/Jet.h"
 #include "DataFormats/BTauReco/interface/JetTag.h"
 #include "DataFormats/JetReco/interface/PFJetCollection.h"
@@ -108,22 +102,18 @@ private:
 
 #if ECALDRIVEN>0
   struct order { bool operator() (const pat::Electron &ele1, const pat::Electron &ele2) const {
-      if (ele1.ecalDrivenMomentum().pt() < ele2.ecalDrivenMomentum().pt()) return false;
-      return true;
+      return (ele1.ecalDrivenMomentum().pt() > ele2.ecalDrivenMomentum().pt());
     }
   };
 #endif
 
   double btagSF(bool isMC, double flavour, double pt, double eta) {
-	  if (isMC == false) return 1.0;
-	  if (flavour == 5 || flavour == 4) {
-		  return BtSF_->Val(pt, eta);
-	  } else {  
-		  return LtSF_->Val(pt, eta);
-	  } 
-	  return 1.0;
+    if (isMC == false) return 1.0;
+    if (flavour == 5 || flavour == 4) return BtSF_->Val(pt, eta);
+    return LtSF_->Val(pt, eta);
   }
 
+  // ----------member data ---------------------------
 
   std::string pileup_;
   std::string lepton_;
@@ -143,8 +133,6 @@ private:
 
   TRandom3 * gRandom_;
 
-  // ----------member data ---------------------------
-
   /****************** LEGEND *************************
 
    w_plotname_b => at least a b in the event, Nb > 0
@@ -153,51 +141,7 @@ private:
 
    ***************************************************/
 
-  int       Nj, Nb;
-  double    jet_pt;
-  double    jet_eta;
-  double    jet_phi;
-  double    bjet_pt;
-  double    bjet_eta;
-  double    bjet_phi;
-  double    ele_pt;
-  double    ele_pt2;
-  double    ele_eta;
-  double    muon_pt;
-  double    muon_eta;
-  double    diele_mass;
-  double    diele_phi;
-  double    diele_pt;
-  double    dimuon_mass;
-  double    dimuon_phi;
-  double    dimuon_pt;
-  double    delta_phi_ee_b;
-  double    delta_phi_mm_b;
-  double    delta_phi_ee;
-  double    delta_phi_mm;
-  double    b_leading_pt;
-  double    b_leading_eta;
-
-  double    Ht, Ht_b;
-  double    discrCSV;
-  double    discrBJP;
-  double    discrJBP;
-  double    MyWeight;
-  double    sFac;
-  double    sFacErr;
-  double    scalFac_first_e;
-  double    scalFac_second_e;
-  double    scalFac_first_m;
-  double    scalFac_second_m;
-  double    scalFac_b;
-  double    scalFac_l;
-  double    Nf, Nbk;
-  double    Afb;
-
   TH1F*     h_jetmultiplicity;
-  TH1F*     h_jet_pt;
-  TH1F*     h_ele_pt;
-  TH1F*     h_muon_pt;
 
   TH1F*     ecaldriven;
   TProfile* ecaldriven2;
@@ -401,7 +345,7 @@ private:
   TH1F*     b_MET;
   TH1F*     c_MET;
   TH1F*     w_MET_sign;
-  
+
   TH1F*     w_MET_b;
   TH1F*     b_MET_b;
   TH1F*     c_MET_b;
@@ -452,12 +396,9 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   edm::Service < TFileService > fs;
 
   h_jetmultiplicity =   fs->make < TH1F > ("h_jetmultiplicity", "h_jetmultiplicity;N_jets", 8, 0.5, 8.5);
-  h_jet_pt =            fs->make < TH1F > ("h_jet_pt",          "h_jet_pt;P_t [GeV]", 20, 30, 530);
-  h_ele_pt =            fs->make < TH1F > ("h_ele_pt",          "h_ele_pt;P_t [GeV]", 20, 30, 530);
-  h_muon_pt =           fs->make < TH1F > ("h_muon_pt",         "h_muon_pt;P_t [GeV]", 100, 0, 250);
 
   ecaldriven =          fs->make < TH1F > ("ecaldriven",        "ecaldriven - pf", 100, -5, 5);
-  ecaldriven2 =         fs->make < TProfile > ("ecaldriven2",   "ecaldriven - pf versus pf", 100, -2.5, 2.5, -1, 1);              
+  ecaldriven2 =         fs->make < TProfile > ("ecaldriven2",   "ecaldriven - pf versus pf", 100, -2.5, 2.5, -1, 1);
 
   h_pu_weights =        fs->make < TH1F > ("h_pu_weights",      "h_pu_weights;PU weight", 10, 0, 10);
 
@@ -658,7 +599,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_MET =               fs->make < TH1F > ("b_MET",             "b_MET;MET [GeV]", 50, 0., 250.);
   c_MET =               fs->make < TH1F > ("c_MET",             "c_MET;MET [GeV]", 50, 0., 250.);
   w_MET_sign = 	        fs->make < TH1F > ("w_MET_sign",        "w_MET_sign;MET significance [GeV]", 50, 0., 100.);
-  
+
   w_MET_b =               fs->make < TH1F > ("w_MET_b",         "w_MET_b;MET [GeV]", 50, 0., 250.);
   b_MET_b =               fs->make < TH1F > ("b_MET_b",         "b_MET_b;MET [GeV]", 50, 0., 250.);
   c_MET_b =               fs->make < TH1F > ("c_MET",           "c_MET_b;MET [GeV]", 50, 0., 250.);
@@ -735,43 +676,26 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   bool ee_event = false;
   bool mm_event = false;
 
-  int Ntracks = 0;
-  Nj = 0;
-  Nbk = 0;
-  jet_pt = 0;
-  jet_eta = 0;
-  jet_phi = 0;
-  bjet_pt = 0;
-  bjet_eta = 0;
-  bjet_phi = 0;
-  ele_pt = 0;
-  ele_pt2 = 0;
-  ele_eta = 0;
-  muon_pt = 0;
-  muon_eta = 0;
-  diele_mass = 0;
-  dimuon_mass = 0;
-  discrCSV = 0;
-  discrBJP = 0;
-  discrJBP = 0;
-  b_leading_pt = 0;
-  b_leading_eta = 0;
-  delta_phi_ee_b = 0;
-  delta_phi_mm_b = 0;
-  delta_phi_ee = 0;
-  delta_phi_mm = 0;
-  Nf = 0;
-  Nb = 0;
-  Afb = 0;
-  scalFac_first_e = 1;
-  scalFac_second_e = 1;
-  scalFac_first_m = 1;
-  scalFac_second_m = 1;
-  scalFac_b = 1;
-  scalFac_l = 1;
+  int Nj = 0;
+  int Nb = 0;
 
-  Ht = 0;
-  Ht_b = 0;
+  double diele_mass = 0;
+  double diele_phi = 0;
+  double diele_pt = 0;
+
+  double dimuon_mass = 0;
+  double dimuon_phi = 0;
+  double dimuon_pt = 0;
+
+  double Ht = 0;
+
+  double MyWeight = 1;
+
+  double scalFac_first_e = 1;
+  double scalFac_second_e = 1;
+  double scalFac_first_m = 1;
+  double scalFac_second_m = 1;
+  double scalFac_b = 1;
 
   // ++++++ Pile-Up
 
@@ -951,9 +875,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   for (vector < pat::Jet >::const_iterator jet = jets->begin (); jet != jets->end (); ++jet) {
 
-    jet_pt  = jet->pt ();
-    jet_eta = jet->eta();
-    jet_phi = jet->phi();
+    double jet_pt  = jet->pt ();
+    double jet_eta = jet->eta();
 
     Ht += jet->pt();
 
@@ -974,7 +897,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
       vect_jets.push_back (*jet);
 
-      discrCSV = jet->bDiscriminator("combinedSecondaryVertexBJetTags");
+      double discrCSV = jet->bDiscriminator("combinedSecondaryVertexBJetTags");
       //cout << discrCSV << endl;
 
       reco::SecondaryVertexTagInfo const * svTagInfos = jet->tagInfoSecondaryVertex("secondaryVertex");
@@ -994,10 +917,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
 	++Nb;
 	//cout << Nb << endl;
-
-        bjet_pt  = jet->pt ();
-        bjet_eta = jet->eta();
-        bjet_phi = jet->phi();
 
         vect_bjets.push_back (*jet);
 
@@ -1134,7 +1053,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   if (ee_event && Nj > 0) {
-    delta_phi_ee = fabs(diele_phi - vect_jets[0].phi());
+    double delta_phi_ee = fabs(diele_phi - vect_jets[0].phi());
     if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
 
     h_mass_ee->Fill (diele_mass);
@@ -1153,7 +1072,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
       w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
       w_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
-      delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
+      double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
       if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
       w_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
       if (isb) {
@@ -1202,7 +1121,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   if (mm_event && Nj > 0) {
-    delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi());
+    double delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi());
     if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
 
     h_mass_mm->Fill (dimuon_mass);
@@ -1221,7 +1140,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
       w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
       w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
-      delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
+      double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
       if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
       w_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
       if (isb) {
@@ -1241,9 +1160,8 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if ((ee_event || mm_event) && Nj > 0) {
     h_pu_weights->Fill (MyWeight);
-    Ntracks = tracks->size();
-    h_tracks->Fill (Ntracks);
-    w_tracks->Fill (Ntracks, MyWeight);
+    h_tracks->Fill (tracks->size());
+    w_tracks->Fill (tracks->size(), MyWeight);
     h_recoVTX->Fill (NVtx);
     w_recoVTX->Fill (NVtx, MyWeight);
   }
@@ -1498,7 +1416,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   if ((ee_event || mm_event) && Nj > 2 && Nb > 2) {
-    scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta())*btagSF(isMC, vect_bjets[1].partonFlavour(), vect_bjets[1].pt(), vect_bjets[1].eta())*btagSF(isMC, vect_bjets[2].partonFlavour(), vect_bjets[2].pt(), vect_bjets[2].eta()); 
+    scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta())*btagSF(isMC, vect_bjets[1].partonFlavour(), vect_bjets[1].pt(), vect_bjets[1].eta())*btagSF(isMC, vect_bjets[2].partonFlavour(), vect_bjets[2].pt(), vect_bjets[2].eta());
     w_third_jet_pt_b->Fill (vect_jets[2].pt(), MyWeight*scalFac_b);
     w_third_jet_eta_b->Fill (vect_jets[2].eta(), MyWeight*scalFac_b);
     w_third_bjet_pt->Fill (vect_bjets[2].pt(), MyWeight*scalFac_b);
@@ -1522,6 +1440,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   // ++++++++ EXTRA PLOTS
+
+  int Nf = 0;
+  int Nbk = 0;
+
+  double Afb = 0;
 
   if ((ee_event || mm_event) && Nj > 0 && Nb > 0) {
     scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
