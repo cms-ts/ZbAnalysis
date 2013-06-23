@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.95 2013/06/22 07:01:18 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.96 2013/06/23 07:13:26 dellaric Exp $
 //
 //
 
@@ -611,11 +611,13 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_MET =               fs->make < TH1F > ("b_MET",             "b_MET;MET [GeV]", 50, 0., 250.);
   c_MET =               fs->make < TH1F > ("c_MET",             "c_MET;MET [GeV]", 50, 0., 250.);
   w_MET_sign = 	        fs->make < TH1F > ("w_MET_sign",        "w_MET_sign;MET significance [GeV]", 50, 0., 100.);
+  b_MET_sign = 	        fs->make < TH1F > ("b_MET_sign",        "b_MET_sign;MET significance [GeV]", 50, 0., 100.);
+  c_MET_sign = 	        fs->make < TH1F > ("c_MET_sign",        "c_MET_sign;MET significance [GeV]", 50, 0., 100.);
 
   w_MET_b =               fs->make < TH1F > ("w_MET_b",         "w_MET_b;MET [GeV]", 50, 0., 250.);
   b_MET_b =               fs->make < TH1F > ("b_MET_b",         "b_MET_b;MET [GeV]", 50, 0., 250.);
-  c_MET_b =               fs->make < TH1F > ("c_MET",           "c_MET_b;MET [GeV]", 50, 0., 250.);
-  w_MET_sign_b = 	  fs->make < TH1F > ("w_MET_sign",      "w_MET_sign_b;MET significance [GeV]", 50, 0., 100.);
+  c_MET_b =               fs->make < TH1F > ("c_MET_b",         "c_MET_b;MET [GeV]", 50, 0., 250.);
+  w_MET_sign_b = 	  fs->make < TH1F > ("w_MET_sign_b",    "w_MET_sign_b;MET significance [GeV]", 50, 0., 100.);
   b_MET_sign_b = 	  fs->make < TH1F > ("b_MET_sign_b",    "b_MET_sign_b;MET significance [GeV]", 50, 0., 100.);
   c_MET_sign_b = 	  fs->make < TH1F > ("c_MET_sign_b",    "c_MET_sign_b;MET significance [GeV]", 50, 0., 100.);
 
@@ -996,13 +998,15 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   if ((ee_event || mm_event) && Nj > 0) {
     w_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
+    w_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
     if (isb) {
       b_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
+      b_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
     }
     if (isc && !isb) {
       c_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
+      c_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
     }
-    w_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
   }
 
   if ((ee_event || mm_event) && Nj > 0) {
