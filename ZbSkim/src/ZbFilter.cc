@@ -13,7 +13,7 @@
 //
 // Original Author:  Vieri Candelise
 //         Created:  Thu Nov  1 11:32:14 CET 2012
-// $Id: ZbFilter.cc,v 1.1 2013/01/28 12:52:12 dellaric Exp $
+// $Id: ZbFilter.cc,v 1.2 2013/04/17 07:23:07 dellaric Exp $
 //
 //
 
@@ -29,7 +29,6 @@
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDFilter.h"
-
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "DataFormats/JetReco/interface/Jet.h"
