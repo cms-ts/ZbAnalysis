@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.20 2013/06/23 10:59:24 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.21 2013/06/23 11:00:27 dellaric Exp $
 //
 //
 
@@ -447,20 +447,17 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
       if (!bdaughter) {
         TLorentzVector B;
         B.SetPtEtaPhiM(thepart->pt(),thepart->eta(),thepart->phi(),thepart->mass());
-        int njet=0;
-	int j=0;
+	int j = 0;
      	double Rmin = 9999.;
-        for (unsigned int i=1; i<vect_jets.size(); ++i) {
-	  njet++;
+        for (unsigned int i=0; i<vect_jets.size(); ++i) {
           if (ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B) < Rmin) {
-	    j=i;
+	    j = i;
 	    Rmin = ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B);
 	  }
         }
         if (Rmin < 0.4) {
 	  Nb++;
 	  vect_bjets.push_back(vect_jets[j]);
-          //cout<<"gen jet: "<<vect_bjets[0].pt()<<endl;
 	}
       }
     }
@@ -468,6 +465,8 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   // Sort b-jets in pT
   std::sort( vect_bjets.begin(), vect_bjets.end(), order_jets() );
+
+  //cout<<"gen jet: "<<vect_bjets[0].pt()<<endl;
 
   /*
   // Get reco jet collection and print the reco b jets for check
