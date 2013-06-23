@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.96 2013/06/23 07:13:26 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.97 2013/06/23 21:05:36 dellaric Exp $
 //
 //
 
@@ -357,6 +357,8 @@ private:
   TH1F*     b_MET;
   TH1F*     c_MET;
   TH1F*     w_MET_sign;
+  TH1F*     b_MET_sign;
+  TH1F*     c_MET_sign;
 
   TH1F*     w_MET_b;
   TH1F*     b_MET_b;
