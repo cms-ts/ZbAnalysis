@@ -13,24 +13,13 @@
 //
 // Original Author:  Chiara La Licata
 //         Created:  Mon Feb 11 13:52:51 CET 2013
-// $Id: ZJetsAnalyzer.cc,v 1.11 2013/06/21 11:22:52 dellaric Exp $
+// $Id: ZJetsAnalyzer.cc,v 1.12 2013/06/21 14:04:33 dellaric Exp $
 //
 //
 
 
 // system include files
 #include <memory>
-
-// user include files
-#include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
-
-#include "FWCore/Framework/interface/Event.h"
-#include "FWCore/Framework/interface/MakerMacros.h"
-
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
-
-// system include files
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -39,10 +28,10 @@
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDFilter.h"
-
+#include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/JetReco/interface/Jet.h"
 #include "DataFormats/BTauReco/interface/JetTag.h"
 #include "DataFormats/JetReco/interface/PFJetCollection.h"
@@ -112,36 +101,6 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       run_lumi* RunLumi_;
 
       // ----------member data ---------------------------
-
-      double ele_pt;
-      double ele_eta;
-      double muon_pt;
-      double muon_eta;
-      double jet_pt;
-      double jet_eta;
-      double diele_inv;
-      double dimuon_inv;
-     
-      double MyWeight;
-
-      double ht;
-
-      double jet_phi;
- 
-      int NZ_ele, NZ_muon;     
-
-      int Nj;
-
-      double scalFac_first_ele;
-      double scalFac_first_muon;
-      double scalFac_second_ele;
-      double scalFac_second_muon;
-
-      double run_number;
-      double lumiRun;
-
-      int NZ_ele_run;
-      int NZ_muon_run;
 
       TH1F* h_NZ_ee;
       TH1F* h_NZ_mm;
@@ -269,8 +228,6 @@ ZJetsAnalyzer::ZJetsAnalyzer(const edm::ParameterSet& iConfig)
         h_scalFactor_second_muon = fs->make<TH1F>("scaleFactor_second_muon", "scaleFactor_second_muon",90,0.6,1.5);
 
 	h_runNumber = fs->make<TH1F>("Z vs runNumber","Z vs runNumber",18050,190640,208690);
-	run_number=0;
-	NZ_ele_run=0;
 	//h_Z_vs_runNumber  = fs->make<TProfile>("h_NZ_vs_runNumber","h_NZ_vs_runNumber",3900,190000,193900,0,50);
 }
 
@@ -350,20 +307,39 @@ edm::Handle<reco::CompositeCandidateCollection> zee;
 iEvent.getByLabel("zeleMatchedeleMatched", zee);
 
 
+double ele_pt=0;
+double ele_eta=0;
+double muon_pt=0;
+double muon_eta=0;
+double jet_pt=0;
+double jet_eta=0;
+double diele_inv=0;
+double dimuon_inv=0;
+     
+double MyWeight=1;
 
-scalFac_first_ele=1;
-scalFac_first_muon=1;
-scalFac_second_ele=1;
-scalFac_second_muon=1;
+double ht=0;
 
+double jet_phi=0;
+ 
+int NZ_ele=0;
+int NZ_muon=0;     
+
+int Nj=0;
+
+double scalFac_first_ele=1;
+double scalFac_first_muon=1;
+double scalFac_second_ele=1;
+double scalFac_second_muon=1;
+
+double run_number=0;
+double lumiRun=0;
+
+int NZ_ele_run = 0;
+int NZ_muon_run=0;
 
 bool ee_event=false;
 bool mm_event=false;
-ele_pt=0;
-muon_pt=0;
-ele_eta=0;
-muon_eta=0;
-
 
 
 //run_number=iEvent.run();
