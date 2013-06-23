@@ -98,5 +98,5 @@ process.TFileService = cms.Service("TFileService",
 	fileName = cms.string('ZbTree.root')
 )
 
-process.p = cms.Path(process.filter*process.demo_ee*process.demo_ee_up*process.demo_ee_down*process.demo_mm*process.demo_mm_up*process.demo_mm_down*process.demo2_ee*process.demo2_mm*process.demo3_ee*process.demo3_mm)
+process.p = cms.Path(process.filter*process.demo_ee*process.demo_ee_up*process.demo_ee_down*process.demo_mm*process.demo_mm_up*process.demo_mm_down*process.demo_ee_btag*process.demo_mm_btag*process.demo2_ee*process.demo2_mm*process.demo3_ee*process.demo3_mm)
 

@@ -287,7 +287,20 @@ process.demo_mm = cms.EDAnalyzer('ZbAnalyzer',
         JEC     = cms.untracked.double(0),
         usePartonFlavour = cms.untracked.bool(False)
 )
-
+process.demo_ee_btag = cms.EDAnalyzer('ZbAnalyzer',
+	path = cms.untracked.string("."),
+        pileup  = cms.untracked.string("S10"),
+        lepton  = cms.untracked.string("electron"),
+        JEC     = cms.untracked.double(0),
+        usePartonFlavour = cms.untracked.bool(True)
+)
+process.demo_mm_btag = cms.EDAnalyzer('ZbAnalyzer',
+	path = cms.untracked.string("."),
+        pileup  = cms.untracked.string("S10"),
+        lepton  = cms.untracked.string("muon"),
+        JEC     = cms.untracked.double(0),
+        usePartonFlavour = cms.untracked.bool(True)
+)
 process.p = cms.Path(
    process.goodOfflinePrimaryVertices *
    getattr(process,"patPF2PATSequence"+postfix) *
@@ -307,7 +320,8 @@ process.p = cms.Path(
    process.zeleMatchedeleMatched *
    process.demo3_ee * process.demo3_mm *
    process.MyProcess *
-   process.demo_ee * process.demo_mm
+   process.demo_ee * process.demo_mm *
+   process.demo_ee_btag * process.demo_mm_btag
    #process.dump
    )
 
