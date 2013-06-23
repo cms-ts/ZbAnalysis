@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.16 2013/06/23 07:58:18 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.17 2013/06/23 08:57:38 dellaric Exp $
 //
 //
 
@@ -453,7 +453,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 	    Rmin = ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B);
 	  }
         }
-        if (Rmin < 0.5) {
+        if (Rmin < 0.4) {
 	  Nb++;
 	  vect_bjets.push_back(vect_jets[j]);
           //cout<<"gen jet: "<<vect_bjets[0].pt()<<endl;
