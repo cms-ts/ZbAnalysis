@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.14 2013/06/22 07:01:18 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.15 2013/06/23 07:13:26 dellaric Exp $
 //
 //
 
@@ -276,14 +276,14 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   vector < TLorentzVector > vect_ele;
 
-  for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin();itgen!=genPart->end();itgen++) {
+  for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) {
 
     if (fabs(itgen->pdgId())==11 && itgen->status()==1) { // loop over gen electrons
       TLorentzVector ele;
       ele.SetPtEtaPhiM(itgen->pt(),itgen->eta(),itgen->phi(),itgen->mass());
 
       // Loop over photons: FSR dressing for electrons
-      for (vector<reco::GenParticle>::const_iterator itgen2=genPart->begin();itgen2!=genPart->end();itgen2++) {
+      for (vector<reco::GenParticle>::const_iterator itgen2=genPart->begin(); itgen2!=genPart->end(); itgen2++) {
         if (fabs(itgen2->pdgId())==22 && itgen2->status()==1) { // loop over primary gen photon
        	  TLorentzVector gam;
           gam.SetPtEtaPhiM(itgen2->pt(),itgen2->eta(),itgen2->phi(),itgen2->mass());
@@ -329,13 +329,13 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   vector < TLorentzVector > vect_muon;
 
-  for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin();itgen!=genPart->end();itgen++) {
+  for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) {
     if (fabs(itgen->pdgId())==13 && itgen->status()==1) { // loop over gen muons
       TLorentzVector muon;
       muon.SetPtEtaPhiM(itgen->pt(),itgen->eta(),itgen->phi(),itgen->mass());
 
       // Loop over photons: FSR dressing for muons
-      for (vector<reco::GenParticle>::const_iterator itgen2=genPart->begin();itgen2!=genPart->end();itgen2++) {
+      for (vector<reco::GenParticle>::const_iterator itgen2=genPart->begin(); itgen2!=genPart->end(); itgen2++) {
         if (fabs(itgen2->pdgId())==22 && itgen2->status()==1) { // loop over primary gen photon
 	  TLorentzVector gam;
 	  gam.SetPtEtaPhiM(itgen2->pt(),itgen2->eta(),itgen2->phi(),itgen2->mass());
@@ -385,83 +385,84 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   // ++++++++ JETS
 
   vector < pat::Jet > vect_jets;
+
+  for (vector<reco::GenJet>::const_iterator jet=gJets->begin(); jet!=gJets->end(); ++jet) {
+
+    double jet_pt  = jet->pt ();
+    double jet_eta = jet->eta();
+    Ht += jet->pt();
+
+    /*Lepton removal from jets inside sqrt Deta2+Dphi2 <0.3*/
+
+    double deltaPhi1 = 0;
+    if (ee_event) deltaPhi1 = fabs(jet->phi()- vect_ele[iele0]. Phi());
+    if (mm_event) deltaPhi1 = fabs(jet->phi()- vect_muon[imuon0].Phi());
+
+    if (deltaPhi1 > acos(-1)) deltaPhi1= 2*acos(-1) - deltaPhi1;
+
+    double deltaR1 = 0;
+    if (ee_event) deltaR1= sqrt( deltaPhi1*deltaPhi1  + pow(jet->eta()-vect_ele[iele0]. Eta(),2) );
+    if (mm_event) deltaR1= sqrt( deltaPhi1*deltaPhi1  + pow(jet->eta()-vect_muon[imuon0].Eta(),2) );
+
+    double deltaPhi2 = 0;
+    if (ee_event) deltaPhi2 = fabs(jet->phi()-vect_ele[iele1]. Phi());
+    if (mm_event) deltaPhi2 = fabs(jet->phi()-vect_muon[imuon1].Phi());
+
+    if (deltaPhi2 > acos(-1)) deltaPhi2= 2*acos(-1) - deltaPhi2;
+
+    double deltaR2 = 0;
+    if (ee_event) deltaR2= sqrt( deltaPhi2*deltaPhi2  + pow(jet->eta()-vect_ele[iele1]. Eta(),2) );
+    if (mm_event) deltaR2= sqrt( deltaPhi2*deltaPhi2  + pow(jet->eta()-vect_muon[imuon1].Eta(),2) );
+
+    if (jet_pt > 30 && fabs(jet_eta) < 2.5 && (deltaR1>0.1 && deltaR2>0.1)) {
+      ++Nj;
+      vect_jets.push_back (*jet);
+     }
+
+  }
+
+  std::sort( vect_jets.begin(), vect_jets.end(), order_jets() );
+
+  /*loop over gen particles, find the b*/
+
   vector < pat::Jet > vect_bjets;
 
   int nb=0;
 
-   for (vector<reco::GenJet>::const_iterator jet=gJets->begin();jet!=gJets->end();++jet) {
+  for (std::vector <reco::GenParticle>::const_iterator thepart =genPart->begin(); thepart != genPart->end(); thepart++) {
 
-     double jet_pt  = jet->pt ();
-     double jet_eta = jet->eta();
-     Ht += jet->pt();
-
-     /*Lepton removal from jets inside sqrt Deta2+Dphi2 <0.3*/
-
-     double deltaPhi1 = 0;
-     if (ee_event) deltaPhi1 = fabs(jet->phi()- vect_ele[iele0]. Phi());
-     if (mm_event) deltaPhi1 = fabs(jet->phi()- vect_muon[imuon0].Phi());
-
-     if (deltaPhi1 > acos(-1)) deltaPhi1= 2*acos(-1) - deltaPhi1;
-
-     double deltaR1 = 0;
-     if (ee_event) deltaR1= sqrt( deltaPhi1*deltaPhi1  + pow(jet->eta()-vect_ele[iele0]. Eta(),2) );
-     if (mm_event) deltaR1= sqrt( deltaPhi1*deltaPhi1  + pow(jet->eta()-vect_muon[imuon0].Eta(),2) );
-
-     double deltaPhi2 = 0;
-     if (ee_event) deltaPhi2 = fabs(jet->phi()-vect_ele[iele1]. Phi());
-     if (mm_event) deltaPhi2 = fabs(jet->phi()-vect_muon[imuon1].Phi());
-
-     if (deltaPhi2 > acos(-1)) deltaPhi2= 2*acos(-1) - deltaPhi2;
-
-     double deltaR2 = 0;
-     if (ee_event) deltaR2= sqrt( deltaPhi2*deltaPhi2  + pow(jet->eta()-vect_ele[iele1]. Eta(),2) );
-     if (mm_event) deltaR2= sqrt( deltaPhi2*deltaPhi2  + pow(jet->eta()-vect_muon[imuon1].Eta(),2) );
-
-     if (jet_pt > 30 && fabs(jet_eta) < 2.5 && (deltaR1>0.1 && deltaR2>0.1)) {
-       ++Nj;
-       vect_jets.push_back (*jet);
-      }
-
-   }
-
-   std::sort( vect_jets.begin(), vect_jets.end(), order_jets() );
-
-   /*loop over gen particles, find the b*/
-
-   for ( std::vector <reco::GenParticle>::const_iterator thepart =genPart->begin();thepart != genPart->end(); thepart++) {
-
-     if ( (int) (abs(thepart->pdgId() / 100)%10 ) == 5 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 5 ) {
-       nb++;
-       bool bdaughter = false; // b candidate has no daughters
-       for (int i=0; i < abs(thepart->numberOfDaughters()); i++) {
-         if ( (int) (abs(thepart->daughter(i)->pdgId() / 100)%10 ) == 5 || (int) (abs( thepart->daughter(i)->pdgId() / 1000)%10 ) == 5 ) {
-           bdaughter=true; // b daughter found
+    if ((int) (abs(thepart->pdgId() / 100)%10 ) == 5 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 5 ) {
+      nb++;
+      bool bdaughter = false; // b candidate has no daughters
+      for (int i=0; i < abs(thepart->numberOfDaughters()); i++) {
+        if ((int) (abs(thepart->daughter(i)->pdgId() / 100)%10 ) == 5 || (int) (abs( thepart->daughter(i)->pdgId() / 1000)%10 ) == 5) {
+          bdaughter=true; // b daughter found
         }
       }
       if (!bdaughter) {
         TLorentzVector B;
-	B.SetPtEtaPhiM(thepart->pt(),thepart->eta(),thepart->phi(),thepart->mass());
+        B.SetPtEtaPhiM(thepart->pt(),thepart->eta(),thepart->phi(),thepart->mass());
         int njet=0;
         for (unsigned int i=1; i<vect_jets.size(); ++i) {
 	  njet++;
-     	  double Rmin(9999.);
-          if (ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(),B)<0.1) {
-            if (ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(),B)<Rmin) {
-   	      Rmin = ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(),B);
+     	  double Rmin = 9999.;
+          if (ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B) < 0.5) {
+            if (ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B) < Rmin) {
+   	      Rmin = ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B);
 	      Nb++;
 	      vect_bjets.push_back(vect_jets[i]);
               //cout<<"gen jet: "<<vect_bjets[0].pt()<<endl;
 	    }
 	  }
-	}
+        }
       }
     }
   }
 
   std::sort( vect_bjets.begin(), vect_bjets.end(), order_jets() );
 
-  // Get reco jet collection and print the reco b jets for check
   /*
+  // Get reco jet collection and print the reco b jets for check
   edm::Handle < vector < pat::Jet > > jets;
   iEvent.getByLabel ("goodJets", jets);
 
