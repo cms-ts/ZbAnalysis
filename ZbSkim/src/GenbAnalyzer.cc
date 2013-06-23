@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.17 2013/06/23 08:57:38 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.18 2013/06/23 09:20:14 dellaric Exp $
 //
 //
 
@@ -129,10 +129,10 @@ private:
   TH1F*     h_jet_pt;
   TH1F*     h_ele_pt;
   TH1F*     h_muon_pt;
-  TH1F*     w_pt_Z_mm_b;
-  TH1F*     w_pt_Z_ee_b;
-  TH1F*     w_pt_Z_mm;
   TH1F*     w_pt_Z_ee;
+  TH1F*     w_pt_Z_mm;
+  TH1F*     w_pt_Z_ee_b;
+  TH1F*     w_pt_Z_mm_b;
 
   TH1F*     h_pu_weights;
 
@@ -145,6 +145,8 @@ private:
   TH1F*     w_second_ele_pt;
   TH1F*     w_dressed_ele_pt;
   TH1F*     w_first_muon_pt;
+  TH1F*     w_mass_ee;
+  TH1F*     w_mass_mm;
   TH1F*     w_mass_ee_b;  // at least one b jet in the event
   TH1F*     w_mass_mm_b;
   TH1F*     w_delta_ee_b;
@@ -195,6 +197,8 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_pt_Z_mm =           fs->make < TH1F > ("w_pt_Z_mm",          "w_pt_Z_mm;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_ee_b =         fs->make < TH1F > ("w_pt_Z_ee_b",        "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_mm_b =         fs->make < TH1F > ("w_pt_Z_mm_b",        "w_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
+  w_mass_ee =           fs->make < TH1F > ("w_mass_ee",          "w_mass_ee;Mass [GeV]", 80, 71., 111.);
+  w_mass_mm =           fs->make < TH1F > ("w_mass_mm",          "w_mass_mm;Mass [GeV]", 80, 71., 111.);
   w_mass_ee_b =         fs->make < TH1F > ("w_mass_ee_b",        "w_mass_ee_b;Mass [GeV]", 80, 71., 111.);
   w_mass_mm_b =         fs->make < TH1F > ("w_mass_mm_b",        "w_mass_mm_b;Mass [GeV]", 80, 71., 111.);
   w_Ht =                fs->make < TH1F > ("w_Ht",               "w_Ht [GeV]", 50, 30., 1000.);
@@ -480,6 +484,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   if (ee_event && Nj > 0) {
     w_first_ele_pt->Fill (vect_ele[iele0].Pt(), MyWeight);
     w_second_ele_pt->Fill (vect_ele[iele1].Pt(), MyWeight);
+    w_mass_ee->Fill(diele_mass, MyWeight);
     w_pt_Z_ee->Fill(diele_pt, MyWeight);
     double delta_phi_ee = fabs(diele_phi - vect_jets[0].phi());
     if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
@@ -488,6 +493,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   if (mm_event && Nj > 0) {
     w_first_muon_pt->Fill (vect_muon[imuon0].Pt(), MyWeight);
+    w_mass_mm->Fill(dimuon_mass, MyWeight);
     w_pt_Z_mm->Fill(dimuon_pt, MyWeight);
     double delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi());
     if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
