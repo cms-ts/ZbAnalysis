@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.15 2013/06/23 07:13:26 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.16 2013/06/23 07:58:18 dellaric Exp $
 //
 //
 
@@ -416,11 +416,12 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
     if (jet_pt > 30 && fabs(jet_eta) < 2.5 && (deltaR1>0.1 && deltaR2>0.1)) {
       ++Nj;
-      vect_jets.push_back (*jet);
+      vect_jets.push_back(*jet);
      }
 
   }
 
+  // Sort jets in pT
   std::sort( vect_jets.begin(), vect_jets.end(), order_jets() );
 
   /*loop over gen particles, find the b*/
@@ -433,32 +434,35 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
     if ((int) (abs(thepart->pdgId() / 100)%10 ) == 5 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 5 ) {
       nb++;
-      bool bdaughter = false; // b candidate has no daughters
+      bool bdaughter = false;
       for (int i=0; i < abs(thepart->numberOfDaughters()); i++) {
         if ((int) (abs(thepart->daughter(i)->pdgId() / 100)%10 ) == 5 || (int) (abs( thepart->daughter(i)->pdgId() / 1000)%10 ) == 5) {
-          bdaughter=true; // b daughter found
+          bdaughter = true; // b daughter found
         }
       }
       if (!bdaughter) {
         TLorentzVector B;
         B.SetPtEtaPhiM(thepart->pt(),thepart->eta(),thepart->phi(),thepart->mass());
         int njet=0;
+	int j=0;
+     	double Rmin = 9999.;
         for (unsigned int i=1; i<vect_jets.size(); ++i) {
 	  njet++;
-     	  double Rmin = 9999.;
-          if (ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B) < 0.5) {
-            if (ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B) < Rmin) {
-   	      Rmin = ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B);
-	      Nb++;
-	      vect_bjets.push_back(vect_jets[i]);
-              //cout<<"gen jet: "<<vect_bjets[0].pt()<<endl;
-	    }
+          if (ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B) < Rmin) {
+	    j=i;
+	    Rmin = ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B);
 	  }
         }
+        if (Rmin < 0.5) {
+	  Nb++;
+	  vect_bjets.push_back(vect_jets[j]);
+          //cout<<"gen jet: "<<vect_bjets[0].pt()<<endl;
+	}
       }
     }
   }
 
+  // Sort b-jets in pT
   std::sort( vect_bjets.begin(), vect_bjets.end(), order_jets() );
 
   /*
