@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.18 2013/06/23 09:20:14 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.19 2013/06/23 09:44:41 dellaric Exp $
 //
 //
 
@@ -436,11 +436,11 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   for (std::vector <reco::GenParticle>::const_iterator thepart =genPart->begin(); thepart != genPart->end(); thepart++) {
 
-    if ((int) (abs(thepart->pdgId() / 100)%10 ) == 5 || (int) (abs(thepart->pdgId() / 1000)%10 ) == 5 ) {
+    if ((int) ((abs(thepart->pdgId())/100)%10) == 5 || (int) ((abs(thepart->pdgId())/1000)%10) == 5 ) {
       nb++;
       bool bdaughter = false;
       for (int i=0; i < abs(thepart->numberOfDaughters()); i++) {
-        if ((int) (abs(thepart->daughter(i)->pdgId() / 100)%10 ) == 5 || (int) (abs( thepart->daughter(i)->pdgId() / 1000)%10 ) == 5) {
+        if ((int) ((abs(thepart->daughter(i))->pdgId()/100)%10) == 5 || (int) ((abs(thepart->daughter(i))->pdgId()/1000)%10) == 5) {
           bdaughter = true; // b daughter found
         }
       }
