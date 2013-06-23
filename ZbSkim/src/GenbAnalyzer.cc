@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.13 2013/06/21 15:21:20 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.14 2013/06/22 07:01:18 dellaric Exp $
 //
 //
 
@@ -105,13 +105,25 @@ private:
     }
   };
 
+  void fill(TH1F* histogram, double value, double weight=1.0) {
+    TAxis* axis = histogram->GetXaxis();
+    Int_t nx = histogram->GetNbinsX();
+    if (axis->FindBin(value) <= 0) {
+      histogram->Fill(histogram->GetBinCenter(1), weight);
+    } else if (axis->FindBin(value) >= nx+1) {
+      histogram->Fill(histogram->GetBinCenter(nx), weight);
+    } else {
+      histogram->Fill(value, weight);
+    }
+  };
+
+  // ----------member data ---------------------------
+
   std::string pileup_;
   std::string lepton_;
   std::string path_;
 
   edm::LumiReWeighting LumiWeights_;
-
-  // ----------member data ---------------------------
 
   TH1F*     h_jetmultiplicity;
   TH1F*     h_jet_pt;

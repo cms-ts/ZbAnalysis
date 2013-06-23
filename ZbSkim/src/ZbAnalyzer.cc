@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.94 2013/06/21 14:04:33 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.95 2013/06/22 07:01:18 dellaric Exp $
 //
 //
 
@@ -101,7 +101,7 @@ private:
 #define ECALDRIVEN 0
 
 #if ECALDRIVEN>0
-  struct order { bool operator() (const pat::Electron &ele1, const pat::Electron &ele2) const {
+  struct order_ele { bool operator() (const pat::Electron &ele1, const pat::Electron &ele2) const {
       return (ele1.ecalDrivenMomentum().pt() > ele2.ecalDrivenMomentum().pt());
     }
   };
@@ -111,7 +111,19 @@ private:
     if (isMC == false) return 1.0;
     if (flavour == 5 || flavour == 4) return BtSF_->Val(pt, eta);
     return LtSF_->Val(pt, eta);
-  }
+  };
+
+  void fill(TH1F* histogram, double value, double weight=1.0) {
+    TAxis* axis = histogram->GetXaxis();
+    Int_t nx = histogram->GetNbinsX();
+    if (axis->FindBin(value) <= 0) {
+      histogram->Fill(histogram->GetBinCenter(1), weight);
+    } else if (axis->FindBin(value) >= nx+1) {
+      histogram->Fill(histogram->GetBinCenter(nx), weight);
+    } else {
+      histogram->Fill(value, weight);
+    }
+  };
 
   // ----------member data ---------------------------
 
@@ -747,7 +759,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
 #if ECALDRIVEN>0
-  std::sort( vect_ele.begin(), vect_ele.end(), order() );
+  std::sort( vect_ele.begin(), vect_ele.end(), order_ele() );
 #endif
 
   int iele0=0;
