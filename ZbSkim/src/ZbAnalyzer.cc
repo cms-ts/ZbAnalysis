@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.100 2013/06/24 15:03:54 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.101 2013/06/24 18:00:17 dellaric Exp $
 //
 //
 
@@ -880,7 +880,7 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     }
   }
 
-  // ++++++++ JETS (1)
+  // ++++++++ JETS
 
   vector < pat::Jet > vect_jets;
 
