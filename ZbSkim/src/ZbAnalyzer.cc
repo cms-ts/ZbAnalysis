@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.97 2013/06/23 21:05:36 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.98 2013/06/23 21:07:06 dellaric Exp $
 //
 //
 
@@ -1024,10 +1024,10 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       //cout << vect_bjets[0].pt() << " " << vect_bjets[0].eta() <<"   SFb = " << scalFac_b << endl;
       w_Ht_b->Fill (Ht, MyWeight*scalFac_b);
       w_MET_b->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight*scalFac_b);
-      w_MET_sign_b->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight*scalFac_b);
+      w_MET_sign_b->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight*scalFac_b);
       if (isb) {
         b_Ht_b->Fill (Ht, MyWeight*scalFac_b);
-	b_MET_b->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight*scalFac_b);
+	b_MET_b->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight*scalFac_b);
 	b_MET_sign_b->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight*scalFac_b);
       }
       if (isc && !isb) {
