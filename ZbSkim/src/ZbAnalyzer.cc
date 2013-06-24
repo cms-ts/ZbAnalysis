@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.99 2013/06/24 05:48:41 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.100 2013/06/24 15:03:54 dellaric Exp $
 //
 //
 
@@ -880,9 +880,38 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     }
   }
 
-  // ++++++++ MET & HT PLOTS
+  // ++++++++ JETS (1)
 
-  if (ee_event || mm_event) {
+  vector < pat::Jet > vect_jets;
+
+  for (vector < pat::Jet >::const_iterator jet = jets->begin (); jet != jets->end (); ++jet) {
+
+    double jet_pt  = jet->pt ();
+    double jet_eta = jet->eta();
+
+    // JEC Uncertainty
+
+    jecUnc->setJetPt(jet_pt);
+    jecUnc->setJetEta(jet_eta);
+    double unc = jecUnc->getUncertainty(true);
+    double cor = (1.0+unc*par_);
+    h_JEC_uncert->Fill (unc);
+    //cout<< "JEC syst =" << unc << endl;
+
+    jet_pt = jet_pt * cor;
+
+    Ht += jet_pt;
+
+    if (jet_pt > 30) {
+      ++Nj;
+      vect_jets.push_back (*jet);
+    }
+
+  }
+
+  // ++++++++ MET PLOTS
+
+  if ((ee_event || mm_event) && Nj > 0) {
     w_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
     w_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
     if (isb) {
@@ -895,110 +924,86 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     }
   }
 
+  // ++++++++ MET CUT
+
   ee_event = ee_event && (mets->empty() ? true : (*mets)[0].significance() < 30.);
   mm_event = mm_event && (mets->empty() ? true : (*mets)[0].significance() < 30.);
 
-  // ++++++++ JETS
+  // ++++++++ B JETS
 
-  vector < pat::Jet > vect_jets;
   vector < pat::Jet > vect_bjets;
 
   double sumVertexMassJet = 0.;
   double sumVertexMassTrk = 0.;
   double sumVertexMass = 0.;
 
-  for (vector < pat::Jet >::const_iterator jet = jets->begin (); jet != jets->end (); ++jet) {
+  for (unsigned int i=0; i<vect_jets.size(); ++i) {
 
-    double jet_pt  = jet->pt ();
-    double jet_eta = jet->eta();
+    double discrCSV = vect_jets[i].bDiscriminator("combinedSecondaryVertexBJetTags");
+    //cout << discrCSV << endl;
 
-    Ht += jet->pt();
+    if (ee_event || mm_event) {
+      h_secondvtx_N->Fill (discrCSV);
+      w_secondvtx_N->Fill (discrCSV, MyWeight);
+      if (isb) {
+        b_secondvtx_N->Fill (discrCSV, MyWeight);
+      }
+      if (isc && !isb) {
+        c_secondvtx_N->Fill (discrCSV, MyWeight);
+      }
+    }
 
-    // JEC Uncertainty
+    if (discrCSV > 0.898 || (usePartonFlavour_ && vect_jets[i].partonFlavour()==5)) {
 
-    jecUnc->setJetPt(jet_pt);
-    jecUnc->setJetEta(jet_eta);
-    double unc = jecUnc->getUncertainty(true);
-    double cor = (1.0+unc*par_);
-    h_JEC_uncert->Fill (unc);
-    //cout<< "JEC syst =" << unc << endl;
+      ++Nb;
+      //cout << Nb << endl;
+      vect_bjets.push_back (vect_jets[i]);
 
-    jet_pt = jet->pt () * cor;
-
-    if (jet_pt > 30) {
-
-      ++Nj;
-
-      vect_jets.push_back (*jet);
-
-      double discrCSV = jet->bDiscriminator("combinedSecondaryVertexBJetTags");
-      //cout << discrCSV << endl;
-
-      reco::SecondaryVertexTagInfo const * svTagInfos = jet->tagInfoSecondaryVertex("secondaryVertex");
-
+      scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
       if (ee_event || mm_event) {
-        h_secondvtx_N->Fill (discrCSV);
-        w_secondvtx_N->Fill (discrCSV, MyWeight);
+        w_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
 	if (isb) {
-	  b_secondvtx_N->Fill (discrCSV, MyWeight);
+	  b_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
 	}
 	if (isc && !isb) {
-	  c_secondvtx_N->Fill (discrCSV, MyWeight);
+	  c_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
 	}
       }
 
-      if (discrCSV > 0.898 || (usePartonFlavour_ && jet->partonFlavour()==5)) {
+      reco::SecondaryVertexTagInfo const * svTagInfos = vect_jets[i].tagInfoSecondaryVertex("secondaryVertex");
 
-	++Nb;
-	//cout << Nb << endl;
-
-        vect_bjets.push_back (*jet);
-
-        scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-        if (ee_event || mm_event) {
-	  w_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
-	  if (isb) {
-	    b_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
-	  }
-	  if (isc && !isb) {
-	    c_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
-	  }
-        }
-
-	if ( svTagInfos && svTagInfos->nVertices() > 0 ) {
-	  ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecJet;
-	  for (reco::Vertex::trackRef_iterator track = svTagInfos->secondaryVertex(0).tracks_begin(); track != svTagInfos->secondaryVertex(0).tracks_end(); ++track) {
-	    const double kPionMass = 0.13957018;
-	    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > vec;
-	    vec.SetPx( (*track)->px() );
-	    vec.SetPy( (*track)->py() );
-	    vec.SetPz( (*track)->pz() );
-	    vec.SetM (kPionMass);
-	    sumVecJet += vec;
-	  }
-	  sumVertexMassJet += sumVecJet.M();
-	}
-
-	ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecTrk;
-	for (size_t itrack=0; itrack < jet->associatedTracks().size(); ++itrack) {
+      if ( svTagInfos && svTagInfos->nVertices() > 0 ) {
+	ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecJet;
+	for (reco::Vertex::trackRef_iterator track = svTagInfos->secondaryVertex(0).tracks_begin(); track != svTagInfos->secondaryVertex(0).tracks_end(); ++track) {
 	  const double kPionMass = 0.13957018;
 	  ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > vec;
-	  vec.SetPx( jet->associatedTracks()[itrack]->px() );
-	  vec.SetPy( jet->associatedTracks()[itrack]->py() );
-	  vec.SetPz( jet->associatedTracks()[itrack]->pz() );
+	  vec.SetPx( (*track)->px() );
+	  vec.SetPy( (*track)->py() );
+	  vec.SetPz( (*track)->pz() );
 	  vec.SetM (kPionMass);
-	  sumVecTrk += vec;
+	  sumVecJet += vec;
 	}
-	sumVertexMassTrk += sumVecTrk.M();
+	sumVertexMassJet += sumVecJet.M();
+      }
 
-	if ( svTagInfos && svTagInfos->nVertices() > 0 ) {
-    	  const reco::Vertex &vertex = svTagInfos->secondaryVertex(0);
-	  reco::TrackKinematics vertexKinematics(vertex);
-	  bool useTrackWeights = true;
-	  math::XYZTLorentzVector vertexSum = useTrackWeights ? vertexKinematics.weightedVectorSum() : vertexKinematics.vectorSum();
-	  sumVertexMass += vertexSum.M();
-	}
+      ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecTrk;
+      for (size_t itrack=0; itrack < vect_jets[i].associatedTracks().size(); ++itrack) {
+	const double kPionMass = 0.13957018;
+	ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > vec;
+	vec.SetPx( vect_jets[i].associatedTracks()[itrack]->px() );
+	vec.SetPy( vect_jets[i].associatedTracks()[itrack]->py() );
+	vec.SetPz( vect_jets[i].associatedTracks()[itrack]->pz() );
+	vec.SetM (kPionMass);
+	sumVecTrk += vec;
+      }
+      sumVertexMassTrk += sumVecTrk.M();
 
+      if ( svTagInfos && svTagInfos->nVertices() > 0 ) {
+    	const reco::Vertex &vertex = svTagInfos->secondaryVertex(0);
+	reco::TrackKinematics vertexKinematics(vertex);
+	bool useTrackWeights = true;
+	math::XYZTLorentzVector vertexSum = useTrackWeights ? vertexKinematics.weightedVectorSum() : vertexKinematics.vectorSum();
+	sumVertexMass += vertexSum.M();
       }
 
     }
