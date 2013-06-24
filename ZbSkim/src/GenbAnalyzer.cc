@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.21 2013/06/23 11:00:27 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.22 2013/06/23 20:45:49 dellaric Exp $
 //
 //
 
@@ -365,13 +365,13 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   int imuon0=0;
   int imuon1=0;
 
-   for (unsigned int i=1; i<vect_muon.size(); ++i) {
-     if (vect_muon[i].E()*vect_muon[imuon0].E()<0 && imuon1==0) imuon1=i;
-     vect_muon[i].SetE(fabs(vect_muon[i].E()));
-   }
-   if (vect_muon.size()!=0) vect_muon[imuon0].SetE(fabs(vect_muon[imuon0].E()));
+  for (unsigned int i=1; i<vect_muon.size(); ++i) {
+    if (vect_muon[i].E()*vect_muon[imuon0].E()<0 && imuon1==0) imuon1=i;
+    vect_muon[i].SetE(fabs(vect_muon[i].E()));
+  }
+  if (vect_muon.size()!=0) vect_muon[imuon0].SetE(fabs(vect_muon[imuon0].E()));
 
-   if (imuon1 != 0) {
+  if (imuon1 != 0) {
 
     TLorentzVector y;
     y = vect_muon[imuon0] + vect_muon[imuon1];
