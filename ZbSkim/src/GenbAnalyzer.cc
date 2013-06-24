@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.23 2013/06/24 15:20:45 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.24 2013/06/24 18:02:07 dellaric Exp $
 //
 //
 
@@ -397,7 +397,7 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
     Ht += jet_pt;
 
-    /*Lepton removal from jets inside sqrt Deta2+Dphi2 <0.3*/
+    /*Lepton removal from jets inside sqrt Delta2+Dphi2 <0.3*/
 
     double deltaPhi1 = 0;
     if (ee_event) deltaPhi1 = fabs(jet->phi()- vect_ele[iele0]. Phi());
