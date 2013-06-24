@@ -262,12 +262,12 @@ getattr(process,"pfNoTau"+postfix).enable = useNoTau
 getattr(process,"pfNoElectron"+postfix).enable = useNoElectron
 
 process.dump = cms.EDAnalyzer("EventContentAnalyzer")
-process.demo3_ee = cms.EDAnalyzer('GenbAnalyzer',
+process.demo_ee_gen = cms.EDAnalyzer('GenbAnalyzer',
 	path = cms.untracked.string("."),
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("electron"),
 )
-process.demo3_mm = cms.EDAnalyzer('GenbAnalyzer',
+process.demo_mm_gen = cms.EDAnalyzer('GenbAnalyzer',
 	path = cms.untracked.string("."),
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("muon"),
@@ -318,7 +318,7 @@ process.p = cms.Path(
    process.selectedPatElectronsTriggerMatch *
    process.matchedElectrons *
    process.zeleMatchedeleMatched *
-   process.demo3_ee * process.demo3_mm *
+   process.demo_ee_gen * process.demo_mm_gen *
    process.MyProcess *
    process.demo_ee * process.demo_mm *
    process.demo_ee_btag * process.demo_mm_btag

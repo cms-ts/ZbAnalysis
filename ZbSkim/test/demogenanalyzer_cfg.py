@@ -84,12 +84,12 @@ process.demo2_mm = cms.EDAnalyzer('ZJetsAnalyzer',
 	lepton  = cms.untracked.string("muon")
 )
 
-process.demo3_ee = cms.EDAnalyzer('GenbAnalyzer',
+process.demo_ee_gen = cms.EDAnalyzer('GenbAnalyzer',
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("electron"),
 )
 
-process.demo3_mm = cms.EDAnalyzer('GenbAnalyzer',
+process.demo_mm_gen = cms.EDAnalyzer('GenbAnalyzer',
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("muon"),
 )
@@ -98,5 +98,5 @@ process.TFileService = cms.Service("TFileService",
 	fileName = cms.string('ZbTree.root')
 )
 
-process.p = cms.Path(process.filter*process.demo_ee*process.demo_ee_up*process.demo_ee_down*process.demo_mm*process.demo_mm_up*process.demo_mm_down*process.demo_ee_btag*process.demo_mm_btag*process.demo2_ee*process.demo2_mm*process.demo3_ee*process.demo3_mm)
+process.p = cms.Path(process.filter*process.demo_ee*process.demo_ee_up*process.demo_ee_down*process.demo_mm*process.demo_mm_up*process.demo_mm_down*process.demo_ee_btag*process.demo_mm_btag*process.demo2_ee*process.demo2_mm*process.demo_ee_gen*process.demo_mm_gen)
 
