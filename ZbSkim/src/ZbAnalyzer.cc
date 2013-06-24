@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.98 2013/06/23 21:07:06 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.99 2013/06/24 05:48:41 dellaric Exp $
 //
 //
 
@@ -880,6 +880,24 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     }
   }
 
+  // ++++++++ MET & HT PLOTS
+
+  if (ee_event || mm_event) {
+    w_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
+    w_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
+    if (isb) {
+      b_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
+      b_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
+    }
+    if (isc && !isb) {
+      c_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
+      c_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
+    }
+  }
+
+  ee_event = ee_event && (mets->empty() ? true : (*mets)[0].significance() < 30.);
+  mm_event = mm_event && (mets->empty() ? true : (*mets)[0].significance() < 30.);
+
   // ++++++++ JETS
 
   vector < pat::Jet > vect_jets;
@@ -997,19 +1015,6 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
   }
 
   // ++++++++ MET & HT PLOTS
-
-  if ((ee_event || mm_event) && Nj > 0) {
-    w_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
-    w_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
-    if (isb) {
-      b_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
-      b_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
-    }
-    if (isc && !isb) {
-      c_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
-      c_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
-    }
-  }
 
   if ((ee_event || mm_event) && Nj > 0) {
     w_Ht->Fill (Ht, MyWeight);
