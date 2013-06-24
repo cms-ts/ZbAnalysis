@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.22 2013/06/23 20:45:49 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.23 2013/06/24 15:20:45 dellaric Exp $
 //
 //
 
@@ -394,7 +394,8 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
     double jet_pt  = jet->pt ();
     double jet_eta = jet->eta();
-    Ht += jet->pt();
+
+    Ht += jet_pt;
 
     /*Lepton removal from jets inside sqrt Deta2+Dphi2 <0.3*/
 
