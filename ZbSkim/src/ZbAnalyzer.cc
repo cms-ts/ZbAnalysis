@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.99 2013/06/24 05:48:41 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.103 2013/06/24 18:38:38 dellaric Exp $
 //
 //
 
@@ -909,11 +909,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
     jet_pt = jet_pt * cor;
 
-    Ht += jet_pt;
-
     if (jet_pt > 30) {
 
       ++Nj;
+
+      Ht += jet_pt;
 
       vect_jets.push_back (*jet);
 
