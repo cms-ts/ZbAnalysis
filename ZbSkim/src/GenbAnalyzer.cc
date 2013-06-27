@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.25 2013/06/24 18:50:58 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.26 2013/06/25 05:36:06 dellaric Exp $
 //
 //
 
@@ -140,7 +140,10 @@ private:
   TH1F*     w_first_jet_pt;      // leading jet of any type
   TH1F*     w_first_jet_eta;
   TH1F*     w_first_bjet_pt;
+  TH1F*     w_first_bjet_eta;
   TH1F*     w_bjetmultiplicity;
+  TH1F*     w_first_jet_pt_b;   // leading jet with at least one b jet in the event
+  TH1F*     w_first_jet_eta_b;
   TH1F*     w_first_ele_pt;
   TH1F*     w_second_ele_pt;
   TH1F*     w_dressed_ele_pt;
@@ -153,7 +156,6 @@ private:
   TH1F*     w_delta_mm_b;
   TH1F*     w_delta_ee;
   TH1F*     w_delta_mm;
-  TH1F*     w_first_bjet_eta;
   TH1F*     w_Ht;
   TH1F*     w_Ht_b;
 
@@ -193,6 +195,8 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_first_jet_pt =      fs->make < TH1F > ("w_first_jet_pt",     "w_first_jet_pt; [GeV]", 50, 30., 700.);
   w_first_jet_eta =     fs->make < TH1F > ("w_first_jet_eta",    "w_first_jet_eta", 16, -2.5, 2.5);
   w_first_bjet_eta =    fs->make < TH1F > ("w_first_bjet_eta",   "w_first_bjet_eta", 16, -2.5, 2.5);
+  w_first_jet_pt_b =    fs->make < TH1F > ("w_first_jet_pt_b",   "w_first_jet_pt_b;P_t [GeV]", 50, 30., 700.);
+  w_first_jet_eta_b =   fs->make < TH1F > ("w_first_jet_eta_b",  "w_first_jet_eta_b;Eta", 16, -2.5, 2.5);
   w_pt_Z_ee =           fs->make < TH1F > ("w_pt_Z_ee",          "w_pt_Z_ee;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_mm =           fs->make < TH1F > ("w_pt_Z_mm",          "w_pt_Z_mm;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_ee_b =         fs->make < TH1F > ("w_pt_Z_ee_b",        "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
@@ -513,12 +517,16 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   if (mm_event && Nb>0 && Nj>0) {
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
+    w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
+    w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight);
     w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight);
     w_mass_mm_b->Fill (dimuon_mass, MyWeight);
   }
   if (ee_event && Nb>0 && Nj>0) {
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
+    w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
+    w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight);
     w_pt_Z_ee_b->Fill (diele_pt, MyWeight);
     w_mass_ee_b->Fill (diele_mass, MyWeight);
   }
