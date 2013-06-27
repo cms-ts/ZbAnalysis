@@ -24,9 +24,13 @@ if (ilepton<1 || ilepton>2) {
 }
 
 	double Lumi2012;
+	double tt=1.0;
 
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
+	
+	if (ilepton==1 && doFit==1) tt=0.959;
+	if (ilepton==2 && doFit==1) tt=0.935;
 
 	double norm1 = ( (Lumi2012 * Xsec_dy ) / Ngen_dy);
 	double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
@@ -94,9 +98,6 @@ if (ilepton<1 || ilepton>2) {
 	if (ilepton==2) mc7->cd("demo_mm");
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 
-	if (doFit==1 && (h_mc1==0 || h_mc2==0)) return;
-	if (doFit==2 && (h_mc1==0 || h_mc1b==0 || h_mc1c==0)) return;
-
 	h_data -> Sumw2();
 
 	h_mc1 -> Sumw2();
@@ -150,7 +151,7 @@ if (ilepton<1 || ilepton>2) {
 	h_mc1->Scale(norm1);
 	if (h_mc1b) h_mc1b->Scale(norm1);
 	if (h_mc1c) h_mc1c->Scale(norm1);
-	h_mc2->Scale(norm2);
+	h_mc2->Scale(norm2*tt);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);
@@ -296,7 +297,7 @@ if (ilepton<1 || ilepton>2) {
 	pad1->SetBottomMargin(0.001);
 	pad1->Draw();
 	pad1->cd();
-	//pad1->SetLogy();
+	pad1->SetLogy();
 
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
@@ -483,12 +484,12 @@ if (ilepton<1 || ilepton>2) {
 	  if (doBkg) title = title + "_doBkg";
 	  if (doFit) title = title + "_doFit";
 	  if (ilepton==1) {
-	    gSystem->mkdir(("electrons/" + version).c_str());
-	    c1->SaveAs(("electrons/" + version + "/" + title + ".pdf").c_str());
+	    gSystem->mkdir(("electrons/" + version + "/distributions/").c_str());
+	    c1->SaveAs(("electrons/" + version + "/distributions" + "/" + title + ".pdf").c_str());
 	  }
 	  if (ilepton==2) {
-	    gSystem->mkdir(("muons/" + version).c_str());
-	    c1->SaveAs(("muons/" + version + "/" + title + ".pdf").c_str());
+	    gSystem->mkdir(("muons/" + version + "/distributions/").c_str());
+	    c1->SaveAs(("muons/" + version + "/distributions" + "/" + title + ".pdf").c_str());
 	  }
 	}
 }
