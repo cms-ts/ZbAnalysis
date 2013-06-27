@@ -332,7 +332,6 @@ if (ilepton<1 || ilepton>2) {
 	  h_mc1->SetFillColor(kRed);
 	  h_mc1->SetMarkerColor(kRed);
 
-
 	  h_mcg->SetLineColor(kGreen+2);
 	  h_mcg->SetFillColor(kGreen+2);
 	  h_mcg->SetMarkerColor(kGreen+2);
@@ -358,17 +357,16 @@ if (ilepton<1 || ilepton>2) {
 	latexLabel->Draw("same");
 
 	if (isratio==0) {
-	if (plot) {
-	if (ilepton==1) {
-
-	gSystem->mkdir(("electrons/" + version + "/xsecs/").c_str());
-	c1->SaveAs(("electrons/" + version + "/xsecs" + "/" + title_b + "_ratio" + ".pdf").c_str());
-	}
-	if (ilepton==2) {
-	gSystem->mkdir(("muons/" + version + "/xsecs/").c_str());
-	c1->SaveAs(("muons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
-	}
-	}
+	  if (plot) {
+	    if (ilepton==1) {
+	      gSystem->mkdir(("electrons/" + version + "/xsecs/").c_str());
+	      c1->SaveAs(("electrons/" + version + "/xsecs" + "/" + title_b + "_ratio" + ".pdf").c_str());
+	    }
+	    if (ilepton==2) {
+	      gSystem->mkdir(("muons/" + version + "/xsecs/").c_str());
+	      c1->SaveAs(("muons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
+	    }
+	  }
 	}
 
 	if (plot && (isratio==1)) {
