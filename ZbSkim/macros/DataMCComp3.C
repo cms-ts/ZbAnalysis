@@ -51,34 +51,34 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 	h_reco->SetStats(0);
 	
 	if (title=="w_first_jet_pt") {
-	h_reco->GetXaxis ()->SetTitle("leading jet p_{T} [GeV/c]");
+	  h_reco->GetXaxis ()->SetTitle("leading jet p_{T} [GeV/c]");
 	} else if (title=="w_first_jet_eta") {
-	h_reco->GetXaxis ()->SetTitle("leading jet #eta");
+	  h_reco->GetXaxis ()->SetTitle("leading jet #eta");
 	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm") {
-	h_reco->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
+	  h_reco->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_delta_phi_ee"||title=="w_delta_phi_mm") {
-	h_reco->GetXaxis ()->SetTitle("#Delta #phi(Zj) [rad]");
+	  h_reco->GetXaxis ()->SetTitle("#Delta #phi(Zj) [rad]");
 	} else if (title=="w_Ht") {
-        h_reco->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
+          h_reco->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
 	}
 	if (title=="w_first_bjet_pt") {
-	h_reco->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
-	h_reco->GetXaxis()->SetRangeUser(0, 200);
-	h_reco->GetYaxis()->SetRangeUser(0, 1);
+	  h_reco->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
+	  h_reco->GetXaxis()->SetRangeUser(0, 200);
+	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	} else if (title=="w_first_bjet_eta") {
-	h_reco->GetYaxis()->SetRangeUser(0, 1);
-	h_reco->GetXaxis ()->SetTitle("leading b-jet #eta");
+	  h_reco->GetYaxis()->SetRangeUser(0, 1);
+	  h_reco->GetXaxis ()->SetTitle("leading b-jet #eta");
 	} else if (title=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b") {
-	h_reco->GetYaxis()->SetRangeUser(0, 1);
-	h_reco->GetXaxis()->SetRangeUser(0, 200);
-	h_reco->GetXaxis ()->SetTitle("Z boson p_{T} + b-jets [GeV/c]");
+	  h_reco->GetYaxis()->SetRangeUser(0, 1);
+	  h_reco->GetXaxis()->SetRangeUser(0, 200);
+	  h_reco->GetXaxis ()->SetTitle("Z boson p_{T} + b-jets [GeV/c]");
 	} else if (title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b") {
-	h_reco->GetYaxis()->SetRangeUser(0, 1);
-	h_reco->GetXaxis ()->SetTitle("#Delta #phi(Zb) [rad]");
+	  h_reco->GetYaxis()->SetRangeUser(0, 1);
+	  h_reco->GetXaxis ()->SetTitle("#Delta #phi(Zb) [rad]");
 	} else if (title=="w_Ht_b") {
-	h_reco->GetYaxis()->SetRangeUser(0, 1);
-	h_reco->GetXaxis()->SetRangeUser(0, 200);
-        h_reco->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
+	  h_reco->GetYaxis()->SetRangeUser(0, 1);
+	  h_reco->GetXaxis()->SetRangeUser(0, 200);
+          h_reco->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
 	}
 	
 	//h_reco->GetXaxis()->SetTitle("variable X");
@@ -108,7 +108,7 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 	Label->DrawLatex(0.50, 0.68, buff);
 
 	c2->Update();
-        //for(int i=0; i<h_reco->GetXaxis()->GetNbins(); i++){
+        //for (int i=0; i<h_reco->GetXaxis()->GetNbins(); i++) {
 	//	cout<<"bin"<<i<<"="<<h_reco->GetBinContent(i)<<endl;
 	//}  
 
@@ -129,15 +129,15 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 	eff.SetMarkerStyle(20);
 	eff.Draw();*/
 	 
-	 if(plot){
-	 if (ilepton==1) {
-	 gSystem->mkdir(("electrons/" + version + "/efficiency/").c_str());
-	 c2->SaveAs(("electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
-	 }
-	 if (ilepton==2) {
-	 gSystem->mkdir(("muons/" + version + "/efficiency/").c_str());
-	 c2->SaveAs(("muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
-	 }
-	 }
+	if (plot) {
+	  if (ilepton==1) {
+	    gSystem->mkdir(("electrons/" + version + "/efficiency/").c_str());
+	    c2->SaveAs(("electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
+	  }
+	  if (ilepton==2) {
+	    gSystem->mkdir(("muons/" + version + "/efficiency/").c_str());
+	    c2->SaveAs(("muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
+	  }
+	}
 
 }
