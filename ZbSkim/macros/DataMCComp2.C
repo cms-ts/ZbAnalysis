@@ -58,7 +58,7 @@ if (ilepton<1 || ilepton>2) {
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
-	double norm1 = ( (Lumi2012 * Xsec_dy ) / Ngen_dy);
+	double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
 	double norm3 = ( (Lumi2012 * Xsec_zz) / Ngen_zz);
 	double norm4 = ( (Lumi2012 * Xsec_wz) / Ngen_wz);
@@ -219,20 +219,22 @@ if (ilepton<1 || ilepton>2) {
 	h_data_b->Add(h_mc1c_b, -1.);
 	h_data_b->Add(h_mc1uds_b, -1.);
 
-        h_data_b->Scale(1./e_Zb);
-	h_data->Scale(1./e_Z);
+	h_data_b->Scale(1./(Lumi2012*e_Zb));
+	h_data->Scale(1./(Lumi2012*e_Z));
 	if (isratio==1) {
 	  h_data_b->Divide(h_data);
 	  h_data_b->Scale(100.);
 	}
 
-	h_mc1b_b->Scale(1./e_Zb);
-	h_mc1->Scale(1./e_Z);
+	h_mc1b_b->Scale(1./(Lumi2012*e_Zb));
+	h_mc1->Scale(1./(Lumi2012*e_Z));
 	if (isratio==1) {
 	  h_mc1b_b->Divide(h_mc1);
 	  h_mc1b_b->Scale(100.);
 	}
 
+	h_mcg_b->Scale(1./(Lumi2012));
+	h_mcg->Scale(1./(Lumi2012));
 	if (isratio==1) {
 	  h_mcg_b->Divide(h_mcg);
 	  h_mcg_b->Scale(100.);
@@ -322,10 +324,10 @@ if (ilepton<1 || ilepton>2) {
 	if (isratio==0) {
 	  c1->SetLogy();
 	
-	  h_mc1b_b ->SetMaximum(4*h_data->GetMaximum());
-	  h_mc1b_b ->SetMinimum(TMath::Max(0.1,0.25*h_mc1b_b->GetBinContent(h_mc1b_b->GetMinimumBin())));
-	  h_mc1b_b ->Draw("E5");
-	  h_mcg_b ->Draw("E5SAME");
+	  h_mc1b_b->SetMaximum(4*h_data->GetMaximum());
+	  h_mc1b_b->SetMinimum(TMath::Max(0.000001,0.25*h_mc1b_b->GetBinContent(h_mc1b_b->GetMinimumBin())));
+	  h_mc1b_b->Draw("E5");
+	  h_mcg_b->Draw("E5SAME");
 	  h_data_b->Draw("SAME");
 
 	  h_mc1->SetLineColor(kRed);
@@ -341,9 +343,9 @@ if (ilepton<1 || ilepton>2) {
 	  h_data->SetMarkerStyle(20);
 	  h_data->SetMarkerSize (1.0);
 
-	  h_mc1  ->Draw("E5SAME");
-	  h_mcg  ->Draw("E5SAME");
-	  h_data ->Draw("SAME");
+	  h_mc1->Draw("E5SAME");
+	  h_mcg->Draw("E5SAME");
+	  h_data->Draw("SAME");
 
 	  leg->AddEntry(h_data,"Z(#rightarrow ee)+ b DATA","p");
 	  leg->AddEntry(h_mc1, "Z(#rightarrow ee)+ b MC","l");
