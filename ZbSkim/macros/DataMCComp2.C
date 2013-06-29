@@ -323,8 +323,8 @@ if (ilepton<1 || ilepton>2) {
 	  c1->SetLogy();
 	
 	  h_mc1b_b ->SetMaximum(4*h_data->GetMaximum());
-	  h_mc1b_b ->SetMinimum(TMath::Max(0.1,0.25*h_mcg_b->GetMinimum()));
-	  h_mc1b_b ->Draw("E5SAME");
+	  h_mc1b_b ->SetMinimum(TMath::Max(0.1,0.25*h_mc1b_b->GetBinContent(h_mc1b_b->GetMinimumBin())));
+	  h_mc1b_b ->Draw("E5");
 	  h_mcg_b ->Draw("E5SAME");
 	  h_data_b->Draw("SAME");
 
