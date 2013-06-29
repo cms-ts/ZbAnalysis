@@ -158,9 +158,9 @@ if (ilepton<1 || ilepton>2) {
 	h_mc7 -> Sumw2();
 
 	h_mc1_b -> Sumw2();	
-	h_mcg_b -> Sumw2();
 	if (h_mc1b_b) h_mc1b_b -> Sumw2();
 	if (h_mc1c_b) h_mc1c_b -> Sumw2();
+	h_mcg_b -> Sumw2();
 	h_mc2_b -> Sumw2();
 	h_mc3_b -> Sumw2();
 	h_mc4_b -> Sumw2();
@@ -282,7 +282,9 @@ if (ilepton<1 || ilepton>2) {
 	//h_mc1b_b->SetMarkerStyle(20);
 	h_mc1b_b->SetMarkerSize (1.0);
 	h_mc1b_b->SetFillColor(kRed);
-	h_mc1b_b->Draw("E5");
+	if (isratio==1) {
+	  h_mc1b_b->Draw("E5");
+	}
 	h_mc1b_b->SetStats(0);
 	//h_mc1b_b->SetFillStyle(3001);
 
@@ -290,7 +292,9 @@ if (ilepton<1 || ilepton>2) {
 	h_mcg_b->SetFillColor(kGreen+2);
 	h_mcg_b->SetMarkerColor(kGreen+2);
 	//h_mcg_b->SetFillStyle(3001);
-	h_mcg_b->Draw("E5SAME");
+	if (isratio==1) {
+	  h_mcg_b->Draw("E5SAME");
+	}
 
 	if (isratio==1) {
 	  h_data_b->GetYaxis()->SetTitle("#sigma_{Z+b-jets}/#sigma_{Z+jets} [%]");
@@ -301,7 +305,9 @@ if (ilepton<1 || ilepton>2) {
 	h_data_b->SetLineColor(kBlack);
 	h_data_b->SetMarkerStyle(20);
 	h_data_b->SetMarkerSize (1.0);
-	h_data_b->Draw("EPSAME");
+	if (isratio==1) {
+	  h_data_b->Draw("EPSAME");
+	}
 	h_data_b->SetStats(0);
 	
 	leg = new TLegend(0.62, 0.580, 0.88, 0.88);
