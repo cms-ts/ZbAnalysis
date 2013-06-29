@@ -303,7 +303,7 @@ if (ilepton<1 || ilepton>2) {
 	h_data_b->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b->SetMarkerColor(kBlack);
 	h_data_b->SetLineColor(kBlack);
-	h_data_b->SetMarkerStyle(20);
+	h_data_b->SetMarkerStyle(24);
 	h_data_b->SetMarkerSize (1.0);
 	if (isratio==1) {
 	  h_data_b->Draw("EPSAME");
@@ -315,17 +315,6 @@ if (ilepton<1 || ilepton>2) {
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
-
-	if (ilepton==1) {
-	  leg->AddEntry(h_data_b,"Z(#rightarrow ee) DATA","p");
-	  leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
-	  leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph","l");
-	}
-	if (ilepton==2){
-	  leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu) DATA","p");
-	  leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
-	  leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph","l");
-	}
 
 	if (isratio==0) {
 	  c1->SetLogy();
@@ -353,9 +342,20 @@ if (ilepton<1 || ilepton>2) {
 	  h_mcg->Draw("E5SAME");
 	  h_data->Draw("SAME");
 
-	  leg->AddEntry(h_data,"Z(#rightarrow ee)+ b DATA","p");
-	  leg->AddEntry(h_mc1, "Z(#rightarrow ee)+ b MC","l");
-	  leg->AddEntry(h_mcg, "Z(#rightarrow ee)+ b MadGraph","l");
+	  leg->AddEntry(h_data,"Z(#rightarrow ee) DATA","p");
+	  leg->AddEntry(h_mc1, "Z(#rightarrow ee) MC","l");
+	  leg->AddEntry(h_mcg, "Z(#rightarrow ee) MadGraph","l");
+	}
+
+	if (ilepton==1) {
+	  leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
+	  leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee)+b MC","l");
+	  leg->AddEntry(h_mcg_b,"Z(#rightarrow ee)+b MadGraph","l");
+	}
+	if (ilepton==2){
+	  leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu)+b DATA","p");
+	  leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu)+b MC","l");
+	  leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu)+b MadGraph","l");
 	}
 
 	leg->Draw();
