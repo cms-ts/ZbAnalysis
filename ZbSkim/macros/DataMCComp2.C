@@ -27,9 +27,9 @@ if (ilepton<1 || ilepton>2) {
 
 	if (ilepton==1) {
 	  
-	  c_b   = 0.747;
-	  c_c   = 1.294; 
-	  c_l   = 2.011;
+	  c_b   = 0.813;
+	  c_c   = 1.389; 
+	  c_l   = 0.545;
 	  
 	  e_Zb  = 0.299; 
           e_Z   = 0.513;
@@ -40,9 +40,9 @@ if (ilepton<1 || ilepton>2) {
 
 	} else if (ilepton==2) {
 	  
-	  c_b   = 0.747;
-	  c_c   = 1.526; 
-	  c_l   = 1.273;
+	  c_b   = 0.814;
+	  c_c   = 1.408; 
+	  c_l   = 1.405;
 
 	  e_Zb  = 0.447; 
 	  e_Z   = 0.804;  
@@ -169,7 +169,7 @@ if (ilepton<1 || ilepton>2) {
 	h_mc7_b -> Sumw2();
 
 	h_mc1->Scale(norm1);
-	h_mcg->Scale(3.05*norm1);
+	h_mcg->Scale(norm1);
 	h_mc2->Scale(norm2*tt);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
@@ -180,7 +180,7 @@ if (ilepton<1 || ilepton>2) {
 	h_mc1_b->Scale(norm1);
 	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
 	if (h_mc1c_b) h_mc1c_b->Scale(norm1);
-	h_mcg_b->Scale(3.05*norm1);
+	h_mcg_b->Scale(norm1);
 	h_mc2_b->Scale(norm2*tt);
 	h_mc3_b->Scale(norm3);
 	h_mc4_b->Scale(norm4);
