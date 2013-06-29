@@ -32,7 +32,7 @@ if (ilepton<1 || ilepton>2) {
 	if (ilepton==1 && doFit==1) tt=0.959;
 	if (ilepton==2 && doFit==1) tt=0.935;
 
-	double norm1 = ( (Lumi2012 * Xsec_dy ) / Ngen_dy);
+	double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
 	double norm3 = ( (Lumi2012 * Xsec_zz) / Ngen_zz);
 	double norm4 = ( (Lumi2012 * Xsec_wz) / Ngen_wz);
