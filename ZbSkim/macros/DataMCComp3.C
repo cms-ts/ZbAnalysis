@@ -12,6 +12,15 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 	if (title.empty()) title = "w_jetmultiplicity";
 	TFile *mc1 = TFile::Open((path+"DYJetsToLL_gen.root").c_str());
 	TFile *mc2 = TFile::Open((path+"DYJetsToLL_gen.root").c_str());
+
+        if (ilepton==1) {
+          if (title.find("muon")!=string::npos) return;
+          if (title.find("mm")!=string::npos) return;
+        }
+        if (ilepton==2) {
+          if (title.find("ele")!=string::npos) return;
+          if (title.find("ee")!=string::npos) return;
+        }
         
 	if (ilepton==1) mc1->cd("demo_ee");
 	if (ilepton==2) mc1->cd("demo_mm");  
