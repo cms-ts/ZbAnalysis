@@ -19,9 +19,9 @@ double func(double* x, double* p) {
 
 void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
 
-if (ilepton<1 || ilepton>2) {
-  ilepton = 1 + ilepton % 2;
-}
+	if (ilepton<1 || ilepton>2) {
+	  ilepton = 1 + ilepton % 2;
+	}
 
 	double Lumi2012;
 	double tt=1.0;
