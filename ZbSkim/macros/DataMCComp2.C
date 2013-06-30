@@ -5,16 +5,17 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/" + version + "/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 
-if (ilepton<1 || ilepton>2) {
-  ilepton = 1 + ilepton % 2;
-}
+	if (ilepton<1 || ilepton>2) {
+	  ilepton = 1 + ilepton % 2;
+	}
+
 	/* purity */
 
 	double c_b;
 	double c_c; 
 	double c_l;
 
-	/*efficiency: (e_Z / e_Zb = e_Z / e_Z_1*e_Z_b) */
+	/*efficiency: (e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b) */
 
 	double e_Zb;
 	double e_Z;
@@ -31,10 +32,10 @@ if (ilepton<1 || ilepton>2) {
 	  c_c   = 1.389; 
 	  c_l   = 0.545;
 	  
-	  e_Zb  = 0.299; 
-          e_Z   = 0.513;
-          e_Z_1 = 0.428;
-          e_Z_b = 0.697;
+	  e_Zb  = 0.234; 
+          e_Z   = 0.514;
+          e_Z_1 = 0.426;
+          e_Z_b = 0.550;
 
 	  tt = 0.959;
 
@@ -44,10 +45,10 @@ if (ilepton<1 || ilepton>2) {
 	  c_c   = 1.408; 
 	  c_l   = 1.405;
 
-	  e_Zb  = 0.447; 
-	  e_Z   = 0.804;  
-	  e_Z_1 = 0.629;
-	  e_Z_b = 0.712;
+	  e_Zb  = 0.351; 
+	  e_Z   = 0.802;  
+	  e_Z_1 = 0.632;
+	  e_Z_b = 0.556;
 
 	  tt = 0.935;
 
