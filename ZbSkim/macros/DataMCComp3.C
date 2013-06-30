@@ -21,23 +21,42 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
           if (title.find("ele")!=string::npos) return;
           if (title.find("ee")!=string::npos) return;
         }
-        
-	if (ilepton==1) mc1->cd("demo_ee");
-	if (ilepton==2) mc1->cd("demo_mm");  
-	TH1F* h_reco = (TH1F*)gDirectory->Get(title.c_str());
-	if (ilepton==1) mc2->cd("demo_ee_gen");
-	if (ilepton==2) mc2->cd("demo_mm_gen");
-	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
+
+int itype = 0; // e_Zb
+//int itype = 1; // e_Z_1
+//int itype = 2; // e_Z_b
+
+	string title_reco = title;
+	string title_gen = title;
+
+	if (title.find("_b")!=string::npos) {
+	  if (itype==0) title_reco = "b"+title.substr(1);
+	  if (itype==2) title_reco = "b"+title.substr(1);
+	}
+
+	if (ilepton==1&&itype==0) mc1->cd("demo_ee");
+	if (ilepton==2&&itype==0) mc1->cd("demo_mm");  
+	if (ilepton==1&&itype==1) mc1->cd("demo_ee_btag");
+	if (ilepton==2&&itype==1) mc1->cd("demo_mm_btag");  
+	if (ilepton==1&&itype==2) mc1->cd("demo_ee");
+	if (ilepton==2&&itype==2) mc1->cd("demo_mm");  
+	TH1F* h_reco = (TH1F*)gDirectory->Get(title_reco.c_str());
+	if (ilepton==1&&itype==0) mc2->cd("demo_ee_gen");
+	if (ilepton==2&&itype==0) mc2->cd("demo_mm_gen");
+	if (ilepton==1&&itype==1) mc2->cd("demo_ee_gen");
+	if (ilepton==2&&itype==1) mc2->cd("demo_mm_gen");
+	if (ilepton==1&&itype==2) mc2->cd("demo_ee_btag");
+	if (ilepton==2&&itype==2) mc2->cd("demo_mm_btag");
+	TH1F* h_gen = (TH1F*)gDirectory->Get(title_gen.c_str());
+
+	h_reco->Sumw2();
+	h_gen->Sumw2();
+	double N = h_reco->GetEffectiveEntries() / h_gen->GetEffectiveEntries();
+	double errN = sqrt(h_reco->GetEffectiveEntries()) / h_gen->GetEffectiveEntries();
 
 //	TCanvas* c1 = new TCanvas("c1", "c1", 800, 600);
 //	c1->cd();
-          
-	h_reco->Sumw2();
-	h_gen->Sumw2();
-//	double N = h_reco->Integral() / h_gen->Integral();
-//	double errN = sqrt(h_reco->Integral()) / h_gen->Integral();
-	double N = h_reco->GetEffectiveEntries() / h_gen->GetEffectiveEntries();
-	double errN = sqrt(h_reco->GetEffectiveEntries()) / h_gen->GetEffectiveEntries();
+
 //	h_gen->Draw("EPX0");
 //	h_gen->SetMarkerStyle(20);
 //	h_reco->Draw("histsame");
@@ -51,47 +70,50 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 	h_reco->SetStats(0);
 	
 	if (title=="w_first_jet_pt") {
-	  h_reco->GetXaxis ()->SetTitle("leading jet p_{T} [GeV/c]");
+	  h_reco->GetXaxis()->SetTitle("leading jet p_{T} [GeV/c]");
 	} else if (title=="w_first_jet_eta") {
-	  h_reco->GetXaxis ()->SetTitle("leading jet #eta");
+	  h_reco->GetXaxis()->SetTitle("leading jet #eta");
 	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm") {
-	  h_reco->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
+	  h_reco->GetXaxis()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_delta_phi_ee"||title=="w_delta_phi_mm") {
-	  h_reco->GetXaxis ()->SetTitle("#Delta #phi(Zj) [rad]");
+	  h_reco->GetXaxis()->SetTitle("#Delta #phi(Zj) [rad]");
 	} else if (title=="w_Ht") {
-          h_reco->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
+          h_reco->GetXaxis()->SetTitle("H_{T} [GeV/c]");
 	}
 	if (title=="w_first_bjet_pt") {
-	  h_reco->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
+	  h_reco->GetXaxis()->SetTitle("leading b-jet p_{T} [GeV/c]");
 	  h_reco->GetXaxis()->SetRangeUser(0, 200);
 	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	} else if (title=="w_first_bjet_eta") {
 	  h_reco->GetYaxis()->SetRangeUser(0, 1);
-	  h_reco->GetXaxis ()->SetTitle("leading b-jet #eta");
+	  h_reco->GetXaxis()->SetTitle("leading b-jet #eta");
 	} else if (title=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b") {
 	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	  h_reco->GetXaxis()->SetRangeUser(0, 200);
-	  h_reco->GetXaxis ()->SetTitle("Z boson p_{T} + b-jets [GeV/c]");
+	  h_reco->GetXaxis()->SetTitle("Z boson p_{T} + b-jets [GeV/c]");
 	} else if (title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b") {
 	  h_reco->GetYaxis()->SetRangeUser(0, 1);
-	  h_reco->GetXaxis ()->SetTitle("#Delta #phi(Zb) [rad]");
+	  h_reco->GetXaxis()->SetTitle("#Delta #phi(Zb) [rad]");
 	} else if (title=="w_Ht_b") {
 	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	  h_reco->GetXaxis()->SetRangeUser(0, 200);
-          h_reco->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
+          h_reco->GetXaxis()->SetTitle("H_{T} [GeV/c]");
 	}
 	
-	//h_reco->GetXaxis()->SetTitle("variable X");
 	h_reco->GetXaxis()->SetTitleOffset(0.95);
 	h_reco->GetXaxis()->SetTitleSize(0.04);
 	h_reco->GetXaxis()->SetLabelFont(42);
 	h_reco->GetXaxis()->SetLabelSize(0.04);
 	h_reco->GetXaxis()->SetTitleFont(42);
-	h_reco->GetYaxis()->SetTitle("#epsilon = N_{Z+b}^{RECO} / N_{Z+b}^{GEN}");
+	if (title_reco == title_gen) {
+	  h_reco->GetYaxis()->SetTitle("#epsilon = N_{Z}^{RECO} / N_{Z}^{GEN}");
+	} else {
+	  h_reco->GetYaxis()->SetTitle("#epsilon = N_{Z+b}^{RECO} / N_{Z+b}^{GEN}");
+	}
 	h_reco->GetYaxis()->SetNdivisions(505);
 	h_reco->GetYaxis()->SetTitleSize(0.04);
 	h_reco->GetYaxis()->SetLabelSize(0.04);
-	//h_reco->GetYaxis()->SetRangeUser(0.5, 1.5);
+	h_reco->GetYaxis()->SetRangeUser(0.0, 1.5);
 	h_reco->GetYaxis()->SetTitleOffset(1.04);
 	h_reco->SetMarkerStyle(20);
 
@@ -108,6 +130,7 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 	Label->DrawLatex(0.50, 0.68, buff);
 
 	c2->Update();
+
         //for (int i=0; i<h_reco->GetXaxis()->GetNbins(); i++) {
 	//	cout<<"bin"<<i<<"="<<h_reco->GetBinContent(i)<<endl;
 	//}  
