@@ -11,46 +11,57 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 
 	/* purity */
 
-	double c_b;
-	double c_c; 
-	double c_l;
+	double c_b=1.0;
+	double c_c=1.0;
+	double c_uds=1.0;
 
 	/*efficiency: (e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b) */
 
-	double e_Zb;
-	double e_Z;
-	double e_Z_1;
-	double e_Z_b;
+	double e_Zb=1.0;
+	double e_Z=1.0;
+	double e_Z_1=1.0;
+	double e_Z_b=1.0;
 
        /* top */
 
-	double tt;
+	double c_t=1.0;
+
+//int useFitResults=0; // use MC predictions for c_b, c_c, c_uds, c_t
+int useFitResults=0;  // use fit results for c_b, c_c, c_uds, c_t
 
 	if (ilepton==1) {
-	  
-	  c_b   = 0.813;
-	  c_c   = 1.389; 
-	  c_l   = 0.545;
-	  
+
+	  if (useFitResults==1) {
+	    c_b   = 0.813;
+	    c_c   = 1.389; 
+	    c_uds = 0.545;
+	  }
+
 	  e_Zb  = 0.234; 
           e_Z   = 0.514;
           e_Z_1 = 0.426;
           e_Z_b = 0.550;
 
-	  tt = 0.959;
+	  if (useFitResults==1) {
+	    c_t = 0.959;
+	  }
 
 	} else if (ilepton==2) {
-	  
-	  c_b   = 0.814;
-	  c_c   = 1.408; 
-	  c_l   = 1.405;
+
+	  if (useFitResults==1) {
+	    c_b   = 0.814;
+	    c_c   = 1.408; 
+	    c_uds = 1.405;
+	  }
 
 	  e_Zb  = 0.351; 
 	  e_Z   = 0.802;  
 	  e_Z_1 = 0.632;
 	  e_Z_b = 0.556;
 
-	  tt = 0.935;
+	  if (useFitResults==1) {
+	    c_t = 0.935;
+	  }
 
 	}
 
@@ -171,7 +182,7 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 
 	h_mc1->Scale(norm1);
 	h_mcg->Scale(norm1);
-	h_mc2->Scale(norm2*tt);
+	h_mc2->Scale(norm2*c_t);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);
@@ -182,7 +193,7 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
 	if (h_mc1c_b) h_mc1c_b->Scale(norm1);
 	h_mcg_b->Scale(norm1);
-	h_mc2_b->Scale(norm2*tt);
+	h_mc2_b->Scale(norm2*c_t);
 	h_mc3_b->Scale(norm3);
 	h_mc4_b->Scale(norm4);
 //	h_mc5_b->Scale(norm5);
@@ -213,7 +224,7 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
-	h_mc1uds_b->Scale(c_l);
+	h_mc1uds_b->Scale(c_uds);
 	h_mc1b_b->Scale(c_b);
 	h_mc1c_b->Scale(c_c);
 
