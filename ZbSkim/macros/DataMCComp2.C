@@ -325,13 +325,14 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	  h_mc1b_b->SetMaximum(4*h_data->GetMaximum());
 	  h_mc1b_b->SetMinimum(TMath::Max(0.000001,0.25*h_mc1b_b->GetBinContent(h_mc1b_b->GetMinimumBin())));
 
-	  h_mc1b_b->SetFillColor(0);
-	  h_mc1b_b->DrawClone("HISTC");
+//	  h_mc1b_b->SetFillColor(0);
+//	  h_mc1b_b->DrawClone("HISTL");
 	  h_mc1b_b->SetFillColor(kRed);
-	  h_mc1b_b->Draw("E5SAME");
+//	  h_mc1b_b->Draw("E5SAME");
+	  h_mc1b_b->Draw("E5");
 
-	  h_mcg_b->SetFillColor(0);
-	  h_mcg_b->DrawClone("HISTCSAME");
+//	  h_mcg_b->SetFillColor(0);
+//	  h_mcg_b->DrawClone("HISTLSAME");
 	  h_mcg_b->SetFillColor(kGreen+2);
 	  h_mcg_b->Draw("E5SAME");
 
@@ -340,16 +341,16 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	  h_mc1->SetLineColor(kRed);
 	  h_mc1->SetLineWidth(2);
 	  h_mc1->SetMarkerColor(kRed);
-	  h_mc1->SetFillColor(0);
-	  h_mc1->DrawClone("HISTCSAME");
+//	  h_mc1->SetFillColor(0);
+//	  h_mc1->DrawClone("HISTLSAME");
 	  h_mc1->SetFillColor(kRed);
 	  h_mc1->Draw("E5SAME");
 
 	  h_mcg->SetLineColor(kGreen+2);
 	  h_mcg->SetLineWidth(2);
 	  h_mcg->SetMarkerColor(kGreen+2);
-	  h_mcg->SetFillColor(0);
-	  h_mcg->DrawClone("HISTCSAME");
+//	  h_mcg->SetFillColor(0);
+//	  h_mcg->DrawClone("HISTLSAME");
 	  h_mcg->SetFillColor(kGreen+2);
 	  h_mcg->Draw("E5SAME");
 
