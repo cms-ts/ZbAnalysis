@@ -281,8 +281,6 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	h_mc1b_b->SetLineColor(kRed);
 	h_mc1b_b->SetLineWidth(2);
 	h_mc1b_b->SetMarkerColor(kRed);
-	//h_mc1b_b->SetMarkerStyle(20);
-	h_mc1b_b->SetMarkerSize (1.0);
 	h_mc1b_b->SetFillColor(kRed);
 	if (isratio==1) {
 	  h_mc1b_b->Draw("E5");
@@ -325,34 +323,49 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	  h_mc1b_b->SetMaximum(4*h_data->GetMaximum());
 	  h_mc1b_b->SetMinimum(TMath::Max(0.000001,0.25*h_mc1b_b->GetBinContent(h_mc1b_b->GetMinimumBin())));
 
-//	  h_mc1b_b->SetFillColor(0);
-//	  h_mc1b_b->DrawClone("HISTL");
-	  h_mc1b_b->SetFillColor(kRed);
-//	  h_mc1b_b->Draw("E5SAME");
 	  h_mc1b_b->Draw("E5");
+	  TH1F* tmp1 = h_mc1b_b->Clone();
+	  if (title.find("jet")!=string::npos) {
+	    tmp1->GetXaxis()->SetRangeUser(0, 200);
+	  }
+	  tmp1->SetFillColor(0);
+	  tmp1->DrawClone("HISTLSAME");
 
-//	  h_mcg_b->SetFillColor(0);
-//	  h_mcg_b->DrawClone("HISTLSAME");
-	  h_mcg_b->SetFillColor(kGreen+2);
 	  h_mcg_b->Draw("E5SAME");
+	  TH1F* tmp2 = h_mcg_b->Clone();
+	  if (title.find("jet")!=string::npos) {
+	    tmp2->GetXaxis()->SetRangeUser(0, 200);
+	  }
+	  tmp2->SetFillColor(0);
+	  tmp2->DrawClone("HISTLSAME");
 
 	  h_data_b->Draw("SAME");
 
 	  h_mc1->SetLineColor(kRed);
 	  h_mc1->SetLineWidth(2);
 	  h_mc1->SetMarkerColor(kRed);
-//	  h_mc1->SetFillColor(0);
-//	  h_mc1->DrawClone("HISTLSAME");
+
 	  h_mc1->SetFillColor(kRed);
 	  h_mc1->Draw("E5SAME");
+	  TH1F* tmp3 = h_mc1->Clone();
+	  if (title.find("jet")!=string::npos) {
+	    tmp3->GetXaxis()->SetRangeUser(0, 200);
+	  }
+	  tmp3->SetFillColor(0);
+	  tmp3->DrawClone("HISTLSAME");
 
 	  h_mcg->SetLineColor(kGreen+2);
 	  h_mcg->SetLineWidth(2);
 	  h_mcg->SetMarkerColor(kGreen+2);
-//	  h_mcg->SetFillColor(0);
-//	  h_mcg->DrawClone("HISTLSAME");
+
 	  h_mcg->SetFillColor(kGreen+2);
 	  h_mcg->Draw("E5SAME");
+	  TH1F* tmp4 = h_mcg->Clone();
+	  if (title.find("jet")!=string::npos) {
+	    tmp4->GetXaxis()->SetRangeUser(0, 200);
+	  }
+	  tmp4->SetFillColor(0);
+	  tmp4->DrawClone("HISTLSAME");
 
 	  h_data->SetMarkerColor(kBlack);
 	  h_data->SetLineColor(kBlack);
