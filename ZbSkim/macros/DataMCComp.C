@@ -23,14 +23,15 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	  ilepton = 1 + ilepton % 2;
 	}
 
+	double c_t=1.0;
+
+	if (ilepton==1 && doFit==1) c_t=0.959;
+	if (ilepton==2 && doFit==1) c_t=0.935;
+
 	double Lumi2012;
-	double tt=1.0;
 
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
-	
-	if (ilepton==1 && doFit==1) tt=0.959;
-	if (ilepton==2 && doFit==1) tt=0.935;
 
 	double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
@@ -151,7 +152,7 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	h_mc1->Scale(norm1);
 	if (h_mc1b) h_mc1b->Scale(norm1);
 	if (h_mc1c) h_mc1c->Scale(norm1);
-	h_mc2->Scale(norm2*tt);
+	h_mc2->Scale(norm2*c_t);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);
@@ -198,7 +199,7 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
 	  f1->SetParameters(1.0, 0.0, 0.0);
-	  f1->SetParNames("c(ttbar)", "dummy", "dummy");
+	  f1->SetParNames("c(t)", "dummy", "dummy");
 	  f1->FixParameter(1, 0.0);
 	  f1->FixParameter(2, 0.0);
 	  h_data_fit->Fit("f1", "Q0");
@@ -224,7 +225,7 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
 	  f1->SetParameters(1.0, 1.0, 0.0);
-	  f1->SetParNames("c(Z+jets)", "c(ttbar)", "dummy");
+	  f1->SetParNames("c(Z+jets)", "c(t)", "dummy");
 	  f1->FixParameter(2, 0.0);
 	  h_data_fit->Fit("f1", "Q0");
 	  if (h_mc1b) h_mc_fit0->Add(h_mc1b, -1.);
@@ -309,7 +310,7 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
 	h_data->SetMarkerSize (1.0);
-	h_data->SetStats(0);
+	//h_data->SetStats(0);
 
 	TLegend *leg;
 	if (doBkg) {
@@ -448,13 +449,13 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	  fitLabel->SetNDC();
 	  char buff[100];
 	  if (doFit==1) {
-	    sprintf(buff, "c_{ttbar} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	    sprintf(buff, "c_{t} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
 	    fitLabel->DrawLatex(0.68, 0.58, buff);
 	  }
 	  if (doFit==2) {
 	    sprintf(buff, "c_{Z+jets} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
 	    fitLabel->DrawLatex(0.68, 0.58, buff);
-	    sprintf(buff, "c_{ttbar} = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
+	    sprintf(buff, "c_{t} = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
 	    fitLabel->DrawLatex(0.68, 0.53, buff);
 	  }
 	  if (doFit==3) {
