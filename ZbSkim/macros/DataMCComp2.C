@@ -279,6 +279,7 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	}
 	
 	h_mc1b_b->SetLineColor(kRed);
+	h_mc1b_b->SetLineWidth(3);
 	h_mc1b_b->SetMarkerColor(kRed);
 	//h_mc1b_b->SetMarkerStyle(20);
 	h_mc1b_b->SetMarkerSize (1.0);
@@ -290,6 +291,7 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	//h_mc1b_b->SetFillStyle(3001);
 
 	h_mcg_b->SetLineColor(kGreen+2);
+	h_mcg_b->SetLineWidth(3);
 	h_mcg_b->SetFillColor(kGreen+2);
 	h_mcg_b->SetMarkerColor(kGreen+2);
 	//h_mcg_b->SetFillStyle(3001);
@@ -327,10 +329,12 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	  h_data_b->Draw("SAME");
 
 	  h_mc1->SetLineColor(kRed);
+	  h_mc1->SetLineWidth(3);
 	  h_mc1->SetFillColor(kRed);
 	  h_mc1->SetMarkerColor(kRed);
 
 	  h_mcg->SetLineColor(kGreen+2);
+	  h_mcg->SetLineWidth(3);
 	  h_mcg->SetFillColor(kGreen+2);
 	  h_mcg->SetMarkerColor(kGreen+2);
 	  
