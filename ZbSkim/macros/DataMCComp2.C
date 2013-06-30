@@ -27,7 +27,7 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	double c_t=1.0;
 
 //int useFitResults=0; // use MC predictions for c_b, c_c, c_uds, c_t
-int useFitResults=0;  // use fit results for c_b, c_c, c_uds, c_t
+int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
 	if (ilepton==1) {
 
