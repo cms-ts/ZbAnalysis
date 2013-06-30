@@ -26,12 +26,11 @@ int itype = 0; // e_Zb
 //int itype = 1; // e_Z_1
 //int itype = 2; // e_Z_b
 
-	string title_reco = title;
-	string title_gen = title;
+	string title_b = title;
 
 	if (title.find("_b")!=string::npos) {
-	  if (itype==0) title_reco = "b"+title.substr(1);
-	  if (itype==2) title_reco = "b"+title.substr(1);
+	  if (itype==0) title_b = "b"+title.substr(1);
+	  if (itype==2) title_b = "b"+title.substr(1);
 	}
 
 	if (ilepton==1&&itype==0) mc1->cd("demo_ee");
@@ -40,14 +39,14 @@ int itype = 0; // e_Zb
 	if (ilepton==2&&itype==1) mc1->cd("demo_mm_btag");  
 	if (ilepton==1&&itype==2) mc1->cd("demo_ee");
 	if (ilepton==2&&itype==2) mc1->cd("demo_mm");  
-	TH1F* h_reco = (TH1F*)gDirectory->Get(title_reco.c_str());
+	TH1F* h_reco = (TH1F*)gDirectory->Get(title.c_str());
 	if (ilepton==1&&itype==0) mc2->cd("demo_ee_gen");
 	if (ilepton==2&&itype==0) mc2->cd("demo_mm_gen");
 	if (ilepton==1&&itype==1) mc2->cd("demo_ee_gen");
 	if (ilepton==2&&itype==1) mc2->cd("demo_mm_gen");
 	if (ilepton==1&&itype==2) mc2->cd("demo_ee_btag");
 	if (ilepton==2&&itype==2) mc2->cd("demo_mm_btag");
-	TH1F* h_gen = (TH1F*)gDirectory->Get(title_gen.c_str());
+	TH1F* h_gen = (TH1F*)gDirectory->Get(title_b.c_str());
 
 	h_reco->Sumw2();
 	h_gen->Sumw2();
@@ -105,7 +104,7 @@ int itype = 0; // e_Zb
 	h_reco->GetXaxis()->SetLabelFont(42);
 	h_reco->GetXaxis()->SetLabelSize(0.04);
 	h_reco->GetXaxis()->SetTitleFont(42);
-	if (title_reco == title_gen) {
+	if (title_b == title) {
 	  h_reco->GetYaxis()->SetTitle("#epsilon = N_{Z}^{RECO} / N_{Z}^{GEN}");
 	} else {
 	  h_reco->GetYaxis()->SetTitle("#epsilon = N_{Z+b}^{RECO} / N_{Z+b}^{GEN}");
