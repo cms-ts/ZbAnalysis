@@ -414,7 +414,7 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	  if (plot) {
 	    if (ilepton==1) {
 	      gSystem->mkdir(("electrons/" + version + "/xsecs/").c_str());
-	      c1->SaveAs(("electrons/" + version + "/xsecs" + "/" + title_b + "_ratio" + ".pdf").c_str());
+	      c1->SaveAs(("electrons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
 	    }
 	    if (ilepton==2) {
 	      gSystem->mkdir(("muons/" + version + "/xsecs/").c_str());
