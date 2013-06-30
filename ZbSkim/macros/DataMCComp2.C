@@ -279,7 +279,7 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	}
 	
 	h_mc1b_b->SetLineColor(kRed);
-	h_mc1b_b->SetLineWidth(3);
+	h_mc1b_b->SetLineWidth(2);
 	h_mc1b_b->SetMarkerColor(kRed);
 	//h_mc1b_b->SetMarkerStyle(20);
 	h_mc1b_b->SetMarkerSize (1.0);
@@ -291,7 +291,7 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	//h_mc1b_b->SetFillStyle(3001);
 
 	h_mcg_b->SetLineColor(kGreen+2);
-	h_mcg_b->SetLineWidth(3);
+	h_mcg_b->SetLineWidth(2);
 	h_mcg_b->SetFillColor(kGreen+2);
 	h_mcg_b->SetMarkerColor(kGreen+2);
 	//h_mcg_b->SetFillStyle(3001);
@@ -324,43 +324,70 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	
 	  h_mc1b_b->SetMaximum(4*h_data->GetMaximum());
 	  h_mc1b_b->SetMinimum(TMath::Max(0.000001,0.25*h_mc1b_b->GetBinContent(h_mc1b_b->GetMinimumBin())));
-	  h_mc1b_b->Draw("E5");
+
+	  h_mc1b_b->SetFillColor(0);
+	  h_mc1b_b->DrawClone("HISTC");
+	  h_mc1b_b->SetFillColor(kRed);
+	  h_mc1b_b->Draw("E5SAME");
+
+	  h_mcg_b->SetFillColor(0);
+	  h_mcg_b->DrawClone("HISTCSAME");
+	  h_mcg_b->SetFillColor(kGreen+2);
 	  h_mcg_b->Draw("E5SAME");
+
 	  h_data_b->Draw("SAME");
 
 	  h_mc1->SetLineColor(kRed);
-	  h_mc1->SetLineWidth(3);
-	  h_mc1->SetFillColor(kRed);
+	  h_mc1->SetLineWidth(2);
 	  h_mc1->SetMarkerColor(kRed);
+	  h_mc1->SetFillColor(0);
+	  h_mc1->DrawClone("HISTCSAME");
+	  h_mc1->SetFillColor(kRed);
+	  h_mc1->Draw("E5SAME");
 
 	  h_mcg->SetLineColor(kGreen+2);
-	  h_mcg->SetLineWidth(3);
-	  h_mcg->SetFillColor(kGreen+2);
+	  h_mcg->SetLineWidth(2);
 	  h_mcg->SetMarkerColor(kGreen+2);
-	  
+	  h_mcg->SetFillColor(0);
+	  h_mcg->DrawClone("HISTCSAME");
+	  h_mcg->SetFillColor(kGreen+2);
+	  h_mcg->Draw("E5SAME");
+
 	  h_data->SetMarkerColor(kBlack);
 	  h_data->SetLineColor(kBlack);
 	  h_data->SetMarkerStyle(20);
 	  h_data->SetMarkerSize (1.0);
-
-	  h_mc1->Draw("E5SAME");
-	  h_mcg->Draw("E5SAME");
 	  h_data->Draw("SAME");
 
-	  leg->AddEntry(h_data,"Z(#rightarrow ee) DATA","p");
-	  leg->AddEntry(h_mc1, "Z(#rightarrow ee) MC","l");
-	  leg->AddEntry(h_mcg, "Z(#rightarrow ee) MadGraph","l");
+	  if (ilepton==1) {
+	    leg->AddEntry(h_data,"Z(#rightarrow ee) DATA","p");
+	    leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
+	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph","l");
+	    leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
+	    leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee)+b MC","l");
+	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee)+b MadGraph","l");
+	  }
+	  if (ilepton==2){
+	    leg->AddEntry(h_data,"Z(#rightarrow #mu#mu) DATA","p");
+	    leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
+	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph","l");
+	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu)+b DATA","p");
+	    leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu)+b MC","l");
+	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu)+b MadGraph","l");
+	  }
 	}
 
-	if (ilepton==1) {
-	  leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
-	  leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee)+b MC","l");
-	  leg->AddEntry(h_mcg_b,"Z(#rightarrow ee)+b MadGraph","l");
-	}
-	if (ilepton==2){
-	  leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu)+b DATA","p");
-	  leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu)+b MC","l");
-	  leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu)+b MadGraph","l");
+	if (isratio==1) {
+	  if (ilepton==1) {
+	    leg->AddEntry(h_data_b,"Z(#rightarrow ee) DATA","p");
+	    leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
+	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph","l");
+	  }
+	  if (ilepton==2){
+	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu) DATA","p");
+	    leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
+	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph","l");
+	  }
 	}
 
 	leg->Draw();
