@@ -336,7 +336,7 @@ int useFitResults=0;  // use fit results for c_b, c_c, c_uds, c_t
 
 	  h_mc1b_b->Draw("E5");
 	  TH1F* tmp1 = h_mc1b_b->Clone();
-	  if (title.find("jet_pt")!=string::npos) {
+	  if (title.find("_pt")!=string::npos) {
 	    tmp1->GetXaxis()->SetRangeUser(0, 200);
 	  }
 	  tmp1->SetFillColor(0);
@@ -344,7 +344,7 @@ int useFitResults=0;  // use fit results for c_b, c_c, c_uds, c_t
 
 	  h_mcg_b->Draw("E5SAME");
 	  TH1F* tmp2 = h_mcg_b->Clone();
-	  if (title.find("jet_pt")!=string::npos) {
+	  if (title.find("_pt")!=string::npos) {
 	    tmp2->GetXaxis()->SetRangeUser(0, 200);
 	  }
 	  tmp2->SetFillColor(0);
@@ -359,7 +359,7 @@ int useFitResults=0;  // use fit results for c_b, c_c, c_uds, c_t
 	  h_mc1->SetFillColor(kRed);
 	  h_mc1->Draw("E5SAME");
 	  TH1F* tmp3 = h_mc1->Clone();
-	  if (title.find("jet_pt")!=string::npos) {
+	  if (title.find("_pt")!=string::npos) {
 	    tmp3->GetXaxis()->SetRangeUser(0, 200);
 	  }
 	  tmp3->SetFillColor(0);
@@ -372,7 +372,7 @@ int useFitResults=0;  // use fit results for c_b, c_c, c_uds, c_t
 	  h_mcg->SetFillColor(kGreen+2);
 	  h_mcg->Draw("E5SAME");
 	  TH1F* tmp4 = h_mcg->Clone();
-	  if (title.find("jet_pt")!=string::npos) {
+	  if (title.find("_pt")!=string::npos) {
 	    tmp4->GetXaxis()->SetRangeUser(0, 200);
 	  }
 	  tmp4->SetFillColor(0);
