@@ -237,6 +237,9 @@ int useBinnedEfficiency=0;
 	if (useBinnedEfficiency==0) {
 	  h_data_b->Scale(1./(Lumi2012*e_Zb));
 	  h_data->Scale(1./(Lumi2012*e_Z));
+
+	  h_mc1b_b->Scale(1./(Lumi2012*e_Zb));
+	  h_mc1->Scale(1./(Lumi2012*e_Z));
 	} else {
 
 	}
@@ -246,8 +249,6 @@ int useBinnedEfficiency=0;
 	  h_data_b->Scale(100.);
 	}
 
-	h_mc1b_b->Scale(1./(Lumi2012*e_Zb));
-	h_mc1->Scale(1./(Lumi2012*e_Z));
 	if (isratio==1) {
 	  h_mc1b_b->Divide(h_mc1);
 	  h_mc1b_b->Scale(100.);
