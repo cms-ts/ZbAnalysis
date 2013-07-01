@@ -39,14 +39,14 @@ int itype = 0; // e_Zb
 	if (ilepton==2&&itype==1) mc1->cd("demo_mm_btag");  
 	if (ilepton==1&&itype==2) mc1->cd("demo_ee");
 	if (ilepton==2&&itype==2) mc1->cd("demo_mm");  
-	TH1F* h_reco = (TH1F*)gDirectory->Get(title.c_str());
+	TH1F* h_reco = (TH1F*)gDirectory->Get(title_b.c_str());
 	if (ilepton==1&&itype==0) mc2->cd("demo_ee_gen");
 	if (ilepton==2&&itype==0) mc2->cd("demo_mm_gen");
 	if (ilepton==1&&itype==1) mc2->cd("demo_ee_gen");
 	if (ilepton==2&&itype==1) mc2->cd("demo_mm_gen");
 	if (ilepton==1&&itype==2) mc2->cd("demo_ee_btag");
 	if (ilepton==2&&itype==2) mc2->cd("demo_mm_btag");
-	TH1F* h_gen = (TH1F*)gDirectory->Get(title_b.c_str());
+	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
 
 	h_reco->Sumw2();
 	h_gen->Sumw2();
@@ -130,35 +130,20 @@ int itype = 0; // e_Zb
 
 	c2->Update();
 
-        //for (int i=0; i<h_reco->GetXaxis()->GetNbins(); i++) {
-	//	cout<<"bin"<<i<<"="<<h_reco->GetBinContent(i)<<endl;
-	//}  
-
-	/*TGraphAsymmErrors eff (h_gen, h_reco);
-	eff.SetTitle("");
-	eff.GetXaxis()->SetTitle("variable X");
-	eff.GetXaxis()->SetTitleOffset(0.9);
-	eff.GetXaxis()->SetTitleSize(0.04);
-	eff.GetXaxis()->SetLabelFont(42);
-	eff.GetXaxis()->SetLabelSize(0.04);
-	eff.GetXaxis()->SetTitleFont(42);
-	eff.GetYaxis()->SetTitle("Efficiency");
-	eff.GetYaxis()->SetNdivisions(505);
-	eff.GetYaxis()->SetTitleSize(0.04);
-	eff.GetYaxis()->SetLabelSize(0.04);
-	eff.GetYaxis()->SetRangeUser(0.5, 1.5);
-	eff.GetYaxis()->SetTitleOffset(0.9);
-	eff.SetMarkerStyle(20);
-	eff.Draw();*/
-	 
 	if (plot) {
 	  if (ilepton==1) {
+	    TFile *f = new TFile(("electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
 	    gSystem->mkdir(("electrons/" + version + "/efficiency/").c_str());
 	    c2->SaveAs(("electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
+	    h_reco->Write();
+	    f->Close();
 	  }
 	  if (ilepton==2) {
+	    TFile *f = new TFile(("muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
 	    gSystem->mkdir(("muons/" + version + "/efficiency/").c_str());
 	    c2->SaveAs(("muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
+	    h_reco->Write();
+	    f->Close();
 	  }
 	}
 
