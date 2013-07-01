@@ -231,8 +231,16 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_data_b->Add(h_mc1c_b, -1.);
 	h_data_b->Add(h_mc1uds_b, -1.);
 
-	h_data_b->Scale(1./(Lumi2012*e_Zb));
-	h_data->Scale(1./(Lumi2012*e_Z));
+int useBinnedEfficiency=0;
+//int useBinnedEfficiency=1;
+
+	if (useBinnedEfficiency==0) {
+	  h_data_b->Scale(1./(Lumi2012*e_Zb));
+	  h_data->Scale(1./(Lumi2012*e_Z));
+	} else {
+
+	}
+
 	if (isratio==1) {
 	  h_data_b->Divide(h_data);
 	  h_data_b->Scale(100.);
