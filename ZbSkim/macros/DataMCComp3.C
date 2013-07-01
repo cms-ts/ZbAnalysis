@@ -132,16 +132,16 @@ int itype = 0; // e_Zb
 
 	if (plot) {
 	  if (ilepton==1) {
-	    TFile *f = new TFile(("electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
 	    gSystem->mkdir(("electrons/" + version + "/efficiency/").c_str());
 	    c2->SaveAs(("electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
+	    TFile *f = new TFile(("electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
 	    h_reco->Write();
 	    f->Close();
 	  }
 	  if (ilepton==2) {
-	    TFile *f = new TFile(("muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
 	    gSystem->mkdir(("muons/" + version + "/efficiency/").c_str());
 	    c2->SaveAs(("muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
+	    TFile *f = new TFile(("muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
 	    h_reco->Write();
 	    f->Close();
 	  }
