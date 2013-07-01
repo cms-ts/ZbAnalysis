@@ -22,7 +22,7 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
           if (title.find("ee")!=string::npos) return;
         }
 
-int itype = 0; // e_Zb
+int itype = 0; // e_Zb or e_Z
 //int itype = 1; // e_Z_1
 //int itype = 2; // e_Z_b
 
