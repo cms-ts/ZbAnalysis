@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.103 2013/06/24 18:38:38 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.104 2013/06/25 05:36:06 dellaric Exp $
 //
 //
 
@@ -67,6 +67,7 @@
 #include "DataFormats/JetReco/interface/GenJet.h"
 #include "DataFormats/JetReco/interface/GenJetCollection.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "JetMETCorrections/Objects/interface/JetCorrector.h"
 #include "DataFormats/PatCandidates/interface/JetCorrFactors.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
@@ -740,6 +741,16 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
     }
 
     MyWeight = LumiWeights_.weight (Tnpv);
+
+  }
+
+  edm::Handle<GenEventInfoProduct> genEventInfoHandle;
+
+  if (iEvent.getByLabel ("generator", genEventInfoHandle)) {
+
+    double mcWeight = genEventInfoHandle->weight();
+
+    MyWeight = MyWeight*mcWeight;
 
   }
 
