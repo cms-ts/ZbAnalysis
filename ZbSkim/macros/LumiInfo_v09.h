@@ -17,10 +17,6 @@ double Lumi_2012D_22Jan = 7318.000;
 double Ngen_dy = 30459503;
 double Xsec_dy = 3503.71; // NNLO
 
-//double Ngen_dy = 3297045; // DYEE
-//double Ngen_dy = 3293740; // DYMM
-//double Xsec_dy = 5745.25; // NNLO
-
 //////////////////////// TTbar
 
 double Ngen_tt = 6923750;
