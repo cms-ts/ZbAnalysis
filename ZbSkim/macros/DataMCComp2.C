@@ -231,8 +231,8 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_data_b->Add(h_mc1c_b, -1.);
 	h_data_b->Add(h_mc1uds_b, -1.);
 
-int useBinnedEfficiency=0;
-//int useBinnedEfficiency=1;
+//int useBinnedEfficiency=0;
+int useBinnedEfficiency=1;
 
 	if (useBinnedEfficiency==0) {
 	  h_data_b->Scale(1./(Lumi2012*e_Zb));
@@ -240,7 +240,30 @@ int useBinnedEfficiency=0;
 	  h_mc1b_b->Scale(1./(Lumi2012*e_Zb));
 	  h_mc1->Scale(1./(Lumi2012*e_Z));
 	} else {
-
+          if (ilepton==1) {
+	    TFile f_b(("electrons/" + version + "/efficiency" + "/" + h_data_b->GetName() + "_efficiency" + ".root").c_str());
+	    TFile f(("electrons/" + version + "/efficiency" + "/" + h_data->GetName() + "_efficiency" + ".root").c_str());
+	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName());
+	    TH1F* h = (TH1F*)f.Get(h_data->GetName());
+	    h_data_b->Divide(h_b);
+	    h_data->Divide(h);
+	    h_mc1b_b->Divide(h_b);
+	    h_mc1->Divide(h);
+	    f_b.Close();
+	    f.Close();
+          }
+	  if (ilepton==2) {
+	    TFile f_b(("muons/" + version + "/efficiency" + "/" + h_data_b->GetName() + "_efficiency" + ".root").c_str());
+	    TFile f(("muons/" + version + "/efficiency" + "/" + h_data->GetName() + "_efficiency" + ".root").c_str());
+	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName());
+	    TH1F* h = (TH1F*)f.Get(h_data->GetName());
+	    h_data_b->Divide(h_b);
+	    h_data->Divide(h);
+	    h_mc1b_b->Divide(h_b);
+	    h_mc1->Divide(h);
+	    f_b.Close();
+	    f.Close();
+          }
 	  h_data_b->Scale(1./(Lumi2012));
 	  h_data->Scale(1./(Lumi2012));
 	  h_mc1b_b->Scale(1./(Lumi2012));
@@ -273,33 +296,14 @@ int useBinnedEfficiency=0;
 	} else {
 	     h_mc1b_b->GetYaxis()->SetTitle("#sigma [pb]");
 	}
-	if (title_b=="w_first_jet_pt_b") {
-	  h_mc1b_b->GetXaxis ()->SetTitle("leading jet p_{T} [GeV/c]");
-	  h_mc1b_b->GetXaxis()->SetRangeUser(0, 4);
-	  if (isratio==1) h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
-	} else if (title_b=="w_first_jet_eta_b") {
-	  h_mc1b_b->GetXaxis ()->SetTitle("leading jet #eta");
-	  if (isratio==1) h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
-	} else if (title_b=="w_first_bjet_pt") {
-	  h_mc1b_b->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
-	  if (isratio==1) h_mc1b_b->GetXaxis()->SetRangeUser(0, 200);
-	  if (isratio==1) h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
-	} else if (title_b=="w_first_bjet_eta") {
-	  h_mc1b_b->GetXaxis ()->SetTitle("leading b-jet #eta");
-	  if (isratio==1) h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
-	} else if (title_b=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b") {
-	  h_mc1b_b->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
-	  if (isratio==1) h_mc1b_b->GetXaxis()->SetRangeUser(0, 200);
-	  if (isratio==1) h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
-	} else if (title_b=="w_Ht_b") {
-	  h_mc1b_b->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
-	  h_mc1b_b->GetXaxis()->SetRangeUser(0, 250);
-	  if (isratio==1) h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
-	} else if (title_b=="w_delta_phi_ee_b" || title_b=="w_delta_phi_mm_b") {
-	  h_mc1b_b->GetXaxis ()->SetTitle("#Delta#phi(Zb) [rad]");
-	  h_mc1b_b->GetXaxis()->SetRangeUser(0, 250);
-	  if (isratio==1) h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
-	}
+
+	TPad *pad1 = new TPad("pad1","pad1",0,0.3,1,1);
+	//pad1->SetTopMargin(0);
+	pad1->SetBottomMargin(0.0001);
+	pad1->Draw();
+	pad1->cd();
+	pad1->SetLogy();
+	h_mc1b_b->SetStats(0);
 	
 	h_mc1b_b->SetLineColor(kRed);
 	h_mc1b_b->SetLineWidth(2);
@@ -319,7 +323,7 @@ int useBinnedEfficiency=0;
 	if (isratio==1) {
 	  h_mcg_b->Draw("E5SAME");
 	}
-
+	
 	if (isratio==1) {
 	  h_data_b->GetYaxis()->SetTitle("#sigma_{Z+b-jets}/#sigma_{Z+jets} [%]");
 	}
@@ -330,7 +334,7 @@ int useBinnedEfficiency=0;
 	h_data_b->SetMarkerStyle(24);
 	h_data_b->SetMarkerSize (1.0);
 	if (isratio==1) {
-	  h_data_b->Draw("EPSAME");
+	  h_data_b->Draw("EPX0SAME");
 	}
 	h_data_b->SetStats(0);
 	
@@ -344,7 +348,7 @@ int useBinnedEfficiency=0;
 	  c1->SetLogy();
 	
 	  h_mc1b_b->SetMaximum(4*h_data->GetMaximum());
-	  h_mc1b_b->SetMinimum(TMath::Max(0.000001,0.25*h_mc1b_b->GetBinContent(h_mc1b_b->GetMinimumBin())));
+	  h_mc1b_b->SetMinimum(TMath::Max(0.000002,0.25*h_mc1b_b->GetBinContent(h_mc1b_b->GetMinimumBin())));
 
 	  h_mc1b_b->Draw("E5");
 	  TH1F* tmp1 = h_mc1b_b->Clone();
@@ -429,9 +433,83 @@ int useBinnedEfficiency=0;
 
 	leg->Draw();
 	c1->cd();
-
+	pad1->Update();
+	
  	TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
 	latexLabel->Draw("same");
+	
+	TH1F *h_R = h_data_b->Clone("h_R");
+	TH1F *h_R2= h_data->Clone("h_R"); 
+
+	TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
+	pad2->SetTopMargin(0);
+	pad2->SetBottomMargin(0.3);
+	pad2->Draw();
+	pad2->cd();
+	h_R->SetTitle("");
+	h_R->SetStats(0);
+	
+	h_R->GetXaxis()->SetTitleOffset(0.9);
+	h_R->GetXaxis()->SetTitleSize(0.1);
+	h_R->GetXaxis()->SetLabelFont(42);
+	h_R->GetXaxis()->SetLabelSize(0.08);
+	h_R->GetXaxis()->SetTitleFont(42);
+	h_R->GetYaxis()->SetTitle("Data / Theory");
+	h_R->GetYaxis()->SetNdivisions(505);
+	h_R->GetYaxis()->SetTitleSize(0.09);
+	h_R->GetYaxis()->SetLabelSize(0.08);
+	h_R->GetYaxis()->SetRangeUser(0.5, 1.5);
+	h_R->GetYaxis()->SetTitleOffset(0.4);
+	h_R->Divide(h_mcg_b);
+	h_R->SetMarkerStyle(24);
+	h_R->Draw("EPX0");
+	h_R2->GetXaxis()->SetTitleOffset(0.9);
+	h_R2->GetXaxis()->SetTitleSize(0.1);
+	h_R2->GetXaxis()->SetLabelFont(42);
+	h_R2->GetXaxis()->SetLabelSize(0.08);
+	h_R2->GetXaxis()->SetTitleFont(42);
+	h_R2->GetYaxis()->SetTitle("Data/MC");
+	h_R2->GetYaxis()->SetNdivisions(505);
+	h_R2->GetYaxis()->SetTitleSize(0.09);
+	h_R2->GetYaxis()->SetLabelSize(0.08);
+	h_R2->GetYaxis()->SetRangeUser(0.5, 1.5);
+	h_R2->GetYaxis()->SetTitleOffset(0.4);
+	h_R2->Divide(h_mcg);
+	h_R2->SetMarkerStyle(20);
+	h_R2->Draw("EPX0SAME");
+
+	TLine *OLine = new TLine(h_R->GetXaxis()->GetXmin(),1.,h_R->GetXaxis()->GetXmax(),1.);
+	OLine->SetLineColor(kBlue);
+	OLine->SetLineStyle(2);
+	OLine->Draw();
+
+	if (title_b=="w_first_jet_pt_b") {
+	  h_R->GetXaxis ()->SetTitle("leading jet p_{T} [GeV/c]");
+	  h_R->GetXaxis()->SetRangeUser(0, 4);
+	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	} else if (title_b=="w_first_jet_eta_b") {
+	  h_R->GetXaxis ()->SetTitle("leading jet #eta");
+	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	} else if (title_b=="w_first_bjet_pt") {
+	  h_R->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
+	  if (isratio==1) h_R->GetXaxis()->SetRangeUser(0, 200);
+	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	} else if (title_b=="w_first_bjet_eta") {
+	  h_R->GetXaxis ()->SetTitle("leading b-jet #eta");
+	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	} else if (title_b=="w_pt_Z_ee_b"||title_b =="w_pt_Z_mm_b") {
+	  h_R->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
+	  if (isratio==1) h_R->GetXaxis()->SetRangeUser(0, 200);
+	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	} else if (title_b=="w_Ht_b") {
+	  h_R->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
+	  h_R->GetXaxis()->SetRangeUser(0, 250);
+	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	} else if (title_b=="w_delta_phi_ee_b" || title_b=="w_delta_phi_mm_b") {
+	  h_R->GetXaxis ()->SetTitle("#Delta#phi(Zb) [rad]");
+	  h_R->GetXaxis()->SetRangeUser(0, 250);
+	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 20);
+	} 
 
 	if (isratio==0) {
 	  if (plot) {
