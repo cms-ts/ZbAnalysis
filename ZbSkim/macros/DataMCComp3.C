@@ -134,16 +134,16 @@ int itype = 0; // e_Zb or e_Z
 	  if (ilepton==1) {
 	    gSystem->mkdir(("electrons/" + version + "/efficiency/").c_str());
 	    c2->SaveAs(("electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
-	    TFile *f = new TFile(("electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
+	    TFile f(("electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
-	    f->Close();
+	    f.Close();
 	  }
 	  if (ilepton==2) {
 	    gSystem->mkdir(("muons/" + version + "/efficiency/").c_str());
 	    c2->SaveAs(("muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
-	    TFile *f = new TFile(("muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
+	    TFile f(("muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
-	    f->Close();
+	    f.Close();
 	  }
 	}
 

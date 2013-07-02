@@ -237,11 +237,14 @@ int useBinnedEfficiency=0;
 	if (useBinnedEfficiency==0) {
 	  h_data_b->Scale(1./(Lumi2012*e_Zb));
 	  h_data->Scale(1./(Lumi2012*e_Z));
-
 	  h_mc1b_b->Scale(1./(Lumi2012*e_Zb));
 	  h_mc1->Scale(1./(Lumi2012*e_Z));
 	} else {
 
+	  h_data_b->Scale(1./(Lumi2012));
+	  h_data->Scale(1./(Lumi2012));
+	  h_mc1b_b->Scale(1./(Lumi2012));
+	  h_mc1->Scale(1./(Lumi2012));
 	}
 
 	if (isratio==1) {
