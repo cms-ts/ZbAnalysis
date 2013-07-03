@@ -294,7 +294,7 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();
 
-	TPad *pad1 = new TPad("pad1","pad1",0,0.3,1,1);
+	TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
 	pad1->SetBottomMargin(0.001);
 	pad1->Draw();
 	pad1->cd();
@@ -303,7 +303,7 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
  	hs->GetXaxis()->SetLabelSize(0.08);
-	hs->GetXaxis()->SetTitleOffset (0.7);
+	hs->GetXaxis()->SetTitleOffset(0.7);
 	hs->SetMinimum(8);
 
 	h_data->Draw("EPX0SAMES");
@@ -433,7 +433,6 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 
 	TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
 	OLine->SetLineColor(kRed);
-	OLine->SetLineStyle(2);
 	OLine->Draw();
 
 	c1->cd();

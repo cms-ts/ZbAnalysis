@@ -9,6 +9,13 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	  ilepton = 1 + ilepton % 2;
 	}
 
+	if (gROOT->GetVersionInt() >= 53401) {
+	  gROOT->GetColor(kRed)->SetAlpha(0.5);
+	  gROOT->GetColor(kGreen+2)->SetAlpha(0.5);
+	  gROOT->GetColor(kMagenta-6)->SetAlpha(0.5);
+	  gROOT->GetColor(kBlue-4)->SetAlpha(0.5);
+	}
+
 	/* purity */
 
 	double c_b=1.0;
@@ -71,6 +78,10 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
 	double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
+	double norm1_1 = ( (Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
+	double norm1_2;
+	if (ilepton==1) norm1_2 = ( (Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
+	if (ilepton==2) norm1_2 = ( (Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
 	double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
 	double norm3 = ( (Lumi2012 * Xsec_zz) / Ngen_zz);
 	double norm4 = ( (Lumi2012 * Xsec_wz) / Ngen_wz);
@@ -96,6 +107,10 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
 	TFile *mc1 = TFile::Open((path + "DYJetsToLL.root").c_str());
 	TFile *mcg = TFile::Open((path + "DYJetsToLL_gen.root").c_str());
+	TFile *mcg1 = TFile::Open((path + "DYJetsToLL_sherpa_gen.root").c_str());
+	TFile *mcg2;
+	if (ilepton==1) mcg2 = TFile::Open((path + "DYToEE_powheg_gen.root").c_str());
+	if (ilepton==2) mcg2 = TFile::Open((path + "DYToMuMu_powheg_gen.root").c_str());
 	TFile *mc2 = TFile::Open((path + "TTbar.root").c_str());
 	TFile *mc3 = TFile::Open((path + "ZZ.root").c_str());
 	TFile *mc4 = TFile::Open((path + "WZ.root").c_str());
@@ -116,17 +131,27 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	TH1F* h_data = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_data_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (ilepton==1) mcg->cd("demo_ee_gen");
-	if (ilepton==2) mcg->cd("demo_mm_gen");
-	TH1F* h_mcg = (TH1F*)gDirectory->Get(title.c_str());
-	TH1F* h_mcg_b = (TH1F*)gDirectory->Get(title_b.c_str());
-
 	if (ilepton==1) mc1->cd("demo_ee");
 	if (ilepton==2) mc1->cd("demo_mm");
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 	TH1F* h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
 	TH1F* h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
+
+	if (ilepton==1) mcg->cd("demo_ee_gen");
+	if (ilepton==2) mcg->cd("demo_mm_gen");
+	TH1F* h_mcg = (TH1F*)gDirectory->Get(title.c_str());
+	TH1F* h_mcg_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
+	if (ilepton==1) mcg1->cd("demo_ee_gen");
+	if (ilepton==2) mcg1->cd("demo_mm_gen");
+	TH1F* h_mcg1 = (TH1F*)gDirectory->Get(title.c_str());
+	TH1F* h_mcg1_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
+	if (ilepton==1) mcg2->cd("demo_ee_gen");
+	if (ilepton==2) mcg2->cd("demo_mm_gen");
+	TH1F* h_mcg2 = (TH1F*)gDirectory->Get(title.c_str());
+	TH1F* h_mcg2_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
 	if (ilepton==1) mc2->cd("demo_ee");
 	if (ilepton==2) mc2->cd("demo_mm");
@@ -162,6 +187,8 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
 	h_mc1 -> Sumw2();
 	h_mcg -> Sumw2();
+	h_mcg1 -> Sumw2();
+	h_mcg2 -> Sumw2();
 	h_mc2 -> Sumw2();
 	h_mc3 -> Sumw2();
 	h_mc4 -> Sumw2();
@@ -173,6 +200,8 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	if (h_mc1b_b) h_mc1b_b -> Sumw2();
 	if (h_mc1c_b) h_mc1c_b -> Sumw2();
 	h_mcg_b -> Sumw2();
+	h_mcg1_b -> Sumw2();
+	h_mcg2_b -> Sumw2();
 	h_mc2_b -> Sumw2();
 	h_mc3_b -> Sumw2();
 	h_mc4_b -> Sumw2();
@@ -182,6 +211,8 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
 	h_mc1->Scale(norm1);
 	h_mcg->Scale(norm1);
+	h_mcg1->Scale(norm1_1*3);
+	h_mcg2->Scale(norm1_2);
 	h_mc2->Scale(norm2*c_t);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
@@ -193,6 +224,8 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
 	if (h_mc1c_b) h_mc1c_b->Scale(norm1);
 	h_mcg_b->Scale(norm1);
+	h_mcg1_b->Scale(norm1_1);
+	h_mcg2_b->Scale(norm1_2);
 	h_mc2_b->Scale(norm2*c_t);
 	h_mc3_b->Scale(norm3);
 	h_mc4_b->Scale(norm4);
@@ -281,10 +314,18 @@ int useBinnedEfficiency=1;
 	}
 
 	h_mcg_b->Scale(1./(Lumi2012));
+	h_mcg1_b->Scale(1./(Lumi2012));
+	h_mcg2_b->Scale(1./(Lumi2012));
 	h_mcg->Scale(1./(Lumi2012));
+	h_mcg1->Scale(1./(Lumi2012));
+	h_mcg2->Scale(1./(Lumi2012));
 	if (isratio==1) {
 	  h_mcg_b->Divide(h_mcg);
+	  h_mcg1_b->Divide(h_mcg1);
+	  h_mcg2_b->Divide(h_mcg2);
 	  h_mcg_b->Scale(100.);
+	  h_mcg1_b->Scale(100.);
+	  h_mcg2_b->Scale(100.);
 	}
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
@@ -292,38 +333,50 @@ int useBinnedEfficiency=1;
 
 	h_mc1b_b->SetTitle("");
 	if (isratio==1) {
-	   h_mc1b_b->GetYaxis()->SetTitle("#sigma(Z+b) / #sigma(Z+j) [%]");
+	  h_mc1b_b->GetYaxis()->SetTitle("#sigma(Z+b) / #sigma(Z+j) [%]");
 	} else {
-	     h_mc1b_b->GetYaxis()->SetTitle("#sigma [pb]");
+	  h_mc1b_b->GetYaxis()->SetTitle("#sigma [pb]");
 	}
 
-	TPad *pad1 = new TPad("pad1","pad1",0,0.3,1,1);
-	//pad1->SetTopMargin(0);
+	TPad *pad1 = new TPad("pad1","pad1",0,0.4,1,1);
+	pad1->SetTopMargin(0.115);
 	pad1->SetBottomMargin(0.0001);
 	pad1->Draw();
 	pad1->cd();
-	pad1->SetLogy();
-	h_mc1b_b->SetStats(0);
-	
+
 	h_mc1b_b->SetLineColor(kRed);
 	h_mc1b_b->SetLineWidth(2);
 	h_mc1b_b->SetMarkerColor(kRed);
 	h_mc1b_b->SetFillColor(kRed);
+	h_mc1b_b->SetStats(0);
 	if (isratio==1) {
 	  h_mc1b_b->Draw("E5");
 	}
-	h_mc1b_b->SetStats(0);
-	//h_mc1b_b->SetFillStyle(3001);
 
 	h_mcg_b->SetLineColor(kGreen+2);
 	h_mcg_b->SetLineWidth(2);
 	h_mcg_b->SetFillColor(kGreen+2);
 	h_mcg_b->SetMarkerColor(kGreen+2);
-	//h_mcg_b->SetFillStyle(3001);
 	if (isratio==1) {
 	  h_mcg_b->Draw("E5SAME");
 	}
-	
+
+	h_mcg1_b->SetLineColor(kMagenta-6);
+	h_mcg1_b->SetLineWidth(2);
+	h_mcg1_b->SetFillColor(kMagenta-6);
+	h_mcg1_b->SetMarkerColor(kMagenta-6);
+	if (isratio==1) {
+	  h_mcg1_b->Draw("E5SAME");
+	}
+
+	h_mcg2_b->SetLineColor(kBlue-4);
+	h_mcg2_b->SetLineWidth(2);
+	h_mcg2_b->SetFillColor(kBlue-4);
+	h_mcg2_b->SetMarkerColor(kBlue-4);
+	if (isratio==1) {
+	  h_mcg2_b->Draw("E5SAME");
+	}
+
 	if (isratio==1) {
 	  h_data_b->GetYaxis()->SetTitle("#sigma_{Z+b-jets}/#sigma_{Z+jets} [%]");
 	}
@@ -332,11 +385,11 @@ int useBinnedEfficiency=1;
 	h_data_b->SetMarkerColor(kBlack);
 	h_data_b->SetLineColor(kBlack);
 	h_data_b->SetMarkerStyle(24);
-	h_data_b->SetMarkerSize (1.0);
+	h_data_b->SetMarkerSize(0.7);
+	h_data_b->SetStats(0);
 	if (isratio==1) {
 	  h_data_b->Draw("EPX0SAME");
 	}
-	h_data_b->SetStats(0);
 	
 	leg = new TLegend(0.62, 0.580, 0.88, 0.88);
 	leg->SetBorderSize(0);
@@ -345,7 +398,7 @@ int useBinnedEfficiency=1;
 	leg->SetFillStyle(0);
 
 	if (isratio==0) {
-	  c1->SetLogy();
+	  pad1->SetLogy();
 	
 	  h_mc1b_b->SetMaximum(4*h_data->GetMaximum());
 	  h_mc1b_b->SetMinimum(TMath::Max(0.000002,0.25*h_mc1b_b->GetBinContent(h_mc1b_b->GetMinimumBin())));
@@ -366,12 +419,27 @@ int useBinnedEfficiency=1;
 	  tmp2->SetFillColor(0);
 	  tmp2->DrawClone("HISTLSAME");
 
-	  h_data_b->Draw("SAME");
+	  h_mcg1_b->Draw("E5SAME");
+	  TH1F* tmp2_1 = h_mcg1_b->Clone();
+	  if (title.find("_pt")!=string::npos) {
+	    tmp2_1->GetXaxis()->SetRangeUser(0, 200);
+	  }
+	  tmp2_1->SetFillColor(0);
+	  tmp2_1->DrawClone("HISTLSAME");
+
+	  h_mcg2_b->Draw("E5SAME");
+	  TH1F* tmp2_2 = h_mcg2_b->Clone();
+	  if (title.find("_pt")!=string::npos) {
+	    tmp2_2->GetXaxis()->SetRangeUser(0, 200);
+	  }
+	  tmp2_2->SetFillColor(0);
+	  tmp2_2->DrawClone("HISTLSAME");
+
+	  h_data_b->Draw("EPX0SAME");
 
 	  h_mc1->SetLineColor(kRed);
 	  h_mc1->SetLineWidth(2);
 	  h_mc1->SetMarkerColor(kRed);
-
 	  h_mc1->SetFillColor(kRed);
 	  h_mc1->Draw("E5SAME");
 	  TH1F* tmp3 = h_mc1->Clone();
@@ -384,7 +452,6 @@ int useBinnedEfficiency=1;
 	  h_mcg->SetLineColor(kGreen+2);
 	  h_mcg->SetLineWidth(2);
 	  h_mcg->SetMarkerColor(kGreen+2);
-
 	  h_mcg->SetFillColor(kGreen+2);
 	  h_mcg->Draw("E5SAME");
 	  TH1F* tmp4 = h_mcg->Clone();
@@ -394,27 +461,51 @@ int useBinnedEfficiency=1;
 	  tmp4->SetFillColor(0);
 	  tmp4->DrawClone("HISTLSAME");
 
+	  h_mcg1->SetLineColor(kMagenta-6);
+	  h_mcg1->SetLineWidth(2);
+	  h_mcg1->SetMarkerColor(kMagenta-6);
+	  h_mcg1->SetFillColor(kMagenta-6);
+	  h_mcg1->Draw("E5SAME");
+	  TH1F* tmp4_1 = h_mcg1->Clone();
+	  if (title.find("_pt")!=string::npos) {
+	    tmp4_1->GetXaxis()->SetRangeUser(0, 200);
+	  }
+	  tmp4_1->SetFillColor(0);
+	  tmp4_1->DrawClone("HISTLSAME");
+
+	  h_mcg2->SetLineColor(kBlue-4);
+	  h_mcg2->SetLineWidth(2);
+	  h_mcg2->SetMarkerColor(kBlue-4);
+	  h_mcg2->SetFillColor(kBlue-4);
+	  h_mcg2->Draw("E5SAME");
+	  TH1F* tmp4_2 = h_mcg2->Clone();
+	  if (title.find("_pt")!=string::npos) {
+	    tmp4_2->GetXaxis()->SetRangeUser(0, 200);
+	  }
+	  tmp4_2->SetFillColor(0);
+	  tmp4_2->DrawClone("HISTLSAME");
+
 	  h_data->SetMarkerColor(kBlack);
 	  h_data->SetLineColor(kBlack);
 	  h_data->SetMarkerStyle(20);
-	  h_data->SetMarkerSize (1.0);
-	  h_data->Draw("SAME");
+	  h_data->SetMarkerSize (0.7);
+	  h_data->Draw("EPX0SAME");
 
 	  if (ilepton==1) {
 	    leg->AddEntry(h_data,"Z(#rightarrow ee) DATA","p");
+	    leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
 	    leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph","l");
-	    leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
-	    leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee)+b MC","l");
-	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee)+b MadGraph","l");
+	    leg->AddEntry(h_mcg1,"Z(#rightarrow ee) Sherpa","l");
+	    leg->AddEntry(h_mcg2,"Z(#rightarrow ee) Powheg","l");
 	  }
 	  if (ilepton==2){
 	    leg->AddEntry(h_data,"Z(#rightarrow #mu#mu) DATA","p");
+	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu)+b DATA","p");
 	    leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph","l");
-	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu)+b DATA","p");
-	    leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu)+b MC","l");
-	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu)+b MadGraph","l");
+	    leg->AddEntry(h_mcg1,"Z(#rightarrow #mu#mu) Sherpa","l");
+	    leg->AddEntry(h_mcg2,"Z(#rightarrow #mu#mu) Powheg","l");
 	  }
 	}
 
@@ -423,93 +514,267 @@ int useBinnedEfficiency=1;
 	    leg->AddEntry(h_data_b,"Z(#rightarrow ee) DATA","p");
 	    leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph","l");
+	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow ee) Sherpa","l");
+	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow ee) Powheg","l");
 	  }
 	  if (ilepton==2){
 	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu) DATA","p");
 	    leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph","l");
+	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow #mu#mu) Sherpa","l");
+	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow #mu#mu) Powheg","l");
 	  }
 	}
 
 	leg->Draw();
+
 	c1->cd();
-	pad1->Update();
-	
+
  	TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
 	latexLabel->Draw("same");
-	
-	TH1F *h_R = h_data_b->Clone("h_R");
-	TH1F *h_R2= h_data->Clone("h_R"); 
 
-	TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
+	TPad *pad2 = new TPad("pad2","pad2",0,0.29,1,0.4);
 	pad2->SetTopMargin(0);
-	pad2->SetBottomMargin(0.3);
+	pad2->SetBottomMargin(0.001);
 	pad2->Draw();
 	pad2->cd();
-	h_R->SetTitle("");
-	h_R->SetStats(0);
-	
-	h_R->GetXaxis()->SetTitleOffset(0.9);
-	h_R->GetXaxis()->SetTitleSize(0.1);
-	h_R->GetXaxis()->SetLabelFont(42);
-	h_R->GetXaxis()->SetLabelSize(0.08);
-	h_R->GetXaxis()->SetTitleFont(42);
-	h_R->GetYaxis()->SetTitle("Data / Theory");
-	h_R->GetYaxis()->SetNdivisions(505);
-	h_R->GetYaxis()->SetTitleSize(0.09);
-	h_R->GetYaxis()->SetLabelSize(0.08);
-	h_R->GetYaxis()->SetRangeUser(0.5, 1.5);
-	h_R->GetYaxis()->SetTitleOffset(0.4);
-	h_R->Divide(h_mcg_b);
-	h_R->SetMarkerStyle(24);
-	h_R->Draw("EPX0");
-	h_R2->GetXaxis()->SetTitleOffset(0.9);
-	h_R2->GetXaxis()->SetTitleSize(0.1);
-	h_R2->GetXaxis()->SetLabelFont(42);
-	h_R2->GetXaxis()->SetLabelSize(0.08);
-	h_R2->GetXaxis()->SetTitleFont(42);
-	h_R2->GetYaxis()->SetTitle("Data/MC");
-	h_R2->GetYaxis()->SetNdivisions(505);
-	h_R2->GetYaxis()->SetTitleSize(0.09);
-	h_R2->GetYaxis()->SetLabelSize(0.08);
-	h_R2->GetYaxis()->SetRangeUser(0.5, 1.5);
-	h_R2->GetYaxis()->SetTitleOffset(0.4);
-	h_R2->Divide(h_mcg);
-	h_R2->SetMarkerStyle(20);
-	h_R2->Draw("EPX0SAME");
 
-	TLine *OLine = new TLine(h_R->GetXaxis()->GetXmin(),1.,h_R->GetXaxis()->GetXmax(),1.);
-	OLine->SetLineColor(kBlue);
-	OLine->SetLineStyle(2);
-	OLine->Draw();
+	TH1F *h_M = h_data_b->Clone("h_M");
+	h_M->SetTitle("");
+	h_M->SetStats(0);	
+	h_M->GetXaxis()->SetTitleOffset(0.9);
+	h_M->GetXaxis()->SetTitleSize(0.14);
+	h_M->GetXaxis()->SetLabelFont(42);
+	h_M->GetXaxis()->SetLabelSize(0.12);
+	h_M->GetXaxis()->SetTitleFont(42);
+	h_M->GetXaxis()->SetTickLength(0.1);
+	h_M->GetYaxis()->SetTitle("Data / Theory");
+	h_M->GetYaxis()->SetNdivisions(013);
+	h_M->GetYaxis()->SetTitleSize(0.17);
+	h_M->GetYaxis()->SetLabelSize(0.17);
+	h_M->GetYaxis()->SetRangeUser(-0.2, 2.2);
+	h_M->GetYaxis()->SetTitleOffset(0.21);
+	h_M->GetYaxis()->SetTickLength(0.02);
+	h_M->Divide(h_mcg_b);
+	h_M->SetMarkerStyle(24);
+	h_M->Draw("EPX0");
+	if (isratio==0) {
+	  TH1F *h_M2= h_data->Clone("h_M2"); 
+	  h_M2->GetXaxis()->SetTitleOffset(0.9);
+	  h_M2->GetXaxis()->SetTitleSize(0.14);
+	  h_M2->GetXaxis()->SetLabelFont(42);
+	  h_M2->GetXaxis()->SetLabelSize(0.12);
+	  h_M2->GetXaxis()->SetTitleFont(42);
+	  h_M2->GetXaxis()->SetTickLength(0.1);
+	  h_M2->GetYaxis()->SetTitle("Data / Theory");
+	  h_M2->GetYaxis()->SetNdivisions(013);
+	  h_M2->GetYaxis()->SetTitleSize(0.17);
+	  h_M2->GetYaxis()->SetLabelSize(0.17);
+	  h_M2->GetYaxis()->SetRangeUser(-0.2, 2.2);
+	  h_M2->GetYaxis()->SetTitleOffset(0.21);
+	  h_M2->GetYaxis()->SetTickLength(0.02);
+	  h_M2->Divide(h_mcg);
+	  h_M2->SetMarkerStyle(20);
+	  h_M2->Draw("EPX0SAME");
+	}
+
+	TLatex *t2 = new TLatex();
+	t2->SetTextSize(0.2);
+	t2->SetTextFont(42);
+	t2->SetLineWidth(2);
+	t2->SetNDC();
+	t2->DrawLatex(0.15,0.7,"MadGraph");
+
+	TLine *OLine2 = new TLine(h_M->GetXaxis()->GetXmin(),1.,h_M->GetXaxis()->GetXmax(),1.);
+	OLine2->SetLineColor(kGreen+2);
+	OLine2->Draw();
+
+	c1->cd();
+
+	TPad *pad3 = new TPad("pad3","pad3",0,0.18,1,0.29);
+	pad3->SetTopMargin(0);
+	pad3->SetBottomMargin(0.001);
+	pad3->Draw();
+	pad3->cd();   
+
+	TH1F *h_S = h_data_b->Clone("h_S");
+	h_S->SetTitle("");
+	h_S->SetStats(0);
+	h_S->GetXaxis()->SetTitleOffset(0.9);        
+	h_S->GetXaxis()->SetTitleSize(0.14);
+	h_S->GetXaxis()->SetLabelFont(42);      
+	h_S->GetXaxis()->SetLabelSize(0.12);
+	h_S->GetXaxis()->SetTitleFont(42);
+	h_S->GetXaxis()->SetTickLength(0.1);
+	h_S->GetYaxis()->SetTitle("Data / Theory");
+	h_S->GetYaxis()->SetNdivisions(013);
+	h_S->GetYaxis()->SetTitleSize(0.17);
+	h_S->GetYaxis()->SetLabelSize(0.17);
+	h_S->GetYaxis()->SetRangeUser(-0.2, 2.2);
+	h_S->GetYaxis()->SetTitleOffset(0.21);
+	h_S->GetYaxis()->SetTickLength(0.02);
+	h_S->Divide(h_mcg1_b);
+	h_S->SetMarkerStyle(24);
+	h_S->Draw("EPX0");
+	if (isratio==0) {
+	  TH1F *h_S2= h_data->Clone("h_S2"); 	
+	  h_S2->GetXaxis()->SetTitleOffset(0.9);
+	  h_S2->GetXaxis()->SetTitleSize(0.14);
+	  h_S2->GetXaxis()->SetLabelFont(42);
+	  h_S2->GetXaxis()->SetLabelSize(0.12);
+	  h_S2->GetXaxis()->SetTitleFont(42);
+	  h_S2->GetXaxis()->SetTickLength(0.1);
+	  h_S2->GetYaxis()->SetTitle("Data / Theory");
+	  h_S2->GetYaxis()->SetNdivisions(013);
+	  h_S2->GetYaxis()->SetTitleSize(0.17);
+	  h_S2->GetYaxis()->SetLabelSize(0.17);
+	  h_S2->GetYaxis()->SetRangeUser(-0.2, 2.2);
+	  h_S2->GetYaxis()->SetTitleOffset(0.21);
+	  h_S2->GetYaxis()->SetTickLength(0.02);
+	  h_S2->Divide(h_mcg1);
+	  h_S2->SetMarkerStyle(20);
+	  h_S2->Draw("EPX0SAME");
+	}
+
+	TLatex *t3 = new TLatex();
+	t3->SetTextSize(0.2);
+	t3->SetTextFont(42);
+	t3->SetLineWidth(2);
+	t3->SetNDC();
+	t3->DrawLatex(0.15,0.7,"Sherpa");
+
+	TLine *OLine3 = new TLine(h_S->GetXaxis()->GetXmin(),1.,h_S->GetXaxis()->GetXmax(),1.);
+	OLine3->SetLineColor(kMagenta-6);
+	OLine3->Draw();
+
+	c1->cd();
+
+	TPad *pad4 = new TPad("pad4","pad4",0,0.0,1,0.18);
+	pad4->SetTopMargin(0);
+	pad4->SetBottomMargin(0.3);
+	pad4->Draw();
+	pad4->cd();   
+
+	TH1F *h_P = h_data_b->Clone("h_P");
+	h_P->SetTitle("");
+	h_P->SetStats(0);
+	h_P->GetXaxis()->SetTitleOffset(0.9);        
+	h_P->GetXaxis()->SetTitleSize(0.14);
+	h_P->GetXaxis()->SetLabelFont(42);     
+	h_P->GetXaxis()->SetLabelSize(0.12);
+	h_P->GetXaxis()->SetTitleFont(42);
+	h_P->GetXaxis()->SetTickLength(0.1);
+	h_P->GetYaxis()->SetTitle("Data / Theory");
+	h_P->GetYaxis()->SetNdivisions(013);
+	h_P->GetYaxis()->SetTitleSize(0.11);
+	h_P->GetYaxis()->SetLabelSize(0.11);
+	h_P->GetYaxis()->SetRangeUser(-0.2, 2.2);
+	h_P->GetYaxis()->SetTitleOffset(0.32);
+	h_P->GetYaxis()->SetTickLength(0.02);
+	h_P->Divide(h_mcg2_b);
+	h_P->SetMarkerStyle(24);
+	h_P->Draw("EPX0");
+	if (isratio==0) {
+	  TH1F *h_P2= h_data->Clone("h_P2"); 	
+	  h_P2->GetXaxis()->SetTitleOffset(0.9);
+	  h_P2->GetXaxis()->SetTitleSize(0.14);
+	  h_P2->GetXaxis()->SetLabelFont(42);
+	  h_P2->GetXaxis()->SetLabelSize(0.12);
+	  h_P2->GetXaxis()->SetTitleFont(42);
+	  h_P2->GetXaxis()->SetTickLength(0.1);
+	  h_P2->GetYaxis()->SetTitle("Data / Theory");
+	  h_P2->GetYaxis()->SetNdivisions(013);
+	  h_P2->GetYaxis()->SetTitleSize(0.11);
+	  h_P2->GetYaxis()->SetLabelSize(0.11);
+	  h_P2->GetYaxis()->SetRangeUser(-0.2, 2.2);
+	  h_P2->GetYaxis()->SetTitleOffset(0.32);
+	  h_P2->GetYaxis()->SetTickLength(0.02);
+	  h_P2->Divide(h_mcg2);
+	  h_P2->SetMarkerStyle(20);
+	  h_P2->Draw("EPX0SAME");
+	}
+
+	TLatex *t4 = new TLatex();
+	t4->SetTextSize(0.13);
+	t4->SetTextFont(42);
+	t4->SetLineWidth(2);
+	t4->SetNDC();
+	t4->DrawLatex(0.15,0.8,"Powheg");
+
+	TLine *OLine4 = new TLine(h_P->GetXaxis()->GetXmin(),1.,h_P->GetXaxis()->GetXmax(),1.);
+	OLine4->SetLineColor(kBlue-4);
+	OLine4->Draw();
+
+	c1->cd();
+
+	if (isratio==1) {
+	  h_mc1b_b->GetYaxis()->SetRangeUser(-0.5, 10);
+	}
 
 	if (title_b=="w_first_jet_pt_b") {
-	  h_R->GetXaxis ()->SetTitle("leading jet p_{T} [GeV/c]");
-	  h_R->GetXaxis()->SetRangeUser(0, 4);
-	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	  h_P->GetXaxis()->SetTitle("leading jet p_{T} [GeV/c]");
+	  if (isratio==1) {
+	    h_mc1b_b->GetXaxis()->SetRangeUser(0, 200);
+	    h_M->GetXaxis()->SetRangeUser(0, 200);
+	    h_S->GetXaxis()->SetRangeUser(0, 200);
+	    h_P->GetXaxis()->SetRangeUser(0, 200);
+	    h_mc1b_b->GetYaxis()->SetRangeUser(-0.5, 20);
+	    OLine2->SetX2(210);
+	    OLine3->SetX2(210);
+	    OLine4->SetX2(210);
+	  }
 	} else if (title_b=="w_first_jet_eta_b") {
-	  h_R->GetXaxis ()->SetTitle("leading jet #eta");
-	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	  h_P->GetXaxis()->SetTitle("leading jet #eta");
+	  if (isratio==1) {
+	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
+	  }
 	} else if (title_b=="w_first_bjet_pt") {
-	  h_R->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
-	  if (isratio==1) h_R->GetXaxis()->SetRangeUser(0, 200);
-	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	  h_P->GetXaxis()->SetTitle("leading b-jet p_{T} [GeV/c]");
+	  if (isratio==1) {
+	    h_mc1b_b->GetXaxis()->SetRangeUser(0, 200);
+	    h_M->GetXaxis()->SetRangeUser(0, 200);
+	    h_S->GetXaxis()->SetRangeUser(0, 200);
+	    h_P->GetXaxis()->SetRangeUser(0, 200);
+	    h_mc1b_b->GetYaxis()->SetRangeUser(-0.5, 10);
+	    OLine2->SetX2(210);
+	    OLine3->SetX2(210);
+	    OLine4->SetX2(210);
+	  }
 	} else if (title_b=="w_first_bjet_eta") {
-	  h_R->GetXaxis ()->SetTitle("leading b-jet #eta");
-	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	  h_P->GetXaxis()->SetTitle("leading b-jet #eta");
+	  if (isratio==1) {
+	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
+	  }
 	} else if (title_b=="w_pt_Z_ee_b"||title_b =="w_pt_Z_mm_b") {
-	  h_R->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
-	  if (isratio==1) h_R->GetXaxis()->SetRangeUser(0, 200);
-	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	  h_P->GetXaxis()->SetTitle("Z boson p_{T} [GeV/c]");
+	  if (isratio==1) {
+	    h_mc1b_b->GetXaxis()->SetRangeUser(0, 200);
+	    h_M->GetXaxis()->SetRangeUser(0, 200);
+	    h_S->GetXaxis()->SetRangeUser(0, 200);
+	    h_P->GetXaxis()->SetRangeUser(0, 200);
+	    h_mc1b_b->GetYaxis()->SetRangeUser(-0.5, 20);
+	    OLine2->SetX2(210);
+	    OLine3->SetX2(210);
+	    OLine4->SetX2(210);
+	  }
 	} else if (title_b=="w_Ht_b") {
-	  h_R->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
-	  h_R->GetXaxis()->SetRangeUser(0, 250);
-	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 10);
+	  h_P->GetXaxis()->SetTitle("H_{T} [GeV/c]");
+	  if (isratio==1) {
+	    h_mc1b_b->GetXaxis()->SetRangeUser(0, 250);
+	    h_M->GetXaxis()->SetRangeUser(0, 250);
+	    h_S->GetXaxis()->SetRangeUser(0, 250);
+	    h_P->GetXaxis()->SetRangeUser(0, 250);
+	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
+	    OLine2->SetX2(260);
+	    OLine3->SetX2(260);
+	    OLine4->SetX2(260);
+	  }
 	} else if (title_b=="w_delta_phi_ee_b" || title_b=="w_delta_phi_mm_b") {
-	  h_R->GetXaxis ()->SetTitle("#Delta#phi(Zb) [rad]");
-	  h_R->GetXaxis()->SetRangeUser(0, 250);
-	  if (isratio==1) h_R->GetYaxis()->SetRangeUser(0, 20);
-	} 
+	  h_P->GetXaxis()->SetTitle("#Delta#phi(Zb) [rad]");
+	  if (isratio==1) {
+	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
+	  }
+	}
 
 	if (isratio==0) {
 	  if (plot) {
