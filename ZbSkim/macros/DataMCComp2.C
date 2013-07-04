@@ -211,7 +211,7 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
 	h_mc1->Scale(norm1);
 	h_mcg->Scale(norm1);
-	h_mcg1->Scale(norm1_1*3);
+	h_mcg1->Scale(norm1_1);
 	h_mcg2->Scale(norm1_2);
 	h_mc2->Scale(norm2*c_t);
 	h_mc3->Scale(norm3);
@@ -405,32 +405,36 @@ int useBinnedEfficiency=1;
 
 	  h_mc1b_b->Draw("E5");
 	  TH1F* tmp1 = h_mc1b_b->Clone();
-	  if (title.find("_pt")!=string::npos) {
+	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    tmp1->GetXaxis()->SetRangeUser(0, 200);
+	    if (tmp1->GetMinimum()==0) tmp1->GetXaxis()->SetRangeUser(0, tmp1->GetBinCenter(tmp1->GetMinimumBin()-1));
 	  }
 	  tmp1->SetFillColor(0);
 	  tmp1->DrawClone("HISTLSAME");
 
 	  h_mcg_b->Draw("E5SAME");
 	  TH1F* tmp2 = h_mcg_b->Clone();
-	  if (title.find("_pt")!=string::npos) {
-	    tmp2->GetXaxis()->SetRangeUser(0, 200);
+	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
+	    //tmp2->GetXaxis()->SetRangeUser(0, 200);
+	    if (tmp2->GetMinimum()==0) tmp2->GetXaxis()->SetRangeUser(0, tmp2->GetBinCenter(tmp2->GetMinimumBin()-1));
 	  }
 	  tmp2->SetFillColor(0);
 	  tmp2->DrawClone("HISTLSAME");
 
 	  h_mcg1_b->Draw("E5SAME");
 	  TH1F* tmp2_1 = h_mcg1_b->Clone();
-	  if (title.find("_pt")!=string::npos) {
-	    tmp2_1->GetXaxis()->SetRangeUser(0, 200);
+	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
+	    //tmp2_1->GetXaxis()->SetRangeUser(0, 200);
+	    if (tmp2_1->GetMinimum()==0) tmp2_1->GetXaxis()->SetRangeUser(0, tmp2_1->GetBinCenter(tmp2_1->GetMinimumBin()-1));
 	  }
 	  tmp2_1->SetFillColor(0);
 	  tmp2_1->DrawClone("HISTLSAME");
 
 	  h_mcg2_b->Draw("E5SAME");
 	  TH1F* tmp2_2 = h_mcg2_b->Clone();
-	  if (title.find("_pt")!=string::npos) {
-	    tmp2_2->GetXaxis()->SetRangeUser(0, 200);
+	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
+	    //tmp2_2->GetXaxis()->SetRangeUser(0, 200);
+	    if (tmp2_2->GetMinimum()==0) tmp2_2->GetXaxis()->SetRangeUser(0, tmp2_2->GetBinCenter(tmp2_2->GetMinimumBin()-1));
 	  }
 	  tmp2_2->SetFillColor(0);
 	  tmp2_2->DrawClone("HISTLSAME");
@@ -443,8 +447,9 @@ int useBinnedEfficiency=1;
 	  h_mc1->SetFillColor(kRed);
 	  h_mc1->Draw("E5SAME");
 	  TH1F* tmp3 = h_mc1->Clone();
-	  if (title.find("_pt")!=string::npos) {
-	    tmp3->GetXaxis()->SetRangeUser(0, 200);
+	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
+	    //tmp3->GetXaxis()->SetRangeUser(0, 200);
+	    if (tmp3->GetMinimum()==0) tmp3->GetXaxis()->SetRangeUser(0, tmp3->GetBinCenter(tmp3->GetMinimumBin()-1));
 	  }
 	  tmp3->SetFillColor(0);
 	  tmp3->DrawClone("HISTLSAME");
@@ -455,8 +460,9 @@ int useBinnedEfficiency=1;
 	  h_mcg->SetFillColor(kGreen+2);
 	  h_mcg->Draw("E5SAME");
 	  TH1F* tmp4 = h_mcg->Clone();
-	  if (title.find("_pt")!=string::npos) {
-	    tmp4->GetXaxis()->SetRangeUser(0, 200);
+	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
+	    //tmp4->GetXaxis()->SetRangeUser(0, 200);
+	    if (tmp4->GetMinimum()==0) tmp4->GetXaxis()->SetRangeUser(0, tmp4->GetBinCenter(tmp4->GetMinimumBin()-1));
 	  }
 	  tmp4->SetFillColor(0);
 	  tmp4->DrawClone("HISTLSAME");
@@ -467,8 +473,9 @@ int useBinnedEfficiency=1;
 	  h_mcg1->SetFillColor(kMagenta-6);
 	  h_mcg1->Draw("E5SAME");
 	  TH1F* tmp4_1 = h_mcg1->Clone();
-	  if (title.find("_pt")!=string::npos) {
-	    tmp4_1->GetXaxis()->SetRangeUser(0, 200);
+	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
+//	    tmp4_1->GetXaxis()->SetRangeUser(0, 200);
+	    if (tmp4_1->GetMinimum()==0) tmp4_1->GetXaxis()->SetRangeUser(0, tmp4_1->GetBinCenter(tmp4_1->GetMinimumBin()-1));
 	  }
 	  tmp4_1->SetFillColor(0);
 	  tmp4_1->DrawClone("HISTLSAME");
@@ -479,8 +486,9 @@ int useBinnedEfficiency=1;
 	  h_mcg2->SetFillColor(kBlue-4);
 	  h_mcg2->Draw("E5SAME");
 	  TH1F* tmp4_2 = h_mcg2->Clone();
-	  if (title.find("_pt")!=string::npos) {
-	    tmp4_2->GetXaxis()->SetRangeUser(0, 200);
+	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
+	    //tmp4_2->GetXaxis()->SetRangeUser(0, 200);
+	    if (tmp4_2->GetMinimum()==0) tmp4_2->GetXaxis()->SetRangeUser(0, tmp4_2->GetBinCenter(tmp4_2->GetMinimumBin()-1));
 	  }
 	  tmp4_2->SetFillColor(0);
 	  tmp4_2->DrawClone("HISTLSAME");
