@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.27 2013/06/27 11:40:44 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.28 2013/07/02 13:40:44 dellaric Exp $
 //
 //
 
@@ -126,6 +126,8 @@ private:
 
   edm::LumiReWeighting LumiWeights_;
 
+  TH1F*     h_gen_weights;
+
   TH1F*     h_jetmultiplicity;
   TH1F*     h_jet_pt;
   TH1F*     h_ele_pt;
@@ -134,8 +136,6 @@ private:
   TH1F*     w_pt_Z_mm;
   TH1F*     w_pt_Z_ee_b;
   TH1F*     w_pt_Z_mm_b;
-
-  TH1F*     h_pu_weights;
 
   TH1F*     w_jetmultiplicity;
   TH1F*     w_first_jet_pt;      // leading jet of any type
@@ -185,6 +185,8 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
 
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
+
+  h_gen_weights     =   fs->make < TH1F > ("h_gen_weights",      "h_gen_weights", 2, 0, 2);
 
   w_jetmultiplicity =   fs->make < TH1F > ("w_jetmultiplicity",  "w_jetmultiplicity;", 8, 0.5, 8.5);
   w_first_ele_pt =      fs->make < TH1F > ("w_first_ele_pt",     "w_first_ele_pt; [GeV]", 50, 0., 450.);
@@ -286,6 +288,9 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   if (iEvent.getByLabel ("generator", genEventInfoHandle)) {
 
     double mcWeight = genEventInfoHandle->weight();
+
+    h_gen_weights->Fill(0.5, 1.0);
+    h_gen_weights->Fill(1.5, mcWeight);
 
     MyWeight = MyWeight*mcWeight;
 
