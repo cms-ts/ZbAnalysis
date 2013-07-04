@@ -433,6 +433,7 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 
 	TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
 	OLine->SetLineColor(kRed);
+	OLine->SetLineWidth(2);
 	OLine->Draw();
 
 	c1->cd();

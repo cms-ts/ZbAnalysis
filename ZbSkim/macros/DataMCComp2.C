@@ -29,7 +29,7 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 	double e_Z_1=1.0;
 	double e_Z_b=1.0;
 
-       /* top */
+	/* top */
 
 	double c_t=1.0;
 
@@ -100,10 +100,9 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	  if (title.find("ee")!=string::npos) return;
 	}
 
-	if (ilepton==1)
-	  TFile *data = TFile::Open((path + "DoubleElectron_2012_merge.root").c_str());
-	if (ilepton==2)
-	  TFile *data = TFile::Open((path + "DoubleMu_2012_merge.root").c_str());
+	TFile *data;
+	if (ilepton==1) data = TFile::Open((path + "DoubleElectron_2012_merge.root").c_str());
+	if (ilepton==2) data = TFile::Open((path + "DoubleMu_2012_merge.root").c_str());
 
 	TFile *mc1 = TFile::Open((path + "DYJetsToLL.root").c_str());
 	TFile *mcg = TFile::Open((path + "DYJetsToLL_gen.root").c_str());
@@ -595,6 +594,7 @@ int useBinnedEfficiency=1;
 
 	TLine *OLine2 = new TLine(h_M->GetXaxis()->GetXmin(),1.,h_M->GetXaxis()->GetXmax(),1.);
 	OLine2->SetLineColor(kGreen+2);
+	OLine2->SetLineWidth(2);
 	OLine2->Draw();
 
 	c1->cd();
@@ -653,6 +653,7 @@ int useBinnedEfficiency=1;
 
 	TLine *OLine3 = new TLine(h_S->GetXaxis()->GetXmin(),1.,h_S->GetXaxis()->GetXmax(),1.);
 	OLine3->SetLineColor(kMagenta-6);
+	OLine3->SetLineWidth(2);
 	OLine3->Draw();
 
 	c1->cd();
@@ -711,6 +712,7 @@ int useBinnedEfficiency=1;
 
 	TLine *OLine4 = new TLine(h_P->GetXaxis()->GetXmin(),1.,h_P->GetXaxis()->GetXmax(),1.);
 	OLine4->SetLineColor(kBlue-4);
+	OLine4->SetLineWidth(2);
 	OLine4->Draw();
 
 	c1->cd();
