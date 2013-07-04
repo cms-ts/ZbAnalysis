@@ -65,8 +65,8 @@ for D in $DIRS; do
       ERRORS=`diff /tmp/l1 /tmp/l2 | grep -v d | sed -e 's/<//' | sed -e 's/ //g'`
       echo $ERRORS
       for E in $ERRORS; do
-        ls -lt $DIR/$D/patTuple_${E}_*_*.root
-        ls -lt $DIR/$D/patTuple_${E}_*_*.root | tail -1 | awk '{print $9}' | sed -e 's;/gpfs/grid/srm;lcg-del -l srm://gridsrm.ts.infn.it;'
+        ls -lt $DIR/$D/*Tuple_${E}_*_*.root
+        ls -lt $DIR/$D/*Tuple_${E}_*_*.root | tail -1 | awk '{print $9}' | sed -e 's;/gpfs/grid/srm;lcg-del -l srm://gridsrm.ts.infn.it;'
       done
       rm /tmp/l1 /tmp/l2
     fi
