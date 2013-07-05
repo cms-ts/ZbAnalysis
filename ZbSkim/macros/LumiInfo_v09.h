@@ -12,10 +12,22 @@ double Lumi_2012B_22Jan = 4429.000;
 double Lumi_2012C_22Jan = 7152.000;
 double Lumi_2012D_22Jan = 7318.000;
 
-//////////////////////// DY
+//////////////////////// DY MadGraph
 
 double Ngen_dy = 30459503;
 double Xsec_dy = 3503.71; // NNLO
+
+//////////////////////// DY Sherpa
+
+//double Ngen_dy_1 = 127014144 * 0.3432;
+double Ngen_dy_1 = 126964144 * 0.3432; // IN PROGRESS
+double Xsec_dy_1 = 3503.71; // NNLO
+
+//////////////////////// DY Powheg
+
+double Ngen_dy_2_ee = 3297045; // EE
+double Ngen_dy_2_mm = 3283740; // MM
+double Xsec_dy_2 = 5745.25/3.0; // NNLO
 
 //////////////////////// TTbar
 
