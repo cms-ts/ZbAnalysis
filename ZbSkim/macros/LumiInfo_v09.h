@@ -19,7 +19,7 @@ double Xsec_dy = 3503.71; // NNLO
 
 //////////////////////// DY Sherpa
 
-double Ngen_dy_1 = 127014144 * 0.3432;
+double Ngen_dy_1 = 127014144 * 43915740.0 / 127014144.0;
 double Xsec_dy_1 = 3503.71; // NNLO
 
 //////////////////////// DY Powheg

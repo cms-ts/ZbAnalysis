@@ -106,7 +106,7 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
 	TFile *mc1 = TFile::Open((path + "DYJetsToLL.root").c_str());
 	TFile *mcg = TFile::Open((path + "DYJetsToLL_gen.root").c_str());
-	TFile *mcg1 = TFile::Open((path + "DYJetsToLL_sherpa_gen.root").c_str());
+	TFile *mcg1 = TFile::Open((path + "DYJets_sherpa_gen.root").c_str());
 	TFile *mcg2;
 	if (ilepton==1) mcg2 = TFile::Open((path + "DYToEE_powheg_gen.root").c_str());
 	if (ilepton==2) mcg2 = TFile::Open((path + "DYToMuMu_powheg_gen.root").c_str());
