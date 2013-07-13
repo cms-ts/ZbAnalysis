@@ -223,6 +223,7 @@ process.GlobalTag.toGet = cms.VPSet(
 process.source = cms.Source("PoolSource",
 	#fileNames = cms.untracked.vstring('/store/mc/Summer12/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/AODSIM/PU_S7_START50_V15-v1/0000/88AD6E87-E173-E111-9996-00E081791749.root')
 	fileNames = cms.untracked.vstring('file:88AD6E87-E173-E111-9996-00E081791749.root')
+	#fileNames = cms.untracked.vstring('file:7ADC40F9-2C8B-E211-B250-0026189438FA.root')
 			   )
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
