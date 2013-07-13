@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.106 2013/07/13 12:39:22 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.107 2013/07/13 12:46:58 dellaric Exp $
 //
 //
 
@@ -687,11 +687,19 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   h_scaleFactor_second_muon = fs->make < TH1F > ("h_scaleFactor_second_muon", "h_scaleFactor_second_muon", 50, 0.95, 1.05);
   b_scaleFactor_second_muon = fs->make < TH1F > ("b_scaleFactor_second_muon", "b_scaleFactor_second_muon", 50, 0.95, 1.05);
 
-  produces<std::vector < pat::Electron >>("myElectrons");
-  produces<std::vector < pat::Muon >>("myMuons");
+  produces<std::vector<double>>("myEventWeight");
 
-  produces<std::vector < pat::Jet >>("myJets");
-  produces<std::vector < pat::Jet >>("myBjets");
+  produces<std::vector<pat::Electron>>("myElectrons");
+  produces<std::vector<pat::Muon>>("myMuons");
+
+  produces<std::vector<double>>("myPtZ");
+
+  produces<std::vector<pat::Jet>>("myJets");
+
+  produces<std::vector<double>>("myHt");
+
+  produces<std::vector<double>>("myBjetsWeights");
+  produces<std::vector<pat::Jet>>("myBjets");
 
 }
 
@@ -746,10 +754,19 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   edm::Handle<vector<reco::GenJet> > gJets;
   iEvent.getByLabel(edm::InputTag("goodJets","genJets"), gJets);
 
-  std::auto_ptr< std::vector<pat::Electron> > myElectrons( new std::vector<pat::Electron> );
-  std::auto_ptr< std::vector<pat::Muon> > myMuons( new std::vector<pat::Muon> );
-  std::auto_ptr< std::vector<pat::Jet> > myJets( new std::vector<pat::Jet> );
-  std::auto_ptr< std::vector<pat::Jet> > myBjets( new std::vector<pat::Jet> );
+  std::auto_ptr<std::vector<double>> myEventWeight( new std::vector<double> );
+
+  std::auto_ptr<std::vector<pat::Electron>> myElectrons( new std::vector<pat::Electron> );
+  std::auto_ptr<std::vector<pat::Muon>> myMuons( new std::vector<pat::Muon> );
+
+  std::auto_ptr<std::vector<double>> myPtZ( new std::vector<double> );
+
+  std::auto_ptr<std::vector<pat::Jet>> myJets( new std::vector<pat::Jet> );
+
+  std::auto_ptr<std::vector<double>> myHt( new std::vector<double> );
+
+  std::auto_ptr<std::vector<double>> myBjetsWeights( new std::vector<double> );
+  std::auto_ptr<std::vector<pat::Jet>> myBjets( new std::vector<pat::Jet> );
 
   bool ee_event = false;
   bool mm_event = false;
@@ -1623,30 +1640,48 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
   }
 
+  if ((ee_event || mm_event) && Nj > 0 && met_cut) {
+    myEventWeight->push_back(MyWeight);
+  }
+
   if (ee_event && Nj > 0 && met_cut) {
     for (unsigned int i=0; i<vect_ele.size(); ++i) {
       myElectrons->push_back(vect_ele[i]);
+      myPtZ->push_back(diele_pt);
     }
   }
 
   if (mm_event && Nj > 0 && met_cut) {
     for (unsigned int i=0; i<vect_muon.size(); ++i) {
       myMuons->push_back(vect_muon[i]);
+      myPtZ->push_back(dimuon_pt);
     }
   }
 
   if ((ee_event || mm_event) && Nj > 0 && met_cut) {
     for (unsigned int i=0; i<vect_jets.size(); ++i) {
       myJets->push_back(vect_jets[i]);
+      myHt->push_back(Ht);
     }
     for (unsigned int i=0; i<vect_bjets.size(); ++i) {
+      scalFac_b = btagSF(isMC, vect_bjets[i].partonFlavour(), vect_bjets[i].pt(), vect_bjets[i].eta());
+      myBjetsWeights->push_back(scalFac_b);
       myBjets->push_back(vect_bjets[i]);
     }
   }
 
+  iEvent.put( myEventWeight, "myEventWeight" );
+
   iEvent.put( myElectrons, "myElectrons" );
   iEvent.put( myMuons, "myMuons" );
+
+  iEvent.put( myPtZ, "myPtZ" );
+
   iEvent.put( myJets, "myJets" );
+
+  iEvent.put( myHt, "myHt" );
+
+  iEvent.put( myBjetsWeights, "myBjetsWeights" );
   iEvent.put( myBjets, "myBjets" );
 
 }
