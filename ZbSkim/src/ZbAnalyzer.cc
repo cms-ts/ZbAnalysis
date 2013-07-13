@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.104 2013/06/25 05:36:06 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.105 2013/07/02 13:40:44 dellaric Exp $
 //
 //
 
@@ -28,7 +28,7 @@
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -81,7 +81,7 @@
 // class declaration
 //
 
-class ZbAnalyzer:public  edm::EDAnalyzer {
+class ZbAnalyzer : public edm::EDProducer {
 
 public:
 
@@ -91,7 +91,7 @@ public:
 private:
 
   virtual void beginJob ();
-  virtual void analyze (const edm::Event &, const edm::EventSetup &);
+  virtual void produce (edm::Event &, const edm::EventSetup &);
   virtual void endJob ();
 
   virtual void beginRun (edm::Run const &, edm::EventSetup const &);
@@ -637,6 +637,12 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   h_scaleFactor_second_muon = fs->make < TH1F > ("h_scaleFactor_second_muon", "h_scaleFactor_second_muon", 50, 0.95, 1.05);
   b_scaleFactor_second_muon = fs->make < TH1F > ("b_scaleFactor_second_muon", "b_scaleFactor_second_muon", 50, 0.95, 1.05);
 
+  produces<std::vector < pat::Electron >>("myElectrons");
+  produces<std::vector < pat::Muon >>("myMuons");
+
+  produces<std::vector < pat::Jet >>("myJets");
+  produces<std::vector < pat::Jet >>("myBjets");
+
 }
 
 ZbAnalyzer::~ZbAnalyzer () {
@@ -651,7 +657,7 @@ ZbAnalyzer::~ZbAnalyzer () {
 //
 
 // ------------ method called for each event ------------
-void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) {
+void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   using namespace edm;
   using namespace std;
@@ -689,6 +695,11 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
 
   edm::Handle<vector<reco::GenJet> > gJets;
   iEvent.getByLabel(edm::InputTag("goodJets","genJets"), gJets);
+
+  std::auto_ptr< std::vector<pat::Electron> > myElectrons( new std::vector<pat::Electron> );
+  std::auto_ptr< std::vector<pat::Muon> > myMuons( new std::vector<pat::Muon> );
+  std::auto_ptr< std::vector<pat::Jet> > myJets( new std::vector<pat::Jet> );
+  std::auto_ptr< std::vector<pat::Jet> > myBjets( new std::vector<pat::Jet> );
 
   bool ee_event = false;
   bool mm_event = false;
@@ -1517,6 +1528,32 @@ void ZbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSe
       b_scaleFactor_second_muon->Fill (scalFac_second_m, MyWeight / (scalFac_first_m * scalFac_second_m));
     }
   }
+
+  if (ee_event && Nj > 0 && met_cut) {
+    for (unsigned int i=0; i<vect_ele.size(); ++i) {
+      myElectrons->push_back(vect_ele[i]);
+    }
+  }
+
+  if (mm_event && Nj > 0 && met_cut) {
+    for (unsigned int i=0; i<vect_muon.size(); ++i) {
+      myMuons->push_back(vect_muon[i]);
+    }
+  }
+
+  if ((ee_event || mm_event) && Nj > 0 && met_cut) {
+    for (unsigned int i=0; i<vect_jets.size(); ++i) {
+      myJets->push_back(vect_jets[i]);
+    }
+    for (unsigned int i=0; i<vect_bjets.size(); ++i) {
+      myBjets->push_back(vect_bjets[i]);
+    }
+  }
+
+  iEvent.put( myElectrons, "myElectrons" );
+  iEvent.put( myMuons, "myMuons" );
+  iEvent.put( myJets, "myJets" );
+  iEvent.put( myBjets, "myBjets" );
 
 }
 

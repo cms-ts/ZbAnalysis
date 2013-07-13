@@ -18,68 +18,68 @@ process.source = cms.Source("PoolSource",
 process.filter = cms.EDFilter('ZbFilter'
 )
 
-process.demo_ee = cms.EDAnalyzer('ZbAnalyzer',
+process.demoEle = cms.EDProducer('ZbAnalyzer',
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("electron"),
 	JEC     = cms.untracked.double(0),
 	usePartonFlavour = cms.untracked.bool(False)
 )
 
-process.demo_ee_up = cms.EDAnalyzer('ZbAnalyzer',
+process.demoEleUp = cms.EDProducer('ZbAnalyzer',
 	pileup     = cms.untracked.string("S10"),
 	lepton     = cms.untracked.string("electron"),
 	JEC        = cms.untracked.double(1),
 	usePartonFlavour = cms.untracked.bool(False)
 )
 
-process.demo_ee_down = cms.EDAnalyzer('ZbAnalyzer',
+process.demoEleDown = cms.EDProducer('ZbAnalyzer',
 	pileup       = cms.untracked.string("S10"),
 	lepton 	     = cms.untracked.string("electron"),
 	JEC    	     = cms.untracked.double(-1),
 	usePartonFlavour = cms.untracked.bool(False)
 )
 
-process.demo_mm = cms.EDAnalyzer('ZbAnalyzer',
+process.demoMuo = cms.EDProducer('ZbAnalyzer',
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("muon"),
 	JEC     = cms.untracked.double(0),
 	usePartonFlavour = cms.untracked.bool(False)
 )
 
-process.demo_mm_up = cms.EDAnalyzer('ZbAnalyzer',
+process.demoMuoUp = cms.EDProducer('ZbAnalyzer',
 	pileup 	   = cms.untracked.string("S10"),
 	lepton 	   = cms.untracked.string("muon"),
 	JEC    	   = cms.untracked.double(1),
 	usePartonFlavour = cms.untracked.bool(False)
 )
 
-process.demo_mm_down = cms.EDAnalyzer('ZbAnalyzer',
+process.demoMuoDown = cms.EDProducer('ZbAnalyzer',
 	pileup 	     = cms.untracked.string("S10"),
 	lepton 	     = cms.untracked.string("muon"),
 	JEC    	     = cms.untracked.double(-1),
 	usePartonFlavour = cms.untracked.bool(False)
 )
 
-process.demo_ee_btag = cms.EDAnalyzer('ZbAnalyzer',
+process.demoEleBtag = cms.EDProducer('ZbAnalyzer',
         pileup  = cms.untracked.string("S10"),
         lepton  = cms.untracked.string("electron"),
         JEC     = cms.untracked.double(0),
 	usePartonFlavour = cms.untracked.bool(True)
 )
 
-process.demo_mm_btag = cms.EDAnalyzer('ZbAnalyzer',
+process.demoMuoBtag = cms.EDProducer('ZbAnalyzer',
         pileup  = cms.untracked.string("S10"),
         lepton  = cms.untracked.string("muon"),
         JEC     = cms.untracked.double(0),
 	usePartonFlavour = cms.untracked.bool(True)
 )
 
-process.demo2_ee = cms.EDAnalyzer('ZJetsAnalyzer',
+process.demoEle2 = cms.EDAnalyzer('ZJetsAnalyzer',
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("electron")
 )
 
-process.demo2_mm = cms.EDAnalyzer('ZJetsAnalyzer',
+process.demoMuo2 = cms.EDAnalyzer('ZJetsAnalyzer',
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("muon")
 )
@@ -87,6 +87,5 @@ process.demo2_mm = cms.EDAnalyzer('ZJetsAnalyzer',
 process.TFileService = cms.Service("TFileService",
 	fileName = cms.string('ZbTree.root')
 )
-
-process.p = cms.Path(process.filter*process.demo_ee*process.demo_ee_up*process.demo_ee_down*process.demo_mm*process.demo_mm_up*process.demo_mm_down*process.demo_ee_btag*process.demo_mm_btag*process.demo2_ee*process.demo2_mm)
+process.p = cms.Path(process.filter*process.demoEle*process.demoEleUp*process.demoEleDown*process.demoMuo*process.demoMuoUp*process.demoMuoDown*process.demoEleBtag*process.demoMuoBtag*process.demoEle2*process.demoMuo2)
 

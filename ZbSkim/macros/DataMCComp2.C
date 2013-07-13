@@ -125,13 +125,13 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	  title_b = title + "_b";
         }
 
-	if (ilepton==1) data->cd("demo_ee");
-	if (ilepton==2) data->cd("demo_mm");
+	if (ilepton==1) data->cd("demoEle");
+	if (ilepton==2) data->cd("demoMuo");
 	TH1F* h_data = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_data_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (ilepton==1) mc1->cd("demo_ee");
-	if (ilepton==2) mc1->cd("demo_mm");
+	if (ilepton==1) mc1->cd("demoEle");
+	if (ilepton==2) mc1->cd("demoMuo");
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 	TH1F* h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
@@ -152,33 +152,33 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	TH1F* h_mcg2 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg2_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (ilepton==1) mc2->cd("demo_ee");
-	if (ilepton==2) mc2->cd("demo_mm");
+	if (ilepton==1) mc2->cd("demoEle");
+	if (ilepton==2) mc2->cd("demoMuo");
 	TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc2_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (ilepton==1) mc3->cd("demo_ee");
-	if (ilepton==2) mc3->cd("demo_mm");
+	if (ilepton==1) mc3->cd("demoEle");
+	if (ilepton==2) mc3->cd("demoMuo");
 	TH1F* h_mc3 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc3_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (ilepton==1) mc4->cd("demo_ee");
-	if (ilepton==2) mc4->cd("demo_mm");
+	if (ilepton==1) mc4->cd("demoEle");
+	if (ilepton==2) mc4->cd("demoMuo");
 	TH1F* h_mc4 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc4_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-//	if (ilepton==1) mc5->cd("demo_ee");
-//	if (ilepton==2) mc5->cd("demo_mm");
+//	if (ilepton==1) mc5->cd("demoEle");
+//	if (ilepton==2) mc5->cd("demoMuo");
 //	TH1F* h_mc5 = (TH1F*)gDirectory->Get(title.c_str());
 //	TH1F* h_mc5_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (ilepton==1) mc6->cd("demo_ee");
-	if (ilepton==2) mc6->cd("demo_mm");
+	if (ilepton==1) mc6->cd("demoEle");
+	if (ilepton==2) mc6->cd("demoMuo");
 	TH1F* h_mc6 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc6_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (ilepton==1) mc7->cd("demo_ee");
-	if (ilepton==2) mc7->cd("demo_mm");
+	if (ilepton==1) mc7->cd("demoEle");
+	if (ilepton==2) mc7->cd("demoMuo");
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc7_b = (TH1F*)gDirectory->Get(title_b.c_str());
 

@@ -65,38 +65,38 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	TFile *mc6 = TFile::Open((path + "WW.root").c_str());
 	TFile *mc7 = TFile::Open((path + "Wj.root").c_str());
 
-	if (ilepton==1) data->cd("demo_ee");
-	if (ilepton==2) data->cd("demo_mm");
+	if (ilepton==1) data->cd("demoEle");
+	if (ilepton==2) data->cd("demoMuo");
 	TH1F* h_data = (TH1F*)gDirectory->Get(title.c_str());
 
-	if (ilepton==1) mc1->cd("demo_ee");
-	if (ilepton==2) mc1->cd("demo_mm");
+	if (ilepton==1) mc1->cd("demoEle");
+	if (ilepton==2) mc1->cd("demoMuo");
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
 	TH1F* h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
 
-	if (ilepton==1) mc2->cd("demo_ee");
-	if (ilepton==2) mc2->cd("demo_mm");
+	if (ilepton==1) mc2->cd("demoEle");
+	if (ilepton==2) mc2->cd("demoMuo");
 	TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
 
-	if (ilepton==1) mc3->cd("demo_ee");
-	if (ilepton==2) mc3->cd("demo_mm");
+	if (ilepton==1) mc3->cd("demoEle");
+	if (ilepton==2) mc3->cd("demoMuo");
 	TH1F* h_mc3 = (TH1F*)gDirectory->Get(title.c_str());
 
-	if (ilepton==1) mc4->cd("demo_ee");
-	if (ilepton==2) mc4->cd("demo_mm");
+	if (ilepton==1) mc4->cd("demoEle");
+	if (ilepton==2) mc4->cd("demoMuo");
 	TH1F* h_mc4 = (TH1F*)gDirectory->Get(title.c_str());
 
-//	if (ilepton==1) mc5->cd("demo_ee");
-//	if (ilepton==2) mc5->cd("demo_mm");
+//	if (ilepton==1) mc5->cd("demoEle");
+//	if (ilepton==2) mc5->cd("demoMuo");
 //	TH1F* h_mc5 = (TH1F*)gDirectory->Get(title.c_str());
 
-	if (ilepton==1) mc6->cd("demo_ee");
-	if (ilepton==2) mc6->cd("demo_mm");
+	if (ilepton==1) mc6->cd("demoEle");
+	if (ilepton==2) mc6->cd("demoMuo");
 	TH1F* h_mc6 = (TH1F*)gDirectory->Get(title.c_str());
 
-	if (ilepton==1) mc7->cd("demo_ee");
-	if (ilepton==2) mc7->cd("demo_mm");
+	if (ilepton==1) mc7->cd("demoEle");
+	if (ilepton==2) mc7->cd("demoMuo");
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 
 	h_data -> Sumw2();

@@ -262,39 +262,39 @@ getattr(process,"pfNoTau"+postfix).enable = useNoTau
 getattr(process,"pfNoElectron"+postfix).enable = useNoElectron
 
 process.dump = cms.EDAnalyzer("EventContentAnalyzer")
-process.demo_ee_gen = cms.EDAnalyzer('GenbAnalyzer',
+process.demoEleGen = cms.EDAnalyzer('GenbAnalyzer',
 	path = cms.untracked.string("."),
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("electron"),
 )
-process.demo_mm_gen = cms.EDAnalyzer('GenbAnalyzer',
+process.demoMuoGen = cms.EDAnalyzer('GenbAnalyzer',
 	path = cms.untracked.string("."),
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("muon"),
 )
 process.MyProcess = cms.EDFilter('ZbFilter')
-process.demo_ee = cms.EDAnalyzer('ZbAnalyzer',
+process.demoEle = cms.EDProducer('ZbAnalyzer',
 	path = cms.untracked.string("."),
         pileup  = cms.untracked.string("S10"),
         lepton  = cms.untracked.string("electron"),
         JEC     = cms.untracked.double(0),
         usePartonFlavour = cms.untracked.bool(False)
 )
-process.demo_mm = cms.EDAnalyzer('ZbAnalyzer',
+process.demoMuo = cms.EDProducer('ZbAnalyzer',
 	path = cms.untracked.string("."),
         pileup  = cms.untracked.string("S10"),
         lepton  = cms.untracked.string("muon"),
         JEC     = cms.untracked.double(0),
         usePartonFlavour = cms.untracked.bool(False)
 )
-process.demo_ee_btag = cms.EDAnalyzer('ZbAnalyzer',
+process.demoEleBtag = cms.EDProducer('ZbAnalyzer',
 	path = cms.untracked.string("."),
         pileup  = cms.untracked.string("S10"),
         lepton  = cms.untracked.string("electron"),
         JEC     = cms.untracked.double(0),
         usePartonFlavour = cms.untracked.bool(True)
 )
-process.demo_mm_btag = cms.EDAnalyzer('ZbAnalyzer',
+process.demoMuoBtag = cms.EDProducer('ZbAnalyzer',
 	path = cms.untracked.string("."),
         pileup  = cms.untracked.string("S10"),
         lepton  = cms.untracked.string("muon"),
@@ -318,10 +318,10 @@ process.p = cms.Path(
    process.selectedPatElectronsTriggerMatch *
    process.matchedElectrons *
    process.zeleMatchedeleMatched *
-   process.demo_ee_gen * process.demo_mm_gen *
+   process.demoEleGen * process.demoMuoGen *
    process.MyProcess *
-   process.demo_ee * process.demo_mm *
-   process.demo_ee_btag * process.demo_mm_btag
+   process.demoEle * process.demoMuo *
+   process.demoEleBtag * process.demoMuoBtag
    #process.dump
    )
 
