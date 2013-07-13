@@ -15,9 +15,6 @@ process.source = cms.Source("PoolSource",
         )
 )
 
-process.filter = cms.EDFilter('ZbFilter'
-)
-
 process.demoEle = cms.EDProducer('ZbAnalyzer',
 	pileup  = cms.untracked.string("S10"),
 	lepton  = cms.untracked.string("electron"),
@@ -98,5 +95,5 @@ process.TFileService = cms.Service("TFileService",
 	fileName = cms.string('ZbTree.root')
 )
 
-process.p = cms.Path(process.filter*process.demoEle*process.demoEleUp*process.demoEleDown*process.demoMuo*process.demoMuoUp*process.demoMuoDown*process.demoEleBtag*process.demoMuoBtag*process.demoEle2*process.demoMuo2*process.demoEleGen*process.demoMuoGen)
+process.p = cms.Path(process.demoEle*process.demoEleUp*process.demoEleDown*process.demoMuo*process.demoMuoUp*process.demoMuoDown*process.demoEleBtag*process.demoMuoBtag*process.demoEle2*process.demoMuo2*process.demoEleGen*process.demoMuoGen)
 
