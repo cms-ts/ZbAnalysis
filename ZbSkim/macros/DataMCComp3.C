@@ -33,19 +33,19 @@ int itype = 0; // e_Zb or e_Z
 	  if (itype==2) title_b = "b"+title.substr(1);
 	}
 
-	if (ilepton==1&&itype==0) mc1->cd("demo_ee");
-	if (ilepton==2&&itype==0) mc1->cd("demo_mm");  
-	if (ilepton==1&&itype==1) mc1->cd("demo_ee_btag");
-	if (ilepton==2&&itype==1) mc1->cd("demo_mm_btag");  
-	if (ilepton==1&&itype==2) mc1->cd("demo_ee");
-	if (ilepton==2&&itype==2) mc1->cd("demo_mm");  
+	if (ilepton==1&&itype==0) mc1->cd("demoEle");
+	if (ilepton==2&&itype==0) mc1->cd("demoMuo");  
+	if (ilepton==1&&itype==1) mc1->cd("demoEleBtag");
+	if (ilepton==2&&itype==1) mc1->cd("demoMuoBtag");  
+	if (ilepton==1&&itype==2) mc1->cd("demoEle");
+	if (ilepton==2&&itype==2) mc1->cd("demoMuo");  
 	TH1F* h_reco = (TH1F*)gDirectory->Get(title_b.c_str());
-	if (ilepton==1&&itype==0) mc2->cd("demo_ee_gen");
-	if (ilepton==2&&itype==0) mc2->cd("demo_mm_gen");
-	if (ilepton==1&&itype==1) mc2->cd("demo_ee_gen");
-	if (ilepton==2&&itype==1) mc2->cd("demo_mm_gen");
-	if (ilepton==1&&itype==2) mc2->cd("demo_ee_btag");
-	if (ilepton==2&&itype==2) mc2->cd("demo_mm_btag");
+	if (ilepton==1&&itype==0) mc2->cd("demoEleGen");
+	if (ilepton==2&&itype==0) mc2->cd("demoMuoGen");
+	if (ilepton==1&&itype==1) mc2->cd("demoEleGen");
+	if (ilepton==2&&itype==1) mc2->cd("demoMuoGen");
+	if (ilepton==1&&itype==2) mc2->cd("demoEleBtag");
+	if (ilepton==2&&itype==2) mc2->cd("demoMuoBtag");
 	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
 
 	h_reco->Sumw2();

@@ -137,18 +137,18 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	TH1F* h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
 	TH1F* h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
 
-	if (ilepton==1) mcg->cd("demo_ee_gen");
-	if (ilepton==2) mcg->cd("demo_mm_gen");
+	if (ilepton==1) mcg->cd("demoEleGen");
+	if (ilepton==2) mcg->cd("demoMuoGen");
 	TH1F* h_mcg = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (ilepton==1) mcg1->cd("demo_ee_gen");
-	if (ilepton==2) mcg1->cd("demo_mm_gen");
+	if (ilepton==1) mcg1->cd("demoEleGen");
+	if (ilepton==2) mcg1->cd("demoMuoGen");
 	TH1F* h_mcg1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (ilepton==1) mcg2->cd("demo_ee_gen");
-	if (ilepton==2) mcg2->cd("demo_mm_gen");
+	if (ilepton==1) mcg2->cd("demoEleGen");
+	if (ilepton==2) mcg2->cd("demoMuoGen");
 	TH1F* h_mcg2 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg2_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
