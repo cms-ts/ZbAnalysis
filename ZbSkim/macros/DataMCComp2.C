@@ -803,11 +803,11 @@ int useBinnedEfficiency=1;
 	if (isratio==0) {
 	  if (plot) {
 	    if (ilepton==1) {
-	      gSystem->mkdir(("electrons/" + version + "/xsecs/").c_str());
+	      gSystem->mkdir(("electrons/" + version + "/xsecs/").c_str(), kTRUE);
 	      c1->SaveAs(("electrons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
 	    }
 	    if (ilepton==2) {
-	      gSystem->mkdir(("muons/" + version + "/xsecs/").c_str());
+	      gSystem->mkdir(("muons/" + version + "/xsecs/").c_str(), kTRUE);
 	      c1->SaveAs(("muons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
 	    }
 	  }
