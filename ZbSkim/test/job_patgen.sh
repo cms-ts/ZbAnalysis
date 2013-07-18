@@ -9,16 +9,16 @@ cd -
 cp /gpfs/cms/users/candelis/work/ZbSkim/test/demogenanalyzer_cfg.py job.py
 
 pileup=$1
-echo "process.demo_ee.pileup = cms.untracked.string('"$pileup"')" >> job.py
-echo "process.demo_ee_up.pileup = cms.untracked.string('"$pileup"')" >> job.py
-echo "process.demo_ee_down.pileup = cms.untracked.string('"$pileup"')" >> job.py
-echo "process.demo_mm.pileup = cms.untracked.string('"$pileup"')" >> job.py
-echo "process.demo_mm_up.pileup = cms.untracked.string('"$pileup"')" >> job.py
-echo "process.demo_mm_down.pileup = cms.untracked.string('"$pileup"')" >> job.py
-echo "process.demo_ee_btag.pileup = cms.untracked.string('"$pileup"')" >> job.py
-echo "process.demo_mm_btag.pileup = cms.untracked.string('"$pileup"')" >> job.py
-echo "process.demo2_ee.pileup = cms.untracked.string('"$pileup"')" >> job.py
-echo "process.demo2_mm.pileup = cms.untracked.string('"$pileup"')" >> job.py
+echo "process.demoEle.pileup = cms.untracked.string('"$pileup"')" >> job.py
+echo "process.demoEleUp.pileup = cms.untracked.string('"$pileup"')" >> job.py
+echo "process.demoEleDown.pileup = cms.untracked.string('"$pileup"')" >> job.py
+echo "process.demoMuo.pileup = cms.untracked.string('"$pileup"')" >> job.py
+echo "process.demoMuoUp.pileup = cms.untracked.string('"$pileup"')" >> job.py
+echo "process.demoMuoDown.pileup = cms.untracked.string('"$pileup"')" >> job.py
+echo "process.demoEleBtag.pileup = cms.untracked.string('"$pileup"')" >> job.py
+echo "process.demoMuoBtag.pileup = cms.untracked.string('"$pileup"')" >> job.py
+echo "process.demoEle2.pileup = cms.untracked.string('"$pileup"')" >> job.py
+echo "process.demoMuo2.pileup = cms.untracked.string('"$pileup"')" >> job.py
 
 shift
 
