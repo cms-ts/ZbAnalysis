@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.28 2013/07/02 13:40:44 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.29 2013/07/04 16:19:40 dellaric Exp $
 //
 //
 
@@ -74,6 +74,8 @@
 #include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
+#include "Rivet/Projections/FastJets.hh"
+
 
 //
 // class declaration
@@ -261,6 +263,22 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   double Ht = 0;
 
+  struct pt_and_particles
+      {
+        TLorentzVector p_part;
+        vector<unsigned int> lepton_photon;
+      };
+
+  struct pt_and_particles ele_dres;
+  struct pt_and_particles pos_dres;
+  vector<unsigned int> ele_photons;
+  vector<unsigned int> pos_photons;
+
+  struct pt_and_particles mu_dres;
+  struct pt_and_particles antimu_dres;
+  vector<unsigned int> mu_photons;
+  vector<unsigned int> antimu_photons;
+
   // ++++++ Pile-Up
 
   MyWeight = 1.0;
@@ -298,14 +316,31 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   // +++++++++ ELECTRONS
 
+
+
+
+  //vector < unsigned int > lepton_photon;
+  vector <reco::GenParticle> part_vect;
+
+ 
+  unsigned int index_ele=0;
+
+  ele_photons.empty();
+
   vector < TLorentzVector > vect_ele;
 
-  for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) {
 
+  for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) {	
     if (fabs(itgen->pdgId())==11 && itgen->status()==1) { // loop over gen electrons
       TLorentzVector ele;
       ele.SetPtEtaPhiM(itgen->pt(),itgen->eta(),itgen->phi(),itgen->mass());
 
+      if (itgen->pdgId()==11)	
+      	ele_photons.push_back(index_ele);
+      else
+	pos_photons.push_back(index_ele);
+
+      unsigned int index_gamma=0;
       // Loop over photons: FSR dressing for electrons
       for (vector<reco::GenParticle>::const_iterator itgen2=genPart->begin(); itgen2!=genPart->end(); itgen2++) {
         if (fabs(itgen2->pdgId())==22 && itgen2->status()==1) { // loop over primary gen photon
@@ -315,51 +350,94 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 	  if (deltaPhi_eg > acos(-1)) deltaPhi_eg= 2*acos(-1) - deltaPhi_eg;
 	  double deltaR_eg = sqrt( deltaPhi_eg*deltaPhi_eg + pow(fabs(gam.Eta()-ele.Eta()),2));
 	  if (deltaR_eg< 0.1) {
+	    if (itgen->pdgId()==11)
+	    	ele_photons.push_back(index_gamma);
+	    else 
+		pos_photons.push_back(index_gamma);
 	    ele += gam;
 	  }
 	}
+		index_gamma++;
       }
-      if (ele.Pt()>20 && fabs(ele.Eta())<2.4) {
-        ele.SetE(itgen->charge() * ele.E());
-        vect_ele.push_back(ele);
+      if (ele.Pt()>20 && fabs(ele.Eta())<2.4)
+      {
+
+	if (itgen->pdgId()==11) // e' un elettrone
+	{
+
+		if(ele_dres.lepton_photon.empty())
+		{
+			ele_dres.p_part = ele;
+			ele_dres.lepton_photon = ele_photons;
+        	}
+		else
+		{
+			if(ele.Pt()>ele_dres.p_part.Pt())
+			{
+				ele_dres.p_part = ele;
+				ele_dres.lepton_photon = ele_photons;
+			}
+
+		}
+      	}
+	else   // e' un positrone
+	{
+		if(pos_dres.lepton_photon.empty())
+		{
+			pos_dres.p_part = ele;
+			pos_dres.lepton_photon = pos_photons;			
+		}
+		else
+		{
+			if(ele.Pt()>pos_dres.p_part.Pt())
+			{
+				pos_dres.p_part = ele;
+				pos_dres.lepton_photon = pos_photons;
+			}
+
+		}
+
+	}
+
+
       }
+
     }
+	index_ele++;
   }
 
-  // Sort electrons in pT
-  std::sort( vect_ele.begin(), vect_ele.end(), order_leptons() );
-
-  int iele0=0;
-  int iele1=0;
-
-  for (unsigned int i=1; i<vect_ele.size(); ++i) {
-    if ((vect_ele[i].E()*vect_ele[iele0].E())<0 && iele1==0) iele1=i;
-    vect_ele[i].SetE(fabs(vect_ele[i].E()));
+  if( !ele_dres.lepton_photon.empty() && !pos_dres.lepton_photon.empty() )
+  {
+	
+  	TLorentzVector y;
+  	y = ele_dres.p_part + pos_dres.p_part;
+  	diele_mass = y.M();
+  	diele_pt =   y.Pt();
+	diele_phi =  y.Phi();
+	if (diele_mass>71 && diele_mass<111) 
+		ee_event = true;
   }
-  if (vect_ele.size()!=0) vect_ele[iele0].SetE(fabs(vect_ele[iele0].E()));
 
-  if (iele1 != 0) {
-    TLorentzVector y;
-    y = vect_ele[iele0] + vect_ele[iele1];
-    diele_mass = y.M();
-    diele_pt =   y.Pt();
-    diele_phi =  y.Phi();
-    if (diele_mass>71 && diele_mass<111) {
-      ee_event = true;
-    }
-  }
+
 
   // +++++++++ MUONS
 
   vector < TLorentzVector > vect_muon;
+  unsigned int index_mu = 0;
 
-  for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) {
+  for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) { 
     if (fabs(itgen->pdgId())==13 && itgen->status()==1) { // loop over gen muons
       TLorentzVector muon;
       muon.SetPtEtaPhiM(itgen->pt(),itgen->eta(),itgen->phi(),itgen->mass());
+      
+      if (itgen->pdgId()==13)
+        mu_photons.push_back(index_mu);
+      else
+        antimu_photons.push_back(index_mu);
 
       // Loop over photons: FSR dressing for muons
-      for (vector<reco::GenParticle>::const_iterator itgen2=genPart->begin(); itgen2!=genPart->end(); itgen2++) {
+      unsigned int index_gammamu = 0;
+      for (vector<reco::GenParticle>::const_iterator itgen2=genPart->begin(); itgen2!=genPart->end(); itgen2++) {	
         if (fabs(itgen2->pdgId())==22 && itgen2->status()==1) { // loop over primary gen photon
 	  TLorentzVector gam;
 	  gam.SetPtEtaPhiM(itgen2->pt(),itgen2->eta(),itgen2->phi(),itgen2->mass());
@@ -367,9 +445,54 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 	  if (deltaPhi_mg > acos(-1)) deltaPhi_mg= 2*acos(-1) - deltaPhi_mg;
 	  double deltaR_mg = sqrt( deltaPhi_mg*deltaPhi_mg + pow(fabs(gam.Eta()-muon.Eta()),2));
 	  if (deltaR_mg< 0.1) {
+	    if (itgen->pdgId()==13)
+                mu_photons.push_back(index_gammamu);
+            else
+                antimu_photons.push_back(index_gammamu);
 	    muon += gam;
 	  }
         }
+	index_gammamu++;
+      }
+      if (muon.Pt()>20 && fabs(muon.Eta())<2.4)
+      {
+        if (itgen->pdgId()==13) // e' un muone
+        {
+                if(mu_dres.lepton_photon.empty())
+                {
+                        mu_dres.p_part = muon;
+                        mu_dres.lepton_photon = mu_photons;
+                }
+                else
+                {
+                        if(muon.Pt()>mu_dres.p_part.Pt())
+                        {
+                                mu_dres.p_part = muon;
+                                mu_dres.lepton_photon = mu_photons;
+                        }
+
+                }
+        }
+        else   // e' un antimuone
+        {
+                if(antimu_dres.lepton_photon.empty())
+                {
+                        antimu_dres.p_part = muon;
+                        antimu_dres.lepton_photon = antimu_photons;
+                }
+                else
+                {
+                        if(muon.Pt()>antimu_dres.p_part.Pt())
+                        {
+                                antimu_dres.p_part = muon;
+                                antimu_dres.lepton_photon = antimu_photons;
+                        }
+
+                }
+
+        }
+
+
       }
 
       if (muon.Pt()>20 && fabs(muon.Eta())<2.4) {
@@ -377,84 +500,139 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
         vect_muon.push_back(muon);
       }
     }
+	index_mu++;
   }
 
-  // Sort muons in pT
-  std::sort( vect_muon.begin(), vect_muon.end(), order_leptons() );
-
-  int imuon0=0;
-  int imuon1=0;
-
-  for (unsigned int i=1; i<vect_muon.size(); ++i) {
-    if (vect_muon[i].E()*vect_muon[imuon0].E()<0 && imuon1==0) imuon1=i;
-    vect_muon[i].SetE(fabs(vect_muon[i].E()));
-  }
-  if (vect_muon.size()!=0) vect_muon[imuon0].SetE(fabs(vect_muon[imuon0].E()));
-
-  if (imuon1 != 0) {
-
-    TLorentzVector y;
-    y = vect_muon[imuon0] + vect_muon[imuon1];
-    dimuon_mass = y.M();
-    dimuon_pt = y.Pt();
-    dimuon_phi = y.Phi();
-    if (dimuon_mass>71 && dimuon_mass<111) {
-      mm_event = true;
-    }
+if( !mu_dres.lepton_photon.empty() && !antimu_dres.lepton_photon.empty() )
+  {
+        TLorentzVector y;
+        y = mu_dres.p_part + antimu_dres.p_part;
+        dimuon_mass = y.M();
+        dimuon_pt =   y.Pt();
+        dimuon_phi =  y.Phi();
+        if (dimuon_mass>71 && dimuon_mass<111)
+                mm_event = true;
   }
 
-  ee_event = ee_event && (lepton_ == "electron");
-  mm_event = mm_event && (lepton_ == "muon");
+
+ vector<reco::GenParticle> part_jets;
+ vector<reco::GenParticle> part_jets_st1;
+
+
+
+unsigned int index_nu = 0;
+unsigned index_ch = 0;
+
+vector<unsigned int> neutrino;
+vector<unsigned int> ch_part;
+
+for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++){
+	if (itgen->status()==1 && (itgen->pdgId()==12 || itgen->pdgId()==14 || itgen->pdgId()==16))
+		neutrino.push_back(index_nu);
+	index_nu++;
+
+	if (itgen->charge()!=0 && itgen->pt()<0.25 && itgen->status()==1)
+		ch_part.push_back(index_ch);
+	index_ch++;
+}
+
+
+for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) 
+{		
+	part_jets.push_back(*itgen);
+}
+
+
+vector<unsigned int> canc_part;
+
+if(ee_event)
+{
+	canc_part = ele_dres.lepton_photon;
+	for (unsigned int i =0; i < pos_dres.lepton_photon.size(); i++)
+		canc_part.push_back(pos_dres.lepton_photon.at(i));
+}
+
+if(mm_event)
+{
+	canc_part = mu_dres.lepton_photon;
+        for (unsigned int l = 0; l < antimu_dres.lepton_photon.size(); l++)
+		canc_part.push_back(antimu_dres.lepton_photon.at(l));
+}
+
+if(!neutrino.empty())
+{
+	for (unsigned int j=0; j < neutrino.size(); j++ )
+		canc_part.push_back(neutrino.at(j)); 
+}
+
+
+if(!ch_part.empty())
+{
+	for (unsigned int p = 0; p < ch_part.size(); p++ )
+		canc_part.push_back(ch_part.at(p));
+}
+
+
+
+//ordino il vettore in modo crescente     
+stable_sort(canc_part.begin(), canc_part.end());
+
+
+//scorro il vettore dal basso e per ogni elemento cancello il corrispondente elemento da part_jets
+for (int i = (canc_part.size() - 1); i >= 0; i--)
+	part_jets.erase(part_jets.begin() + canc_part.at(i));
+
+for (unsigned int j=0; j<part_jets.size(); j++)
+{
+	if(part_jets.at(j).status()==1)
+		part_jets_st1.push_back(part_jets.at(j));
+
+}
+
+// part_jets_st1 contiene ora tutte le particelle su cui fare la riclusterizzazione 
+std::vector<fastjet::PseudoJet> vecs;
+
+for (unsigned int l = 0; l < part_jets_st1.size(); l++)
+{	
+	TLorentzVector part;
+	part.SetPtEtaPhiM(part_jets_st1.at(l).pt(),part_jets_st1.at(l).eta(),part_jets_st1.at(l).phi(),part_jets_st1.at(l).mass());
+
+	fastjet::PseudoJet pseudoJet(part_jets_st1.at(l).px(), part_jets_st1.at(l).py(), part_jets_st1.at(l).pz(), part.E());
+	pseudoJet.set_user_index(l);
+	vecs.push_back(pseudoJet);
+}
+
+
+//cout << "------ jet con fastjet ------------" << endl;
+
+vector<fastjet::PseudoJet> vect_jets;
+fastjet::ClusterSequence cseq(vecs, fastjet::JetDefinition(fastjet:: antikt_algorithm, 0.5));
+vector<fastjet::PseudoJet> jets = sorted_by_pt(cseq.inclusive_jets(30.0));
+for (unsigned int i = 0; i < jets.size(); i++)
+{
+	double etaj = jets[i].eta();
+	double ptj = jets[i].perp();
+
+
+	if (fabs(etaj) < 2.5 && jets[i].perp() > 30)
+        {
+		vect_jets.push_back(jets[i]);
+		Ht = Ht + jets[i].perp();
+        }
+
+}
+
+
+
+
 
   // ++++++++ JETS
 
-  vector < pat::Jet > vect_jets;
-
-  for (vector<reco::GenJet>::const_iterator jet=gJets->begin(); jet!=gJets->end(); ++jet) {
-
-    double jet_pt  = jet->pt ();
-    double jet_eta = jet->eta();
-
-    /*Lepton removal from jets inside sqrt Delta2+Dphi2 <0.3*/
-
-    double deltaPhi1 = 0;
-    if (ee_event) deltaPhi1 = fabs(jet->phi()- vect_ele[iele0]. Phi());
-    if (mm_event) deltaPhi1 = fabs(jet->phi()- vect_muon[imuon0].Phi());
-
-    if (deltaPhi1 > acos(-1)) deltaPhi1= 2*acos(-1) - deltaPhi1;
-
-    double deltaR1 = 0;
-    if (ee_event) deltaR1= sqrt( deltaPhi1*deltaPhi1  + pow(jet->eta()-vect_ele[iele0]. Eta(),2) );
-    if (mm_event) deltaR1= sqrt( deltaPhi1*deltaPhi1  + pow(jet->eta()-vect_muon[imuon0].Eta(),2) );
-
-    double deltaPhi2 = 0;
-    if (ee_event) deltaPhi2 = fabs(jet->phi()-vect_ele[iele1]. Phi());
-    if (mm_event) deltaPhi2 = fabs(jet->phi()-vect_muon[imuon1].Phi());
-
-    if (deltaPhi2 > acos(-1)) deltaPhi2= 2*acos(-1) - deltaPhi2;
-
-    double deltaR2 = 0;
-    if (ee_event) deltaR2= sqrt( deltaPhi2*deltaPhi2  + pow(jet->eta()-vect_ele[iele1]. Eta(),2) );
-    if (mm_event) deltaR2= sqrt( deltaPhi2*deltaPhi2  + pow(jet->eta()-vect_muon[imuon1].Eta(),2) );
-
-    if (jet_pt > 30 && fabs(jet_eta) < 2.5 && (deltaR1>0.1 && deltaR2>0.1)) {
-
-      ++Nj;
-
-      Ht += jet_pt;
-
-      vect_jets.push_back(*jet);
-
-     }
-
-  }
-
-  // Sort jets in pT
-  std::sort( vect_jets.begin(), vect_jets.end(), order_jets() );
 
   /*loop over gen particles, find the b*/
 
-  vector < pat::Jet > vect_bjets;
+  //vector < pat::Jet > vect_bjets;
+  vector<fastjet::PseudoJet> vect_bjets;
 
   int nb=0;
 
@@ -468,15 +646,18 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
           bdaughter = true; // b daughter found
         }
       }
+
       if (!bdaughter) {
         TLorentzVector B;
         B.SetPtEtaPhiM(thepart->pt(),thepart->eta(),thepart->phi(),thepart->mass());
 	int j = 0;
      	double Rmin = 9999.;
         for (unsigned int i=0; i<vect_jets.size(); ++i) {
-          if (ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B) < Rmin) {
+	  TLorentzVector jet_momentum;
+	  jet_momentum.SetPtEtaPhiM(vect_jets[i].perp(),vect_jets[i].eta(),vect_jets[i].phi(),vect_jets[i].m());
+          if (ROOT::Math::VectorUtil::DeltaR(jet_momentum, B) < Rmin) {
 	    j = i;
-	    Rmin = ROOT::Math::VectorUtil::DeltaR(vect_jets[i].momentum(), B);
+	    Rmin = ROOT::Math::VectorUtil::DeltaR(jet_momentum, B);
 	  }
         }
         if (Rmin < 0.4) {
@@ -484,29 +665,18 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 	  vect_bjets.push_back(vect_jets[j]);
 	}
       }
+
     }
-  }
+}
 
   // Sort b-jets in pT
-  std::sort( vect_bjets.begin(), vect_bjets.end(), order_jets() );
+  //std::sort( vect_bjets.begin(), vect_bjets.end(), order_jets() );
 
-  //cout<<"gen jet: "<<vect_bjets[0].pt()<<endl;
 
-  /*
-  // Get reco jet collection and print the reco b jets for check
-  edm::Handle < vector < pat::Jet > > jets;
-  iEvent.getByLabel ("goodJets", jets);
 
-  for (vector < pat::Jet >::const_iterator jet = jets->begin (); jet != jets->end (); ++jet) {
-    if (fabs(jet->partonFlavour ()) == 5) {
-      cout<<"reco jet: "<<jet->momentum()<<endl;
-    }
-  }
-  */
-
-  if (ee_event && Nj > 0) {
-    w_first_ele_pt->Fill (vect_ele[iele0].Pt(), MyWeight);
-    w_second_ele_pt->Fill (vect_ele[iele1].Pt(), MyWeight);
+  if (ee_event && vect_jets.size()!=0) {
+    w_first_ele_pt->Fill (ele_dres.p_part.Pt(), MyWeight);
+    w_second_ele_pt->Fill (pos_dres.p_part.Pt(), MyWeight);
     w_mass_ee->Fill(diele_mass, MyWeight);
     w_pt_Z_ee->Fill(diele_pt, MyWeight);
     double delta_phi_ee = fabs(diele_phi - vect_jets[0].phi());
@@ -514,8 +684,9 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
     w_delta_ee->Fill(delta_phi_ee, MyWeight);
   }
 
-  if (mm_event && Nj > 0) {
-    w_first_muon_pt->Fill (vect_muon[imuon0].Pt(), MyWeight);
+  if (mm_event && vect_jets.size()!=0) {
+    w_first_muon_pt->Fill (mu_dres.p_part.Pt(), MyWeight);
+    //w_second_muon_pt->Fill (antimu_dres.p_part, MyWeight);
     w_mass_mm->Fill(dimuon_mass, MyWeight);
     w_pt_Z_mm->Fill(dimuon_pt, MyWeight);
     double delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi());
@@ -523,14 +694,14 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
     w_delta_mm->Fill(delta_phi_mm, MyWeight);
   }
 
-  if ((ee_event || mm_event) && Nj > 0) {
+  if ((ee_event || mm_event) && vect_jets.size()!=0) {
     w_first_jet_pt->Fill (vect_jets[0].pt(), MyWeight);
     w_first_jet_eta->Fill (vect_jets[0].eta(), MyWeight);
-    w_jetmultiplicity->Fill (Nj, MyWeight);
+    w_jetmultiplicity->Fill (vect_jets.size(), MyWeight);
     w_Ht->Fill (Ht, MyWeight);
   }
 
-  if (mm_event && Nb>0 && Nj>0) {
+  if (mm_event && Nb>0 && vect_jets.size()!=0) {
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
@@ -538,7 +709,8 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
     w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight);
     w_mass_mm_b->Fill (dimuon_mass, MyWeight);
   }
-  if (ee_event && Nb>0 && Nj>0) {
+
+  if (ee_event && Nb>0 && vect_jets.size()!=0) {
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
@@ -547,20 +719,22 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
     w_mass_ee_b->Fill (diele_mass, MyWeight);
   }
 
-  if ((ee_event || mm_event) && Nb>0 && Nj>0) {
+  if ((ee_event || mm_event) && Nb>0 &&  vect_jets.size()!=0) {
     w_bjetmultiplicity->Fill (Nb, MyWeight);
     w_Ht_b->Fill (Ht, MyWeight);
   }
-  if (ee_event && Nj > 0 && Nb > 0) {
+  if (ee_event && vect_jets.size()!=0 && Nb > 0) {
     double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
     if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
     w_delta_ee_b->Fill(delta_phi_ee_b, MyWeight);
   }
-  if (mm_event && Nj > 0 && Nb > 0) {
+  if (mm_event && vect_jets.size()!=0 && Nb > 0) {
     double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
     if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
     w_delta_mm_b->Fill(delta_phi_mm_b, MyWeight);
   }
+
+
 
 }
 
