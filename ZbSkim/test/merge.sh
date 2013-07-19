@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=v08
+VERSION=v09
 
 if [ $# -eq 0 ]; then
   echo 'Usage: merge.sh jobdir [version]'
