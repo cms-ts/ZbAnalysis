@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.30 2013/07/18 13:57:15 clalicat Exp $
+// $Id: GenbAnalyzer.cc,v 1.31 2013/07/19 16:24:42 dellaric Exp $
 //
 //
 
@@ -103,7 +103,7 @@ private:
       return (p1.Pt() > p2.Pt());
     }
   };
-  struct order_jets { bool operator() (const pat::Jet &j1, const pat::Jet &j2) const {
+  struct order_jets { bool operator() (const fastjet::PseudoJet &j1, const fastjet::PseudoJet &j2) const {
       return (j1.pt() > j2.pt());
     }
   };
@@ -219,16 +219,16 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
  
   produces<std::vector < double>>("myEventWeight");
 
-  produces<std::vector < TLorentzVector >>("myElectrons");
-  produces<std::vector < TLorentzVector >>("myMuons");
+  produces<std::vector < math::XYZTLorentzVector >>("myElectrons");
+  produces<std::vector < math::XYZTLorentzVector >>("myMuons");
 
   produces<std::vector < double>>("myPtZ");
 
-  produces<std::vector < fastjet::PseudoJet >>("myJets");
+  produces<std::vector < math::XYZTLorentzVector >>("myJets");
 
   produces<std::vector < double>>("myHt");
 
-  produces<std::vector < fastjet::PseudoJet >>("myBjets");
+  produces<std::vector < math::XYZTLorentzVector >>("myBjets");
 
 }
 
@@ -260,16 +260,16 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   
   std::auto_ptr<std::vector<double>> myEventWeight( new std::vector<double> );
 
-  std::auto_ptr<std::vector < TLorentzVector > > myElectrons( new std::vector < TLorentzVector > ); 
-  std::auto_ptr<std::vector < TLorentzVector > > myMuons( new std::vector < TLorentzVector > );
+  std::auto_ptr<std::vector < math::XYZTLorentzVector > > myElectrons( new std::vector < math::XYZTLorentzVector > ); 
+  std::auto_ptr<std::vector < math::XYZTLorentzVector > > myMuons( new std::vector < math::XYZTLorentzVector > );
 
   std::auto_ptr<std::vector<double>> myPtZ( new std::vector<double> );
 
-  std::auto_ptr< std::vector < fastjet::PseudoJet > > myJets( new std::vector < fastjet::PseudoJet > );
+  std::auto_ptr< std::vector < math::XYZTLorentzVector > > myJets( new std::vector < math::XYZTLorentzVector > );
 
   std::auto_ptr<std::vector<double>> myHt( new std::vector<double> );
 
-  std::auto_ptr< std::vector < fastjet::PseudoJet > > myBjets( new std::vector < fastjet::PseudoJet > );
+  std::auto_ptr< std::vector < math::XYZTLorentzVector > > myBjets( new std::vector < math::XYZTLorentzVector > );
 
   bool ee_event = false;
   bool mm_event = false;
@@ -383,10 +383,8 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
       }
       if (ele.Pt()>20 && fabs(ele.Eta())<2.4)
       {
-
 	if (itgen->pdgId()==11) // e' un elettrone
 	{
-
 		if(ele_dres.lepton_photon.empty())
 		{
 			ele_dres.p_part = ele;
@@ -399,7 +397,6 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 				ele_dres.p_part = ele;
 				ele_dres.lepton_photon = ele_photons;
 			}
-
 		}
       	}
 	else   // e' un positrone
@@ -416,21 +413,17 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 				pos_dres.p_part = ele;
 				pos_dres.lepton_photon = pos_photons;
 			}
-
 		}
-
 	}
-
-
       }
-
     }
 	index_ele++;
   }
 
   if( !ele_dres.lepton_photon.empty() && !pos_dres.lepton_photon.empty() )
   {
-	
+        vect_ele.push_back(ele_dres.p_part);
+        vect_ele.push_back(pos_dres.p_part);
   	TLorentzVector y;
   	y = ele_dres.p_part + pos_dres.p_part;
   	diele_mass = y.M();
@@ -439,8 +432,6 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 	if (diele_mass>71 && diele_mass<111) 
 		ee_event = true;
   }
-
-
 
   // +++++++++ MUONS
 
@@ -492,7 +483,6 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
                                 mu_dres.p_part = muon;
                                 mu_dres.lepton_photon = mu_photons;
                         }
-
                 }
         }
         else   // e' un antimuone
@@ -509,24 +499,17 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
                                 antimu_dres.p_part = muon;
                                 antimu_dres.lepton_photon = antimu_photons;
                         }
-
                 }
-
         }
-
-
-      }
-
-      if (muon.Pt()>20 && fabs(muon.Eta())<2.4) {
-        muon.SetE(itgen->charge() * muon.E());
-        vect_muon.push_back(muon);
       }
     }
 	index_mu++;
   }
 
-if( !mu_dres.lepton_photon.empty() && !antimu_dres.lepton_photon.empty() )
+  if( !mu_dres.lepton_photon.empty() && !antimu_dres.lepton_photon.empty() )
   {
+        vect_muon.push_back(mu_dres.p_part);
+        vect_muon.push_back(antimu_dres.p_part);
         TLorentzVector y;
         y = mu_dres.p_part + antimu_dres.p_part;
         dimuon_mass = y.M();
@@ -536,19 +519,16 @@ if( !mu_dres.lepton_photon.empty() && !antimu_dres.lepton_photon.empty() )
                 mm_event = true;
   }
 
+  vector<reco::GenParticle> part_jets;
+  vector<reco::GenParticle> part_jets_st1;
 
- vector<reco::GenParticle> part_jets;
- vector<reco::GenParticle> part_jets_st1;
+  unsigned int index_nu = 0;
+  unsigned index_ch = 0;
 
+  vector<unsigned int> neutrino;
+  vector<unsigned int> ch_part;
 
-
-unsigned int index_nu = 0;
-unsigned index_ch = 0;
-
-vector<unsigned int> neutrino;
-vector<unsigned int> ch_part;
-
-for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++){
+  for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++){
 	if (itgen->status()==1 && (itgen->pdgId()==12 || itgen->pdgId()==14 || itgen->pdgId()==16))
 		neutrino.push_back(index_nu);
 	index_nu++;
@@ -556,104 +536,88 @@ for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=ge
 	if (itgen->charge()!=0 && itgen->pt()<0.25 && itgen->status()==1)
 		ch_part.push_back(index_ch);
 	index_ch++;
-}
+  }
 
-
-for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) 
-{		
+  for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) 
+  {	
 	part_jets.push_back(*itgen);
-}
+  }
 
+  vector<unsigned int> canc_part;
 
-vector<unsigned int> canc_part;
-
-if(ee_event)
-{
+  if(ee_event)
+  {
 	canc_part = ele_dres.lepton_photon;
 	for (unsigned int i =0; i < pos_dres.lepton_photon.size(); i++)
 		canc_part.push_back(pos_dres.lepton_photon.at(i));
-}
+  }
 
-if(mm_event)
-{
+  if(mm_event)
+  {
 	canc_part = mu_dres.lepton_photon;
         for (unsigned int l = 0; l < antimu_dres.lepton_photon.size(); l++)
 		canc_part.push_back(antimu_dres.lepton_photon.at(l));
-}
+  }
 
-if(!neutrino.empty())
-{
+  if(!neutrino.empty())
+  {
 	for (unsigned int j=0; j < neutrino.size(); j++ )
 		canc_part.push_back(neutrino.at(j)); 
-}
+  }
 
-
-if(!ch_part.empty())
-{
+  if(!ch_part.empty())
+  {
 	for (unsigned int p = 0; p < ch_part.size(); p++ )
 		canc_part.push_back(ch_part.at(p));
-}
+  }
 
+  //ordino il vettore in modo crescente     
+  stable_sort(canc_part.begin(), canc_part.end());
 
-
-//ordino il vettore in modo crescente     
-stable_sort(canc_part.begin(), canc_part.end());
-
-
-//scorro il vettore dal basso e per ogni elemento cancello il corrispondente elemento da part_jets
-for (int i = (canc_part.size() - 1); i >= 0; i--)
+  //scorro il vettore dal basso e per ogni elemento cancello il corrispondente elemento da part_jets
+  for (int i = (canc_part.size() - 1); i >= 0; i--)
 	part_jets.erase(part_jets.begin() + canc_part.at(i));
 
-for (unsigned int j=0; j<part_jets.size(); j++)
-{
+  for (unsigned int j=0; j<part_jets.size(); j++)
+  {
 	if(part_jets.at(j).status()==1)
 		part_jets_st1.push_back(part_jets.at(j));
+  }
 
-}
+  // part_jets_st1 contiene ora tutte le particelle su cui fare la riclusterizzazione 
+  std::vector<fastjet::PseudoJet> vecs;
 
-// part_jets_st1 contiene ora tutte le particelle su cui fare la riclusterizzazione 
-std::vector<fastjet::PseudoJet> vecs;
-
-for (unsigned int l = 0; l < part_jets_st1.size(); l++)
-{	
+  for (unsigned int l = 0; l < part_jets_st1.size(); l++)
+  {	
 	TLorentzVector part;
 	part.SetPtEtaPhiM(part_jets_st1.at(l).pt(),part_jets_st1.at(l).eta(),part_jets_st1.at(l).phi(),part_jets_st1.at(l).mass());
 
 	fastjet::PseudoJet pseudoJet(part_jets_st1.at(l).px(), part_jets_st1.at(l).py(), part_jets_st1.at(l).pz(), part.E());
 	pseudoJet.set_user_index(l);
 	vecs.push_back(pseudoJet);
-}
+  }
 
+  //cout << "------ jet con fastjet ------------" << endl;
 
-//cout << "------ jet con fastjet ------------" << endl;
-
-vector<fastjet::PseudoJet> vect_jets;
-fastjet::ClusterSequence cseq(vecs, fastjet::JetDefinition(fastjet:: antikt_algorithm, 0.5));
-vector<fastjet::PseudoJet> jets = sorted_by_pt(cseq.inclusive_jets(30.0));
-for (unsigned int i = 0; i < jets.size(); i++)
-{
+  vector<fastjet::PseudoJet> vect_jets;
+  fastjet::ClusterSequence cseq(vecs, fastjet::JetDefinition(fastjet:: antikt_algorithm, 0.5));
+  vector<fastjet::PseudoJet> jets = sorted_by_pt(cseq.inclusive_jets(30.0));
+  for (unsigned int i = 0; i < jets.size(); i++)
+  {
 	double etaj = jets[i].eta();
 	double ptj = jets[i].perp();
-
 
 	if (fabs(etaj) < 2.5 && jets[i].perp() > 30)
         {
 		vect_jets.push_back(jets[i]);
 		Ht = Ht + jets[i].perp();
         }
-
-}
-
-
-
-
+  }
 
   // ++++++++ JETS
 
-
   /*loop over gen particles, find the b*/
 
-  //vector < pat::Jet > vect_bjets;
   vector<fastjet::PseudoJet> vect_bjets;
 
   int nb=0;
@@ -689,12 +653,10 @@ for (unsigned int i = 0; i < jets.size(); i++)
       }
 
     }
-}
+  }
 
   // Sort b-jets in pT
-  //std::sort( vect_bjets.begin(), vect_bjets.end(), order_jets() );
-
-
+  std::sort( vect_bjets.begin(), vect_bjets.end(), order_jets() );
 
   if (ee_event && vect_jets.size()!=0) {
     w_first_ele_pt->Fill (ele_dres.p_part.Pt(), MyWeight);
@@ -762,25 +724,25 @@ for (unsigned int i = 0; i < jets.size(); i++)
  
  if (ee_event && Nj > 0) {
     for (unsigned int i=0; i<vect_ele.size(); ++i) {
-      myElectrons->push_back(vect_ele[i]);
+      myElectrons->push_back(math::XYZTLorentzVector(vect_ele[i].Px(),vect_ele[i].Py(),vect_ele[i].Pz(),vect_ele[i].E()));
       myPtZ->push_back(diele_pt);
     }
  }
   
   if (mm_event && Nj > 0) {
     for (unsigned int i=0; i<vect_muon.size(); ++i) {
-      myMuons->push_back(vect_muon[i]);
+      myMuons->push_back(math::XYZTLorentzVector(vect_muon[i].Px(),vect_muon[i].Py(),vect_muon[i].Pz(),vect_muon[i].E()));
       myPtZ->push_back(dimuon_pt);
     }
   }
   
   if ((ee_event || mm_event) && Nj > 0) {
     for (unsigned int i=0; i<vect_jets.size(); ++i) {
-      myJets->push_back(vect_jets[i]);
+      myJets->push_back(math::XYZTLorentzVector(vect_jets[i].px(),vect_jets[i].py(),vect_jets[i].pz(),vect_jets[i].e()));
       myHt->push_back(Ht);
     }
     for (unsigned int i=0; i<vect_bjets.size(); ++i) {
-     myBjets->push_back(vect_bjets[i]);
+     myBjets->push_back(math::XYZTLorentzVector(vect_bjets[i].px(),vect_bjets[i].py(),vect_bjets[i].pz(),vect_bjets[i].e()));
     }
   }
 
