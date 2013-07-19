@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.29 2013/07/04 16:19:40 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.30 2013/07/18 13:57:15 clalicat Exp $
 //
 //
 
@@ -28,7 +28,7 @@
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -81,7 +81,7 @@
 // class declaration
 //
 
-class GenbAnalyzer:public  edm::EDAnalyzer {
+class GenbAnalyzer:public  edm::EDProducer {
 
 public:
 
@@ -91,7 +91,7 @@ public:
 private:
 
   virtual void beginJob ();
-  virtual void analyze (const edm::Event &, const edm::EventSetup &);
+  virtual void produce (edm::Event &, const edm::EventSetup &);
   virtual void endJob ();
 
   virtual void beginRun (edm::Run const &, edm::EventSetup const &);
@@ -216,6 +216,19 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_delta_mm_b =        fs->make < TH1F > ("w_delta_phi_mm_b",   "w_delta_phi_mm_b", 12, 0, TMath::Pi ());
   w_delta_ee =          fs->make < TH1F > ("w_delta_phi_ee",     "w_delta_phi_ee", 12, 0, TMath::Pi ());
   w_delta_ee_b =        fs->make < TH1F > ("w_delta_phi_ee_b",   "w_delta_phi_ee_b", 12, 0, TMath::Pi ());
+ 
+  produces<std::vector < double>>("myEventWeight");
+
+  produces<std::vector < TLorentzVector >>("myElectrons");
+  produces<std::vector < TLorentzVector >>("myMuons");
+
+  produces<std::vector < double>>("myPtZ");
+
+  produces<std::vector < fastjet::PseudoJet >>("myJets");
+
+  produces<std::vector < double>>("myHt");
+
+  produces<std::vector < fastjet::PseudoJet >>("myBjets");
 
 }
 
@@ -231,12 +244,12 @@ GenbAnalyzer::~GenbAnalyzer () {
 //
 
 // ------------ method called for each event ------------
-void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & iSetup) {
+void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   using namespace edm;
   using namespace std;
 
-  edm::Handle<vector<reco::GenParticle> > genPart;
+ edm::Handle<vector<reco::GenParticle> > genPart;
   iEvent.getByLabel ("genParticles", genPart);
 
   edm::Handle<vector<reco::GenJet> > gJets;
@@ -244,6 +257,19 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   if (! gJets.isValid()) {
     iEvent.getByLabel(edm::InputTag("selectedPatJetsPFlow","genJets"), gJets);
   }
+  
+  std::auto_ptr<std::vector<double>> myEventWeight( new std::vector<double> );
+
+  std::auto_ptr<std::vector < TLorentzVector > > myElectrons( new std::vector < TLorentzVector > ); 
+  std::auto_ptr<std::vector < TLorentzVector > > myMuons( new std::vector < TLorentzVector > );
+
+  std::auto_ptr<std::vector<double>> myPtZ( new std::vector<double> );
+
+  std::auto_ptr< std::vector < fastjet::PseudoJet > > myJets( new std::vector < fastjet::PseudoJet > );
+
+  std::auto_ptr<std::vector<double>> myHt( new std::vector<double> );
+
+  std::auto_ptr< std::vector < fastjet::PseudoJet > > myBjets( new std::vector < fastjet::PseudoJet > );
 
   bool ee_event = false;
   bool mm_event = false;
@@ -316,9 +342,6 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
 
   // +++++++++ ELECTRONS
 
-
-
-
   //vector < unsigned int > lepton_photon;
   vector <reco::GenParticle> part_vect;
 
@@ -328,7 +351,6 @@ void GenbAnalyzer::analyze (const edm::Event & iEvent, const edm::EventSetup & i
   ele_photons.empty();
 
   vector < TLorentzVector > vect_ele;
-
 
   for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) {	
     if (fabs(itgen->pdgId())==11 && itgen->status()==1) { // loop over gen electrons
@@ -734,7 +756,46 @@ for (unsigned int i = 0; i < jets.size(); i++)
     w_delta_mm_b->Fill(delta_phi_mm_b, MyWeight);
   }
 
+  if ((ee_event || mm_event) && Nj > 0) {
+     myEventWeight->push_back(MyWeight);
+  }
+ 
+ if (ee_event && Nj > 0) {
+    for (unsigned int i=0; i<vect_ele.size(); ++i) {
+      myElectrons->push_back(vect_ele[i]);
+      myPtZ->push_back(diele_pt);
+    }
+ }
+  
+  if (mm_event && Nj > 0) {
+    for (unsigned int i=0; i<vect_muon.size(); ++i) {
+      myMuons->push_back(vect_muon[i]);
+      myPtZ->push_back(dimuon_pt);
+    }
+  }
+  
+  if ((ee_event || mm_event) && Nj > 0) {
+    for (unsigned int i=0; i<vect_jets.size(); ++i) {
+      myJets->push_back(vect_jets[i]);
+      myHt->push_back(Ht);
+    }
+    for (unsigned int i=0; i<vect_bjets.size(); ++i) {
+     myBjets->push_back(vect_bjets[i]);
+    }
+  }
 
+  iEvent.put( myEventWeight, "myEventWeight" );
+
+  iEvent.put( myElectrons, "myElectrons" );
+  iEvent.put( myMuons, "myMuons" );
+
+  iEvent.put( myPtZ, "myPtZ" );
+
+  iEvent.put( myJets, "myJets" );
+
+  iEvent.put( myHt, "myHt" );
+
+  iEvent.put( myBjets, "myBjets" );
 
 }
 
