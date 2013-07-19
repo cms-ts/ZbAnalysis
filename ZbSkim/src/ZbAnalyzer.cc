@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.108 2013/07/13 18:50:27 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.109 2013/07/19 21:10:47 dellaric Exp $
 //
 //
 
@@ -863,7 +863,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   }
 
   if (iele1!=0) {
-    math::XYZTLorentzVectorD z;
+    math::XYZTLorentzVector z;
 #if ECALDRIVEN>1
     z = vect_ele[iele0].ecalDrivenMomentum() + vect_ele[iele1].ecalDrivenMomentum();
 #else
@@ -902,7 +902,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   }
 
   if (imuon1!=0) {
-    math::XYZTLorentzVectorD z;
+    math::XYZTLorentzVector z;
     z = vect_muon[imuon0].p4() + vect_muon[imuon1].p4();
     dimuon_mass = z.mass();
     dimuon_phi = z.phi();
