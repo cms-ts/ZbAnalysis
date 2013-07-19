@@ -1,3 +1,5 @@
+<use name="rivet"/>
+<use name="fastjet"/>
 <use name="rootcore"/>
 <use name="root"/>
 <use name="FWCore/Framework"/>
