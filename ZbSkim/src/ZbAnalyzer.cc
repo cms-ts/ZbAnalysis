@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.110 2013/07/19 21:13:21 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.111 2013/07/20 07:23:57 dellaric Exp $
 //
 //
 
@@ -699,7 +699,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   produces<std::vector<double>>("myHt");
 
   produces<std::vector<double>>("myBjetsWeights");
-  produces<std::vector<pat::Jet>>("myBjets");
+  produces<std::vector<math::XYZTLorentzVector>>("myBjets");
 
 }
 
