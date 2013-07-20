@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.32 2013/07/19 22:01:11 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.33 2013/07/20 07:24:14 dellaric Exp $
 //
 //
 
@@ -609,6 +609,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
 	if (fabs(etaj) < 2.5 && jets[i].perp() > 30)
         {
+		Nj++;
 		vect_jets.push_back(jets[i]);
 		Ht = Ht + jets[i].perp();
         }
@@ -658,7 +659,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   // Sort b-jets in pT
   std::sort( vect_bjets.begin(), vect_bjets.end(), order_jets() );
 
-  if (ee_event && vect_jets.size()!=0) {
+  if (ee_event && Nj > 0) {
     w_first_ele_pt->Fill (ele_dres.p_part.Pt(), MyWeight);
     w_second_ele_pt->Fill (pos_dres.p_part.Pt(), MyWeight);
     w_mass_ee->Fill(diele_mass, MyWeight);
@@ -668,7 +669,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_delta_ee->Fill(delta_phi_ee, MyWeight);
   }
 
-  if (mm_event && vect_jets.size()!=0) {
+  if (mm_event && Nj > 0) {
     w_first_muon_pt->Fill (mu_dres.p_part.Pt(), MyWeight);
     //w_second_muon_pt->Fill (antimu_dres.p_part, MyWeight);
     w_mass_mm->Fill(dimuon_mass, MyWeight);
@@ -678,14 +679,14 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_delta_mm->Fill(delta_phi_mm, MyWeight);
   }
 
-  if ((ee_event || mm_event) && vect_jets.size()!=0) {
+  if ((ee_event || mm_event) && Nj > 0) {
     w_first_jet_pt->Fill (vect_jets[0].pt(), MyWeight);
     w_first_jet_eta->Fill (vect_jets[0].eta(), MyWeight);
     w_jetmultiplicity->Fill (vect_jets.size(), MyWeight);
     w_Ht->Fill (Ht, MyWeight);
   }
 
-  if (mm_event && Nb>0 && vect_jets.size()!=0) {
+  if (mm_event && Nb > 0 && Nj > 0) {
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
@@ -694,7 +695,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_mass_mm_b->Fill (dimuon_mass, MyWeight);
   }
 
-  if (ee_event && Nb>0 && vect_jets.size()!=0) {
+  if (ee_event && Nb > 0 && Nj > 0) {
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
@@ -703,16 +704,16 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_mass_ee_b->Fill (diele_mass, MyWeight);
   }
 
-  if ((ee_event || mm_event) && Nb>0 &&  vect_jets.size()!=0) {
+  if ((ee_event || mm_event) && Nb > 0 && Nj > 0) {
     w_bjetmultiplicity->Fill (Nb, MyWeight);
     w_Ht_b->Fill (Ht, MyWeight);
   }
-  if (ee_event && vect_jets.size()!=0 && Nb > 0) {
+  if (ee_event && Nb > 0 && Nj > 0) {
     double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
     if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
     w_delta_ee_b->Fill(delta_phi_ee_b, MyWeight);
   }
-  if (mm_event && vect_jets.size()!=0 && Nb > 0) {
+  if (mm_event && Nb > 0 && Nj > 0) {
     double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
     if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
     w_delta_mm_b->Fill(delta_phi_mm_b, MyWeight);
