@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.31 2013/07/19 16:24:42 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.32 2013/07/19 22:01:11 dellaric Exp $
 //
 //
 
@@ -217,18 +217,18 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_delta_ee =          fs->make < TH1F > ("w_delta_phi_ee",     "w_delta_phi_ee", 12, 0, TMath::Pi ());
   w_delta_ee_b =        fs->make < TH1F > ("w_delta_phi_ee_b",   "w_delta_phi_ee_b", 12, 0, TMath::Pi ());
  
-  produces<std::vector < double>>("myEventWeight");
+  produces<std::vector<double>>("myEventWeight");
 
-  produces<std::vector < math::XYZTLorentzVector >>("myElectrons");
-  produces<std::vector < math::XYZTLorentzVector >>("myMuons");
+  produces<std::vector<math::XYZTLorentzVector>>("myElectrons");
+  produces<std::vector<math::XYZTLorentzVector>>("myMuons");
 
-  produces<std::vector < double>>("myPtZ");
+  produces<std::vector<double>>("myPtZ");
 
-  produces<std::vector < math::XYZTLorentzVector >>("myJets");
+  produces<std::vector<math::XYZTLorentzVector>>("myJets");
 
-  produces<std::vector < double>>("myHt");
+  produces<std::vector<double>>("myHt");
 
-  produces<std::vector < math::XYZTLorentzVector >>("myBjets");
+  produces<std::vector<math::XYZTLorentzVector>>("myBjets");
 
 }
 
@@ -260,16 +260,16 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   
   std::auto_ptr<std::vector<double>> myEventWeight( new std::vector<double> );
 
-  std::auto_ptr<std::vector < math::XYZTLorentzVector > > myElectrons( new std::vector < math::XYZTLorentzVector > ); 
-  std::auto_ptr<std::vector < math::XYZTLorentzVector > > myMuons( new std::vector < math::XYZTLorentzVector > );
+  std::auto_ptr<std::vector<math::XYZTLorentzVector>> myElectrons( new std::vector<math::XYZTLorentzVector> ); 
+  std::auto_ptr<std::vector<math::XYZTLorentzVector>> myMuons( new std::vector<math::XYZTLorentzVector> );
 
   std::auto_ptr<std::vector<double>> myPtZ( new std::vector<double> );
 
-  std::auto_ptr< std::vector < math::XYZTLorentzVector > > myJets( new std::vector < math::XYZTLorentzVector > );
+  std::auto_ptr<std::vector<math::XYZTLorentzVector>> myJets( new std::vector<math::XYZTLorentzVector> );
 
   std::auto_ptr<std::vector<double>> myHt( new std::vector<double> );
 
-  std::auto_ptr< std::vector < math::XYZTLorentzVector > > myBjets( new std::vector < math::XYZTLorentzVector > );
+  std::auto_ptr<std::vector<math::XYZTLorentzVector>> myBjets( new std::vector<math::XYZTLorentzVector> );
 
   bool ee_event = false;
   bool mm_event = false;
@@ -723,24 +723,22 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   }
  
  if (ee_event && Nj > 0) {
-    for (unsigned int i=0; i<vect_ele.size(); ++i) {
-      myElectrons->push_back(math::XYZTLorentzVector(vect_ele[i].Px(),vect_ele[i].Py(),vect_ele[i].Pz(),vect_ele[i].E()));
-      myPtZ->push_back(diele_pt);
-    }
+    myElectrons->push_back(math::XYZTLorentzVector(vect_ele[0].Px(),vect_ele[0].Py(),vect_ele[0].Pz(),vect_ele[0].E()));
+    myElectrons->push_back(math::XYZTLorentzVector(vect_ele[1].Px(),vect_ele[1].Py(),vect_ele[1].Pz(),vect_ele[1].E()));
+    myPtZ->push_back(diele_pt);
  }
   
   if (mm_event && Nj > 0) {
-    for (unsigned int i=0; i<vect_muon.size(); ++i) {
-      myMuons->push_back(math::XYZTLorentzVector(vect_muon[i].Px(),vect_muon[i].Py(),vect_muon[i].Pz(),vect_muon[i].E()));
-      myPtZ->push_back(dimuon_pt);
-    }
+    myMuons->push_back(math::XYZTLorentzVector(vect_muon[0].Px(),vect_muon[0].Py(),vect_muon[0].Pz(),vect_muon[0].E()));
+    myMuons->push_back(math::XYZTLorentzVector(vect_muon[1].Px(),vect_muon[1].Py(),vect_muon[1].Pz(),vect_muon[1].E()));
+    myPtZ->push_back(dimuon_pt);
   }
   
   if ((ee_event || mm_event) && Nj > 0) {
     for (unsigned int i=0; i<vect_jets.size(); ++i) {
       myJets->push_back(math::XYZTLorentzVector(vect_jets[i].px(),vect_jets[i].py(),vect_jets[i].pz(),vect_jets[i].e()));
-      myHt->push_back(Ht);
     }
+    myHt->push_back(Ht);
     for (unsigned int i=0; i<vect_bjets.size(); ++i) {
      myBjets->push_back(math::XYZTLorentzVector(vect_bjets[i].px(),vect_bjets[i].py(),vect_bjets[i].pz(),vect_bjets[i].e()));
     }
