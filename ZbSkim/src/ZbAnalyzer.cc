@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: ZbAnalyzer.cc,v 1.109 2013/07/19 21:10:47 dellaric Exp $
+// $Id: ZbAnalyzer.cc,v 1.110 2013/07/19 21:13:21 dellaric Exp $
 //
 //
 
@@ -689,12 +689,12 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
 
   produces<std::vector<double>>("myEventWeight");
 
-  produces<std::vector<pat::Electron>>("myElectrons");
-  produces<std::vector<pat::Muon>>("myMuons");
+  produces<std::vector<math::XYZTLorentzVector>>("myElectrons");
+  produces<std::vector<math::XYZTLorentzVector>>("myMuons");
 
   produces<std::vector<double>>("myPtZ");
 
-  produces<std::vector<pat::Jet>>("myJets");
+  produces<std::vector<math::XYZTLorentzVector>>("myJets");
 
   produces<std::vector<double>>("myHt");
 
@@ -756,17 +756,17 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   std::auto_ptr<std::vector<double>> myEventWeight( new std::vector<double> );
 
-  std::auto_ptr<std::vector<pat::Electron>> myElectrons( new std::vector<pat::Electron> );
-  std::auto_ptr<std::vector<pat::Muon>> myMuons( new std::vector<pat::Muon> );
+  std::auto_ptr<std::vector<math::XYZTLorentzVector>> myElectrons( new std::vector<math::XYZTLorentzVector> );
+  std::auto_ptr<std::vector<math::XYZTLorentzVector>> myMuons( new std::vector<math::XYZTLorentzVector> );
 
   std::auto_ptr<std::vector<double>> myPtZ( new std::vector<double> );
 
-  std::auto_ptr<std::vector<pat::Jet>> myJets( new std::vector<pat::Jet> );
+  std::auto_ptr<std::vector<math::XYZTLorentzVector>> myJets( new std::vector<math::XYZTLorentzVector> );
 
   std::auto_ptr<std::vector<double>> myHt( new std::vector<double> );
 
   std::auto_ptr<std::vector<double>> myBjetsWeights( new std::vector<double> );
-  std::auto_ptr<std::vector<pat::Jet>> myBjets( new std::vector<pat::Jet> );
+  std::auto_ptr<std::vector<math::XYZTLorentzVector>> myBjets( new std::vector<math::XYZTLorentzVector> );
 
   bool ee_event = false;
   bool mm_event = false;
@@ -1645,28 +1645,26 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   }
 
   if (ee_event && Nj > 0 && met_cut) {
-    for (unsigned int i=0; i<vect_ele.size(); ++i) {
-      myElectrons->push_back(vect_ele[i]);
-      myPtZ->push_back(diele_pt);
-    }
+    myElectrons->push_back(math::XYZTLorentzVector(vect_ele[iele0].px(),vect_ele[iele0].py(),vect_ele[iele0].pz(),vect_ele[iele0].energy()));
+    myElectrons->push_back(math::XYZTLorentzVector(vect_ele[iele1].px(),vect_ele[iele1].py(),vect_ele[iele1].pz(),vect_ele[iele1].energy()));
+    myPtZ->push_back(diele_pt);
   }
 
   if (mm_event && Nj > 0 && met_cut) {
-    for (unsigned int i=0; i<vect_muon.size(); ++i) {
-      myMuons->push_back(vect_muon[i]);
-      myPtZ->push_back(dimuon_pt);
-    }
+    myMuons->push_back(math::XYZTLorentzVector(vect_muon[imuon0].px(),vect_muon[imuon0].py(),vect_muon[imuon0].pz(),vect_muon[imuon0].energy()));
+    myMuons->push_back(math::XYZTLorentzVector(vect_muon[imuon1].px(),vect_muon[imuon1].py(),vect_muon[imuon1].pz(),vect_muon[imuon1].energy()));
+    myPtZ->push_back(dimuon_pt);
   }
 
   if ((ee_event || mm_event) && Nj > 0 && met_cut) {
     for (unsigned int i=0; i<vect_jets.size(); ++i) {
-      myJets->push_back(vect_jets[i]);
-      myHt->push_back(Ht);
+      myJets->push_back(math::XYZTLorentzVector(vect_jets[i].px(),vect_jets[i].py(),vect_jets[i].pz(),vect_jets[i].energy()));
     }
+    myHt->push_back(Ht);
     for (unsigned int i=0; i<vect_bjets.size(); ++i) {
       scalFac_b = btagSF(isMC, vect_bjets[i].partonFlavour(), vect_bjets[i].pt(), vect_bjets[i].eta());
       myBjetsWeights->push_back(scalFac_b);
-      myBjets->push_back(vect_bjets[i]);
+      myBjets->push_back(math::XYZTLorentzVector(vect_bjets[i].px(),vect_bjets[i].py(),vect_bjets[i].pz(),vect_bjets[i].energy()));
     }
   }
 
