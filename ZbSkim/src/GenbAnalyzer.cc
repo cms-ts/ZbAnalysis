@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.33 2013/07/20 07:24:14 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.34 2013/07/20 07:49:46 dellaric Exp $
 //
 //
 
@@ -275,7 +275,9 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   bool mm_event = false;
 
   int Nj = 0;
+  int Nj2 = 0;
   int Nb = 0;
+  int Nb2 = 0;
 
   double diele_mass = 0;
   double diele_phi = 0;
@@ -600,8 +602,9 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   //cout << "------ jet con fastjet ------------" << endl;
 
   vector<fastjet::PseudoJet> vect_jets;
+  vector<fastjet::PseudoJet> vect_jets_all;
   fastjet::ClusterSequence cseq(vecs, fastjet::JetDefinition(fastjet:: antikt_algorithm, 0.5));
-  vector<fastjet::PseudoJet> jets = sorted_by_pt(cseq.inclusive_jets(30.0));
+  vector<fastjet::PseudoJet> jets = sorted_by_pt(cseq.inclusive_jets(0.0));
   for (unsigned int i = 0; i < jets.size(); i++)
   {
 	double etaj = jets[i].eta();
@@ -613,6 +616,8 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 		vect_jets.push_back(jets[i]);
 		Ht = Ht + jets[i].perp();
         }
+	Nj2++;
+	vect_jets2.push_back(jets[i]);
   }
 
   // ++++++++ JETS
@@ -651,6 +656,20 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 	  Nb++;
 	  vect_bjets.push_back(vect_jets[j]);
 	}
+	int j2 = 0;
+     	double Rmin2 = 9999.;
+        for (unsigned int i=0; i<vect_jets2.size(); ++i) {
+	  TLorentzVector jet_momentum;
+	  jet_momentum.SetPtEtaPhiM(vect_jets2[i].perp(),vect_jets2[i].eta(),vect_jets2[i].phi(),vect_jets2[i].m());
+          if (ROOT::Math::VectorUtil::DeltaR(jet_momentum, B) < Rmin2) {
+	    j2 = i;
+	    Rmin2 = ROOT::Math::VectorUtil::DeltaR(jet_momentum, B);
+	  }
+        }
+        if (Rmin2 < 0.4) {
+	  Nb2++;
+	  vect_bjets2.push_back(vect_jets2[j]);
+	}
       }
 
     }
@@ -658,6 +677,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   // Sort b-jets in pT
   std::sort( vect_bjets.begin(), vect_bjets.end(), order_jets() );
+  std::sort( vect_bjets2.begin(), vect_bjets2.end(), order_jets() );
 
   if (ee_event && Nj > 0) {
     w_first_ele_pt->Fill (ele_dres.p_part.Pt(), MyWeight);
@@ -719,29 +739,29 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_delta_mm_b->Fill(delta_phi_mm_b, MyWeight);
   }
 
-  if ((ee_event || mm_event) && Nj > 0) {
+  if ((ee_event || mm_event) && Nj2 > 0) {
      myEventWeight->push_back(MyWeight);
   }
  
- if (ee_event && Nj > 0) {
+ if (ee_event && Nj2 > 0) {
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[0].Px(),vect_ele[0].Py(),vect_ele[0].Pz(),vect_ele[0].E()));
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[1].Px(),vect_ele[1].Py(),vect_ele[1].Pz(),vect_ele[1].E()));
     myPtZ->push_back(diele_pt);
  }
   
-  if (mm_event && Nj > 0) {
+  if (mm_event && Nj2 > 0) {
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[0].Px(),vect_muon[0].Py(),vect_muon[0].Pz(),vect_muon[0].E()));
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[1].Px(),vect_muon[1].Py(),vect_muon[1].Pz(),vect_muon[1].E()));
     myPtZ->push_back(dimuon_pt);
   }
   
-  if ((ee_event || mm_event) && Nj > 0) {
-    for (unsigned int i=0; i<vect_jets.size(); ++i) {
-      myJets->push_back(math::XYZTLorentzVector(vect_jets[i].px(),vect_jets[i].py(),vect_jets[i].pz(),vect_jets[i].e()));
+  if ((ee_event || mm_event) && Nj2 > 0) {
+    for (unsigned int i=0; i<vect_jets2.size(); ++i) {
+      myJets->push_back(math::XYZTLorentzVector(vect_jets2[i].px(),vect_jets2[i].py(),vect_jets2[i].pz(),vect_jets2[i].e()));
     }
     myHt->push_back(Ht);
-    for (unsigned int i=0; i<vect_bjets.size(); ++i) {
-     myBjets->push_back(math::XYZTLorentzVector(vect_bjets[i].px(),vect_bjets[i].py(),vect_bjets[i].pz(),vect_bjets[i].e()));
+    for (unsigned int i=0; i<vect_bjets2.size(); ++i) {
+     myBjets->push_back(math::XYZTLorentzVector(vect_bjets2[i].px(),vect_bjets2[i].py(),vect_bjets2[i].pz(),vect_bjets2[i].e()));
     }
   }
 
