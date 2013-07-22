@@ -485,12 +485,12 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	  if (doBkg) title = title + "_doBkg";
 	  if (doFit) title = title + "_doFit";
 	  if (ilepton==1) {
-	    gSystem->mkdir((path + "../../electrons/" + version + "/distributions/").c_str(), kTRUE);
-	    c1->SaveAs((path + "../../electrons/" + version + "/distributions" + "/" + title + ".pdf").c_str());
+	    gSystem->mkdir((path + "../electrons/" + version + "/distributions/").c_str(), kTRUE);
+	    c1->SaveAs((path + "../electrons/" + version + "/distributions" + "/" + title + ".pdf").c_str());
 	  }
 	  if (ilepton==2) {
-	    gSystem->mkdir((path + "../../muons/" + version + "/distributions/").c_str(), kTRUE);
-	    c1->SaveAs((path + "../../muons/" + version + "/distributions" + "/" + title + ".pdf").c_str());
+	    gSystem->mkdir((path + "../muons/" + version + "/distributions/").c_str(), kTRUE);
+	    c1->SaveAs((path + "../muons/" + version + "/distributions" + "/" + title + ".pdf").c_str());
 	  }
 	}
 }

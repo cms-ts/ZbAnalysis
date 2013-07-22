@@ -803,24 +803,24 @@ int useBinnedEfficiency=1;
 	if (isratio==0) {
 	  if (plot) {
 	    if (ilepton==1) {
-	      gSystem->mkdir((path + "../../electrons/" + version + "/xsecs/").c_str(), kTRUE);
-	      c1->SaveAs((path + "../../electrons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
+	      gSystem->mkdir((path + "../electrons/" + version + "/xsecs/").c_str(), kTRUE);
+	      c1->SaveAs((path + "../electrons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
 	    }
 	    if (ilepton==2) {
-	      gSystem->mkdir((path + "../../muons/" + version + "/xsecs/").c_str(), kTRUE);
-	      c1->SaveAs((path + "../../muons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
+	      gSystem->mkdir((path + "../muons/" + version + "/xsecs/").c_str(), kTRUE);
+	      c1->SaveAs((path + "../muons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
 	    }
 	  }
 	}
 
 	if (plot && (isratio==1)) {
 	  if (ilepton==1) {
-	    gSystem->mkdir((path + "../../electrons/" + version + "/ratios/").c_str());
-	    c1->SaveAs((path + "../../electrons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
+	    gSystem->mkdir((path + "../electrons/" + version + "/ratios/").c_str());
+	    c1->SaveAs((path + "../electrons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
 	  } 
 	  if (ilepton==2) {
-	    gSystem->mkdir((path + "../../muons/" + version + "/ratios/").c_str());
-	    c1->SaveAs((path + "../../muons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
+	    gSystem->mkdir((path + "../muons/" + version + "/ratios/").c_str());
+	    c1->SaveAs((path + "../muons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
 	  }
 	}
 }
