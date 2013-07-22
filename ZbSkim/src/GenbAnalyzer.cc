@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.34 2013/07/20 07:49:46 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.35 2013/07/22 08:01:23 dellaric Exp $
 //
 //
 
@@ -602,7 +602,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   //cout << "------ jet con fastjet ------------" << endl;
 
   vector<fastjet::PseudoJet> vect_jets;
-  vector<fastjet::PseudoJet> vect_jets_all;
+  vector<fastjet::PseudoJet> vect_jets2;
   fastjet::ClusterSequence cseq(vecs, fastjet::JetDefinition(fastjet:: antikt_algorithm, 0.5));
   vector<fastjet::PseudoJet> jets = sorted_by_pt(cseq.inclusive_jets(0.0));
   for (unsigned int i = 0; i < jets.size(); i++)
@@ -625,6 +625,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   /*loop over gen particles, find the b*/
 
   vector<fastjet::PseudoJet> vect_bjets;
+  vector<fastjet::PseudoJet> vect_bjets2;
 
   int nb=0;
 
