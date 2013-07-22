@@ -14,7 +14,7 @@
 //
 // Original Author: Vieri Candelise
 // Created: Thu Jan 10 15:57:03 CET 2013
-// $Id: GenbAnalyzer.cc,v 1.35 2013/07/22 08:01:23 dellaric Exp $
+// $Id: GenbAnalyzer.cc,v 1.36 2013/07/22 08:02:22 dellaric Exp $
 //
 //
 
@@ -669,7 +669,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
         }
         if (Rmin2 < 0.4) {
 	  Nb2++;
-	  vect_bjets2.push_back(vect_jets2[j]);
+	  vect_bjets2.push_back(vect_jets2[j2]);
 	}
       }
 
