@@ -757,7 +757,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
     if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
     w_delta_ee_b->Fill(delta_phi_ee_b, MyWeight);
-    if (Nb == 1) {
+    if (Nj == 1) {
       w_single_delta_ee_b->Fill (delta_phi_ee_b, MyWeight);
       w_single_pt_Z_ee_b->Fill (diele_pt, MyWeight);
     }
@@ -766,13 +766,13 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
     if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
     w_delta_mm_b->Fill(delta_phi_mm_b, MyWeight);
-    if (Nb == 1) {
+    if (Nj == 1) {
       w_single_delta_mm_b->Fill (delta_phi_mm_b, MyWeight);
       w_single_pt_Z_mm_b->Fill (dimuon_pt, MyWeight);
     }
   }
   
-  if ((ee_event || mm_event) && Nb==1) {
+  if ((ee_event || mm_event) && Nb > 0 && Nj == 1) {
     w_single_Ht_b->Fill (Ht, MyWeight);
     w_single_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_single_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
