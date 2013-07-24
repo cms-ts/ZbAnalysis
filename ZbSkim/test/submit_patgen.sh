@@ -29,6 +29,11 @@ if [ ! -e $DATADIR/$VERSION/$JOBDIR ]; then
   exit
 fi
 
+P=S10
+if [ "$JOBDIR" == "QCD" ]; then
+  P=S7
+fi
+
 rm -fr $OUTDIR/$VERSION/${JOBDIR}_patgen
 mkdir -p $OUTDIR/$VERSION/${JOBDIR}_patgen
 cd $OUTDIR/$VERSION/${JOBDIR}_patgen
