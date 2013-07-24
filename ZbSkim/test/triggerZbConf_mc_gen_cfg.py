@@ -302,6 +302,12 @@ process.demoMuoBtag = cms.EDProducer('ZbAnalyzer',
         JEC     = cms.untracked.double(0),
         usePartonFlavour = cms.untracked.bool(True)
 )
+process.demoEleDump = cms.EDAnalyzer('ZbDumper',
+        lepton       = cms.untracked.string("electron")
+)
+process.demoMuoDump = cms.EDAnalyzer('ZbDumper',
+        lepton       = cms.untracked.string("muon")
+)
 process.p = cms.Path(
    process.goodOfflinePrimaryVertices *
    getattr(process,"patPF2PATSequence"+postfix) *
@@ -322,7 +328,8 @@ process.p = cms.Path(
    process.demoEleGen * process.demoMuoGen *
 #   process.MyProcess *
    process.demoEle * process.demoMuo *
-   process.demoEleBtag * process.demoMuoBtag
+   process.demoEleBtag * process.demoMuoBtag *
+   process.demoEleDump * process.demoMuoDump
    #process.dump
    )
 
@@ -340,7 +347,6 @@ process.out.outputCommands = patEventContent
 process.out.outputCommands += patExtraAodEventContent
 process.out.outputCommands += patTriggerEventContent
 process.out.outputCommands += [
-	'keep *',
 	'keep *_addPileupInfo_*_*',
 	'keep *_matchedElectrons_*_*',
 	'keep *_matchedMuons_*_*',
