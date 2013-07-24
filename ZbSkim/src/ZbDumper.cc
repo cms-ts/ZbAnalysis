@@ -246,7 +246,7 @@ ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	if (ee_event||mm_event) w_first_jet_pt->Fill(jets->empty() ? -1 : (*jets)[0].pt(), k<0 ? -1 : (*gen_jets)[k].pt(), my_weight);
 	if (ee_event||mm_event) w_first_jet_eta->Fill(jets->empty() ? -3 : (*jets)[0].eta(), k<0 ? -3 : (*gen_jets)[k].eta(), my_weight);
 	if (ee_event||mm_event) w_first_bjet_pt->Fill(bjets->empty() ? -1 : (*bjets)[0].pt(), k_b<0 ? -1 : (*gen_bjets)[k_b].pt(), my_weight);
-	if (ee_event||mm_event) w_first_bjet_eta->Fill(bjets->empty() ? -3 : (*bjets)[0].pt(), k_b<0 ? -1 : (*gen_bjets)[k_b].eta(), my_weight);
+	if (ee_event||mm_event) w_first_bjet_eta->Fill(bjets->empty() ? -3 : (*bjets)[0].eta(), k_b<0 ? -3 : (*gen_bjets)[k_b].eta(), my_weight);
 	if (ee_event) w_pt_Z_ee->Fill(ptZ->empty() ? -1 : (*ptZ)[0], gen_ptZ->empty() ? -1 : (*gen_ptZ)[0], my_weight);
 	if (mm_event) w_pt_Z_mm->Fill(ptZ->empty() ? -1 : (*ptZ)[0], gen_ptZ->empty() ? -1 : (*gen_ptZ)[0], my_weight);
 	if (ee_event && !gen_bjets->empty() && !bjets->empty()) w_pt_Z_ee_b->Fill(ptZ->empty() ? -1 : (*ptZ)[0], gen_ptZ->empty() ? -1 : (*gen_ptZ)[0], my_weight);
