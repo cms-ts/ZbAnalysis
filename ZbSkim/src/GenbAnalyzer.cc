@@ -149,8 +149,8 @@ private:
   TH1F*     w_first_jet_eta_b;
   TH1F*     w_first_ele_pt;
   TH1F*     w_second_ele_pt;
-  TH1F*     w_dressed_ele_pt;
   TH1F*     w_first_muon_pt;
+  TH1F*     w_second_muon_pt;
   TH1F*     w_mass_ee;
   TH1F*     w_mass_mm;
   TH1F*     w_mass_ee_b;  // at least one b jet in the event
@@ -201,8 +201,8 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_jetmultiplicity =   fs->make < TH1F > ("w_jetmultiplicity",  "w_jetmultiplicity;", 8, 0.5, 8.5);
   w_first_ele_pt =      fs->make < TH1F > ("w_first_ele_pt",     "w_first_ele_pt; [GeV]", 50, 0., 450.);
   w_second_ele_pt =     fs->make < TH1F > ("w_second_ele_pt",    "w_second_ele_pt; [GeV]", 50, 0., 450.);
-  w_dressed_ele_pt =    fs->make < TH1F > ("w_dressed_ele_pt",   "w_dressed_ele_pt; [GeV]", 50, 0., 450.);
   w_first_muon_pt =     fs->make < TH1F > ("w_first_muon_pt",    "w_first_muon_pt; [GeV]", 50, 0., 450.);
+  w_second_muon_pt =    fs->make < TH1F > ("w_second_muon_pt",   "w_second_muon_pt; [GeV]", 50, 0., 450.);
   w_bjetmultiplicity =  fs->make < TH1F > ("w_bjetmultiplicity", "w_bjetmultiplicity;N_bjets", 5, 0.5, 5.5);
   w_first_bjet_pt =     fs->make < TH1F > ("w_first_bjet_pt",    "w_first_bjet_pt; [GeV]", 50, 30., 700.);
   w_first_jet_pt =      fs->make < TH1F > ("w_first_jet_pt",     "w_first_jet_pt; [GeV]", 50, 30., 700.);
@@ -711,7 +711,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   if (mm_event && Nj > 0) {
     w_first_muon_pt->Fill (mu_dres.p_part.Pt(), MyWeight);
-    //w_second_muon_pt->Fill (antimu_dres.p_part, MyWeight);
+    w_second_muon_pt->Fill (antimu_dres.p_part.Pt(), MyWeight);
     w_mass_mm->Fill(dimuon_mass, MyWeight);
     w_pt_Z_mm->Fill(dimuon_pt, MyWeight);
     double delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi());
