@@ -626,7 +626,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 	double etaj = jets[i].eta();
 	double ptj = jets[i].perp();
 
-	if (fabs(etaj) < 2.5 && jets[i].perp() > 30)
+	if (fabs(etaj) < 2.5 && ptj > 30)
         {
 		Nj++;
 		vect_jets.push_back(jets[i]);
