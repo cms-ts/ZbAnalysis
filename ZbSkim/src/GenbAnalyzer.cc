@@ -225,11 +225,11 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_delta_ee =          fs->make < TH1F > ("w_delta_phi_ee",     "w_delta_phi_ee", 12, 0, TMath::Pi ());
   w_delta_ee_b =        fs->make < TH1F > ("w_delta_phi_ee_b",   "w_delta_phi_ee_b", 12, 0, TMath::Pi ());
 
-  w_single_bjet_pt =           fs->make < TH1F > ("w_single_bjet_pt",    "w_single_bjet_pt;P_t [GeV]", 50, 30., 700.);
-  w_single_bjet_eta =          fs->make < TH1F > ("w_single_bjet_eta",    "w_single_bjet_eta", 16, -2.5, 2.5);
+  w_single_bjet_pt =           fs->make < TH1F > ("w_single_bjet_pt",         "w_single_bjet_pt;P_t [GeV]", 50, 30., 700.);
+  w_single_bjet_eta =          fs->make < TH1F > ("w_single_bjet_eta",        "w_single_bjet_eta", 16, -2.5, 2.5);
   w_single_pt_Z_ee_b =         fs->make < TH1F > ("w_single_pt_Z_ee_b",       "w_single_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
   w_single_pt_Z_mm_b =         fs->make < TH1F > ("w_single_pt_Z_mm_b",       "w_single_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
-  w_single_delta_ee_b =        fs->make < TH1F > ("w_single_delta_phi_mm_b",  "w_single_delta_phi_mm_b", 12, 0, TMath::Pi ());
+  w_single_delta_ee_b =        fs->make < TH1F > ("w_single_delta_phi_ee_b",  "w_single_delta_phi_ee_b", 12, 0, TMath::Pi ());
   w_single_delta_mm_b =        fs->make < TH1F > ("w_single_delta_phi_mm_b",  "w_single_delta_phi_mm_b", 12, 0, TMath::Pi ());
   w_single_Ht_b =              fs->make < TH1F > ("w_single_Ht_b",            "w_single_Ht [GeV]", 50, 30., 1000.);
 
@@ -696,6 +696,9 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   std::sort( vect_bjets.begin(), vect_bjets.end(), order_jets() );
   std::sort( vect_bjets2.begin(), vect_bjets2.end(), order_jets() );
 
+  ee_event = ee_event && (lepton_ == "electron");
+  mm_event = mm_event && (lepton_ == "muon");
+
   if (ee_event && Nj > 0) {
     w_first_ele_pt->Fill (ele_dres.p_part.Pt(), MyWeight);
     w_second_ele_pt->Fill (pos_dres.p_part.Pt(), MyWeight);
@@ -759,12 +762,13 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_delta_mm_b->Fill(delta_phi_mm_b, MyWeight);
   }
   
-  if (mm_event && Nb==1) {
-    w_single_pt_Z_mm_b->Fill  (dimuon_pt, MyWeight);
-  }
   if (ee_event && Nb==1) {
     w_single_pt_Z_ee_b->Fill (diele_pt, MyWeight);
   }
+  if (mm_event && Nb==1) {
+    w_single_pt_Z_mm_b->Fill (dimuon_pt, MyWeight);
+  }
+
   if ((ee_event || mm_event) && Nb==1) {
     w_single_Ht_b->Fill (Ht, MyWeight);
     w_single_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
