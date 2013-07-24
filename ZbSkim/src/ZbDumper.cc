@@ -220,8 +220,6 @@ ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        double R = 0.1;
        for (unsigned int i=0; i<gen_jets->size(); ++i) {
 	if (ROOT::Math::VectorUtil::DeltaR((*jets)[0], (*gen_jets)[i]) < R) {
-	   cout<< "gen pt="<<(*gen_jets)[i].pt()<<"   "<<"gen eta="<<(*gen_jets)[i].eta()<<endl;
-       	   cout<< "reco pt="<<(*jets)[i].pt()<<"   "<<"reco eta="<<(*jets)[i].eta()<<endl;
 	   k=i;
 	   R = ROOT::Math::VectorUtil::DeltaR((*jets)[0], (*gen_jets)[i]);
 	}
@@ -232,8 +230,6 @@ ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        double R_b = 0.1;
        for (unsigned int i=0; i<gen_bjets->size(); ++i) {
 	if (ROOT::Math::VectorUtil::DeltaR((*bjets)[0], (*gen_bjets)[i]) < R_b) {
-	   cout<< "b gen pt="<<(*gen_bjets)[i].pt()<<"   "<<"b gen eta="<<(*gen_bjets)[i].eta() <<endl;
-       	   cout<< "b reco pt="<<(*bjets)[i].pt()<<"   "<<"b reco eta="<<(*bjets)[i].eta() <<endl;
 	   k_b=i;
 	   R_b = ROOT::Math::VectorUtil::DeltaR((*bjets)[0], (*gen_bjets)[i]);
 	}
