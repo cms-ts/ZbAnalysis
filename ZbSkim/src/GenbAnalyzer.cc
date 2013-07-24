@@ -755,11 +755,13 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
     if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
     w_delta_ee_b->Fill(delta_phi_ee_b, MyWeight);
+    if (Nb == 1) w_single_delta_ee_b->Fill(delta_phi_ee_b, MyWeight);
   }
   if (mm_event && Nb > 0 && Nj > 0) {
     double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
     if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
     w_delta_mm_b->Fill(delta_phi_mm_b, MyWeight);
+    if (Nb == 1) w_single_delta_mm_b->Fill(delta_phi_mm_b, MyWeight);
   }
   
   if (ee_event && Nb==1) {
