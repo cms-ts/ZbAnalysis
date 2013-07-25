@@ -939,28 +939,27 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   bool vtx_cut = true;
 
-  edm::Handle < vector < reco::Vertex > > vertices_h;
-  iEvent.getByLabel (edm::InputTag ("goodOfflinePrimaryVertices"), vertices_h);
+  edm::Handle < vector < reco::Vertex > > vertices;
+  iEvent.getByLabel (edm::InputTag ("goodOfflinePrimaryVertices"), vertices);
 
-  // require in the event that there is at least one reconstructed vertex
-  if (vertices_h->size () <= 0) vtx_cut = false;
+  if (vertices->size() > 0) {
+    const reco::Vertex* theVertex = &(vertices->front());
+    if (theVertex->ndof() < 5) vtx_cut = false;
+    if (fabs(theVertex->z()) > 24.0) vtx_cut = false;
+    if (fabs(theVertex->position().rho()) > 2.0) vtx_cut = false;
+  } else {
+    vtx_cut = false;
+  }
 
-  // pick the first (i.e. highest sum pt) vertex
-  const reco::Vertex * theVertex = &(vertices_h->front ());
-
-  // require that the vertex meets certain criteria
-  if (theVertex->ndof () < 5) vtx_cut = false;
-  if (fabs(theVertex->z ()) > 24.0) vtx_cut = false;
-  if (fabs(theVertex->position ().rho ()) > 2.0) vtx_cut = false;
-
-  // now, count vertices
   int NVtx = 0;
-  for (vector < reco::Vertex >::const_iterator itv = vertices_h->begin (); itv != vertices_h->end (); ++itv) {
-    // require that the vertex meets certain criteria
-    if (itv->ndof () < 5)	continue;
-    if (fabs(itv->z ()) > 50.0)	continue;
-    if (fabs(itv->position ().rho ()) > 2.0)	continue;
-    ++NVtx;
+
+  if (vtx_cut) {
+    for (vector < reco::Vertex >::const_iterator itv = vertices->begin (); itv != vertices->end (); ++itv) {
+      if (itv->ndof() < 5) continue;
+      if (fabs(itv->z()) > 50.0) continue;
+      if (fabs(itv->position().rho()) > 2.0) continue;
+      ++NVtx;
+    }
   }
 
   // ++++++++ LOOP OVER GEN PARTICLES
