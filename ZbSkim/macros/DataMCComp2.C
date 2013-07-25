@@ -1,7 +1,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v09.h"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/GDR/data/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 
@@ -800,27 +801,34 @@ int useBinnedEfficiency=1;
 	  }
 	}
 
-	if (isratio==0) {
-	  if (plot) {
+	if (plot) {
+	  if (isratio==0) {
 	    if (ilepton==1) {
 	      gSystem->mkdir((path + "/electrons/" + version + "/xsecs/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/electrons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
+	      TFile f((path + "/electrons/" + version + "/xsecs/" + title_b + "_xsecs" + ".root").c_str(),"RECREATE");
+              h_data->Write(title.c_str());
+              h_data_b->Write(title_b.c_str());
+              f.Close();
 	    }
 	    if (ilepton==2) {
 	      gSystem->mkdir((path + "/muons/" + version + "/xsecs/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/muons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
+	      TFile f((path + "/muons/" + version + "/xsecs/" + title_b + "_xsecs" + ".root").c_str(),"RECREATE");
+              h_data->Write(title.c_str());
+              h_data_b->Write(title_b.c_str());
+              f.Close();
 	    }
 	  }
-	}
-
-	if (plot && (isratio==1)) {
-	  if (ilepton==1) {
-	    gSystem->mkdir((path + "/electrons/" + version + "/ratios/").c_str());
-	    c1->SaveAs((path + "/electrons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
-	  } 
-	  if (ilepton==2) {
-	    gSystem->mkdir((path + "/muons/" + version + "/ratios/").c_str());
-	    c1->SaveAs((path + "/muons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
+	  if (isratio==1) {
+	    if (ilepton==1) {
+	      gSystem->mkdir((path + "/electrons/" + version + "/ratios/").c_str());
+	      c1->SaveAs((path + "/electrons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
+	    }
+	    if (ilepton==2) {
+	      gSystem->mkdir((path + "/muons/" + version + "/ratios/").c_str());
+	      c1->SaveAs((path + "/muons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
+	    }
 	  }
 	}
 }
