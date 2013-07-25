@@ -1,7 +1,7 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v09.h"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/" + version + "/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 
@@ -10,8 +10,8 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 	}
 
 	if (title.empty()) title = "w_jetmultiplicity";
-	TFile *mc1 = TFile::Open((path+"DYJetsToLL_gen.root").c_str());
-	TFile *mc2 = TFile::Open((path+"DYJetsToLL_gen.root").c_str());
+	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 
         if (ilepton==1) {
           if (title.find("muon")!=string::npos) return;
@@ -132,16 +132,16 @@ int itype = 0; // e_Zb or e_Z
 
 	if (plot) {
 	  if (ilepton==1) {
-	    gSystem->mkdir((path + "../electrons/" + version + "/efficiency/").c_str(), kTRUE);
-	    c2->SaveAs((path + "../electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
-	    TFile f((path + "../electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
+	    gSystem->mkdir((path + "/electrons/" + version + "/efficiency/").c_str(), kTRUE);
+	    c2->SaveAs((path + "/electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
+	    TFile f((path + "/electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
 	    f.Close();
 	  }
 	  if (ilepton==2) {
-	    gSystem->mkdir((path + "../muons/" + version + "/efficiency/").c_str(), kTRUE);
-	    c2->SaveAs((path + "../muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
-	    TFile f((path + "../muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
+	    gSystem->mkdir((path + "/muons/" + version + "/efficiency/").c_str(), kTRUE);
+	    c2->SaveAs((path + "/muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
+	    TFile f((path + "/muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
 	    f.Close();
 	  }

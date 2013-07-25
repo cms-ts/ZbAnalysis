@@ -1,7 +1,7 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v09.h"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/" + version + "/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 TH1F* h_data_fit = 0;
 TH1F* h_mc_fit0 = 0;
@@ -53,17 +53,17 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	}
 
 	if (ilepton==1)
-	  TFile *data = TFile::Open((path + "DoubleElectron_2012_merge.root").c_str());
+	  TFile *data = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
 	if (ilepton==2)
-	  TFile *data = TFile::Open((path + "DoubleMu_2012_merge.root").c_str());
+	  TFile *data = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
 
-	TFile *mc1 = TFile::Open((path + "DYJetsToLL.root").c_str());
-	TFile *mc2 = TFile::Open((path + "TTbar.root").c_str());
-	TFile *mc3 = TFile::Open((path + "ZZ.root").c_str());
-	TFile *mc4 = TFile::Open((path + "WZ.root").c_str());
-//	TFile *mc5 = TFile::Open((path + "QCD.root").c_str());
-	TFile *mc6 = TFile::Open((path + "WW.root").c_str());
-	TFile *mc7 = TFile::Open((path + "Wj.root").c_str());
+	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
+	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
+	TFile *mc3 = TFile::Open((path + "/" + version + "/" + "ZZ.root").c_str());
+	TFile *mc4 = TFile::Open((path + "/" + version + "/" + "WZ.root").c_str());
+//	TFile *mc5 = TFile::Open((path + "/" + version + "/" + "QCD.root").c_str());
+	TFile *mc6 = TFile::Open((path + "/" + version + "/" + "WW.root").c_str());
+	TFile *mc7 = TFile::Open((path + "/" + version + "/" + "Wj.root").c_str());
 
 	if (ilepton==1) data->cd("demoEle");
 	if (ilepton==2) data->cd("demoMuo");
@@ -485,12 +485,12 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	  if (doBkg) title = title + "_doBkg";
 	  if (doFit) title = title + "_doFit";
 	  if (ilepton==1) {
-	    gSystem->mkdir((path + "../electrons/" + version + "/distributions/").c_str(), kTRUE);
-	    c1->SaveAs((path + "../electrons/" + version + "/distributions" + "/" + title + ".pdf").c_str());
+	    gSystem->mkdir((path + "/electrons/" + version + "/distributions/").c_str(), kTRUE);
+	    c1->SaveAs((path + "/electrons/" + version + "/distributions" + "/" + title + ".pdf").c_str());
 	  }
 	  if (ilepton==2) {
-	    gSystem->mkdir((path + "../muons/" + version + "/distributions/").c_str(), kTRUE);
-	    c1->SaveAs((path + "../muons/" + version + "/distributions" + "/" + title + ".pdf").c_str());
+	    gSystem->mkdir((path + "/muons/" + version + "/distributions/").c_str(), kTRUE);
+	    c1->SaveAs((path + "/muons/" + version + "/distributions" + "/" + title + ".pdf").c_str());
 	  }
 	}
 }

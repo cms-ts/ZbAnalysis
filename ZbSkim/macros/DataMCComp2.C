@@ -1,7 +1,7 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v09.h"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/" + version + "/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 
@@ -101,21 +101,21 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	}
 
 	TFile *data;
-	if (ilepton==1) data = TFile::Open((path + "DoubleElectron_2012_merge.root").c_str());
-	if (ilepton==2) data = TFile::Open((path + "DoubleMu_2012_merge.root").c_str());
+	if (ilepton==1) data = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
+	if (ilepton==2) data = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
 
-	TFile *mc1 = TFile::Open((path + "DYJetsToLL.root").c_str());
-	TFile *mcg = TFile::Open((path + "DYJetsToLL_gen.root").c_str());
-	TFile *mcg1 = TFile::Open((path + "DYJets_sherpa_gen.root").c_str());
+	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
+	TFile *mcg = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	TFile *mcg1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	TFile *mcg2;
-	if (ilepton==1) mcg2 = TFile::Open((path + "DYToEE_powheg_gen.root").c_str());
-	if (ilepton==2) mcg2 = TFile::Open((path + "DYToMuMu_powheg_gen.root").c_str());
-	TFile *mc2 = TFile::Open((path + "TTbar.root").c_str());
-	TFile *mc3 = TFile::Open((path + "ZZ.root").c_str());
-	TFile *mc4 = TFile::Open((path + "WZ.root").c_str());
-//	TFile *mc5 = TFile::Open((path + "QCD.root").c_str());
-	TFile *mc6 = TFile::Open((path + "WW.root").c_str());
-	TFile *mc7 = TFile::Open((path + "Wj.root").c_str());
+	if (ilepton==1) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
+	if (ilepton==2) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
+	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
+	TFile *mc3 = TFile::Open((path + "/" + version + "/" + "ZZ.root").c_str());
+	TFile *mc4 = TFile::Open((path + "/" + version + "/" + "WZ.root").c_str());
+//	TFile *mc5 = TFile::Open((path + "/" + version + "/" + "QCD.root").c_str());
+	TFile *mc6 = TFile::Open((path + "/" + version + "/" + "WW.root").c_str());
+	TFile *mc7 = TFile::Open((path + "/" + version + "/" + "Wj.root").c_str());
 
 	string title_b = title;
 
@@ -273,8 +273,8 @@ int useBinnedEfficiency=1;
 	  h_mc1->Scale(1./(Lumi2012*e_Z));
 	} else {
           if (ilepton==1) {
-	    TFile f_b(("electrons/" + version + "/efficiency" + "/" + h_data_b->GetName() + "_efficiency" + ".root").c_str());
-	    TFile f(("electrons/" + version + "/efficiency" + "/" + h_data->GetName() + "_efficiency" + ".root").c_str());
+	    TFile f_b((path + "/electrons/" + version + "/efficiency" + "/" + string(h_data_b->GetName()) + "_efficiency" + ".root").c_str());
+	    TFile f((path + "/electrons/" + version + "/efficiency" + "/" + string(h_data->GetName()) + "_efficiency" + ".root").c_str());
 	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName());
 	    TH1F* h = (TH1F*)f.Get(h_data->GetName());
 	    h_data_b->Divide(h_b);
@@ -285,8 +285,8 @@ int useBinnedEfficiency=1;
 	    f.Close();
           }
 	  if (ilepton==2) {
-	    TFile f_b(("muons/" + version + "/efficiency" + "/" + h_data_b->GetName() + "_efficiency" + ".root").c_str());
-	    TFile f(("muons/" + version + "/efficiency" + "/" + h_data->GetName() + "_efficiency" + ".root").c_str());
+	    TFile f_b((path + "/muons/" + version + "/efficiency" + "/" + string(h_data_b->GetName()) + "_efficiency" + ".root").c_str());
+	    TFile f((path + "/muons/" + version + "/efficiency" + "/" + string(h_data->GetName()) + "_efficiency" + ".root").c_str());
 	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName());
 	    TH1F* h = (TH1F*)f.Get(h_data->GetName());
 	    h_data_b->Divide(h_b);
@@ -803,24 +803,24 @@ int useBinnedEfficiency=1;
 	if (isratio==0) {
 	  if (plot) {
 	    if (ilepton==1) {
-	      gSystem->mkdir((path + "../electrons/" + version + "/xsecs/").c_str(), kTRUE);
-	      c1->SaveAs((path + "../electrons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
+	      gSystem->mkdir((path + "/electrons/" + version + "/xsecs/").c_str(), kTRUE);
+	      c1->SaveAs((path + "/electrons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
 	    }
 	    if (ilepton==2) {
-	      gSystem->mkdir((path + "../muons/" + version + "/xsecs/").c_str(), kTRUE);
-	      c1->SaveAs((path + "../muons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
+	      gSystem->mkdir((path + "/muons/" + version + "/xsecs/").c_str(), kTRUE);
+	      c1->SaveAs((path + "/muons/" + version + "/xsecs" + "/" + title_b + "_xsecs" + ".pdf").c_str());
 	    }
 	  }
 	}
 
 	if (plot && (isratio==1)) {
 	  if (ilepton==1) {
-	    gSystem->mkdir((path + "../electrons/" + version + "/ratios/").c_str());
-	    c1->SaveAs((path + "../electrons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
+	    gSystem->mkdir((path + "/electrons/" + version + "/ratios/").c_str());
+	    c1->SaveAs((path + "/electrons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
 	  } 
 	  if (ilepton==2) {
-	    gSystem->mkdir((path + "../muons/" + version + "/ratios/").c_str());
-	    c1->SaveAs((path + "../muons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
+	    gSystem->mkdir((path + "/muons/" + version + "/ratios/").c_str());
+	    c1->SaveAs((path + "/muons/" + version + "/ratios" + "/" + title_b + "_ratio" + ".pdf").c_str());
 	  }
 	}
 }
