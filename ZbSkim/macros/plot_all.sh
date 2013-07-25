@@ -49,8 +49,12 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_first_jet_pt\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_first_jet_eta\",1,$i\)
   
+  root -l -q -b DataMCComp.C\(\"w_single_pt_Z_ee_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_single_pt_Z_mm_b\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_single_bjet_pt\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_single_bjet_eta\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_single_delta_phi_ee_b\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_single_delta_phi_mm_b\",1,$i\)
   
   root -l -q -b DataMCComp.C\(\"w_second_jet_pt\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_second_jet_eta\",1,$i\)
