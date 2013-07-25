@@ -1,8 +1,7 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v09.h"
 
-//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/GDR/data/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 
