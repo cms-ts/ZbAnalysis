@@ -134,15 +134,15 @@ int itype = 0; // e_Zb or e_Z
 	if (plot) {
 	  if (ilepton==1) {
 	    gSystem->mkdir((path + "/electrons/" + version + "/efficiency/").c_str(), kTRUE);
-	    c2->SaveAs((path + "/electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
-	    TFile f((path + "/electrons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
+	    c2->SaveAs((path + "/electrons/" + version + "/efficiency" + "/" + title + "_efficiency.pdf").c_str());
+	    TFile f((path + "/electrons/" + version + "/efficiency" + "/" + title + "_efficiency.root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
 	    f.Close();
 	  }
 	  if (ilepton==2) {
 	    gSystem->mkdir((path + "/muons/" + version + "/efficiency/").c_str(), kTRUE);
-	    c2->SaveAs((path + "/muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".pdf").c_str());
-	    TFile f((path + "/muons/" + version + "/efficiency" + "/" + title + "_efficiency" + ".root").c_str(),"RECREATE");
+	    c2->SaveAs((path + "/muons/" + version + "/efficiency" + "/" + title + "_efficiency.pdf").c_str());
+	    TFile f((path + "/muons/" + version + "/efficiency" + "/" + title + "_efficiency.root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
 	    f.Close();
 	  }
