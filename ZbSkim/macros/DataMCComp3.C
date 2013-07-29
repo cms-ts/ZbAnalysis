@@ -10,8 +10,6 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 	}
 
 	if (title.empty()) title = "w_jetmultiplicity";
-	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 
         if (ilepton==1) {
           if (title.find("muon")!=string::npos) return;
@@ -21,6 +19,9 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
           if (title.find("ele")!=string::npos) return;
           if (title.find("ee")!=string::npos) return;
         }
+
+	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 
 int itype = 0; // e_Zb or e_Z
 //int itype = 1; // e_Z_1
