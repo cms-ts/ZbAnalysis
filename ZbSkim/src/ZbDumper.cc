@@ -82,9 +82,6 @@ class ZbDumper : public edm::EDAnalyzer {
       explicit ZbDumper(const edm::ParameterSet&);
       ~ZbDumper();
 
-      static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-
-
    private:
       virtual void beginJob() ;
       virtual void analyze(const edm::Event&, const edm::EventSetup&);
@@ -333,15 +330,6 @@ void ZbDumper::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup
 
 // ------------ method called when ending the processing of a luminosity block  ------------
 void ZbDumper::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) {
-}
-
-// ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
-void ZbDumper::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-  //The following says we do not know what parameters are allowed so do no validation
-  // Please change this to state exactly what you do use, even if it is no parameters
-  edm::ParameterSetDescription desc;
-  desc.setUnknown();
-  descriptions.addDefault(desc);
 }
 
 //define this as a plug-in
