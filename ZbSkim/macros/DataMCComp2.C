@@ -273,8 +273,8 @@ int useBinnedEfficiency=1;
 	  h_mc1->Scale(1./(Lumi2012*e_Z));
 	} else {
           if (ilepton==1) {
-	    TFile f_b((path + "/electrons/" + version + "/efficiency" + "/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
-	    TFile f((path + "/electrons/" + version + "/efficiency" + "/" + string(h_data->GetName()) + "_efficiency.root").c_str());
+	    TFile f_b((path + "/electrons/" + version + "/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
+	    TFile f((path + "/electrons/" + version + "/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
 	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName());
 	    TH1F* h = (TH1F*)f.Get(h_data->GetName());
 	    h_data_b->Divide(h_b);
@@ -285,8 +285,8 @@ int useBinnedEfficiency=1;
 	    f.Close();
           }
 	  if (ilepton==2) {
-	    TFile f_b((path + "/muons/" + version + "/efficiency" + "/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
-	    TFile f((path + "/muons/" + version + "/efficiency" + "/" + string(h_data->GetName()) + "_efficiency.root").c_str());
+	    TFile f_b((path + "/muons/" + version + "/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
+	    TFile f((path + "/muons/" + version + "/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
 	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName());
 	    TH1F* h = (TH1F*)f.Get(h_data->GetName());
 	    h_data_b->Divide(h_b);
