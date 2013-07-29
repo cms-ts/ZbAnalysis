@@ -62,10 +62,10 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1) {
 	  TH1F* h_mc1_reco  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd("demoMuoDump");
 	  TH2F* h_mc1_mtx  = (TH2F*)gDirectory->Get(title.c_str());
-	  mc2->cd("demoMuo");
-	  TH1F* h_mc2_reco  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc2->cd("demoMuoGen");
 	  TH1F* h_mc2_truth = (TH1F*)gDirectory->Get(title.c_str());
+	  mc2->cd("demoMuo");
+	  TH1F* h_mc2_reco  = (TH1F*)gDirectory->Get(title.c_str());
 	}
 
         RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_mtx);
