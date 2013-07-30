@@ -39,8 +39,10 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1) {
 	data->cd();
 	TH1F* h_data_reco = (TH1F*)gDirectory->Get(title.c_str());
 
-	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	//TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
+	//TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
 	//TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 
 	if (ilepton==1) {
@@ -70,9 +72,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1) {
 
         RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_mtx);
 
-	if (title!="w_pt_Z_ee_b"&&title!="w_pt_Z_mm_b") {
-	  response.UseOverflow();
-	}
+	response.UseOverflow();
 
 // n=100: numero di mc toys usati per la propagazione dell'incertezza della 
 // matrice di covarianza dopo l'unfolding.
@@ -81,8 +81,10 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1) {
 
 	//RooUnfoldBayes unfold (&response, h_mc2_reco, 7);
 
+	unfold.PrintTable(cout, h_mc1_truth);
+
 	TH1F* h_mc2_unf= (TH1F*) unfold.Hreco();
-       
+
 	double N = (h_mc2_truth->Integral())/(h_mc2_unf->Integral());
         h_mc2_unf->Scale(N);
 
