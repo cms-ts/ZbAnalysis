@@ -2,7 +2,7 @@
 //
 // Package:    ZbDumper
 // Class:      ZbDumper
-// 
+//
 /**\class ZbDumper ZbDumper.cc ZbAnalysis/ZbDumper/src/ZbDumper.cc
 
  Description: [one line class summary]
@@ -132,12 +132,12 @@ ZbDumper::ZbDumper(const edm::ParameterSet& iConfig) {
 
    w_first_jet_pt    = fs->make < TH2F > ("w_first_jet_pt", "w_first_jet_pt;P_t [GeV]", 50, 30., 700., 50, 30., 700.);
    w_first_jet_eta   = fs->make < TH2F > ("w_first_jet_eta",   "w_first_jet_eta;Eta", 16, -2.5, 2.5,16, -2.5, 2.5);
-   w_first_bjet_pt   = fs->make < TH2F > ("w_first_bjet_pt",    "w_first_bjet_pt;P_t [GeV]", 50, 30., 700., 50, 30., 700.); 
+   w_first_bjet_pt   = fs->make < TH2F > ("w_first_bjet_pt",    "w_first_bjet_pt;P_t [GeV]", 50, 30., 700., 50, 30., 700.);
    w_first_bjet_eta  = fs->make < TH2F > ("w_first_bjet_eta",   "w_first_bjet_eta;Eta", 16, -2.5, 2.5,16, -2.5, 2.5);
    w_pt_Z_ee         = fs->make < TH2F > ("w_pt_Z_ee",         "w_pt_Z_ee;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
-   w_pt_Z_mm         = fs->make < TH2F > ("w_pt_Z_mm",         "w_pt_Z_mm;P_t [GeV]", 40, 0., 400.,40, 0., 400.);
-   w_pt_Z_ee_b 	     = fs->make < TH2F > ("w_pt_Z_ee_b",       "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.,40, 0., 400.);
-   w_pt_Z_mm_b       = fs->make < TH2F > ("w_pt_Z_mm_b",       "w_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.,40, 0., 400.);
+   w_pt_Z_mm         = fs->make < TH2F > ("w_pt_Z_mm",         "w_pt_Z_mm;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
+   w_pt_Z_ee_b 	     = fs->make < TH2F > ("w_pt_Z_ee_b",       "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
+   w_pt_Z_mm_b       = fs->make < TH2F > ("w_pt_Z_mm_b",       "w_pt_Z_mm_b;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
    w_Ht 	     = fs->make < TH2F > ("w_Ht",              "w_Ht [GeV]", 50, 30., 1000.,50, 30., 1000.);
    w_Ht_b 	     = fs->make < TH2F > ("w_Ht_b",            "w_Ht [GeV]", 50, 30., 1000.,50, 30., 1000.);
    w_delta_ee        = fs->make < TH2F > ("w_delta_phi_ee",    "w_delta_phi_ee", 12, 0, TMath::Pi (), 12, 0, TMath::Pi ());
@@ -148,7 +148,7 @@ ZbDumper::ZbDumper(const edm::ParameterSet& iConfig) {
 }
 
 ZbDumper::~ZbDumper() {
- 
+
    // do anything here that needs to be done at desctruction time
    // (e.g. close files, deallocate resources etc.)
 
@@ -210,7 +210,7 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
    }
 
    if (lepton_== "muon") {
- 
+
      iEvent.getByLabel (edm::InputTag("demoMuo","myEventWeight"), weight);
      iEvent.getByLabel (edm::InputTag("demoMuo","myElectrons"), electrons);
      iEvent.getByLabel (edm::InputTag("demoMuo","myMuons"), muons);
@@ -232,9 +232,9 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myBjets"), gen_bjets);
 
    }
-           
+
    int k=-1;
-   if (jets->size()>0) { 
+   if (jets->size()>0) {
      double R = 0.1;
      for (unsigned int i=0; i<gen_jets->size(); ++i) {
      if (ROOT::Math::VectorUtil::DeltaR((*jets)[0], (*gen_jets)[i]) < R) {
@@ -244,7 +244,7 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      }
    }
    int k_b=-1;
-   if (bjets->size()>0) { 
+   if (bjets->size()>0) {
      double R_b = 0.1;
      for (unsigned int i=0; i<gen_bjets->size(); ++i) {
        if (ROOT::Math::VectorUtil::DeltaR((*bjets)[0], (*gen_bjets)[i]) < R_b) {
@@ -253,7 +253,7 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
        }
      }
    }
-     
+
    double my_weight = gen_weight->empty() ? ( weight->empty() ? -1 : (*weight)[0] ) : (*gen_weight)[0];
 
    if (my_weight>0) {
@@ -286,7 +286,7 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      if (ee_event || mm_event) {
        w_Ht->Fill(Ht->empty() ? -1 : (*Ht)[0], gen_Ht->empty() ? -1 : (*gen_Ht)[0], my_weight);
        if (!bjets->empty() || !gen_bjets->empty()) {
-         w_Ht_b->Fill(Ht->empty() ? -1 : (*Ht)[0], gen_Ht->empty() ? -1 : (*gen_Ht)[0], my_weight); 
+         w_Ht_b->Fill(Ht->empty() ? -1 : (*Ht)[0], gen_Ht->empty() ? -1 : (*gen_Ht)[0], my_weight);
        }
      }
 
