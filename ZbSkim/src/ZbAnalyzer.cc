@@ -1647,6 +1647,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
   }
 
+  // ++++++++ OUTPUT COLLECTIONS
+
   if ((ee_event || mm_event) && Nj > 0 && vtx_cut && met_cut) {
     myEventWeight->push_back(MyWeight);
   }
@@ -1667,7 +1669,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     for (unsigned int i=0; i<vect_jets.size(); ++i) {
       myJets->push_back(math::XYZTLorentzVector(vect_jets[i].px(),vect_jets[i].py(),vect_jets[i].pz(),vect_jets[i].energy()));
     }
-    myHt->push_back(Ht);
     for (unsigned int i=0; i<vect_bjets.size(); ++i) {
       scalFac_b = btagSF(isMC, vect_bjets[i].partonFlavour(), vect_bjets[i].pt(), vect_bjets[i].eta());
       myBjetsWeights->push_back(scalFac_b);
@@ -1675,7 +1676,11 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
   }
 
-  if (ee_event && Nj > 0) {
+  if ((ee_event || mm_event) && Nj > 0 && vtx_cut && met_cut) {
+    myHt->push_back(Ht);
+  }
+
+  if (ee_event && Nj > 0 && vtx_cut && met_cut) {
     double delta_phi_ee = fabs(diele_phi - vect_jets[0].phi());
     if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
     myDeltaPhi->push_back(delta_phi_ee);
@@ -1686,7 +1691,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
   }
 
-  if (mm_event && Nj > 0) {
+  if (mm_event && Nj > 0 && vtx_cut && met_cut) {
     double delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi());
     if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
     myDeltaPhi->push_back(delta_phi_mm);
