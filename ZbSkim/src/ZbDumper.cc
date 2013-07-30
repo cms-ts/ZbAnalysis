@@ -259,8 +259,8 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
 
    if (my_weight>0) {
 
-     bool ee_event = lepton_ == "electron" && electrons->size() != 0;
-     bool mm_event = lepton_ == "muon" && muons->size() != 0;
+     bool ee_event = lepton_ == "electron" && (electrons->size() != 0 || gen_electrons->size() != 0);
+     bool mm_event = lepton_ == "muon" && (muons->size() != 0 || gen_muons->size() != 0);
 
      if (ee_event || mm_event) {
        w_first_jet_pt->Fill(jets->empty() ? -1 : (*jets)[0].pt(), k<0 ? -1 : (*gen_jets)[k].pt(), my_weight);
