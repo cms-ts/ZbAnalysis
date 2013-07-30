@@ -693,16 +693,18 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   produces<std::vector<math::XYZTLorentzVector>>("myMuons");
 
   produces<std::vector<double>>("myPtZ");
+  produces<std::vector<double>>("myPtZb");
 
   produces<std::vector<math::XYZTLorentzVector>>("myJets");
   produces<std::vector<double>>("myDeltaPhi");
 
   produces<std::vector<double>>("myHt");
+  produces<std::vector<double>>("myHtb");
 
-  produces<std::vector<double>>("myBjetsWeights");
+  produces<std::vector<double>>("myBJetsWeights");
 
-  produces<std::vector<math::XYZTLorentzVector>>("myBjets");
-  produces<std::vector<double>>("myBdeltaPhi");
+  produces<std::vector<math::XYZTLorentzVector>>("myBJets");
+  produces<std::vector<double>>("myBDeltaPhi");
 
 }
 
@@ -763,18 +765,20 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   std::auto_ptr<std::vector<math::XYZTLorentzVector>> myMuons( new std::vector<math::XYZTLorentzVector> );
 
   std::auto_ptr<std::vector<double>> myPtZ( new std::vector<double> );
+  std::auto_ptr<std::vector<double>> myPtZb( new std::vector<double> );
 
   std::auto_ptr<std::vector<math::XYZTLorentzVector>> myJets( new std::vector<math::XYZTLorentzVector> );
 
   std::auto_ptr<std::vector<double>> myDeltaPhi( new std::vector<double> );
 
   std::auto_ptr<std::vector<double>> myHt( new std::vector<double> );
+  std::auto_ptr<std::vector<double>> myHtb( new std::vector<double> );
 
-  std::auto_ptr<std::vector<double>> myBjetsWeights( new std::vector<double> );
+  std::auto_ptr<std::vector<double>> myBJetsWeights( new std::vector<double> );
 
-  std::auto_ptr<std::vector<math::XYZTLorentzVector>> myBjets( new std::vector<math::XYZTLorentzVector> );
+  std::auto_ptr<std::vector<math::XYZTLorentzVector>> myBJets( new std::vector<math::XYZTLorentzVector> );
 
-  std::auto_ptr<std::vector<double>> myBdeltaPhi( new std::vector<double> );
+  std::auto_ptr<std::vector<double>> myBDeltaPhi( new std::vector<double> );
 
   bool ee_event = false;
   bool mm_event = false;
@@ -1657,12 +1661,18 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[iele0].px(),vect_ele[iele0].py(),vect_ele[iele0].pz(),vect_ele[iele0].energy()));
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[iele1].px(),vect_ele[iele1].py(),vect_ele[iele1].pz(),vect_ele[iele1].energy()));
     myPtZ->push_back(diele_pt);
+    if (Nb > 0) {
+      myPtZb->push_back(diele_pt);
+    }
   }
 
   if (mm_event && Nj > 0 && vtx_cut && met_cut) {
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[imuon0].px(),vect_muon[imuon0].py(),vect_muon[imuon0].pz(),vect_muon[imuon0].energy()));
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[imuon1].px(),vect_muon[imuon1].py(),vect_muon[imuon1].pz(),vect_muon[imuon1].energy()));
     myPtZ->push_back(dimuon_pt);
+    if (Nb > 0) {
+      myPtZb->push_back(dimuon_pt);
+    }
   }
 
   if ((ee_event || mm_event) && Nj > 0 && vtx_cut && met_cut) {
@@ -1671,13 +1681,16 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
     for (unsigned int i=0; i<vect_bjets.size(); ++i) {
       scalFac_b = btagSF(isMC, vect_bjets[i].partonFlavour(), vect_bjets[i].pt(), vect_bjets[i].eta());
-      myBjetsWeights->push_back(scalFac_b);
-      myBjets->push_back(math::XYZTLorentzVector(vect_bjets[i].px(),vect_bjets[i].py(),vect_bjets[i].pz(),vect_bjets[i].energy()));
+      myBJetsWeights->push_back(scalFac_b);
+      myBJets->push_back(math::XYZTLorentzVector(vect_bjets[i].px(),vect_bjets[i].py(),vect_bjets[i].pz(),vect_bjets[i].energy()));
     }
   }
 
   if ((ee_event || mm_event) && Nj > 0 && vtx_cut && met_cut) {
     myHt->push_back(Ht);
+    if (Nb > 0) {
+      myHtb->push_back(Ht);
+    }
   }
 
   if (ee_event && Nj > 0 && vtx_cut && met_cut) {
@@ -1687,7 +1700,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (Nb > 0) {
       double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
       if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
-      myBdeltaPhi->push_back(delta_phi_ee_b);
+      myBDeltaPhi->push_back(delta_phi_ee_b);
     }
   }
 
@@ -1698,7 +1711,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (Nb > 0) {
       double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
       if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
-      myBdeltaPhi->push_back(delta_phi_mm_b);
+      myBDeltaPhi->push_back(delta_phi_mm_b);
     }
   }
 
@@ -1708,16 +1721,18 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   iEvent.put( myMuons, "myMuons" );
 
   iEvent.put( myPtZ, "myPtZ" );
+  iEvent.put( myPtZb, "myPtZb" );
 
   iEvent.put( myJets, "myJets" );
   iEvent.put( myDeltaPhi, "myDeltaPhi" );
 
   iEvent.put( myHt, "myHt" );
+  iEvent.put( myHtb, "myHtb" );
 
-  iEvent.put( myBjetsWeights, "myBjetsWeights" );
+  iEvent.put( myBJetsWeights, "myBJetsWeights" );
 
-  iEvent.put( myBjets, "myBjets" );
-  iEvent.put( myBdeltaPhi, "myBdeltaPhi" );
+  iEvent.put( myBJets, "myBJets" );
+  iEvent.put( myBDeltaPhi, "myBDeltaPhi" );
 
 }
 
