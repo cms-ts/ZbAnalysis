@@ -217,14 +217,14 @@ private:
   TH1F*     w_first_bjet_eta;
   TH1F*     b_first_bjet_eta;
   TH1F*     c_first_bjet_eta;
-  
+
   TH1F*     w_single_bjet_pt;	// only 1 b jet
   TH1F*     b_single_bjet_pt;
   TH1F*     c_single_bjet_pt;
   TH1F*     w_single_bjet_eta;
   TH1F*     b_single_bjet_eta;
   TH1F*     c_single_bjet_eta;
-  
+
   TH1F*     w_second_bjet_pt;
   TH1F*     b_second_bjet_pt;
   TH1F*     c_second_bjet_pt;
@@ -290,7 +290,7 @@ private:
   TH1F*     w_pt_Z_mm;
   TH1F*     b_pt_Z_mm;
   TH1F*     c_pt_Z_mm;
-  
+
   TH1F*     w_single_pt_Z_ee_b;
   TH1F*     b_single_pt_Z_ee_b;
   TH1F*     c_single_pt_Z_ee_b;
@@ -371,7 +371,7 @@ private:
   TH1F*     w_Ht;
   TH1F*     b_Ht;
   TH1F*     c_Ht;
-  
+
   TH1F*     w_single_Ht_b;
   TH1F*     b_single_Ht_b;
   TH1F*     c_single_Ht_b;
@@ -1596,7 +1596,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_third_bjet_eta->Fill (vect_bjets[2].eta(), MyWeight*scalFac_b);
     }
   }
-  
+
   // ++++++++ SINGLE BJET
 
   if ((ee_event || mm_event) && Nj == 1 && Nb > 0 && vtx_cut && met_cut) {
@@ -1614,7 +1614,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_single_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight*scalFac_b);
     }
   }
-  
+
   // ++++++++ EXTRA PLOTS
 
   int Nf = 0;
