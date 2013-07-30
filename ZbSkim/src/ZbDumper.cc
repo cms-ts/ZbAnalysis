@@ -17,7 +17,6 @@
 //
 //
 
-
 // system include files
 #include <memory>
 
@@ -170,7 +169,9 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
     edm::Handle <std::vector<math::XYZTLorentzVector>> jets;
     edm::Handle <std::vector<math::XYZTLorentzVector>> bjets;
     edm::Handle <std::vector<double>>   ptZ;
+    edm::Handle <std::vector<double>>   ptZ_b;
     edm::Handle <std::vector<double>>   Ht;
+    edm::Handle <std::vector<double>>   Ht_b;
     edm::Handle <std::vector<double>>   delta_phi;
     edm::Handle <std::vector<double>>   bdelta_phi;
     edm::Handle <std::vector<double>>   weight;
@@ -178,9 +179,13 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
     edm::Handle <std::vector<math::XYZTLorentzVector>> gen_electrons;
     edm::Handle <std::vector<math::XYZTLorentzVector>> gen_muons;
     edm::Handle <std::vector<math::XYZTLorentzVector>> gen_jets;
+    edm::Handle <std::vector<math::XYZTLorentzVector>> gen_jets2;
     edm::Handle <std::vector<math::XYZTLorentzVector>> gen_bjets;
+    edm::Handle <std::vector<math::XYZTLorentzVector>> gen_bjets2;
     edm::Handle <std::vector<double>>   gen_ptZ;
+    edm::Handle <std::vector<double>>   gen_ptZ_b;
     edm::Handle <std::vector<double>>   gen_Ht;
+    edm::Handle <std::vector<double>>   gen_Ht_b;
     edm::Handle <std::vector<double>>   gen_delta_phi;
     edm::Handle <std::vector<double>>   gen_bdelta_phi;
     edm::Handle <std::vector<double>>   gen_weight;
@@ -192,20 +197,26 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      iEvent.getByLabel (edm::InputTag("demoEle","myMuons"), muons);
      iEvent.getByLabel (edm::InputTag("demoEle","myJets"), jets);
      iEvent.getByLabel (edm::InputTag("demoEle","myPtZ"), ptZ);
+     iEvent.getByLabel (edm::InputTag("demoEle","myPtZb"), ptZ_b);
      iEvent.getByLabel (edm::InputTag("demoEle","myHt"), Ht);
+     iEvent.getByLabel (edm::InputTag("demoEle","myHtb"), Ht_b);
      iEvent.getByLabel (edm::InputTag("demoEle","myDeltaPhi"), delta_phi);
-     iEvent.getByLabel (edm::InputTag("demoEle","myBdeltaPhi"), bdelta_phi);
-     iEvent.getByLabel (edm::InputTag("demoEle","myBjets"), bjets);
-     iEvent.getByLabel (edm::InputTag("demoEle","myBjetsWeights"), bweight);
+     iEvent.getByLabel (edm::InputTag("demoEle","myBDeltaPhi"), bdelta_phi);
+     iEvent.getByLabel (edm::InputTag("demoEle","myBJets"), bjets);
+     iEvent.getByLabel (edm::InputTag("demoEle","myBJetsWeights"), bweight);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myEventWeight"), gen_weight);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myElectrons"), gen_electrons);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myMuons"), gen_muons);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myJets"), gen_jets);
+     iEvent.getByLabel (edm::InputTag("demoEleGen","myJets2"), gen_jets2);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myPtZ"), gen_ptZ);
+     iEvent.getByLabel (edm::InputTag("demoEleGen","myPtZb"), gen_ptZ_b);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myHt"), gen_Ht);
+     iEvent.getByLabel (edm::InputTag("demoEleGen","myHtb"), gen_Ht_b);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myDeltaPhi"), gen_delta_phi);
-     iEvent.getByLabel (edm::InputTag("demoEleGen","myBdeltaPhi"), gen_bdelta_phi);
-     iEvent.getByLabel (edm::InputTag("demoEleGen","myBjets"), gen_bjets);
+     iEvent.getByLabel (edm::InputTag("demoEleGen","myBDeltaPhi"), gen_bdelta_phi);
+     iEvent.getByLabel (edm::InputTag("demoEleGen","myBJets"), gen_bjets);
+     iEvent.getByLabel (edm::InputTag("demoEleGen","myBJets2"), gen_bjets2);
 
    }
 
@@ -216,46 +227,52 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      iEvent.getByLabel (edm::InputTag("demoMuo","myMuons"), muons);
      iEvent.getByLabel (edm::InputTag("demoMuo","myJets"), jets);
      iEvent.getByLabel (edm::InputTag("demoMuo","myPtZ"), ptZ);
+     iEvent.getByLabel (edm::InputTag("demoMuo","myPtZb"), ptZ_b);
      iEvent.getByLabel (edm::InputTag("demoMuo","myHt"), Ht);
+     iEvent.getByLabel (edm::InputTag("demoMuo","myHtb"), Ht_b);
      iEvent.getByLabel (edm::InputTag("demoMuo","myDeltaPhi"), delta_phi);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myBdeltaPhi"), bdelta_phi);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myBjets"), bjets);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myBjetsWeights"), bweight);
+     iEvent.getByLabel (edm::InputTag("demoMuo","myBDeltaPhi"), bdelta_phi);
+     iEvent.getByLabel (edm::InputTag("demoMuo","myBJets"), bjets);
+     iEvent.getByLabel (edm::InputTag("demoMuo","myBJetsWeights"), bweight);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myEventWeight"), gen_weight);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myElectrons"), gen_electrons);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myMuons"), gen_muons);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myJets"), gen_jets);
+     iEvent.getByLabel (edm::InputTag("demoMuoGen","myJets2"), gen_jets2);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myPtZ"), gen_ptZ);
+     iEvent.getByLabel (edm::InputTag("demoMuoGen","myPtZb"), gen_ptZ_b);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myHt"), gen_Ht);
+     iEvent.getByLabel (edm::InputTag("demoMuoGen","myHtb"), gen_Ht_b);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myDeltaPhi"), gen_delta_phi);
-     iEvent.getByLabel (edm::InputTag("demoMuoGen","myBdeltaPhi"), gen_bdelta_phi);
-     iEvent.getByLabel (edm::InputTag("demoMuoGen","myBjets"), gen_bjets);
+     iEvent.getByLabel (edm::InputTag("demoMuoGen","myBDeltaPhi"), gen_bdelta_phi);
+     iEvent.getByLabel (edm::InputTag("demoMuoGen","myBJets"), gen_bjets);
+     iEvent.getByLabel (edm::InputTag("demoMuoGen","myBJets2"), gen_bjets2);
 
    }
 
    int k=-1;
    if (jets->size()>0) {
      double R = 0.1;
-     for (unsigned int i=0; i<gen_jets->size(); ++i) {
-     if (ROOT::Math::VectorUtil::DeltaR((*jets)[0], (*gen_jets)[i]) < R) {
-       k=i;
-       R = ROOT::Math::VectorUtil::DeltaR((*jets)[0], (*gen_jets)[i]);
-     }
+     for (unsigned int i=0; i<gen_jets2->size(); ++i) {
+       if (ROOT::Math::VectorUtil::DeltaR((*jets)[0], (*gen_jets2)[i]) < R) {
+         k=i;
+         R = ROOT::Math::VectorUtil::DeltaR((*jets)[0], (*gen_jets2)[i]);
+       }
      }
    }
    int k_b=-1;
    if (bjets->size()>0) {
      double R_b = 0.1;
-     for (unsigned int i=0; i<gen_bjets->size(); ++i) {
-       if (ROOT::Math::VectorUtil::DeltaR((*bjets)[0], (*gen_bjets)[i]) < R_b) {
+     for (unsigned int i=0; i<gen_bjets2->size(); ++i) {
+       if (ROOT::Math::VectorUtil::DeltaR((*bjets)[0], (*gen_bjets2)[i]) < R_b) {
          k_b=i;
-         R_b = ROOT::Math::VectorUtil::DeltaR((*bjets)[0], (*gen_bjets)[i]);
+         R_b = ROOT::Math::VectorUtil::DeltaR((*bjets)[0], (*gen_bjets2)[i]);
        }
      }
    }
 
    double my_weight = weight->empty() ? ( gen_weight->empty() ? -1 : (*gen_weight)[0] ) : (*weight)[0];
-   double my_bweight = my_weight * ( bjets->empty() ? 1 : (*bweight)[0] );
+   double my_bweight = my_weight * ( bweight->empty() ? 1 : (*bweight)[0] );
 
    if (my_weight>0) {
 
@@ -263,46 +280,35 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      bool mm_event = lepton_ == "muon" && (muons->size() != 0 || gen_muons->size() != 0);
 
      if (ee_event || mm_event) {
-       w_first_jet_pt->Fill(jets->empty() ? -1 : (*jets)[0].pt(), k<0 ? -1 : (*gen_jets)[k].pt(), my_weight);
-       w_first_jet_eta->Fill(jets->empty() ? -3 : (*jets)[0].eta(), k<0 ? -3 : (*gen_jets)[k].eta(), my_weight);
-       if (!bjets->empty() || !gen_bjets->empty()) {
-         w_first_bjet_pt->Fill(bjets->empty() ? -1 : (*bjets)[0].pt(), k_b<0 ? -1 : (*gen_bjets)[k_b].pt(), my_bweight);
-         w_first_bjet_eta->Fill(bjets->empty() ? -3 : (*bjets)[0].eta(), k_b<0 ? -3 : (*gen_bjets)[k_b].eta(), my_bweight);
-       }
+       w_first_jet_pt->Fill(jets->empty() ? -1 : (*jets)[0].pt(), k<0 ? -1 : (*gen_jets2)[k].pt(), my_weight);
+       w_first_jet_eta->Fill(jets->empty() ? -3 : (*jets)[0].eta(), k<0 ? -3 : (*gen_jets2)[k].eta(), my_weight);
+       w_first_bjet_pt->Fill(bjets->empty() ? -1 : (*bjets)[0].pt(), k_b<0 ? -1 : (*gen_bjets2)[k_b].pt(), my_bweight);
+       w_first_bjet_eta->Fill(bjets->empty() ? -3 : (*bjets)[0].eta(), k_b<0 ? -3 : (*gen_bjets2)[k_b].eta(), my_bweight);
      }
 
      if (ee_event) {
        w_pt_Z_ee->Fill(ptZ->empty() ? -1 : (*ptZ)[0], gen_ptZ->empty() ? -1 : (*gen_ptZ)[0], my_weight);
-       if (!bjets->empty() || !gen_bjets->empty()) {
-         w_pt_Z_ee_b->Fill(ptZ->empty() ? -1 : (*ptZ)[0], gen_ptZ->empty() ? -1 : (*gen_ptZ)[0], my_bweight);
-       }
+       w_pt_Z_ee_b->Fill(ptZ_b->empty() ? -1 : (*ptZ_b)[0], gen_ptZ_b->empty() ? -1 : (*gen_ptZ_b)[0], my_bweight);
      }
+
      if (mm_event) {
        w_pt_Z_mm->Fill(ptZ->empty() ? -1 : (*ptZ)[0], gen_ptZ->empty() ? -1 : (*gen_ptZ)[0], my_weight);
-       if (!bjets->empty() || !gen_bjets->empty()) {
-         w_pt_Z_mm_b->Fill(ptZ->empty() ? -1 : (*ptZ)[0], gen_ptZ->empty() ? -1 : (*gen_ptZ)[0], my_bweight);
-       }
+       w_pt_Z_mm_b->Fill(ptZ_b->empty() ? -1 : (*ptZ_b)[0], gen_ptZ_b->empty() ? -1 : (*gen_ptZ_b)[0], my_bweight);
      }
 
      if (ee_event || mm_event) {
        w_Ht->Fill(Ht->empty() ? -1 : (*Ht)[0], gen_Ht->empty() ? -1 : (*gen_Ht)[0], my_weight);
-       if (!bjets->empty() || !gen_bjets->empty()) {
-         w_Ht_b->Fill(Ht->empty() ? -1 : (*Ht)[0], gen_Ht->empty() ? -1 : (*gen_Ht)[0], my_bweight);
-       }
+       w_Ht_b->Fill(Ht_b->empty() ? -1 : (*Ht_b)[0], gen_Ht_b->empty() ? -1 : (*gen_Ht_b)[0], my_bweight);
      }
 
      if (ee_event) {
        w_delta_ee->Fill(delta_phi->empty() ? -1 : (*delta_phi)[0], gen_delta_phi->empty() ? -1 : (*gen_delta_phi)[0], my_weight);
-       if (!bjets->empty() || !gen_bjets->empty()) {
-         w_delta_ee_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi->empty() ? -1 : (*gen_bdelta_phi)[0], my_bweight);
-       }
+       w_delta_ee_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi->empty() ? -1 : (*gen_bdelta_phi)[0], my_bweight);
      }
 
      if (mm_event) {
        w_delta_mm->Fill(delta_phi->empty() ? -1 : (*delta_phi)[0], gen_delta_phi->empty() ? -1 : (*gen_delta_phi)[0], my_weight);
-       if (!bjets->empty() || !gen_bjets->empty()) {
-         w_delta_mm_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi->empty() ? -1 : (*gen_bdelta_phi)[0], my_bweight);
-       }
+       w_delta_mm_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi->empty() ? -1 : (*gen_bdelta_phi)[0], my_bweight);
      }
 
    }
