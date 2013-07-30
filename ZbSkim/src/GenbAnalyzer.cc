@@ -777,30 +777,35 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_single_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
   }
 
+  // ++++++++ OUTPUT COLLECTIONS
+
   if ((ee_event || mm_event) && Nj2 > 0) {
      myEventWeight->push_back(MyWeight);
   }
 
- if (ee_event && Nj2 > 0) {
+ if (ee_event && Nj > 0) {
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[0].Px(),vect_ele[0].Py(),vect_ele[0].Pz(),vect_ele[0].E()));
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[1].Px(),vect_ele[1].Py(),vect_ele[1].Pz(),vect_ele[1].E()));
     myPtZ->push_back(diele_pt);
  }
 
-  if (mm_event && Nj2 > 0) {
+  if (mm_event && Nj > 0) {
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[0].Px(),vect_muon[0].Py(),vect_muon[0].Pz(),vect_muon[0].E()));
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[1].Px(),vect_muon[1].Py(),vect_muon[1].Pz(),vect_muon[1].E()));
     myPtZ->push_back(dimuon_pt);
   }
 
-  if ((ee_event || mm_event) && Nj2 > 0) {
+  if (ee_event || mm_event) {
     for (unsigned int i=0; i<vect_jets2.size(); ++i) {
       myJets->push_back(math::XYZTLorentzVector(vect_jets2[i].px(),vect_jets2[i].py(),vect_jets2[i].pz(),vect_jets2[i].e()));
     }
-    myHt->push_back(Ht);
     for (unsigned int i=0; i<vect_bjets2.size(); ++i) {
      myBjets->push_back(math::XYZTLorentzVector(vect_bjets2[i].px(),vect_bjets2[i].py(),vect_bjets2[i].pz(),vect_bjets2[i].e()));
     }
+  }
+
+  if ((ee_event || mm_event) && Nj > 0) {
+    myHt->push_back(Ht);
   }
 
   if (ee_event && Nj > 0) {
