@@ -3,7 +3,7 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=1) {
+void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=0) {
 
 // imode = -1; // identity test using pattuples
 // imode =  0; // identity test using MadGraph
@@ -129,14 +129,14 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=1) {
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 
-	if (imode<=1) {
-	  c1->cd();
-          TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
-          pad1->SetBottomMargin(0.001);
-          pad1->Draw();
-          pad1->cd();
-          pad1->SetLogy();
+	c1->cd();
+        TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
+        pad1->SetBottomMargin(0.001);
+        pad1->Draw();
+        pad1->cd();
+        pad1->SetLogy();
 
+	if (imode<=1) {
 	  h_mc2_unf = (TH1F*) unfold_mc.Hreco();
 
 	  float val = TMath::Max(h_mc2_unf->GetMaximum(), h_mc2_reco->GetMaximum());
@@ -161,48 +161,15 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=1) {
 	  h_mc1_truth->SetLineColor(kRed);
 	  h_mc1_reco->SetLineStyle(2);
 	  h_mc1_truth->SetLineStyle(2);
-
-          pad1->Update();
-          c1->Update();
-
-          c1->cd();
-
-          TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
-          pad2->SetTopMargin(0);
-          pad2->SetBottomMargin(0.3);
-          pad2->Draw();
-          pad2->cd();
-
-          TH1F *h_ratio = h_mc2_unf->Clone();
-
-          h_ratio->SetTitle("");
-          h_ratio->SetStats(0);
-
-          h_ratio->GetXaxis()->SetTitleOffset(0.9);
-          h_ratio->GetXaxis()->SetTitleSize(0.1);
-          h_ratio->GetXaxis()->SetLabelFont(42);
-          h_ratio->GetXaxis()->SetLabelSize(0.08);
-          h_ratio->GetXaxis()->SetTitleFont(42);
-          h_ratio->GetYaxis()->SetTitle("ratio");
-          h_ratio->GetYaxis()->SetNdivisions(505);
-          h_ratio->GetYaxis()->SetTitleSize(0.09);
-          h_ratio->GetYaxis()->SetLabelSize(0.08);
-          h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
-          h_ratio->GetYaxis()->SetTitleOffset(0.4);
-          h_ratio->Divide(h_mc2_truth);
-          //h_ratio->SetMarkerStyle(20);
-          h_ratio->Draw();
-
-          TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
-          OLine->SetLineColor(kRed);
-          OLine->SetLineWidth(1);
-          OLine->Draw();
-
 	}
 
 	if (imode==2) {
 	  c1->cd();
-	  c1->SetLogy();
+          TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
+          pad1->SetBottomMargin(0.001);
+          pad1->Draw();
+          pad1->cd();
+          pad1->SetLogy();
 
 	  h_data_unf = (TH1F*) unfold_data.Hreco();
 
@@ -226,6 +193,46 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=1) {
 	  h_mc1_reco->SetLineStyle(2);
 	  h_mc1_truth->SetLineStyle(2);
 	}
+
+        pad1->Update();
+        c1->Update();
+
+        c1->cd();
+
+        TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
+        pad2->SetTopMargin(0);
+        pad2->SetBottomMargin(0.3);
+        pad2->Draw();
+        pad2->cd();
+
+        TH1F *h_ratio;
+        if (imode<=1) h_ratio = (TH1F*) h_mc2_unf->Clone();
+        if (imode==2) h_ratio = (TH1F*) h_data_unf->Clone();
+
+        h_ratio->SetTitle("");
+        h_ratio->SetStats(0);
+
+        h_ratio->GetXaxis()->SetTitleOffset(0.9);
+        h_ratio->GetXaxis()->SetTitleSize(0.1);
+        h_ratio->GetXaxis()->SetLabelFont(42);
+        h_ratio->GetXaxis()->SetLabelSize(0.08);
+        h_ratio->GetXaxis()->SetTitleFont(42);
+        h_ratio->GetYaxis()->SetTitle("ratio");
+        h_ratio->GetYaxis()->SetNdivisions(505);
+        h_ratio->GetYaxis()->SetTitleSize(0.09);
+        h_ratio->GetYaxis()->SetLabelSize(0.08);
+        h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
+        h_ratio->GetYaxis()->SetTitleOffset(0.4);
+        h_ratio->Divide(h_mc2_truth);
+        //h_ratio->SetMarkerStyle(20);
+        h_ratio->Draw();
+
+        TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
+        OLine->SetLineColor(kRed);
+        OLine->SetLineWidth(1);
+        OLine->Draw();
+
+        c1->cd();
 
 	if (plot) {
 	  if (ilepton==1) {
