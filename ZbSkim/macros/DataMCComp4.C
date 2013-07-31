@@ -191,7 +191,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=1) {
           h_ratio->GetYaxis()->SetTitleOffset(0.4);
           h_ratio->Divide(h_mc2_truth);
           //h_ratio->SetMarkerStyle(20);
-          h_ratio->Draw("EPX0");
+          h_ratio->Draw();
 
           TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
           OLine->SetLineColor(kRed);
