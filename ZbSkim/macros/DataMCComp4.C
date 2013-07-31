@@ -3,7 +3,7 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
+void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=1) {
 
 // imode = -1; // identity test using pattuples
 // imode =  0; // identity test using MadGraph
@@ -15,6 +15,14 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 	if (ilepton<1 || ilepton>2) {
 	  ilepton = 1 + ilepton % 2;
         }
+
+	double Lumi2012;
+
+	if (ilepton==1) Lumi2012 = Lumi2012_ele;
+	if (ilepton==2) Lumi2012 = Lumi2012_muon;
+
+	double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
+	double norm1_1 = ( (Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -86,6 +94,23 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 	  h_mc2_reco    = (TH1F*)gDirectory->Get(title.c_str());
 	}
 
+	h_mc1_truth->Scale(norm1);
+	h_mc1_reco->Scale(norm1);
+	h_mc1_matrix->Scale(norm1);
+
+	if (imode<=0) {
+	  h_mc2_truth->Scale(norm1);
+	  h_mc2_reco->Scale(norm1);
+	}
+	if (imode==1) {
+	  h_mc2_truth->Scale(norm1_1);
+	  h_mc2_reco->Scale(norm1_1);
+	}
+	if (imode==2) {
+	  h_mc2_truth->Scale(norm1);
+	  h_mc2_reco->Scale(norm1);
+	}
+
         RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 
 	response.UseOverflow();
@@ -106,7 +131,11 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 
 	if (imode<=1) {
 	  c1->cd();
-	  c1->SetLogy();
+          TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
+          pad1->SetBottomMargin(0.001);
+          pad1->Draw();
+          pad1->cd();
+          pad1->SetLogy();
 
 	  h_mc2_unf = (TH1F*) unfold_mc.Hreco();
 
@@ -132,6 +161,43 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 	  h_mc1_truth->SetLineColor(kRed);
 	  h_mc1_reco->SetLineStyle(2);
 	  h_mc1_truth->SetLineStyle(2);
+
+          pad1->Update();
+          c1->Update();
+
+          c1->cd();
+
+          TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
+          pad2->SetTopMargin(0);
+          pad2->SetBottomMargin(0.3);
+          pad2->Draw();
+          pad2->cd();
+
+          TH1F *h_ratio = h_mc2_unf->Clone();
+
+          h_ratio->SetTitle("");
+          h_ratio->SetStats(0);
+
+          h_ratio->GetXaxis()->SetTitleOffset(0.9);
+          h_ratio->GetXaxis()->SetTitleSize(0.1);
+          h_ratio->GetXaxis()->SetLabelFont(42);
+          h_ratio->GetXaxis()->SetLabelSize(0.08);
+          h_ratio->GetXaxis()->SetTitleFont(42);
+          h_ratio->GetYaxis()->SetTitle("ratio");
+          h_ratio->GetYaxis()->SetNdivisions(505);
+          h_ratio->GetYaxis()->SetTitleSize(0.09);
+          h_ratio->GetYaxis()->SetLabelSize(0.08);
+          h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
+          h_ratio->GetYaxis()->SetTitleOffset(0.4);
+          h_ratio->Divide(h_mc2_truth);
+          //h_ratio->SetMarkerStyle(20);
+          h_ratio->Draw("EPX0");
+
+          TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
+          OLine->SetLineColor(kRed);
+          OLine->SetLineWidth(1);
+          OLine->Draw();
+
 	}
 
 	if (imode==2) {
