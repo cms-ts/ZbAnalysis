@@ -3,7 +3,12 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp4(string& title="", int plot=0, int ilepton=1) {
+void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=-1) {
+
+// imode = -1; // identity test using pattuples
+// imode =  0; // identity test using MadGraph
+// imode =  1; // closure test using MadGraph + Sherpa
+// imode =  2; // unfolding data
 
 	gSystem->Load("libRooUnfold");
 
@@ -36,14 +41,18 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1) {
 	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/xsecs/" + file + "_xsecs.root").c_str());
 	if (ilepton==2) data = TFile::Open((path + "/muons/" + version + "/xsecs/" + file + "_xsecs.root").c_str());
 
+	TFile *mc1;
+	if (imode==-1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
+	if (imode>= 0) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+
+	TFile *mc2;
+	if (imode==-1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
+	if (imode== 0) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (imode== 1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+	if (imode== 2) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+
 	data->cd();
 	TH1F* h_data_reco = (TH1F*)gDirectory->Get(title.c_str());
-
-	//TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
-	//TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
-	//TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 
 	if (ilepton==1) {
 	  mc1->cd("demoEleGen");
@@ -74,16 +83,16 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1) {
 
 	response.UseOverflow();
 
-// n=100: numero di mc toys usati per la propagazione dell'incertezza della 
-// matrice di covarianza dopo l'unfolding.
-// default n=1000, cambia di molto la velocita' dell'algo
-	RooUnfoldSvd unfold (&response, h_mc2_reco, 7, 100);
+	int kreg = 7; // default 0 -> nbins/2
+	int ntoys = 100; // default 1000
 
-	//RooUnfoldBayes unfold (&response, h_mc2_reco, 7);
+	RooUnfoldSvd unfold_mc (&response, h_mc2_reco, kreg, ntoys);
+	RooUnfoldSvd unfold_data (&response, h_data_reco, kreg, ntoys);
 
-	unfold.PrintTable(cout, h_mc1_truth);
+	if (imode<=0) unfold_mc.PrintTable(cout, h_mc1_truth);
 
-	TH1F* h_mc2_unf= (TH1F*) unfold.Hreco();
+	TH1F* h_mc2_unf = (TH1F*) unfold_mc.Hreco();
+	TH1F* h_data_unf = (TH1F*) unfold_data.Hreco();
 
 	double N = (h_mc2_truth->Integral())/(h_mc2_unf->Integral());
         h_mc2_unf->Scale(N);
