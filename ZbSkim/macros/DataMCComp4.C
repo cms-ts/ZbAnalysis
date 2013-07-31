@@ -3,7 +3,7 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=-1) {
+void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 
 // imode = -1; // identity test using pattuples
 // imode =  0; // identity test using MadGraph
@@ -51,35 +51,42 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=-1) {
 	if (imode== 1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	if (imode== 2) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 
+	TH1F* h_data_reco;
 	data->cd();
-	TH1F* h_data_reco = (TH1F*)gDirectory->Get(title.c_str());
+	h_data_reco = (TH1F*)gDirectory->Get((title+"_raw").c_str());
+
+	TH1F* h_mc1_truth;
+	TH1F* h_mc1_reco;
+	TH2F* h_mc1_matrix;
+	TH1F* h_mc2_truth;
+	TH1F* h_mc2_reco;
 
 	if (ilepton==1) {
 	  mc1->cd("demoEleGen");
-	  TH1F* h_mc1_truth = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc1_truth  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd("demoEle");
-	  TH1F* h_mc1_reco  = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc1_reco   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd("demoEleDump");
-	  TH2F* h_mc1_mtx  = (TH2F*)gDirectory->Get(title.c_str());
+	  h_mc1_matrix = (TH2F*)gDirectory->Get(title.c_str());
 	  mc2->cd("demoEleGen");
-	  TH1F* h_mc2_truth = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc2_truth  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc2->cd("demoEle");
-	  TH1F* h_mc2_reco  = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc2_reco   = (TH1F*)gDirectory->Get(title.c_str());
 	}
 	if (ilepton==2) {
 	  mc1->cd("demoMuoGen");
-	  TH1F* h_mc1_truth = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc1_truth   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd("demoMuo");
-	  TH1F* h_mc1_reco  = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc1_reco    = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd("demoMuoDump");
-	  TH2F* h_mc1_mtx  = (TH2F*)gDirectory->Get(title.c_str());
+	  h_mc1_matrix  = (TH2F*)gDirectory->Get(title.c_str());
 	  mc2->cd("demoMuoGen");
-	  TH1F* h_mc2_truth = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc2_truth   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc2->cd("demoMuo");
-	  TH1F* h_mc2_reco  = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc2_reco    = (TH1F*)gDirectory->Get(title.c_str());
 	}
 
-        RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_mtx);
+        RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 
 	response.UseOverflow();
 
@@ -91,46 +98,84 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=-1) {
 
 	if (imode<=0) unfold_mc.PrintTable(cout, h_mc1_truth);
 
-	TH1F* h_mc2_unf = (TH1F*) unfold_mc.Hreco();
-	TH1F* h_data_unf = (TH1F*) unfold_data.Hreco();
+	TH1F* h_mc2_unf;
 
-	double N = (h_mc2_truth->Integral())/(h_mc2_unf->Integral());
-        h_mc2_unf->Scale(N);
+	TH1F* h_data_unf;
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
-	c1->cd();
-	c1->SetLogy();
-	h_mc2_unf->Draw();
-	h_mc2_truth->Draw("SAME");
-	h_mc2_reco->Draw("SAME");
-	h_mc1_truth->Draw("SAME");
-	h_mc1_reco->Draw("SAME");
 
-	h_mc2_unf->SetLineColor(kBlack);
-	h_mc2_truth->SetLineColor(kRed);
-	h_mc2_reco->SetLineColor(kGreen);
-	h_mc1_truth->SetLineColor(kRed);
-	h_mc1_reco->SetLineColor(kGreen);
-	h_mc1_truth->SetLineStyle(2);
-	h_mc1_reco->SetLineStyle(2);
+	if (imode<=1) {
+	  c1->cd();
+	  c1->SetLogy();
 
-	TCanvas* c2 = new TCanvas("c2", "c2", 800, 600);
-	c2->cd();
-	h_mc1_mtx->Draw();
+	  h_mc2_unf = (TH1F*) unfold_mc.Hreco();
+
+	  float val = TMath::Max(h_mc2_unf->GetMaximum(), h_mc2_reco->GetMaximum());
+	  val = TMath::Max(val, h_mc2_truth->GetMaximum());
+	  val = TMath::Max(val, h_mc1_reco->GetMaximum());
+	  val = TMath::Max(val, h_mc1_truth->GetMaximum());
+
+	  h_mc2_unf->SetMaximum(1.5*val);
+
+	  h_mc2_unf->Draw();
+	  h_mc2_reco->Draw("SAME");
+	  h_mc2_truth->Draw("SAME");
+
+	  h_mc2_unf->SetLineColor(kBlack);
+	  h_mc2_reco->SetLineColor(kGreen);
+	  h_mc2_truth->SetLineColor(kRed);
+
+	  h_mc1_reco->Draw("SAME");
+	  h_mc1_truth->Draw("SAME");
+
+	  h_mc1_reco->SetLineColor(kGreen);
+	  h_mc1_truth->SetLineColor(kRed);
+	  h_mc1_reco->SetLineStyle(2);
+	  h_mc1_truth->SetLineStyle(2);
+	}
+
+	if (imode==2) {
+	  c1->cd();
+	  c1->SetLogy();
+
+	  h_data_unf = (TH1F*) unfold_data.Hreco();
+
+	  float val = TMath::Max(h_data_unf->GetMaximum(),h_data_reco->GetMaximum());
+	  val = TMath::Max(val, h_mc1_reco->GetMaximum());
+	  val = TMath::Max(val, h_mc1_truth->GetMaximum());
+
+	  h_data_unf->SetMaximum(1.5*val);
+
+	  h_data_unf->Draw();
+	  h_data_reco->Draw("SAME");
+
+	  h_mc1_reco->Draw("SAME");
+	  h_mc1_truth->Draw("SAME");
+
+	  h_data_unf->SetLineColor(kBlack);
+	  h_data_reco->SetLineColor(kGreen);
+
+	  h_mc1_reco->SetLineColor(kGreen);
+	  h_mc1_truth->SetLineColor(kRed);
+	  h_mc1_reco->SetLineStyle(2);
+	  h_mc1_truth->SetLineStyle(2);
+	}
 
 	if (plot) {
 	  if (ilepton==1) {
 	    gSystem->mkdir((path + "/electrons/" + version + "/unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.pdf").c_str());
 	    TFile f((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
-	    h_mc2_unf->Write(title.c_str());
+	    if (imode<=1) h_mc2_unf->Write(title.c_str());
+	    if (imode==2) h_data_unf->Write(title.c_str());
 	    f.Close();
 	  }
 	  if (ilepton==2) {
 	    gSystem->mkdir((path + "/muons/" + version + "/unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.pdf").c_str());
 	    TFile f((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
-	    h_mc2_unf->Write(title.c_str());
+	    if (imode<=1) h_mc2_unf->Write(title.c_str());
+	    if (imode==2) h_data_unf->Write(title.c_str());
 	    f.Close();
 	  }
 	}
