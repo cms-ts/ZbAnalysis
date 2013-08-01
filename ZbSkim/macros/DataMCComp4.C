@@ -173,21 +173,27 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 	  val = TMath::Max(val, h_mc1_reco->GetMaximum());
 	  val = TMath::Max(val, h_mc1_truth->GetMaximum());
 
-	  h_data_unf->SetMaximum(1.5*val);
+	  h_data_reco->SetMaximum(1.5*val);
 
-	  h_data_unf->Draw();
-	  h_data_reco->Draw("SAME");
-
-	  h_mc1_reco->Draw("SAME");
-	  h_mc1_truth->Draw("SAME");
+          h_data_reco->SetLineColor(kGreen);
+          h_data_reco->SetMarkerColor(kGreen);
+          h_data_reco->SetMarkerStyle(20);
+          h_data_reco->SetMarkerSize(0.7);
+          h_data_reco->Draw("EPX0");
 
 	  h_data_unf->SetLineColor(kBlack);
-	  h_data_reco->SetLineColor(kGreen);
+	  h_data_unf->SetMarkerColor(kBlack);
+	  h_data_unf->SetMarkerStyle(20);
+	  h_data_unf->SetMarkerSize(0.7);
+	  h_data_unf->Draw("EPX0SAME");
+
+          h_mc1_truth->SetLineColor(kRed);
+          h_mc1_truth->SetLineStyle(2);
+          h_mc1_truth->Draw("SAME");
 
 	  h_mc1_reco->SetLineColor(kGreen);
-	  h_mc1_truth->SetLineColor(kRed);
 	  h_mc1_reco->SetLineStyle(2);
-	  h_mc1_truth->SetLineStyle(2);
+	  h_mc1_reco->Draw("SAME");
 	}
 
         TLegend *leg = new TLegend(0.42, 0.580, 0.68, 0.88);
@@ -196,14 +202,18 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
         leg->SetFillColor(0);
         leg->SetFillStyle(0);
 
-        leg->AddEntry(h_mc1_truth,"MC1 truth","l");
         leg->AddEntry(h_mc1_reco,"MC1 reco","l");
-        if (imode==1) leg->AddEntry(h_mc2_reco,"MC2 reco","l");
-        if (imode==1) leg->AddEntry(h_mc2_truth,"MC2 truth","l");
+        leg->AddEntry(h_mc1_truth,"MC1 truth","l");
         if (imode<=0) leg->AddEntry(h_mc2_unf,"MC1 unfold","l");
-        if (imode==1) leg->AddEntry(h_mc2_unf,"MC2 unfold","l");
-        if (imode==2) leg->AddEntry(h_data_reco,"DATA reco","l");
-        if (imode==2) leg->AddEntry(h_data_unf,"DATA unfold","l");
+        if (imode==1) {
+          leg->AddEntry(h_mc2_reco,"MC2 reco","l");
+          leg->AddEntry(h_mc2_truth,"MC2 truth","l");
+          leg->AddEntry(h_mc2_unf,"MC2 unfold","l");
+        }
+        if (imode==2) {
+          leg->AddEntry(h_data_reco,"DATA reco","p");
+           leg->AddEntry(h_data_unf,"DATA unfold","p");
+        }
 
         leg->Draw();
 
@@ -236,9 +246,12 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
         h_ratio->GetYaxis()->SetLabelSize(0.08);
         h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
         h_ratio->GetYaxis()->SetTitleOffset(0.4);
-        h_ratio->Divide(h_mc2_truth);
-        //h_ratio->SetMarkerStyle(20);
-        h_ratio->Draw();
+        if (imode<=1) h_ratio->Divide(h_mc2_truth);
+        if (imode==2) h_ratio->Divide(h_mc1_truth);
+        if (imode==2) h_ratio->SetMarkerStyle(20);
+        h_ratio->SetMarkerSize(0.7);
+        h_ratio->Draw("EPX0");
+        if (imode<=1) h_ratio->Draw("EP0SAME");
 
         TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
         OLine->SetLineColor(kRed);
