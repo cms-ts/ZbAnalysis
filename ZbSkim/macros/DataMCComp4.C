@@ -5,10 +5,10 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 
-// imode = -1; // identity test using pattuples
-// imode =  0; // identity test using MadGraph
+// imode = -1; // identity test using MadGraph PAT
+// imode =  0; // identity test using MadGraph GEN
 // imode =  1; // closure test using MadGraph + Sherpa
-// imode =  2; // unfolding data
+// imode =  2; // unfolding data with MadGraph
 
 	gSystem->Load("libRooUnfold");
 
@@ -51,7 +51,9 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 
 	TFile *mc1;
 	if (imode==-1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
-	if (imode>= 0) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (imode== 0) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (imode== 1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (imode== 2) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 
 	TFile *mc2;
 	if (imode==-1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
@@ -98,17 +100,11 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 	h_mc1_reco->Scale(norm1);
 	h_mc1_matrix->Scale(norm1);
 
-	if (imode<=0) {
-	  h_mc2_truth->Scale(norm1);
-	  h_mc2_reco->Scale(norm1);
-	}
+	h_mc2_truth->Scale(norm1);
+	h_mc2_reco->Scale(norm1);
 	if (imode==1) {
-	  h_mc2_truth->Scale(norm1_1);
-	  h_mc2_reco->Scale(norm1_1);
-	}
-	if (imode==2) {
-	  h_mc2_truth->Scale(norm1);
-	  h_mc2_reco->Scale(norm1);
+	  h_mc2_truth->Scale(norm1_1/norm1);
+	  h_mc2_reco->Scale(norm1_1/norm1);
 	}
 
         RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_matrix);
@@ -194,6 +190,23 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 	  h_mc1_truth->SetLineStyle(2);
 	}
 
+        TLegend *leg = new TLegend(0.42, 0.580, 0.68, 0.88);
+        leg->SetBorderSize(0);
+        leg->SetEntrySeparation(0.01);
+        leg->SetFillColor(0);
+        leg->SetFillStyle(0);
+
+        leg->AddEntry(h_mc1_truth,"MC1 truth","l");
+        leg->AddEntry(h_mc1_reco,"MC1 reco","l");
+        if (imode==1) leg->AddEntry(h_mc2_reco,"MC2 reco","l");
+        if (imode==1) leg->AddEntry(h_mc2_truth,"MC2 truth","l");
+        if (imode<=0) leg->AddEntry(h_mc2_unf,"MC1 unfold","l");
+        if (imode==1) leg->AddEntry(h_mc2_unf,"MC2 unfold","l");
+        if (imode==2) leg->AddEntry(h_data_reco,"DATA reco","l");
+        if (imode==2) leg->AddEntry(h_data_unf,"DATA unfold","l");
+
+        leg->Draw();
+
         pad1->Update();
         c1->Update();
 
@@ -208,6 +221,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
         TH1F *h_ratio;
         if (imode<=1) h_ratio = (TH1F*) h_mc2_unf->Clone();
         if (imode==2) h_ratio = (TH1F*) h_data_unf->Clone();
+        if (imode==3) h_ratio = (TH1F*) h_data_unf->Clone();
 
         h_ratio->SetTitle("");
         h_ratio->SetStats(0);

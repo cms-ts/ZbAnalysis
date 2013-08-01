@@ -263,6 +263,9 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_data_b->Add(h_mc1c_b, -1.);
 	h_data_b->Add(h_mc1uds_b, -1.);
 
+	TH1F *h_data_raw = h_data->Clone();
+	TH1F *h_data_b_raw = h_data_b->Clone();
+
 //int useBinnedEfficiency=0;
 int useBinnedEfficiency=1;
 
@@ -806,6 +809,8 @@ int useBinnedEfficiency=1;
 	      gSystem->mkdir((path + "/electrons/" + version + "/xsecs/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/electrons/" + version + "/xsecs/" + title_b + "_xsecs.pdf").c_str());
 	      TFile f((path + "/electrons/" + version + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
+	      h_data_raw->Write((title+"_raw").c_str());
+              h_data_b_raw->Write((title_b+"_raw").c_str());
               h_data->Write(title.c_str());
               h_data_b->Write(title_b.c_str());
               f.Close();
@@ -814,6 +819,8 @@ int useBinnedEfficiency=1;
 	      gSystem->mkdir((path + "/muons/" + version + "/xsecs/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/muons/" + version + "/xsecs/" + title_b + "_xsecs.pdf").c_str());
 	      TFile f((path + "/muons/" + version + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
+	      h_data_raw->Write((title+"_raw").c_str());
+              h_data_b_raw->Write((title_b+"_raw").c_str());
               h_data->Write(title.c_str());
               h_data_b->Write(title_b.c_str());
               f.Close();
