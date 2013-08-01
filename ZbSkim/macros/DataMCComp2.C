@@ -390,7 +390,7 @@ int useBinnedEfficiency=1;
 	  h_data_b->Draw("EPX0SAME");
 	}
 	
-	leg = new TLegend(0.62, 0.580, 0.88, 0.88);
+	TLegend *leg = new TLegend(0.62, 0.580, 0.88, 0.88);
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
