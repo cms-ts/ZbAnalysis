@@ -244,20 +244,22 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 	  if (ilepton==1) {
 	    gSystem->mkdir((path + "/electrons/" + version + "/unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.pdf").c_str());
-	    TFile f((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
-	    if (imode<=1) h_mc2_unf->Write(title.c_str());
-	    if (imode==2) h_data_unf->Write(title.c_str());
-	    f.Close();
 	    c2->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
+	    if (imode==2) {
+	      TFile f((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
+	      h_data_unf->Write(title.c_str());
+	      f.Close();
+	    }
 	  }
 	  if (ilepton==2) {
 	    gSystem->mkdir((path + "/muons/" + version + "/unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.pdf").c_str());
-	    TFile f((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
-	    if (imode<=1) h_mc2_unf->Write(title.c_str());
-	    if (imode==2) h_data_unf->Write(title.c_str());
-	    f.Close();
 	    c2->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
+	    if (imode==2) {
+	      TFile f((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
+	      h_data_unf->Write(title.c_str());
+	      f.Close();
+	    }
 	  }
 	}
 
