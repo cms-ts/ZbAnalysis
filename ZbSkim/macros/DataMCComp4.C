@@ -3,12 +3,13 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int method=0) {
+void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int method=0) {
 
 // imode = -1; // identity test using MadGraph PAT
 // imode =  0; // identity test using MadGraph GEN
 // imode =  1; // closure test using MadGraph + Sherpa
-// imode =  2; // unfolding data with MadGraph
+// imode =  2; // closure test using MadGraph + Powheg
+// imode =  3; // unfolding data with MadGraph
 
 // method = 0; // use SVD
 // method = 1; // use Bayes
@@ -27,6 +28,9 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
 
 	double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm1_1 = ( (Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
+	double norm1_2;
+	if (ilepton==1) norm1_2 = ( (Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
+	if (ilepton==2) norm1_2 = ( (Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -58,12 +62,17 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
 	if (imode== 0) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 2) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (imode== 3) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 
 	TFile *mc2;
 	if (imode==-1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
 	if (imode== 0) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
-	if (imode== 2) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (imode== 2) {
+	  if (ilepton==1) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
+	  if (ilepton==2) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
+	}
+	if (imode== 3) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 
 	TH1F* h_data_reco;
 	data->cd();
@@ -110,6 +119,10 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
 	  h_mc2_truth->Scale(norm1_1/norm1);
 	  h_mc2_reco->Scale(norm1_1/norm1);
 	}
+	if (imode==2) {
+	  h_mc2_truth->Scale(norm1_2/norm1);
+	  h_mc2_reco->Scale(norm1_2/norm1);
+	}
 
         RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 
@@ -117,6 +130,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
 
 	if (method==0) {
 	  int kreg = 0; // default 0 -> nbins/2
+	  kreg = h_mc2_reco->GetNbinsX()/3.;
 	  int ntoys = 100; // default 1000
 	  RooUnfoldSvd unfold_mc (&response, h_mc2_reco, kreg, ntoys);
 	  RooUnfoldSvd unfold_data (&response, h_data_reco, kreg, ntoys);
@@ -148,7 +162,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
         pad1->cd();
         pad1->SetLogy();
 
-	if (imode<=1) {
+	if (imode<=2) {
 	  h_mc2_unf = (TH1F*) unfold_mc.Hreco();
 
 	  float val = TMath::Max(h_mc2_unf->GetMaximum(), h_mc2_reco->GetMaximum());
@@ -175,7 +189,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
 	  h_mc1_truth->SetLineStyle(2);
 	}
 
-	if (imode==2) {
+	if (imode==3) {
 	  c1->cd();
           TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
           pad1->SetBottomMargin(0.001);
@@ -218,17 +232,22 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
         leg->SetFillColor(0);
         leg->SetFillStyle(0);
 
-        leg->AddEntry(h_mc1_reco,"MC1 reco","l");
-        leg->AddEntry(h_mc1_truth,"MC1 truth","l");
-        if (imode<=0) leg->AddEntry(h_mc2_unf,"MC1 unfold","l");
+        leg->AddEntry(h_mc1_reco,"MADGRAPH reco","l");
+        leg->AddEntry(h_mc1_truth,"MADGRAPH truth","l");
+        if (imode<=0) leg->AddEntry(h_mc2_unf,"MADGRAPH unfold","l");
         if (imode==1) {
-          leg->AddEntry(h_mc2_reco,"MC2 reco","l");
-          leg->AddEntry(h_mc2_truth,"MC2 truth","l");
-          leg->AddEntry(h_mc2_unf,"MC2 unfold","l");
+          leg->AddEntry(h_mc2_reco,"SHERPA reco","l");
+          leg->AddEntry(h_mc2_truth,"SHERPA truth","l");
+          leg->AddEntry(h_mc2_unf,"SHERPA unfold","l");
         }
         if (imode==2) {
+          leg->AddEntry(h_mc2_reco,"POWHEG reco","l");
+          leg->AddEntry(h_mc2_truth,"POWHEG truth","l");
+          leg->AddEntry(h_mc2_unf,"POWHEG unfold","l");
+        }
+        if (imode==3) {
           leg->AddEntry(h_data_reco,"DATA reco","p");
-           leg->AddEntry(h_data_unf,"DATA unfold","p");
+          leg->AddEntry(h_data_unf,"DATA unfold","p");
         }
 
         leg->Draw();
@@ -245,8 +264,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
         pad2->cd();
 
         TH1F *h_ratio;
-        if (imode<=1) h_ratio = (TH1F*) h_mc2_unf->Clone();
-        if (imode==2) h_ratio = (TH1F*) h_data_unf->Clone();
+        if (imode<=2) h_ratio = (TH1F*) h_mc2_unf->Clone();
+        if (imode==3) h_ratio = (TH1F*) h_data_unf->Clone();
 
         h_ratio->SetTitle("");
         h_ratio->SetStats(0);
@@ -262,12 +281,14 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
         h_ratio->GetYaxis()->SetLabelSize(0.08);
         h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
         h_ratio->GetYaxis()->SetTitleOffset(0.4);
-        if (imode<=1) h_ratio->Divide(h_mc2_truth);
-        if (imode==2) h_ratio->Divide(h_mc1_truth);
-        if (imode==2) h_ratio->SetMarkerStyle(20);
+        if (imode<=2) h_ratio->Divide(h_mc2_truth);
+        if (imode==3) {
+          h_ratio->Divide(h_mc1_truth);
+          h_ratio->SetMarkerStyle(20);
+        }
         h_ratio->SetMarkerSize(0.7);
         h_ratio->Draw("EPX0");
-        if (imode<=1) h_ratio->Draw("EP0SAME");
+        if (imode<=2) h_ratio->Draw("EP0SAME");
 
         TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
         OLine->SetLineColor(kRed);
@@ -279,8 +300,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
 	  c2->cd();
 	  c2->SetLogy();
 	  TH1D *d;
-	  if (imode<=1) d = unfold_mc.Impl()->GetD();
-	  if (imode==2) d = unfold_data.Impl()->GetD();
+	  if (imode<=2) d = unfold_mc.Impl()->GetD();
+	  if (imode==3) d = unfold_data.Impl()->GetD();
 	  d->Draw();
 	}
 
@@ -289,7 +310,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
 	    gSystem->mkdir((path + "/electrons/" + version + "/unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.pdf").c_str());
 	    c2->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
-	    if (imode==2) {
+	    if (imode==3) {
 	      TFile f((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unf->Write(title.c_str());
 	      f.Close();
@@ -299,7 +320,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int m
 	    gSystem->mkdir((path + "/muons/" + version + "/unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.pdf").c_str());
 	    c2->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
-	    if (imode==2) {
+	    if (imode==3) {
 	      TFile f((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unf->Write(title.c_str());
 	      f.Close();
