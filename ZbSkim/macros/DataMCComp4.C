@@ -3,12 +3,16 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
+void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2, int method=0) {
 
 // imode = -1; // identity test using MadGraph PAT
 // imode =  0; // identity test using MadGraph GEN
 // imode =  1; // closure test using MadGraph + Sherpa
 // imode =  2; // unfolding data with MadGraph
+
+// method = 0; // use SVD
+// method = 1; // use Bayes
+// method = 2; // use BinByBin
 
 	gSystem->Load("libRooUnfold");
 
@@ -111,11 +115,23 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 
 	response.UseOverflow();
 
-	int kreg = 0; // default 0 -> nbins/2
-	int ntoys = 100; // default 1000
+	if (method==0) {
+	  int kreg = 0; // default 0 -> nbins/2
+	  int ntoys = 100; // default 1000
+	  RooUnfoldSvd unfold_mc (&response, h_mc2_reco, kreg, ntoys);
+	  RooUnfoldSvd unfold_data (&response, h_data_reco, kreg, ntoys);
+	}
 
-	RooUnfoldSvd unfold_mc (&response, h_mc2_reco, kreg, ntoys);
-	RooUnfoldSvd unfold_data (&response, h_data_reco, kreg, ntoys);
+	if (method==1) {
+	  int niter = 4; // default 4 -> number of iterations
+	  RooUnfoldBayes unfold_mc (&response, h_mc2_reco, niter);
+	  RooUnfoldBayes unfold_data (&response, h_data_reco, niter);
+	}
+
+	if (method==2) {
+	  RooUnfoldBinByBin unfold_mc (&response, h_mc2_reco);
+	  RooUnfoldBinByBin unfold_data (&response, h_data_reco);
+	}
 
 	if (imode<=0) unfold_mc.PrintTable(cout, h_mc1_truth);
 
@@ -259,12 +275,14 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
         OLine->Draw();
 
 	TCanvas* c2 = new TCanvas("c2", "c2", 800, 600);
-	c2->cd();
-	c2->SetLogy();
-	TH1D *d;
-	if (imode<=1) d = unfold_mc.Impl()->GetD();
-	if (imode==2) d = unfold_data.Impl()->GetD();
-	d->Draw();
+	if (method==0) {
+	  c2->cd();
+	  c2->SetLogy();
+	  TH1D *d;
+	  if (imode<=1) d = unfold_mc.Impl()->GetD();
+	  if (imode==2) d = unfold_data.Impl()->GetD();
+	  d->Draw();
+	}
 
 	if (plot) {
 	  if (ilepton==1) {
