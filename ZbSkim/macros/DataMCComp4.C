@@ -3,7 +3,7 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=0) {
+void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
 
 // imode = -1; // identity test using pattuples
 // imode =  0; // identity test using MadGraph
@@ -115,7 +115,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=0) {
 
 	response.UseOverflow();
 
-	int kreg = 7; // default 0 -> nbins/2
+	int kreg = 0; // default 0 -> nbins/2
 	int ntoys = 100; // default 1000
 
 	RooUnfoldSvd unfold_mc (&response, h_mc2_reco, kreg, ntoys);
@@ -127,7 +127,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=0) {
 
 	TH1F* h_data_unf;
 
-	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
+	TCanvas* c1 = new TCanvas("c1", "c1", 800, 600);
 
 	c1->cd();
         TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
@@ -232,7 +232,13 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=0) {
         OLine->SetLineWidth(1);
         OLine->Draw();
 
-        c1->cd();
+	TCanvas* c2 = new TCanvas("c2", "c2", 800, 600);
+	c2->cd();
+	c2->SetLogy();
+	TH1D *d;
+	if (imode<=1) d = unfold_mc.Impl()->GetD();
+	if (imode==2) d = unfold_data.Impl()->GetD();
+	d->Draw();
 
 	if (plot) {
 	  if (ilepton==1) {
@@ -242,6 +248,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=0) {
 	    if (imode<=1) h_mc2_unf->Write(title.c_str());
 	    if (imode==2) h_data_unf->Write(title.c_str());
 	    f.Close();
+	    c2->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
 	  }
 	  if (ilepton==2) {
 	    gSystem->mkdir((path + "/muons/" + version + "/unfolding/").c_str(), kTRUE);
@@ -250,6 +257,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=0) {
 	    if (imode<=1) h_mc2_unf->Write(title.c_str());
 	    if (imode==2) h_data_unf->Write(title.c_str());
 	    f.Close();
+	    c2->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
 	  }
 	}
 
