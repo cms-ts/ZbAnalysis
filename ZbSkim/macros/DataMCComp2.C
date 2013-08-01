@@ -3,7 +3,7 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1) {
+void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1, int unfold=0) {
 
 	if (ilepton<1 || ilepton>2) {
 	  ilepton = 1 + ilepton % 2;
@@ -127,8 +127,36 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
 	if (ilepton==1) data->cd("demoEle");
 	if (ilepton==2) data->cd("demoMuo");
-	TH1F* h_data = (TH1F*)gDirectory->Get(title.c_str());
-	TH1F* h_data_b = (TH1F*)gDirectory->Get(title_b.c_str());
+	TH1F* h_data;
+	TH1F* h_data_b;
+	if (unfold==0) {
+	  h_data = (TH1F*)gDirectory->Get(title.c_str());
+	  h_data_b = (TH1F*)gDirectory->Get(title_b.c_str());
+	}
+	if (unfold==1) {
+          if (ilepton==1) {
+	    TFile f((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.root").c_str());
+	    TFile f_b((path + "/electrons/" + version + "/unfolding/" + title_b + "_unfolding.root").c_str());
+	    TH1F* h_data = (TH1F*)f.Get(title.c_str())->Clone();
+	    TH1F* h_data_b = (TH1F*)f_b.Get(title_b.c_str())->Clone();
+	    h_data->SetDirectory(0);
+	    h_data_b->SetDirectory(0);
+	    f.Close();
+	    f_b.Close();
+          }
+          if (ilepton==2) {
+	    TFile f((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.root").c_str());
+	    TFile f_b((path + "/muons/" + version + "/unfolding/" + title_b + "_unfolding.root").c_str());
+	    TH1F* h_data = (TH1F*)f.Get(title.c_str())->Clone();
+	    TH1F* h_data_b = (TH1F*)f_b.Get(title_b.c_str())->Clone();
+	    h_data->SetDirectory(0);
+	    h_data_b->SetDirectory(0);
+	    f.Close();
+	    f_b.Close();
+          }
+	  h_data->SetStats(0);
+	  h_data_b->SetStats(0);
+	}
 
 	if (ilepton==1) mc1->cd("demoEle");
 	if (ilepton==2) mc1->cd("demoMuo");
@@ -182,31 +210,34 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc7_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	h_data -> Sumw2();
+	if (unfold==0) {
+	  h_data->Sumw2();
+	  h_data_b->Sumw2();
+	}
 
-	h_mc1 -> Sumw2();
-	h_mcg -> Sumw2();
-	h_mcg1 -> Sumw2();
-	h_mcg2 -> Sumw2();
-	h_mc2 -> Sumw2();
-	h_mc3 -> Sumw2();
-	h_mc4 -> Sumw2();
-//	h_mc5 -> Sumw2();
-	h_mc6 -> Sumw2();
-	h_mc7 -> Sumw2();
+	h_mc1->Sumw2();
+	h_mcg->Sumw2();
+	h_mcg1->Sumw2();
+	h_mcg2->Sumw2();
+	h_mc2->Sumw2();
+	h_mc3->Sumw2();
+	h_mc4->Sumw2();
+//	h_mc5->Sumw2();
+	h_mc6->Sumw2();
+	h_mc7->Sumw2();
 
-	h_mc1_b -> Sumw2();	
-	if (h_mc1b_b) h_mc1b_b -> Sumw2();
-	if (h_mc1c_b) h_mc1c_b -> Sumw2();
-	h_mcg_b -> Sumw2();
-	h_mcg1_b -> Sumw2();
-	h_mcg2_b -> Sumw2();
-	h_mc2_b -> Sumw2();
-	h_mc3_b -> Sumw2();
-	h_mc4_b -> Sumw2();
-//	h_mc5_b -> Sumw2();
-	h_mc6_b -> Sumw2();
-	h_mc7_b -> Sumw2();
+	h_mc1_b->Sumw2();	
+	if (h_mc1b_b) h_mc1b_b->Sumw2();
+	if (h_mc1c_b) h_mc1c_b->Sumw2();
+	h_mcg_b->Sumw2();
+	h_mcg1_b->Sumw2();
+	h_mcg2_b->Sumw2();
+	h_mc2_b->Sumw2();
+	h_mc3_b->Sumw2();
+	h_mc4_b->Sumw2();
+//	h_mc5_b->Sumw2();
+	h_mc6_b->Sumw2();
+	h_mc7_b->Sumw2();
 
 	h_mc1->Scale(norm1);
 	h_mcg->Scale(norm1);
@@ -232,19 +263,21 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_mc6_b->Scale(norm6);
 	h_mc7_b->Scale(norm7);
 
-	h_data->Add(h_mc7, -1.);
-	h_data->Add(h_mc6, -1.);
-//	h_data->Add(h_mc5, -1.);
-	h_data->Add(h_mc4, -1.);
-	h_data->Add(h_mc3, -1.);
-	h_data->Add(h_mc2, -1.);
+	if (unfold==0) {
+	  h_data->Add(h_mc7, -1.);
+	  h_data->Add(h_mc6, -1.);
+//	  h_data->Add(h_mc5, -1.);
+	  h_data->Add(h_mc4, -1.);
+	  h_data->Add(h_mc3, -1.);
+	  h_data->Add(h_mc2, -1.);
 
-	h_data_b->Add(h_mc7_b, -1.);
-	h_data_b->Add(h_mc6_b, -1.);
-//	h_data_b->Add(h_mc5_b, -1.);
-	h_data_b->Add(h_mc4_b, -1.);
-	h_data_b->Add(h_mc3_b, -1.);
-	h_data_b->Add(h_mc2_b, -1.);
+	  h_data_b->Add(h_mc7_b, -1.);
+	  h_data_b->Add(h_mc6_b, -1.);
+//	  h_data_b->Add(h_mc5_b, -1.);
+	  h_data_b->Add(h_mc4_b, -1.);
+	  h_data_b->Add(h_mc3_b, -1.);
+	  h_data_b->Add(h_mc2_b, -1.);
+	}
 
 	TH1F *h_mc1uds_b = h_mc1_b->Clone("h_mc1uds_b");
 	if (h_mc1b_b) h_mc1uds_b->Add(h_mc1b_b, -1);
@@ -260,49 +293,67 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_mc1b_b->Scale(c_b);
 	h_mc1c_b->Scale(c_c);
 
-	h_data_b->Add(h_mc1c_b, -1.);
-	h_data_b->Add(h_mc1uds_b, -1.);
+	if (unfold==0) {
+	  h_data_b->Add(h_mc1c_b, -1.);
+	  h_data_b->Add(h_mc1uds_b, -1.);
+	}
 
-	TH1F *h_data_raw = h_data->Clone();
-	TH1F *h_data_b_raw = h_data_b->Clone();
+	TH1F *h_data_raw;
+	TH1F *h_data_b_raw;
+	if (unfold==0) {
+	  h_data_raw = (TH1F*)h_data->Clone();
+	  h_data_b_raw = (TH1F*)h_data_b->Clone();
+	}
 
 //int useBinnedEfficiency=0;
 int useBinnedEfficiency=1;
 
+	if (unfold==1) useBinnedEfficiency=1;
+
 	if (useBinnedEfficiency==0) {
-	  h_data_b->Scale(1./(Lumi2012*e_Zb));
 	  h_data->Scale(1./(Lumi2012*e_Z));
-	  h_mc1b_b->Scale(1./(Lumi2012*e_Zb));
+	  h_data_b->Scale(1./(Lumi2012*e_Zb));
 	  h_mc1->Scale(1./(Lumi2012*e_Z));
-	} else {
+	  h_mc1b_b->Scale(1./(Lumi2012*e_Zb));
+	}
+
+	if (useBinnedEfficiency==1) {
           if (ilepton==1) {
-	    TFile f_b((path + "/electrons/" + version + "/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
 	    TFile f((path + "/electrons/" + version + "/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
-	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName());
-	    TH1F* h = (TH1F*)f.Get(h_data->GetName());
-	    h_data_b->Divide(h_b);
-	    h_data->Divide(h);
-	    h_mc1b_b->Divide(h_b);
-	    h_mc1->Divide(h);
-	    f_b.Close();
+	    TFile f_b((path + "/electrons/" + version + "/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
+	    TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
+	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
+	    h->SetDirectory(0);
+	    h_b->SetDirectory(0);
 	    f.Close();
+	    f_b.Close();
+	    if (unfold==0) {
+	      h_data->Divide(h);
+	      h_data_b->Divide(h_b);
+	    }
+	    h_mc1->Divide(h);
+	    h_mc1b_b->Divide(h_b);
           }
 	  if (ilepton==2) {
-	    TFile f_b((path + "/muons/" + version + "/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
 	    TFile f((path + "/muons/" + version + "/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
-	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName());
-	    TH1F* h = (TH1F*)f.Get(h_data->GetName());
-	    h_data_b->Divide(h_b);
-	    h_data->Divide(h);
-	    h_mc1b_b->Divide(h_b);
-	    h_mc1->Divide(h);
-	    f_b.Close();
+	    TFile f_b((path + "/muons/" + version + "/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
+	    TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
+	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
+	    h->SetDirectory(0);
+	    h_b->SetDirectory(0);
 	    f.Close();
+	    f_b.Close();
+	    if (unfold==0) {
+	      h_data->Divide(h);
+	      h_data_b->Divide(h_b);
+	    }
+	    h_mc1->Divide(h);
+	    h_mc1b_b->Divide(h_b);
           }
-	  h_data_b->Scale(1./(Lumi2012));
 	  h_data->Scale(1./(Lumi2012));
-	  h_mc1b_b->Scale(1./(Lumi2012));
+	  h_data_b->Scale(1./(Lumi2012));
 	  h_mc1->Scale(1./(Lumi2012));
+	  h_mc1b_b->Scale(1./(Lumi2012));
 	}
 
 	if (isratio==1) {
@@ -315,12 +366,12 @@ int useBinnedEfficiency=1;
 	  h_mc1b_b->Scale(100.);
 	}
 
-	h_mcg_b->Scale(1./(Lumi2012));
-	h_mcg1_b->Scale(1./(Lumi2012));
-	h_mcg2_b->Scale(1./(Lumi2012));
 	h_mcg->Scale(1./(Lumi2012));
 	h_mcg1->Scale(1./(Lumi2012));
 	h_mcg2->Scale(1./(Lumi2012));
+	h_mcg_b->Scale(1./(Lumi2012));
+	h_mcg1_b->Scale(1./(Lumi2012));
+	h_mcg2_b->Scale(1./(Lumi2012));
 	if (isratio==1) {
 	  h_mcg_b->Divide(h_mcg);
 	  h_mcg1_b->Divide(h_mcg1);
@@ -734,9 +785,9 @@ int useBinnedEfficiency=1;
 	    h_S->GetXaxis()->SetRangeUser(0, 200);
 	    h_P->GetXaxis()->SetRangeUser(0, 200);
 	    h_mc1b_b->GetYaxis()->SetRangeUser(-0.5, 20);
-	    OLine2->SetX2(210);
-	    OLine3->SetX2(210);
-	    OLine4->SetX2(210);
+	    OLine2->SetX2(204);
+	    OLine3->SetX2(204);
+	    OLine4->SetX2(204);
 	  }
 	} else if (title_b=="w_first_jet_eta_b") {
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d#eta");
@@ -755,9 +806,9 @@ int useBinnedEfficiency=1;
 	    h_S->GetXaxis()->SetRangeUser(0, 200);
 	    h_P->GetXaxis()->SetRangeUser(0, 200);
 	    h_mc1b_b->GetYaxis()->SetRangeUser(-0.5, 10);
-	    OLine2->SetX2(210);
-	    OLine3->SetX2(210);
-	    OLine4->SetX2(210);
+	    OLine2->SetX2(204);
+	    OLine3->SetX2(204);
+	    OLine4->SetX2(204);
 	  }
 	} else if (title_b=="w_first_bjet_eta") {
 	  h_P->GetXaxis()->SetTitle("leading b-jet #eta");
@@ -790,9 +841,9 @@ int useBinnedEfficiency=1;
 	    h_S->GetXaxis()->SetRangeUser(0, 250);
 	    h_P->GetXaxis()->SetRangeUser(0, 250);
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
-	    OLine2->SetX2(260);
-	    OLine3->SetX2(260);
-	    OLine4->SetX2(260);
+	    OLine2->SetX2(263);
+	    OLine3->SetX2(263);
+	    OLine4->SetX2(263);
 	  }
 	} else if (title_b=="w_delta_phi_ee_b" || title_b=="w_delta_phi_mm_b") {
 	  h_P->GetXaxis()->SetTitle("#Delta#phi(Zb) [rad]");
@@ -804,36 +855,60 @@ int useBinnedEfficiency=1;
 	}
 
 	if (plot) {
-	  if (isratio==0) {
-	    if (ilepton==1) {
-	      gSystem->mkdir((path + "/electrons/" + version + "/xsecs/").c_str(), kTRUE);
-	      c1->SaveAs((path + "/electrons/" + version + "/xsecs/" + title_b + "_xsecs.pdf").c_str());
-	      TFile f((path + "/electrons/" + version + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
-	      h_data_raw->Write((title+"_raw").c_str());
-              h_data_b_raw->Write((title_b+"_raw").c_str());
-              h_data->Write(title.c_str());
-              h_data_b->Write(title_b.c_str());
-              f.Close();
+	  if (unfold==0) {
+	    if (isratio==0) {
+	      if (ilepton==1) {
+	        gSystem->mkdir((path + "/electrons/" + version + "/xsecs/").c_str(), kTRUE);
+	        c1->SaveAs((path + "/electrons/" + version + "/xsecs/" + title_b + "_xsecs.pdf").c_str());
+	        TFile f((path + "/electrons/" + version + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
+	        h_data_raw->Write((title+"_raw").c_str());
+                h_data_b_raw->Write((title_b+"_raw").c_str());
+                h_data->Write(title.c_str());
+                h_data_b->Write(title_b.c_str());
+                f.Close();
+	      }
+	      if (ilepton==2) {
+	        gSystem->mkdir((path + "/muons/" + version + "/xsecs/").c_str(), kTRUE);
+	        c1->SaveAs((path + "/muons/" + version + "/xsecs/" + title_b + "_xsecs.pdf").c_str());
+	        TFile f((path + "/muons/" + version + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
+	        h_data_raw->Write((title+"_raw").c_str());
+                h_data_b_raw->Write((title_b+"_raw").c_str());
+                h_data->Write(title.c_str());
+                h_data_b->Write(title_b.c_str());
+                f.Close();
+	      }
 	    }
-	    if (ilepton==2) {
-	      gSystem->mkdir((path + "/muons/" + version + "/xsecs/").c_str(), kTRUE);
-	      c1->SaveAs((path + "/muons/" + version + "/xsecs/" + title_b + "_xsecs.pdf").c_str());
-	      TFile f((path + "/muons/" + version + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
-	      h_data_raw->Write((title+"_raw").c_str());
-              h_data_b_raw->Write((title_b+"_raw").c_str());
-              h_data->Write(title.c_str());
-              h_data_b->Write(title_b.c_str());
-              f.Close();
+	    if (isratio==1) {
+	      if (ilepton==1) {
+	        gSystem->mkdir((path + "/electrons/" + version + "/ratios/").c_str());
+	        c1->SaveAs((path + "/electrons/" + version + "/ratios/" + title_b + "_ratio.pdf").c_str());
+	      }
+	      if (ilepton==2) {
+	        gSystem->mkdir((path + "/muons/" + version + "/ratios/").c_str());
+	        c1->SaveAs((path + "/muons/" + version + "/ratios/" + title_b + "_ratio.pdf").c_str());
+	      }
 	    }
 	  }
-	  if (isratio==1) {
-	    if (ilepton==1) {
-	      gSystem->mkdir((path + "/electrons/" + version + "/ratios/").c_str());
-	      c1->SaveAs((path + "/electrons/" + version + "/ratios/" + title_b + "_ratio.pdf").c_str());
+	  if (unfold==1) {
+	    if (isratio==0) {
+	      if (ilepton==1) {
+	        gSystem->mkdir((path + "/electrons/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
+	        c1->SaveAs((path + "/electrons/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
+	      }
+	      if (ilepton==2) {
+	        gSystem->mkdir((path + "/muons/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
+	        c1->SaveAs((path + "/muons/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
+	      }
 	    }
-	    if (ilepton==2) {
-	      gSystem->mkdir((path + "/muons/" + version + "/ratios/").c_str());
-	      c1->SaveAs((path + "/muons/" + version + "/ratios/" + title_b + "_ratio.pdf").c_str());
+	    if (isratio==1) {
+	      if (ilepton==1) {
+	        gSystem->mkdir((path + "/electrons/" + version + "/ratios_unfolding/").c_str());
+	        c1->SaveAs((path + "/electrons/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
+	      }
+	      if (ilepton==2) {
+	        gSystem->mkdir((path + "/muons/" + version + "/ratios_unfolding/").c_str());
+	        c1->SaveAs((path + "/muons/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
+	      }
 	    }
 	  }
 	}
