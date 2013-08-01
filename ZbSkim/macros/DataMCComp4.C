@@ -221,7 +221,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=2) {
         TH1F *h_ratio;
         if (imode<=1) h_ratio = (TH1F*) h_mc2_unf->Clone();
         if (imode==2) h_ratio = (TH1F*) h_data_unf->Clone();
-        if (imode==3) h_ratio = (TH1F*) h_data_unf->Clone();
 
         h_ratio->SetTitle("");
         h_ratio->SetStats(0);
