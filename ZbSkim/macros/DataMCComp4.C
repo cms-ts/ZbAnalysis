@@ -130,7 +130,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 	if (method==0) {
 	  int kreg = 0; // default 0 -> nbins/2
-	  kreg = h_mc2_reco->GetNbinsX()/3.;
 	  int ntoys = 100; // default 1000
 	  RooUnfoldSvd unfold_mc (&response, h_mc2_reco, kreg, ntoys);
 	  RooUnfoldSvd unfold_data (&response, h_data_reco, kreg, ntoys);
