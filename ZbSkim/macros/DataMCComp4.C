@@ -21,24 +21,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  ilepton = 1 + ilepton % 2;
         }
 
-        /* purity */
-
         double c_b=1.0;
-
-//int useFitResults=0; // use MC predictions for c_b
-int useFitResults=1;  // use fit results for c_b
-
-        if (ilepton==1) {
-          if (useFitResults==1) {
-            c_b   = 0.813;
-          }
-        }
-
-        if (ilepton==2) {
-          if (useFitResults==1) {
-            c_b   = 0.814;
-          }
-        }
+	if (imode==3) c_b = 0.814; // use fit results for c_b
 
 	double Lumi2012;
 
