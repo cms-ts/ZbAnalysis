@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export ROOT_HIST=0
+
 cd $CMS_PATH/slc5_amd64_gcc472/cms/cmssw/CMSSW_6_1_0
 eval `scramv1 runtime -sh`
 cd -
