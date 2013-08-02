@@ -22,7 +22,7 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1, int
 	double c_c=1.0;
 	double c_uds=1.0;
 
-	/*efficiency: (e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b) */
+	/* efficiency: (e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b) */
 
 	double e_Zb=1.0;
 	double e_Z=1.0;
