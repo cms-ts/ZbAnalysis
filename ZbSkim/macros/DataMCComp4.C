@@ -21,6 +21,25 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  ilepton = 1 + ilepton % 2;
         }
 
+        /* purity */
+
+        double c_b=1.0;
+
+//int useFitResults=0; // use MC predictions for c_b
+int useFitResults=1;  // use fit results for c_b
+
+        if (ilepton==1) {
+          if (useFitResults==1) {
+            c_b   = 0.813;
+          }
+        }
+
+        if (ilepton==2) {
+          if (useFitResults==1) {
+            c_b   = 0.814;
+          }
+        }
+
 	double Lumi2012;
 
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
@@ -122,6 +141,15 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	if (imode==2) {
 	  h_mc2_truth->Scale(norm1_2/norm1);
 	  h_mc2_reco->Scale(norm1_2/norm1);
+	}
+
+	if (title.find("_b")!=string::npos) {
+	  h_mc1_truth->Scale(c_b);
+	  h_mc1_reco->Scale(c_b);
+	  h_mc1_matrix->Scale(c_b);
+
+	  h_mc2_truth->Scale(c_b);
+	  h_mc2_reco->Scale(c_b);
 	}
 
         RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_matrix);
@@ -278,7 +306,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         h_ratio->GetYaxis()->SetNdivisions(505);
         h_ratio->GetYaxis()->SetTitleSize(0.09);
         h_ratio->GetYaxis()->SetLabelSize(0.08);
-        h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
+        h_ratio->GetYaxis()->SetRangeUser(-0.2, 2.2);
         h_ratio->GetYaxis()->SetTitleOffset(0.4);
         if (imode<=2) h_ratio->Divide(h_mc2_truth);
         if (imode==3) {
