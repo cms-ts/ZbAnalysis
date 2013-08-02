@@ -37,39 +37,33 @@ void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1, int
 int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
 	if (ilepton==1) {
-
 	  if (useFitResults==1) {
 	    c_b   = 0.813;
 	    c_c   = 1.389; 
 	    c_uds = 0.545;
 	  }
-
 	  e_Zb  = 0.234; 
           e_Z   = 0.514;
           e_Z_1 = 0.426;
           e_Z_b = 0.550;
-
 	  if (useFitResults==1) {
 	    c_t = 0.959;
 	  }
+	}
 
-	} else if (ilepton==2) {
-
+	if (ilepton==2) {
 	  if (useFitResults==1) {
 	    c_b   = 0.814;
 	    c_c   = 1.408; 
 	    c_uds = 1.405;
 	  }
-
 	  e_Zb  = 0.351; 
 	  e_Z   = 0.802;  
 	  e_Z_1 = 0.632;
 	  e_Z_b = 0.556;
-
 	  if (useFitResults==1) {
 	    c_t = 0.935;
 	  }
-
 	}
 
 	double Lumi2012;
