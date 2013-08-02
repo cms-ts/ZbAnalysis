@@ -306,21 +306,22 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         OLine->SetLineWidth(1);
         OLine->Draw();
 
-	TCanvas* c2 = new TCanvas("c2", "c2", 800, 600);
+	TCanvas* c2;
 	if (method==0) {
+          c2 = new TCanvas("c2", "c2", 800, 600);
 	  c2->cd();
 	  c2->SetLogy();
 	  TH1D *d;
 	  if (imode<=2) d = unfold_mc.Impl()->GetD();
 	  if (imode==3) d = unfold_data.Impl()->GetD();
-	  d->Draw();
+	  d->DrawCopy();
 	}
 
 	if (plot) {
 	  if (ilepton==1) {
 	    gSystem->mkdir((path + "/electrons/" + version + "/unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.pdf").c_str());
-	    c2->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
+	    if (c2) c2->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
 	    if (imode==3) {
 	      TFile f((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unf->Write(title.c_str());
@@ -330,7 +331,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  if (ilepton==2) {
 	    gSystem->mkdir((path + "/muons/" + version + "/unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.pdf").c_str());
-	    c2->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
+	    if (c2) c2->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
 	    if (imode==3) {
 	      TFile f((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unf->Write(title.c_str());
