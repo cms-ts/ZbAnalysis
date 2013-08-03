@@ -189,16 +189,16 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 	  h_mc2_unf->SetMaximum(1.5*val);
 
-	  h_mc2_unf->Draw();
-	  h_mc2_reco->Draw("SAME");
-	  h_mc2_truth->Draw("SAME");
+	  h_mc2_unf->Draw("HIST");
+	  h_mc2_reco->Draw("HISTSAME");
+	  h_mc2_truth->Draw("HISTSAME");
 
 	  h_mc2_unf->SetLineColor(kBlack);
 	  h_mc2_reco->SetLineColor(kGreen);
 	  h_mc2_truth->SetLineColor(kRed);
 
-	  h_mc1_reco->Draw("SAME");
-	  h_mc1_truth->Draw("SAME");
+	  h_mc1_reco->Draw("HISTSAME");
+	  h_mc1_truth->Draw("HISTSAME");
 
 	  h_mc1_reco->SetLineColor(kGreen);
 	  h_mc1_truth->SetLineColor(kRed);
@@ -236,11 +236,11 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
           h_mc1_truth->SetLineColor(kRed);
           h_mc1_truth->SetLineStyle(2);
-          h_mc1_truth->Draw("SAME");
+          h_mc1_truth->Draw("HISTSAME");
 
 	  h_mc1_reco->SetLineColor(kGreen);
 	  h_mc1_reco->SetLineStyle(2);
-	  h_mc1_reco->Draw("SAME");
+	  h_mc1_reco->Draw("HISTSAME");
 	}
 
         TLegend *leg = new TLegend(0.42, 0.580, 0.68, 0.88);
