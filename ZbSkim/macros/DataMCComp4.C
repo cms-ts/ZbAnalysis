@@ -297,6 +297,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         h_ratio->GetYaxis()->SetTitleSize(0.09);
         h_ratio->GetYaxis()->SetLabelSize(0.08);
         h_ratio->GetYaxis()->SetRangeUser(-0.2, 2.2);
+        if (imode<=0) h_ratio->GetYaxis()->SetRangeUser(0.95, 1.05);
         h_ratio->GetYaxis()->SetTitleOffset(0.4);
         if (imode<=2) h_ratio->Divide(h_mc2_truth);
         if (imode==3) {
