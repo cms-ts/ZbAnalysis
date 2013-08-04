@@ -32,10 +32,9 @@ TH1F* fixrange(TH1F *old) {
   }
 
   old->Delete();
-  TH1F *old = (TH1F*)tmp->Clone(name.c_str());
-  tmp->Delete();
+  tmp->SetName(name.c_str());
 
-  return old;
+  return tmp;
 }
 
 TH2F* fixrange(TH2F* old) {
@@ -81,8 +80,7 @@ TH2F* fixrange(TH2F* old) {
   }
 
   old->Delete();
-  TH2F *new = (TH2F*)tmp->Clone(name.c_str());
-  tmp->Delete();
+  tmp->SetName(name.c_str());
 
-  return new;
+  return tmp;
 }
