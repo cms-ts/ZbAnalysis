@@ -304,13 +304,13 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 //int useBinnedEfficiency=0;
 int useBinnedEfficiency=1;
 
-	if (unfold==1) useBinnedEfficiency=1;
-
 	if (useBinnedEfficiency==0) {
-	  h_data->Scale(1./(Lumi2012*e_Z));
-	  h_data_b->Scale(1./(Lumi2012*e_Zb));
-	  h_mc1->Scale(1./(Lumi2012*e_Z));
-	  h_mc1b_b->Scale(1./(Lumi2012*e_Zb));
+	  if (unfold==0) {
+	    h_data->Scale(1./e_Z);
+	    h_data_b->Scale(1./e_Zb);
+	  }
+	  h_mc1->Scale(1./e_Z);
+	  h_mc1b_b->Scale(1./e_Zb);
 	}
 
 	if (useBinnedEfficiency==1) {
@@ -346,18 +346,15 @@ int useBinnedEfficiency=1;
 	    h_mc1->Divide(h);
 	    h_mc1b_b->Divide(h_b);
           }
-	  h_data->Scale(1./(Lumi2012));
-	  h_data_b->Scale(1./(Lumi2012));
-	  h_mc1->Scale(1./(Lumi2012));
-	  h_mc1b_b->Scale(1./(Lumi2012));
 	}
 
+	h_data->Scale(1./(Lumi2012));
+	h_data_b->Scale(1./(Lumi2012));
+	h_mc1->Scale(1./(Lumi2012));
+	h_mc1b_b->Scale(1./(Lumi2012));
 	if (isratio==1) {
 	  h_data_b->Divide(h_data);
 	  h_data_b->Scale(100.);
-	}
-
-	if (isratio==1) {
 	  h_mc1b_b->Divide(h_mc1);
 	  h_mc1b_b->Scale(100.);
 	}
