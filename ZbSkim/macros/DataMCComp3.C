@@ -23,7 +23,9 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 
-int itype = 0; // e_Zb or e_Z
+/* efficiency: e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b */
+
+int itype = 0; // e_Z or e_Zb=e_Z_1*e_Z_b
 //int itype = 1; // e_Z_1
 //int itype = 2; // e_Z_b
 
