@@ -41,10 +41,10 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	if (ilepton==1) {
 	  if (useFitResults==1) {
 	    c_b   = 0.770;
-	    c_c   = 1.238; 
+	    c_c   = 1.238;
 	    c_uds = 1.991;
 	  }
-          e_Zb  = 0.229; 
+          e_Zb  = 0.229;
           e_Z   = 0.544;
           e_Z_1 = 0.416;
           e_Z_b = 0.550;
@@ -56,11 +56,11 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	if (ilepton==2) {
 	  if (useFitResults==1) {
 	    c_b   = 0.747;
-	    c_c   = 1.484; 
+	    c_c   = 1.484;
 	    c_uds = 1.173;
 	  }
-          e_Zb  = 0.335; 
-	  e_Z   = 0.802;  
+          e_Zb  = 0.335;
+	  e_Z   = 0.802;
 	  e_Z_1 = 0.603;
 	  e_Z_b = 0.556;
 	  if (useFitResults==1) {
@@ -222,7 +222,7 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_mc6->Sumw2();
 	h_mc7->Sumw2();
 
-	h_mc1_b->Sumw2();	
+	h_mc1_b->Sumw2();
 	if (h_mc1b_b) h_mc1b_b->Sumw2();
 	if (h_mc1c_b) h_mc1c_b->Sumw2();
 	h_mcg_b->Sumw2();
@@ -447,7 +447,7 @@ int useBinnedEfficiency=1;
 	if (isratio==1) {
 	  h_data_b->Draw("EPX0SAME");
 	}
-	
+
 	TLegend *leg = new TLegend(0.62, 0.580, 0.88, 0.88);
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
@@ -456,7 +456,7 @@ int useBinnedEfficiency=1;
 
 	if (isratio==0) {
 	  pad1->SetLogy();
-	
+
 	  h_mc1b_b->SetMaximum(4*h_data->GetMaximum());
 	  h_mc1b_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b->GetBinContent(h_data_b->GetMinimumBin())));
 
@@ -598,7 +598,7 @@ int useBinnedEfficiency=1;
 
 	TH1F *h_M = h_data_b->Clone("h_M");
 	h_M->SetTitle("");
-	h_M->SetStats(0);	
+	h_M->SetStats(0);
 	h_M->GetXaxis()->SetTitleOffset(0.9);
 	h_M->GetXaxis()->SetTitleSize(0.14);
 	h_M->GetXaxis()->SetLabelFont(42);
@@ -616,7 +616,7 @@ int useBinnedEfficiency=1;
 	h_M->SetMarkerStyle(24);
 	h_M->Draw("EPX0");
 	if (isratio==0) {
-	  TH1F *h_M2= h_data->Clone("h_M2"); 
+	  TH1F *h_M2= h_data->Clone("h_M2");
 	  h_M2->GetXaxis()->SetTitleOffset(0.9);
 	  h_M2->GetXaxis()->SetTitleSize(0.14);
 	  h_M2->GetXaxis()->SetLabelFont(42);
@@ -653,14 +653,14 @@ int useBinnedEfficiency=1;
 	pad3->SetTopMargin(0);
 	pad3->SetBottomMargin(0.001);
 	pad3->Draw();
-	pad3->cd();   
+	pad3->cd();
 
 	TH1F *h_S = h_data_b->Clone("h_S");
 	h_S->SetTitle("");
 	h_S->SetStats(0);
-	h_S->GetXaxis()->SetTitleOffset(0.9);        
+	h_S->GetXaxis()->SetTitleOffset(0.9);
 	h_S->GetXaxis()->SetTitleSize(0.14);
-	h_S->GetXaxis()->SetLabelFont(42);      
+	h_S->GetXaxis()->SetLabelFont(42);
 	h_S->GetXaxis()->SetLabelSize(0.12);
 	h_S->GetXaxis()->SetTitleFont(42);
 	h_S->GetXaxis()->SetTickLength(0.1);
@@ -675,7 +675,7 @@ int useBinnedEfficiency=1;
 	h_S->SetMarkerStyle(24);
 	h_S->Draw("EPX0");
 	if (isratio==0) {
-	  TH1F *h_S2= h_data->Clone("h_S2"); 	
+	  TH1F *h_S2= h_data->Clone("h_S2");
 	  h_S2->GetXaxis()->SetTitleOffset(0.9);
 	  h_S2->GetXaxis()->SetTitleSize(0.14);
 	  h_S2->GetXaxis()->SetLabelFont(42);
@@ -712,14 +712,14 @@ int useBinnedEfficiency=1;
 	pad4->SetTopMargin(0);
 	pad4->SetBottomMargin(0.3);
 	pad4->Draw();
-	pad4->cd();   
+	pad4->cd();
 
 	TH1F *h_P = h_data_b->Clone("h_P");
 	h_P->SetTitle("");
 	h_P->SetStats(0);
-	h_P->GetXaxis()->SetTitleOffset(0.9);        
+	h_P->GetXaxis()->SetTitleOffset(0.9);
 	h_P->GetXaxis()->SetTitleSize(0.14);
-	h_P->GetXaxis()->SetLabelFont(42);     
+	h_P->GetXaxis()->SetLabelFont(42);
 	h_P->GetXaxis()->SetLabelSize(0.12);
 	h_P->GetXaxis()->SetTitleFont(42);
 	h_P->GetXaxis()->SetTickLength(0.1);
@@ -734,7 +734,7 @@ int useBinnedEfficiency=1;
 	h_P->SetMarkerStyle(24);
 	h_P->Draw("EPX0");
 	if (isratio==0) {
-	  TH1F *h_P2= h_data->Clone("h_P2"); 	
+	  TH1F *h_P2= h_data->Clone("h_P2");
 	  h_P2->GetXaxis()->SetTitleOffset(0.9);
 	  h_P2->GetXaxis()->SetTitleSize(0.14);
 	  h_P2->GetXaxis()->SetLabelFont(42);

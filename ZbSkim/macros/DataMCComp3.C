@@ -37,11 +37,11 @@ int itype = 0; // e_Z or e_Zb=e_Z_1*e_Z_b
 	}
 
 	if (ilepton==1&&itype==0) mc1->cd("demoEle");
-	if (ilepton==2&&itype==0) mc1->cd("demoMuo");  
+	if (ilepton==2&&itype==0) mc1->cd("demoMuo");
 	if (ilepton==1&&itype==1) mc1->cd("demoEleBtag");
-	if (ilepton==2&&itype==1) mc1->cd("demoMuoBtag");  
+	if (ilepton==2&&itype==1) mc1->cd("demoMuoBtag");
 	if (ilepton==1&&itype==2) mc1->cd("demoEle");
-	if (ilepton==2&&itype==2) mc1->cd("demoMuo");  
+	if (ilepton==2&&itype==2) mc1->cd("demoMuo");
 	TH1F* h_reco = (TH1F*)gDirectory->Get(title_b.c_str());
 	if (ilepton==1&&itype==0) mc2->cd("demoEleGen");
 	if (ilepton==2&&itype==0) mc2->cd("demoMuoGen");
@@ -70,7 +70,7 @@ int itype = 0; // e_Z or e_Zb=e_Z_1*e_Z_b
 
 	h_reco->SetTitle("");
 	h_reco->SetStats(0);
-	
+
 	if (title=="w_first_jet_pt") {
 	  h_reco->GetXaxis()->SetTitle("leading jet p_{T} [GeV/c]");
 	} else if (title=="w_first_jet_eta") {
@@ -101,7 +101,7 @@ int itype = 0; // e_Z or e_Zb=e_Z_1*e_Z_b
 	  h_reco->GetXaxis()->SetRangeUser(0, 200);
           h_reco->GetXaxis()->SetTitle("H_{T} [GeV/c]");
 	}
-	
+
 	h_reco->GetXaxis()->SetTitleOffset(0.95);
 	h_reco->GetXaxis()->SetTitleSize(0.04);
 	h_reco->GetXaxis()->SetLabelFont(42);
