@@ -25,7 +25,11 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         }
 
         double c_b=1.0;
-	if (imode==3) c_b = 0.814; // use fit results for c_b
+// use fit results for c_b
+	if (imode==3) {
+	  if (ilepton==1) c_b = 0.770;
+	  if (ilepton==2) c_b = 0.747;
+	}
 
 	double Lumi2012;
 
