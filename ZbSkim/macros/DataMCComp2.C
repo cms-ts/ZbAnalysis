@@ -40,31 +40,31 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
 	if (ilepton==1) {
 	  if (useFitResults==1) {
-	    c_b   = 0.813;
-	    c_c   = 1.389; 
-	    c_uds = 0.545;
+	    c_b   = 0.770;
+	    c_c   = 1.238; 
+	    c_uds = 1.991;
 	  }
-	  e_Zb  = 0.234; 
-          e_Z   = 0.514;
-          e_Z_1 = 0.426;
+          e_Zb  = 0.229; 
+          e_Z   = 0.544;
+          e_Z_1 = 0.416;
           e_Z_b = 0.550;
 	  if (useFitResults==1) {
-	    c_t = 0.959;
+	    c_t = 0.914;
 	  }
 	}
 
 	if (ilepton==2) {
 	  if (useFitResults==1) {
-	    c_b   = 0.814;
-	    c_c   = 1.408; 
-	    c_uds = 1.405;
+	    c_b   = 0.747;
+	    c_c   = 1.484; 
+	    c_uds = 1.173;
 	  }
-	  e_Zb  = 0.351; 
+          e_Zb  = 0.335; 
 	  e_Z   = 0.802;  
-	  e_Z_1 = 0.632;
+	  e_Z_1 = 0.603;
 	  e_Z_b = 0.556;
 	  if (useFitResults==1) {
-	    c_t = 0.935;
+	    c_t = 0.995;
 	  }
 	}
 
