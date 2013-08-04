@@ -1,6 +1,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v09.h"
 
+#include "fixrange.C"
+
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1, int unfold=0) {
@@ -374,6 +376,17 @@ int useBinnedEfficiency=1;
 	  h_mcg1_b->Scale(100.);
 	  h_mcg2_b->Scale(100.);
 	}
+
+	h_data = fixrange(h_data);
+	h_data_b = fixrange(h_data_b);
+	h_mc1 = fixrange(h_mc1);
+	h_mc1b_b = fixrange(h_mc1b_b);
+	h_mcg = fixrange(h_mcg);
+	h_mcg_b = fixrange(h_mcg_b);
+	h_mcg1 = fixrange(h_mcg1);
+	h_mcg1_b = fixrange(h_mcg1_b);
+	h_mcg2 = fixrange(h_mcg2);
+	h_mcg2_b = fixrange(h_mcg2_b);
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();

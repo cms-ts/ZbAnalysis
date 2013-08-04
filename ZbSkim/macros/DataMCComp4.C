@@ -1,6 +1,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v09.h"
 
+#include "fixrange.C"
+
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int method=0) {
@@ -112,6 +114,13 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  mc2->cd("demoMuo");
 	  h_mc2_reco    = (TH1F*)gDirectory->Get(title.c_str());
 	}
+
+	h_data_reco = fixrange(h_data_reco);
+	h_mc1_truth = fixrange(h_mc1_truth);
+	h_mc1_reco = fixrange(h_mc1_reco);
+	h_mc1_matrix = fixrange(h_mc1_matrix);
+	h_mc2_truth = fixrange(h_mc2_truth);
+	h_mc2_reco = fixrange(h_mc2_reco);
 
 	h_mc1_truth->Scale(norm1);
 	h_mc1_reco->Scale(norm1);
