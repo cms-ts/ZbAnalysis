@@ -348,8 +348,10 @@ int useBinnedEfficiency=1;
           }
 	}
 
-	h_data->Scale(1./Lumi2012);
-	h_data_b->Scale(1./Lumi2012);
+	if (unfold==0) {
+	  h_data->Scale(1./Lumi2012);
+	  h_data_b->Scale(1./Lumi2012);
+	}
 	h_mc1->Scale(1./Lumi2012);
 	h_mc1b_b->Scale(1./Lumi2012);
 	if (isratio==1) {
