@@ -290,11 +290,13 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	}
 
 	TH1F *tmp;
+	if (imode<=2) tmp = h_mc2_reco;
+	if (imode>=3) tmp = h_data_reco;
+	tmp->SetTitle("");
+	tmp->GetYaxis()->SetTitle("#sigma [pb]");
+
 	if (imode<=2) tmp = h_mc2_unf;
 	if (imode>=3) tmp = h_data_unf;
-
-	tmp->SetTitle("");
-
 	if (title=="w_first_jet_pt") {
 	  tmp->GetXaxis()->SetTitle("leading jet p_{T} [GeV/c]");
 	} else if (title=="w_first_jet_eta") {
@@ -317,15 +319,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	} else if (title=="w_Ht_b") {
           tmp->GetXaxis()->SetTitle("H_{T} [GeV/c]");
 	}
-
-	if (imode<=2) tmp = h_mc2_reco;
-	if (imode>=3) tmp = h_data_reco;
-        tmp->GetXaxis()->SetTitleOffset(0.9);
-        tmp->GetXaxis()->SetTitleSize(0.1);
-        tmp->GetXaxis()->SetLabelFont(42);
-        tmp->GetXaxis()->SetLabelSize(0.08);
-        tmp->GetXaxis()->SetTitleFont(42);
-	tmp->GetYaxis()->SetTitle("#sigma [pb]");
 
         TLegend *leg = new TLegend(0.42, 0.580, 0.68, 0.88);
         leg->SetBorderSize(0);
