@@ -126,6 +126,13 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	h_mc2_truth = fixrange(h_mc2_truth);
 	h_mc2_reco = fixrange(h_mc2_reco);
 
+	h_data_reco->Sumw2();
+	h_mc1_truth->Sumw2();
+	h_mc1_reco->Sumw2();
+	h_mc1_matrix->Sumw2();
+	h_mc2_truth->Sumw2();
+	h_mc2_reco->Sumw2();
+
 	RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 	response.UseOverflow();
 
