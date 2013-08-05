@@ -293,6 +293,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	if (imode<=2) tmp = h_mc2_reco;
 	if (imode>=3) tmp = h_data_reco;
 	tmp->SetTitle("");
+	tmp->SetStats(0);
 	tmp->GetYaxis()->SetTitle("#sigma [pb]");
 
 	if (imode<=2) tmp = h_mc2_unf;
@@ -371,6 +372,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         if (imode<=2) h_ratio = (TH1F*) h_mc2_unf->Clone();
         if (imode>=3) h_ratio = (TH1F*) h_data_unf->Clone();
 
+	h_ratio->SetTitle("");
         h_ratio->SetStats(0);
 
         h_ratio->GetXaxis()->SetTitleOffset(0.9);
