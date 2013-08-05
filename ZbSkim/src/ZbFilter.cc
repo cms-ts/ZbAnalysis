@@ -90,15 +90,13 @@ class ZbFilter : public edm::EDFilter {
 //
 };
 
-ZbFilter::ZbFilter(const edm::ParameterSet& iConfig)
-{
+ZbFilter::ZbFilter(const edm::ParameterSet& iConfig) {
    //now do what ever initialization is needed
 
 }
 
 
-ZbFilter::~ZbFilter()
-{
+ZbFilter::~ZbFilter() {
 
  
    // do anything here that needs to be done at desctruction time
@@ -112,9 +110,7 @@ ZbFilter::~ZbFilter()
 //
 
 // ------------ method called on each new Event  ------------
-bool
-ZbFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
-{
+bool ZbFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) {
    using namespace edm;
 
    //get electron collection
@@ -145,49 +141,53 @@ ZbFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
    edm::Handle<reco::CompositeCandidateCollection> zee;
    iEvent.getByLabel("zeleMatchedeleMatched", zee);
 
+   // Get the Z->em collection
+   edm::Handle<reco::CompositeCandidateCollection> zem;
+   iEvent.getByLabel("zeleMatchedmuMatched", zem);
+   // Get the Z->me collection
+   edm::Handle<reco::CompositeCandidateCollection> zme;
+   iEvent.getByLabel("zmuMatchedeleMatched", zme);
+ 
    //std::cout<<"numero j="<<jets->size()<<std::endl;
 
-   if ( (zmm->size()==0 && zee->size()==0) || jets->size()==0) return false;
+   if (zee.isValid() && zmm.isValid()) {  
+     if ( (zem->size()==0 && zme->size()==0) || jets->size()==0) return false;  
+     return true;
+   }
+
+   if (zme.isValid() && zem.isValid()) { 
+     if ( (zmm->size()==0 && zee->size()==0) || jets->size()==0) return false;
+     return true;
+   }
 
    return true;
 
 }
 // ------------ method called once each job just before starting event loop  ------------
-void 
-ZbFilter::beginJob()
-{
+void ZbFilter::beginJob() {
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
-void 
-ZbFilter::endJob() {
+void ZbFilter::endJob() {
 }
 
 // ------------ method called when starting to processes a run  ------------
-bool 
-ZbFilter::beginRun(edm::Run&, edm::EventSetup const&)
-{ 
+bool ZbFilter::beginRun(edm::Run&, edm::EventSetup const&) { 
   return true;
 }
 
 // ------------ method called when ending the processing of a run  ------------
-bool 
-ZbFilter::endRun(edm::Run&, edm::EventSetup const&)
-{
+bool ZbFilter::endRun(edm::Run&, edm::EventSetup const&) {
   return true;
 }
 
 // ------------ method called when starting to processes a luminosity block  ------------
-bool 
-ZbFilter::beginLuminosityBlock(edm::LuminosityBlock&, edm::EventSetup const&)
-{
+bool ZbFilter::beginLuminosityBlock(edm::LuminosityBlock&, edm::EventSetup const&) {
   return true;
 }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
-bool 
-ZbFilter::endLuminosityBlock(edm::LuminosityBlock&, edm::EventSetup const&)
-{
+bool ZbFilter::endLuminosityBlock(edm::LuminosityBlock&, edm::EventSetup const&) {
   return true;
 }
 
