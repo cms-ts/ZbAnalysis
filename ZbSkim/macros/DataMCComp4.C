@@ -289,6 +289,44 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  h_mc1_reco->Draw("HISTSAME");
 	}
 
+	TH1F *tmp;
+	if (imode<=2) tmp = h_mc2_unf;
+	if (imode>=3) tmp = h_data_unf;
+
+	tmp->SetTitle("");
+
+	if (title=="w_first_jet_pt") {
+	  tmp->GetXaxis()->SetTitle("leading jet p_{T} [GeV/c]");
+	} else if (title=="w_first_jet_eta") {
+	  tmp->GetXaxis()->SetTitle("leading jet #eta");
+	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm") {
+	  tmp->GetXaxis()->SetTitle("Z boson p_{T} [GeV/c]");
+	} else if (title=="w_delta_phi_ee"||title=="w_delta_phi_mm") {
+	  tmp->GetXaxis()->SetTitle("#Delta #phi(jZ) [rad]");
+	} else if (title=="w_Ht") {
+          tmp->GetXaxis()->SetTitle("H_{T} [GeV/c]");
+	}
+	if (title=="w_first_bjet_pt") {
+	  tmp->GetXaxis()->SetTitle("leading b-jet p_{T} [GeV/c]");
+	} else if (title=="w_first_bjet_eta") {
+	  tmp->GetXaxis()->SetTitle("leading b-jet #eta");
+	} else if (title=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b") {
+	  tmp->GetXaxis()->SetTitle("Z boson p_{T} [GeV/c]");
+	} else if (title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b") {
+	  tmp->GetXaxis()->SetTitle("#Delta #phi(bZ) [rad]");
+	} else if (title=="w_Ht_b") {
+          tmp->GetXaxis()->SetTitle("H_{T} [GeV/c]");
+	}
+
+	if (imode<=2) tmp = h_mc2_reco;
+	if (imode>=3) tmp = h_data_reco;
+        tmp->GetXaxis()->SetTitleOffset(0.9);
+        tmp->GetXaxis()->SetTitleSize(0.1);
+        tmp->GetXaxis()->SetLabelFont(42);
+        tmp->GetXaxis()->SetLabelSize(0.08);
+        tmp->GetXaxis()->SetTitleFont(42);
+	tmp->GetYaxis()->SetTitle("#sigma [pb]");
+
         TLegend *leg = new TLegend(0.42, 0.580, 0.68, 0.88);
         leg->SetBorderSize(0);
         leg->SetEntrySeparation(0.01);
@@ -340,7 +378,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         if (imode<=2) h_ratio = (TH1F*) h_mc2_unf->Clone();
         if (imode>=3) h_ratio = (TH1F*) h_data_unf->Clone();
 
-        h_ratio->SetTitle("");
         h_ratio->SetStats(0);
 
         h_ratio->GetXaxis()->SetTitleOffset(0.9);

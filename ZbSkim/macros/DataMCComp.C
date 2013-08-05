@@ -408,6 +408,8 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	  h_ratio->GetXaxis ()->SetTitle("Z mass + (#geq 1 b-jet) [GeV/c^{2}]");
 	} else if (title=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
+	} else if (title=="w_delta_phi_ee"||title=="w_delta_phi_mm") {
+	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(jZ) [rad]");
 	} else if (title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b") {
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
 	} else if (title=="SVTX_mass_jet"||title=="SVTX_mass_trk"||title=="SVTX_mass") {

@@ -92,7 +92,7 @@ int itype = 0; // e_Z or e_Zb=e_Z_1*e_Z_b
 	} else if (title=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b") {
 	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	  h_reco->GetXaxis()->SetRangeUser(0, 200);
-	  h_reco->GetXaxis()->SetTitle("Z boson p_{T} + b-jets [GeV/c]");
+	  h_reco->GetXaxis()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b") {
 	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	  h_reco->GetXaxis()->SetTitle("#Delta #phi(Zb) [rad]");
