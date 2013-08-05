@@ -126,33 +126,22 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	h_mc2_truth = fixrange(h_mc2_truth);
 	h_mc2_reco = fixrange(h_mc2_reco);
 
-	h_mc1_truth->Scale(norm1);
-	h_mc1_reco->Scale(norm1);
-	h_mc1_matrix->Scale(norm1);
+	RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_matrix);
+	response.UseOverflow();
 
-	h_mc2_truth->Scale(norm1);
+	h_mc1_reco->Scale(norm1);
 	h_mc2_reco->Scale(norm1);
 	if (imode==1) {
-	  h_mc2_truth->Scale(norm1_1/norm1);
 	  h_mc2_reco->Scale(norm1_1/norm1);
 	}
 	if (imode==2) {
-	  h_mc2_truth->Scale(norm1_2/norm1);
 	  h_mc2_reco->Scale(norm1_2/norm1);
 	}
 
 	if (title.find("_b")!=string::npos) {
-	  h_mc1_truth->Scale(c_b);
 	  h_mc1_reco->Scale(c_b);
-	  h_mc1_matrix->Scale(c_b);
-
-	  h_mc2_truth->Scale(c_b);
 	  h_mc2_reco->Scale(c_b);
 	}
-
-        RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_matrix);
-
-	response.UseOverflow();
 
 	if (method==0) {
 	  int kreg = 0; // default 0 -> nbins/2
