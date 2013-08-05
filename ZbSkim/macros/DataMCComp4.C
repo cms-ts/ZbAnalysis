@@ -385,7 +385,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         h_ratio->GetXaxis()->SetLabelFont(42);
         h_ratio->GetXaxis()->SetLabelSize(0.08);
         h_ratio->GetXaxis()->SetTitleFont(42);
-        h_ratio->GetYaxis()->SetTitle("ratio");
+        h_ratio->GetYaxis()->SetTitle("reco / truth");
         h_ratio->GetYaxis()->SetNdivisions(505);
         h_ratio->GetYaxis()->SetTitleSize(0.09);
         h_ratio->GetYaxis()->SetLabelSize(0.08);
