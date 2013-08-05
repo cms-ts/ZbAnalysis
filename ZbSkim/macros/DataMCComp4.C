@@ -66,12 +66,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  }
 	}
 
-	string title_b = title;
-
-	if (title.find("_b")!=string::npos) {
-	  title_b = "b"+title.substr(1);
-	}
-
 	TFile *data;
 	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/xsecs/" + file + "_xsecs.root").c_str());
 	if (ilepton==2) data = TFile::Open((path + "/muons/" + version + "/xsecs/" + file + "_xsecs.root").c_str());
@@ -106,6 +100,12 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	TH1F* h_data_reco;
 	data->cd();
 	h_data_reco = (TH1F*)gDirectory->Get((title+"_raw").c_str());
+
+	string title_b = title;
+
+	if (title.find("_b")!=string::npos) {
+	  title_b = "b"+title.substr(1);
+	}
 
 	TH1F* h_mc1_truth;
 	TH1F* h_mc1_reco;
