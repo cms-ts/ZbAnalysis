@@ -133,8 +133,8 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
           if (ilepton==1) {
 	    TFile f((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.root").c_str());
 	    TFile f_b((path + "/electrons/" + version + "/unfolding/" + title_b + "_unfolding.root").c_str());
-	    TH1F* h_data = (TH1F*)f.Get(title.c_str())->Clone();
-	    TH1F* h_data_b = (TH1F*)f_b.Get(title_b.c_str())->Clone();
+	    h_data = (TH1F*)f.Get(title.c_str())->Clone();
+	    h_data_b = (TH1F*)f_b.Get(title_b.c_str())->Clone();
 	    h_data->SetDirectory(0);
 	    h_data_b->SetDirectory(0);
 	    f.Close();
@@ -143,8 +143,8 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
           if (ilepton==2) {
 	    TFile f((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.root").c_str());
 	    TFile f_b((path + "/muons/" + version + "/unfolding/" + title_b + "_unfolding.root").c_str());
-	    TH1F* h_data = (TH1F*)f.Get(title.c_str())->Clone();
-	    TH1F* h_data_b = (TH1F*)f_b.Get(title_b.c_str())->Clone();
+	    h_data = (TH1F*)f.Get(title.c_str())->Clone();
+	    h_data_b = (TH1F*)f_b.Get(title_b.c_str())->Clone();
 	    h_data->SetDirectory(0);
 	    h_data_b->SetDirectory(0);
 	    f.Close();
