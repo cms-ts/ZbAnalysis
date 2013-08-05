@@ -129,6 +129,32 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 	response.UseOverflow();
 
+	h_mc1_truth->Scale(norm1);
+	h_mc1_reco->Scale(norm1);
+	h_mc2_truth->Scale(norm1);
+	h_mc2_reco->Scale(norm1);
+	if (imode==1) {
+	  h_mc2_truth->Scale(norm1_1/norm1);
+	  h_mc2_reco->Scale(norm1_1/norm1);
+	}
+	if (imode==2) {
+	  h_mc2_truth->Scale(norm1_2/norm1);
+	  h_mc2_reco->Scale(norm1_2/norm1);
+	}
+
+	if (title.find("_b")!=string::npos) {
+	  h_mc1_truth->Scale(c_b);
+	  h_mc1_reco->Scale(c_b);
+	  h_mc2_truth->Scale(c_b);
+	  h_mc2_reco->Scale(c_b);
+	}
+
+	h_data_reco->Scale(1./Lumi2012);
+	h_mc1_truth->Scale(1./Lumi2012);
+	h_mc1_reco->Scale(1./Lumi2012);
+	h_mc2_truth->Scale(1./Lumi2012);
+	h_mc2_reco->Scale(1./Lumi2012);
+
 	if (method==0) {
 	  int kreg = 0; // default 0 -> nbins/2
 	  int ntoys = 100; // default 1000
@@ -153,26 +179,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	}
 
 	if (imode<=0) unfold_mc.PrintTable(cout, h_mc1_truth);
-
-	h_mc1_truth->Scale(norm1);
-	h_mc1_reco->Scale(norm1);
-	h_mc2_truth->Scale(norm1);
-	h_mc2_reco->Scale(norm1);
-	if (imode==1) {
-	  h_mc2_truth->Scale(norm1_1/norm1);
-	  h_mc2_reco->Scale(norm1_1/norm1);
-	}
-	if (imode==2) {
-	  h_mc2_truth->Scale(norm1_2/norm1);
-	  h_mc2_reco->Scale(norm1_2/norm1);
-	}
-
-	if (title.find("_b")!=string::npos) {
-	  h_mc1_truth->Scale(c_b);
-	  h_mc1_reco->Scale(c_b);
-	  h_mc2_truth->Scale(c_b);
-	  h_mc2_reco->Scale(c_b);
-	}
 
 	TCanvas* c1 = new TCanvas("c1", "c1", 800, 600);
 
