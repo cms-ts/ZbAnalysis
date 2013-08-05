@@ -129,20 +129,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 	response.UseOverflow();
 
-	h_mc1_reco->Scale(norm1);
-	h_mc2_reco->Scale(norm1);
-	if (imode==1) {
-	  h_mc2_reco->Scale(norm1_1/norm1);
-	}
-	if (imode==2) {
-	  h_mc2_reco->Scale(norm1_2/norm1);
-	}
-
-	if (title.find("_b")!=string::npos) {
-	  h_mc1_reco->Scale(c_b);
-	  h_mc2_reco->Scale(c_b);
-	}
-
 	if (method==0) {
 	  int kreg = 0; // default 0 -> nbins/2
 	  int ntoys = 100; // default 1000
@@ -168,9 +154,25 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 	if (imode<=0) unfold_mc.PrintTable(cout, h_mc1_truth);
 
-	TH1F* h_mc2_unf;
+	h_mc1_truth->Scale(norm1);
+	h_mc1_reco->Scale(norm1);
+	h_mc2_truth->Scale(norm1);
+	h_mc2_reco->Scale(norm1);
+	if (imode==1) {
+	  h_mc2_truth->Scale(norm1_1/norm1);
+	  h_mc2_reco->Scale(norm1_1/norm1);
+	}
+	if (imode==2) {
+	  h_mc2_truth->Scale(norm1_2/norm1);
+	  h_mc2_reco->Scale(norm1_2/norm1);
+	}
 
-	TH1F* h_data_unf;
+	if (title.find("_b")!=string::npos) {
+	  h_mc1_truth->Scale(c_b);
+	  h_mc1_reco->Scale(c_b);
+	  h_mc2_truth->Scale(c_b);
+	  h_mc2_reco->Scale(c_b);
+	}
 
 	TCanvas* c1 = new TCanvas("c1", "c1", 800, 600);
 
@@ -181,6 +183,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         pad1->cd();
         pad1->SetLogy();
 
+	TH1F* h_mc2_unf;
 	if (imode<=2) {
 	  h_mc2_unf = (TH1F*) unfold_mc.Hreco();
 
@@ -208,6 +211,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  h_mc1_truth->SetLineStyle(2);
 	}
 
+	TH1F* h_data_unf;
 	if (imode==3) {
 	  c1->cd();
           TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
