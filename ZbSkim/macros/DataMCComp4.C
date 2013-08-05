@@ -56,12 +56,18 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	string file = title;
 
 	if (file.find("_b")==string::npos) {
-          if (file.find("_jet_")!=string::npos) {
-            file.insert(file.find("_jet_")+1, "b");
-          } else {
-            file = file + "_b";
-          }
-        }
+	  if (file.find("_jet_")!=string::npos) {
+	    file.insert(file.find("_jet_")+1, "b");
+	  } else {
+	    file = file + "_b";
+	  }
+	}
+
+	string title_b = title;
+
+	if (title.find("_b")!=string::npos) {
+	  title_b = "b"+title.substr(1);
+	}
 
 	TFile *data;
 	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/xsecs/" + file + "_xsecs.root").c_str());
@@ -98,25 +104,25 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  mc1->cd("demoEleGen");
 	  h_mc1_truth  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd("demoEle");
-	  h_mc1_reco   = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc1_reco   = (TH1F*)gDirectory->Get(title_b.c_str());
 	  mc1->cd("demoEleDump");
 	  h_mc1_matrix = (TH2F*)gDirectory->Get(title.c_str());
 	  mc2->cd("demoEleGen");
 	  h_mc2_truth  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc2->cd("demoEle");
-	  h_mc2_reco   = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc2_reco   = (TH1F*)gDirectory->Get(title_b.c_str());
 	}
 	if (ilepton==2) {
 	  mc1->cd("demoMuoGen");
 	  h_mc1_truth   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd("demoMuo");
-	  h_mc1_reco    = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc1_reco    = (TH1F*)gDirectory->Get(title_b.c_str());
 	  mc1->cd("demoMuoDump");
 	  h_mc1_matrix  = (TH2F*)gDirectory->Get(title.c_str());
 	  mc2->cd("demoMuoGen");
 	  h_mc2_truth   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc2->cd("demoMuo");
-	  h_mc2_reco    = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc2_reco    = (TH1F*)gDirectory->Get(title_b.c_str());
 	}
 
 	h_data_reco = fixrange(h_data_reco);
