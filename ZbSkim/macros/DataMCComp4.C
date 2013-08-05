@@ -9,7 +9,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 // imode = -1; // identity test using MadGraph PAT
 // imode =  0; // identity test using MadGraph GEN
- imode =  1; // closure test using MadGraph + Sherpa
+// imode =  1; // closure test using MadGraph + Sherpa
 // imode =  2; // closure test using MadGraph + Powheg
 // imode =  3; // unfolding data with MadGraph
 // imode =  4; // unfolding data with Sherpa
