@@ -850,11 +850,11 @@ int useBinnedEfficiency=1;
 	    }
 	    if (isratio==1) {
 	      if (ilepton==1) {
-	        gSystem->mkdir((path + "/electrons/" + version + "/ratios/").c_str());
+	        gSystem->mkdir((path + "/electrons/" + version + "/ratios/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/electrons/" + version + "/ratios/" + title_b + "_ratio.pdf").c_str());
 	      }
 	      if (ilepton==2) {
-	        gSystem->mkdir((path + "/muons/" + version + "/ratios/").c_str());
+	        gSystem->mkdir((path + "/muons/" + version + "/ratios/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/muons/" + version + "/ratios/" + title_b + "_ratio.pdf").c_str());
 	      }
 	    }
@@ -872,11 +872,11 @@ int useBinnedEfficiency=1;
 	    }
 	    if (isratio==1) {
 	      if (ilepton==1) {
-	        gSystem->mkdir((path + "/electrons/" + version + "/ratios_unfolding/").c_str());
+	        gSystem->mkdir((path + "/electrons/" + version + "/ratios_unfolding/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/electrons/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
 	      }
 	      if (ilepton==2) {
-	        gSystem->mkdir((path + "/muons/" + version + "/ratios_unfolding/").c_str());
+	        gSystem->mkdir((path + "/muons/" + version + "/ratios_unfolding/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/muons/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
 	      }
 	    }
