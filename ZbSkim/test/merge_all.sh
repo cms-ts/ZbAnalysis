@@ -38,6 +38,11 @@ else
   ./merge.sh DoubleMuParked_2012C_22Jan13 $VERSION
   ./merge.sh DoubleMuParked_2012D_22Jan13 $VERSION
 
+  ./merge.sh MuEG_2012A_22Jan13 $VERSION
+  ./merge.sh MuEG_2012B_22Jan13 $VERSION
+  ./merge.sh MuEG_2012C_22Jan13 $VERSION
+  ./merge.sh MuEG_2012D_22Jan13 $VERSION
+
 fi
 
 ./merge.sh data-all $VERSION
