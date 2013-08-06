@@ -1376,16 +1376,16 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
       w_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
       if (Nj == 1) {
-        w_single_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
         w_single_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
+        w_single_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
       }
       if (isb) {
         b_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
         b_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
         b_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
 	if (Nj == 1) {
-	  b_single_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
           b_single_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
+	  b_single_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
 	}
       }
       if (isc && !isb) {
@@ -1393,8 +1393,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         c_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
         c_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
         if (Nj == 1) {
-	  c_single_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
           c_single_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
+	  c_single_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
         }
       }
     }
@@ -1455,16 +1455,16 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
       w_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
       if (Nj == 1) {
-        w_single_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
         w_single_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
+        w_single_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
       }
       if (isb) {
         b_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
         b_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
         b_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
         if (Nj == 1) {
-          b_single_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
           b_single_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
+          b_single_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
 	}
       }
       if (isc && !isb) {
@@ -1472,8 +1472,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         c_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
         c_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
         if (Nj == 1) {
-          c_single_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
           c_single_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
+          c_single_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
         }
       }
     }
@@ -1534,16 +1534,16 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       if (delta_phi_em_b > acos (-1)) delta_phi_em_b = 2 * acos (-1) - delta_phi_em_b;
       w_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
       if (Nj == 1) {
-        w_single_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
         w_single_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
+        w_single_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
       }
       if (isb) {
         b_mass_em_b->Fill (dielemuon_mass, MyWeight*scalFac_b);
         b_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
         b_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
 	if (Nj == 1) {
-	  b_single_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
           b_single_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
+	  b_single_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
 	}
       }
       if (isc && !isb) {
@@ -1551,8 +1551,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         c_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
         c_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
         if (Nj == 1) {
-	  c_single_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
           c_single_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
+	  c_single_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
         }
       }
     }
@@ -1612,18 +1612,11 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   if (ee_event && Nj > 0 && Nb > 0 && vtx_cut && met_cut) {
     scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-    w_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
 #if ECALDRIVEN>1
     w_first_ele_pt_b->Fill (vect_ele[iele0].ecalDrivenMomentum().pt(), MyWeight*scalFac_b);
 #else
     w_first_ele_pt_b->Fill (vect_ele[iele0].pt(), MyWeight*scalFac_b);
 #endif
-    if (isb) {
-      b_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
-    }
-    if (isc && !isb) {
-      c_mass_ee_b->Fill (diele_mass, MyWeight*scalFac_b);
-    }
   }
 
   // ++++++++ MUONS PLOTS
@@ -1649,14 +1642,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   if (mm_event && Nj > 0 && Nb > 0 && vtx_cut && met_cut) {
     scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-    w_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
     w_first_muon_pt_b ->Fill (vect_muon[imuon0].pt(), MyWeight*scalFac_b);
-    if (isb) {
-      b_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
-    }
-    if (isc && !isb) {
-      c_mass_mm_b->Fill (dimuon_mass, MyWeight*scalFac_b);
-    }
   }
 
   // ++++++++  ELECTRONS+MUONS PLOTS
@@ -1736,7 +1722,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   if (em_event && Nj > 0 && Nb > 0 && vtx_cut && met_cut) {
     scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-    w_mass_em_b->Fill (dielemuon_mass, MyWeight*scalFac_b);
     if (iele1!=-1) {
       w_first_muon_pt_b ->Fill (vect_muon[imuon0].pt(), MyWeight*scalFac_b);
     }
@@ -1746,12 +1731,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 #else
       w_first_ele_pt_b->Fill (vect_ele[iele0].pt(), MyWeight*scalFac_b);
 #endif
-    }
-    if (isb) {
-      b_mass_em_b->Fill (dielemuon_mass, MyWeight*scalFac_b);
-    }
-    if (isc && !isb) {
-      c_mass_em_b->Fill (dielemuon_mass, MyWeight*scalFac_b);
     }
   }
 
