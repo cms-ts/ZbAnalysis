@@ -37,6 +37,9 @@ elif [ "$JOBDIR" == "data-all" ]; then
   echo 'Preparing '$WORKDIR/$VERSION/DoubleMu_2012_merge.root
   rm -f $WORKDIR/$VERSION/DoubleMu_2012_merge.root
   hadd $opts $WORKDIR/$VERSION/DoubleMu_2012_merge.root $WORKDIR/$VERSION/DoubleMu*_2012*.root
+  echo 'Preparing '$WORKDIR/$VERSION/MuEG_2012_merge.root
+  rm -f $WORKDIR/$VERSION/MuEG_2012_merge.root
+  hadd $opts $WORKDIR/$VERSION/MuEG_2012_merge.root $WORKDIR/$VERSION/MuEG_2012*.root
 else
   echo 'ERROR: jobdir "'$JOBDIR'" does not exist !'
 fi
