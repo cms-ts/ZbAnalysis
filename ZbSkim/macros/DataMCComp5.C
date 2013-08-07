@@ -58,7 +58,7 @@ void DataMCComp5(string& title="", int plot=0, int ilepton=1) {
 
       h_data->Sumw2();
       h_data_fit->Sumw2();
-      
+
       h_data->Scale(1./Lumi2012);
       h_data_fit->Scale(1./Lumi2012);
 
@@ -70,12 +70,11 @@ void DataMCComp5(string& title="", int plot=0, int ilepton=1) {
 	  h_data_fit->SetBinContent(i, 0);
 	  h_data_fit->SetBinError(i, 0);
         }
-     }
-     f1->SetParameter(0,0.5);
-     f1->SetParNames("c(t)", "dummy", "dummy");
-     h_data->Fit("f1", "Q0");
-     h_data_fit->Scale(f1->GetParameter(0));
-
+      }
+      f1->SetParameter(0,0.5);
+      f1->SetParNames("c(t)", "dummy", "dummy");
+      h_data->Fit("f1", "Q0");
+      h_data_fit->Scale(f1->GetParameter(0));
 
       TCanvas* c1 = new TCanvas("c", "c", 800, 600);
       c1->cd();
@@ -92,7 +91,7 @@ void DataMCComp5(string& title="", int plot=0, int ilepton=1) {
       h_data->SetMarkerSize (1.0);
       h_data->SetTitle("");
       //h_data->SetStats(0);
-	
+
       c1->cd();
 
       TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
@@ -110,15 +109,11 @@ void DataMCComp5(string& title="", int plot=0, int ilepton=1) {
       if (plot) {
         if (ilepton==1) {
           gSystem->mkdir((path + "electrons/" + version + "/ttbarSub/").c_str(), kTRUE);
-          c1->SaveAs((path + "electrons/" + version + "/ttbarSub" + "/" + title + ".pdf").c_str());
+          c1->SaveAs((path + "electrons/" + version + "/ttbarSub/" + title + ".pdf").c_str());
         }
         if (ilepton==2) {
           gSystem->mkdir((path + "muons/" + version + "/ttbarSub/").c_str(), kTRUE);
-          c1->SaveAs((path + "muons/" + version + "/ttbarSub" + "/" + title + ".pdf").c_str());
+          c1->SaveAs((path + "muons/" + version + "/ttbarSub/" + title + ".pdf").c_str());
         }
       }
- }
-
-	  
-	  
-
+}
