@@ -51,7 +51,7 @@ void DataMCComp5(string& title="", int plot=0, int ilepton=1) {
         title_em.replace(title_em.find("_mm_")+1, 1, "e");
       }
 
-      TFile *data_em = TFile::Open((path + "/" + version + "/" + "MuEG_2012.root").c_str());
+      TFile *data_em = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
 
       data_em->cd("demoEleMuo");
       h_data_fit = (TH1F*)gDirectory->Get(title_em.c_str());
