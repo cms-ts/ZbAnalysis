@@ -108,12 +108,12 @@ void DataMCComp5(string& title="", int plot=0, int ilepton=1) {
 
       if (plot) {
         if (ilepton==1) {
-          gSystem->mkdir((path + "electrons/" + version + "/ttbarSub/").c_str(), kTRUE);
-          c1->SaveAs((path + "electrons/" + version + "/ttbarSub/" + title + ".pdf").c_str());
+          gSystem->mkdir((path + "electrons/" + version + "/ttbar_sub/").c_str(), kTRUE);
+          c1->SaveAs((path + "electrons/" + version + "/ttbar_sub/" + title + ".pdf").c_str());
         }
         if (ilepton==2) {
-          gSystem->mkdir((path + "muons/" + version + "/ttbarSub/").c_str(), kTRUE);
-          c1->SaveAs((path + "muons/" + version + "/ttbarSub/" + title + ".pdf").c_str());
+          gSystem->mkdir((path + "muons/" + version + "/ttbar_sub/").c_str(), kTRUE);
+          c1->SaveAs((path + "muons/" + version + "/ttbar_sub/" + title + ".pdf").c_str());
         }
       }
 }
