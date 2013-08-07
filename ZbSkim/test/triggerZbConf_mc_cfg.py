@@ -188,6 +188,7 @@ process.matchedMuonsEM = selectedPatMuons.clone(
                      'numberOfMatchedStations > 1 &'
                      '(pfIsolationR04().sumChargedHadronPt + max(pfIsolationR04().sumNeutralHadronEt + pfIsolationR04().sumPhotonEt - 0.5*pfIsolationR04().sumPUPt,0.0))/pt < 0.2 &'
                      'triggerObjectMatches.size > 0'
+	     )
 )
 
 ############## e Trigger Matching
