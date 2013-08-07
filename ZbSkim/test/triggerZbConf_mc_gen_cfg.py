@@ -229,8 +229,7 @@ process.selectedPatElectronsTriggerMatchEM = cms.EDProducer("PATTriggerMatchElec
 
 ##############
 
-switchOnTriggerMatching(process,triggerMatchers = ['selectedTriggeredPatMuons','selectedTriggeredPatElectrons'],sequence ='patDefaultSequence',hltProcess = '*')
-switchOnTriggerMatching(process,triggerMatchers = ['selectedTriggeredPatMuonsEM','selectedTriggeredPatElectronsEM'],sequence ='patDefaultSequence',hltProcess = '*')
+switchOnTriggerMatching(process,triggerMatchers = ['selectedTriggeredPatMuons','selectedTriggeredPatElectrons','selectedTriggeredPatMuonsEM','selectedTriggeredPatElectronsEM'],sequence ='patDefaultSequence',hltProcess = '*')
 
 removeCleaningFromTriggerMatching(process)
 
@@ -328,7 +327,7 @@ process.source = cms.Source("PoolSource",
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 
 process.options.wantSummary = True
-process.maxEvents.input = 1000
+process.maxEvents.input = 2000
 
 getattr(process,"pfElectronsFromVertex"+postfix).d0Cut = 0.02
 getattr(process,"pfElectronsFromVertex"+postfix).dzCut = 0.1

@@ -229,8 +229,7 @@ process.selectedPatElectronsTriggerMatchEM = cms.EDProducer("PATTriggerMatchElec
 
 ##############
 
-switchOnTriggerMatching(process,triggerMatchers = ['selectedTriggeredPatMuons','selectedTriggeredPatElectrons'],sequence ='patDefaultSequence',hltProcess = '*')
-switchOnTriggerMatching(process,triggerMatchers = ['selectedTriggeredPatMuonsEM','selectedTriggeredPatElectronsEM'],sequence ='patDefaultSequence',hltProcess = '*')
+switchOnTriggerMatching(process,triggerMatchers = ['selectedTriggeredPatMuons','selectedTriggeredPatElectrons','selectedTriggeredPatMuonsEM','selectedTriggeredPatElectronsEM'],sequence ='patDefaultSequence',hltProcess = '*')
 
 removeCleaningFromTriggerMatching(process)
 
