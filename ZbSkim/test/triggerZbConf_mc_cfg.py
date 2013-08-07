@@ -361,51 +361,7 @@ getattr(process,"pfNoTau"+postfix).enable = useNoTau
 getattr(process,"pfNoElectron"+postfix).enable = useNoElectron
 
 process.dump = cms.EDAnalyzer("EventContentAnalyzer")
-process.demoEleGen = cms.EDProducer('GenbAnalyzer',
-        path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
-        lepton  = cms.untracked.string("electron"),
-)
-process.demoMuoGen = cms.EDProducer('GenbAnalyzer',
-        path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
-        lepton  = cms.untracked.string("muon"),
-)
 process.MyProcess = cms.EDFilter('ZbFilter')
-process.demoEle = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
-        lepton  = cms.untracked.string("electron"),
-        JEC     = cms.untracked.double(0),
-        usePartonFlavour = cms.untracked.bool(False)
-)
-process.demoMuo = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
-        lepton  = cms.untracked.string("muon"),
-        JEC     = cms.untracked.double(0),
-        usePartonFlavour = cms.untracked.bool(False)
-)
-process.demoEleBtag = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
-        lepton  = cms.untracked.string("electron"),
-        JEC     = cms.untracked.double(0),
-        usePartonFlavour = cms.untracked.bool(True)
-)
-process.demoMuoBtag = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
-        lepton  = cms.untracked.string("muon"),
-        JEC     = cms.untracked.double(0),
-        usePartonFlavour = cms.untracked.bool(True)
-)
-process.demoEleDump = cms.EDAnalyzer('ZbDumper',
-        lepton       = cms.untracked.string("electron")
-)
-process.demoMuoDump = cms.EDAnalyzer('ZbDumper',
-        lepton       = cms.untracked.string("muon")
-)
 
 process.p = cms.Path(
    process.goodOfflinePrimaryVertices *
@@ -432,21 +388,11 @@ process.p = cms.Path(
    process.selectedPatElectronsTriggerMatchEM *
    process.matchedElectronsEM *
    process.zeleMatchedmuMatched *
-   process.demoEleGen * process.demoMuoGen *
-   process.demoEleGen * process.demoMuoGen *
-#   process.MyProcess *
-   process.demoEle * process.demoMuo *
-   process.demoEleBtag * process.demoMuoBtag *
-   process.demoEleDump * process.demoMuoDump
+   process.MyProcess
    #process.dump
 )
 
 process.out.fileName = 'patTuple.root'
-process.outpath = cms.EndPath()
-
-process.TFileService = cms.Service("TFileService",
-        fileName = cms.string('rootTuple.root')
-)
 
 from PhysicsTools.PatAlgos.patEventContent_cff import patEventContent
 from PhysicsTools.PatAlgos.patEventContent_cff import patExtraAodEventContent
