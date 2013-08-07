@@ -831,10 +831,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   edm::Handle < reco::CompositeCandidateCollection > zem;
   iEvent.getByLabel ("zeleMatchedmuMatched", zem);
 
-  // Get the Z->me collection
-  edm::Handle < reco::CompositeCandidateCollection > zme;
-  iEvent.getByLabel ("zmuMatchedeleMatched", zme);
-
   // Get tracks
   edm::Handle < vector < reco::Track > > tracks;
   iEvent.getByLabel ("generalTracks", tracks);
@@ -1019,7 +1015,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // +++++++++ ELECTRONS + MUONS
 
-  if (lepton_=="electron+muon") {
+  if (lepton_=="electron+muon" && zem.isValid()) {
 
     iele1=-1;
     imuon1=-1;
@@ -1502,12 +1498,12 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   }
 
   if (em_event && vtx_cut && met_cut) {
-    w_numberOfZ->Fill (zem->size()+zme->size(), MyWeight);
+    w_numberOfZ->Fill (zem->size(), MyWeight);
     if (isb) {
-      b_numberOfZ->Fill (zem->size()+zme->size(), MyWeight);
+      b_numberOfZ->Fill (zem->size(), MyWeight);
     }
     if (isc && !isb) {
-      c_numberOfZ->Fill (zem->size()+zme->size(), MyWeight);
+      c_numberOfZ->Fill (zem->size(), MyWeight);
     }
   }
 
