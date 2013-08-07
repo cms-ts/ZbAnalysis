@@ -393,9 +393,12 @@ process.out.outputCommands += [
 	'keep *_addPileupInfo_*_*',
 	'keep *_matchedElectrons_*_*',
 	'keep *_matchedMuons_*_*',
+	'keep *_matchedElectronsEM_*_*',
+	'keep *_matchedMuonsEM_*_*',
 	'keep *_goodJets_*_*',
 	'keep *_zeleMatchedeleMatched_*_*',
 	'keep *_zmuMatchedmuMatched_*_*',
+	'keep *_zeleMatchedmuMatched_*_*',
 	'keep *_goodOfflinePrimaryVertices_*_*'
 ]
 
