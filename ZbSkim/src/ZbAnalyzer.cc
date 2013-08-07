@@ -807,13 +807,15 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   using namespace edm;
   using namespace std;
 
+  // Get electron collection
+  edm::Handle < pat::ElectronCollection > electrons;
+  iEvent.getByLabel ("matchedElectrons", electrons);
+  if (lepton_=="electron+muon") iEvent.getByLabel ("matchedElectronsEM", electrons);
+
   // Get muon collection
   edm::Handle < pat::MuonCollection > muons;
   iEvent.getByLabel ("matchedMuons", muons);
-
-  // Get muon collection
-  edm::Handle < pat::ElectronCollection > electrons;
-  iEvent.getByLabel ("matchedElectrons", electrons);
+  if (lepton_=="electron+muon") iEvent.getByLabel ("matchedMuonsEM", muons);
 
   // Get jet collection
   edm::Handle < vector < pat::Jet > > jets;
@@ -844,6 +846,10 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   edm::Handle<vector<reco::GenJet> > gJets;
   iEvent.getByLabel(edm::InputTag("goodJets","genJets"), gJets);
+
+  if (lepton_=="electron+muon" && !electrons.isValid()) return;
+  if (lepton_=="electron+muon" && !muons.isValid()) return;
+  if (lepton_=="electron+muon" && !zem.isValid()) return;
 
   std::auto_ptr<std::vector<double>> myEventWeight( new std::vector<double> );
 
@@ -1008,7 +1014,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // +++++++++ ELECTRONS + MUONS
 
-  if (lepton_=="electron+muon" && zem.isValid()) {
+  if (lepton_=="electron+muon") {
 
     iele1=-1;
     imuon1=-1;
