@@ -975,13 +975,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     diele_mass = z.mass();
     diele_phi = z.phi();
     diele_pt = z.pt();
-//
-//    if (isMC) {
-//      double smear = gRandom_->Gaus(0, 1.0);
-//      diele_mass = 1.0023 * diele_mass + smear;
-//      diele_pt = 1.0023 * diele_pt + smear;
-//    }
-//
     if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
 
