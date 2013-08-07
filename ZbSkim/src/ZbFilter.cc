@@ -144,19 +144,16 @@ bool ZbFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) {
    // Get the Z->em collection
    edm::Handle<reco::CompositeCandidateCollection> zem;
    iEvent.getByLabel("zeleMatchedmuMatched", zem);
-   // Get the Z->me collection
-   edm::Handle<reco::CompositeCandidateCollection> zme;
-   iEvent.getByLabel("zmuMatchedeleMatched", zme);
  
    //std::cout<<"numero j="<<jets->size()<<std::endl;
 
-   if (zee.isValid() && zmm.isValid()) {  
-     if ( (zem->size()==0 && zme->size()==0) || jets->size()==0) return false;  
+   if (zee.isValid() && zmm.isValid() && zem.isValid()) {  
+     if ((zee->size()==0 && zmm->size()==0 && zem->size()==0) || jets->size()==0) return false;
      return true;
    }
 
-   if (zme.isValid() && zem.isValid()) { 
-     if ( (zmm->size()==0 && zee->size()==0) || jets->size()==0) return false;
+   if (zee.isValid() && zmm.isValid()) {  
+     if ((zee->size()==0 && zmm->size()==0) || jets->size()==0) return false;
      return true;
    }
 
