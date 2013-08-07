@@ -1312,7 +1312,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // ++++++++ DIELECTRON Z PLOTS
 
-  if (lepton_=="electron" && iele1!=-1 && Nj > 0 && vtx_cut && met_cut) {
+  if (lepton_=="electron" && iele1!=-1 && Nj > 0 && vtx_cut && !met_cut) {
     w_mass_ee_wide->Fill (diele_mass, MyWeight);
     if (isb) {
       b_mass_ee_wide->Fill (diele_mass, MyWeight);
@@ -1391,7 +1391,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // ++++++++ DIMUON Z PLOTS
 
-  if (lepton_=="muon" && imuon1!=-1 && Nj > 0 && vtx_cut && met_cut) {
+  if (lepton_=="muon" && imuon1!=-1 && Nj > 0 && vtx_cut && !met_cut) {
     w_mass_mm_wide->Fill (dimuon_mass, MyWeight);
     if (isb) {
       b_mass_mm_wide->Fill (dimuon_mass, MyWeight);
@@ -1470,7 +1470,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // ++++++++ ELECTRON+MUON Z PLOTS
 
-  if (lepton_=="electron+muon" && (iele1!=-1||imuon1!=-1) && Nj > 0 && vtx_cut && met_cut) {
+  if (lepton_=="electron+muon" && (iele1!=-1||imuon1!=-1) && Nj > 0 && vtx_cut && !met_cut) {
     w_mass_em_wide->Fill (dielemuon_mass, MyWeight);
     if (isb) {
       b_mass_em_wide->Fill (dielemuon_mass, MyWeight);
