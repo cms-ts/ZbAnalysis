@@ -120,6 +120,28 @@ private:
     }
   };
 
+  bool isB (reco::GenParticle gp) {
+    int pid = gp.pdgId();
+    if((abs(pid)/100)%10 == 5 || (abs(pid)/1000)%10 == 5) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  bool hasBAncestors (reco::GenParticle gp) {
+    if(isB(gp)) return true;
+    if (gp.numberOfMothers()==0) return false;
+    bool found=false;
+    for (unsigned int im=0;im<gp.numberOfMothers();im++) {
+      found=found || hasBAncestors(*gp.motherRef(im));
+    }
+    return found;
+
+  }
+
+
   // ----------member data ---------------------------
 
   std::string pileup_;
@@ -376,19 +398,20 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   unsigned int index_ele=0;
 
-  ele_photons.empty();
-
   vector < TLorentzVector > vect_ele;
 
   for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) {
     if (fabs(itgen->pdgId())==11 && itgen->status()==1) { // loop over gen electrons
+      ele_photons.clear();
+      pos_photons.clear();
       TLorentzVector ele;
       ele.SetPtEtaPhiM(itgen->pt(),itgen->eta(),itgen->phi(),itgen->mass());
 
-      if (itgen->pdgId()==11)
+      if (itgen->pdgId()==11) {
       	ele_photons.push_back(index_ele);
-      else
+      } else {
 	pos_photons.push_back(index_ele);
+      }
 
       unsigned int index_gamma=0;
       // Loop over photons: FSR dressing for electrons
@@ -396,14 +419,15 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
         if (fabs(itgen2->pdgId())==22 && itgen2->status()==1) { // loop over primary gen photon
        	  TLorentzVector gam;
           gam.SetPtEtaPhiM(itgen2->pt(),itgen2->eta(),itgen2->phi(),itgen2->mass());
-	  double deltaPhi_eg = fabs(gam.Phi()- ele.Phi());
+	  double deltaPhi_eg = fabs(gam.Phi()- itgen->phi());
 	  if (deltaPhi_eg > acos(-1)) deltaPhi_eg= 2*acos(-1) - deltaPhi_eg;
-	  double deltaR_eg = sqrt( deltaPhi_eg*deltaPhi_eg + pow(fabs(gam.Eta()-ele.Eta()),2));
+	  double deltaR_eg = sqrt( deltaPhi_eg*deltaPhi_eg + pow(fabs(gam.Eta()-itgen->eta()),2));
 	  if (deltaR_eg< 0.1) {
-	    if (itgen->pdgId()==11)
+	    if (itgen->pdgId()==11) {
 	    	ele_photons.push_back(index_gamma);
-	    else
+	    } else {
 		pos_photons.push_back(index_gamma);
+	    }
 	    ele += gam;
 	  }
 	}
@@ -454,13 +478,16 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) {
     if (fabs(itgen->pdgId())==13 && itgen->status()==1) { // loop over gen muons
+      mu_photons.clear();
+      antimu_photons.clear();
       TLorentzVector muon;
       muon.SetPtEtaPhiM(itgen->pt(),itgen->eta(),itgen->phi(),itgen->mass());
 
-      if (itgen->pdgId()==13)
+      if (itgen->pdgId()==13) {
         mu_photons.push_back(index_mu);
-      else
+      } else {
         antimu_photons.push_back(index_mu);
+      }
 
       // Loop over photons: FSR dressing for muons
       unsigned int index_gammamu = 0;
@@ -468,14 +495,15 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
         if (fabs(itgen2->pdgId())==22 && itgen2->status()==1) { // loop over primary gen photon
 	  TLorentzVector gam;
 	  gam.SetPtEtaPhiM(itgen2->pt(),itgen2->eta(),itgen2->phi(),itgen2->mass());
-	  double deltaPhi_mg = fabs(gam.Phi()- muon.Phi());
+	  double deltaPhi_mg = fabs(gam.Phi()- itgen->phi());
 	  if (deltaPhi_mg > acos(-1)) deltaPhi_mg= 2*acos(-1) - deltaPhi_mg;
-	  double deltaR_mg = sqrt( deltaPhi_mg*deltaPhi_mg + pow(fabs(gam.Eta()-muon.Eta()),2));
+	  double deltaR_mg = sqrt( deltaPhi_mg*deltaPhi_mg + pow(fabs(gam.Eta()-itgen->eta()),2));
 	  if (deltaR_mg< 0.1) {
-	    if (itgen->pdgId()==13)
+	    if (itgen->pdgId()==13) {
                 mu_photons.push_back(index_gammamu);
-            else
+	    } else {
                 antimu_photons.push_back(index_gammamu);
+	    }
 	    muon += gam;
 	  }
         }
@@ -529,12 +557,14 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   vector<unsigned int> ch_part;
 
   for (vector<reco::GenParticle>::const_iterator itgen=genPart->begin(); itgen!=genPart->end(); itgen++) {
-	if (itgen->status()==1 && (itgen->pdgId()==12 || itgen->pdgId()==14 || itgen->pdgId()==16))
+	if (itgen->status()==1 && (fabs(itgen->pdgId())==12 || fabs(itgen->pdgId())==14 || fabs(itgen->pdgId())==16)) {
 		neutrino.push_back(index_nu);
+	}
 	index_nu++;
 
-	if (itgen->charge()!=0 && itgen->pt()<0.25 && itgen->status()==1)
+	if (itgen->charge()!=0 && itgen->pt()<0.25 && itgen->status()==1) {
 		ch_part.push_back(index_ch);
+	}
 	index_ch++;
   }
 
@@ -590,7 +620,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 	vecs.push_back(pseudoJet);
   }
 
-  //cout << "------ jet con fastjet ------------" << endl;
+  // ++++++++ JETS
 
   vector<fastjet::PseudoJet> vect_jets;
   vector<fastjet::PseudoJet> vect_jets2;
@@ -609,59 +639,49 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 	vect_jets2.push_back(jets[i]);
   }
 
-  // ++++++++ JETS
+  // ++++++++ BJETS
 
   /*loop over gen particles, find the b*/
 
   vector<fastjet::PseudoJet> vect_bjets;
   vector<fastjet::PseudoJet> vect_bjets2;
 
-  int nb=0;
+  bool Bjet_found = false;
+  bool Bjet2_found = false;
 
-  for (std::vector <reco::GenParticle>::const_iterator thepart =genPart->begin(); thepart != genPart->end(); thepart++) {
+  for(unsigned int k = 0; k < vect_jets.size() ; k++) {
+    Bjet_found = false;
+    vector<fastjet::PseudoJet> constituents = cseq.constituents(vect_jets[k]);
 
-    if ((int) ((abs(thepart->pdgId())/100)%10) == 5 || (int) ((abs(thepart->pdgId())/1000)%10) == 5 ) {
-      nb++;
-      bool bdaughter = false;
-      for (int i=0; i < abs(thepart->numberOfDaughters()); i++) {
-        if ((int) ((abs(thepart->daughter(i)->pdgId())/100)%10) == 5 || (int) ((abs(thepart->daughter(i)->pdgId())/1000)%10) == 5) {
-          bdaughter = true; // b daughter found
-        }
+    for (unsigned int c = 0; c < constituents.size() && !Bjet_found; c++) {
+      int index = constituents.at(c).user_index();
+      reco::GenParticle gp = part_jets_st1.at(index);
+      if (hasBAncestors(gp)) {
+        Bjet_found = true;
       }
+    }
 
-      if (!bdaughter) {
-        TLorentzVector B;
-        B.SetPtEtaPhiM(thepart->pt(),thepart->eta(),thepart->phi(),thepart->mass());
-	int j = 0;
-     	double Rmin = 9999.;
-        for (unsigned int i=0; i<vect_jets.size(); ++i) {
-	  TLorentzVector jet_momentum;
-	  jet_momentum.SetPtEtaPhiM(vect_jets[i].perp(),vect_jets[i].eta(),vect_jets[i].phi(),vect_jets[i].m());
-          if (ROOT::Math::VectorUtil::DeltaR(jet_momentum, B) < Rmin) {
-	    j = i;
-	    Rmin = ROOT::Math::VectorUtil::DeltaR(jet_momentum, B);
-	  }
-        }
-        if (Rmin < 0.4) {
-	  Nb++;
-	  vect_bjets.push_back(vect_jets[j]);
-	}
-	int j2 = 0;
-     	double Rmin2 = 9999.;
-        for (unsigned int i=0; i<vect_jets2.size(); ++i) {
-	  TLorentzVector jet_momentum;
-	  jet_momentum.SetPtEtaPhiM(vect_jets2[i].perp(),vect_jets2[i].eta(),vect_jets2[i].phi(),vect_jets2[i].m());
-          if (ROOT::Math::VectorUtil::DeltaR(jet_momentum, B) < Rmin2) {
-	    j2 = i;
-	    Rmin2 = ROOT::Math::VectorUtil::DeltaR(jet_momentum, B);
-	  }
-        }
-        if (Rmin2 < 0.4) {
-	  Nb2++;
-	  vect_bjets2.push_back(vect_jets2[j2]);
-	}
+    if(Bjet_found) {
+      vect_bjets.push_back(vect_jets[k]);
+      Nb++;
+    }
+  }
+
+  for(unsigned int k = 0; k < vect_jets2.size() ; k++) {
+    Bjet2_found = false;
+    vector<fastjet::PseudoJet> constituents = cseq.constituents(vect_jets2[k]);
+
+    for (unsigned int c = 0; c < constituents.size() && !Bjet2_found; c++) {
+      int index = constituents.at(c).user_index();
+      reco::GenParticle gp = part_jets_st1.at(index);
+      if (hasBAncestors(gp)){
+        Bjet2_found = true;
       }
+    }
 
+    if(Bjet2_found) {
+      vect_bjets2.push_back(vect_jets2[k]);
+      Nb2++;
     }
   }
 
