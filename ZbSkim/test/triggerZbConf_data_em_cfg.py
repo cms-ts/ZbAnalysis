@@ -212,12 +212,6 @@ process.zeleMatchedmuMatched = cms.EDProducer('CandViewShallowCloneCombiner',
 				    name  = cms.string('Zelematchedmumatched'),
 				    roles = cms.vstring('matched1', 'matched2')
 				    )
-process.zmuMatchedeleMatched = cms.EDProducer('CandViewShallowCloneCombiner',
-			            decay = cms.string('matchedMuons@+ matchedElectrons@-'),
-				    cut   = cms.string('mass > 60.0 & mass < 120.0'),
-				    name  = cms.string('Zmumatchedelematched'),
-				    roles = cms.vstring('matched1', 'matched2')
-				    )
 
 ##############
 
@@ -284,7 +278,6 @@ process.p = cms.Path(
    process.matchedElectrons *
    process.zeleMatchedeleMatched *
    process.zeleMatchedmuMatched *
-   process.zmuMatchedeleMatched *
    process.MyProcess
    #process.dump
    )
@@ -305,7 +298,6 @@ process.out.outputCommands += [
 	'keep *_zeleMatchedeleMatched_*_*',
 	'keep *_zmuMatchedmuMatched_*_*',
 	'keep *_zeleMatchedmuMatched_*_*',
-	'keep *_zmuMatchedeleMatched_*_*',
 	'keep *_goodOfflinePrimaryVertices_*_*'
 ]
 
