@@ -1,7 +1,8 @@
 #include "LumiLabel.C"
-#include "LumiInfo_v09.h"
+#include "LumiInfo_v10.h"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/GDR/data/";
 
 TH1F* h_data_fit = 0;
 TH1F* h_mc_fit0 = 0;
@@ -23,11 +24,13 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 
 	if (ilepton==1 && doFit==1) c_t=0.959;
 	if (ilepton==2 && doFit==1) c_t=0.935;
+	if (ilepton==2 && doFit==1) c_t=1.000;
 
 	double Lumi2012;
 
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
+	if (ilepton==3) Lumi2012 = 19790.0;
 
 	double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
@@ -47,11 +50,19 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	  if (title.find("ele")!=string::npos) return;
 	  if (title.find("ee")!=string::npos) return;
 	}
+	if (ilepton==3) {
+	  if (title.find("ee")!=string::npos) {
+	    title.replace(title.find("_ee_")+2, 1, "m");
+	  }
+	  if (title.find("mm")!=string::npos) return;
+	}
 
 	if (ilepton==1)
 	  TFile *data = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
 	if (ilepton==2)
 	  TFile *data = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
+	if (ilepton==3)
+	  TFile *data = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
 
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
@@ -63,36 +74,44 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 
 	if (ilepton==1) data->cd("demoEle");
 	if (ilepton==2) data->cd("demoMuo");
+	if (ilepton==3) data->cd("demoEleMuo");
 	TH1F* h_data = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc1->cd("demoEle");
 	if (ilepton==2) mc1->cd("demoMuo");
+	if (ilepton==3) mc1->cd("demoEleMuo");
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
 	TH1F* h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
 
 	if (ilepton==1) mc2->cd("demoEle");
 	if (ilepton==2) mc2->cd("demoMuo");
+	if (ilepton==3) mc2->cd("demoEleMuo");
 	TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc3->cd("demoEle");
 	if (ilepton==2) mc3->cd("demoMuo");
+	if (ilepton==3) mc3->cd("demoEleMuo");
 	TH1F* h_mc3 = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc4->cd("demoEle");
 	if (ilepton==2) mc4->cd("demoMuo");
+	if (ilepton==3) mc4->cd("demoEleMuo");
 	TH1F* h_mc4 = (TH1F*)gDirectory->Get(title.c_str());
 
 //	if (ilepton==1) mc5->cd("demoEle");
 //	if (ilepton==2) mc5->cd("demoMuo");
+//	if (ilepton==3) mc5->cd("demoEleMuo");
 //	TH1F* h_mc5 = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc6->cd("demoEle");
 	if (ilepton==2) mc6->cd("demoMuo");
+	if (ilepton==3) mc6->cd("demoEleMuo");
 	TH1F* h_mc6 = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (ilepton==1) mc7->cd("demoEle");
 	if (ilepton==2) mc7->cd("demoMuo");
+	if (ilepton==3) mc7->cd("demoEleMuo");
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 
 	h_data -> Sumw2();
@@ -333,6 +352,7 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 
 	if (ilepton==1) leg->AddEntry(h_data,"Z(#rightarrow ee)+jets","p");
 	if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
+	if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow e#mu)+jets","p");
 
 	leg->AddEntry(h_mc1,"Z+jets","f");
 	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
@@ -489,6 +509,10 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	  if (ilepton==2) {
 	    gSystem->mkdir((path + "/muons/" + version + "/distributions/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/muons/" + version + "/distributions/" + title + ".pdf").c_str());
+	  }
+	  if (ilepton==3) {
+	    gSystem->mkdir((path + "/electrons+muons/" + version + "/distributions/").c_str(), kTRUE);
+	    c1->SaveAs((path + "/electrons+muons/" + version + "/distributions/" + title + ".pdf").c_str());
 	  }
 	}
 }
