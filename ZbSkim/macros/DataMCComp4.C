@@ -22,10 +22,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 	gSystem->Load("libRooUnfold");
 
-	if (ilepton<1 || ilepton>2) {
-	  ilepton = 1 + ilepton % 2;
-        }
-
 // use fit results for c_b
 
         double c_b=1.0;

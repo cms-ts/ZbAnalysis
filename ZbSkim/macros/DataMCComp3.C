@@ -5,10 +5,6 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 
-        if (ilepton<1 || ilepton>2) {
-        ilepton = 1 + ilepton % 2;
-	}
-
 	if (title.empty()) title = "w_jetmultiplicity";
 
         if (ilepton==1) {

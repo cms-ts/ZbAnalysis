@@ -7,10 +7,6 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1, int unfold=0) {
 
-	if (ilepton<1 || ilepton>2) {
-	  ilepton = 1 + ilepton % 2;
-	}
-
 	if (gROOT->GetVersionInt() >= 53401) {
 	  gROOT->GetColor(kRed)->SetAlpha(0.5);
 	  gROOT->GetColor(kGreen+2)->SetAlpha(0.5);

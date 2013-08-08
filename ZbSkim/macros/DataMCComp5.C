@@ -15,9 +15,12 @@ double func(double* x, double* p) {
 
 void DataMCComp5(string& title="", int plot=0, int ilepton=1) {
 
-      if (ilepton<1 || ilepton>2) {
-        ilepton = 1 + ilepton % 2;
-      }
+      double Lumi2012;
+
+      if (ilepton==1) Lumi2012 = Lumi2012_ele;
+      if (ilepton==2) Lumi2012 = Lumi2012_muon;
+
+      if (title.empty()) title = "w_jetmultiplicity";
 
       if (ilepton==1) {
         if (title.find("muon")!=string::npos) return;
@@ -27,13 +30,6 @@ void DataMCComp5(string& title="", int plot=0, int ilepton=1) {
 	if (title.find("ele")!=string::npos) return;
 	if (title.find("ee")!=string::npos) return;
       }
-
-      double Lumi2012;
-
-      if (ilepton==1) Lumi2012 = Lumi2012_ele;
-      if (ilepton==2) Lumi2012 = Lumi2012_muon;
-
-      if (title.empty()) title = "w_jetmultiplicity";
 
       TFile *data_ee = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
       TFile *data_mm = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());

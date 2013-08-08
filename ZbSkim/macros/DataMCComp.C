@@ -19,10 +19,6 @@ double func(double* x, double* p) {
 
 void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
 
-	if (ilepton<1 || ilepton>2) {
-	  ilepton = 1 + ilepton % 2;
-	}
-
 	double c_t=1.0;
 
 	if (ilepton==1 && doFit==1) c_t=0.959;
