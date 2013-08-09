@@ -375,6 +375,13 @@ int useBinnedEfficiency=1;
 	  h_mcg2_b->Scale(100.);
 	}
 
+	h_mcg->Scale(1., "width");
+	h_mcg1->Scale(1., "width");
+	h_mcg2->Scale(1., "width");
+	h_mcg_b->Scale(1., "width");
+	h_mcg1_b->Scale(1., "width");
+	h_mcg2_b->Scale(1., "width");
+
 	h_data = fixrange(h_data);
 	h_data_b = fixrange(h_data_b);
 	h_mc1 = fixrange(h_mc1);
