@@ -179,12 +179,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  h_mc2_reco->Scale(c_b);
 	}
 
-	h_data_reco->Scale(1./Lumi2012);
-	h_mc1_truth->Scale(1./Lumi2012);
-	h_mc1_reco->Scale(1./Lumi2012);
-	h_mc2_truth->Scale(1./Lumi2012);
-	h_mc2_reco->Scale(1./Lumi2012);
-
 	if (method==0) {
 	  int kreg = 0; // default 0 -> nbins/2
 	  int ntoys = 100; // default 1000
@@ -290,7 +284,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	if (imode>=3) tmp = h_data_reco;
 	tmp->SetTitle("");
 	tmp->SetStats(0);
-	tmp->GetYaxis()->SetTitle("#sigma [pb]");
+	tmp->GetYaxis()->SetTitle("Events");
 
 	if (imode<=2) tmp = h_mc2_unf;
 	if (imode>=3) tmp = h_data_unf;
