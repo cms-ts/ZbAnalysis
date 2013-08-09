@@ -6,8 +6,11 @@ cd $CMS_PATH/slc5_amd64_gcc472/cms/cmssw/CMSSW_6_1_0
 eval `scramv1 runtime -sh`
 cd -
 
+N=3
+[ "${VERSION}" \< "v10" ] && N=2
+
 i=1
-while [ $i -le 3 ]; do
+while [ $i -le $N ]; do
 
   root -l -q -b DataMCComp.C\(\"h_pu_weights\",1,$i\)
   root -l -q -b DataMCComp.C\(\"h_recoVTX\",1,$i\)
@@ -111,7 +114,7 @@ while [ $i -le 3 ]; do
 done
 
 i=1
-while [ $i -le 3 ]; do
+while [ $i -le $N ]; do
 
   root -l -q -b DataMCComp.C\(\"w_MET\",1,$i,0,1\)
   root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,$i,0,1\)

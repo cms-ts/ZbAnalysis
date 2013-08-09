@@ -355,6 +355,11 @@ int useBinnedEfficiency=1;
 	  h_mc1b_b->Scale(100.);
 	}
 
+	h_data->Scale(1., "width");
+	h_data_b->Scale(1., "width");
+	h_mc1->Scale(1., "width");
+	h_mc1b_b->Scale(1., "width");
+
 	h_mcg->Scale(1./Lumi2012);
 	h_mcg1->Scale(1./Lumi2012);
 	h_mcg2->Scale(1./Lumi2012);
