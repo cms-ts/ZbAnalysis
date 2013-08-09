@@ -344,10 +344,10 @@ int useBinnedEfficiency=1;
           }
 	}
 
-	h_data->Scale(1./Lumi2012);
-	h_data_b->Scale(1./Lumi2012);
-	h_mc1->Scale(1./Lumi2012);
-	h_mc1b_b->Scale(1./Lumi2012);
+	h_data->Scale(1./Lumi2012, "width");
+	h_data_b->Scale(1./Lumi2012, "width");
+	h_mc1->Scale(1./Lumi2012, "width");
+	h_mc1b_b->Scale(1./Lumi2012, "width");
 	if (isratio==1) {
 	  h_data_b->Divide(h_data);
 	  h_data_b->Scale(100.);
@@ -355,17 +355,12 @@ int useBinnedEfficiency=1;
 	  h_mc1b_b->Scale(100.);
 	}
 
-	h_data->Scale(1., "width");
-	h_data_b->Scale(1., "width");
-	h_mc1->Scale(1., "width");
-	h_mc1b_b->Scale(1., "width");
-
-	h_mcg->Scale(1./Lumi2012);
-	h_mcg1->Scale(1./Lumi2012);
-	h_mcg2->Scale(1./Lumi2012);
-	h_mcg_b->Scale(1./Lumi2012);
-	h_mcg1_b->Scale(1./Lumi2012);
-	h_mcg2_b->Scale(1./Lumi2012);
+	h_mcg->Scale(1./Lumi2012, "width");
+	h_mcg1->Scale(1./Lumi2012, "width");
+	h_mcg2->Scale(1./Lumi2012, "width");
+	h_mcg_b->Scale(1./Lumi2012, "width");
+	h_mcg1_b->Scale(1./Lumi2012, "width");
+	h_mcg2_b->Scale(1./Lumi2012, "width");
 	if (isratio==1) {
 	  h_mcg_b->Divide(h_mcg);
 	  h_mcg1_b->Divide(h_mcg1);
@@ -374,13 +369,6 @@ int useBinnedEfficiency=1;
 	  h_mcg1_b->Scale(100.);
 	  h_mcg2_b->Scale(100.);
 	}
-
-	h_mcg->Scale(1., "width");
-	h_mcg1->Scale(1., "width");
-	h_mcg2->Scale(1., "width");
-	h_mcg_b->Scale(1., "width");
-	h_mcg1_b->Scale(1., "width");
-	h_mcg2_b->Scale(1., "width");
 
 	h_data = fixrange(h_data);
 	h_data_b = fixrange(h_data_b);
