@@ -52,7 +52,7 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	}
 	if (ilepton==3) {
 	  if (title.find("ee")!=string::npos) {
-	    title.replace(title.find("_ee_")+2, 1, "m");
+	    title.replace(title.find("ee")+1, 1, "m");
 	  }
 	  if (title.find("mm")!=string::npos) return;
 	}
