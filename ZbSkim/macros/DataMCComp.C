@@ -49,12 +49,6 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	  if (title.find("ele")!=string::npos) return;
 	  if (title.find("ee")!=string::npos) return;
 	}
-	if (ilepton==3) {
-	  if (title.find("ee")!=string::npos) {
-	    title.replace(title.find("ee")+1, 1, "m");
-	  }
-	  if (title.find("mm")!=string::npos) return;
-	}
 
 	if (ilepton==1)
 	  TFile *data = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
