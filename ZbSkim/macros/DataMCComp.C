@@ -1,5 +1,5 @@
 #include "LumiLabel.C"
-#include "LumiInfo_v09.h"
+#include "LumiInfo_v10.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
@@ -21,15 +21,15 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 
 	double c_t=1.0;
 
-	if (ilepton==1 && doFit==1) c_t=0.959;
-	if (ilepton==2 && doFit==1) c_t=0.935;
+	if (ilepton==1 && doFit==1) c_t=0.914;
+	if (ilepton==2 && doFit==1) c_t=0.894;
 	if (ilepton==2 && doFit==1) c_t=1.000;
 
 	double Lumi2012;
 
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
-	if (ilepton==3) Lumi2012 = 19790.0;
+	if (ilepton==3) Lumi2012 = 19780.0;
 
 	double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);

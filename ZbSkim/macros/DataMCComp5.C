@@ -1,5 +1,5 @@
 #include "LumiLabel.C"
-#include "LumiInfo_v09.h"
+#include "LumiInfo_v10.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 

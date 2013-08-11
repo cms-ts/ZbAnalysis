@@ -1,5 +1,5 @@
 #include "LumiLabel.C"
-#include "LumiInfo_v09.h"
+#include "LumiInfo_v10.h"
 
 #include "fixrange.C"
 
@@ -40,10 +40,10 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	    c_c   = 1.238;
 	    c_uds = 1.991;
 	  }
-          e_Zb  = 0.229;
-          e_Z   = 0.544;
-          e_Z_1 = 0.416;
-          e_Z_b = 0.550;
+          e_Zb  = 0.212;
+          e_Z   = 0.545;
+          e_Z_1 = 0.380;
+          e_Z_b = 0.557;
 	  if (useFitResults==1) {
 	    c_t = 0.914;
 	  }
@@ -51,16 +51,16 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
 	if (ilepton==2) {
 	  if (useFitResults==1) {
-	    c_b   = 0.747;
-	    c_c   = 1.484;
-	    c_uds = 1.173;
+	    c_b   = 0.728;
+	    c_c   = 1.435;
+	    c_uds = 1.141;
 	  }
-          e_Zb  = 0.335;
-	  e_Z   = 0.802;
-	  e_Z_1 = 0.603;
-	  e_Z_b = 0.556;
+          e_Zb  = 0.310;
+	  e_Z   = 0.804;
+	  e_Z_1 = 0.550;
+	  e_Z_b = 0.564;
 	  if (useFitResults==1) {
-	    c_t = 0.995;
+	    c_t = 0.894;
 	  }
 	}
 
