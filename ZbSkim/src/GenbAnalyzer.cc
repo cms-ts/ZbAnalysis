@@ -122,25 +122,23 @@ private:
 
   bool isB (reco::GenParticle gp) {
     int pid = gp.pdgId();
-    if((abs(pid)/100)%10 == 5 || (abs(pid)/1000)%10 == 5) {
+    if ((abs(pid)/100)%10 == 5 || (abs(pid)/1000)%10 == 5) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
 
   bool hasBAncestors (reco::GenParticle gp) {
-    if(isB(gp)) return true;
+    if (gp.status()<1||gp.status()>3) return false;
+    if (isB(gp)) return true;
     if (gp.numberOfMothers()==0) return false;
-    bool found=false;
+    bool found = false;
     for (unsigned int im=0;im<gp.numberOfMothers();im++) {
-      found=found || hasBAncestors(*gp.motherRef(im));
+      found = found || hasBAncestors(*gp.motherRef(im));
     }
     return found;
-
   }
-
 
   // ----------member data ---------------------------
 
