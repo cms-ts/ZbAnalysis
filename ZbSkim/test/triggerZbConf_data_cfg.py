@@ -312,7 +312,7 @@ process.source = cms.Source("PoolSource",
 	#fileNames = cms.untracked.vstring('/store/data/Run2012A/DoubleElectron/AOD/13Jul2012-v1/00000/FA1B4710-F3D9-E111-858E-0024E876636C.root')
 	fileNames = cms.untracked.vstring('file:FA1B4710-F3D9-E111-858E-0024E876636C.root')
 	#fileNames = cms.untracked.vstring('/store/data/Run2012A/MuEG/AOD/22Jan2013-v1/20000/00F0AA8F-D566-E211-9A55-BCAEC50971F9.root')
-	fileNames = cms.untracked.vstring('file:00F0AA8F-D566-E211-9A55-BCAEC50971F9.root')
+	#fileNames = cms.untracked.vstring('file:00F0AA8F-D566-E211-9A55-BCAEC50971F9.root')
 )
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
