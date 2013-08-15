@@ -44,8 +44,8 @@ NT=0
 
 for D in $DIRS; do
 
-  N1=`ls $DIR/$D/ | awk -F_ '{print $2}' | sort | wc -w`
-  N2=`ls $DIR/$D/ | awk -F_ '{print $2}' | sort | uniq | wc -w`
+  N1=`ls $DIR/$D/ | grep root | awk -F_ '{print $2}' | sort | wc -w`
+  N2=`ls $DIR/$D/ | grep root | awk -F_ '{print $2}' | sort | uniq | wc -w`
 
   NT=$((NT+N2))
 
@@ -60,8 +60,8 @@ for D in $DIRS; do
 
     if [ "$N1" -gt "$N2" ]; then
       echo "ERROR: possible duplicate in "$D" : "$N1" != "$N2
-      ls $DIR/$D/ | awk -F_ '{print $2}' | sort > /tmp/l1
-      ls $DIR/$D/ | awk -F_ '{print $2}' | sort | uniq > /tmp/l2
+      ls $DIR/$D/ | grep root | awk -F_ '{print $2}' | sort > /tmp/l1
+      ls $DIR/$D/ | grep root | awk -F_ '{print $2}' | sort | uniq > /tmp/l2
       ERRORS=`diff /tmp/l1 /tmp/l2 | grep -v d | sed -e 's/<//' | sed -e 's/ //g'`
       echo $ERRORS
       for E in $ERRORS; do
@@ -71,7 +71,7 @@ for D in $DIRS; do
       rm /tmp/l1 /tmp/l2
     fi
 
-  FILES=`ls $DIR/$D/`
+  FILES=`ls $DIR/$D/ | grep root`
 
   for F in $FILES; do
 
