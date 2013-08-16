@@ -436,7 +436,6 @@ process.p = cms.Path(
    process.matchedElectronsEM *
    process.zeleMatchedmuMatched *
    process.demoEleGen * process.demoMuoGen *
-   process.demoEleGen * process.demoMuoGen *
 #   process.MyProcess *
    process.demoEle * process.demoMuo *
    process.demoEleBtag * process.demoMuoBtag *
