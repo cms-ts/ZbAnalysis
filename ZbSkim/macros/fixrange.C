@@ -22,6 +22,7 @@ TH1F* fixrange(TH1F *old) {
   x2 = old->GetXaxis()->GetBinUpEdge(old->GetXaxis()->FindBin(x2));
 
   TH1F *tmp = new TH1F("tmp",old->GetTitle(),nx,x1,x2);
+  tmp->Sumw2();
 
   for (int i=0;i<=old->GetNbinsX()+1;i++) {
     int ii = tmp->GetXaxis()->FindBin(old->GetXaxis()->GetBinCenter(i));
@@ -67,6 +68,7 @@ TH2F* fixrange(TH2F* old) {
   y2 = old->GetYaxis()->GetBinUpEdge(old->GetYaxis()->FindBin(y2));
 
   TH2F *tmp = new TH2F("tmp",old->GetTitle(),nx,x1,x2,ny,y1,y2);
+  tmp->Sumw2();
 
   for (int i=0;i<=old->GetNbinsX()+1;i++) {
     for (int j=0;j<=old->GetNbinsY()+1;j++) {
