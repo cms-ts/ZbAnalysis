@@ -64,8 +64,6 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
-#include "DataFormats/JetReco/interface/GenJet.h"
-#include "DataFormats/JetReco/interface/GenJetCollection.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "JetMETCorrections/Objects/interface/JetCorrector.h"
@@ -75,7 +73,6 @@
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
 #include "Rivet/Projections/FastJets.hh"
-
 
 //
 // class declaration
@@ -293,12 +290,6 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
  edm::Handle<vector<reco::GenParticle> > genPart;
   iEvent.getByLabel ("genParticles", genPart);
-
-  edm::Handle<vector<reco::GenJet> > gJets;
-  iEvent.getByLabel(edm::InputTag("ak5GenJetsNoNu",""), gJets);
-  if (! gJets.isValid()) {
-    iEvent.getByLabel(edm::InputTag("selectedPatJetsPFlow","genJets"), gJets);
-  }
 
   std::auto_ptr<std::vector<double>> myEventWeight( new std::vector<double> );
 
