@@ -981,7 +981,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     diele_mass = z.mass();
     diele_pt = z.pt();
     diele_phi = z.phi();
-    if (diele_phi<0) diele_phi = diele_phi + 2 * acos (-1);
     if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
 
@@ -1010,7 +1009,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     dimuon_mass = z.mass();
     dimuon_pt = z.pt();
     dimuon_phi = z.phi();
-    if (dimuon_phi<0) dimuon_phi = dimuon_phi + 2 * acos (-1);
     if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
   }
 
@@ -1053,7 +1051,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       dielemuon_mass = z.mass();
       dielemuon_pt   = z.pt();
       dielemuon_phi  = z.phi();
-      if (dielemuon_phi<0) dielemuon_phi = dielemuon_phi + 2 * acos (-1);
       if (dielemuon_mass>71 && dielemuon_mass<111) em_event = true;
     }
     if (imuon1!=-1) {
