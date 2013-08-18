@@ -142,6 +142,7 @@ private:
   std::string pileup_;
   std::string lepton_;
   std::string path_;
+  bool rivet_;
 
   edm::LumiReWeighting LumiWeights_;
 
@@ -209,6 +210,8 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   pileup_ = iConfig.getUntrackedParameter < std::string > ("pileup", "S7");
   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
   path_ =   iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
+
+  rivet_  = iConfig.getUntrackedParameter < bool > ("rivet", false);
 
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
@@ -366,6 +369,8 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     MyWeight = LumiWeights_.weight (Tnpv);
 
   }
+
+  if (rivet_) MyWeight = 1.0;
 
   edm::Handle<GenEventInfoProduct> genEventInfoHandle;
 
@@ -852,6 +857,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
 // ------------ method called once each job just before starting event loop ------------
 void GenbAnalyzer::beginJob () {
+
   LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileup_ + ".root", path_ + "/" + "pileup_2012.root", "pileup", "pileup");
 
 }
