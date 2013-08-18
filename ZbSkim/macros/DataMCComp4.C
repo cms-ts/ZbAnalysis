@@ -217,6 +217,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	if (imode<=2) {
 	  h_mc2_unf = (TH1F*) unfold_mc.Hreco();
 
+	  h_mc2_unf->SetMinimum(TMath::Max(1.0, 0.1*h_mc2_reco->GetMinimum()));
+
 	  float val = TMath::Max(h_mc2_unf->GetMaximum(), h_mc2_reco->GetMaximum());
 	  val = TMath::Max(val, h_mc2_truth->GetMaximum());
 	  val = TMath::Max(val, h_mc1_reco->GetMaximum());
