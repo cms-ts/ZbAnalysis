@@ -462,6 +462,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   	diele_mass = y.M();
   	diele_pt =   y.Pt();
 	diele_phi =  y.Phi();
+	if (diele_phi<0) diele_phi = diele_phi + 2 * acos (-1);
 	if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
 
@@ -538,6 +539,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
         dimuon_mass = y.M();
         dimuon_pt =   y.Pt();
         dimuon_phi =  y.Phi();
+        if (dimuon_phi<0) dimuon_phi = dimuon_phi + 2 * acos (-1);
         if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
   }
 

@@ -979,8 +979,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     z = vect_ele[iele0].p4() + vect_ele[iele1].p4();
 #endif
     diele_mass = z.mass();
-    diele_phi = z.phi();
     diele_pt = z.pt();
+    diele_phi = z.phi();
+    if (diele_phi<0) diele_phi = diele_phi + 2 * acos (-1);
     if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
 
@@ -1007,8 +1008,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     math::XYZTLorentzVector z;
     z = vect_muon[imuon0].p4() + vect_muon[imuon1].p4();
     dimuon_mass = z.mass();
-    dimuon_phi = z.phi();
     dimuon_pt = z.pt();
+    dimuon_phi = z.phi();
+    if (dimuon_phi<0) dimuon_phi = dimuon_phi + 2 * acos (-1);
     if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
   }
 
