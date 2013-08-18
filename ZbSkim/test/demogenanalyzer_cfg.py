@@ -83,12 +83,12 @@ process.demoMuo2 = cms.EDAnalyzer('ZJetsAnalyzer',
 
 process.demoEleGen = cms.EDProducer('GenbAnalyzer',
 	pileup  = cms.untracked.string("S10"),
-	lepton  = cms.untracked.string("electron"),
+	lepton  = cms.untracked.string("electron")
 )
 
 process.demoMuoGen = cms.EDProducer('GenbAnalyzer',
 	pileup  = cms.untracked.string("S10"),
-	lepton  = cms.untracked.string("muon"),
+	lepton  = cms.untracked.string("muon")
 )
 
 process.TFileService = cms.Service("TFileService",
