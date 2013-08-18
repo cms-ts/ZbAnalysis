@@ -462,7 +462,6 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   	diele_mass = y.M();
   	diele_pt =   y.Pt();
 	diele_phi =  y.Phi();
-	if (diele_phi<0) diele_phi = diele_phi + 2 * acos (-1);
 	if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
 
@@ -539,7 +538,6 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
         dimuon_mass = y.M();
         dimuon_pt =   y.Pt();
         dimuon_phi =  y.Phi();
-        if (dimuon_phi<0) dimuon_phi = dimuon_phi + 2 * acos (-1);
         if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
   }
 
@@ -693,7 +691,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_second_ele_pt->Fill (pos_dres.p_part.Pt(), MyWeight);
     w_mass_ee->Fill(diele_mass, MyWeight);
     w_pt_Z_ee->Fill(diele_pt, MyWeight);
-    double delta_phi_ee = fabs(diele_phi - vect_jets[0].phi());
+    double delta_phi_ee = fabs(diele_phi - vect_jets[0].phi_std());
     if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
     w_delta_ee->Fill(delta_phi_ee, MyWeight);
   }
@@ -703,7 +701,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_second_muon_pt->Fill (antimu_dres.p_part.Pt(), MyWeight);
     w_mass_mm->Fill(dimuon_mass, MyWeight);
     w_pt_Z_mm->Fill(dimuon_pt, MyWeight);
-    double delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi());
+    double delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi_std());
     if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
     w_delta_mm->Fill(delta_phi_mm, MyWeight);
   }
@@ -739,7 +737,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   }
 
   if (ee_event && Nb > 0 && Nj > 0) {
-    double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
+    double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi_std());
     if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
     w_delta_ee_b->Fill(delta_phi_ee_b, MyWeight);
     if (Nj == 1) {
@@ -748,7 +746,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     }
   }
   if (mm_event && Nb > 0 && Nj > 0) {
-    double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
+    double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi_std());
     if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
     w_delta_mm_b->Fill(delta_phi_mm_b, MyWeight);
     if (Nj == 1) {
@@ -813,22 +811,22 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   }
 
   if (ee_event && Nj > 0) {
-    double delta_phi_ee = fabs(diele_phi - vect_jets[0].phi());
+    double delta_phi_ee = fabs(diele_phi - vect_jets[0].phi_std());
     if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
     myDeltaPhi->push_back(delta_phi_ee);
     if (Nb > 0) {
-      double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
+      double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi_std());
       if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
       myBDeltaPhi->push_back(delta_phi_ee_b);
     }
   }
 
   if (mm_event && Nj > 0) {
-    double delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi());
+    double delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi_std());
     if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
     myDeltaPhi->push_back(delta_phi_mm);
     if (Nb > 0) {
-      double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
+      double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi_std());
       if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
       myBDeltaPhi->push_back(delta_phi_mm_b);
     }
