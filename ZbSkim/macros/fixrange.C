@@ -76,8 +76,10 @@ TH2F* fixrange(TH2F* old) {
       int jj = tmp->GetYaxis()->FindBin(old->GetYaxis()->GetBinCenter(j));
       float c = tmp->GetBinContent(ii,jj)+old->GetBinContent(i,j);
       float e = TMath::Sqrt(tmp->GetBinError(ii,jj)**2+old->GetBinError(i,j)**2);
-      tmp->SetBinContent(ii,jj,c);
-      tmp->SetBinError(ii,jj,e);
+      if (ii<tmp->GetNbinsX()+1) {
+        tmp->SetBinContent(ii,jj,c);
+        tmp->SetBinError(ii,jj,e);
+      }
     }
   }
 
