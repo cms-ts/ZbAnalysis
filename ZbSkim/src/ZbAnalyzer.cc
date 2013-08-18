@@ -1051,8 +1051,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       z = vect_muon[imuon0].p4() + vect_ele[iele1].p4();
 #endif
       dielemuon_mass = z.mass();
-      dielemuon_phi  = z.phi();
       dielemuon_pt   = z.pt();
+      dielemuon_phi  = z.phi();
+      if (dielemuon_phi<0) dielemuon_phi = dielemuon_phi + 2 * acos (-1);
       if (dielemuon_mass>71 && dielemuon_mass<111) em_event = true;
     }
     if (imuon1!=-1) {
