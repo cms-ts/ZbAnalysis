@@ -13,7 +13,8 @@ TH1F* fixrange(TH1F *old) {
     x1 = 0.;
     x2 = 200.;
   } else {
-    return old;
+    x1 = old->GetXaxis()->GetBinCenter(1);
+    x2 = old->GetXaxis()->GetBinCenter(old->GetNbinsX());
   }
 
   int nx = old->GetXaxis()->FindBin(x2)-old->GetXaxis()->FindBin(x1)+1;
@@ -21,7 +22,7 @@ TH1F* fixrange(TH1F *old) {
   x1 = old->GetXaxis()->GetBinLowEdge(old->GetXaxis()->FindBin(x1));
   x2 = old->GetXaxis()->GetBinUpEdge(old->GetXaxis()->FindBin(x2));
 
-  TH1F *tmp = new TH1F("tmp",old->GetTitle(),nx,x1,x2);
+  TH1F* tmp = new TH1F("tmp",old->GetTitle(),nx,x1,x2);
   tmp->Sumw2();
 
   for (int i=0;i<=old->GetNbinsX()+1;i++) {
@@ -31,6 +32,8 @@ TH1F* fixrange(TH1F *old) {
     tmp->SetBinContent(ii,c);
     tmp->SetBinError(ii,e);
   }
+
+  tmp->SetEntries(old->GetEntries());
 
   old->Delete();
   tmp->SetName(name.c_str());
@@ -53,7 +56,8 @@ TH2F* fixrange(TH2F* old) {
     x1 = 0.;
     x2 = 200.;
   } else {
-    return old;
+    x1 = old->GetXaxis()->GetBinCenter(1);
+    x2 = old->GetXaxis()->GetBinCenter(old->GetNbinsX());
   }
 
   float y1=x1;
@@ -67,7 +71,7 @@ TH2F* fixrange(TH2F* old) {
   y1 = old->GetYaxis()->GetBinLowEdge(old->GetYaxis()->FindBin(y1));
   y2 = old->GetYaxis()->GetBinUpEdge(old->GetYaxis()->FindBin(y2));
 
-  TH2F *tmp = new TH2F("tmp",old->GetTitle(),nx,x1,x2,ny,y1,y2);
+  TH2F* tmp = new TH2F("tmp",old->GetTitle(),nx,x1,x2,ny,y1,y2);
   tmp->Sumw2();
 
   for (int i=0;i<=old->GetNbinsX()+1;i++) {
@@ -76,12 +80,14 @@ TH2F* fixrange(TH2F* old) {
       int jj = tmp->GetYaxis()->FindBin(old->GetYaxis()->GetBinCenter(j));
       float c = tmp->GetBinContent(ii,jj)+old->GetBinContent(i,j);
       float e = TMath::Sqrt(tmp->GetBinError(ii,jj)**2+old->GetBinError(i,j)**2);
-      if (ii<tmp->GetNbinsX()+1) {
-        tmp->SetBinContent(ii,jj,c);
-        tmp->SetBinError(ii,jj,e);
-      }
+      if (ii==0||ii==tmp->GetNbinsX()+1) continue;
+      if (jj==0||jj==tmp->GetNbinsY()+1) continue;
+      tmp->SetBinContent(ii,jj,c);
+      tmp->SetBinError(ii,jj,e);
     }
   }
+
+  tmp->SetEntries(old->GetEntries());
 
   old->Delete();
   tmp->SetName(name.c_str());
