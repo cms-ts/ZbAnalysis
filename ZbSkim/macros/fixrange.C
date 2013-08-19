@@ -13,7 +13,8 @@ TH1F* fixrange(TH1F *old) {
     x1 = 0.;
     x2 = 200.;
   } else {
-    return old;
+    x1 = old->GetXaxis()->GetBinCenter(1);
+    x2 = old->GetXaxis()->GetBinCenter(old->GetNbinsX());
   }
 
   int nx = old->GetXaxis()->FindBin(x2)-old->GetXaxis()->FindBin(x1)+1;
@@ -55,7 +56,8 @@ TH2F* fixrange(TH2F* old) {
     x1 = 0.;
     x2 = 200.;
   } else {
-    return old;
+    x1 = old->GetXaxis()->GetBinCenter(1);
+    x2 = old->GetXaxis()->GetBinCenter(old->GetNbinsX());
   }
 
   float y1=x1;
