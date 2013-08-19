@@ -13,8 +13,7 @@ TH1F* fixrange(TH1F *old) {
     x1 = 0.;
     x2 = 200.;
   } else {
-    x1 = old->GetXaxis()->GetBinCenter(1);
-    x2 = old->GetXaxis()->GetBinCenter(old->GetNbinsX());
+    return old;
   }
 
   int nx = old->GetXaxis()->FindBin(x2)-old->GetXaxis()->FindBin(x1)+1;
@@ -56,8 +55,7 @@ TH2F* fixrange(TH2F* old) {
     x1 = 0.;
     x2 = 200.;
   } else {
-    x1 = old->GetXaxis()->GetBinCenter(1);
-    x2 = old->GetXaxis()->GetBinCenter(old->GetNbinsX());
+    return old;
   }
 
   float y1=x1;
@@ -80,8 +78,7 @@ TH2F* fixrange(TH2F* old) {
       int jj = tmp->GetYaxis()->FindBin(old->GetYaxis()->GetBinCenter(j));
       float c = tmp->GetBinContent(ii,jj)+old->GetBinContent(i,j);
       float e = TMath::Sqrt(tmp->GetBinError(ii,jj)**2+old->GetBinError(i,j)**2);
-      if (ii==0||ii==tmp->GetNbinsX()+1) continue;
-      if (jj==0||jj==tmp->GetNbinsY()+1) continue;
+      if (ii==tmp->GetNbinsX()+1) continue;
       tmp->SetBinContent(ii,jj,c);
       tmp->SetBinError(ii,jj,e);
     }
