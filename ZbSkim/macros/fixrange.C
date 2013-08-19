@@ -1,4 +1,4 @@
-TH1F* fixrange(TH1F *old) {
+TH1F* fixrange(TH1F* old) {
 
   float x1, x2;
   string name = old->GetName();
@@ -27,10 +27,15 @@ TH1F* fixrange(TH1F *old) {
 
   for (int i=0;i<=old->GetNbinsX()+1;i++) {
     int ii = tmp->GetXaxis()->FindBin(old->GetXaxis()->GetBinCenter(i));
-    float c = tmp->GetBinContent(ii)+old->GetBinContent(i);
-    float e = TMath::Sqrt(tmp->GetBinError(ii)**2+old->GetBinError(i)**2);
-    tmp->SetBinContent(ii,c);
-    tmp->SetBinError(ii,e);
+    float c1 = tmp->GetBinContent(ii);
+    float e1 = tmp->GetBinError(ii);
+    float c2 = old->GetBinContent(i);
+    float e2 = old->GetBinError(i);
+
+    if (ii==tmp->GetNbinsX()+1) continue;
+
+    tmp->SetBinContent(ii,c1+c2);
+    tmp->SetBinError(ii,TMath::Sqrt(e1*e1+e2*e2));
   }
 
   tmp->SetEntries(old->GetEntries());
@@ -78,11 +83,15 @@ TH2F* fixrange(TH2F* old) {
     for (int j=0;j<=old->GetNbinsY()+1;j++) {
       int ii = tmp->GetXaxis()->FindBin(old->GetXaxis()->GetBinCenter(i));
       int jj = tmp->GetYaxis()->FindBin(old->GetYaxis()->GetBinCenter(j));
-      float c = tmp->GetBinContent(ii,jj)+old->GetBinContent(i,j);
-      float e = TMath::Sqrt(tmp->GetBinError(ii,jj)**2+old->GetBinError(i,j)**2);
+      float c1 = tmp->GetBinContent(ii,jj);
+      float e1 = tmp->GetBinError(ii,jj);
+      float c2 = old->GetBinContent(i,j);
+      float e2 = old->GetBinError(i,j);
+
       if (ii==tmp->GetNbinsX()+1) continue;
-      tmp->SetBinContent(ii,jj,c);
-      tmp->SetBinError(ii,jj,e);
+
+      tmp->SetBinContent(ii,jj,c1+c2);
+      tmp->SetBinError(ii,jj,TMath::Sqrt(e1*e1+e2*e2));
     }
   }
 
