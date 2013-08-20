@@ -147,8 +147,9 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	h_mc2_truth = fixrange(h_mc2_truth);
 	h_mc2_reco = fixrange(h_mc2_reco);
 
-	RooUnfoldResponse response (h_mc1_reco, h_mc1_truth, h_mc1_matrix);
+	RooUnfoldResponse response(h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 	response.UseOverflow();
+	//response.Print();
 
 	h_mc1_truth->Scale(norm1);
 	h_mc1_reco->Scale(norm1);
@@ -178,25 +179,33 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  h_mc2_reco->Scale(c_b);
 	}
 
+	RooUnfold* unfold_mc;
+	RooUnfold* unfold_data;
+
 	if (method==0) {
 	  int kreg = 0; // default 0 -> nbins/2
 	  int ntoys = 100; // default 1000
-	  RooUnfoldSvd unfold_mc (&response, h_mc2_reco, kreg, ntoys);
-	  RooUnfoldSvd unfold_data (&response, h_data_reco, kreg, ntoys);
+	  unfold_mc = new RooUnfoldSvd(&response, h_mc2_reco, kreg, ntoys);
+	  unfold_data = new RooUnfoldSvd(&response, h_data_reco, kreg, ntoys);
 	}
 
 	if (method==1) {
 	  int niter = 4; // default 4 -> number of iterations
-	  RooUnfoldBayes unfold_mc (&response, h_mc2_reco, niter);
-	  RooUnfoldBayes unfold_data (&response, h_data_reco, niter);
+	  unfold_mc = new RooUnfoldBayes(&response, h_mc2_reco, niter);
+	  unfold_data = new RooUnfoldBayes(&response, h_data_reco, niter);
 	}
 
 	if (method==2) {
-	  RooUnfoldBinByBin unfold_mc (&response, h_mc2_reco);
-	  RooUnfoldBinByBin unfold_data (&response, h_data_reco);
+	  unfold_mc = new RooUnfoldBinByBin(&response, h_mc2_reco);
+	  unfold_data = new RooUnfoldBinByBin(&response, h_data_reco);
 	}
 
-	if (imode<=0) unfold_mc.PrintTable(cout, h_mc1_truth);
+	if (imode<=2) {
+	  unfold_mc->PrintTable(cout, h_mc2_truth, RooUnfold::kErrors);
+	}
+	if (imode>=3) {
+	  unfold_data->PrintTable(cout);
+	}
 
 	TCanvas* c1 = new TCanvas("c1", "c1", 800, 600);
 
@@ -209,16 +218,23 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 	TH1F* h_mc2_unf;
 	if (imode<=2) {
-	  h_mc2_unf = (TH1F*) unfold_mc.Hreco();
+	  h_mc2_unf = (TH1F*) unfold_mc->Hreco(RooUnfold::kErrors);
 
-	  h_mc2_unf->SetMinimum(TMath::Max(1.0, 0.1*h_mc2_reco->GetMinimum()));
+	  RooUnfoldErrors* e = new RooUnfoldErrors(0, unfold_mc);
+	  TH1F* h_errors = e->UnfoldingError();
+	  TH1F* h_residuals = e->RMSResiduals();
+	  TMatrixD h_covariance = unfold_mc->Ereco(RooUnfold::kCovariance);
+	  //h_covariance.Print();
 
-	  float val = TMath::Max(h_mc2_unf->GetMaximum(), h_mc2_reco->GetMaximum());
-	  val = TMath::Max(val, h_mc2_truth->GetMaximum());
-	  val = TMath::Max(val, h_mc1_reco->GetMaximum());
-	  val = TMath::Max(val, h_mc1_truth->GetMaximum());
+	  float vmin = TMath::Max(1.0, 0.1*h_mc2_reco->GetMinimum());
+	  h_mc2_unf->SetMinimum(vmin);
 
-	  h_mc2_unf->SetMaximum(1.5*val);
+	  float vmax = TMath::Max(0.0, h_mc2_unf->GetMaximum());
+	  vmax = TMath::Max(vmax, h_mc2_reco->GetMaximum());
+	  vmax = TMath::Max(vmax, h_mc2_truth->GetMaximum());
+	  vmax = TMath::Max(vmax, h_mc1_reco->GetMaximum());
+	  vmax = TMath::Max(vmax, h_mc1_truth->GetMaximum());
+	  h_mc2_unf->SetMaximum(1.5*vmax);
 
 	  h_mc2_unf->Draw("HIST");
 	  h_mc2_reco->Draw("HISTSAME");
@@ -239,20 +255,19 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 	TH1F* h_data_unf;
 	if (imode>=3) {
-	  c1->cd();
-          TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
-          pad1->SetBottomMargin(0.001);
-          pad1->Draw();
-          pad1->cd();
-          pad1->SetLogy();
+	  h_data_unf = (TH1F*) unfold_data->Hreco(RooUnfold::kErrors);
 
-	  h_data_unf = (TH1F*) unfold_data.Hreco();
+	  RooUnfoldErrors* e = new RooUnfoldErrors(0, unfold_data);
+	  TH1F* h_errors = e->UnfoldingError();
+	  TH1F* h_residuals = e->RMSResiduals();
+	  TMatrixD h_covariance = unfold_data->Ereco(RooUnfold::kCovariance);
+	  //h_covariance.Print();
 
-	  float val = TMath::Max(h_data_unf->GetMaximum(),h_data_reco->GetMaximum());
-	  val = TMath::Max(val, h_mc1_reco->GetMaximum());
-	  val = TMath::Max(val, h_mc1_truth->GetMaximum());
-
-	  h_data_reco->SetMaximum(1.5*val);
+	  float vmax = TMath::Max(0.0, h_data_unf->GetMaximum());
+	  float vmax = TMath::Max(vmax, h_data_reco->GetMaximum());
+	  vmax = TMath::Max(vmax, h_mc1_reco->GetMaximum());
+	  vmax = TMath::Max(vmax, h_mc1_truth->GetMaximum());
+	  h_data_reco->SetMaximum(1.5*vmax);
 
           h_data_reco->SetLineColor(kGreen);
           h_data_reco->SetMarkerColor(kGreen);
@@ -393,8 +408,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  c2->cd();
 	  c2->SetLogy();
 	  TH1D *d;
-	  if (imode<=2) d = unfold_mc.Impl()->GetD();
-	  if (imode>=3) d = unfold_data.Impl()->GetD();
+	  if (imode<=2) d = ((RooUnfoldSvd*)unfold_mc)->Impl()->GetD();
+	  if (imode>=3) d = ((RooUnfoldSvd*)unfold_data)->Impl()->GetD();
 	  d->DrawCopy();
 	}
 
