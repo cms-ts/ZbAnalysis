@@ -358,6 +358,15 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
         leg->Draw();
 
+        TLatex* t = new TLatex();
+        t->SetTextSize(0.05);
+        t->SetTextFont(42);
+        t->SetLineWidth(2);
+        t->SetNDC();
+        if (method==0) t->DrawLatex(0.11,0.85,"SVD");
+        if (method==1) t->DrawLatex(0.11,0.85,"BAYES");
+        if (method==2) t->DrawLatex(0.11,0.85,"BIN-BY-BIN");
+
         pad1->Update();
         c1->Update();
 
