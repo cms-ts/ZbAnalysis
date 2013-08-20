@@ -147,6 +147,13 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	h_mc2_truth = fixrange(h_mc2_truth);
 	h_mc2_reco = fixrange(h_mc2_reco);
 
+	if (method==1) {
+	   for (int i=0; i<=h_mc1_matrix->GetNbinsX()+1; i++) {
+	    h_mc1_matrix->SetBinContent(i, 0, 0.);
+	    h_mc1_matrix->SetBinContent(i, h_mc1_matrix->GetNbinsX()+1, 0.);
+	  }
+	}
+
 	RooUnfoldResponse response(h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 	response.UseOverflow();
 	//response.Print();
