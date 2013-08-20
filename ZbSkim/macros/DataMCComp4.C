@@ -17,8 +17,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 // method = 0; // use SVD
 // method = 1; // use Bayes
-// method = 2; // use TUnfold
-// method = 3; // use BinByBin
+// method = 2; // use BinByBin
 
 	gSystem->Load("libRooUnfold");
 
@@ -193,11 +192,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	}
 
 	if (method==2) {
-	  RooUnfoldTUnfold unfold_mc (&response, h_mc2_reco);
-	  RooUnfoldTUnfold unfold_data (&response, h_data_reco);
-	}
-
-	if (method==3) {
 	  RooUnfoldBinByBin unfold_mc (&response, h_mc2_reco);
 	  RooUnfoldBinByBin unfold_data (&response, h_data_reco);
 	}
