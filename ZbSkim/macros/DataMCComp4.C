@@ -422,6 +422,17 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  d->DrawCopy();
 	}
 
+	TCanvas* c3;
+	c3 = new TCanvas("c3", "c3", 800, 600);
+	c3->cd();
+	c3->SetLogz();
+	TH2F* h_response = response.Hresponse();
+	h_response->SetStats(0);
+	h_response->SetTitle("Response matrix: (x,y)=(measured,truth)");
+	h_response->GetXaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
+	h_response->GetYaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
+	h_response->Draw("colz");
+
 	RooUnfoldErrors* e;
 	int ntoys = 0; // default 500
 	if (imode<=2) e = new RooUnfoldErrors(ntoys, unfold_mc, h_mc2_truth);
@@ -433,14 +444,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	if (imode<=2) h_err_cov = new TH2F(TMatrix(unfold_mc->Ereco(RooUnfold::kCovariance)));
 	if (imode>=3) h_err_cov = new TH2F(TMatrix(unfold_data->Ereco(RooUnfold::kCovariance)));
 
-	TCanvas* c3;
-	c3 = new TCanvas("c3", "c3", 800, 600);
-	c3->cd();
-	c3->SetLogz();
-	TH2F* h_response = response.Hresponse();
-	h_response->SetStats(0);
-	h_response->Draw("colz");
-
 	TCanvas* c4;
 	c4 = new TCanvas("c4", "c4", 800, 600);
 	c4->Divide(1, 2);
@@ -449,12 +452,26 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	vmax = TMath::Max(vmax, h_err_res->GetMaximum());
 	h_err_err->SetMaximum(1.2*vmax);
 	h_err_err->SetStats(0);
+	h_err_err->GetXaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
+	h_err_err->GetYaxis()->SetTitle("Error");
 	h_err_err->Draw("HIST");
 	h_err_res->Draw("PSAME");
 	c4->cd(2);
 	h_err_cov->SetStats(0);
-	h_err_cov->SetTitle("Covariance matrix");
-	h_err_cov->Draw("text");
+	h_err_cov->SetTitle("Covariance matrix (including under/overflows)");
+	//h_err_cov->GetXaxis()->SetRange(1, h_mc1_matrix->GetNbinsX());
+	//h_err_cov->GetYaxis()->SetRange(1, h_mc1_matrix->GetNbinsY());
+	h_err_cov->GetXaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
+	h_err_cov->GetYaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
+	gStyle->SetHistMinimumZero();
+	h_err_cov->SetMarkerSize(1.45);
+	gPad->SetGridx();
+	gPad->SetGridy();
+	h_err_cov->GetXaxis()->SetNdivisions(020);
+	h_err_cov->GetYaxis()->SetNdivisions(020);
+	gStyle->SetGridStyle(1);
+	gStyle->SetPaintTextFormat("+11.3g");
+	h_err_cov->Draw("TEXT");
 
 	TLegend* err = new TLegend (0.70, 0.75, 0.89, 0.89);
 	err->SetBorderSize(0);
