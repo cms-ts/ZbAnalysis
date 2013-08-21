@@ -198,7 +198,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	}
 
 	if (method==2) {
-	  int reg = 2; // default 4 -> 1=size, 2=derivative, 3=curvature
+	  int reg = 2; // default 2 -> 1=size, 2=derivative, 3=curvature
 	  unfold_mc = new RooUnfoldTUnfold(&response, h_mc2_reco, reg);
 	  unfold_data = new RooUnfoldTUnfold(&response, h_data_reco, reg); 
 	}
