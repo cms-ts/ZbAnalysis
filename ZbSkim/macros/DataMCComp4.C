@@ -17,7 +17,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 // method = 0; // use SVD
 // method = 1; // use Bayes
-// method = 2; // use BinByBin
+// method = 2; // use TUnfold
+// method = 3; // use BinByBin
 
 	gSystem->Load("libRooUnfold");
 
@@ -147,15 +148,9 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	h_mc2_truth = fixrange(h_mc2_truth);
 	h_mc2_reco = fixrange(h_mc2_reco);
 
-	if (method==1) {
-	   for (int i=0; i<=h_mc1_matrix->GetNbinsX()+1; i++) {
-	    h_mc1_matrix->SetBinContent(i, 0, 0.);
-	    h_mc1_matrix->SetBinContent(i, h_mc1_matrix->GetNbinsX()+1, 0.);
-	  }
-	}
-
 	RooUnfoldResponse response(h_mc1_reco, h_mc1_truth, h_mc1_matrix);
-	response.UseOverflow();
+	response.UseOverflow(kTRUE);
+	if (method==2) response.UseOverflow(kFALSE);
 	//response.Print();
 
 	h_mc1_truth->Scale(norm1);
@@ -203,6 +198,11 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	}
 
 	if (method==2) {
+	  unfold_mc = new RooUnfoldTUnfold(&response, h_mc2_reco);
+	  unfold_data = new RooUnfoldTUnfold(&response, h_data_reco); 
+	}
+
+	if (method==3) {
 	  unfold_mc = new RooUnfoldBinByBin(&response, h_mc2_reco);
 	  unfold_data = new RooUnfoldBinByBin(&response, h_data_reco);
 	}
@@ -243,6 +243,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  vmax = TMath::Max(vmax, h_mc1_truth->GetMaximum());
 	  h_mc2_unf->SetMaximum(1.5*vmax);
 
+	  h_mc2_unf->SetStats(0);
+
 	  h_mc2_unf->Draw("HIST");
 	  h_mc2_reco->Draw("HISTSAME");
 	  h_mc2_truth->Draw("HISTSAME");
@@ -275,6 +277,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  vmax = TMath::Max(vmax, h_mc1_reco->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc1_truth->GetMaximum());
 	  h_data_reco->SetMaximum(1.5*vmax);
+
+	  h_data_reco->SetStats(0);
 
           h_data_reco->SetLineColor(kGreen);
           h_data_reco->SetMarkerColor(kGreen);
