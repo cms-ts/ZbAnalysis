@@ -208,11 +208,19 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  unfold_data = new RooUnfoldBinByBin(&response, h_data_reco);
 	}
 
+	int dosys = 0; // default 0 -> 0=no, 1=yes, 2=no measurement errors
+	unfold_mc->IncludeSystematics(dosys);
+	unfold_data->IncludeSystematics(dosys);
+
 	if (imode<=2) {
-	  unfold_mc->PrintTable(cout, h_mc2_truth, RooUnfold::kErrors);
+	  unfold_mc->Print();
+	  int err = RooUnfold::kErrors;
+	  unfold_mc->PrintTable(cout, h_mc2_truth, err);
 	}
 	if (imode>=3) {
-	  unfold_data->PrintTable(cout);
+	  unfold_data->Print();
+	  int err = RooUnfold::kErrors;
+	  unfold_data->PrintTable(cout, 0, err);
 	}
 
 	TCanvas* c1 = new TCanvas("c1", "c1", 800, 600);
@@ -226,7 +234,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 	TH1F* h_mc2_unfold;
 	if (imode<=2) {
-	  h_mc2_unfold = (TH1F*) unfold_mc->Hreco(RooUnfold::kErrors);
+	  int err = RooUnfold::kErrors;
+	  h_mc2_unfold = (TH1F*) unfold_mc->Hreco(err);
 
 	  float vmin = TMath::Max(1.0, 0.1*h_mc2_reco->GetMinimum());
 	  h_mc2_unfold->SetMinimum(vmin);
@@ -259,7 +268,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 	TH1F* h_data_unfold;
 	if (imode>=3) {
-	  h_data_unfold = (TH1F*) unfold_data->Hreco(RooUnfold::kErrors);
+	  int err = RooUnfold::kErrors;
+	  h_data_unfold = (TH1F*) unfold_data->Hreco(err);
 
 	  float vmax = TMath::Max(0.0, h_data_unfold->GetMaximum());
 	  vmax = TMath::Max(vmax, h_data_reco->GetMaximum());
@@ -447,8 +457,9 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	TH1F* h_err_err = e->UnfoldingError();
 	TH1F* h_err_res = e->RMSResiduals();
 	TH2F* h_err_cov;
-	if (imode<=2) h_err_cov = new TH2F(TMatrix(unfold_mc->Ereco(RooUnfold::kCovariance)));
-	if (imode>=3) h_err_cov = new TH2F(TMatrix(unfold_data->Ereco(RooUnfold::kCovariance)));
+	int err = RooUnfold::kCovariance;
+	if (imode<=2) h_err_cov = new TH2F(TMatrix(unfold_mc->Ereco(err)));
+	if (imode>=3) h_err_cov = new TH2F(TMatrix(unfold_data->Ereco(err)));
 
 	TCanvas* c4;
 	c4 = new TCanvas("c4", "c4", 800, 600);
