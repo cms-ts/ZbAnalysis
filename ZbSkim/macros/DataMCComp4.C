@@ -149,8 +149,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	h_mc2_reco = fixrange(h_mc2_reco);
 
 	RooUnfoldResponse response(h_mc1_reco, h_mc1_truth, h_mc1_matrix);
-	response.UseOverflow(kTRUE);
-	if (method==2) response.UseOverflow(kFALSE);
+	//response.UseOverflow(kTRUE);
+	//if (method==2) response.UseOverflow(kFALSE);
 	//response.Print();
 
 	h_mc1_truth->Scale(norm1);
