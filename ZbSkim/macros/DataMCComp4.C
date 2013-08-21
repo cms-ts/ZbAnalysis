@@ -224,7 +224,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	}
 
 	TCanvas* c1 = new TCanvas("c1", "c1", 800, 600);
-
 	c1->cd();
         TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
         pad1->SetBottomMargin(0.001);
@@ -332,51 +331,51 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
           tmp->GetXaxis()->SetTitle("H_{T} [GeV/c]");
 	}
 
-        TLegend *leg = new TLegend(0.42, 0.580, 0.68, 0.88);
-        leg->SetBorderSize(0);
-        leg->SetEntrySeparation(0.01);
-        leg->SetFillColor(0);
-        leg->SetFillStyle(0);
+        TLegend *leg1 = new TLegend(0.42, 0.580, 0.68, 0.88);
+        leg1->SetBorderSize(0);
+        leg1->SetEntrySeparation(0.01);
+        leg1->SetFillColor(0);
+        leg1->SetFillStyle(0);
 
         if (imode<=3) {
-          leg->AddEntry(h_mc1_reco,"MADGRAPH reco","l");
-          leg->AddEntry(h_mc1_truth,"MADGRAPH truth","l");
+          leg1->AddEntry(h_mc1_reco,"MADGRAPH reco","l");
+          leg1->AddEntry(h_mc1_truth,"MADGRAPH truth","l");
 	}
         if (imode==4) {
-          leg->AddEntry(h_mc1_reco,"SHERPA reco","l");
-          leg->AddEntry(h_mc1_truth,"SHERPA truth","l");
+          leg1->AddEntry(h_mc1_reco,"SHERPA reco","l");
+          leg1->AddEntry(h_mc1_truth,"SHERPA truth","l");
 	}
         if (imode==5) {
-          leg->AddEntry(h_mc1_reco,"POWHEG reco","l");
-          leg->AddEntry(h_mc1_truth,"POWHEG truth","l");
+          leg1->AddEntry(h_mc1_reco,"POWHEG reco","l");
+          leg1->AddEntry(h_mc1_truth,"POWHEG truth","l");
 	}
-        if (imode<=0) leg->AddEntry(h_mc2_unfold,"MADGRAPH unfold","l");
+        if (imode<=0) leg1->AddEntry(h_mc2_unfold,"MADGRAPH unfold","l");
         if (imode==1) {
-          leg->AddEntry(h_mc2_reco,"SHERPA reco","l");
-          leg->AddEntry(h_mc2_truth,"SHERPA truth","l");
-          leg->AddEntry(h_mc2_unfold,"SHERPA unfold","l");
+          leg1->AddEntry(h_mc2_reco,"SHERPA reco","l");
+          leg1->AddEntry(h_mc2_truth,"SHERPA truth","l");
+          leg1->AddEntry(h_mc2_unfold,"SHERPA unfold","l");
         }
         if (imode==2) {
-          leg->AddEntry(h_mc2_reco,"POWHEG reco","l");
-          leg->AddEntry(h_mc2_truth,"POWHEG truth","l");
-          leg->AddEntry(h_mc2_unfold,"POWHEG unfold","l");
+          leg1->AddEntry(h_mc2_reco,"POWHEG reco","l");
+          leg1->AddEntry(h_mc2_truth,"POWHEG truth","l");
+          leg1->AddEntry(h_mc2_unfold,"POWHEG unfold","l");
         }
         if (imode>=3) {
-          leg->AddEntry(h_data_reco,"DATA reco","p");
-          leg->AddEntry(h_data_unfold,"DATA unfold","p");
+          leg1->AddEntry(h_data_reco,"DATA reco","p");
+          leg1->AddEntry(h_data_unfold,"DATA unfold","p");
         }
 
-        leg->Draw();
+        leg1->Draw();
 
         TLatex* t = new TLatex();
         t->SetTextSize(0.05);
         t->SetTextFont(42);
         t->SetLineWidth(2);
         t->SetNDC();
-        if (method==0) t->DrawLatex(0.11,0.85,"SVD");
-        if (method==1) t->DrawLatex(0.11,0.85,"BAYES");
-        if (method==2) t->DrawLatex(0.12,0.85,"TUNFOLD");
-        if (method==3) t->DrawLatex(0.11,0.85,"BIN-BY-BIN");
+        if (method==0) t->DrawLatex(0.13,0.85,"SVD");
+        if (method==1) t->DrawLatex(0.13,0.85,"BAYES");
+        if (method==2) t->DrawLatex(0.13,0.85,"TUNFOLD");
+        if (method==3) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
 
         pad1->Update();
         c1->Update();
@@ -433,8 +432,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  d->DrawCopy();
 	}
 
-	TCanvas* c3;
-	c3 = new TCanvas("c3", "c3", 800, 600);
+	TCanvas* c3 = new TCanvas("c3", "c3", 800, 600);
 	c3->cd();
 	c3->SetLogz();
 	TH2F* h_response = response.Hresponse();
@@ -444,25 +442,24 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	h_response->GetYaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
 	h_response->Draw("colz");
 
-        if (method==0) t->DrawLatex(0.12,0.85,"SVD");
-        if (method==1) t->DrawLatex(0.12,0.85,"BAYES");
-        if (method==2) t->DrawLatex(0.12,0.85,"TUNFOLD");
-        if (method==3) t->DrawLatex(0.12,0.85,"BIN-BY-BIN");
+        if (method==0) t->DrawLatex(0.13,0.85,"SVD");
+        if (method==1) t->DrawLatex(0.13,0.85,"BAYES");
+        if (method==2) t->DrawLatex(0.13,0.85,"TUNFOLD");
+        if (method==3) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
 
 	RooUnfoldErrors* e;
 	int ntoys = 0; // default 500
 	if (imode<=2) e = new RooUnfoldErrors(ntoys, unfold_mc, h_mc2_truth);
 	if (imode>=3) e = new RooUnfoldErrors(ntoys, unfold_data);
-
 	TH1F* h_err_err = e->UnfoldingError();
 	TH1F* h_err_res = e->RMSResiduals();
+
 	TH2F* h_err_cov;
 	int err = RooUnfold::kCovariance;
 	if (imode<=2) h_err_cov = new TH2F(TMatrix(unfold_mc->Ereco(err)));
 	if (imode>=3) h_err_cov = new TH2F(TMatrix(unfold_data->Ereco(err)));
 
-	TCanvas* c4;
-	c4 = new TCanvas("c4", "c4", 800, 600);
+	TCanvas* c4 = new TCanvas("c4", "c4", 800, 600);
 	c4->Divide(1, 2);
 	c4->cd(1);
 	if (imode<=2) {
@@ -481,10 +478,23 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	h_err_err->Draw("HIST");
 	h_err_res->Draw("PSAME");
 
-        if (method==0) t->DrawLatex(0.12,0.85,"SVD");
-        if (method==1) t->DrawLatex(0.12,0.85,"BAYES");
-        if (method==2) t->DrawLatex(0.12,0.85,"TUNFOLD");
-        if (method==3) t->DrawLatex(0.12,0.85,"BIN-BY-BIN");
+	TLegend* leg2 = new TLegend (0.70, 0.75, 0.89, 0.89);
+	leg2->SetBorderSize(0);
+	leg2->SetEntrySeparation(0.01);
+	leg2->SetFillColor(0);
+	leg2->SetFillStyle(0);
+
+	leg2->SetTextSize(0.05);
+	leg2->SetTextFont(42);
+	leg2->AddEntry (h_err_err, "Unfolding errors", "L");
+	leg2->AddEntry (h_err_res, "Toy MC RMS",       "P");
+
+	leg2->Draw();
+
+        if (method==0) t->DrawLatex(0.13,0.85,"SVD");
+        if (method==1) t->DrawLatex(0.13,0.85,"BAYES");
+        if (method==2) t->DrawLatex(0.13,0.85,"TUNFOLD");
+        if (method==3) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
 
 	c4->cd(2);
 	h_err_cov->SetStats(0);
@@ -502,20 +512,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	gStyle->SetGridStyle(1);
 	gStyle->SetPaintTextFormat("+11.3g");
 	h_err_cov->Draw("TEXT");
-
-	TLegend* err = new TLegend (0.70, 0.75, 0.89, 0.89);
-	err->SetBorderSize(0);
-	err->SetEntrySeparation(0.01);
-	err->SetFillColor(0);
-	err->SetFillStyle(0);
-
-	err->SetTextSize(0.05);
-	err->SetTextFont(42);
-	err->AddEntry (h_err_err, "Unfolding errors", "L");
-	err->AddEntry (h_err_res, "Toy MC RMS",       "P");
-
-	c4->cd(1);
-	err->Draw();
 
 	if (plot) {
 	  if (ilepton==1) {
