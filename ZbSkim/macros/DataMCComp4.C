@@ -228,12 +228,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	if (imode<=2) {
 	  h_mc2_unf = (TH1F*) unfold_mc->Hreco(RooUnfold::kErrors);
 
-	  RooUnfoldErrors* e = new RooUnfoldErrors(0, unfold_mc);
-	  TH1F* h_errors = e->UnfoldingError();
-	  TH1F* h_residuals = e->RMSResiduals();
-	  TMatrixD h_covariance = unfold_mc->Ereco(RooUnfold::kCovariance);
-	  //h_covariance.Print();
-
 	  float vmin = TMath::Max(1.0, 0.1*h_mc2_reco->GetMinimum());
 	  h_mc2_unf->SetMinimum(vmin);
 
@@ -267,14 +261,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	if (imode>=3) {
 	  h_data_unf = (TH1F*) unfold_data->Hreco(RooUnfold::kErrors);
 
-	  RooUnfoldErrors* e = new RooUnfoldErrors(0, unfold_data);
-	  TH1F* h_errors = e->UnfoldingError();
-	  TH1F* h_residuals = e->RMSResiduals();
-	  TMatrixD h_covariance = unfold_data->Ereco(RooUnfold::kCovariance);
-	  //h_covariance.Print();
-
 	  float vmax = TMath::Max(0.0, h_data_unf->GetMaximum());
-	  float vmax = TMath::Max(vmax, h_data_reco->GetMaximum());
+	  vmax = TMath::Max(vmax, h_data_reco->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc1_reco->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc1_truth->GetMaximum());
 	  h_data_reco->SetMaximum(1.5*vmax);
@@ -434,11 +422,61 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  d->DrawCopy();
 	}
 
+	RooUnfoldErrors* e;
+	int ntoys = 0; // default 500
+	if (imode<=2) e = new RooUnfoldErrors(ntoys, unfold_mc, h_mc2_truth);
+	if (imode>=3) e = new RooUnfoldErrors(ntoys, unfold_data);
+
+	TH1F* h_err_err = e->UnfoldingError();
+	TH1F* h_err_res = e->RMSResiduals();
+	TH2F* h_err_cov;
+	if (imode<=2) h_err_cov = new TH2F(TMatrix(unfold_mc->Ereco(RooUnfold::kCovariance)));
+	if (imode>=3) h_err_cov = new TH2F(TMatrix(unfold_data->Ereco(RooUnfold::kCovariance)));
+
+	TCanvas* c3;
+	c3 = new TCanvas("c3", "c3", 800, 600);
+	c3->cd();
+	c3->SetLogz();
+	TH2F* h_response = response.Hresponse();
+	h_response->SetStats(0);
+	h_response->Draw("colz");
+
+	TCanvas* c4;
+	c4 = new TCanvas("c4", "c4", 800, 600);
+	c4->Divide(1, 2);
+	c4->cd(1);
+	float vmax = TMath::Max(1.0, h_err_err->GetMaximum());
+	vmax = TMath::Max(vmax, h_err_res->GetMaximum());
+	h_err_err->SetMaximum(1.2*vmax);
+	h_err_err->SetStats(0);
+	h_err_err->Draw("HIST");
+	h_err_res->Draw("PSAME");
+	c4->cd(2);
+	h_err_cov->SetStats(0);
+	h_err_cov->SetTitle("Covariance matrix");
+	h_err_cov->Draw("text");
+
+	TLegend* err = new TLegend (0.70, 0.75, 0.89, 0.89);
+	err->SetBorderSize(0);
+	err->SetEntrySeparation(0.01);
+	err->SetFillColor(0);
+	err->SetFillStyle(0);
+
+	err->SetTextSize(0.05);
+	err->SetTextFont(42);
+	err->AddEntry (h_err_err, "Unfolding errors", "L");
+	err->AddEntry (h_err_res, "Toy MC RMS",       "P");
+
+	c4->cd(1);
+	err->Draw();
+
 	if (plot) {
 	  if (ilepton==1) {
 	    gSystem->mkdir((path + "/electrons/" + version + "/unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.pdf").c_str());
 	    if (c2) c2->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
+	    if (c3) c3->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_response.pdf").c_str());
+	    if (c4) c4->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
 	    if (imode>=3) {
 	      TFile f((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unf->Write(title.c_str());
@@ -449,6 +487,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	    gSystem->mkdir((path + "/muons/" + version + "/unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.pdf").c_str());
 	    if (c2) c2->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
+	    if (c3) c3->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_response.pdf").c_str());
+	    if (c4) c4->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
 	    if (imode>=3) {
 	      TFile f((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unf->Write(title.c_str());
