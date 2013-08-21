@@ -224,27 +224,27 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         pad1->cd();
         pad1->SetLogy();
 
-	TH1F* h_mc2_unf;
+	TH1F* h_mc2_unfold;
 	if (imode<=2) {
-	  h_mc2_unf = (TH1F*) unfold_mc->Hreco(RooUnfold::kErrors);
+	  h_mc2_unfold = (TH1F*) unfold_mc->Hreco(RooUnfold::kErrors);
 
 	  float vmin = TMath::Max(1.0, 0.1*h_mc2_reco->GetMinimum());
-	  h_mc2_unf->SetMinimum(vmin);
+	  h_mc2_unfold->SetMinimum(vmin);
 
-	  float vmax = TMath::Max(0.0, h_mc2_unf->GetMaximum());
+	  float vmax = TMath::Max(0.0, h_mc2_unfold->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc2_reco->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc2_truth->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc1_reco->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc1_truth->GetMaximum());
-	  h_mc2_unf->SetMaximum(1.5*vmax);
+	  h_mc2_unfold->SetMaximum(1.5*vmax);
 
-	  h_mc2_unf->SetStats(0);
+	  h_mc2_unfold->SetStats(0);
 
-	  h_mc2_unf->Draw("HIST");
+	  h_mc2_unfold->Draw("HIST");
 	  h_mc2_reco->Draw("HISTSAME");
 	  h_mc2_truth->Draw("HISTSAME");
 
-	  h_mc2_unf->SetLineColor(kBlack);
+	  h_mc2_unfold->SetLineColor(kBlack);
 	  h_mc2_reco->SetLineColor(kGreen);
 	  h_mc2_truth->SetLineColor(kRed);
 
@@ -257,11 +257,11 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  h_mc1_truth->SetLineStyle(2);
 	}
 
-	TH1F* h_data_unf;
+	TH1F* h_data_unfold;
 	if (imode>=3) {
-	  h_data_unf = (TH1F*) unfold_data->Hreco(RooUnfold::kErrors);
+	  h_data_unfold = (TH1F*) unfold_data->Hreco(RooUnfold::kErrors);
 
-	  float vmax = TMath::Max(0.0, h_data_unf->GetMaximum());
+	  float vmax = TMath::Max(0.0, h_data_unfold->GetMaximum());
 	  vmax = TMath::Max(vmax, h_data_reco->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc1_reco->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc1_truth->GetMaximum());
@@ -275,11 +275,11 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
           h_data_reco->SetMarkerSize(0.7);
           h_data_reco->Draw("EPX0");
 
-	  h_data_unf->SetLineColor(kBlack);
-	  h_data_unf->SetMarkerColor(kBlack);
-	  h_data_unf->SetMarkerStyle(20);
-	  h_data_unf->SetMarkerSize(0.7);
-	  h_data_unf->Draw("EPX0SAME");
+	  h_data_unfold->SetLineColor(kBlack);
+	  h_data_unfold->SetMarkerColor(kBlack);
+	  h_data_unfold->SetMarkerStyle(20);
+	  h_data_unfold->SetMarkerSize(0.7);
+	  h_data_unfold->Draw("EPX0SAME");
 
           h_mc1_truth->SetLineColor(kRed);
           h_mc1_truth->SetLineStyle(2);
@@ -297,8 +297,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	tmp->SetStats(0);
 	tmp->GetYaxis()->SetTitle("Events");
 
-	if (imode<=2) tmp = h_mc2_unf;
-	if (imode>=3) tmp = h_data_unf;
+	if (imode<=2) tmp = h_mc2_unfold;
+	if (imode>=3) tmp = h_data_unfold;
 	if (title=="w_first_jet_pt") {
 	  tmp->GetXaxis()->SetTitle("leading jet p_{T} [GeV/c]");
 	} else if (title=="w_first_jet_eta") {
@@ -340,20 +340,20 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
           leg->AddEntry(h_mc1_reco,"POWHEG reco","l");
           leg->AddEntry(h_mc1_truth,"POWHEG truth","l");
 	}
-        if (imode<=0) leg->AddEntry(h_mc2_unf,"MADGRAPH unfold","l");
+        if (imode<=0) leg->AddEntry(h_mc2_unfold,"MADGRAPH unfold","l");
         if (imode==1) {
           leg->AddEntry(h_mc2_reco,"SHERPA reco","l");
           leg->AddEntry(h_mc2_truth,"SHERPA truth","l");
-          leg->AddEntry(h_mc2_unf,"SHERPA unfold","l");
+          leg->AddEntry(h_mc2_unfold,"SHERPA unfold","l");
         }
         if (imode==2) {
           leg->AddEntry(h_mc2_reco,"POWHEG reco","l");
           leg->AddEntry(h_mc2_truth,"POWHEG truth","l");
-          leg->AddEntry(h_mc2_unf,"POWHEG unfold","l");
+          leg->AddEntry(h_mc2_unfold,"POWHEG unfold","l");
         }
         if (imode>=3) {
           leg->AddEntry(h_data_reco,"DATA reco","p");
-          leg->AddEntry(h_data_unf,"DATA unfold","p");
+          leg->AddEntry(h_data_unfold,"DATA unfold","p");
         }
 
         leg->Draw();
@@ -365,7 +365,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         t->SetNDC();
         if (method==0) t->DrawLatex(0.11,0.85,"SVD");
         if (method==1) t->DrawLatex(0.11,0.85,"BAYES");
-        if (method==2) t->DrawLatex(0.11,0.85,"BIN-BY-BIN");
+        if (method==2) t->DrawLatex(0.12,0.85,"TUNFOLD");
+        if (method==3) t->DrawLatex(0.11,0.85,"BIN-BY-BIN");
 
         pad1->Update();
         c1->Update();
@@ -379,8 +380,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         pad2->cd();
 
         TH1F *h_ratio;
-        if (imode<=2) h_ratio = (TH1F*) h_mc2_unf->Clone();
-        if (imode>=3) h_ratio = (TH1F*) h_data_unf->Clone();
+        if (imode<=2) h_ratio = (TH1F*) h_mc2_unfold->Clone();
+        if (imode>=3) h_ratio = (TH1F*) h_data_unfold->Clone();
 
 	h_ratio->SetTitle("");
         h_ratio->SetStats(0);
@@ -433,6 +434,11 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	h_response->GetYaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
 	h_response->Draw("colz");
 
+        if (method==0) t->DrawLatex(0.12,0.85,"SVD");
+        if (method==1) t->DrawLatex(0.12,0.85,"BAYES");
+        if (method==2) t->DrawLatex(0.12,0.85,"TUNFOLD");
+        if (method==3) t->DrawLatex(0.12,0.85,"BIN-BY-BIN");
+
 	RooUnfoldErrors* e;
 	int ntoys = 0; // default 500
 	if (imode<=2) e = new RooUnfoldErrors(ntoys, unfold_mc, h_mc2_truth);
@@ -448,14 +454,27 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	c4 = new TCanvas("c4", "c4", 800, 600);
 	c4->Divide(1, 2);
 	c4->cd(1);
-	float vmax = TMath::Max(1.0, h_err_err->GetMaximum());
-	vmax = TMath::Max(vmax, h_err_res->GetMaximum());
-	h_err_err->SetMaximum(1.2*vmax);
+	if (imode<=2) {
+	  h_err_err->Divide(h_mc2_unfold);
+	  h_err_res->Divide(h_mc2_unfold);
+	}
+	if (imode>=3) {
+	  h_err_err->Divide(h_data_unfold);
+	  h_err_res->Divide(h_data_unfold);
+	}
+	h_err_err->Scale(100);
+	h_err_res->Scale(100);
 	h_err_err->SetStats(0);
 	h_err_err->GetXaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
-	h_err_err->GetYaxis()->SetTitle("Error");
+	h_err_err->GetYaxis()->SetTitle("Error [%]");
 	h_err_err->Draw("HIST");
 	h_err_res->Draw("PSAME");
+
+        if (method==0) t->DrawLatex(0.12,0.85,"SVD");
+        if (method==1) t->DrawLatex(0.12,0.85,"BAYES");
+        if (method==2) t->DrawLatex(0.12,0.85,"TUNFOLD");
+        if (method==3) t->DrawLatex(0.12,0.85,"BIN-BY-BIN");
+
 	c4->cd(2);
 	h_err_cov->SetStats(0);
 	h_err_cov->SetTitle("Covariance matrix (including under/overflows)");
@@ -496,7 +515,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	    if (c4) c4->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
 	    if (imode>=3) {
 	      TFile f((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
-	      h_data_unf->Write(title.c_str());
+	      h_data_unfold->Write(title.c_str());
 	      f.Close();
 	    }
 	  }
@@ -508,7 +527,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	    if (c4) c4->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
 	    if (imode>=3) {
 	      TFile f((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
-	      h_data_unf->Write(title.c_str());
+	      h_data_unfold->Write(title.c_str());
 	      f.Close();
 	    }
 	  }
