@@ -32,8 +32,6 @@ TH1F* fixrange(TH1F* old) {
     float c2 = old->GetBinContent(i);
     float e2 = old->GetBinError(i);
 
-    if (ii==tmp->GetNbinsX()+1) continue;
-
     tmp->SetBinContent(ii,c1+c2);
     tmp->SetBinError(ii,TMath::Sqrt(e1*e1+e2*e2));
   }
@@ -87,8 +85,15 @@ TH2F* fixrange(TH2F* old) {
       float e1 = tmp->GetBinError(ii,jj);
       float c2 = old->GetBinContent(i,j);
       float e2 = old->GetBinError(i,j);
-
+//
+// underflows and overflows *must* be discarded before the unfolding:
+// inefficiencies and fakes/background are taken from the additional entries
+// in the 'reco' and 'truth' histograms, respectively
+//
+      if (ii==0) continue;
       if (ii==tmp->GetNbinsX()+1) continue;
+      if (jj==0) continue;
+      if (jj==tmp->GetNbinsY()+1) continue;
 
       tmp->SetBinContent(ii,jj,c1+c2);
       tmp->SetBinError(ii,jj,TMath::Sqrt(e1*e1+e2*e2));
