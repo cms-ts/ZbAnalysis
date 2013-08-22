@@ -149,8 +149,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	h_mc2_reco = fixrange(h_mc2_reco);
 
 	RooUnfoldResponse response(h_mc1_reco, h_mc1_truth, h_mc1_matrix);
-	//response.UseOverflow(kTRUE);
-	//if (method==2) response.UseOverflow(kFALSE);
+	response.UseOverflow(kTRUE);
+	if (method==2) response.UseOverflow(kFALSE);
 	//response.Print();
 
 	h_mc1_truth->Scale(norm1);
@@ -447,12 +447,32 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         if (method==2) t->DrawLatex(0.13,0.85,"TUNFOLD");
         if (method==3) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
 
-	RooUnfoldErrors* e;
-	int ntoys = 0; // default 500
-	if (imode<=2) e = new RooUnfoldErrors(ntoys, unfold_mc, h_mc2_truth);
-	if (imode>=3) e = new RooUnfoldErrors(ntoys, unfold_data);
-	TH1F* h_err_err = e->UnfoldingError();
-	TH1F* h_err_res = e->RMSResiduals();
+	int ntoys = 50; // default 500
+	unfold_mc->SetNToys(ntoys);
+	unfold_data->SetNToys(ntoys);
+
+	RooUnfold* u;
+	if (imode<=2) unfold = unfold_mc;
+	if (imode>=3) unfold = unfold_data;
+	TVectorD err_err = unfold->ErecoV(RooUnfold::kErrors);
+	TVectorD err_res = unfold->ErecoV(RooUnfold::kCovToy);
+
+	int ntx = h_mc2_truth->GetNbinsX();
+	float xlo = h_mc2_truth->GetXaxis()->GetXmin();
+	float xhi = h_mc2_truth->GetXaxis()->GetXmax();
+	TH1F* h_err_err = new TH1F("unferr", "Unfolding errors", ntx, xlo, xhi);
+	TH1F* h_err_res = new TH1F("toyerr", "Toy MC RMS",       ntx, xlo, xhi);
+	for (int i= 0; i<ntx; i++) {
+	  h_err_err->SetBinContent(i+1,err_err[i+response.UseOverflowStatus()]);
+	  h_err_res->SetBinContent(i+1,err_res[i+response.UseOverflowStatus()]);
+	}
+	h_err_err->SetMarkerColor(kBlue);
+	h_err_err->SetLineColor(kBlue);
+	h_err_err->SetMarkerStyle(24);
+	h_err_err->SetMinimum(0);
+	h_err_res->SetMarkerColor(kRed);
+	h_err_res->SetMarkerStyle(4);
+	h_err_res->SetMinimum(0);
 
 	TH2F* h_err_cov;
 	int err = RooUnfold::kCovariance;
@@ -472,6 +492,9 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	}
 	h_err_err->Scale(100);
 	h_err_res->Scale(100);
+	float vmax = TMath::Max(0.0, h_err_err->GetMaximum());
+	vmax = TMath::Max(vmax, h_err_res->GetMaximum());
+	h_err_err->SetMaximum(1.5*vmax);
 	h_err_err->SetStats(0);
 	h_err_err->GetXaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
 	h_err_err->GetYaxis()->SetTitle("Error [%]");
