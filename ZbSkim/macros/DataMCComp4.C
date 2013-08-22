@@ -17,8 +17,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 // method = 0; // use SVD
 // method = 1; // use Bayes
-// method = 2; // use TUnfold
-// method = 3; // use BinByBin
+// method = 2; // use BinByBin
 
 	gSystem->Load("libRooUnfold");
 
@@ -150,7 +149,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 	RooUnfoldResponse response(h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 	response.UseOverflow(kTRUE);
-	if (method==2) response.UseOverflow(kFALSE);
 	//response.Print();
 
 	h_mc1_truth->Scale(norm1);
@@ -198,12 +196,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	}
 
 	if (method==2) {
-	  int reg = 2; // default 2 -> 1=size, 2=derivative, 3=curvature
-	  unfold_mc = new RooUnfoldTUnfold(&response, h_mc2_reco, reg);
-	  unfold_data = new RooUnfoldTUnfold(&response, h_data_reco, reg); 
-	}
-
-	if (method==3) {
 	  unfold_mc = new RooUnfoldBinByBin(&response, h_mc2_reco);
 	  unfold_data = new RooUnfoldBinByBin(&response, h_data_reco);
 	}
@@ -374,8 +366,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         t->SetNDC();
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"BAYES");
-        if (method==2) t->DrawLatex(0.13,0.85,"TUNFOLD");
-        if (method==3) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
+        if (method==2) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
 
         pad1->Update();
         c1->Update();
@@ -444,8 +435,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"BAYES");
-        if (method==2) t->DrawLatex(0.13,0.85,"TUNFOLD");
-        if (method==3) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
+        if (method==2) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
 
 	int ntoys = 50; // default 500
 	unfold_mc->SetNToys(ntoys);
@@ -516,8 +506,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"BAYES");
-        if (method==2) t->DrawLatex(0.13,0.85,"TUNFOLD");
-        if (method==3) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
+        if (method==2) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
 
 	c4->cd(2);
 	h_err_cov->SetStats(0);
