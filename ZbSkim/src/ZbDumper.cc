@@ -271,6 +271,15 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      }
    }
 
+   if (k!=-1) {
+     if ((*gen_jets2)[k].pt() < 30) k=-1;
+     if (fabs((*gen_jets2)[k].eta()) > 2.5) k=-1;
+   }
+   if (k_b!=-1) {
+     if ((*gen_bjets2)[k_b].pt() < 30) k_b=-1;
+     if (fabs((*gen_bjets2)[k_b].eta()) > 2.5) k_b=-1;
+   }
+
    double my_weight = weight->empty() ? ( gen_weight->empty() ? -1 : (*gen_weight)[0] ) : (*weight)[0];
    double my_bweight = my_weight * ( bweight->empty() ? 1 : (*bweight)[0] );
 
