@@ -441,7 +441,7 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	unfold_mc->SetNToys(ntoys);
 	unfold_data->SetNToys(ntoys);
 
-	RooUnfold* u;
+	RooUnfold* unfold;
 	if (imode<=2) unfold = unfold_mc;
 	if (imode>=3) unfold = unfold_data;
 	TVectorD err_err = unfold->ErecoV(RooUnfold::kErrors);
