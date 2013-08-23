@@ -184,9 +184,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 
 	if (method==0) {
 	  int kreg = 0; // default 0 -> nbins/2
-	  int ntoys = 100; // default 1000
-	  unfold_mc = new RooUnfoldSvd(&response, h_mc2_reco, kreg, ntoys);
-	  unfold_data = new RooUnfoldSvd(&response, h_data_reco, kreg, ntoys);
+	  unfold_mc = new RooUnfoldSvd(&response, h_mc2_reco, kreg);
+	  unfold_data = new RooUnfoldSvd(&response, h_data_reco, kreg);
 	}
 
 	if (method==1) {
@@ -199,6 +198,10 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	  unfold_mc = new RooUnfoldBinByBin(&response, h_mc2_reco);
 	  unfold_data = new RooUnfoldBinByBin(&response, h_data_reco);
 	}
+
+	int ntoys = 50; // default 50
+	unfold_mc->SetNToys(ntoys);
+	unfold_data->SetNToys(ntoys);
 
 	int dosys = 0; // default 0 -> 0=no, 1=yes, 2=no measurement errors
 	unfold_mc->IncludeSystematics(dosys);
@@ -436,10 +439,6 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"BAYES");
         if (method==2) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
-
-	int ntoys = 50; // default 500
-	unfold_mc->SetNToys(ntoys);
-	unfold_data->SetNToys(ntoys);
 
 	RooUnfold* unfold;
 	if (imode<=2) unfold = unfold_mc;
