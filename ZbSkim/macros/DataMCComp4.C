@@ -7,6 +7,9 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int method=0) {
 
+bool verbose = false;
+// bool verbose = true;
+
 // imode = -1; // identity test using MadGraph PAT
 // imode =  0; // identity test using MadGraph GEN
 // imode =  1; // closure test using MadGraph + Sherpa
@@ -18,6 +21,8 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 // method = 0; // use SVD
 // method = 1; // use Bayes
 // method = 2; // use BinByBin
+
+	if (!verbose) gErrorIgnoreLevel = kError;
 
 	gSystem->Load("libRooUnfold");
 
@@ -197,6 +202,11 @@ void DataMCComp4(string& title="", int plot=0, int ilepton=1, int imode=3, int m
 	if (method==2) {
 	  unfold_mc = new RooUnfoldBinByBin(&response, h_mc2_reco);
 	  unfold_data = new RooUnfoldBinByBin(&response, h_data_reco);
+	}
+
+	if (!verbose) {
+	  unfold_mc->SetVerbose(0);
+	  unfold_data->SetVerbose(0);
 	}
 
 	int ntoys = 50; // default 50
