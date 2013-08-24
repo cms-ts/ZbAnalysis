@@ -548,7 +548,7 @@ bool verbose = false;
 	TProfile* hParmChi2 = parms->GetChi2();
 	TProfile* hParmErr = parms->GetRMSError();
 	TProfile* hParmRes = parms->GetMeanResiduals();
-	TProfile* hParmRms = parms->GetRMSResiduals();
+	TH1F* hParmRms = parms->GetRMSResiduals();
 
 	hParmChi2->SetStats(0);
 	hParmErr->SetStats(0);
