@@ -22,7 +22,7 @@ bool verbose = false;
 // method = 1; // use Bayes
 // method = 2; // use BinByBin
 
-	if (!verbose) gErrorIgnoreLevel = kError;
+	//if (!verbose) gErrorIgnoreLevel = kError;
 
 	gSystem->Load("libRooUnfold");
 
@@ -378,8 +378,8 @@ bool verbose = false;
         t->SetLineWidth(2);
         t->SetNDC();
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
-        if (method==1) t->DrawLatex(0.13,0.85,"BAYES");
-        if (method==2) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
+        if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
+        if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
 
         pad1->Update();
         c1->Update();
@@ -447,8 +447,8 @@ bool verbose = false;
 	h_response->Draw("colz");
 
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
-        if (method==1) t->DrawLatex(0.13,0.85,"BAYES");
-        if (method==2) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
+        if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
+        if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
 
 	RooUnfold* unfold;
 	if (imode<=2) unfold = unfold_mc;
@@ -514,14 +514,12 @@ bool verbose = false;
 	leg2->Draw();
 
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
-        if (method==1) t->DrawLatex(0.13,0.85,"BAYES");
-        if (method==2) t->DrawLatex(0.13,0.85,"BIN-BY-BIN");
+        if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
+        if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
 
 	c4->cd(2);
 	h_err_cov->SetStats(0);
 	h_err_cov->SetTitle("Covariance matrix (including under/overflows)");
-	//h_err_cov->GetXaxis()->SetRange(1, h_mc1_matrix->GetNbinsX());
-	//h_err_cov->GetYaxis()->SetRange(1, h_mc1_matrix->GetNbinsY());
 	h_err_cov->GetXaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
 	h_err_cov->GetYaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
 	gStyle->SetHistMinimumZero();
