@@ -154,7 +154,7 @@ bool verbose = false;
 
 	RooUnfoldResponse response(h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 	response.UseOverflow(kTRUE);
-	//response.Print();
+	if (verbose) response.Print();
 
 	h_mc1_truth->Scale(norm1);
 	h_mc1_reco->Scale(norm1);
@@ -205,8 +205,8 @@ bool verbose = false;
 	}
 
 	if (!verbose) {
-	  unfold_mc->SetVerbose(0);
-	  unfold_data->SetVerbose(0);
+	  unfold_mc->SetVerbose(-1);
+	  unfold_data->SetVerbose(-1);
 	}
 
 	int ntoys = 50; // default 50
@@ -450,11 +450,19 @@ bool verbose = false;
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
 
+	int nv = response.GetNbinsMeasured();
+	if (response.UseOverflowStatus()) nv = nv + 2;
+	TVectorD err_err(nv);
+	TVectorD err_res(nv);
 	RooUnfold* unfold;
-	if (imode<=2) unfold = unfold_mc;
-	if (imode>=3) unfold = unfold_data;
-	TVectorD err_err = unfold->ErecoV(RooUnfold::kErrors);
-	TVectorD err_res = unfold->ErecoV(RooUnfold::kCovToy);
+	if (imode<=2) {
+	  err_err = unfold_mc->ErecoV(RooUnfold::kErrors);
+	  err_res = unfold_mc->ErecoV(RooUnfold::kCovToy);
+	}
+	if (imode>=3) {
+	  err_err = unfold_data->ErecoV(RooUnfold::kErrors);
+	  err_res = unfold_data->ErecoV(RooUnfold::kCovToy);
+	}
 
 	int ntx = h_mc2_truth->GetNbinsX();
 	float xlo = h_mc2_truth->GetXaxis()->GetXmin();
