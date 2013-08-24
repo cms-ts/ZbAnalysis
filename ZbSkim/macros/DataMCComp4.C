@@ -430,7 +430,7 @@ bool verbose = false;
           c2 = new TCanvas("c2", "c2", 800, 600);
 	  c2->cd();
 	  c2->SetLogy();
-	  TH1F* d;
+	  TH1D* d;
 	  if (imode<=2) d = ((RooUnfoldSvd*)unfold_mc)->Impl()->GetD();
 	  if (imode>=3) d = ((RooUnfoldSvd*)unfold_data)->Impl()->GetD();
 	  d->DrawCopy();
