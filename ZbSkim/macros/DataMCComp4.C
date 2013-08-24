@@ -479,8 +479,7 @@ bool verbose = false;
 	if (imode>=3) h_err_cov = new TH2F(TMatrix(unfold_data->Ereco(err)));
 
 	TCanvas* c4 = new TCanvas("c4", "c4", 800, 600);
-	c4->Divide(1, 2);
-	c4->cd(1);
+	c4->cd();
 	if (imode<=2) {
 	  h_err_err->Divide(h_mc2_unfold);
 	  h_err_res->Divide(h_mc2_unfold);
@@ -506,10 +505,8 @@ bool verbose = false;
 	leg2->SetFillColor(0);
 	leg2->SetFillStyle(0);
 
-	leg2->SetTextSize(0.05);
-	leg2->SetTextFont(42);
-	leg2->AddEntry (h_err_err, "Unfolding errors", "L");
-	leg2->AddEntry (h_err_res, "Toy MC RMS",       "P");
+	leg2->AddEntry(h_err_err, "Unfolding errors", "L");
+	leg2->AddEntry(h_err_res, "Toy MC RMS",       "P");
 
 	leg2->Draw();
 
@@ -517,20 +514,23 @@ bool verbose = false;
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
 
-	c4->cd(2);
+	TCanvas* c5 = new TCanvas("c5", "c5", 800, 600);
+	c5->cd();
 	h_err_cov->SetStats(0);
 	h_err_cov->SetTitle("Covariance matrix (including under/overflows)");
 	h_err_cov->GetXaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
 	h_err_cov->GetYaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
 	gStyle->SetHistMinimumZero();
-	h_err_cov->SetMarkerSize(1.45);
-	gPad->SetGridx();
-	gPad->SetGridy();
+	h_err_cov->SetMarkerSize(0.85);
 	h_err_cov->GetXaxis()->SetNdivisions(020);
 	h_err_cov->GetYaxis()->SetNdivisions(020);
 	gStyle->SetGridStyle(1);
-	gStyle->SetPaintTextFormat("+11.3g");
-	h_err_cov->Draw("TEXT");
+	gStyle->SetPaintTextFormat("+11.1e");
+	h_err_cov->Draw("TEXT30");
+
+        if (method==0) t->DrawLatex(0.01,0.95,"SVD");
+        if (method==1) t->DrawLatex(0.01,0.95,"Bayes");
+        if (method==2) t->DrawLatex(0.01,0.95,"BinByBin");
 
 	RooUnfoldParms* parms;
 	int err = RooUnfold::kErrors;
@@ -555,28 +555,28 @@ bool verbose = false;
 	hParmRes->SetStats(0);
 	hParmRms->SetStats(0);
 
-	TCanvas* c5 = new TCanvas("c5", "c5", 800, 600);
-	c5->cd();
-	c5->Divide(2, 2);
-	c5->cd(1);
+	TCanvas* c6 = new TCanvas("c6", "c6", 800, 600);
+	c6->cd();
+	c6->Divide(2, 2);
+	c6->cd(1);
 	hParmChi2->Draw("P");
 	hParmChi2->GetXaxis()->SetTitle("regparm");
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
-	c5->cd(2);
+	c6->cd(2);
 	hParmErr->Draw("P");
 	hParmErr->GetXaxis()->SetTitle("regparm");
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
-	c5->cd(3);
+	c6->cd(3);
 	hParmRes->Draw("P");
 	hParmRes->GetXaxis()->SetTitle("regparm");
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
-	c5->cd(4);
+	c6->cd(4);
 	hParmRms->Draw("P");
 	hParmRms->GetXaxis()->SetTitle("regparm");
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
@@ -590,7 +590,8 @@ bool verbose = false;
 	    if (c2) c2->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
 	    if (c3) c3->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_response.pdf").c_str());
 	    if (c4) c4->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
-	    if (c5) c5->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_scan.pdf").c_str());
+	    if (c5) c5->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_covariance.pdf").c_str());
+	    if (c6) c6->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_scan.pdf").c_str());
 	    if (imode>=3) {
 	      TFile f((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
@@ -603,7 +604,8 @@ bool verbose = false;
 	    if (c2) c2->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
 	    if (c3) c3->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_response.pdf").c_str());
 	    if (c4) c4->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
-	    if (c5) c5->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_scan.pdf").c_str());
+	    if (c5) c5->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_covariance.pdf").c_str());
+	    if (c6) c6->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_scan.pdf").c_str());
 	    if (imode>=3) {
 	      TFile f((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
