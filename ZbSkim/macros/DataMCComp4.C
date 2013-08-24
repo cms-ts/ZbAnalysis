@@ -66,11 +66,11 @@ bool verbose = false;
 	  }
 	}
 
-	TFile *data;
+	TFile* data;
 	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/xsecs/" + file + "_xsecs.root").c_str());
 	if (ilepton==2) data = TFile::Open((path + "/muons/" + version + "/xsecs/" + file + "_xsecs.root").c_str());
 
-	TFile *mc1;
+	TFile* mc1;
 	if (imode==-1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
 	if (imode== 0) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
@@ -82,7 +82,7 @@ bool verbose = false;
 	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
 
-	TFile *mc2;
+	TFile* mc2;
 	if (imode==-1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
 	if (imode== 0) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
@@ -213,7 +213,7 @@ bool verbose = false;
 	unfold_mc->SetNToys(ntoys);
 	unfold_data->SetNToys(ntoys);
 
-	int dosys = 1; // default 0 -> 0=stat, 1=stat+sys, 2=sys only
+	int dosys = 0; // default 0 -> 0=stat, 1=stat+sys, 2=sys only
 	unfold_mc->IncludeSystematics(dosys);
 	unfold_data->IncludeSystematics(dosys);
 
@@ -230,7 +230,7 @@ bool verbose = false;
 
 	TCanvas* c1 = new TCanvas("c1", "c1", 800, 600);
 	c1->cd();
-        TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
+        TPad* pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
         pad1->SetBottomMargin(0.001);
         pad1->Draw();
         pad1->cd();
@@ -304,7 +304,7 @@ bool verbose = false;
 	  h_mc1_reco->Draw("HISTSAME");
 	}
 
-	TH1F *tmp;
+	TH1F* tmp;
 	if (imode<=2) tmp = h_mc2_reco;
 	if (imode>=3) tmp = h_data_reco;
 	tmp->SetTitle("");
@@ -336,7 +336,7 @@ bool verbose = false;
           tmp->GetXaxis()->SetTitle("H_{T} [GeV/c]");
 	}
 
-        TLegend *leg1 = new TLegend(0.42, 0.580, 0.68, 0.88);
+        TLegend* leg1 = new TLegend(0.42, 0.580, 0.68, 0.88);
         leg1->SetBorderSize(0);
         leg1->SetEntrySeparation(0.01);
         leg1->SetFillColor(0);
@@ -386,13 +386,13 @@ bool verbose = false;
 
         c1->cd();
 
-        TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
+        TPad* pad2 = new TPad("pad2","pad2",0,0,1,0.3);
         pad2->SetTopMargin(0);
         pad2->SetBottomMargin(0.3);
         pad2->Draw();
         pad2->cd();
 
-        TH1F *h_ratio;
+        TH1F* h_ratio;
         if (imode<=2) h_ratio = (TH1F*) h_mc2_unfold->Clone();
         if (imode>=3) h_ratio = (TH1F*) h_data_unfold->Clone();
 
@@ -420,7 +420,7 @@ bool verbose = false;
         h_ratio->Draw("EPX0");
         if (imode<=2) h_ratio->Draw("EP0SAME");
 
-        TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
+        TLine* OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
         OLine->SetLineColor(kRed);
         OLine->SetLineWidth(1);
         OLine->Draw();
@@ -430,7 +430,7 @@ bool verbose = false;
           c2 = new TCanvas("c2", "c2", 800, 600);
 	  c2->cd();
 	  c2->SetLogy();
-	  TH1D *d;
+	  TH1D* d;
 	  if (imode<=2) d = ((RooUnfoldSvd*)unfold_mc)->Impl()->GetD();
 	  if (imode>=3) d = ((RooUnfoldSvd*)unfold_data)->Impl()->GetD();
 	  d->DrawCopy();
@@ -444,7 +444,7 @@ bool verbose = false;
 	h_response->SetTitle("Response matrix: (x,y)=(measured,truth)");
 	h_response->GetXaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
 	h_response->GetYaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
-	h_response->Draw("colz");
+	h_response->Draw("COLZ");
 
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
@@ -532,6 +532,57 @@ bool verbose = false;
 	gStyle->SetPaintTextFormat("+11.3g");
 	h_err_cov->Draw("TEXT");
 
+	RooUnfoldParms* parms;
+	int err = RooUnfold::kErrors;
+	if (imode<=2) parms = new RooUnfoldParms(unfold_mc, err, h_mc2_truth);
+	if (imode>=3) parms = new RooUnfoldParms(unfold_data, err, 0);
+
+	float maxparm;
+	if (method==0) maxparm = response.GetNbinsMeasured();
+	if (method==1) maxparm = 50.0;
+	if (method==2) maxparm = 1.0;
+	parms->SetMinParm(1.0);
+	parms->SetMaxParm(maxparm);
+	parms->SetStepSizeParm(1.0);
+
+	TProfile* hParmChi2 = parms->GetChi2();
+	TProfile* hParmErr = parms->GetRMSError();
+	TProfile* hParmRes = parms->GetMeanResiduals();
+	TProfile* hParmRms = parms->GetRMSResiduals();
+
+	hParmChi2->SetStats(0);
+	hParmErr->SetStats(0);
+	hParmRes->SetStats(0);
+	hParmRms->SetStats(0);
+
+	TCanvas* c5 = new TCanvas("c5", "c5", 800, 600);
+	c5->cd();
+	c5->Divide(2, 2);
+	c5->cd(1);
+	hParmChi2->Draw("P");
+	hParmChi2->GetXaxis()->SetTitle("regparm");
+        if (method==0) t->DrawLatex(0.13,0.85,"SVD");
+        if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
+        if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+	c5->cd(2);
+	hParmErr->Draw("P");
+	hParmErr->GetXaxis()->SetTitle("regparm");
+        if (method==0) t->DrawLatex(0.13,0.85,"SVD");
+        if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
+        if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+	c5->cd(3);
+	hParmRes->Draw("P");
+	hParmRes->GetXaxis()->SetTitle("regparm");
+        if (method==0) t->DrawLatex(0.13,0.85,"SVD");
+        if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
+        if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+	c5->cd(4);
+	hParmRms->Draw("P");
+	hParmRms->GetXaxis()->SetTitle("regparm");
+        if (method==0) t->DrawLatex(0.13,0.85,"SVD");
+        if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
+        if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+
 	if (plot) {
 	  if (ilepton==1) {
 	    gSystem->mkdir((path + "/electrons/" + version + "/unfolding/").c_str(), kTRUE);
@@ -539,6 +590,7 @@ bool verbose = false;
 	    if (c2) c2->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
 	    if (c3) c3->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_response.pdf").c_str());
 	    if (c4) c4->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
+	    if (c5) c5->SaveAs((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding_scan.pdf").c_str());
 	    if (imode>=3) {
 	      TFile f((path + "/electrons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
@@ -551,6 +603,7 @@ bool verbose = false;
 	    if (c2) c2->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
 	    if (c3) c3->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_response.pdf").c_str());
 	    if (c4) c4->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
+	    if (c5) c5->SaveAs((path + "/muons/" + version + "/unfolding/" + title + "_unfolding_scan.pdf").c_str());
 	    if (imode>=3) {
 	      TFile f((path + "/muons/" + version + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
