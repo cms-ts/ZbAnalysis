@@ -19,6 +19,9 @@ double func(double* x, double* p) {
 
 void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
 
+int useEleMuo = 0;
+//int useEleMuo = 1;
+
 	double c_t=1.0;
 
 	if (ilepton==1 && doFit==1) c_t=0.914;
@@ -59,6 +62,7 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
+	if (useEleMuo) mc2 = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
 	TFile *mc3 = TFile::Open((path + "/" + version + "/" + "ZZ.root").c_str());
 	TFile *mc4 = TFile::Open((path + "/" + version + "/" + "WZ.root").c_str());
 //	TFile *mc5 = TFile::Open((path + "/" + version + "/" + "QCD.root").c_str());
@@ -81,6 +85,18 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	if (ilepton==2) mc2->cd("demoMuo");
 	if (ilepton==3) mc2->cd("demoEleMuo");
 	TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
+
+	if (useEleMuo) {
+	  string title_em = title;
+	  if (title_em.find("ee")!=string::npos) {
+	    title_em.replace(title_em.find("_ee")+2, 1, "m");
+	  }
+	  if (title_em.find("mm")!=string::npos) {
+	    title_em.replace(title_em.find("_mm")+1, 1, "e");
+	  }
+	  mc2->cd("demoEleMuo");
+	  h_mc2 = (TH1F*)gDirectory->Get(title_em.c_str());
+	}
 
 	if (ilepton==1) mc3->cd("demoEle");
 	if (ilepton==2) mc3->cd("demoMuo");
@@ -161,6 +177,7 @@ void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int do
 	if (h_mc1b) h_mc1b->Scale(norm1);
 	if (h_mc1c) h_mc1c->Scale(norm1);
 	h_mc2->Scale(norm2*c_t);
+	if (useEleMuo) h_mc2->Scale(0.5*(Lumi2012/19780.0)/(norm2*c_t));
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);

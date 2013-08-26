@@ -7,6 +7,9 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1, int unfold=0) {
 
+int useEleMuo = 0;
+//int useEleMuo = 1;
+
 	if (gROOT->GetVersionInt() >= 53401) {
 	  gROOT->GetColor(kRed)->SetAlpha(0.5);
 	  gROOT->GetColor(kGreen+2)->SetAlpha(0.5);
@@ -103,6 +106,7 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	if (ilepton==1) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	if (ilepton==2) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
+	if (useEleMuo) mc2 = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
 	TFile *mc3 = TFile::Open((path + "/" + version + "/" + "ZZ.root").c_str());
 	TFile *mc4 = TFile::Open((path + "/" + version + "/" + "WZ.root").c_str());
 //	TFile *mc5 = TFile::Open((path + "/" + version + "/" + "QCD.root").c_str());
@@ -177,6 +181,22 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc2_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
+	if (useEleMuo) {
+	  string title_em = title;
+	  string title_b_em = title_b;
+	  if (title_em.find("ee")!=string::npos) {
+	    title_em.replace(title_em.find("_ee")+2, 1, "m");
+	    title_b_em.replace(title_b_em.find("_ee")+2, 1, "m");
+	  }
+	  if (title_em.find("mm")!=string::npos) {
+	    title_em.replace(title_em.find("_mm")+1, 1, "e");
+	    title_b_em.replace(title_b_em.find("_mm")+1, 1, "e");
+	  }
+	  mc2->cd("demoEleMuo");
+	  h_mc2 = (TH1F*)gDirectory->Get(title_em.c_str());
+	  h_mc2_b = (TH1F*)gDirectory->Get(title_b_em.c_str());
+	}
+
 	if (ilepton==1) mc3->cd("demoEle");
 	if (ilepton==2) mc3->cd("demoMuo");
 	TH1F* h_mc3 = (TH1F*)gDirectory->Get(title.c_str());
@@ -236,6 +256,7 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_mcg1->Scale(norm1_1);
 	h_mcg2->Scale(norm1_2);
 	h_mc2->Scale(norm2*c_t);
+	if (useEleMuo) h_mc2->Scale(0.5*(Lumi2012/19780.0)/(norm2*c_t));
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);
@@ -249,6 +270,7 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
 	h_mc2_b->Scale(norm2*c_t);
+	if (useEleMuo) h_mc2_b->Scale(0.5*(Lumi2012/19780.0)/(norm2*c_t));
 	h_mc3_b->Scale(norm3);
 	h_mc4_b->Scale(norm4);
 //	h_mc5_b->Scale(norm5);
