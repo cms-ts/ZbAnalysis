@@ -481,11 +481,6 @@ bool verbose = false;
 	h_err_res->SetMarkerStyle(4);
 	h_err_res->SetMinimum(0);
 
-	TH2F* h_err_cov;
-	int err = RooUnfold::kCovariance;
-	if (imode<=2) h_err_cov = new TH2F(TMatrix(unfold_mc->Ereco(err)));
-	if (imode>=3) h_err_cov = new TH2F(TMatrix(unfold_data->Ereco(err)));
-
 	TCanvas* c4 = new TCanvas("c4", "c4", 800, 600);
 	c4->cd();
 	if (imode<=2) {
@@ -521,6 +516,11 @@ bool verbose = false;
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+
+	TH2F* h_err_cov;
+	int err = RooUnfold::kCovariance;
+	if (imode<=2) h_err_cov = new TH2F(TMatrix(unfold_mc->Ereco(err)));
+	if (imode>=3) h_err_cov = new TH2F(TMatrix(unfold_data->Ereco(err)));
 
 	TCanvas* c5 = new TCanvas("c5", "c5", 800, 600);
 	c5->cd();
