@@ -89,10 +89,10 @@ int useEleMuo = 0;
 	if (useEleMuo) {
 	  string title_em = title;
 	  if (title_em.find("ee")!=string::npos) {
-	    title_em.replace(title_em.find("_ee")+2, 1, "m");
+	    title_em.replace(title_em.find("ee")+1, 1, "m");
 	  }
 	  if (title_em.find("mm")!=string::npos) {
-	    title_em.replace(title_em.find("_mm")+1, 1, "e");
+	    title_em.replace(title_em.find("mm"), 1, "e");
 	  }
 	  mc2->cd("demoEleMuo");
 	  h_mc2 = (TH1F*)gDirectory->Get(title_em.c_str());

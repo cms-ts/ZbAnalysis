@@ -185,12 +185,12 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	  string title_em = title;
 	  string title_b_em = title_b;
 	  if (title_em.find("ee")!=string::npos) {
-	    title_em.replace(title_em.find("_ee")+2, 1, "m");
-	    title_b_em.replace(title_b_em.find("_ee")+2, 1, "m");
+	    title_em.replace(title_em.find("ee")+1, 1, "m");
+	    title_b_em.replace(title_b_em.find("ee")+1, 1, "m");
 	  }
 	  if (title_em.find("mm")!=string::npos) {
-	    title_em.replace(title_em.find("_mm")+1, 1, "e");
-	    title_b_em.replace(title_b_em.find("_mm")+1, 1, "e");
+	    title_em.replace(title_em.find("mm"), 1, "e");
+	    title_b_em.replace(title_b_em.find("mm"), 1, "e");
 	  }
 	  mc2->cd("demoEleMuo");
 	  h_mc2 = (TH1F*)gDirectory->Get(title_em.c_str());

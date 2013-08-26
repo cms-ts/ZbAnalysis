@@ -40,11 +40,11 @@ void DataMCComp5(string& title="", int plot=0, int ilepton=1) {
 
       string title_em = title;
 
-      if (title_em.find("_ee")!=string::npos) {
-        title_em.replace(title_em.find("_ee")+2, 1, "m");
+      if (title_em.find("ee")!=string::npos) {
+        title_em.replace(title_em.find("ee")+1, 1, "m");
       }
-      if (title_em.find("_mm")!=string::npos) {
-        title_em.replace(title_em.find("_mm")+1, 1, "e");
+      if (title_em.find("mm")!=string::npos) {
+        title_em.replace(title_em.find("mm"), 1, "e");
       }
 
       TFile *data_em = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
