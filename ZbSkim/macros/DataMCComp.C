@@ -24,9 +24,9 @@ int useEleMuo = 0;
 
 	double c_t=1.0;
 
-	if (ilepton==1 && doFit==3) c_t=0.979;
-	if (ilepton==2 && doFit==3) c_t=0.912;
-	if (ilepton==3 && doFit==3) c_t=0.906;
+	if (ilepton==1 && doFit==3) c_t=1.002;
+	if (ilepton==2 && doFit==3) c_t=1.069;
+	if (ilepton==3 && doFit==3) c_t=0.993;
 
 	if (ilepton==1 && useEleMuo) c_t=0.500;
 	if (ilepton==2 && useEleMuo) c_t=0.500;
