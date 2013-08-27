@@ -65,7 +65,6 @@ int useEleMuo = 0;
 
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
-	if (useEleMuo) mc2 = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
 	TFile *mc3 = TFile::Open((path + "/" + version + "/" + "ZZ.root").c_str());
 	TFile *mc4 = TFile::Open((path + "/" + version + "/" + "WZ.root").c_str());
 //	TFile *mc5 = TFile::Open((path + "/" + version + "/" + "QCD.root").c_str());
@@ -90,15 +89,14 @@ int useEleMuo = 0;
 	TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (useEleMuo) {
-	  string title_em = title;
-	  if (title_em.find("ee")!=string::npos) {
-	    title_em.replace(title_em.find("ee")+1, 1, "m");
+	  if (ilepton==1) {
+	    mc2 = TFile::Open((path + "/electrons/" + version + "/ttbar_sub/" + title + ".root").c_str());
+	    h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
 	  }
-	  if (title_em.find("mm")!=string::npos) {
-	    title_em.replace(title_em.find("mm"), 1, "e");
+	  if (ilepton==2) {
+	    mc2 = TFile::Open((path + "/muons/" + version + "/ttbar_sub/" + title + ".root").c_str());
+	    h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
 	  }
-	  mc2->cd("demoEleMuo");
-	  h_mc2 = (TH1F*)gDirectory->Get(title_em.c_str());
 	}
 
 	if (ilepton==1) mc3->cd("demoEle");
