@@ -24,15 +24,18 @@ int useEleMuo = 0;
 
 	double c_t=1.0;
 
-	if (ilepton==1 && doFit==1) c_t=0.914;
-	if (ilepton==2 && doFit==1) c_t=0.894;
-	if (ilepton==2 && doFit==1) c_t=1.000;
+	if (ilepton==1 && doFit==3) c_t=0.979;
+	if (ilepton==2 && doFit==3) c_t=0.912;
+	if (ilepton==3 && doFit==3) c_t=0.906;
+
+	if (ilepton==1 && useEleMuo) c_t=0.500;
+	if (ilepton==2 && useEleMuo) c_t=0.500;
 
 	double Lumi2012;
 
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
-	if (ilepton==3) Lumi2012 = 19780.0;
+	if (ilepton==3) Lumi2012 = Lumi2012_ele_muon;
 
 	double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
@@ -177,7 +180,7 @@ int useEleMuo = 0;
 	if (h_mc1b) h_mc1b->Scale(norm1);
 	if (h_mc1c) h_mc1c->Scale(norm1);
 	h_mc2->Scale(norm2*c_t);
-	if (useEleMuo) h_mc2->Scale(0.5*(Lumi2012/19780.0)/(norm2*c_t));
+	if (useEleMuo) h_mc2->Scale((Lumi2012/Lumi2012_ele_muon)/(norm2));
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);

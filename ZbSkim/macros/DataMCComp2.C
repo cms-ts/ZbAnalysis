@@ -38,33 +38,31 @@ int useEleMuo = 0;
 int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
 	if (ilepton==1) {
-	  if (useFitResults==1) {
-	    c_b   = 0.770;
-	    c_c   = 1.238;
-	    c_uds = 1.991;
+	  if (useFitResults) {
+	    c_b   = 0.773;
+	    c_c   = 1.237;
+	    c_uds = 1.989;
 	  }
-          e_Zb  = 0.212;
+          e_Zb  = 0.211;
           e_Z   = 0.545;
           e_Z_1 = 0.380;
-          e_Z_b = 0.557;
-	  if (useFitResults==1) {
-	    c_t = 0.914;
-	  }
+          e_Z_b = 0.556;
+	  if (useFitResults) c_t = 0.979;
+	  if (useEleMuo) c_t = 0.500;
 	}
 
 	if (ilepton==2) {
-	  if (useFitResults==1) {
-	    c_b   = 0.728;
-	    c_c   = 1.435;
-	    c_uds = 1.141;
+	  if (useFitResults) {
+	    c_b   = 0.740;
+	    c_c   = 1.431;
+	    c_uds = 1.125;
 	  }
           e_Zb  = 0.310;
 	  e_Z   = 0.804;
 	  e_Z_1 = 0.550;
 	  e_Z_b = 0.564;
-	  if (useFitResults==1) {
-	    c_t = 0.894;
-	  }
+	  if (useFitResults) c_t = 0.912;
+	  if (useEleMuo) c_t = 0.500;
 	}
 
 	double Lumi2012;
@@ -256,7 +254,7 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_mcg1->Scale(norm1_1);
 	h_mcg2->Scale(norm1_2);
 	h_mc2->Scale(norm2*c_t);
-	if (useEleMuo) h_mc2->Scale(0.5*(Lumi2012/19780.0)/(norm2*c_t));
+	if (useEleMuo) h_mc2->Scale((Lumi2012/Lumi2012_ele_muon)/(norm2));
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);
@@ -270,7 +268,7 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
 	h_mc2_b->Scale(norm2*c_t);
-	if (useEleMuo) h_mc2_b->Scale(0.5*(Lumi2012/19780.0)/(norm2*c_t));
+	if (useEleMuo) h_mc2_b->Scale((Lumi2012/Lumi2012_ele_muon)/(norm2));
 	h_mc3_b->Scale(norm3);
 	h_mc4_b->Scale(norm4);
 //	h_mc5_b->Scale(norm5);
