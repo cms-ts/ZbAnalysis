@@ -171,6 +171,13 @@ int useFitResults=1;  // use fit results for c_t
 
       h_data_fit->Scale(Lumi2012/Lumi2012_ele_muon);
 
+      float xfix = 0.500;
+
+      if (ilepton==1) xfix = 0.45;
+      if (ilepton==2) xfix = 0.55;
+
+      h_data_fit->Scale(xfix);
+
       TF1 *f1 = new TF1("f1", func, 60, 120.00, 1);
       if (doFit==1) {
         if (title.find("w_mass")!=string::npos) {
@@ -289,7 +296,7 @@ int useFitResults=1;  // use fit results for c_t
         fitLabel->SetLineWidth(2);
         fitLabel->SetNDC();
         char buff[100];
-        sprintf(buff, "c_{t} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+        sprintf(buff, "c_{t} = %5.3f #pm %5.3f", xfix*f1->GetParameter(0), xfix*f1->GetParError(0));
         fitLabel->DrawLatex(0.68, 0.58, buff);
         if (ilepton==1) sprintf(buff, "I_{ee} = %5.1f", h_data->Integral());
         if (ilepton==2) sprintf(buff, "I_{#mu#mu} = %5.1f", h_data->Integral());
