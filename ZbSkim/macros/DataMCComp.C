@@ -32,7 +32,7 @@ int useEleMuo = 1;
 	double a2_t=1.0;
 
 	if (ilepton==1 && useEleMuo) {
-	  a1_t=0.411;
+	  a1_t=0.422;
 	  a2_t=0.429;
 	}
 	if (ilepton==2 && useEleMuo) {
