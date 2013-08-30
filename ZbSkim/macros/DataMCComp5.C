@@ -77,25 +77,31 @@ int useFitResults=1;  // use fit results for c_t
       h_data_fit = (TH1F*)gDirectory->Get(title_em.c_str());
 
       mc1->cd("demoEleMuo");
+      TH1F* h_mc1_fit = (TH1F*)gDirectory->Get(title.c_str());
       TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 
       if (ilepton==1) mc2->cd("demoEle");
       if (ilepton==2) mc2->cd("demoMuo");
+      TH1F* h_mc2_fit = (TH1F*)gDirectory->Get(title.c_str());
       TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
-
+      
       mc3->cd("demoEleMuo");
+      TH1F* h_mc3_fit = (TH1F*)gDirectory->Get(title.c_str());
       TH1F* h_mc3 = (TH1F*)gDirectory->Get(title.c_str());
 
       mc4->cd("demoEleMuo");
+      TH1F* h_mc4_fit = (TH1F*)gDirectory->Get(title.c_str());
       TH1F* h_mc4 = (TH1F*)gDirectory->Get(title.c_str());
 
 //    mc5->cd("demoEleMuo");
 //    TH1F* h_mc5 = (TH1F*)gDirectory->Get(title.c_str());
 
       mc6->cd("demoEleMuo");
+      TH1F* h_mc6_fit = (TH1F*)gDirectory->Get(title.c_str());
       TH1F* h_mc6 = (TH1F*)gDirectory->Get(title.c_str());
 
       mc7->cd("demoEleMuo");
+      TH1F* h_mc7_fit = (TH1F*)gDirectory->Get(title.c_str());
       TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 
       h_data->Sumw2();
@@ -117,14 +123,19 @@ int useFitResults=1;  // use fit results for c_t
       h_mc6->Scale(norm6);
       h_mc7->Scale(norm7);
 
-      if (doFit==0) {
-        h_data_fit->Add(h_mc7, -1.);
-        h_data_fit->Add(h_mc6, -1.);
-//      h_data_fit->Add(h_mc5, -1.);
-        h_data_fit->Add(h_mc4, -1.);
-        h_data_fit->Add(h_mc3, -1.);
-        h_data_fit->Add(h_mc1, -1.);
-      }
+        h_data_fit->Add(h_mc7_fit, -1.);
+        h_data_fit->Add(h_mc6_fit, -1.);
+//      h_data_fit->Add(h_mc5_fit, -1.);
+        h_data_fit->Add(h_mc4_fit, -1.);
+        h_data_fit->Add(h_mc3_fit, -1.);
+        h_data_fit->Add(h_mc1_fit, -1.);
+        
+	h_data->Add(h_mc7, -1.);
+        h_data->Add(h_mc6, -1.);
+//      h_data->Add(h_mc5, -1.);
+        h_data->Add(h_mc4, -1.);
+        h_data->Add(h_mc3, -1.);
+        h_data->Add(h_mc1, -1.);
 
       TH1F* h_data_fit_raw = (TH1F*)h_data_fit->Clone();
 
