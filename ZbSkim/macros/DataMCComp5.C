@@ -182,7 +182,7 @@ int useFitResults=1;  // use fit results for c_t
       if (doFit==1) {
         if (title.find("w_mass")!=string::npos) {
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            if (h_data_fit->GetXaxis()->GetBinCenter(i)>=85 && h_data_fit->GetXaxis()->GetBinCenter(i)<=100) {
+            if (h_data_fit->GetXaxis()->GetBinCenter(i)>85 && h_data_fit->GetXaxis()->GetBinCenter(i)<100) {
               h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
   	      h_data->SetBinContent(i, 0);
 	      h_data->SetBinError(i, 0);
@@ -198,7 +198,7 @@ int useFitResults=1;  // use fit results for c_t
         }
         if (title=="w_MET") {
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            if (h_data_fit->GetXaxis()->GetBinCenter(i)<=125) {
+            if (h_data_fit->GetXaxis()->GetBinCenter(i)<125) {
               h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
   	      h_data->SetBinContent(i, 0);
 	      h_data->SetBinError(i, 0);
@@ -214,7 +214,7 @@ int useFitResults=1;  // use fit results for c_t
         }
         if (title=="w_MET_sign") {
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            if (h_data_fit->GetXaxis()->GetBinCenter(i)<=50) {
+            if (h_data_fit->GetXaxis()->GetBinCenter(i)<50) {
               h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
   	      h_data->SetBinContent(i, 0);
 	      h_data->SetBinError(i, 0);
@@ -230,7 +230,7 @@ int useFitResults=1;  // use fit results for c_t
         }
         if (title=="w_MET_b") {
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            if (h_data_fit->GetXaxis()->GetBinCenter(i)<=90) {
+            if (h_data_fit->GetXaxis()->GetBinCenter(i)<90) {
               h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
   	      h_data->SetBinContent(i, 0);
 	      h_data->SetBinError(i, 0);
@@ -246,7 +246,7 @@ int useFitResults=1;  // use fit results for c_t
         }
         if (title=="w_MET_sign_b") {
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            if (h_data_fit->GetXaxis()->GetBinCenter(i)<=30) {
+            if (h_data_fit->GetXaxis()->GetBinCenter(i)<30) {
               h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
   	      h_data->SetBinContent(i, 0);
 	      h_data->SetBinError(i, 0);
