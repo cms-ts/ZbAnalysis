@@ -50,10 +50,10 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
           e_Z   = 0.545;
           e_Z_1 = 0.380;
           e_Z_b = 0.556;
-	  if (useFitResults) c_t = 1.002;
+	  if (useFitResults) c_t = 1.062;
 	  if (useEleMuo) {
-	    a1_t=0.425;
-	    a2_t=0.436;
+	    a1_t=0.411;
+	    a2_t=0.429;
 	  }
 	}
 
@@ -67,10 +67,10 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	  e_Z   = 0.804;
 	  e_Z_1 = 0.550;
 	  e_Z_b = 0.564;
-	  if (useFitResults) c_t = 1.069;
+	  if (useFitResults) c_t = 1.013;
 	  if (useEleMuo) {
-	    a1_t=0.541;
-	    a2_t=0.557;
+	    a1_t=0.539;
+	    a2_t=0.552;
 	  }
 	}
 
