@@ -28,13 +28,13 @@ int useFitResults=1;  // use fit results for c_t
       if (ilepton==1) Lumi2012 = Lumi2012_ele;
       if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
-      double norm1 = ( (Lumi2012_ele_muon * Xsec_dy) / Ngen_dy);
-      double norm2 = ( (Lumi2012_ele_muon * Xsec_tt) / Ngen_tt);
-      double norm3 = ( (Lumi2012_ele_muon * Xsec_zz) / Ngen_zz);
-      double norm4 = ( (Lumi2012_ele_muon * Xsec_wz) / Ngen_wz);
-      double norm5 = ( (Lumi2012_ele_muon * Xsec_qcd) / Ngen_qcd);
-      double norm6 = ( (Lumi2012_ele_muon * Xsec_ww) / Ngen_ww);
-      double norm7 = ( (Lumi2012_ele_muon * Xsec_wj) / Ngen_wj);
+      double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
+      double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
+      double norm3 = ( (Lumi2012 * Xsec_zz) / Ngen_zz);
+      double norm4 = ( (Lumi2012 * Xsec_wz) / Ngen_wz);
+      double norm5 = ( (Lumi2012 * Xsec_qcd) / Ngen_qcd);
+      double norm6 = ( (Lumi2012 * Xsec_ww) / Ngen_ww);
+      double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
 
       if (title.empty()) title = "w_jetmultiplicity";
 
@@ -145,13 +145,13 @@ int useFitResults=1;  // use fit results for c_t
       h_mc6->Scale(norm6);
       h_mc7->Scale(norm7);
       
-      h_mc1_fit->Scale(norm1);
-      h_mc2_fit->Scale(norm2*c_t);
-      h_mc3_fit->Scale(norm3);
-      h_mc4_fit->Scale(norm4);
-//    h_mc5_fit->Scale(norm5);
-      h_mc6_fit->Scale(norm6);
-      h_mc7_fit->Scale(norm7);
+      h_mc1_fit->Scale((Lumi2012_ele_muon/Lumi2012)*norm1);
+      h_mc2_fit->Scale((Lumi2012_ele_muon/Lumi2012)*norm2*c_t);
+      h_mc3_fit->Scale((Lumi2012_ele_muon/Lumi2012)*norm3);
+      h_mc4_fit->Scale((Lumi2012_ele_muon/Lumi2012)*norm4);
+//    h_mc5_fit->Scale((Lumi2012_ele_muon/Lumi2012)*norm5);
+      h_mc6_fit->Scale((Lumi2012_ele_muon/Lumi2012)*norm6);
+      h_mc7_fit->Scale((Lumi2012_ele_muon/Lumi2012)*norm7);
 
       h_data->Add(h_mc7, -1.);
       h_data->Add(h_mc6, -1.);
