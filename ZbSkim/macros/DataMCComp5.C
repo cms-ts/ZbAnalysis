@@ -114,6 +114,14 @@ int useFitResults=1;  // use fit results for c_t
 //    h_mc5->Sumw2();
       h_mc6->Sumw2();
       h_mc7->Sumw2();
+      
+      h_mc1_fit->Sumw2();
+      h_mc2_fit->Sumw2();
+      h_mc3_fit->Sumw2();
+      h_mc4_fit->Sumw2();
+//    h_mc5_fit->Sumw2();
+      h_mc6_fit->Sumw2();
+      h_mc7_fit->Sumw2();
 
       h_mc1->Scale(norm1);
       h_mc2->Scale(norm2*c_t);
@@ -122,20 +130,28 @@ int useFitResults=1;  // use fit results for c_t
 //    h_mc5->Scale(norm5);
       h_mc6->Scale(norm6);
       h_mc7->Scale(norm7);
+      
+      h_mc1_fit->Scale(norm1);
+      h_mc2_fit->Scale(norm2*c_t);
+      h_mc3_fit->Scale(norm3);
+      h_mc4_fit->Scale(norm4);
+//    h_mc5_fit->Scale(norm5);
+      h_mc6_fit->Scale(norm6);
+      h_mc7_fit->Scale(norm7);
 
-        h_data_fit->Add(h_mc7_fit, -1.);
-        h_data_fit->Add(h_mc6_fit, -1.);
-//      h_data_fit->Add(h_mc5_fit, -1.);
-        h_data_fit->Add(h_mc4_fit, -1.);
-        h_data_fit->Add(h_mc3_fit, -1.);
-        h_data_fit->Add(h_mc1_fit, -1.);
+      h_data_fit->Add(h_mc7_fit, -1.);
+      h_data_fit->Add(h_mc6_fit, -1.);
+//    h_data_fit->Add(h_mc5_fit, -1.);
+      h_data_fit->Add(h_mc4_fit, -1.);
+      h_data_fit->Add(h_mc3_fit, -1.);
+      h_data_fit->Add(h_mc1_fit, -1.);
         
-	h_data->Add(h_mc7, -1.);
-        h_data->Add(h_mc6, -1.);
-//      h_data->Add(h_mc5, -1.);
-        h_data->Add(h_mc4, -1.);
-        h_data->Add(h_mc3, -1.);
-        h_data->Add(h_mc1, -1.);
+      h_data->Add(h_mc7, -1.);
+      h_data->Add(h_mc6, -1.);
+//    h_data->Add(h_mc5, -1.);
+      h_data->Add(h_mc4, -1.);
+      h_data->Add(h_mc3, -1.);
+      h_data->Add(h_mc1, -1.);
 
       TH1F* h_data_fit_raw = (TH1F*)h_data_fit->Clone();
 
