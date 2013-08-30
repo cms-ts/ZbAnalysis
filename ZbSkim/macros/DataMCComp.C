@@ -24,20 +24,20 @@ int useEleMuo = 1;
 
 	double c_t=1.0;
 
-	if (ilepton==1 && doFit==3) c_t=1.002;
-	if (ilepton==2 && doFit==3) c_t=1.069;
-	if (ilepton==3 && doFit==3) c_t=0.993;
+	if (ilepton==1 && doFit==3) c_t=1.062;
+	if (ilepton==2 && doFit==3) c_t=1.013;
+	if (ilepton==3 && doFit==3) c_t=0.989;
 
 	double a1_t=1.0;
 	double a2_t=1.0;
 
 	if (ilepton==1 && useEleMuo) {
-	  a1_t=0.454;
-	  a2_t=0.437;
+	  a1_t=0.425;
+	  a2_t=0.436;
 	}
 	if (ilepton==2 && useEleMuo) {
-	  a1_t=0.585;
-	  a2_t=0.559;
+	  a1_t=0.541;
+	  a2_t=0.557;
 	}
 
 	double Lumi2012;
