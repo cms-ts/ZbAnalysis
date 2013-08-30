@@ -7,8 +7,8 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1, int unfold=0) {
 
-int useEleMuo = 0;
-//int useEleMuo = 1;
+//int useEleMuo = 0;
+int useEleMuo = 1;
 
 	if (gROOT->GetVersionInt() >= 53401) {
 	  gROOT->GetColor(kRed)->SetAlpha(0.5);
@@ -34,6 +34,9 @@ int useEleMuo = 0;
 
 	double c_t=1.0;
 
+	double a1_t=1.0;
+	double a2_t=1.0;
+
 //int useFitResults=0; // use MC predictions for c_b, c_c, c_uds, c_t
 int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
@@ -48,7 +51,10 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
           e_Z_1 = 0.380;
           e_Z_b = 0.556;
 	  if (useFitResults) c_t = 1.002;
-	  if (useEleMuo) c_t = 0.500;
+	  if (useEleMuo) {
+	    a1_t=0.454;
+	    a2_t=0.437;
+	  }
 	}
 
 	if (ilepton==2) {
@@ -62,7 +68,10 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	  e_Z_1 = 0.550;
 	  e_Z_b = 0.564;
 	  if (useFitResults) c_t = 1.069;
-	  if (useEleMuo) c_t = 0.500;
+	  if (useEleMuo) {
+	    a1_t=0.585;
+	    a2_t=0.559;
+	  }
 	}
 
 	double Lumi2012;
@@ -252,7 +261,9 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_mcg1->Scale(norm1_1);
 	h_mcg2->Scale(norm1_2);
 	h_mc2->Scale(norm2*c_t);
-	if (useEleMuo) h_mc2->Scale((Lumi2012/Lumi2012_ele_muon)/(norm2));
+	if (useEleMuo) {
+	  h_mc2->Scale(a1_t*(Lumi2012/Lumi2012_ele_muon)/(norm2*c_t));
+	}
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);
@@ -266,7 +277,9 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
 	h_mc2_b->Scale(norm2*c_t);
-	if (useEleMuo) h_mc2_b->Scale((Lumi2012/Lumi2012_ele_muon)/(norm2));
+	if (useEleMuo) {
+	  h_mc2_b->Scale(a2_t*(Lumi2012/Lumi2012_ele_muon)/(norm2*c_t));
+	}
 	h_mc3_b->Scale(norm3);
 	h_mc4_b->Scale(norm4);
 //	h_mc5_b->Scale(norm5);

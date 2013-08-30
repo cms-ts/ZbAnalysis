@@ -19,8 +19,8 @@ double func(double* x, double* p) {
 
 void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
 
-int useEleMuo = 0;
-//int useEleMuo = 1;
+//int useEleMuo = 0;
+int useEleMuo = 1;
 
 	double c_t=1.0;
 
@@ -28,8 +28,17 @@ int useEleMuo = 0;
 	if (ilepton==2 && doFit==3) c_t=1.069;
 	if (ilepton==3 && doFit==3) c_t=0.993;
 
-	if (ilepton==1 && useEleMuo) c_t=0.500;
-	if (ilepton==2 && useEleMuo) c_t=0.500;
+	double a1_t=1.0;
+	double a2_t=1.0;
+
+	if (ilepton==1 && useEleMuo) {
+	  a1_t=0.454;
+	  a2_t=0.437;
+	}
+	if (ilepton==2 && useEleMuo) {
+	  a1_t=0.585;
+	  a2_t=0.559;
+	}
 
 	double Lumi2012;
 
@@ -178,7 +187,13 @@ int useEleMuo = 0;
 	if (h_mc1b) h_mc1b->Scale(norm1);
 	if (h_mc1c) h_mc1c->Scale(norm1);
 	h_mc2->Scale(norm2*c_t);
-	if (useEleMuo) h_mc2->Scale((Lumi2012/Lumi2012_ele_muon)/(norm2));
+	if (useEleMuo) {
+	  if (title.find("_b")==string::npos) {
+	    h_mc2->Scale(a1_t*(Lumi2012/Lumi2012_ele_muon)/(norm2*c_t));
+	  } else {
+	    h_mc2->Scale(a2_t*(Lumi2012/Lumi2012_ele_muon)/(norm2*c_t));
+	  }
+	}
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);
@@ -327,6 +342,7 @@ int useEleMuo = 0;
 	pad1->Draw();
 	pad1->cd();
 	pad1->SetLogy();
+	if (title.find("MET")!=string::npos) pad1->SetLogy(0);
 
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
