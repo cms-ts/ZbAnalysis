@@ -82,7 +82,7 @@ int useFitResults=1;  // use fit results for c_t
       if (ilepton==2) mc1->cd("demoMuo");
       TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 
-      mc1->cd("demoEleMuo");
+      mc2->cd("demoEleMuo");
       TH1F* h_mc2_fit = (TH1F*)gDirectory->Get(title.c_str());
       if (ilepton==1) mc2->cd("demoEle");
       if (ilepton==2) mc2->cd("demoMuo");
