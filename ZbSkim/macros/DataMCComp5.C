@@ -189,7 +189,7 @@ int useFitResults=1;  // use fit results for c_t
 
       TF1 *f1 = new TF1("f1", func, 60, 120.00, 1);
       if (doFit==1) {
-        if (title.find("w_mass")!=string::npos) {
+        if (title=="w_mass_ee_wide" || title=="w_mass_mm_wide") {
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
             if (h_data_fit->GetXaxis()->GetBinCenter(i)>85 && h_data_fit->GetXaxis()->GetBinCenter(i)<100) {
               h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
