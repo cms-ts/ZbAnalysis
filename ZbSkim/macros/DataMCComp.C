@@ -497,33 +497,33 @@ int useEleMuo = 1;
 	  char buff[100];
 	  if (doFit==1) {
 	    sprintf(buff, "c_{t} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
-	    fitLabel->DrawLatex(0.68, 0.58, buff);
+	    fitLabel->DrawLatex(0.68, 0.48, buff);
 	  }
 	  if (doFit==2) {
 	    sprintf(buff, "c_{Z+jets} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
-	    fitLabel->DrawLatex(0.68, 0.58, buff);
+	    fitLabel->DrawLatex(0.68, 0.48, buff);
 	    sprintf(buff, "c_{t} = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
-	    fitLabel->DrawLatex(0.68, 0.53, buff);
+	    fitLabel->DrawLatex(0.68, 0.43, buff);
 	  }
 	  if (doFit==3) {
 	    sprintf(buff, "c_{uds} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
-	    fitLabel->DrawLatex(0.38, 0.58, buff);
-	    sprintf(buff, "c_{b}   = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
-	    fitLabel->DrawLatex(0.38, 0.53, buff);
-	    sprintf(buff, "c_{c}   = %5.3f #pm %5.3f", f1->GetParameter(2), f1->GetParError(2));
 	    fitLabel->DrawLatex(0.38, 0.48, buff);
+	    sprintf(buff, "c_{b}   = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
+	    fitLabel->DrawLatex(0.38, 0.43, buff);
+	    sprintf(buff, "c_{c}   = %5.3f #pm %5.3f", f1->GetParameter(2), f1->GetParError(2));
+	    fitLabel->DrawLatex(0.38, 0.38, buff);
 	    float f_uds = 100*h_mc_fit0->Integral()/(h_mc_fit0->Integral()+h_mc_fit1->Integral()+h_mc_fit2->Integral());
 	    float ef_uds = f_uds*(f1->GetParError(0)/f1->GetParameter(0));
 	    sprintf(buff, "f_{uds} = %4.1f #pm %3.1f %%", f_uds, ef_uds);
-	    fitLabel->DrawLatex(0.68, 0.58, buff);
+	    fitLabel->DrawLatex(0.68, 0.48, buff);
 	    float f_b = 100*h_mc_fit1->Integral()/(h_mc_fit0->Integral()+h_mc_fit1->Integral()+h_mc_fit2->Integral());
 	    float ef_b = f_b*(f1->GetParError(1)/f1->GetParameter(1));
 	    sprintf(buff, "f_{b}   = %4.1f #pm %3.1f %%", f_b, ef_b);
-	    fitLabel->DrawLatex(0.68, 0.53, buff);
+	    fitLabel->DrawLatex(0.68, 0.43, buff);
 	    float f_c = 100*h_mc_fit2->Integral()/(h_mc_fit0->Integral()+h_mc_fit1->Integral()+h_mc_fit2->Integral());
 	    float ef_c = f_c*(f1->GetParError(2)/f1->GetParameter(2));
 	    sprintf(buff, "f_{c}   = %4.1f #pm %3.1f %%", f_c, ef_c);
-	    fitLabel->DrawLatex(0.68, 0.48, buff);
+	    fitLabel->DrawLatex(0.68, 0.38, buff);
 	  }
 	  fitLabel->Draw("same");
 	}
