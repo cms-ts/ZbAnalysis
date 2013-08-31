@@ -47,23 +47,12 @@ int useFitResults=1;  // use fit results for c_t
 	if (title.find("ee")!=string::npos) return;
       }
 
-      TFile *data_ee = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
-      TFile *data_mm = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
+      TFile *data;
+      if (ilepton==1) data = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
+      if (ilepton==2) data = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
 
-      if (ilepton==1) data_ee->cd("demoEle");
-      if (ilepton==2) data_mm->cd("demoMuo");
-      h_data = (TH1F*)gDirectory->Get(title.c_str());
-
-      string title_em = title;
-
-      if (title_em.find("ee")!=string::npos) {
-        title_em.replace(title_em.find("ee")+1, 1, "m");
-      }
-      if (title_em.find("mm")!=string::npos) {
-        title_em.replace(title_em.find("mm"), 1, "e");
-      }
-
-      TFile *data_em = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
+      TFile *data_fit;
+      data_fit = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
 
       TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
       TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
@@ -73,50 +62,62 @@ int useFitResults=1;  // use fit results for c_t
       TFile *mc6 = TFile::Open((path + "/" + version + "/" + "WW.root").c_str());
       TFile *mc7 = TFile::Open((path + "/" + version + "/" + "Wj.root").c_str());
 
-      data_em->cd("demoEleMuo");
-      h_data_fit = (TH1F*)gDirectory->Get(title_em.c_str());
+      string title_fit = title;
 
-      mc1->cd("demoEleMuo");
-      TH1F* h_mc1_fit = (TH1F*)gDirectory->Get(title.c_str());
+      if (title_fit.find("ee")!=string::npos) {
+        title_fit.replace(title_fit.find("ee")+1, 1, "m");
+      }
+      if (title_fit.find("mm")!=string::npos) {
+        title_fit.replace(title_fit.find("mm"), 1, "e");
+      }
+
+      if (ilepton==1) data->cd("demoEle");
+      if (ilepton==2) data->cd("demoMuo");
+      h_data = (TH1F*)gDirectory->Get(title.c_str());
+      data_fit->cd("demoEleMuo");
+      h_data_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
+
       if (ilepton==1) mc1->cd("demoEle");
       if (ilepton==2) mc1->cd("demoMuo");
       TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
+      mc1->cd("demoEleMuo");
+      TH1F* h_mc1_fit = (TH1F*)gDirectory->Get(title.c_str());
 
-      mc2->cd("demoEleMuo");
-      TH1F* h_mc2_fit = (TH1F*)gDirectory->Get(title.c_str());
       if (ilepton==1) mc2->cd("demoEle");
       if (ilepton==2) mc2->cd("demoMuo");
       TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
+      mc2->cd("demoEleMuo");
+      TH1F* h_mc2_fit = (TH1F*)gDirectory->Get(title.c_str());
       
-      mc3->cd("demoEleMuo");
-      TH1F* h_mc3_fit = (TH1F*)gDirectory->Get(title.c_str());
       if (ilepton==1) mc3->cd("demoEle");
       if (ilepton==2) mc3->cd("demoMuo");
       TH1F* h_mc3 = (TH1F*)gDirectory->Get(title.c_str());
+      mc3->cd("demoEleMuo");
+      TH1F* h_mc3_fit = (TH1F*)gDirectory->Get(title.c_str());
 
-      mc4->cd("demoEleMuo");
-      TH1F* h_mc4_fit = (TH1F*)gDirectory->Get(title.c_str());
       if (ilepton==1) mc4->cd("demoEle");
       if (ilepton==2) mc4->cd("demoMuo");
       TH1F* h_mc4 = (TH1F*)gDirectory->Get(title.c_str());
+      mc4->cd("demoEleMuo");
+      TH1F* h_mc4_fit = (TH1F*)gDirectory->Get(title.c_str());
 
-//    mc5->cd("demoEleMuo");
-//    TH1F* h_mc5 = (TH1F*)gDirectory->Get(title.c_str());
 //    if (ilepton==1) mc5->cd("demoEle");
 //    if (ilepton==2) mc5->cd("demoMuo");
 //    TH1F* h_mc5 = (TH1F*)gDirectory->Get(title.c_str());
+//    mc5->cd("demoEleMuo");
+//    TH1F* h_mc5_fit = (TH1F*)gDirectory->Get(title.c_str());
 
-      mc6->cd("demoEleMuo");
-      TH1F* h_mc6_fit = (TH1F*)gDirectory->Get(title.c_str());
       if (ilepton==1) mc6->cd("demoEle");
       if (ilepton==2) mc6->cd("demoMuo");
       TH1F* h_mc6 = (TH1F*)gDirectory->Get(title.c_str());
+      mc6->cd("demoEleMuo");
+      TH1F* h_mc6_fit = (TH1F*)gDirectory->Get(title.c_str());
 
-      mc7->cd("demoEleMuo");
-      TH1F* h_mc7_fit = (TH1F*)gDirectory->Get(title.c_str());
       if (ilepton==1) mc7->cd("demoEle");
       if (ilepton==2) mc7->cd("demoMuo");
       TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
+      mc7->cd("demoEleMuo");
+      TH1F* h_mc7_fit = (TH1F*)gDirectory->Get(title.c_str());
 
       h_data->Sumw2();
       h_data_fit->Sumw2();
