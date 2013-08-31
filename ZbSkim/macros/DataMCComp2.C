@@ -52,8 +52,8 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
           e_Z_b = 0.556;
 	  if (useFitResults) c_t = 1.062;
 	  if (useEleMuo) {
-	    a1_t=0.422;
-	    a2_t=0.429;
+	    a1_t=0.451;
+	    a2_t=0.430;
 	  }
 	}
 
@@ -69,8 +69,8 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	  e_Z_b = 0.564;
 	  if (useFitResults) c_t = 1.013;
 	  if (useEleMuo) {
-	    a1_t=0.539;
-	    a2_t=0.552;
+	    a1_t=0.573;
+	    a2_t=0.553;
 	  }
 	}
 

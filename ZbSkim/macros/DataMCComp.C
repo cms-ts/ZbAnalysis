@@ -32,12 +32,12 @@ int useEleMuo = 1;
 	double a2_t=1.0;
 
 	if (ilepton==1 && useEleMuo) {
-	  a1_t=0.422;
-	  a2_t=0.429;
+	  a1_t=0.451;
+	  a2_t=0.430;
 	}
 	if (ilepton==2 && useEleMuo) {
-	  a1_t=0.539;
-	  a2_t=0.552;
+	  a1_t=0.573;
+	  a2_t=0.553;
 	}
 
 	double Lumi2012;
