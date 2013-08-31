@@ -89,43 +89,43 @@ int useFitResults=1;  // use fit results for c_t
       if (ilepton==2) mc1->cd("demoMuo");
       TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
       mc1->cd("demoEleMuo");
-      TH1F* h_mc1_fit = (TH1F*)gDirectory->Get(title.c_str());
+      TH1F* h_mc1_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
       if (ilepton==1) mc2->cd("demoEle");
       if (ilepton==2) mc2->cd("demoMuo");
       TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
       mc2->cd("demoEleMuo");
-      TH1F* h_mc2_fit = (TH1F*)gDirectory->Get(title.c_str());
+      TH1F* h_mc2_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
       
       if (ilepton==1) mc3->cd("demoEle");
       if (ilepton==2) mc3->cd("demoMuo");
       TH1F* h_mc3 = (TH1F*)gDirectory->Get(title.c_str());
       mc3->cd("demoEleMuo");
-      TH1F* h_mc3_fit = (TH1F*)gDirectory->Get(title.c_str());
+      TH1F* h_mc3_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
       if (ilepton==1) mc4->cd("demoEle");
       if (ilepton==2) mc4->cd("demoMuo");
       TH1F* h_mc4 = (TH1F*)gDirectory->Get(title.c_str());
       mc4->cd("demoEleMuo");
-      TH1F* h_mc4_fit = (TH1F*)gDirectory->Get(title.c_str());
+      TH1F* h_mc4_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
 //    if (ilepton==1) mc5->cd("demoEle");
 //    if (ilepton==2) mc5->cd("demoMuo");
 //    TH1F* h_mc5 = (TH1F*)gDirectory->Get(title.c_str());
 //    mc5->cd("demoEleMuo");
-//    TH1F* h_mc5_fit = (TH1F*)gDirectory->Get(title.c_str());
+//    TH1F* h_mc5_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
       if (ilepton==1) mc6->cd("demoEle");
       if (ilepton==2) mc6->cd("demoMuo");
       TH1F* h_mc6 = (TH1F*)gDirectory->Get(title.c_str());
       mc6->cd("demoEleMuo");
-      TH1F* h_mc6_fit = (TH1F*)gDirectory->Get(title.c_str());
+      TH1F* h_mc6_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
       if (ilepton==1) mc7->cd("demoEle");
       if (ilepton==2) mc7->cd("demoMuo");
       TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
       mc7->cd("demoEleMuo");
-      TH1F* h_mc7_fit = (TH1F*)gDirectory->Get(title.c_str());
+      TH1F* h_mc7_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
       h_data->Sumw2();
       h_data_fit->Sumw2();
