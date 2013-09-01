@@ -70,7 +70,7 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	  if (useFitResults) c_t = 1.013;
 	  if (useEleMuo) {
 	    a1_t=0.573;
-	    a2_t=0.556;
+	    a2_t=0.553;
 	  }
 	}
 
