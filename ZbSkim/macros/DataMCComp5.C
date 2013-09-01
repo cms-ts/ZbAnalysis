@@ -189,23 +189,7 @@ int useFitResults=1;  // use fit results for c_t
 
       TF1 *f1 = new TF1("f1", func, 60, 120.00, 1);
       if (doFit==1) {
-        if (title=="w_mass_ee_wide" || title=="w_mass_mm_wide") {
-          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            if (h_data_fit->GetXaxis()->GetBinCenter(i)>85 && h_data_fit->GetXaxis()->GetBinCenter(i)<100) {
-              h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
-  	      h_data->SetBinContent(i, 0);
-	      h_data->SetBinError(i, 0);
-	      h_data_fit->SetBinContent(i, 0);
-	      h_data_fit->SetBinError(i, 0);
-	      h_mc2->SetBinContent(i, 0);
-	      h_mc2->SetBinError(i, 0);
-            }
-	    float e = h_data->GetBinError(i)**2;
-            e = e + h_data_fit->GetBinError(i)**2;
-            h_data->SetBinError(i, TMath::Sqrt(e));          
-	  }
-        }
-        if (title=="w_mass_ee_b_wide" || title=="w_mass_mm_b_wide") {
+        if (title.find("w_mass")!=!=string::npos) {
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
             if (h_data_fit->GetXaxis()->GetBinCenter(i)>85 && h_data_fit->GetXaxis()->GetBinCenter(i)<100) {
               h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
