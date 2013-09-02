@@ -7,8 +7,11 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1, int unfold=0) {
 
-//int useEleMuo = 0;
-int useEleMuo = 1;
+//int useFitResults=0; // use MC predictions for c_b, c_c, c_uds, c_t
+int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
+
+//int useEleMuo = 0; // use MC or fit results for c_t
+int useEleMuo = 1; // use e-mu fit results for c_t
 
 	if (gROOT->GetVersionInt() >= 53401) {
 	  gROOT->GetColor(kRed)->SetAlpha(0.5);
@@ -32,45 +35,52 @@ int useEleMuo = 1;
 
 	/* top */
 
-	double c_t=1.0;
-
-	double a1_t=1.0;
-	double a2_t=1.0;
-
-//int useFitResults=0; // use MC predictions for c_b, c_c, c_uds, c_t
-int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
+	double c1_t=1.0;
+	double ec1_t=0.0;
+	double c2_t=c1_t;
+	double ec2_t=ec1_t;
 
 	if (ilepton==1) {
-	  if (useFitResults) {
-	    c_b   = 0.773;
-	    c_c   = 1.237;
-	    c_uds = 1.989;
-	  }
           e_Zb  = 0.211;
           e_Z   = 0.545;
           e_Z_1 = 0.380;
           e_Z_b = 0.556;
-	  if (useFitResults) c_t = 1.062;
-	  if (useEleMuo) {
-	    a1_t=0.457;
-	    a2_t=0.443;
+	  if (useFitResults) {
+	    c_b   = 0.773;
+	    c_c   = 1.237;
+	    c_uds = 1.989;
+	    c1_t   = 1.062;
+	    ec1_t  = 0.032;
+	    c2_t   = c1_t;
+	    ec2_t  = ec1_t;
+	    if (useEleMuo) {
+	      c1_t  = 0.457;
+	      ec1_t = 0.006;
+	      c2_t  = 0.443;
+	      ec2_t = 0.008;
+	    }
 	  }
 	}
 
 	if (ilepton==2) {
-	  if (useFitResults) {
-	    c_b   = 0.740;
-	    c_c   = 1.431;
-	    c_uds = 1.125;
-	  }
           e_Zb  = 0.310;
 	  e_Z   = 0.804;
 	  e_Z_1 = 0.550;
 	  e_Z_b = 0.564;
-	  if (useFitResults) c_t = 1.013;
-	  if (useEleMuo) {
-	    a1_t=0.582;
-	    a2_t=0.564;
+	  if (useFitResults) {
+	    c_b   = 0.740;
+	    c_c   = 1.431;
+	    c_uds = 1.125;
+	    c_t   = 1.013;
+	    ec_t  = 0.029;
+	    c2_t  = c1_t;
+	    ec2_t = ec1_t;
+	    if (useEleMuo) {
+	      c1_t  = 0.582;
+	      ec1_t = 0.007;
+	      c2_t  = 0.564;
+	      ec2_t = 0.009;
+	    }
 	  }
 	}
 
@@ -79,17 +89,18 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
-	double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
-	double norm1_1 = ( (Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
+	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
+	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
 	double norm1_2;
-	if (ilepton==1) norm1_2 = ( (Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
-	if (ilepton==2) norm1_2 = ( (Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
-	double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
-	double norm3 = ( (Lumi2012 * Xsec_zz) / Ngen_zz);
-	double norm4 = ( (Lumi2012 * Xsec_wz) / Ngen_wz);
-	double norm5 = ( (Lumi2012 * Xsec_qcd) / Ngen_qcd);
-	double norm6 = ( (Lumi2012 * Xsec_ww) / Ngen_ww);
-	double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
+	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
+	if (ilepton==2) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
+	double norm2 = ((Lumi2012 * Xsec_tt) / Ngen_tt);
+	if (useEleMuo) norm2 = (Lumi2012 / Lumi2012_ele_muon);
+	double norm3 = ((Lumi2012 * Xsec_zz) / Ngen_zz);
+	double norm4 = ((Lumi2012 * Xsec_wz) / Ngen_wz);
+	double norm5 = ((Lumi2012 * Xsec_qcd) / Ngen_qcd);
+	double norm6 = ((Lumi2012 * Xsec_ww) / Ngen_ww);
+	double norm7 = ((Lumi2012 * Xsec_wj) / Ngen_wj);
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -260,9 +271,11 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_mcg->Scale(norm1);
 	h_mcg1->Scale(norm1_1);
 	h_mcg2->Scale(norm1_2);
-	h_mc2->Scale(norm2*c_t);
-	if (useEleMuo) {
-	  h_mc2->Scale(a1_t*(Lumi2012/Lumi2012_ele_muon)/(norm2*c_t));
+	h_mc2->Scale(norm2*c1_t);
+	for (int i=0; i<=h_mc2->GetNbinsX()+1; i++) {
+	  float e = h_mc2->GetBinError(i)**2;
+	  e = e + (h_mc2->GetBinContent(i)*(ec1_t/c1_t))**2;
+	  h_mc2->SetBinError(i, TMath::Sqrt(e));
 	}
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
@@ -276,9 +289,11 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 	h_mcg_b->Scale(norm1);
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
-	h_mc2_b->Scale(norm2*c_t);
-	if (useEleMuo) {
-	  h_mc2_b->Scale(a2_t*(Lumi2012/Lumi2012_ele_muon)/(norm2*c_t));
+	h_mc2_b->Scale(norm2*c2_t);
+	for (int i=0; i<=h_mc2_b->GetNbinsX()+1; i++) {
+	  float e = h_mc2_b->GetBinError(i)**2;
+	  e = e + (h_mc2_b->GetBinContent(i)*(ec2_t/c2_t))**2;
+	  h_mc2_b->SetBinError(i, TMath::Sqrt(e));
 	}
 	h_mc3_b->Scale(norm3);
 	h_mc4_b->Scale(norm4);
