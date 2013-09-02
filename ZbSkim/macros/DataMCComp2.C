@@ -46,9 +46,9 @@ int useEleMuo = 1; // use e-mu fit results for c_t
           e_Z_1 = 0.380;
           e_Z_b = 0.556;
 	  if (useFitResults) {
-	    c_b   = 0.773;
-	    c_c   = 1.237;
-	    c_uds = 1.989;
+	    c_b   = 0.791;
+	    c_c   = 1.230;
+	    c_uds = 1.693;
 	    c1_t   = 1.062;
 	    ec1_t  = 0.032;
 	    c2_t   = c1_t;
@@ -68,9 +68,9 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  e_Z_1 = 0.550;
 	  e_Z_b = 0.564;
 	  if (useFitResults) {
-	    c_b   = 0.740;
-	    c_c   = 1.431;
-	    c_uds = 1.125;
+	    c_b   = 0.760;
+	    c_c   = 1.327;
+	    c_uds = 1.277;
 	    c_t   = 1.013;
 	    ec_t  = 0.029;
 	    c2_t  = c1_t;

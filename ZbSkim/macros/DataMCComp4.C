@@ -29,9 +29,10 @@ bool verbose = false;
 // use fit results for c_b
 
         double c_b=1.0;
+
 	if (imode>=3) {
-	  if (ilepton==1) c_b = 0.770;
-	  if (ilepton==2) c_b = 0.747;
+	  if (ilepton==1) c_b = 0.791;
+	  if (ilepton==2) c_b = 0.760;
 	}
 
 	double Lumi2012;
