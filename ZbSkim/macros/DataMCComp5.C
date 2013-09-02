@@ -28,21 +28,21 @@ int useFitResults=1;  // use fit results for c_t
       if (ilepton==1) Lumi2012 = Lumi2012_ele;
       if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
-      double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
-      double norm2 = ( (Lumi2012 * Xsec_tt) / Ngen_tt);
-      double norm3 = ( (Lumi2012 * Xsec_zz) / Ngen_zz);
-      double norm4 = ( (Lumi2012 * Xsec_wz) / Ngen_wz);
-      double norm5 = ( (Lumi2012 * Xsec_qcd) / Ngen_qcd);
-      double norm6 = ( (Lumi2012 * Xsec_ww) / Ngen_ww);
-      double norm7 = ( (Lumi2012 * Xsec_wj) / Ngen_wj);
+      double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
+      double norm2 = ((Lumi2012 * Xsec_tt) / Ngen_tt);
+      double norm3 = ((Lumi2012 * Xsec_zz) / Ngen_zz);
+      double norm4 = ((Lumi2012 * Xsec_wz) / Ngen_wz);
+      double norm5 = ((Lumi2012 * Xsec_qcd) / Ngen_qcd);
+      double norm6 = ((Lumi2012 * Xsec_ww) / Ngen_ww);
+      double norm7 = ((Lumi2012 * Xsec_wj) / Ngen_wj);
 
-      double norm1_fit = ( (Lumi2012_ele_muon * Xsec_dy) / Ngen_dy);
-      double norm2_fit = ( (Lumi2012_ele_muon * Xsec_tt) / Ngen_tt);
-      double norm3_fit = ( (Lumi2012_ele_muon * Xsec_zz) / Ngen_zz);
-      double norm4_fit = ( (Lumi2012_ele_muon * Xsec_wz) / Ngen_wz);
-      double norm5_fit = ( (Lumi2012_ele_muon * Xsec_qcd) / Ngen_qcd);
-      double norm6_fit = ( (Lumi2012_ele_muon * Xsec_ww) / Ngen_ww);
-      double norm7_fit = ( (Lumi2012_ele_muon * Xsec_wj) / Ngen_wj);
+      double norm1_fit = ((Lumi2012_ele_muon * Xsec_dy) / Ngen_dy);
+      double norm2_fit = ((Lumi2012_ele_muon * Xsec_tt) / Ngen_tt);
+      double norm3_fit = ((Lumi2012_ele_muon * Xsec_zz) / Ngen_zz);
+      double norm4_fit = ((Lumi2012_ele_muon * Xsec_wz) / Ngen_wz);
+      double norm5_fit = ((Lumi2012_ele_muon * Xsec_qcd) / Ngen_qcd);
+      double norm6_fit = ((Lumi2012_ele_muon * Xsec_ww) / Ngen_ww);
+      double norm7_fit = ((Lumi2012_ele_muon * Xsec_wj) / Ngen_wj);
 
       if (title.empty()) title = "w_jetmultiplicity";
 

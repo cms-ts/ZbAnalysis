@@ -39,11 +39,11 @@ bool verbose = false;
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
-	double norm1 = ( (Lumi2012 * Xsec_dy) / Ngen_dy);
-	double norm1_1 = ( (Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
+	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
+	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
 	double norm1_2;
-	if (ilepton==1) norm1_2 = ( (Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
-	if (ilepton==2) norm1_2 = ( (Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
+	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
+	if (ilepton==2) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
