@@ -202,7 +202,7 @@ int useFitResults=1;  // use fit results for c_t
             }
 	    float e = h_data->GetBinError(i)**2;
             e = e + h_data_fit->GetBinError(i)**2;
-            h_data->SetBinError(i, TMath::Sqrt(e));          
+            h_data->SetBinError(i, TMath::Sqrt(e)); 
 	  }
         }
         if (title=="w_MET") {
@@ -280,6 +280,11 @@ int useFitResults=1;  // use fit results for c_t
         c1 = new TCanvas("c", "c", 800, 600);
         c1->cd();
 
+	TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
+	pad1->SetBottomMargin(0.001);
+	pad1->Draw();
+	pad1->cd();
+
         h_data->SetMinimum(0);
         h_data->SetMaximum(-1111);
 
@@ -314,6 +319,47 @@ int useFitResults=1;  // use fit results for c_t
         fitLabel->DrawLatex(0.68, 0.48, buff);
         sprintf(buff, "I_{t#bar{t}}  = %5.1f", h_mc2->Integral());
         fitLabel->DrawLatex(0.68, 0.43, buff);
+
+	pad1->Update();
+	c1->Update();
+
+	c1->cd();
+
+	TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
+	pad2->SetTopMargin(0);
+	pad2->SetBottomMargin(0.3);
+	pad2->Draw();
+	pad2->cd();
+
+	TH1F* h_ratio = h_data->Clone("h_ratio");
+	h_ratio->Divide(h_data_fit);
+
+	h_ratio->SetTitle("");
+        h_ratio->SetStats(0);
+
+	h_ratio->GetXaxis()->SetTitleOffset(0.9);
+	h_ratio->GetXaxis()->SetTitleSize(0.1);
+        h_ratio->GetXaxis()->SetLabelFont(42);
+        h_ratio->GetXaxis()->SetLabelSize(0.08);
+        h_ratio->GetXaxis()->SetTitleFont(42);
+        h_ratio->GetYaxis()->SetTitle("ratio");
+        h_ratio->GetYaxis()->SetNdivisions(505);
+        h_ratio->GetYaxis()->SetTitleSize(0.09);
+        h_ratio->GetYaxis()->SetLabelSize(0.08);
+        h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
+        h_ratio->GetYaxis()->SetTitleOffset(0.4);
+
+        h_ratio->SetMarkerStyle(20);
+        h_ratio->SetMarkerColor(kBlack);
+
+        h_ratio->Draw("EPX");
+
+        TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
+        OLine->SetLineColor(kGreen);
+        OLine->SetLineWidth(1);
+        OLine->Draw();
+
+        c1->cd();
       }
 
       if (plot) {
