@@ -15,10 +15,10 @@ double func(double* x, double* p) {
 
 void DataMCComp5(string& title="", int plot=0, int ilepton=1, int doFit=0) {
 
-      double c_t=1.0;
-
 //int useFitResults=0; // use MC predictions for c_t
 int useFitResults=1;  // use fit results for c_t
+
+      double c_t=1.0;
 
       if (ilepton==1 && useFitResults) c_t = 1.062;
       if (ilepton==2 && useFitResults) c_t = 1.013;
