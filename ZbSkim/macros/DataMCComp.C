@@ -32,12 +32,12 @@ int useEleMuo = 1;
 	double a2_t=1.0;
 
 	if (ilepton==1 && useEleMuo) {
-	  a1_t=0.451;
-	  a2_t=0.430;
+	  a1_t=0.457;
+	  a2_t=0.443;
 	}
 	if (ilepton==2 && useEleMuo) {
-	  a1_t=0.573;
-	  a2_t=0.553;
+	  a1_t=0.582;
+	  a2_t=0.564;
 	}
 
 	double Lumi2012;
@@ -245,7 +245,7 @@ int useEleMuo = 1;
 	  f1->SetParNames("c(t)", "dummy", "dummy");
 	  f1->FixParameter(1, 0.0);
 	  f1->FixParameter(2, 0.0);
-	  h_data_fit->Fit("f1", "Q0");
+	  h_data_fit->Fit("f1", "Q0L");
 	  h_mc_fit0->Scale(f1->GetParameter(0));
 	}
 	if (doFit==2) {
@@ -270,7 +270,7 @@ int useEleMuo = 1;
 	  f1->SetParameters(1.0, 1.0, 0.0);
 	  f1->SetParNames("c(Z+jets)", "c(t)", "dummy");
 	  f1->FixParameter(2, 0.0);
-	  h_data_fit->Fit("f1", "Q0");
+	  h_data_fit->Fit("f1", "Q0L");
 	  if (h_mc1b) h_mc_fit0->Add(h_mc1b, -1.);
 	  if (h_mc1c) h_mc_fit0->Add(h_mc1c, -1.);
 	  h_mc_fit0->Scale(f1->GetParameter(0));
@@ -301,7 +301,7 @@ int useEleMuo = 1;
 	  }
 	  f1->SetParameters(1.0, 1.0, 1.0);
 	  f1->SetParNames("c(uds)", "c(b)", "c(c)");
-	  h_data_fit->Fit("f1", "Q0");
+	  h_data_fit->Fit("f1", "Q0L");
 	  h_mc_fit0->Scale(f1->GetParameter(0));
 	  h_mc_fit1->Scale(f1->GetParameter(1));
 	  h_mc_fit2->Scale(f1->GetParameter(2));

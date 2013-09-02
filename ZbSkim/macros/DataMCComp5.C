@@ -271,7 +271,7 @@ int useFitResults=1;  // use fit results for c_t
         }
         f1->SetParameter(0,0.5);
         f1->SetParNames("c(t)");
-        h_data->Fit("f1", "Q0");
+        h_data->Fit("f1", "Q0L");
         h_data_fit->Scale(f1->GetParameter(0));
       }
 
