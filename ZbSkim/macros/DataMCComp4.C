@@ -214,7 +214,7 @@ bool verbose = false;
 	unfold_mc->SetNToys(ntoys);
 	unfold_data->SetNToys(ntoys);
 
-	int dosys = 0; // default 0 -> 0=stat, 1=stat+sys, 2=sys only
+	int dosys = 1; // default 0 -> 0=stat, 1=stat+sys, 2=sys only
 	unfold_mc->IncludeSystematics(dosys);
 	unfold_data->IncludeSystematics(dosys);
 
