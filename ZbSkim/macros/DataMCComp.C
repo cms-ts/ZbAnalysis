@@ -422,7 +422,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 
 	if (ilepton==1) leg->AddEntry(h_data,"Z(#rightarrow ee)+jets","p");
 	if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
-	if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow e#mu)+jets","p");
+	if (ilepton==3) leg->AddEntry(h_data,"Z(#rightarrow e#mu)+jets","p");
 
 	leg->AddEntry(h_mc1,"Z+jets","f");
 	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
