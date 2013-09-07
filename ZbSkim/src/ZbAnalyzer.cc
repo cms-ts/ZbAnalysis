@@ -378,12 +378,15 @@ private:
   TH1F*     w_secondvtx_N;
   TH1F*     w_secondvtx_N_zoom;
   TH1F*     w_secondvtx_N_mass;
+  TH1F*     w_secondvtx_N_nomass;
   TH1F*     b_secondvtx_N;
   TH1F*     b_secondvtx_N_zoom;
   TH1F*     b_secondvtx_N_mass;
+  TH1F*     b_secondvtx_N_nomass;
   TH1F*     c_secondvtx_N;
   TH1F*     c_secondvtx_N_zoom;
   TH1F*     c_secondvtx_N_mass;
+  TH1F*     c_secondvtx_N_nomass;
 
   TH1F*     w_SVTX_mass_jet;
   TH1F*     b_SVTX_mass_jet;
@@ -408,6 +411,13 @@ private:
   TH1F*     b_JBP_mass;
   TH1F*     c_BJP_mass;
   TH1F*     c_JBP_mass;
+
+  TH1F*     w_BJP_nomass;
+  TH1F*     w_JBP_nomass;
+  TH1F*     b_BJP_nomass;
+  TH1F*     b_JBP_nomass;
+  TH1F*     c_BJP_nomass;
+  TH1F*     c_JBP_nomass;
 
   TH1F*     w_Ht;
   TH1F*     b_Ht;
@@ -694,18 +704,21 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_single_delta_em_b =        fs->make < TH1F > ("b_single_delta_phi_em_b",  "b_single_delta_phi_em_b", 12, 0, TMath::Pi ());
   c_single_delta_em_b =        fs->make < TH1F > ("c_single_delta_phi_em_b",  "c_single_delta_phi_em_b", 12, 0, TMath::Pi ());
 
-  h_secondvtx_N =         fs->make < TH1F > ("h_secondvtx_N",     "h_secondvtx_N", 50, 0, 1);
-  w_secondvtx_N =         fs->make < TH1F > ("w_secondvtx_N",     "w_secondvtx_N", 50, 0, 1);
-  w_secondvtx_N_zoom =    fs->make < TH1F > ("w_secondvtx_N_zoom",  "w_secondvtx_N_zoom", 20, 0.898, 1);
-  w_secondvtx_N_mass =    fs->make < TH1F > ("w_secondvtx_N_mass",  "w_secondvtx_N_mass", 20, 0.898, 1);
+  h_secondvtx_N =         fs->make < TH1F > ("h_secondvtx_N",        "h_secondvtx_N", 50, 0, 1);
+  w_secondvtx_N =         fs->make < TH1F > ("w_secondvtx_N",        "w_secondvtx_N", 50, 0, 1);
+  w_secondvtx_N_zoom =    fs->make < TH1F > ("w_secondvtx_N_zoom",   "w_secondvtx_N_zoom", 20, 0.898, 1);
+  w_secondvtx_N_mass =    fs->make < TH1F > ("w_secondvtx_N_mass",   "w_secondvtx_N_mass", 20, 0.898, 1);
+  w_secondvtx_N_nomass =  fs->make < TH1F > ("w_secondvtx_N_nomass", "w_secondvtx_N_nomass", 20, 0.898, 1);
 
-  b_secondvtx_N =         fs->make < TH1F > ("b_secondvtx_N",       "b_secondvtx_N", 50, 0, 1);
-  b_secondvtx_N_zoom =    fs->make < TH1F > ("b_secondvtx_N_zoom",  "b_secondvtx_N_zoom", 20, 0.898, 1);
-  b_secondvtx_N_mass =    fs->make < TH1F > ("b_secondvtx_N_mass",  "b_secondvtx_N_mass", 20, 0.898, 1);
+  b_secondvtx_N =         fs->make < TH1F > ("b_secondvtx_N",        "b_secondvtx_N", 50, 0, 1);
+  b_secondvtx_N_zoom =    fs->make < TH1F > ("b_secondvtx_N_zoom",   "b_secondvtx_N_zoom", 20, 0.898, 1);
+  b_secondvtx_N_mass =    fs->make < TH1F > ("b_secondvtx_N_mass",   "b_secondvtx_N_mass", 20, 0.898, 1);
+  b_secondvtx_N_nomass =  fs->make < TH1F > ("b_secondvtx_N_nomass", "b_secondvtx_N_nomass", 20, 0.898, 1);
 
-  c_secondvtx_N =         fs->make < TH1F > ("c_secondvtx_N",       "c_secondvtx_N", 50, 0, 1);
-  c_secondvtx_N_zoom =    fs->make < TH1F > ("c_secondvtx_N_zoom",  "c_secondvtx_N_zoom", 20, 0.898, 1);
-  c_secondvtx_N_mass =    fs->make < TH1F > ("c_secondvtx_N_mass",  "c_secondvtx_N_mass", 20, 0.898, 1);
+  c_secondvtx_N =         fs->make < TH1F > ("c_secondvtx_N",        "c_secondvtx_N", 50, 0, 1);
+  c_secondvtx_N_zoom =    fs->make < TH1F > ("c_secondvtx_N_zoom",   "c_secondvtx_N_zoom", 20, 0.898, 1);
+  c_secondvtx_N_mass =    fs->make < TH1F > ("c_secondvtx_N_mass",   "c_secondvtx_N_mass", 20, 0.898, 1);
+  c_secondvtx_N_nomass =  fs->make < TH1F > ("c_secondvtx_N_nomass", "c_secondvtx_N_nomass", 20, 0.898, 1);
 
   w_SVTX_mass_jet =     fs->make < TH1F > ("w_SVTX_mass_jet",   "w_SVTX_mass_jet;Mass [GeV]", 80, 0, 6);
   b_SVTX_mass_jet =     fs->make < TH1F > ("b_SVTX_mass_jet",   "b_SVTX_mass_jet;Mass [GeV]", 80, 0, 6);
@@ -730,6 +743,13 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_JBP_mass  =     fs->make < TH1F > ("b_JBP_mass",   "b_JBP_mass", 50, 0, 3);
   c_BJP_mass  =     fs->make < TH1F > ("c_BJP_mass",   "c_BJP_mass", 80, 0, 10);
   c_JBP_mass  =     fs->make < TH1F > ("c_JBP_mass",   "c_JBP_mass", 50, 0, 3);
+
+  w_BJP_nomass  =     fs->make < TH1F > ("w_BJP_nomass",   "w_BJP_nomass", 80, 0, 10);
+  w_JBP_nomass  =     fs->make < TH1F > ("w_JBP_nomass",   "w_JBP_nomass", 50, 0, 3);
+  b_BJP_nomass  =     fs->make < TH1F > ("b_BJP_nomass",   "b_BJP_nomass", 80, 0, 10);
+  b_JBP_nomass  =     fs->make < TH1F > ("b_JBP_nomass",   "b_JBP_nomass", 50, 0, 3);
+  c_BJP_nomass  =     fs->make < TH1F > ("c_BJP_nomass",   "c_BJP_nomass", 80, 0, 10);
+  c_JBP_nomass  =     fs->make < TH1F > ("c_JBP_nomass",   "c_JBP_nomass", 50, 0, 3);
 
   w_Ht =                fs->make < TH1F > ("w_Ht",              "w_Ht [GeV]", 50, 30., 1000.);
   b_Ht =                fs->make < TH1F > ("b_Ht",              "b_Ht [GeV]", 50, 30., 1000.);
@@ -1750,14 +1770,26 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // ++++++++ CSV PLOTS
 
-  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && sumVertexMass > 0.0 ) {
-    scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-    w_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
-    if (isb) {
-      b_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut) {
+    if (sumVertexMass > 0.0 ) {
+      scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
+      w_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+      if (isb) {
+        b_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+      }
+      if (isc && !isb) {
+        c_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+      }
     }
-    if (isc && !isb) {
-      c_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+    if (sumVertexMass == 0.0 ) {
+      scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
+      w_secondvtx_N_nomass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+      if (isb) {
+        b_secondvtx_N_nomass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+      }
+      if (isc && !isb) {
+        c_secondvtx_N_nomass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+      }
     }
   }
 
@@ -1771,12 +1803,20 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       w_BJP_mass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
       w_JBP_mass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
     }
+    if (sumVertexMass == 0.0) {
+      w_BJP_nomass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
+      w_JBP_nomass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+    }
     if (isb) {
       b_BJP->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
       b_JBP->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
       if (sumVertexMass > 0.0) {
         b_BJP_mass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
         b_JBP_mass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+      }
+      if (sumVertexMass == 0.0) {
+        b_BJP_nomass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
+        b_JBP_nomass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
       }
     }
     if (isc && !isb) {
@@ -1785,6 +1825,10 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       if (sumVertexMass > 0.0) {
         c_BJP_mass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
         c_JBP_mass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+      }
+      if (sumVertexMass == 0.0) {
+        c_BJP_nomass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
+        c_JBP_nomass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
       }
     }
   }
