@@ -104,8 +104,13 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp.C\(\"w_secondvtx_N_mass\",1,$i\)
 
+  root -l -q -b DataMCComp.C\(\"w_secondvtx_N_nomass\",1,$i\)
+
   root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,$i\)
+
+  root -l -q -b DataMCComp.C\(\"w_BJP_nomass\",1,$i\)
+  root -l -q -b DataMCComp.C\(\"w_JBP_nomass\",1,$i\)
 
   i=$((i+1))
 done
@@ -165,8 +170,13 @@ root -l -q -b DataMCComp.C\(\"w_JBP\",1,3\)
 
 root -l -q -b DataMCComp.C\(\"w_secondvtx_N_mass\",1,3\)
 
+root -l -q -b DataMCComp.C\(\"w_secondvtx_N_nomass\",1,3\)
+
 root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,3\)
 root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,3\)
+
+root -l -q -b DataMCComp.C\(\"w_BJP_nomass\",1,3\)
+root -l -q -b DataMCComp.C\(\"w_JBP_nomass\",1,3\)
 
 i=1
 while [ $i -le 2 ]; do
@@ -195,6 +205,10 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_secondvtx_N_mass\",1,$i,0,3\)
   root -l -q -b DataMCComp.C\(\"w_secondvtx_N_mass\",1,$i,1,3\)
 
+  root -l -q -b DataMCComp.C\(\"w_secondvtx_N_nomass\",1,$i,1,0\)
+  root -l -q -b DataMCComp.C\(\"w_secondvtx_N_nomass\",1,$i,0,3\)
+  root -l -q -b DataMCComp.C\(\"w_secondvtx_N_nomass\",1,$i,1,3\)
+
   root -l -q -b DataMCComp.C\(\"w_BJP\",1,$i,1,0\)
   root -l -q -b DataMCComp.C\(\"w_BJP\",1,$i,0,3\)
   root -l -q -b DataMCComp.C\(\"w_BJP\",1,$i,1,3\)
@@ -203,6 +217,10 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,$i,0,3\)
   root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,$i,1,3\)
 
+  root -l -q -b DataMCComp.C\(\"w_BJP_nomass\",1,$i,1,0\)
+  root -l -q -b DataMCComp.C\(\"w_BJP_nomass\",1,$i,0,3\)
+  root -l -q -b DataMCComp.C\(\"w_BJP_nomass\",1,$i,1,3\)
+
   root -l -q -b DataMCComp.C\(\"w_JBP\",1,$i,1,0\)
   root -l -q -b DataMCComp.C\(\"w_JBP\",1,$i,0,3\)
   root -l -q -b DataMCComp.C\(\"w_JBP\",1,$i,1,3\)
@@ -210,6 +228,10 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,$i,1,0\)
   root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,$i,0,3\)
   root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,$i,1,3\)
+
+  root -l -q -b DataMCComp.C\(\"w_JBP_nomass\",1,$i,1,0\)
+  root -l -q -b DataMCComp.C\(\"w_JBP_nomass\",1,$i,0,3\)
+  root -l -q -b DataMCComp.C\(\"w_JBP_nomass\",1,$i,1,3\)
 
   i=$((i+1))
 done
@@ -233,16 +255,25 @@ root -l -q -b DataMCComp.C\(\"w_secondvtx_N_zoom\",1,3,0,3\)
 root -l -q -b DataMCComp.C\(\"w_secondvtx_N_mass\",1,3,1,0\)
 root -l -q -b DataMCComp.C\(\"w_secondvtx_N_mass\",1,3,0,3\)
 
+root -l -q -b DataMCComp.C\(\"w_secondvtx_N_nomass\",1,3,1,0\)
+root -l -q -b DataMCComp.C\(\"w_secondvtx_N_nomass\",1,3,0,3\)
+
 root -l -q -b DataMCComp.C\(\"w_BJP\",1,3,1,0\)
 root -l -q -b DataMCComp.C\(\"w_BJP\",1,3,0,3\)
 
 root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,3,1,0\)
 root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,3,0,3\)
 
+root -l -q -b DataMCComp.C\(\"w_BJP_nomass\",1,3,1,0\)
+root -l -q -b DataMCComp.C\(\"w_BJP_nomass\",1,3,0,3\)
+
 root -l -q -b DataMCComp.C\(\"w_JBP\",1,3,1,0\)
 root -l -q -b DataMCComp.C\(\"w_JBP\",1,3,0,3\)
 
 root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,3,1,0\)
 root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,3,0,3\)
+
+root -l -q -b DataMCComp.C\(\"w_JBP_nomass\",1,3,1,0\)
+root -l -q -b DataMCComp.C\(\"w_JBP_nomass\",1,3,0,3\)
 
 exit
