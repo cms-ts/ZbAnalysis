@@ -120,8 +120,13 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp5.C\(\"w_secondvtx_N_mass\",1,$i\)
 
+  root -l -q -b DataMCComp5.C\(\"w_secondvtx_N_nomass\",1,$i\)
+
   root -l -q -b DataMCComp5.C\(\"w_BJP_mass\",1,$i\)
   root -l -q -b DataMCComp5.C\(\"w_JBP_mass\",1,$i\)
+
+  root -l -q -b DataMCComp5.C\(\"w_BJP_nomass\",1,$i\)
+  root -l -q -b DataMCComp5.C\(\"w_JBP_nomass\",1,$i\)
 
   i=$((i+1))
 done
