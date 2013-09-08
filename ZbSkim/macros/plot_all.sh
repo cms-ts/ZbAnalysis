@@ -193,6 +193,10 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_mass_ee_b_wide\",1,$i,0,1\)
   root -l -q -b DataMCComp.C\(\"w_mass_mm_b_wide\",1,$i,0,1\)
 
+  root -l -q -b DataMCComp.C\(\"w_SVTX_mass_trk\",1,$i,1,0\)
+  root -l -q -b DataMCComp.C\(\"w_SVTX_mass_trk\",1,$i,0,3\)
+  root -l -q -b DataMCComp.C\(\"w_SVTX_mass_trk\",1,$i,1,3\)
+  
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,1,0\)
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,0,3\)
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,1,3\)
@@ -245,6 +249,9 @@ root -l -q -b DataMCComp.C\(\"w_MET_sign_b\",1,3,0,1\)
 root -l -q -b DataMCComp.C\(\"w_mass_em_wide\",1,3,0,2\)
 
 root -l -q -b DataMCComp.C\(\"w_mass_em_b_wide\",1,3,0,2\)
+
+root -l -q -b DataMCComp.C\(\"w_SVTX_mass_trk\",1,3,1,0\)
+root -l -q -b DataMCComp.C\(\"w_SVTX_mass_trk\",1,3,0,3\)
 
 root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,3,1,0\)
 root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,3,0,3\)
