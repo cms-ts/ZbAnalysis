@@ -1166,10 +1166,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   vector < pat::Jet > vect_jets;
   vector < pat::Jet > vect_bjets;
 
-  double sumVertexMassJet = 0.;
-  double sumVertexMassTrk = 0.;
-  double sumVertexMass = 0.;
-
   for (vector < pat::Jet >::const_iterator jet = jets->begin(); jet != jets->end(); ++jet) {
 
     double jet_pt  = jet->pt ();
@@ -1215,71 +1211,10 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
         vect_bjets.push_back (*jet);
 
-        scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-        if ((ee_event || mm_event || em_event) && vtx_cut && met_cut) {
-	  w_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
-	  if (isb) {
-	    b_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
-	  }
-	  if (isc && !isb) {
-	    c_secondvtx_N_zoom->Fill (discrCSV, MyWeight*scalFac_b);
-	  }
-        }
-
-        reco::SecondaryVertexTagInfo const * svTagInfos = jet->tagInfoSecondaryVertex("secondaryVertex");
-
-        if ((ee_event || mm_event || em_event) && vtx_cut && met_cut) {
-	  if (svTagInfos && svTagInfos->nVertices() > 0) {
-	    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecJet;
-	    for (reco::Vertex::trackRef_iterator track = svTagInfos->secondaryVertex(0).tracks_begin(); track != svTagInfos->secondaryVertex(0).tracks_end(); ++track) {
-	      const double kPionMass = 0.13957018;
-	      ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > vec;
-	      vec.SetPx( (*track)->px() );
-	      vec.SetPy( (*track)->py() );
-	      vec.SetPz( (*track)->pz() );
-	      vec.SetM (kPionMass);
-	      sumVecJet += vec;
-	    }
-	    sumVertexMassJet += sumVecJet.M();
-	  }
-        }
-
-        if ((ee_event || mm_event || em_event) && vtx_cut && met_cut) {
-	  ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecTrk;
-	  for (size_t itrack=0; itrack < jet->associatedTracks().size(); ++itrack) {
-	    const double kPionMass = 0.13957018;
-	    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > vec;
-	    vec.SetPx( jet->associatedTracks()[itrack]->px() );
-	    vec.SetPy( jet->associatedTracks()[itrack]->py() );
-	    vec.SetPz( jet->associatedTracks()[itrack]->pz() );
-	    vec.SetM (kPionMass);
-	    sumVecTrk += vec;
-	  }
-	  sumVertexMassTrk += sumVecTrk.M();
-        }
-
-        if ((ee_event || mm_event || em_event) && vtx_cut && met_cut) {
-	  if (svTagInfos && svTagInfos->nVertices() > 0) {
-    	    const reco::Vertex &vertex = svTagInfos->secondaryVertex(0);
-	    reco::TrackKinematics vertexKinematics(vertex);
-	    math::XYZTLorentzVector vertexSum = vertexKinematics.weightedVectorSum();
-	    sumVertexMass += vertexSum.M();
-	  }
-        }
-
       }
 
     }
 
-  }
-
-  if (Nb > 0 && met_cut) {
-    sumVertexMassJet /= Nb;
-    sumVertexMassTrk /= Nb;
-    sumVertexMass /= Nb;
-    //cout << "VTX mass JET = " << sumVertexMassJet << endl;
-    //cout << "VTX mass TRK = " << sumVertexMassTrk << endl;
-    //cout << "VTX mass NEW = " << sumVertexMass << endl;
   }
 
   // ++++++++ MET PLOTS
@@ -1751,8 +1686,51 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // ++++++++ SVTX MASS PLOTS
 
+  double sumVertexMassJet = 0.0;
+  double sumVertexMassTrk = 0.0;
+  double sumVertexMass = 0.0;
+
   if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut) {
 
+    reco::SecondaryVertexTagInfo const * svTagInfos = vect_bjets[0].tagInfoSecondaryVertex("secondaryVertex");
+
+    if (svTagInfos && svTagInfos->nVertices() > 0) {
+      ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecJet;
+      for (reco::Vertex::trackRef_iterator track = svTagInfos->secondaryVertex(0).tracks_begin(); track != svTagInfos->secondaryVertex(0).tracks_end(); ++track) {
+        const double kPionMass = 0.13957018;
+        ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > vec;
+        vec.SetPx( (*track)->px() );
+        vec.SetPy( (*track)->py() );
+        vec.SetPz( (*track)->pz() );
+        vec.SetM (kPionMass);
+        sumVecJet += vec;
+      }
+      sumVertexMassJet = sumVecJet.M();
+      //cout << "VTX mass JET = " << sumVecJet.M() << endl;
+    }
+
+    ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecTrk;
+    for (size_t itrack=0; itrack < vect_bjets[0].associatedTracks().size(); ++itrack) {
+      const double kPionMass = 0.13957018;
+      ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > vec;
+      vec.SetPx( vect_bjets[0].associatedTracks()[itrack]->px() );
+      vec.SetPy( vect_bjets[0].associatedTracks()[itrack]->py() );
+      vec.SetPz( vect_bjets[0].associatedTracks()[itrack]->pz() );
+      vec.SetM (kPionMass);
+      sumVecTrk += vec;
+    }
+    sumVertexMassTrk = sumVecTrk.M();
+    //cout << "VTX mass TRK = " << sumVecTrk.M() << endl;
+
+    if (svTagInfos && svTagInfos->nVertices() > 0) {
+      const reco::Vertex &vertex = svTagInfos->secondaryVertex(0);
+      reco::TrackKinematics vertexKinematics(vertex);
+      math::XYZTLorentzVector vertexSum = vertexKinematics.weightedVectorSum();
+      sumVertexMass = vertexSum.M();
+      //cout << "VTX mass NEW = " << vertexSum.M() << endl;
+    }
+
+    scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
     w_SVTX_mass_jet->Fill (sumVertexMassJet, MyWeight*scalFac_b);
     w_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
     w_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
@@ -1771,24 +1749,31 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   // ++++++++ CSV PLOTS
 
   if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut) {
+    scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
+    double discrSVTX = vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags");
+    w_secondvtx_N_zoom->Fill (discrSVTX, MyWeight*scalFac_b);
+    if (isb) {
+      b_secondvtx_N_zoom->Fill (discrSVTX, MyWeight*scalFac_b);
+    }
+    if (isc && !isb) {
+      c_secondvtx_N_zoom->Fill (discrSVTX, MyWeight*scalFac_b);
+    }
     if (sumVertexMass > 0.0 ) {
-      scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-      w_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+      w_secondvtx_N_mass->Fill (discrSVTX, MyWeight*scalFac_b);
       if (isb) {
-        b_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+        b_secondvtx_N_mass->Fill (discrSVTX, MyWeight*scalFac_b);
       }
       if (isc && !isb) {
-        c_secondvtx_N_mass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+        c_secondvtx_N_mass->Fill (discrSVTX, MyWeight*scalFac_b);
       }
     }
     if (sumVertexMass == 0.0 ) {
-      scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-      w_secondvtx_N_nomass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+      w_secondvtx_N_nomass->Fill (discrSVTX, MyWeight*scalFac_b);
       if (isb) {
-        b_secondvtx_N_nomass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+        b_secondvtx_N_nomass->Fill (discrSVTX, MyWeight*scalFac_b);
       }
       if (isc && !isb) {
-        c_secondvtx_N_nomass->Fill (vect_bjets[0].bDiscriminator("combinedSecondaryVertexBJetTags"), MyWeight*scalFac_b);
+        c_secondvtx_N_nomass->Fill (discrSVTX, MyWeight*scalFac_b);
       }
     }
   }
@@ -1797,38 +1782,40 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut) {
     scalFac_b = btagSF(isMC, vect_bjets[0].partonFlavour(), vect_bjets[0].pt(), vect_bjets[0].eta());
-    w_BJP->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
-    w_JBP->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+    double discrBJP = vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags");
+    double discrJBP = vect_bjets[0].bDiscriminator("jetProbabilityBJetTags");
+    w_BJP->Fill (discrBJP, MyWeight*scalFac_b);
+    w_JBP->Fill (discrJBP, MyWeight*scalFac_b);
     if (sumVertexMass > 0.0) {
-      w_BJP_mass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
-      w_JBP_mass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+      w_BJP_mass->Fill (discrBJP, MyWeight*scalFac_b);
+      w_JBP_mass->Fill (discrJBP, MyWeight*scalFac_b);
     }
     if (sumVertexMass == 0.0) {
-      w_BJP_nomass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
-      w_JBP_nomass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+      w_BJP_nomass->Fill (discrBJP, MyWeight*scalFac_b);
+      w_JBP_nomass->Fill (discrJBP, MyWeight*scalFac_b);
     }
     if (isb) {
-      b_BJP->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
-      b_JBP->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+      b_BJP->Fill (discrBJP, MyWeight*scalFac_b);
+      b_JBP->Fill (discrJBP, MyWeight*scalFac_b);
       if (sumVertexMass > 0.0) {
-        b_BJP_mass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
-        b_JBP_mass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+        b_BJP_mass->Fill (discrBJP, MyWeight*scalFac_b);
+        b_JBP_mass->Fill (discrJBP, MyWeight*scalFac_b);
       }
       if (sumVertexMass == 0.0) {
-        b_BJP_nomass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
-        b_JBP_nomass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+        b_BJP_nomass->Fill (discrBJP, MyWeight*scalFac_b);
+        b_JBP_nomass->Fill (discrJBP, MyWeight*scalFac_b);
       }
     }
     if (isc && !isb) {
-      c_BJP->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
-      c_JBP->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+      c_BJP->Fill (discrBJP, MyWeight*scalFac_b);
+      c_JBP->Fill (discrJBP, MyWeight*scalFac_b);
       if (sumVertexMass > 0.0) {
-        c_BJP_mass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
-        c_JBP_mass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+        c_BJP_mass->Fill (discrBJP, MyWeight*scalFac_b);
+        c_JBP_mass->Fill (discrJBP, MyWeight*scalFac_b);
       }
       if (sumVertexMass == 0.0) {
-        c_BJP_nomass->Fill (vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags"), MyWeight*scalFac_b);
-        c_JBP_nomass->Fill (vect_bjets[0].bDiscriminator("jetProbabilityBJetTags"), MyWeight*scalFac_b);
+        c_BJP_nomass->Fill (discrBJP, MyWeight*scalFac_b);
+        c_JBP_nomass->Fill (discrJBP, MyWeight*scalFac_b);
       }
     }
   }
