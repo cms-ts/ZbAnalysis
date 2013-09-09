@@ -500,7 +500,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
 	} else if (title=="SVTX_mass_jet"||title=="SVTX_mass_trk"||title=="SVTX_mass") {
 	  h_ratio->GetXaxis ()->SetTitle("SV mass [GeV/c^{2}]");
-	} else if (title=="w_BJP"||title=="w_BPJ") {
+	} else if (title=="w_BJP"||title=="w_JBP") {
 	  h_ratio->GetXaxis ()->SetTitle("JP Discriminator");
 	}
 
