@@ -22,6 +22,12 @@ echo "process.demoMuo2.pileup = cms.untracked.string('"$pileup"')" >> job.py
 
 shift
 
+cut=$1
+echo "process.demoEle.icut = cms.untracked.uint32("$cut")" >> job.py
+echo "process.demoMuo.icut = cms.untracked.uint32("$cut")" >> job.py
+
+shift
+
 echo "fileList = cms.untracked.vstring()" >> job.py
 i=1
 while [ $i -le $# ]; do
