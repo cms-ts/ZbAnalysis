@@ -77,11 +77,11 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	    ec1_t = 0.012;
 	    c2_t  = 0.898;
 	    ec2_t = 0.013;
-	    if (useEleMuo&&doFit) {
-	      c1_t  = 1.000;
-	      ec1_t = 0.000;
-	      c2_t  = 1.000;
-	      ec2_t = 0.000;
+	    if (useEleMuo) {
+	      c1_t  = 1.007;
+	      ec1_t = 0.012;
+	      c2_t  = 0.898;
+	      ec2_t = 0.013;
 	    }
 	  }
 	}
