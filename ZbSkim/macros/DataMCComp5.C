@@ -6,11 +6,18 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 TH1F* h_data = 0;
 TH1F* h_data_fit = 0;
 
-double func(double* x, double* p) {
-  double val = 0.0;
-  int i = h_data->GetXaxis()->FindBin(x[0]);
-  if (h_data_fit) val = val + p[0]*h_data_fit->GetBinContent(i);
-  return val;
+void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
+  double chisq = 0.0;
+  for (int i=1; i<=h_data->GetNbinsX(); i++) {
+    double xn = h_data->GetBinContent(i);
+    double xd = h_data->GetBinError(i)**2;
+    if (npar>0) {
+      xn = xn - par[0]*h_data_fit->GetBinContent(i);
+      xd = xd + (par[0]*h_data_fit->GetBinError(i))**2;
+    }
+    if (xd!=0) chisq = chisq + (xn*xn)/xd;
+  }
+  fun = chisq;
 }
 
 void DataMCComp5(string& title="", int plot=0, int ilepton=1, int doFit=0) {
@@ -180,99 +187,50 @@ int useFitResults=1;  // use fit results for c_t
 
       h_data_fit->Scale(Lumi2012/Lumi2012_ele_muon);
 
-      float xfix = 0.500;
-
-      if (ilepton==1) xfix = 0.45;
-      if (ilepton==2) xfix = 0.55;
-
-      h_data_fit->Scale(xfix);
-
-      TF1 *f1 = new TF1("f1", func, 60, 120.00, 1);
       if (doFit==1) {
-        if (title.find("w_mass")!=string::npos) {
-          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+        for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+	  bool skip = false;
+          if (title.find("w_mass")!=string::npos) {
             if (h_data_fit->GetXaxis()->GetBinCenter(i)>85 && h_data_fit->GetXaxis()->GetBinCenter(i)<100) {
-              h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
-  	      h_data->SetBinContent(i, 0);
-	      h_data->SetBinError(i, 0);
-	      h_data_fit->SetBinContent(i, 0);
-	      h_data_fit->SetBinError(i, 0);
-	      h_mc2->SetBinContent(i, 0);
-	      h_mc2->SetBinError(i, 0);
+	      skip = true;
             }
-	    float e = h_data->GetBinError(i)**2;
-            e = e + h_data_fit->GetBinError(i)**2;
-            h_data->SetBinError(i, TMath::Sqrt(e)); 
 	  }
-        }
-        if (title=="w_MET") {
-          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+          if (title=="w_MET") {
             if (h_data_fit->GetXaxis()->GetBinCenter(i)<125) {
-              h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
-  	      h_data->SetBinContent(i, 0);
-	      h_data->SetBinError(i, 0);
-	      h_data_fit->SetBinContent(i, 0);
-	      h_data_fit->SetBinError(i, 0);
-	      h_mc2->SetBinContent(i, 0);
-	      h_mc2->SetBinError(i, 0);
+	      skip = true;
             }
-	    float e = h_data->GetBinError(i)**2;
-            e = e + h_data_fit->GetBinError(i)**2;
-	    h_data->SetBinError(i, TMath::Sqrt(e));
 	  }
-        }
-        if (title=="w_MET_sign") {
-          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+          if (title=="w_MET_sign") {
             if (h_data_fit->GetXaxis()->GetBinCenter(i)<50) {
-              h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
-  	      h_data->SetBinContent(i, 0);
-	      h_data->SetBinError(i, 0);
-	      h_data_fit->SetBinContent(i, 0);
-	      h_data_fit->SetBinError(i, 0);
-	      h_mc2->SetBinContent(i, 0);
-	      h_mc2->SetBinError(i, 0);
+	      skip = true;
             }
-            float e = h_data->GetBinError(i)**2;
-            e = e + h_data_fit->GetBinError(i)**2;
-            h_data->SetBinError(i, TMath::Sqrt(e));
+	  }
+          if (title=="w_MET_b") {
+            if (h_data_fit->GetXaxis()->GetBinCenter(i)<90) {
+	      skip = true;
+            }
+          }
+          if (title=="w_MET_sign_b") {
+            if (h_data_fit->GetXaxis()->GetBinCenter(i)<30) {
+	      skip = true;
+            }
+          }
+	  if (skip) {
+  	    h_data->SetBinContent(i, 0);
+	    h_data->SetBinError(i, 0);
+	    h_data_fit->SetBinContent(i, 0);
+	    h_data_fit->SetBinError(i, 0);
+	    h_mc2->SetBinContent(i, 0);
+	    h_mc2->SetBinError(i, 0);
 	  }
         }
-        if (title=="w_MET_b") {
-          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            if (h_data_fit->GetXaxis()->GetBinCenter(i)<90) {
-              h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
-  	      h_data->SetBinContent(i, 0);
-	      h_data->SetBinError(i, 0);
-	      h_data_fit->SetBinContent(i, 0);
-	      h_data_fit->SetBinError(i, 0);
-	      h_mc2->SetBinContent(i, 0);
-	      h_mc2->SetBinError(i, 0);
-            }
-            float e = h_data->GetBinError(i)**2;
-            e = e + h_data_fit->GetBinError(i)**2;
-            h_data->SetBinError(i, TMath::Sqrt(e));
-          }
-        }
-        if (title=="w_MET_sign_b") {
-          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            if (h_data_fit->GetXaxis()->GetBinCenter(i)<30) {
-              h_data->SetEntries(h_data->GetEntries()-h_data->GetBinContent(i)-1);
-  	      h_data->SetBinContent(i, 0);
-	      h_data->SetBinError(i, 0);
-	      h_data_fit->SetBinContent(i, 0);
-	      h_data_fit->SetBinError(i, 0);
-	      h_mc2->SetBinContent(i, 0);
-	      h_mc2->SetBinError(i, 0);
-            }
-            float e = h_data->GetBinError(i)**2;
-            e = e + h_data_fit->GetBinError(i)**2;
-            h_data->SetBinError(i, TMath::Sqrt(e));
-          }
-        }
-        f1->SetParameter(0,0.5);
-        f1->SetParNames("c(t)");
-        h_data->Fit("f1", "Q0L");
-        h_data_fit->Scale(f1->GetParameter(0));
+	TVirtualFitter* fitter = TVirtualFitter::Fitter(0, 1);
+	fitter->SetFCN(fcn);
+	double arglist[1] = {-1.0};
+	fitter->ExecuteCommand("SET PRINT", arglist, 1);
+	fitter->SetParameter(0, "c(t)", 0.5, 0.1, 0.0, 1.0);
+	fitter->ExecuteCommand("MIGRAD", arglist, 0);
+	h_data_fit->Scale(fitter->GetParameter(0));
       }
 
       TCanvas* c1;
@@ -310,12 +268,12 @@ int useFitResults=1;  // use fit results for c_t
         fitLabel->SetLineWidth(2);
         fitLabel->SetNDC();
         char buff[100];
-        sprintf(buff, "c_{t} = %5.3f #pm %5.3f", xfix*f1->GetParameter(0), xfix*f1->GetParError(0));
+        sprintf(buff, "c_{t} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
         fitLabel->DrawLatex(0.68, 0.58, buff);
         if (ilepton==1) sprintf(buff, "I_{ee} = %5.1f", h_data->Integral());
         if (ilepton==2) sprintf(buff, "I_{#mu#mu} = %5.1f", h_data->Integral());
         fitLabel->DrawLatex(0.68, 0.53, buff);
-        sprintf(buff, "I_{e#mu} = %5.1f #pm %5.1f", h_data_fit->Integral(), f1->IntegralError(h_data_fit->GetXaxis()->GetXmin(),h_data_fit->GetXaxis()->GetXmax()));
+        sprintf(buff, "I_{e#mu} = %5.1f", h_data_fit->Integral());
         fitLabel->DrawLatex(0.68, 0.48, buff);
         sprintf(buff, "I_{t#bar{t}}  = %5.1f", h_mc2->Integral());
         fitLabel->DrawLatex(0.68, 0.43, buff);

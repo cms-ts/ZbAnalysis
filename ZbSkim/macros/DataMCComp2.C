@@ -54,10 +54,10 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	    c2_t   = c1_t;
 	    ec2_t  = ec1_t;
 	    if (useEleMuo) {
-	      c1_t  = 0.457;
-	      ec1_t = 0.006;
-	      c2_t  = 0.443;
-	      ec2_t = 0.008;
+	      c1_t  = 0.454;
+	      ec1_t = 0.008;
+	      c2_t  = 0.435;
+	      ec2_t = 0.010;
 	    }
 	  }
 	}
@@ -76,10 +76,10 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	    c2_t  = c1_t;
 	    ec2_t = ec1_t;
 	    if (useEleMuo) {
-	      c1_t  = 0.582;
-	      ec1_t = 0.007;
-	      c2_t  = 0.564;
-	      ec2_t = 0.009;
+	      c1_t  = 0.578;
+	      ec1_t = 0.010;
+	      c2_t  = 0.560;
+	      ec2_t = 0.011;
 	    }
 	  }
 	}

@@ -240,47 +240,4 @@ while [ $i -le 2 ]; do
   i=$((i+1))
 done
 
-root -l -q -b DataMCComp.C\(\"w_MET\",1,3,0,1\)
-root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,3,0,1\)
-
-root -l -q -b DataMCComp.C\(\"w_MET_b\",1,3,0,1\)
-root -l -q -b DataMCComp.C\(\"w_MET_sign_b\",1,3,0,1\)
-
-root -l -q -b DataMCComp.C\(\"w_mass_em_wide\",1,3,0,2\)
-
-root -l -q -b DataMCComp.C\(\"w_mass_em_b_wide\",1,3,0,2\)
-
-root -l -q -b DataMCComp.C\(\"w_SVTX_mass_trk\",1,3,1,0\)
-root -l -q -b DataMCComp.C\(\"w_SVTX_mass_trk\",1,3,0,3\)
-
-root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,3,1,0\)
-root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,3,0,3\)
-
-root -l -q -b DataMCComp.C\(\"w_secondvtx_N_zoom\",1,3,1,0\)
-root -l -q -b DataMCComp.C\(\"w_secondvtx_N_zoom\",1,3,0,3\)
-
-root -l -q -b DataMCComp.C\(\"w_secondvtx_N_mass\",1,3,1,0\)
-root -l -q -b DataMCComp.C\(\"w_secondvtx_N_mass\",1,3,0,3\)
-
-root -l -q -b DataMCComp.C\(\"w_secondvtx_N_nomass\",1,3,1,0\)
-root -l -q -b DataMCComp.C\(\"w_secondvtx_N_nomass\",1,3,0,3\)
-
-root -l -q -b DataMCComp.C\(\"w_BJP\",1,3,1,0\)
-root -l -q -b DataMCComp.C\(\"w_BJP\",1,3,0,3\)
-
-root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,3,1,0\)
-root -l -q -b DataMCComp.C\(\"w_BJP_mass\",1,3,0,3\)
-
-root -l -q -b DataMCComp.C\(\"w_BJP_nomass\",1,3,1,0\)
-root -l -q -b DataMCComp.C\(\"w_BJP_nomass\",1,3,0,3\)
-
-root -l -q -b DataMCComp.C\(\"w_JBP\",1,3,1,0\)
-root -l -q -b DataMCComp.C\(\"w_JBP\",1,3,0,3\)
-
-root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,3,1,0\)
-root -l -q -b DataMCComp.C\(\"w_JBP_mass\",1,3,0,3\)
-
-root -l -q -b DataMCComp.C\(\"w_JBP_nomass\",1,3,1,0\)
-root -l -q -b DataMCComp.C\(\"w_JBP_nomass\",1,3,0,3\)
-
 exit

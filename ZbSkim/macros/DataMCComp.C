@@ -8,13 +8,26 @@ TH1F* h_mc_fit0 = 0;
 TH1F* h_mc_fit1 = 0;
 TH1F* h_mc_fit2 = 0;
 
-double func(double* x, double* p) {
-  double val = 0.0;
-  int i = h_data_fit->GetXaxis()->FindBin(x[0]);
-  if (h_mc_fit0) val = val + p[0]*h_mc_fit0->GetBinContent(i);
-  if (h_mc_fit1) val = val + p[1]*h_mc_fit1->GetBinContent(i);
-  if (h_mc_fit2) val = val + p[2]*h_mc_fit2->GetBinContent(i);
-  return val;
+void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
+  double chisq = 0.0;
+  for (int i=1; i<=h_data_fit->GetNbinsX(); i++) {
+    double xn = h_data_fit->GetBinContent(i);
+    double xd = h_data_fit->GetBinError(i)**2;
+    if (npar>0) {
+      xn = xn - par[0]*h_mc_fit0->GetBinContent(i);
+      xd = xd + (par[0]*h_mc_fit0->GetBinError(i))**2;
+    }
+    if (npar>1) {
+      xn = xn - par[1]*h_mc_fit1->GetBinContent(i);
+      xd = xd + (par[1]*h_mc_fit1->GetBinError(i))**2;
+    }
+    if (npar>2) {
+      xn = xn - par[2]*h_mc_fit2->GetBinContent(i);
+      xd = xd + (par[2]*h_mc_fit2->GetBinError(i))**2;
+    }
+    if (xd!=0) chisq = chisq + (xn*xn)/xd;
+  }
+  fun = chisq;
 }
 
 void DataMCComp(string& title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
@@ -37,10 +50,10 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	    c2_t  = c1_t;
 	    ec2_t = ec1_t;
 	    if (useEleMuo) {
-	      c1_t  = 0.457;
-	      ec1_t = 0.006;
-	      c2_t  = 0.443;
-	      ec2_t = 0.008;
+	      c1_t  = 0.454;
+	      ec1_t = 0.008;
+	      c2_t  = 0.435;
+	      ec2_t = 0.010;
 	    }
 	  }
 	}
@@ -51,10 +64,10 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	    c2_t  = c1_t;
 	    ec2_t = ec1_t;
 	    if (useEleMuo) {
-	      c1_t  = 0.582;
-	      ec1_t = 0.007;
-	      c2_t  = 0.564;
-	      ec2_t = 0.009;
+	      c1_t  = 0.578;
+	      ec1_t = 0.010;
+	      c2_t  = 0.560;
+	      ec2_t = 0.011;
 	    }
 	  }
 	}
@@ -259,7 +272,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  h_mc1->SetBinError(i, TMath::Sqrt(e));
 	}
 
-	TF1 *f1 = new TF1("f1", func, 0.00, 100.00, 3);
+	TVirtualFitter* fitter;
 	if (doFit==1) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
@@ -275,19 +288,62 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  h_mc_fit0 = h_mc2;
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
 	    float e = h_data_fit->GetBinError(i)**2;
-	    e = e + h_mc_fit0->GetBinError(i)**2;
-	    if (title=="w_MET" && h_data_fit->GetXaxis()->GetBinCenter(i) < 125.) e = 1.e10;
-	    if (title=="w_MET_b" && h_data_fit->GetXaxis()->GetBinCenter(i) < 90.) e = 1.e10;
-	    if (title=="w_MET_sign" && h_data_fit->GetXaxis()->GetBinCenter(i) < 50.) e = 1.e10;
-	    if (title=="w_MET_sign_b" && h_data_fit->GetXaxis()->GetBinCenter(i) < 30.) e = 1.e10;
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
-	  f1->SetParameters(1.0, 0.0, 0.0);
-	  f1->SetParNames("c(t)", "dummy", "dummy");
-	  f1->FixParameter(1, 0.0);
-	  f1->FixParameter(2, 0.0);
-	  h_data_fit->Fit("f1", "Q0L");
-	  h_mc_fit0->Scale(f1->GetParameter(0));
+	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+	    bool skip = false;
+	    if (title=="w_MET") {
+	      if (h_data_fit->GetXaxis()->GetBinCenter(i) < 125) {
+		skip = true;
+	      }
+	    }
+	    if (title=="w_MET_sign") {
+	      if (h_data_fit->GetXaxis()->GetBinCenter(i) < 50) {
+		skip = true;
+	      }
+	    }
+	    if (title=="w_MET_b") {
+	      if (h_data_fit->GetXaxis()->GetBinCenter(i) < 90) {
+		skip = true;
+	      }
+	    }
+	    if (title=="w_MET_sign_b") {
+	      if (h_data_fit->GetXaxis()->GetBinCenter(i) < 30) {
+		skip = true;
+	      }
+	    }
+	    if (skip) {
+	      h_data->SetBinContent(i, 0);
+	      h_data->SetBinError(i, 0);
+	      h_data_fit->SetBinContent(i, 0);
+	      h_data_fit->SetBinError(i, 0);
+	      h_mc1->SetBinContent(i, 0);
+	      h_mc1->SetBinError(i, 0);
+	      h_mc1b->SetBinContent(i, 0);
+	      h_mc1b->SetBinError(i, 0);
+	      h_mc1c->SetBinContent(i, 0);
+	      h_mc1c->SetBinError(i, 0);
+	      h_mc2->SetBinContent(i, 0);
+	      h_mc2->SetBinError(i, 0);
+	      h_mc3->SetBinContent(i, 0);
+	      h_mc3->SetBinError(i, 0);
+	      h_mc4->SetBinContent(i, 0);
+	      h_mc4->SetBinError(i, 0);
+//	      h_mc5->SetBinContent(i, 0);
+//	      h_mc5->SetBinError(i, 0);
+	      h_mc6->SetBinContent(i, 0);
+	      h_mc6->SetBinError(i, 0);
+	      h_mc7->SetBinContent(i, 0);
+	      h_mc7->SetBinError(i, 0);
+	    }
+	  }
+	  fitter = TVirtualFitter::Fitter(0, 1);
+	  fitter->SetFCN(fcn);
+	  double arglist[1] = {-1.0};
+	  fitter->ExecuteCommand("SET PRINT", arglist, 1);
+	  fitter->SetParameter(0, "c(t)", 1.0, 0.1, 0.0, 100.0);
+	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
+	  h_mc_fit0->Scale(fitter->GetParameter(0));
 	}
 	if (doFit==2) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
@@ -302,22 +358,19 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  if (h_mc1b) h_mc_fit0->Add(h_mc1b, 1.);
 	  if (h_mc1c) h_mc_fit0->Add(h_mc1c, 1.);
 	  h_mc_fit1 = h_mc2;
-	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-	    float e = h_data_fit->GetBinError(i)**2;
-	    e = e + h_mc_fit0->GetBinError(i)**2;
-	    e = e + h_mc_fit1->GetBinError(i)**2;
-	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
-	  }
-	  f1->SetParameters(1.0, 1.0, 0.0);
-	  f1->SetParNames("c(Z+jets)", "c(t)", "dummy");
-	  f1->FixParameter(2, 0.0);
-	  h_data_fit->Fit("f1", "Q0L");
+	  fitter = TVirtualFitter::Fitter(0, 2);
+	  fitter->SetFCN(fcn);
+	  double arglist[1] = {-1.0};
+	  fitter->ExecuteCommand("SET PRINT", arglist, 1);
+	  fitter->SetParameter(0, "c(Z+jets)", 1.0, 0.1, 0.0, 100.0);
+	  fitter->SetParameter(1, "c(t)", 1.0, 0.1, 0.0, 100.0);
+	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
 	  if (h_mc1b) h_mc_fit0->Add(h_mc1b, -1.);
 	  if (h_mc1c) h_mc_fit0->Add(h_mc1c, -1.);
-	  h_mc_fit0->Scale(f1->GetParameter(0));
-	  if (h_mc1b) h_mc1b->Scale(f1->GetParameter(0));
-	  if (h_mc1c) h_mc1c->Scale(f1->GetParameter(0));
-	  h_mc_fit1->Scale(f1->GetParameter(1));
+	  h_mc_fit0->Scale(fitter->GetParameter(0));
+	  if (h_mc1b) h_mc1b->Scale(fitter->GetParameter(0));
+	  if (h_mc1c) h_mc1c->Scale(fitter->GetParameter(0));
+	  h_mc_fit1->Scale(fitter->GetParameter(1));
 	}
 	if (doFit==3) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
@@ -333,19 +386,48 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  h_mc_fit1 = h_mc1b;
 	  h_mc_fit2 = h_mc1c;
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-	    float e = h_data_fit->GetBinError(i)**2;
-	    e = e + h_mc_fit0->GetBinError(i)**2;
-	    e = e + h_mc_fit1->GetBinError(i)**2;
-	    e = e + h_mc_fit2->GetBinError(i)**2;
-	    if (title=="w_SVTX_mass" && h_data_fit->GetXaxis()->GetBinCenter(i) < 0.2) e = 1.e10;
-	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
+	    bool skip = false;
+	    if (title=="w_SVTX_mass") {
+	      if (h_data_fit->GetXaxis()->GetBinCenter(i) < 0.2) {
+	        skip = true;
+	      }
+	    }
+	    if (skip) {
+	      h_data->SetBinContent(i, 0);
+	      h_data->SetBinError(i, 0);
+	      h_data_fit->SetBinContent(i, 0);
+	      h_data_fit->SetBinError(i, 0);
+	      h_mc1->SetBinContent(i, 0);
+	      h_mc1->SetBinError(i, 0);
+	      h_mc1b->SetBinContent(i, 0);
+	      h_mc1b->SetBinError(i, 0);
+	      h_mc1c->SetBinContent(i, 0);
+	      h_mc1c->SetBinError(i, 0);
+	      h_mc2->SetBinContent(i, 0);
+	      h_mc2->SetBinError(i, 0);
+	      h_mc3->SetBinContent(i, 0);
+	      h_mc3->SetBinError(i, 0);
+	      h_mc4->SetBinContent(i, 0);
+	      h_mc4->SetBinError(i, 0);
+//	      h_mc5->SetBinContent(i, 0);
+//	      h_mc5->SetBinError(i, 0);
+	      h_mc6->SetBinContent(i, 0);
+	      h_mc6->SetBinError(i, 0);
+	      h_mc7->SetBinContent(i, 0);
+	      h_mc7->SetBinError(i, 0);
+	    }
 	  }
-	  f1->SetParameters(1.0, 1.0, 1.0);
-	  f1->SetParNames("c(uds)", "c(b)", "c(c)");
-	  h_data_fit->Fit("f1", "Q0L");
-	  h_mc_fit0->Scale(f1->GetParameter(0));
-	  h_mc_fit1->Scale(f1->GetParameter(1));
-	  h_mc_fit2->Scale(f1->GetParameter(2));
+	  fitter = TVirtualFitter::Fitter(0, 3);
+	  fitter->SetFCN(fcn);
+	  double arglist[1] = {-1.0};
+	  fitter->ExecuteCommand("SET PRINT", arglist, 1);
+	  fitter->SetParameter(0, "c(uds)", 1.0, 0.1, 0.0, 100.0);
+	  fitter->SetParameter(1, "c(b)", 1.0, 0.1, 0.0, 100.0);
+	  fitter->SetParameter(2, "c(c)", 1.0, 0.1, 0.0, 100.0);
+	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
+	  h_mc_fit0->Scale(fitter->GetParameter(0));
+	  h_mc_fit1->Scale(fitter->GetParameter(1));
+	  h_mc_fit2->Scale(fitter->GetParameter(2));
 	}
 
 	TH1F *ht = h_mc1->Clone("ht");
@@ -537,32 +619,32 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  fitLabel->SetNDC();
 	  char buff[100];
 	  if (doFit==1) {
-	    sprintf(buff, "c_{t} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	    sprintf(buff, "c_{t} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
 	    fitLabel->DrawLatex(0.68, 0.48, buff);
 	  }
 	  if (doFit==2) {
-	    sprintf(buff, "c_{Z+jets} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	    sprintf(buff, "c_{Z+jets} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
 	    fitLabel->DrawLatex(0.68, 0.48, buff);
-	    sprintf(buff, "c_{t} = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
+	    sprintf(buff, "c_{t} = %5.3f #pm %5.3f", fitter->GetParameter(1), fitter->GetParError(1));
 	    fitLabel->DrawLatex(0.68, 0.43, buff);
 	  }
 	  if (doFit==3) {
-	    sprintf(buff, "c_{uds} = %5.3f #pm %5.3f", f1->GetParameter(0), f1->GetParError(0));
+	    sprintf(buff, "c_{uds} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
 	    fitLabel->DrawLatex(0.38, 0.48, buff);
-	    sprintf(buff, "c_{b}   = %5.3f #pm %5.3f", f1->GetParameter(1), f1->GetParError(1));
+	    sprintf(buff, "c_{b}   = %5.3f #pm %5.3f", fitter->GetParameter(1), fitter->GetParError(1));
 	    fitLabel->DrawLatex(0.38, 0.43, buff);
-	    sprintf(buff, "c_{c}   = %5.3f #pm %5.3f", f1->GetParameter(2), f1->GetParError(2));
+	    sprintf(buff, "c_{c}   = %5.3f #pm %5.3f", fitter->GetParameter(2), fitter->GetParError(2));
 	    fitLabel->DrawLatex(0.38, 0.38, buff);
 	    float f_uds = 100*h_mc_fit0->Integral()/(h_mc_fit0->Integral()+h_mc_fit1->Integral()+h_mc_fit2->Integral());
-	    float ef_uds = f_uds*(f1->GetParError(0)/f1->GetParameter(0));
+	    float ef_uds = f_uds*(fitter->GetParError(0)/fitter->GetParameter(0));
 	    sprintf(buff, "f_{uds} = %4.1f #pm %3.1f %%", f_uds, ef_uds);
 	    fitLabel->DrawLatex(0.68, 0.48, buff);
 	    float f_b = 100*h_mc_fit1->Integral()/(h_mc_fit0->Integral()+h_mc_fit1->Integral()+h_mc_fit2->Integral());
-	    float ef_b = f_b*(f1->GetParError(1)/f1->GetParameter(1));
+	    float ef_b = f_b*(fitter->GetParError(1)/fitter->GetParameter(1));
 	    sprintf(buff, "f_{b}   = %4.1f #pm %3.1f %%", f_b, ef_b);
 	    fitLabel->DrawLatex(0.68, 0.43, buff);
 	    float f_c = 100*h_mc_fit2->Integral()/(h_mc_fit0->Integral()+h_mc_fit1->Integral()+h_mc_fit2->Integral());
-	    float ef_c = f_c*(f1->GetParError(2)/f1->GetParameter(2));
+	    float ef_c = f_c*(fitter->GetParError(2)/fitter->GetParameter(2));
 	    sprintf(buff, "f_{c}   = %4.1f #pm %3.1f %%", f_c, ef_c);
 	    fitLabel->DrawLatex(0.68, 0.38, buff);
 	  }
