@@ -242,4 +242,8 @@ root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,3,0,1\)
 root -l -q -b DataMCComp.C\(\"w_MET_b\",1,3,0,1\)
 root -l -q -b DataMCComp.C\(\"w_MET_sign_b\",1,3,0,1\)
 
+root -l -q -b DataMCComp.C\(\"w_mass_em_wide\",1,3,0,1\)
+
+root -l -q -b DataMCComp.C\(\"w_mass_em_b_wide\",1,3,0,1\)
+
 exit
