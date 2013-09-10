@@ -27,8 +27,8 @@ int useFitResults=1;  // use fit results for c_t
 
       double c_t=1.0;
 
-      if (ilepton==1 && useFitResults) c_t = 1.072;
-      if (ilepton==2 && useFitResults) c_t = 1.022;
+      if (ilepton==1 && useFitResults) c_t = 1.067;
+      if (ilepton==2 && useFitResults) c_t = 1.004;
 
       double Lumi2012;
       
@@ -259,25 +259,6 @@ int useFitResults=1;  // use fit results for c_t
         h_mc2->Draw("HISTSAME");
         h_mc2->SetLineColor(kBlue);
 
-        TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
-        latexLabel->Draw("same");
-
-        TLatex *fitLabel = new TLatex();
-        fitLabel->SetTextSize(0.0275);
-        fitLabel->SetTextFont(42);
-        fitLabel->SetLineWidth(2);
-        fitLabel->SetNDC();
-        char buff[100];
-        sprintf(buff, "c_{t} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
-        fitLabel->DrawLatex(0.68, 0.58, buff);
-        if (ilepton==1) sprintf(buff, "I_{ee} = %5.1f", h_data->Integral());
-        if (ilepton==2) sprintf(buff, "I_{#mu#mu} = %5.1f", h_data->Integral());
-        fitLabel->DrawLatex(0.68, 0.53, buff);
-        sprintf(buff, "I_{e#mu} = %5.1f #pm %5.1f", h_data_fit->Integral(), h_data_fit->Integral()*fitter->GetParError(0)/fitter->GetParameter(0));
-        fitLabel->DrawLatex(0.68, 0.48, buff);
-        sprintf(buff, "I_{t#bar{t}}  = %5.1f", h_mc2->Integral());
-        fitLabel->DrawLatex(0.68, 0.43, buff);
-
 	pad1->Update();
 	c1->Update();
 
@@ -318,6 +299,25 @@ int useFitResults=1;  // use fit results for c_t
         OLine->Draw();
 
         c1->cd();
+
+        TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
+        latexLabel->Draw("same");
+
+        TLatex *fitLabel = new TLatex();
+        fitLabel->SetTextSize(0.0275);
+        fitLabel->SetTextFont(42);
+        fitLabel->SetLineWidth(2);
+        fitLabel->SetNDC();
+        char buff[100];
+        sprintf(buff, "c_{t} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
+        fitLabel->DrawLatex(0.68, 0.68, buff);
+        if (ilepton==1) sprintf(buff, "I_{ee} = %5.1f", h_data->Integral());
+        if (ilepton==2) sprintf(buff, "I_{#mu#mu} = %5.1f", h_data->Integral());
+        fitLabel->DrawLatex(0.68, 0.63, buff);
+        sprintf(buff, "I_{e#mu} = %5.1f #pm %5.1f", h_data_fit->Integral(), h_data_fit->Integral()*fitter->GetParError(0)/fitter->GetParameter(0));
+        fitLabel->DrawLatex(0.68, 0.58, buff);
+        sprintf(buff, "I_{t#bar{t}}  = %5.1f", h_mc2->Integral());
+        fitLabel->DrawLatex(0.68, 0.53, buff);
       }
 
       if (plot) {

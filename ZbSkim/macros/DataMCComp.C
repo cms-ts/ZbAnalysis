@@ -45,10 +45,10 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 
 	if (ilepton==1) {
 	  if (useFitResults) {
-	    c1_t  = 1.072;
-	    ec1_t = 0.034;
-	    c2_t  = c1_t;
-	    ec2_t = ec1_t;
+	    c1_t  = 1.067;
+	    ec1_t = 0.022;
+	    c2_t  = 0.923;
+	    ec2_t = 0.020;
 	    if (useEleMuo) {
 	      c1_t  = 0.454;
 	      ec1_t = 0.008;
@@ -59,10 +59,10 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	}
 	if (ilepton==2) {
 	  if (useFitResults) {
-	    c1_t  = 1.022;
-	    ec1_t = 0.029;
-	    c2_t  = c1_t;
-	    ec2_t = ec1_t;
+	    c1_t  = 1.004;
+	    ec1_t = 0.020;
+	    c2_t  = 0.888;
+	    ec2_t = 0.017;
 	    if (useEleMuo) {
 	      c1_t  = 0.578;
 	      ec1_t = 0.010;
@@ -73,10 +73,10 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	}
 	if (ilepton==3) {
 	  if (useFitResults) {
-	    c1_t  = 0.992;
-	    ec1_t = 0.021;
-	    c2_t  = c1_t;
-	    ec2_t = ec1_t;
+	    c1_t  = 1.007;
+	    ec1_t = 0.012;
+	    c2_t  = 0.898;
+	    ec2_t = 0.013;
 	    if (useEleMuo) {
 	      c1_t  = 1.000;
 	      ec1_t = 0.000;
@@ -648,7 +648,6 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	    sprintf(buff, "f_{c}   = %4.1f #pm %3.1f %%", f_c, ef_c);
 	    fitLabel->DrawLatex(0.68, 0.38, buff);
 	  }
-	  fitLabel->Draw("same");
 	}
 
 	if (plot) {
