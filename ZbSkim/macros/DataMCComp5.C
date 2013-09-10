@@ -27,8 +27,8 @@ int useFitResults=1;  // use fit results for c_t
 
       double c_t=1.0;
 
-      if (ilepton==1 && useFitResults) c_t = 1.062;
-      if (ilepton==2 && useFitResults) c_t = 1.013;
+      if (ilepton==1 && useFitResults) c_t = 1.072;
+      if (ilepton==2 && useFitResults) c_t = 1.022;
 
       double Lumi2012;
       

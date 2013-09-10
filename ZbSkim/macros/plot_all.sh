@@ -236,4 +236,10 @@ while [ $i -le 2 ]; do
   i=$((i+1))
 done
 
+root -l -q -b DataMCComp.C\(\"w_MET\",1,3,0,1\)
+root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,3,0,1\)
+
+root -l -q -b DataMCComp.C\(\"w_MET_b\",1,3,0,1\)
+root -l -q -b DataMCComp.C\(\"w_MET_sign_b\",1,3,0,1\)
+
 exit
