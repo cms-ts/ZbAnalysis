@@ -94,7 +94,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm2 = ((Lumi2012 * Xsec_tt) / Ngen_tt);
-	if (useEleMuo) norm2 = (Lumi2012 / Lumi2012_ele_muon);
+	if (useEleMuo && ilepton!=3) norm2 = (Lumi2012 / Lumi2012_ele_muon);
 	double norm3 = ((Lumi2012 * Xsec_zz) / Ngen_zz);
 	double norm4 = ((Lumi2012 * Xsec_wz) / Ngen_wz);
 	double norm5 = ((Lumi2012 * Xsec_qcd) / Ngen_qcd);
