@@ -77,13 +77,13 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	    ec1_t = 0.021;
 	    c2_t  = c1_t;
 	    ec2_t = ec1_t;
-	  }
 	    if (useEleMuo) {
 	      c1_t  = 1.000;
 	      ec1_t = 0.000;
 	      c2_t  = 1.000;
 	      ec2_t = 0.000;
 	    }
+	  }
 	}
 
 	double Lumi2012;
