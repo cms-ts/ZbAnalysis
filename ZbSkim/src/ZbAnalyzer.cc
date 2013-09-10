@@ -133,6 +133,7 @@ private:
   double par_;
   bool usePartonFlavour_;
   std::string path_;
+  unsigned int icut_;
 
   JetCorrectionUncertainty *jecUncDT_;
   JetCorrectionUncertainty *jecUncMC_;
@@ -481,7 +482,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
   par_ =    iConfig.getUntrackedParameter <double> ("JEC", 0);
   path_ =   iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
-
+  icut_ =   iConfig.getUntrackedParameter <unsigned int> ("icut", 0);
   usePartonFlavour_ = iConfig.getUntrackedParameter <bool> ("usePartonFlavour", false);
 
   // now do what ever initialization is needed
@@ -1216,6 +1217,20 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
 
   }
+  
+  bool iflag=false;
+  if (icut_==0 && Nb>0) iflag=true;
+  if (icut_==1 && Nb>0 && vect_bjets[0].pt()>30 && vect_bjets[0].pt()<35) iflag=true;
+  if (icut_==2 && Nb>0 && vect_bjets[0].pt()>35 && vect_bjets[0].pt()<40) iflag=true;
+  if (icut_==3 && Nb>0 && vect_bjets[0].pt()>40 && vect_bjets[0].pt()<60) iflag=true;
+  if (icut_==4 && Nb>0 && vect_bjets[0].pt()>60 && vect_bjets[0].pt()<80) iflag=true;
+  if (icut_==5 && Nb>0 && vect_bjets[0].pt()>80 && vect_bjets[0].pt()<120) iflag=true;
+  if (icut_==6 && Nb>0 && vect_bjets[0].pt()>120 && vect_bjets[0].pt()<200) iflag=true;
+  if (icut_==7 && Nb>0 && vect_bjets[0].pt()>200 && vect_bjets[0].pt()<700) iflag=true;
+  
+  ee_event = ee_event && iflag;
+  mm_event = mm_event && iflag;
+  em_event = em_event && iflag;
 
   // ++++++++ MET PLOTS
 
