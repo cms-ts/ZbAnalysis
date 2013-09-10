@@ -307,7 +307,7 @@ process.zeleMatchedmuMatched = cms.EDProducer('CandViewShallowCloneCombiner',
 
 ##############
 
-process.GlobalTag.globaltag = 'FT_53_V21A_AN6::All'
+process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 process.source = cms.Source("PoolSource",
 	#fileNames = cms.untracked.vstring('/store/data/Run2012A/DoubleElectron/AOD/13Jul2012-v1/00000/FA1B4710-F3D9-E111-858E-0024E876636C.root')
 	fileNames = cms.untracked.vstring('file:FA1B4710-F3D9-E111-858E-0024E876636C.root')
