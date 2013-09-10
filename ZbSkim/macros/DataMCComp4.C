@@ -29,10 +29,17 @@ bool verbose = false;
 // use fit results for c_b
 
         double c_b=1.0;
+        double ec_b=0.0;
 
 	if (imode>=3) {
-	  if (ilepton==1) c_b = 0.791;
-	  if (ilepton==2) c_b = 0.760;
+	  if (ilepton==1) {
+	    c_b = 0.733;
+	    ec_b = 0.044;
+	  }
+	  if (ilepton==2) {
+	    c_b = 0.709;
+	    ec_b = 0.034;
+	  }
 	}
 
 	double Lumi2012;
@@ -180,9 +187,29 @@ bool verbose = false;
 
 	if (title.find("_b")!=string::npos) {
 	  h_mc1_truth->Scale(c_b);
+	  for (int i=0; i<=h_mc1_truth->GetNbinsX()+1; i++) {
+	    float e = h_mc1_truth->GetBinError(i)**2;
+	    e = e + (h_mc1_truth->GetBinContent(i)*(ec_b/c_b))**2;
+	    h_mc1_truth->SetBinError(i, TMath::Sqrt(e));
+	  }
 	  h_mc1_reco->Scale(c_b);
+	  for (int i=0; i<=h_mc1_reco->GetNbinsX()+1; i++) {
+	    float e = h_mc1_reco->GetBinError(i)**2;
+	    e = e + (h_mc1_reco->GetBinContent(i)*(ec_b/c_b))**2;
+	    h_mc1_reco->SetBinError(i, TMath::Sqrt(e));
+	  }
 	  h_mc2_truth->Scale(c_b);
+	  for (int i=0; i<=h_mc2_truth->GetNbinsX()+1; i++) {
+	    float e = h_mc2_truth->GetBinError(i)**2;
+	    e = e + (h_mc2_truth->GetBinContent(i)*(ec_b/c_b))**2;
+	    h_mc2_truth->SetBinError(i, TMath::Sqrt(e));
+	  }
 	  h_mc2_reco->Scale(c_b);
+	  for (int i=0; i<=h_mc2_reco->GetNbinsX()+1; i++) {
+	    float e = h_mc2_reco->GetBinError(i)**2;
+	    e = e + (h_mc2_reco->GetBinContent(i)*(ec_b/c_b))**2;
+	    h_mc2_reco->SetBinError(i, TMath::Sqrt(e));
+	  }
 	}
 
 	RooUnfold* unfold_mc;

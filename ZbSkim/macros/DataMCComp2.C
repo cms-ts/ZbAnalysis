@@ -23,8 +23,11 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	/* purity */
 
 	double c_b=1.0;
+	double ec_b=0.0;
 	double c_c=1.0;
+	double ec_c=0.0;
 	double c_uds=1.0;
+	double ec_uds=0.0;
 
 	/* efficiency: (e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b) */
 
@@ -46,9 +49,12 @@ int useEleMuo = 1; // use e-mu fit results for c_t
           e_Z_1 = 0.380;
           e_Z_b = 0.556;
 	  if (useFitResults) {
-	    c_b   = 0.791;
-	    c_c   = 1.230;
-	    c_uds = 1.693;
+	    c_b   = 0.733;
+	    ec_b   = 0.044;
+	    c_c   = 1.395;
+	    ec_c   = 0.275;
+	    c_uds = 2.278;
+	    ec_uds = 0.568;
 	    c1_t   = 1.067;
 	    ec1_t  = 0.022;
 	    c2_t   = 0.923;
@@ -68,9 +74,12 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  e_Z_1 = 0.550;
 	  e_Z_b = 0.564;
 	  if (useFitResults) {
-	    c_b   = 0.760;
-	    c_c   = 1.327;
-	    c_uds = 1.277;
+	    c_b   = 0.709;
+	    ec_b   = 0.034;
+	    c_c   = 1.362;
+	    ec_c   = 0.191;
+	    c_uds = 2.150;
+	    ec_uds = 0.341;
 	    c1_t   = 1.004;
 	    ec1_t  = 0.020;
 	    c2_t  = 0.888;
@@ -327,9 +336,30 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
-	h_mc1uds_b->Scale(c_uds);
-	h_mc1b_b->Scale(c_b);
-	h_mc1c_b->Scale(c_c);
+	if (h_mc1uds_b) {
+	  h_mc1uds_b->Scale(c_uds);
+	  for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
+	    float e = h_mc1uds_b->GetBinError(i)**2;
+	    e = e + (h_mc1uds_b->GetBinContent(i)*(ec_uds/c_uds))**2;
+	    h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
+	  }
+	}
+	if (h_mc1b_b) {
+	  h_mc1b_b->Scale(c_b);
+	  for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
+	    float e = h_mc1b_b->GetBinError(i)**2;
+	    e = e + (h_mc1b_b->GetBinContent(i)*(ec_b/c_b))**2;
+	    h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
+	  }
+	}
+	if (h_mc1c_b) {
+	  h_mc1c_b->Scale(c_c);
+	  for (int i=0; i<=h_mc1c_b->GetNbinsX()+1; i++) {
+	    float e = h_mc1c_b->GetBinError(i)**2;
+	    e = e + (h_mc1c_b->GetBinContent(i)*(ec_c/c_c))**2;
+	    h_mc1c_b->SetBinError(i, TMath::Sqrt(e));
+	  }
+	}
 
 	if (unfold==0) {
 	  h_data_b->Add(h_mc1c_b, -1.);
