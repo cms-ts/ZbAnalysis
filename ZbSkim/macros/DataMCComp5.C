@@ -273,7 +273,7 @@ int useFitResults=1;  // use fit results for c_t
         if (ilepton==1) sprintf(buff, "I_{ee} = %5.1f", h_data->Integral());
         if (ilepton==2) sprintf(buff, "I_{#mu#mu} = %5.1f", h_data->Integral());
         fitLabel->DrawLatex(0.68, 0.53, buff);
-        sprintf(buff, "I_{e#mu} = %5.1f", h_data_fit->Integral());
+        sprintf(buff, "I_{e#mu} = %5.1f #pm %5.1f", h_data_fit->Integral(), h_data_fit->Integral()*fitter->GetParError(0)/fitter->GetParameter(0));
         fitLabel->DrawLatex(0.68, 0.48, buff);
         sprintf(buff, "I_{t#bar{t}}  = %5.1f", h_mc2->Integral());
         fitLabel->DrawLatex(0.68, 0.43, buff);
