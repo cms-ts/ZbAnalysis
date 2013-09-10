@@ -1219,7 +1219,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   }
   
   bool iflag=false;
-  if (icut_==0 && Nb>0) iflag=true;
+  if (icut_==0 || Nb==0) iflag=true;
   if (icut_==1 && Nb>0 && vect_bjets[0].pt()>30 && vect_bjets[0].pt()<35) iflag=true;
   if (icut_==2 && Nb>0 && vect_bjets[0].pt()>35 && vect_bjets[0].pt()<40) iflag=true;
   if (icut_==3 && Nb>0 && vect_bjets[0].pt()>40 && vect_bjets[0].pt()<60) iflag=true;
