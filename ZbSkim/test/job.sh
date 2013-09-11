@@ -25,6 +25,7 @@ shift
 cut=$1
 echo "process.demoEle.icut = cms.untracked.uint32("$cut")" >> job.py
 echo "process.demoMuo.icut = cms.untracked.uint32("$cut")" >> job.py
+echo "process.demoEleMuo.icut = cms.untracked.uint32("$cut")" >> job.py
 
 shift
 
