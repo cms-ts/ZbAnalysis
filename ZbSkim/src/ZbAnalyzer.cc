@@ -1222,11 +1222,13 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   if (icut_==0 || Nb==0) iflag=true;
   if (icut_==1 && Nb>0 && vect_bjets[0].pt()>30 && vect_bjets[0].pt()<35) iflag=true;
   if (icut_==2 && Nb>0 && vect_bjets[0].pt()>35 && vect_bjets[0].pt()<40) iflag=true;
-  if (icut_==3 && Nb>0 && vect_bjets[0].pt()>40 && vect_bjets[0].pt()<60) iflag=true;
-  if (icut_==4 && Nb>0 && vect_bjets[0].pt()>60 && vect_bjets[0].pt()<80) iflag=true;
-  if (icut_==5 && Nb>0 && vect_bjets[0].pt()>80 && vect_bjets[0].pt()<120) iflag=true;
-  if (icut_==6 && Nb>0 && vect_bjets[0].pt()>120 && vect_bjets[0].pt()<200) iflag=true;
-  if (icut_==7 && Nb>0 && vect_bjets[0].pt()>200 && vect_bjets[0].pt()<700) iflag=true;
+  if (icut_==3 && Nb>0 && vect_bjets[0].pt()>40 && vect_bjets[0].pt()<45) iflag=true;
+  if (icut_==4 && Nb>0 && vect_bjets[0].pt()>45 && vect_bjets[0].pt()<50) iflag=true;
+  if (icut_==5 && Nb>0 && vect_bjets[0].pt()>50 && vect_bjets[0].pt()<60) iflag=true;
+  if (icut_==6 && Nb>0 && vect_bjets[0].pt()>60 && vect_bjets[0].pt()<80) iflag=true;
+  if (icut_==7 && Nb>0 && vect_bjets[0].pt()>80 && vect_bjets[0].pt()<200) iflag=true;
+  if (icut_==8 && Nb>0 && vect_bjets[0].pt()>200 && vect_bjets[0].pt()<700) iflag=true;
+
   
   ee_event = ee_event && iflag;
   mm_event = mm_event && iflag;
