@@ -122,7 +122,7 @@ process.selectedPatMuonsTriggerMatchEM = cms.EDProducer("PATTriggerMatchMuonEmbe
 process.goodJets = selectedPatJets.clone(
 		src = cms.InputTag('selectedPatJets'+postfix),
                      cut = cms.string(
-			'pt > 25. & abs(eta) < 2.5 &'
+			'pt > 15. & abs(eta) < 2.55 &'
 			'numberOfDaughters > 1 &'
 			'neutralHadronEnergyFraction < 0.99 &'
 			'neutralEmEnergyFraction < 0.99 &'
