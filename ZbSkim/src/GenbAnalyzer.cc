@@ -555,10 +555,11 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 		neutrino.push_back(index_nu);
 	}
 	index_nu++;
-
+/*
 	if (itgen->charge()!=0 && itgen->pt()<0.25 && itgen->status()==1) {
 		ch_part.push_back(index_ch);
 	}
+*/
 	index_ch++;
   }
 
