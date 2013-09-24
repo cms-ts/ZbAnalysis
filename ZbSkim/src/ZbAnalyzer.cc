@@ -1183,7 +1183,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
     jet_pt = jet_pt * cor;
 
-    if (jet_pt > 30) {
+    if (fabs(jet_eta) < 2.5 && jet_pt > 30) {
 
       ++Nj;
 
