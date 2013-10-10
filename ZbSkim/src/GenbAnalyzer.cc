@@ -315,6 +315,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   bool ee_event = false;
   bool mm_event = false;
+  bool ist = false;
 
   int Nj = 0;
   int Nj2 = 0;
@@ -684,8 +685,18 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   std::sort( vect_bjets.begin(), vect_bjets.end(), order_jets() );
   std::sort( vect_bjets2.begin(), vect_bjets2.end(), order_jets() );
 
-  ee_event = ee_event && (lepton_ == "electron");
-  mm_event = mm_event && (lepton_ == "muon");
+  for (std::vector <reco::GenParticle>::const_iterator thepart = genPart->begin(); thepart != genPart->end(); thepart++) {
+    if (thepart->pdgId()==23) {
+      for (UInt_t i=0; i<thepart->numberOfDaughters(); i++){
+        if (abs(thepart->daughter(i)->pdgId())==15 && thepart->daughter(i)->status()==3){
+          ist = true;
+	}
+      }
+    }
+  }
+
+  ee_event = ee_event && (lepton_ == "electron") && !ist;
+  mm_event = mm_event && (lepton_ == "muon") && !ist;
 
   if (ee_event && Nj > 0) {
     w_first_ele_pt->Fill (ele_dres.p_part.Pt(), MyWeight);
