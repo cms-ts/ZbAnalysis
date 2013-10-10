@@ -15,15 +15,15 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
     double xd = h_data_fit->GetBinError(i)**2;
     if (npar>0) {
       xn = xn - par[0]*h_mc_fit0->GetBinContent(i);
-      xd = xd + (par[0]*h_mc_fit0->GetBinError(i))**2;
+      xd = xd + (5/*par[0]*/*h_mc_fit0->GetBinError(i))**2;
     }
     if (npar>1) {
       xn = xn - par[1]*h_mc_fit1->GetBinContent(i);
-      xd = xd + (par[1]*h_mc_fit1->GetBinError(i))**2;
+      xd = xd + (0.8/*par[1]*/*h_mc_fit1->GetBinError(i))**2;
     }
     if (npar>2) {
       xn = xn - par[2]*h_mc_fit2->GetBinContent(i);
-      xd = xd + (par[2]*h_mc_fit2->GetBinError(i))**2;
+      xd = xd + (0.4/*par[2]*/*h_mc_fit2->GetBinError(i))**2;
     }
     if (xd!=0) chisq = chisq + (xn*xn)/xd;
   }
@@ -50,9 +50,9 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	    c2_t  = 0.923;
 	    ec2_t = 0.020;
 	    if (useEleMuo) {
-	      c1_t  = 0.457;
+	      c1_t  = 0.454;
 	      ec1_t = 0.008;
-	      c2_t  = 0.438;
+	      c2_t  = 0.435;
 	      ec2_t = 0.010;
 	    }
 	  }
@@ -64,7 +64,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	    c2_t  = 0.888;
 	    ec2_t = 0.017;
 	    if (useEleMuo) {
-	      c1_t  = 0.580;
+	      c1_t  = 0.578;
 	      ec1_t = 0.010;
 	      c2_t  = 0.560;
 	      ec2_t = 0.011;
@@ -138,6 +138,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
 	TH1F* h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
+	TH1F* h_mc1t = (TH1F*)gDirectory->Get(("t"+title.substr(1)).c_str());
 
 	if (ilepton==1) mc2->cd("demoEle");
 	if (ilepton==2) mc2->cd("demoMuo");
@@ -199,6 +200,12 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  h_mc1c->SetFillColor(kOrange);
 	  h_mc1c->SetFillStyle(3245);
 	}
+	if (h_mc1t) {
+	  h_mc1t -> Sumw2();
+	  h_mc1t->SetLineColor(kBlack);
+	  h_mc1t->SetFillColor(kOrange-4);
+	  //h_mc1t->SetFillStyle(3004);
+	}
 
 	h_mc2 -> Sumw2();
 	h_mc2 -> SetLineColor(kBlack);
@@ -233,6 +240,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	h_mc1->Scale(norm1);
 	if (h_mc1b) h_mc1b->Scale(norm1);
 	if (h_mc1c) h_mc1c->Scale(norm1);
+	if (h_mc1t) h_mc1t->Scale(norm1);
 	if (title.find("_b")==string::npos) {
 	  h_mc2->Scale(norm2*c1_t);
 	  for (int i=0; i<=h_mc2->GetNbinsX()+1; i++) {
@@ -255,20 +263,23 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	h_mc7->Scale(norm7);
 
 	if (doBkg) {
-	  h_data->Add(h_mc7, -1.);
+          h_data->Add(h_mc7, -1.);
 	  h_data->Add(h_mc6, -1.);
 //	  h_data->Add(h_mc5, -1.);
 	  h_data->Add(h_mc4, -1.);
 	  h_data->Add(h_mc3, -1.);
 	  h_data->Add(h_mc2, -1.);
 	}
-
+	
+        if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
 	if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
 	if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
+
 	for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
 	  float e = h_mc1->GetBinError(i)**2;
 	  if (h_mc1b) e = e - h_mc1b->GetBinError(i)**2;
 	  if (h_mc1c) e = e - h_mc1c->GetBinError(i)**2;
+	  if (h_mc1t) e = e - h_mc1t->GetBinError(i)**2;
 	  h_mc1->SetBinError(i, TMath::Sqrt(e));
 	}
 
@@ -421,10 +432,11 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  fitter->SetFCN(fcn);
 	  double arglist[1] = {-1.0};
 	  fitter->ExecuteCommand("SET PRINT", arglist, 1);
-	  fitter->SetParameter(0, "c(uds)", 1.0, 0.1, 0.0, 100.0);
-	  fitter->SetParameter(1, "c(b)", 1.0, 0.1, 0.0, 100.0);
-	  fitter->SetParameter(2, "c(c)", 1.0, 0.1, 0.0, 100.0);
+	  fitter->SetParameter(0, "c(uds)", 5.0, 0.1, 0.0, 100.0);
+	  fitter->SetParameter(1, "c(b)",   0.8, 0.1, 0.0, 100.0);
+	  fitter->SetParameter(2, "c(c)",   0.4, 0.1, 0.0, 100.0);
 	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
+	  //fitter->ExecuteCommand("MINOS", arglist, 0);
 	  h_mc_fit0->Scale(fitter->GetParameter(0));
 	  h_mc_fit1->Scale(fitter->GetParameter(1));
 	  h_mc_fit2->Scale(fitter->GetParameter(2));
@@ -433,6 +445,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	TH1F *ht = h_mc1->Clone("ht");
 	ht->Reset();
 	if (!doBkg) {
+	  if (h_mc1t) ht->Add(h_mc1t);
 	  ht->Add(h_mc7);
 	  ht->Add(h_mc6);
 //	  ht->Add(h_mc5);
@@ -446,6 +459,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 
 	THStack *hs = new THStack("hs","");
 	if (!doBkg) {
+	  if (h_mc1t) hs->Add(h_mc1t);
 //	  hs->Add(h_mc5);
 	  hs->Add(h_mc6);
 	  hs->Add(h_mc7);
@@ -477,7 +491,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
 	h_data->SetMarkerSize (1.0);
-	//h_data->SetStats(0);
+	h_data->SetStats(0);
 
 	TLegend *leg;
 	if (doBkg) {
@@ -509,6 +523,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	leg->AddEntry(h_mc1,"Z+jets","f");
 	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
 	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
+	if (h_mc1t) leg->AddEntry(h_mc1t,"#tau^{+}#tau^{-}+jets","f");
 	if (!doBkg) {
 	  leg->AddEntry(h_mc2,"t#bar{t}","f");
 	  leg->AddEntry(h_mc3,"ZZ","f");
