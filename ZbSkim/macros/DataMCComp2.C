@@ -186,6 +186,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	TH1F* h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 	TH1F* h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
 	TH1F* h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
+	TH1F* h_mc1t_b = (TH1F*)gDirectory->Get(("t"+title_b.substr(1)).c_str());
 
 	if (ilepton==1) mcg->cd("demoEleGen");
 	if (ilepton==2) mcg->cd("demoMuoGen");
@@ -266,6 +267,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	h_mc1_b->Sumw2();
 	if (h_mc1b_b) h_mc1b_b->Sumw2();
 	if (h_mc1c_b) h_mc1c_b->Sumw2();
+	if (h_mc1t_b) h_mc1t_b->Sumw2();
 	h_mcg_b->Sumw2();
 	h_mcg1_b->Sumw2();
 	h_mcg2_b->Sumw2();
@@ -295,6 +297,7 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	h_mc1_b->Scale(norm1);
 	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
 	if (h_mc1c_b) h_mc1c_b->Scale(norm1);
+	if (h_mc1t_b) h_mc1t_b->Scale(norm1);
 	h_mcg_b->Scale(norm1);
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
@@ -329,10 +332,12 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	TH1F *h_mc1uds_b = h_mc1_b->Clone("h_mc1uds_b");
 	if (h_mc1b_b) h_mc1uds_b->Add(h_mc1b_b, -1);
 	if (h_mc1c_b) h_mc1uds_b->Add(h_mc1c_b, -1);
+	if (h_mc1t_b) h_mc1uds_b->Add(h_mc1t_b, -1);
 	for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
 	  float e = h_mc1uds_b->GetBinError(i)**2;
 	  if (h_mc1b_b) e = e - h_mc1b_b->GetBinError(i)**2;
 	  if (h_mc1c_b) e = e - h_mc1c_b->GetBinError(i)**2;
+	  if (h_mc1t_b) e = e - h_mc1t_b->GetBinError(i)**2;
 	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
