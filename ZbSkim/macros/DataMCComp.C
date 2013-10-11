@@ -446,8 +446,8 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 
 	TH1F *ht = h_mc1->Clone("ht");
 	ht->Reset();
+	if (h_mc1t) ht->Add(h_mc1t);
 	if (!doBkg) {
-	  if (h_mc1t) ht->Add(h_mc1t);
 	  ht->Add(h_mc7);
 	  ht->Add(h_mc6);
 //	  ht->Add(h_mc5);
@@ -460,8 +460,8 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	ht->Add(h_mc1);
 
 	THStack *hs = new THStack("hs","");
+	if (h_mc1t) hs->Add(h_mc1t);
 	if (!doBkg) {
-	  if (h_mc1t) hs->Add(h_mc1t);
 //	  hs->Add(h_mc5);
 	  hs->Add(h_mc6);
 	  hs->Add(h_mc7);
