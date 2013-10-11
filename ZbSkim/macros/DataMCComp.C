@@ -45,10 +45,10 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 
 	if (ilepton==1) {
 	  if (useFitResults) {
-	    c1_t  = 1.014;
-	    ec1_t = 0.021;
-	    c2_t  = 1.003;
-	    ec2_t = 0.022;
+	    c1_t  = 1.080;
+	    ec1_t = 0.022;
+	    c2_t  = 0.924;
+	    ec2_t = 0.020;
 	    if (useEleMuo) {
 	      c1_t  = 0.457;
 	      ec1_t = 0.008;
@@ -59,10 +59,10 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	}
 	if (ilepton==2) {
 	  if (useFitResults) {
-	    c1_t  = 1.024;
+	    c1_t  = 1.028;
 	    ec1_t = 0.019;
-	    c2_t  = 1.004;
-	    ec2_t = 0.019;
+	    c2_t  = 0.891;
+	    ec2_t = 0.017;
 	    if (useEleMuo) {
 	      c1_t  = 0.580;
 	      ec1_t = 0.010;
@@ -73,10 +73,10 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	}
 	if (ilepton==3) {
 	  if (useFitResults) {
-	    c1_t  = 1.017;
+	    c1_t  = 1.023;
 	    ec1_t = 0.012;
-	    c2_t  = 1.006;
-	    ec2_t = 0.014;
+	    c2_t  = 0.902;
+	    ec2_t = 0.013;
 	    if (useEleMuo) {
 	      c1_t  = 1.007;
 	      ec1_t = 0.012;
