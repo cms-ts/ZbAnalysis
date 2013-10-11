@@ -139,7 +139,8 @@ private:
 
   // ----------member data ---------------------------
 
-  std::string pileup_;
+  std::string pileupMC_;
+  std::string pileupDT_;
   std::string lepton_;
   std::string path_;
   bool rivet_;
@@ -207,7 +208,8 @@ using namespace  pat;
 //
 GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
 
-  pileup_ = iConfig.getUntrackedParameter < std::string > ("pileup", "S7");
+  pileupMC_ = iConfig.getUntrackedParameter < std::string > ("pileup", "S10");
+  pileupDT_ = iConfig.getUntrackedParameter < std::string > ("pileup", "");
   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
   path_ =   iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
 
@@ -870,7 +872,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 // ------------ method called once each job just before starting event loop ------------
 void GenbAnalyzer::beginJob () {
 
-  LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileup_ + ".root", path_ + "/" + "pileup_2012.root", "pileup", "pileup");
+  LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileupMC_ + ".root", path_ + "/" + "pileup_2012_" + pileupDT_ + ".root", "pileup", "pileup");
 
 }
 
