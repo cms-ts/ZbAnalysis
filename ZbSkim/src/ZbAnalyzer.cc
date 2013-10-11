@@ -128,7 +128,8 @@ private:
 
   // ----------member data ---------------------------
 
-  std::string pileup_;
+  std::string pileupMC_;
+  std::string pileupDT_;
   std::string lepton_;
   double par_;
   bool usePartonFlavour_;
@@ -556,7 +557,8 @@ using namespace  pat;
 //
 ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
 
-  pileup_ = iConfig.getUntrackedParameter < std::string > ("pileup", "S7");
+  pileupMC_ = iConfig.getUntrackedParameter < std::string > ("pileupMC", "S10");
+  pileupDT_ = iConfig.getUntrackedParameter < std::string > ("pileupDT", "");
   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
   par_ =    iConfig.getUntrackedParameter <double> ("JEC", 0);
   path_ =   iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
@@ -2493,7 +2495,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 void ZbAnalyzer::beginJob () {
   jecUncDT_ = new JetCorrectionUncertainty(path_ + "/" + "Fall12_V7_DATA_Uncertainty_AK5PFchs.txt");
   jecUncMC_ = new JetCorrectionUncertainty(path_ + "/" + "Fall12_V7_MC_Uncertainty_AK5PFchs.txt");
-  LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileup_ + ".root", path_ + "/" + "pileup_2012.root", "pileup", "pileup");
+  LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileupMC_ + ".root", path_ + "/" + "pileup_2012_" + pileupDT_ + ".root", "pileup", "pileup");
 
   ElSF_  = new table(path_ + "/" + "ele_eff.txt");
   ElSF2_ = new table(path_ + "/" + "ele_eff2.txt");
