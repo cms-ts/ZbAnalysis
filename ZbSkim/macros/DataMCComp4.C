@@ -33,12 +33,12 @@ bool verbose = false;
 
 	if (imode>=3) {
 	  if (ilepton==1) {
-	    c_b = 0.733;
-	    ec_b = 0.044;
+	    c_b = 0.709;
+	    ec_b = 0.033;
 	  }
 	  if (ilepton==2) {
-	    c_b = 0.709;
-	    ec_b = 0.034;
+	    c_b = 0.686;
+	    ec_b = 0.026;
 	  }
 	}
 
