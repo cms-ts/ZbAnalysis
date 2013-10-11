@@ -208,8 +208,8 @@ using namespace  pat;
 //
 GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
 
-  pileupMC_ = iConfig.getUntrackedParameter < std::string > ("pileup", "S10");
-  pileupDT_ = iConfig.getUntrackedParameter < std::string > ("pileup", "");
+  pileupMC_ = iConfig.getUntrackedParameter < std::string > ("pileupMC", "S10");
+  pileupDT_ = iConfig.getUntrackedParameter < std::string > ("pileupDT", "");
   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
   path_ =   iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
 
