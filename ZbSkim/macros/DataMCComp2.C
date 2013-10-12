@@ -7,6 +7,9 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1, int unfold=0) {
 
+//int useBinnedEfficiency=0; // use average efficiencies
+int useBinnedEfficiency=1; // use bin-by-bin efficiencies
+
 //int useFitResults=0; // use MC predictions for c_b, c_c, c_uds, c_t
 int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
@@ -377,9 +380,6 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  h_data_raw = (TH1F*)h_data->Clone();
 	  h_data_b_raw = (TH1F*)h_data_b->Clone();
 	}
-
-//int useBinnedEfficiency=0;
-int useBinnedEfficiency=1;
 
 	if (useBinnedEfficiency==0) {
 	  if (unfold==0) {
