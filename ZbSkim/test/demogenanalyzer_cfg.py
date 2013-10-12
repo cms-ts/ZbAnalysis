@@ -145,5 +145,5 @@ process.demoMuoDump = cms.EDAnalyzer('ZbDumper',
         lepton       = cms.untracked.string("muon")
 )
 
-process.p = cms.Path(process.demoEle*process.demoElePum*process.demoElePup*process.demoEleUp*process.demoEleDown*process.demoMuo*process.demoMuoPum*process.demoMuoUp*process.demoMuoDown*process.demoEleBtag*process.demoMuoBtag*process.demoEle2*process.demoMuo2*process.demoEleGen*process.demoMuoGen*process.demoEleDump*process.demoMuoDump)
+process.p = cms.Path(process.demoEle*process.demoElePum*process.demoElePup*process.demoEleUp*process.demoEleDown*process.demoMuo*process.demoMuoPum*process.demoMuoPup*process.demoMuoUp*process.demoMuoDown*process.demoEleBtag*process.demoMuoBtag*process.demoEle2*process.demoMuo2*process.demoEleGen*process.demoMuoGen*process.demoEleDump*process.demoMuoDump)
 
