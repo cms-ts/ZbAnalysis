@@ -111,11 +111,13 @@ process.demoMuoBtag = cms.EDProducer('ZbAnalyzer',
 	usePartonFlavour = cms.untracked.bool(True)
 )
 process.demoEle2 = cms.EDAnalyzer('ZJetsAnalyzer',
-	pileup  = cms.untracked.string("S10"),
+	pileupMC  = cms.untracked.string("S10"),
+	pileupDT = cms.untracked.string("ee"),
 	lepton  = cms.untracked.string("electron")
 )
 process.demoMuo2 = cms.EDAnalyzer('ZJetsAnalyzer',
-	pileup  = cms.untracked.string("S10"),
+	pileupMC  = cms.untracked.string("S10"),
+	pileupDT = cms.untracked.string("mm"),
 	lepton  = cms.untracked.string("muon")
 )
 process.demoEleMuo = cms.EDProducer('ZbAnalyzer',

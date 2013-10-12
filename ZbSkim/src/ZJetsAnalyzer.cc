@@ -76,9 +76,6 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       explicit ZJetsAnalyzer(const edm::ParameterSet&);
       ~ZJetsAnalyzer();
 
-      static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-
-
    private:
       virtual void beginJob() ;
       virtual void analyze(const edm::Event&, const edm::EventSetup&);
@@ -89,7 +86,8 @@ class ZJetsAnalyzer : public edm::EDAnalyzer {
       virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
       virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 
-      std::string pileup_;
+      std::string pileupMC_;
+      std::string pileupDT_;
       std::string lepton_;
       std::string path_;
 
@@ -176,7 +174,8 @@ ZJetsAnalyzer::ZJetsAnalyzer(const edm::ParameterSet& iConfig)
 
 {
 
-	pileup_ = iConfig.getUntrackedParameter<std::string>("pileup", "S7");
+	pileupMC_ = iConfig.getUntrackedParameter<std::string>("pileupMC", "S10");
+	pileupDT_ = iConfig.getUntrackedParameter<std::string>("pileupDT", "");
 	lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
         path_ =   iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
 
@@ -616,7 +615,7 @@ h_runNumber->Fill(run_number);
 void 
 ZJetsAnalyzer::beginJob()
 {
-  LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileup_ + ".root", path_ + "/" + "pileup_2012.root", "pileup", "pileup");
+  LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileupMC_ + ".root", path_ + "/" + "pileup_2012_" + pileupDT_ + ".root", "pileup", "pileup");
 
   EleEff_  = new table(path_ + "/" + "ele_eff.txt");
   MuonEff_ = new table(path_ + "/" + "muon_eff.txt");
@@ -659,16 +658,6 @@ ZJetsAnalyzer::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup
 void 
 ZJetsAnalyzer::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
-}
-
-// ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
-void
-ZJetsAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-  //The following says we do not know what parameters are allowed so do no validation
-  // Please change this to state exactly what you do use, even if it is no parameters
-  edm::ParameterSetDescription desc;
-  desc.setUnknown();
-  descriptions.addDefault(desc);
 }
 
 //define this as a plug-in
