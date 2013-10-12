@@ -55,7 +55,6 @@
 #include "TProfile.h"
 #include "TFile.h"
 #include "TLorentzVector.h"
-#include "TRandom3.h"
 #include "DataFormats/PatCandidates/interface/TriggerEvent.h"
 #include "PhysicsTools/PatUtils/interface/TriggerHelper.h"
 #include "PhysicsTools/CandUtils/interface/CandCombiner.h"
@@ -145,8 +144,6 @@ private:
   table* MuSF_;
   table* BtSF_;
   table* LtSF_;
-
-  TRandom3 * gRandom_;
 
   /****************** LEGEND *************************
 
@@ -2503,7 +2500,6 @@ void ZbAnalyzer::beginJob () {
   BtSF_  = new table(path_ + "/" + "btag_eff.txt");   //btagging scale factors SFb = SFc
   LtSF_  = new table(path_ + "/" + "light_eff.txt");  //light flavour scale factors
 
-  gRandom_ = new TRandom3();
 }
 
 // ------------ method called once each job just after ending the event loop ------------
@@ -2517,7 +2513,6 @@ void ZbAnalyzer::endJob () {
   delete BtSF_;
   delete LtSF_;
 
-  delete gRandom_;
 }
 
 // ------------ method called when starting to processes a run ------------
