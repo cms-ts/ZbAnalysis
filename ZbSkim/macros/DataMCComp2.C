@@ -7,9 +7,6 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp2(string& title="", int plot=0, int ilepton=1, int isratio=1, int unfold=0) {
 
-//int useBinnedEfficiency=0; // use average efficiencies
-int useBinnedEfficiency=1; // use bin-by-bin efficiencies
-
 //int useFitResults=0; // use MC predictions for c_b, c_c, c_uds, c_t
 int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
@@ -32,13 +29,6 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	double c_uds=1.0;
 	double ec_uds=0.0;
 
-	/* efficiency: (e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b) */
-
-	double e_Zb=1.0;
-	double e_Z=1.0;
-	double e_Z_1=1.0;
-	double e_Z_b=1.0;
-
 	/* top */
 
 	double c1_t=1.0;
@@ -47,10 +37,6 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	double ec2_t=ec1_t;
 
 	if (ilepton==1) {
-          e_Zb  = 0.211;
-          e_Z   = 0.545;
-          e_Z_1 = 0.380;
-          e_Z_b = 0.556;
 	  if (useFitResults) {
 	    c_b   = 0.709;
 	    ec_b   = 0.033;
@@ -72,10 +58,6 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	}
 
 	if (ilepton==2) {
-          e_Zb  = 0.310;
-	  e_Z   = 0.804;
-	  e_Z_1 = 0.550;
-	  e_Z_b = 0.564;
 	  if (useFitResults) {
 	    c_b   = 0.686;
 	    ec_b   = 0.026;
@@ -381,49 +363,38 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  h_data_b_raw = (TH1F*)h_data_b->Clone();
 	}
 
-	if (useBinnedEfficiency==0) {
+        if (ilepton==1) {
+	  TFile f((path + "/electrons/" + version + "/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
+	  TFile f_b((path + "/electrons/" + version + "/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
+	  TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
+	  TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
+	  h->SetDirectory(0);
+	  h_b->SetDirectory(0);
+	  f.Close();
+	  f_b.Close();
 	  if (unfold==0) {
-	    h_data->Scale(1./e_Z);
-	    h_data_b->Scale(1./e_Zb);
+	    h_data->Divide(h);
+	    h_data_b->Divide(h_b);
 	  }
-	  h_mc1->Scale(1./e_Z);
-	  h_mc1b_b->Scale(1./e_Zb);
-	}
-
-	if (useBinnedEfficiency==1) {
-          if (ilepton==1) {
-	    TFile f((path + "/electrons/" + version + "/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
-	    TFile f_b((path + "/electrons/" + version + "/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
-	    TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
-	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
-	    h->SetDirectory(0);
-	    h_b->SetDirectory(0);
-	    f.Close();
-	    f_b.Close();
-	    if (unfold==0) {
-	      h_data->Divide(h);
-	      h_data_b->Divide(h_b);
-	    }
-	    h_mc1->Divide(h);
-	    h_mc1b_b->Divide(h_b);
-          }
-	  if (ilepton==2) {
-	    TFile f((path + "/muons/" + version + "/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
-	    TFile f_b((path + "/muons/" + version + "/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
-	    TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
-	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
-	    h->SetDirectory(0);
-	    h_b->SetDirectory(0);
-	    f.Close();
-	    f_b.Close();
-	    if (unfold==0) {
-	      h_data->Divide(h);
-	      h_data_b->Divide(h_b);
-	    }
-	    h_mc1->Divide(h);
-	    h_mc1b_b->Divide(h_b);
-          }
-	}
+	  h_mc1->Divide(h);
+	  h_mc1b_b->Divide(h_b);
+        }
+	if (ilepton==2) {
+	  TFile f((path + "/muons/" + version + "/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
+	  TFile f_b((path + "/muons/" + version + "/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
+	  TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
+	  TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
+	  h->SetDirectory(0);
+	  h_b->SetDirectory(0);
+	  f.Close();
+	  f_b.Close();
+	  if (unfold==0) {
+	    h_data->Divide(h);
+	    h_data_b->Divide(h_b);
+	  }
+	  h_mc1->Divide(h);
+	  h_mc1b_b->Divide(h_b);
+        }
 
 	h_data->Scale(1./Lumi2012, "width");
 	h_data_b->Scale(1./Lumi2012, "width");
