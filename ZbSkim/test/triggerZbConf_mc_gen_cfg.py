@@ -366,39 +366,45 @@ getattr(process,"pfNoElectron"+postfix).enable = useNoElectron
 process.dump = cms.EDAnalyzer("EventContentAnalyzer")
 process.demoEleGen = cms.EDProducer('GenbAnalyzer',
         path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
+        pileupMC  = cms.untracked.string("S10"),
+        pileupDT  = cms.untracked.string("ee"),
         lepton  = cms.untracked.string("electron"),
 )
 process.demoMuoGen = cms.EDProducer('GenbAnalyzer',
         path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
+        pileupMC  = cms.untracked.string("S10"),
+        pileupDT  = cms.untracked.string("mm"),
         lepton  = cms.untracked.string("muon"),
 )
 process.MyProcess = cms.EDFilter('ZbFilter')
 process.demoEle = cms.EDProducer('ZbAnalyzer',
         path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
+        pileupMC  = cms.untracked.string("S10"),
+        pileupDT  = cms.untracked.string("ee"),
         lepton  = cms.untracked.string("electron"),
         JEC     = cms.untracked.double(0),
         usePartonFlavour = cms.untracked.bool(False)
 )
 process.demoMuo = cms.EDProducer('ZbAnalyzer',
         path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
+        pileupMC  = cms.untracked.string("S10"),
+        pileupDT  = cms.untracked.string("mm"),
         lepton  = cms.untracked.string("muon"),
         JEC     = cms.untracked.double(0),
         usePartonFlavour = cms.untracked.bool(False)
 )
 process.demoEleBtag = cms.EDProducer('ZbAnalyzer',
         path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
+        pileupMC  = cms.untracked.string("S10"),
+        pileupDT  = cms.untracked.string("ee"),
         lepton  = cms.untracked.string("electron"),
         JEC     = cms.untracked.double(0),
         usePartonFlavour = cms.untracked.bool(True)
 )
 process.demoMuoBtag = cms.EDProducer('ZbAnalyzer',
         path = cms.untracked.string("."),
-        pileup  = cms.untracked.string("S10"),
+        pileupMC  = cms.untracked.string("S10"),
+        pileupDT  = cms.untracked.string("mm"),
         lepton  = cms.untracked.string("muon"),
         JEC     = cms.untracked.double(0),
         usePartonFlavour = cms.untracked.bool(True)
