@@ -26,20 +26,27 @@ bool verbose = false;
 
 	gSystem->Load("libRooUnfold");
 
-// use fit results for c_b
+	/* purity */
 
         double c_b=1.0;
         double ec_b=0.0;
+	double c_c=1.0;
+	double ec_c=0.0;
+	double c_uds=1.0;
+	double ec_uds=0.0;
 
+	ifstream in3;
 	if (imode>=3) {
 	  if (ilepton==1) {
-	    c_b = 0.709;
-	    ec_b = 0.033;
+	    in3.open((path + "/electrons/" + version + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
 	  }
 	  if (ilepton==2) {
-	    c_b = 0.686;
-	    ec_b = 0.026;
+	    in3.open((path + "/muons/" + version + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
 	  }
+	  in3 >> c_uds >> ec_uds;
+	  in3 >> c_b >> ec_b;
+	  in3 >> c_c >> ec_c;
+	  in3.close();
 	}
 
 	double Lumi2012;

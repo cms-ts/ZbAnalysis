@@ -23,6 +23,13 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  gROOT->GetColor(kBlue-4)->SetAlpha(0.5);
 	}
 
+	/* efficiency */
+
+	double e_Z=1.0;
+	double ee_Z=0.0;
+	double e_Zb=1.0;
+	double ee_Zb=0.0;
+
 	/* purity */
 
 	double c_b=1.0;
@@ -32,67 +39,58 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	double c_uds=1.0;
 	double ec_uds=0.0;
 
-	/* efficiency: (e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b) */
-
-	double e_Zb=1.0;
-	double e_Z=1.0;
-	double e_Z_1=1.0;
-	double e_Z_b=1.0;
-
-	/* top */
+	/* top background */
 
 	double c1_t=1.0;
 	double ec1_t=0.0;
-	double c2_t=c1_t;
-	double ec2_t=ec1_t;
+	double c2_t=1.0;
+	double ec2_t=0.0;
 
+	ifstream in1, in2, in3, in4, in5, in6, in7;
 	if (ilepton==1) {
-          e_Zb  = 0.211;
-          e_Z   = 0.545;
-          e_Z_1 = 0.380;
-          e_Z_b = 0.556;
+	  in1.open((path + "/electrons/" + version + "/efficiency/" + "w_first_jet_eta" + "_efficiency.dat").c_str());
+	  in2.open((path + "/electrons/" + version + "/efficiency/" + "w_first_bjet_eta" + "_efficiency.dat").c_str());
 	  if (useFitResults) {
-	    c_b   = 0.709;
-	    ec_b   = 0.033;
-	    c_c   = 1.665;
-	    ec_c   = 0.198;
-	    c_uds = 1.632;
-	    ec_uds = 0.382;
-	    c1_t   = 1.080;
-	    ec1_t  = 0.022;
-	    c2_t   = 0.924;
-	    ec2_t  = 0.020;
+	    in3.open((path + "/electrons/" + version + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
+	    in4.open((path + "/electrons/" + version + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
+	    in5.open((path + "/electrons/" + version + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
-	      c1_t  = 0.457;
-	      ec1_t = 0.008;
-	      c2_t  = 0.438;
-	      ec2_t = 0.010;
+	      in6.open((path + "/electrons/" + version + "/ttbar_sub/" + "w_mass_ee_wide_doFit" + ".dat").c_str());
+	      in7.open((path + "/electrons/" + version + "/ttbar_sub/" + "w_mass_ee_b_wide_doFit" + ".dat").c_str());
 	    }
 	  }
 	}
-
 	if (ilepton==2) {
-          e_Zb  = 0.310;
-	  e_Z   = 0.804;
-	  e_Z_1 = 0.550;
-	  e_Z_b = 0.564;
+	  in1.open((path + "/muons/" + version + "/efficiency/" + "w_first_jet_eta" + "_efficiency.dat").c_str());
+	  in2.open((path + "/muons/" + version + "/efficiency/" + "w_first_bjet_eta" + "_efficiency.dat").c_str());
 	  if (useFitResults) {
-	    c_b   = 0.686;
-	    ec_b   = 0.026;
-	    c_c   = 1.617;
-	    ec_c   = 0.146;
-	    c_uds = 1.594;
-	    ec_uds = 0.244;
-	    c1_t   = 1.028;
-	    ec1_t  = 0.019;
-	    c2_t  = 0.891;
-	    ec2_t = 0.017;
+	    in3.open((path + "/muons/" + version + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
+	    in4.open((path + "/muons/" + version + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
+	    in5.open((path + "/muons/" + version + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
-	      c1_t  = 0.580;
-	      ec1_t = 0.010;
-	      c2_t  = 0.560;
-	      ec2_t = 0.011;
+	      in6.open((path + "/muons/" + version + "/ttbar_sub/" + "w_mass_ee_wide_doFit" + ".dat").c_str());
+	      in7.open((path + "/muons/" + version + "/ttbar_sub/" + "w_mass_ee_b_wide_doFit" + ".dat").c_str());
 	    }
+	  }
+	}
+	in1 >> e_Z >> ee_Z;
+	in2 >> e_Zb >> ee_Zb;
+	in1.close();
+	in2.close();
+	if (useFitResults) {
+	  in3 >> c_uds >> ec_uds;
+	  in3 >> c_b >> ec_b;
+	  in3 >> c_c >> ec_c;
+	  in3.close();
+	  in4 >> c1_t >> ec1_t;
+	  in5 >> c2_t >> ec2_t;
+	  in4.close();
+	  in5.close();
+	  if (useEleMuo) {
+	    in6 >> c1_t >> ec1_t;
+	    in7 >> c2_t >> ec2_t;
+	    in6.close();
+	    in7.close();
 	  }
 	}
 
@@ -958,3 +956,4 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  }
 	}
 }
+

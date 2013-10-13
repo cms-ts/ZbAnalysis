@@ -38,51 +38,55 @@ int useFitResults=1;  // use fit results for c_t
 //int useEleMuo = 0; // use MC or fit results for c_t
 int useEleMuo = 1; // use e-mu fit results for c_t
 
+	/* top background */
+
 	double c1_t=1.0;
 	double ec1_t=0.0;
-	double c2_t=c1_t;
-	double ec2_t=ec1_t;
+	double c2_t=1.0;
+	double ec2_t=0.0;
 
+	if (doFit==1) {
+	  if (title=="w_MET") { useFitResults=0; useEleMuo=0; }
+	  if (title=="w_MET_b") { useFitResults=0; useEleMuo=0; }
+	}
+
+	ifstream in4, in5, in6, in7;
 	if (ilepton==1) {
 	  if (useFitResults) {
-	    c1_t  = 1.080;
-	    ec1_t = 0.022;
-	    c2_t  = 0.924;
-	    ec2_t = 0.020;
+	    in4.open((path + "/electrons/" + version + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
+	    in5.open((path + "/electrons/" + version + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
-	      c1_t  = 0.457;
-	      ec1_t = 0.008;
-	      c2_t  = 0.438;
-	      ec2_t = 0.010;
+	      in6.open((path + "/electrons/" + version + "/ttbar_sub/" + "w_mass_ee_wide_doFit" + ".dat").c_str());
+	      in7.open((path + "/electrons/" + version + "/ttbar_sub/" + "w_mass_ee_b_wide_doFit" + ".dat").c_str());
 	    }
 	  }
 	}
 	if (ilepton==2) {
 	  if (useFitResults) {
-	    c1_t  = 1.028;
-	    ec1_t = 0.019;
-	    c2_t  = 0.891;
-	    ec2_t = 0.017;
+	    in4.open((path + "/muons/" + version + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
+	    in5.open((path + "/muons/" + version + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
-	      c1_t  = 0.580;
-	      ec1_t = 0.010;
-	      c2_t  = 0.560;
-	      ec2_t = 0.011;
+	      in6.open((path + "/muons/" + version + "/ttbar_sub/" + "w_mass_ee_wide_doFit" + ".dat").c_str());
+	      in7.open((path + "/muons/" + version + "/ttbar_sub/" + "w_mass_ee_b_wide_doFit" + ".dat").c_str());
 	    }
 	  }
 	}
 	if (ilepton==3) {
 	  if (useFitResults) {
-	    c1_t  = 1.023;
-	    ec1_t = 0.012;
-	    c2_t  = 0.902;
-	    ec2_t = 0.013;
-	    if (useEleMuo) {
-	      c1_t  = 1.007;
-	      ec1_t = 0.012;
-	      c2_t  = 0.898;
-	      ec2_t = 0.013;
-	    }
+	    in4.open((path + "/electrons+muons/" + version + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
+	    in5.open((path + "/electrons+muons/" + version + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
+	  }
+	}
+	if (useFitResults) {
+	  in4 >> c1_t >> ec1_t;
+	  in5 >> c2_t >> ec2_t;
+	  in4.close();
+	  in5.close();
+	  if (useEleMuo) {
+	    in6 >> c1_t >> ec1_t;
+	    in7 >> c2_t >> ec2_t;
+	    in6.close();
+	    in7.close();
 	  }
 	}
 
@@ -670,18 +674,35 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	if (plot) {
 	  if (doBkg) title = title + "_doBkg";
 	  if (doFit) title = title + "_doFit";
+	  ofstream out;
 	  if (ilepton==1) {
 	    gSystem->mkdir((path + "/electrons/" + version + "/distributions/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/electrons/" + version + "/distributions/" + title + ".pdf").c_str());
+	    if (doFit) out.open((path + "/electrons/" + version + "/distributions/" + title + ".dat").c_str());
 	  }
 	  if (ilepton==2) {
 	    gSystem->mkdir((path + "/muons/" + version + "/distributions/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/muons/" + version + "/distributions/" + title + ".pdf").c_str());
+	    if (doFit) out.open((path + "/muons/" + version + "/distributions/" + title + ".dat").c_str());
 	  }
 	  if (ilepton==3) {
 	    gSystem->mkdir((path + "/electrons+muons/" + version + "/distributions/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/electrons+muons/" + version + "/distributions/" + title + ".pdf").c_str());
+	    if (doFit) out.open((path + "/electrons+muons/" + version + "/distributions/" + title + ".dat").c_str());
 	  }
+	  if (doFit==1) {
+	    out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;
+	  }
+	  if (doFit==2) {
+	    out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;
+	    out << fitter->GetParameter(1) << " " << fitter->GetParError(1) << endl;
+	  }
+	  if (doFit==3) {
+	    out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;
+	    out << fitter->GetParameter(1) << " " << fitter->GetParError(1) << endl;
+	    out << fitter->GetParameter(2) << " " << fitter->GetParError(2) << endl;
+	  }
+	  out.close();
 	}
 }
 

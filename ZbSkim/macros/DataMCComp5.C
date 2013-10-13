@@ -25,10 +25,32 @@ void DataMCComp5(string& title="", int plot=0, int ilepton=1, int doFit=0) {
 //int useFitResults=0; // use MC predictions for c_t
 int useFitResults=1;  // use fit results for c_t
 
-      double c_t=1.0;
+      /* top background */
 
-      if (ilepton==1 && useFitResults) c_t = 1.080;
-      if (ilepton==2 && useFitResults) c_t = 1.028;
+      double c1_t=1.0;
+      double ec1_t=0.0;
+      double c2_t=1.0;
+      double ec2_t=0.0;
+
+      ifstream in4, in5;
+      if (ilepton==1) {
+        if (useFitResults) {
+          in4.open((path + "/electrons/" + version + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
+          in5.open((path + "/electrons/" + version + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
+        }
+      }
+      if (ilepton==2) {
+        if (useFitResults) {
+          in4.open((path + "/muons/" + version + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
+          in5.open((path + "/muons/" + version + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
+        }
+      }
+      if (useFitResults) {
+        in4 >> c1_t >> ec1_t;
+        in5 >> c2_t >> ec2_t;
+        in4.close();
+        in5.close();
+      }
 
       double Lumi2012;
       
@@ -154,7 +176,7 @@ int useFitResults=1;  // use fit results for c_t
       h_mc7_fit->Sumw2();
 
       h_mc1->Scale(norm1);
-      h_mc2->Scale(norm2*c_t);
+      h_mc2->Scale(norm2*c1_t);
       h_mc3->Scale(norm3);
       h_mc4->Scale(norm4);
 //    h_mc5->Scale(norm5);
@@ -162,7 +184,7 @@ int useFitResults=1;  // use fit results for c_t
       h_mc7->Scale(norm7);
       
       h_mc1_fit->Scale(norm1_fit);
-      h_mc2_fit->Scale(norm2_fit*c_t);
+      h_mc2_fit->Scale(norm2_fit*c1_t);
       h_mc3_fit->Scale(norm3_fit);
       h_mc4_fit->Scale(norm4_fit);
 //    h_mc5_fit->Scale(norm5_fit);
@@ -322,6 +344,7 @@ int useFitResults=1;  // use fit results for c_t
 
       if (plot) {
         if (doFit) title = title + "_doFit";
+	ofstream out;
         if (ilepton==1) {
           gSystem->mkdir((path + "/electrons/" + version + "/ttbar_sub/").c_str(), kTRUE);
           if (c1) c1->SaveAs((path + "/electrons/" + version + "/ttbar_sub/" + title + ".pdf").c_str());
@@ -330,6 +353,7 @@ int useFitResults=1;  // use fit results for c_t
             h_data_fit_raw->Write(title.c_str());
             f.Close();
 	  }
+	  if (doFit) out.open((path + "/electrons/" + version + "/ttbar_sub/" + title + ".dat").c_str());
         }
         if (ilepton==2) {
           gSystem->mkdir((path + "/muons/" + version + "/ttbar_sub/").c_str(), kTRUE);
@@ -339,6 +363,11 @@ int useFitResults=1;  // use fit results for c_t
             h_data_fit_raw->Write(title.c_str());
             f.Close();
 	  }
+	  if (doFit) out.open((path + "/muons/" + version + "/ttbar_sub/" + title + ".dat").c_str());
         }
+	if (doFit==1) {
+	  out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;
+	}
+	out.close();
       }
 }

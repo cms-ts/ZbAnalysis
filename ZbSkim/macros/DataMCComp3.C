@@ -19,9 +19,9 @@ void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 
-/* efficiency: e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b */
+/* efficiency:  e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b */
 
-int itype = 0; // e_Z or e_Zb=e_Z_1*e_Z_b
+int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 //int itype = 1; // e_Z_1
 //int itype = 2; // e_Z_b
 
@@ -130,12 +130,14 @@ int itype = 0; // e_Z or e_Zb=e_Z_1*e_Z_b
 	c2->Update();
 
 	if (plot) {
+	  ofstream out;
 	  if (ilepton==1) {
 	    gSystem->mkdir((path + "/electrons/" + version + "/efficiency/").c_str(), kTRUE);
 	    c2->SaveAs((path + "/electrons/" + version + "/efficiency/" + title + "_efficiency.pdf").c_str());
 	    TFile f((path + "/electrons/" + version + "/efficiency/" + title + "_efficiency.root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
 	    f.Close();
+	    out.open((path + "/electrons/" + version + "/efficiency/" + title + "_efficiency.dat").c_str());
 	  }
 	  if (ilepton==2) {
 	    gSystem->mkdir((path + "/muons/" + version + "/efficiency/").c_str(), kTRUE);
@@ -143,7 +145,10 @@ int itype = 0; // e_Z or e_Zb=e_Z_1*e_Z_b
 	    TFile f((path + "/muons/" + version + "/efficiency/" + title + "_efficiency.root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
 	    f.Close();
+	    out.open((path + "/muons/" + version + "/efficiency/" + title + "_efficiency.dat").c_str());
 	  }
+	  out << N << " " << errN << endl;
+	  out.close();
 	}
-
 }
+
