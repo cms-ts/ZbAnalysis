@@ -367,7 +367,7 @@ int useFitResults=1;  // use fit results for c_t
         }
 	if (doFit==1) {
 	  out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;
+	  out.close();
 	}
-	out.close();
       }
 }

@@ -692,17 +692,19 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  }
 	  if (doFit==1) {
 	    out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;
+	    out.close();
 	  }
 	  if (doFit==2) {
 	    out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;
 	    out << fitter->GetParameter(1) << " " << fitter->GetParError(1) << endl;
+	    out.close();
 	  }
 	  if (doFit==3) {
 	    out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;
 	    out << fitter->GetParameter(1) << " " << fitter->GetParError(1) << endl;
 	    out << fitter->GetParameter(2) << " " << fitter->GetParError(2) << endl;
+	    out.close();
 	  }
-	  out.close();
 	}
 }
 
