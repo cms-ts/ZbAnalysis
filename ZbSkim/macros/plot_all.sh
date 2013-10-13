@@ -9,6 +9,18 @@ cd -
 i=1
 while [ $i -le 2 ]; do
 
+  root -l -q -b DataMCComp.C\(\"w_MET\",1,$i,0,1\)
+  root -l -q -b DataMCComp.C\(\"w_MET_b\",1,$i,0,1\)
+
+  i=$((i+1))
+done
+
+root -l -q -b DataMCComp.C\(\"w_MET\",1,3,0,1\)
+root -l -q -b DataMCComp.C\(\"w_MET_b\",1,3,0,1\)
+
+i=1
+while [ $i -le 2 ]; do
+
   root -l -q -b DataMCComp.C\(\"h_pu_weights\",1,$i\)
   root -l -q -b DataMCComp.C\(\"h_recoVTX\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_recoVTX\",1,$i\)
@@ -64,9 +76,9 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\(\"w_third_jet_eta\",1,$i\)
 
   root -l -q -b DataMCComp.C\(\"w_MET\",1,$i\)
-  root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,$i\)
-
   root -l -q -b DataMCComp.C\(\"w_MET_b\",1,$i\)
+
+  root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,$i\)
   root -l -q -b DataMCComp.C\(\"w_MET_sign_b\",1,$i\)
 
   root -l -q -b DataMCComp.C\(\"w_Ht\",1,$i\)
@@ -181,16 +193,13 @@ root -l -q -b DataMCComp.C\(\"w_JBP_nomass\",1,3\)
 i=1
 while [ $i -le 2 ]; do
 
-  root -l -q -b DataMCComp.C\(\"w_MET\",1,$i,0,1\)
   root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,$i,0,1\)
-
-  root -l -q -b DataMCComp.C\(\"w_MET_b\",1,$i,0,1\)
   root -l -q -b DataMCComp.C\(\"w_MET_sign_b\",1,$i,0,1\)
 
   root -l -q -b DataMCComp.C\(\"w_mass_ee_wide\",1,$i,0,2\)
-  root -l -q -b DataMCComp.C\(\"w_mass_mm_wide\",1,$i,0,2\)
-
   root -l -q -b DataMCComp.C\(\"w_mass_ee_b_wide\",1,$i,0,1\)
+
+  root -l -q -b DataMCComp.C\(\"w_mass_mm_wide\",1,$i,0,2\)
   root -l -q -b DataMCComp.C\(\"w_mass_mm_b_wide\",1,$i,0,1\)
 
   root -l -q -b DataMCComp.C\(\"w_SVTX_mass\",1,$i,1,0\)
@@ -236,14 +245,10 @@ while [ $i -le 2 ]; do
   i=$((i+1))
 done
 
-root -l -q -b DataMCComp.C\(\"w_MET\",1,3,0,1\)
 root -l -q -b DataMCComp.C\(\"w_MET_sign\",1,3,0,1\)
-
-root -l -q -b DataMCComp.C\(\"w_MET_b\",1,3,0,1\)
 root -l -q -b DataMCComp.C\(\"w_MET_sign_b\",1,3,0,1\)
 
 root -l -q -b DataMCComp.C\(\"w_mass_em_wide\",1,3,0,1\)
-
 root -l -q -b DataMCComp.C\(\"w_mass_em_b_wide\",1,3,0,1\)
 
 exit
