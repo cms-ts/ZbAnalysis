@@ -213,29 +213,9 @@ if (irun==4) {             // irun==4 => PU Down
 
 	if (title.find("_b")!=string::npos) {
 	  h_mc1_truth->Scale(c_b);
-	  for (int i=0; i<=h_mc1_truth->GetNbinsX()+1; i++) {
-	    float e = h_mc1_truth->GetBinError(i)**2;
-	    e = e + (h_mc1_truth->GetBinContent(i)*(ec_b/c_b))**2;
-	    h_mc1_truth->SetBinError(i, TMath::Sqrt(e));
-	  }
 	  h_mc1_reco->Scale(c_b);
-	  for (int i=0; i<=h_mc1_reco->GetNbinsX()+1; i++) {
-	    float e = h_mc1_reco->GetBinError(i)**2;
-	    e = e + (h_mc1_reco->GetBinContent(i)*(ec_b/c_b))**2;
-	    h_mc1_reco->SetBinError(i, TMath::Sqrt(e));
-	  }
 	  h_mc2_truth->Scale(c_b);
-	  for (int i=0; i<=h_mc2_truth->GetNbinsX()+1; i++) {
-	    float e = h_mc2_truth->GetBinError(i)**2;
-	    e = e + (h_mc2_truth->GetBinContent(i)*(ec_b/c_b))**2;
-	    h_mc2_truth->SetBinError(i, TMath::Sqrt(e));
-	  }
 	  h_mc2_reco->Scale(c_b);
-	  for (int i=0; i<=h_mc2_reco->GetNbinsX()+1; i++) {
-	    float e = h_mc2_reco->GetBinError(i)**2;
-	    e = e + (h_mc2_reco->GetBinContent(i)*(ec_b/c_b))**2;
-	    h_mc2_reco->SetBinError(i, TMath::Sqrt(e));
-	  }
 	}
 
 	RooUnfold* unfold_mc;
