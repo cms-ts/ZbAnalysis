@@ -9,8 +9,6 @@ cd -
 i=1
 while [ $i -le 2 ]; do
 
-  root -l -q -b DataMCComp7.C\(\"w_first_jet_pt\",1,$i,0\)
-  root -l -q -b DataMCComp7.C\(\"w_first_jet_eta\",1,$i,0\)
   root -l -q -b DataMCComp7.C\(\"w_first_bjet_pt\",1,$i,0\)
   root -l -q -b DataMCComp7.C\(\"w_first_bjet_eta\",1,$i,0\)
   root -l -q -b DataMCComp7.C\(\"w_pt_Z_ee\",1,$i,0\)
@@ -25,8 +23,6 @@ done
 i=1
 while [ $i -le 2 ]; do
 
-  root -l -q -b DataMCComp7.C\(\"w_first_jet_pt\",1,$i,1\)
-  root -l -q -b DataMCComp7.C\(\"w_first_jet_eta\",1,$i,1\)
   root -l -q -b DataMCComp7.C\(\"w_first_bjet_pt\",1,$i,1\)
   root -l -q -b DataMCComp7.C\(\"w_first_bjet_eta\",1,$i,1\)
   root -l -q -b DataMCComp7.C\(\"w_pt_Z_ee\",1,$i,1\)

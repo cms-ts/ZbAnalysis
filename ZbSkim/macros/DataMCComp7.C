@@ -3,8 +3,7 @@
 
 #include "fixrange.C"
 
-//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/GDR/data/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp7(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 
@@ -14,8 +13,7 @@ int useBinnedEfficiency=1; // use bin-by-bin efficiencies
 //int useFitResults=0; // use MC predictions for c_b, c_c, c_uds, c_t
 int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 
-//int useEleMuo = 0; // use MC or fit results for c_t
-int useEleMuo = 1; // use e-mu fit results for c_t
+string subdir="0";
 
 	if (gROOT->GetVersionInt() >= 53401) {
 	  gROOT->GetColor(kRed)->SetAlpha(0.5);
@@ -40,38 +38,19 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	double c_uds=1.0;
 	double ec_uds=0.0;
 
-	/* top background */
-
-	double c1_t=1.0;
-	double ec1_t=0.0;
-	double c2_t=1.0;
-	double ec2_t=0.0;
-
-	ifstream in1, in2, in3, in4, in5, in6, in7;
+	ifstream in1, in2, in3;
 	if (ilepton==1) {
-	  in1.open((path + "/electrons/" + version + "/0/efficiency/" + "w_first_jet_eta" + "_efficiency.dat").c_str());
-	  in2.open((path + "/electrons/" + version + "/0/efficiency/" + "w_first_bjet_eta" + "_efficiency.dat").c_str());
+	  in1.open((path + "/electrons/" + version + "/" + subdir +"/efficiency/" + "w_first_jet_eta" + "_efficiency.dat").c_str());
+	  in2.open((path + "/electrons/" + version + "/" + subdir +"/efficiency/" + "w_first_bjet_eta" + "_efficiency.dat").c_str());
 	  if (useFitResults) {
 	    in3.open((path + "/electrons/" + version + "/distributions/" + "0/" + "w_BJP_doFit" + ".dat").c_str());
-	    in4.open((path + "/electrons/" + version + "/distributions/" + "0/" + "w_MET_doFit" + ".dat").c_str());
-	    in5.open((path + "/electrons/" + version + "/distributions/" + "0/" + "w_MET_b_doFit" + ".dat").c_str());
-	    if (useEleMuo) {
-	      in6.open((path + "/electrons/" + version + "/0/ttbar_sub/" + "w_mass_ee_wide_doFit" + ".dat").c_str());
-	      in7.open((path + "/electrons/" + version + "/0/ttbar_sub/" + "w_mass_ee_b_wide_doFit" + ".dat").c_str());
-	    }
 	  }
 	}
 	if (ilepton==2) {
-	  in1.open((path + "/muons/" + version + "/0/efficiency/" + "w_first_jet_eta" + "_efficiency.dat").c_str());
-	  in2.open((path + "/muons/" + version + "/0/efficiency/" + "w_first_bjet_eta" + "_efficiency.dat").c_str());
+	  in1.open((path + "/muons/" + version + "/" + subdir +"/efficiency/" + "w_first_jet_eta" + "_efficiency.dat").c_str());
+	  in2.open((path + "/muons/" + version + "/" + subdir +"/efficiency/" + "w_first_bjet_eta" + "_efficiency.dat").c_str());
 	  if (useFitResults) {
 	    in3.open((path + "/muons/" + version + "/distributions/" + "0/" + "w_BJP_doFit" + ".dat").c_str());
-	    in4.open((path + "/muons/" + version + "/distributions/" + "0/" + "w_MET_doFit" + ".dat").c_str());
-	    in5.open((path + "/muons/" + version + "/distributions/" + "0/" + "w_MET_b_doFit" + ".dat").c_str());
-	    if (useEleMuo) {
-	      in6.open((path + "/muons/" + version + "/0/ttbar_sub/" + "w_mass_ee_wide_doFit" + ".dat").c_str());
-	      in7.open((path + "/muons/" + version + "/0/ttbar_sub/" + "w_mass_ee_b_wide_doFit" + ".dat").c_str());
-	    }
 	  }
 	}
 	in1 >> e_Z >> ee_Z;
@@ -83,16 +62,6 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  in3 >> c_b >> ec_b;
 	  in3 >> c_c >> ec_c;
 	  in3.close();
-	  in4 >> c1_t >> ec1_t;
-	  in5 >> c2_t >> ec2_t;
-	  in4.close();
-	  in5.close();
-	  if (useEleMuo) {
-	    in6 >> c1_t >> ec1_t;
-	    in7 >> c2_t >> ec2_t;
-	    in6.close();
-	    in7.close();
-	  }
 	}
 
 	double Lumi2012;
@@ -105,13 +74,6 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	double norm1_2;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
 	if (ilepton==2) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
-	double norm2 = ((Lumi2012 * Xsec_tt) / Ngen_tt);
-	if (useEleMuo) norm2 = (Lumi2012 / Lumi2012_ele_muon);
-	double norm3 = ((Lumi2012 * Xsec_zz) / Ngen_zz);
-	double norm4 = ((Lumi2012 * Xsec_wz) / Ngen_wz);
-	double norm5 = ((Lumi2012 * Xsec_qcd) / Ngen_qcd);
-	double norm6 = ((Lumi2012 * Xsec_ww) / Ngen_ww);
-	double norm7 = ((Lumi2012 * Xsec_wj) / Ngen_wj);
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -130,12 +92,6 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	TFile *mcg2;
 	if (ilepton==1) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	if (ilepton==2) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
-	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
-	TFile *mc3 = TFile::Open((path + "/" + version + "/" + "ZZ.root").c_str());
-	TFile *mc4 = TFile::Open((path + "/" + version + "/" + "WZ.root").c_str());
-//	TFile *mc5 = TFile::Open((path + "/" + version + "/" + "QCD.root").c_str());
-	TFile *mc6 = TFile::Open((path + "/" + version + "/" + "WW.root").c_str());
-	TFile *mc7 = TFile::Open((path + "/" + version + "/" + "Wj.root").c_str());
 
 	string title_b = title;
 
@@ -148,8 +104,8 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	TH1F* h_data;
 	TH1F* h_data_b;
         if (ilepton==1) {
-	  TFile f((path + "/electrons/" + version + "/0/unfolding/" + title + "_unfolding.root").c_str());
-	  TFile f_b((path + "/electrons/" + version + "/0/unfolding/" + title_b + "_unfolding.root").c_str());
+	  TFile f((path + "/electrons/" + version + "/" + subdir +"/unfolding/" + title + "_unfolding.root").c_str());
+	  TFile f_b((path + "/electrons/" + version + "/" + subdir +"/unfolding/" + title_b + "_unfolding.root").c_str());
 	  h_data = (TH1F*)f.Get(title.c_str())->Clone();
 	  h_data_b = (TH1F*)f_b.Get(title_b.c_str())->Clone();
 	  h_data->SetDirectory(0);
@@ -158,8 +114,8 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	  f_b.Close();
         }
         if (ilepton==2) {
-	  TFile f((path + "/muons/" + version + "/0/unfolding/" + title + "_unfolding.root").c_str());
-	  TFile f_b((path + "/muons/" + version + "/0/unfolding/" + title_b + "_unfolding.root").c_str());
+	  TFile f((path + "/muons/" + version + "/" + subdir +"/unfolding/" + title + "_unfolding.root").c_str());
+	  TFile f_b((path + "/muons/" + version + "/" + subdir +"/unfolding/" + title_b + "_unfolding.root").c_str());
 	  h_data = (TH1F*)f.Get(title.c_str())->Clone();
 	  h_data_b = (TH1F*)f_b.Get(title_b.c_str())->Clone();
 	  h_data->SetDirectory(0);
@@ -193,61 +149,10 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	TH1F* h_mcg2 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg2_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (ilepton==1) mc2->cd("demoEle");
-	if (ilepton==2) mc2->cd("demoMuo");
-	TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
-	TH1F* h_mc2_b = (TH1F*)gDirectory->Get(title_b.c_str());
-
-	if (useEleMuo) {
-	  if (ilepton==1) {
-	    mc2 = TFile::Open((path + "/electrons/" + version + "/0/ttbar_sub/" + title + ".root").c_str());
-	    h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
-	    mc2 = TFile::Open((path + "/electrons/" + version + "/0/ttbar_sub/" + title_b + ".root").c_str());
-	    h_mc2_b = (TH1F*)gDirectory->Get(title_b.c_str());
-	  }
-	  if (ilepton==2) {
-	    mc2 = TFile::Open((path + "/muons/" + version + "/0/ttbar_sub/" + title + ".root").c_str());
-	    h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
-	    mc2 = TFile::Open((path + "/muons/" + version + "/0/ttbar_sub/" + title_b + ".root").c_str());
-	    h_mc2_b = (TH1F*)gDirectory->Get(title_b.c_str());
-	  }
-	}
-
-	if (ilepton==1) mc3->cd("demoEle");
-	if (ilepton==2) mc3->cd("demoMuo");
-	TH1F* h_mc3 = (TH1F*)gDirectory->Get(title.c_str());
-	TH1F* h_mc3_b = (TH1F*)gDirectory->Get(title_b.c_str());
-
-	if (ilepton==1) mc4->cd("demoEle");
-	if (ilepton==2) mc4->cd("demoMuo");
-	TH1F* h_mc4 = (TH1F*)gDirectory->Get(title.c_str());
-	TH1F* h_mc4_b = (TH1F*)gDirectory->Get(title_b.c_str());
-
-//	if (ilepton==1) mc5->cd("demoEle");
-//	if (ilepton==2) mc5->cd("demoMuo");
-//	TH1F* h_mc5 = (TH1F*)gDirectory->Get(title.c_str());
-//	TH1F* h_mc5_b = (TH1F*)gDirectory->Get(title_b.c_str());
-
-	if (ilepton==1) mc6->cd("demoEle");
-	if (ilepton==2) mc6->cd("demoMuo");
-	TH1F* h_mc6 = (TH1F*)gDirectory->Get(title.c_str());
-	TH1F* h_mc6_b = (TH1F*)gDirectory->Get(title_b.c_str());
-
-	if (ilepton==1) mc7->cd("demoEle");
-	if (ilepton==2) mc7->cd("demoMuo");
-	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
-	TH1F* h_mc7_b = (TH1F*)gDirectory->Get(title_b.c_str());
-
 	h_mc1->Sumw2();
 	h_mcg->Sumw2();
 	h_mcg1->Sumw2();
 	h_mcg2->Sumw2();
-	h_mc2->Sumw2();
-	h_mc3->Sumw2();
-	h_mc4->Sumw2();
-//	h_mc5->Sumw2();
-	h_mc6->Sumw2();
-	h_mc7->Sumw2();
 
 	h_mc1_b->Sumw2();
 	if (h_mc1b_b) h_mc1b_b->Sumw2();
@@ -256,28 +161,11 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	h_mcg_b->Sumw2();
 	h_mcg1_b->Sumw2();
 	h_mcg2_b->Sumw2();
-	h_mc2_b->Sumw2();
-	h_mc3_b->Sumw2();
-	h_mc4_b->Sumw2();
-//	h_mc5_b->Sumw2();
-	h_mc6_b->Sumw2();
-	h_mc7_b->Sumw2();
 
 	h_mc1->Scale(norm1);
 	h_mcg->Scale(norm1);
 	h_mcg1->Scale(norm1_1);
 	h_mcg2->Scale(norm1_2);
-	h_mc2->Scale(norm2*c1_t);
-	for (int i=0; i<=h_mc2->GetNbinsX()+1; i++) {
-	  float e = h_mc2->GetBinError(i)**2;
-	  e = e + (h_mc2->GetBinContent(i)*(ec1_t/c1_t))**2;
-	  h_mc2->SetBinError(i, TMath::Sqrt(e));
-	}
-	h_mc3->Scale(norm3);
-	h_mc4->Scale(norm4);
-//	h_mc5->Scale(norm5);
-	h_mc6->Scale(norm6);
-	h_mc7->Scale(norm7);
 
 	h_mc1_b->Scale(norm1);
 	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
@@ -286,17 +174,6 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	h_mcg_b->Scale(norm1);
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
-	h_mc2_b->Scale(norm2*c2_t);
-	for (int i=0; i<=h_mc2_b->GetNbinsX()+1; i++) {
-	  float e = h_mc2_b->GetBinError(i)**2;
-	  e = e + (h_mc2_b->GetBinContent(i)*(ec2_t/c2_t))**2;
-	  h_mc2_b->SetBinError(i, TMath::Sqrt(e));
-	}
-	h_mc3_b->Scale(norm3);
-	h_mc4_b->Scale(norm4);
-//	h_mc5_b->Scale(norm5);
-	h_mc6_b->Scale(norm6);
-	h_mc7_b->Scale(norm7);
 
 	TH1F *h_mc1uds_b = h_mc1_b->Clone("h_mc1uds_b");
 	if (h_mc1b_b) h_mc1uds_b->Add(h_mc1b_b, -1);
@@ -342,8 +219,8 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 
 	if (useBinnedEfficiency==1) {
           if (ilepton==1) {
-	    TFile f((path + "/electrons/" + version + "/0/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
-	    TFile f_b((path + "/electrons/" + version + "/0/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
+	    TFile f((path + "/electrons/" + version + "/" + subdir +"/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
+	    TFile f_b((path + "/electrons/" + version + "/" + subdir +"/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
 	    TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
 	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
 	    h->SetDirectory(0);
@@ -354,8 +231,8 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 	    h_mc1b_b->Divide(h_b);
           }
 	  if (ilepton==2) {
-	    TFile f((path + "/muons/" + version + "/0/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
-	    TFile f_b((path + "/muons/" + version + "/0/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
+	    TFile f((path + "/muons/" + version + "/" + subdir +"/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
+	    TFile f_b((path + "/muons/" + version + "/" + subdir +"/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
 	    TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
 	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
 	    h->SetDirectory(0);
