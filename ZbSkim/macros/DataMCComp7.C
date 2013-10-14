@@ -7,12 +7,6 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp7(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 
-//int useBinnedEfficiency=0; // use average efficiencies
-int useBinnedEfficiency=1; // use bin-by-bin efficiencies
-
-//int useFitResults=0; // use MC predictions for c_b, c_c, c_uds, c_t
-int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
-
 string subdir="0";
 
 	if (gROOT->GetVersionInt() >= 53401) {
@@ -38,31 +32,17 @@ string subdir="0";
 	double c_uds=1.0;
 	double ec_uds=0.0;
 
-	ifstream in1, in2, in3;
+	ifstream in3;
 	if (ilepton==1) {
-	  in1.open((path + "/electrons/" + version + "/" + subdir +"/efficiency/" + "w_first_jet_eta" + "_efficiency.dat").c_str());
-	  in2.open((path + "/electrons/" + version + "/" + subdir +"/efficiency/" + "w_first_bjet_eta" + "_efficiency.dat").c_str());
-	  if (useFitResults) {
-	    in3.open((path + "/electrons/" + version + "/distributions/" + "0/" + "w_BJP_doFit" + ".dat").c_str());
-	  }
+	  in3.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
 	}
 	if (ilepton==2) {
-	  in1.open((path + "/muons/" + version + "/" + subdir +"/efficiency/" + "w_first_jet_eta" + "_efficiency.dat").c_str());
-	  in2.open((path + "/muons/" + version + "/" + subdir +"/efficiency/" + "w_first_bjet_eta" + "_efficiency.dat").c_str());
-	  if (useFitResults) {
-	    in3.open((path + "/muons/" + version + "/distributions/" + "0/" + "w_BJP_doFit" + ".dat").c_str());
-	  }
+	  in3.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
 	}
-	in1 >> e_Z >> ee_Z;
-	in2 >> e_Zb >> ee_Zb;
-	in1.close();
-	in2.close();
-	if (useFitResults) {
-	  in3 >> c_uds >> ec_uds;
-	  in3 >> c_b >> ec_b;
-	  in3 >> c_c >> ec_c;
-	  in3.close();
-	}
+	in3 >> c_uds >> ec_uds;
+	in3 >> c_b >> ec_b;
+	in3 >> c_c >> ec_c;
+	in3.close();
 
 	double Lumi2012;
 
@@ -212,37 +192,30 @@ string subdir="0";
 	  }
 	}
 
-	if (useBinnedEfficiency==0) {
-	  h_mc1->Scale(1./e_Z);
-	  h_mc1b_b->Scale(1./e_Zb);
-	}
-
-	if (useBinnedEfficiency==1) {
-          if (ilepton==1) {
-	    TFile f((path + "/electrons/" + version + "/" + subdir +"/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
-	    TFile f_b((path + "/electrons/" + version + "/" + subdir +"/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
-	    TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
-	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
-	    h->SetDirectory(0);
-	    h_b->SetDirectory(0);
-	    f.Close();
-	    f_b.Close();
-	    h_mc1->Divide(h);
-	    h_mc1b_b->Divide(h_b);
-          }
-	  if (ilepton==2) {
-	    TFile f((path + "/muons/" + version + "/" + subdir +"/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
-	    TFile f_b((path + "/muons/" + version + "/" + subdir +"/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
-	    TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
-	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
-	    h->SetDirectory(0);
-	    h_b->SetDirectory(0);
-	    f.Close();
-	    f_b.Close();
-	    h_mc1->Divide(h);
-	    h_mc1b_b->Divide(h_b);
-          }
-	}
+        if (ilepton==1) {
+	  TFile f((path + "/electrons/" + version + "/" + subdir +"/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
+	  TFile f_b((path + "/electrons/" + version + "/" + subdir +"/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
+	  TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
+	  TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
+	  h->SetDirectory(0);
+	  h_b->SetDirectory(0);
+	  f.Close();
+	  f_b.Close();
+	  h_mc1->Divide(h);
+	  h_mc1b_b->Divide(h_b);
+        }
+	if (ilepton==2) {
+	  TFile f((path + "/muons/" + version + "/" + subdir +"/efficiency/" + string(h_data->GetName()) + "_efficiency.root").c_str());
+	  TFile f_b((path + "/muons/" + version + "/" + subdir +"/efficiency/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
+	  TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
+	  TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
+	  h->SetDirectory(0);
+	  h_b->SetDirectory(0);
+	  f.Close();
+	  f_b.Close();
+	  h_mc1->Divide(h);
+	  h_mc1b_b->Divide(h_b);
+        }
 
 	h_data->Scale(1./Lumi2012, "width");
 	h_data_b->Scale(1./Lumi2012, "width");
