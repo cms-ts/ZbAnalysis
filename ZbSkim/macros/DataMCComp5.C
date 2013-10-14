@@ -20,10 +20,29 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   fun = chisq;
 }
 
-void DataMCComp5(string& title="", int plot=0, int ilepton=1, int doFit=0) {
+void DataMCComp5(int irun=0, string& title="", int plot=0, int ilepton=1, int doFit=0) {
 
 //int useFitResults=0; // use MC predictions for c_t
 int useFitResults=1;  // use fit results for c_t
+
+string subdir="0";
+string postfix="";
+if (irun==1) {             // irun==1 => JEC Up
+  string subdir="1";
+  string postfix="Up";
+}
+if (irun==2) {             // irun==2 => JEC Down
+  string subdir="2";
+  string postfix="Down";
+}
+if (irun==3) {             // irun==3 => PU Up
+  string subdir="3";
+  string postfix="Pup";
+}
+if (irun==4) {             // irun==4 => PU Down
+  string subdir="4";
+  string postfix="Pum";
+}
 
       /* top background */
 
@@ -35,14 +54,14 @@ int useFitResults=1;  // use fit results for c_t
       ifstream in4, in5;
       if (ilepton==1) {
         if (useFitResults) {
-          in4.open((path + "/electrons/" + version + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
-          in5.open((path + "/electrons/" + version + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
+          in4.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
+          in5.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
         }
       }
       if (ilepton==2) {
         if (useFitResults) {
-          in4.open((path + "/muons/" + version + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
-          in5.open((path + "/muons/" + version + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
+          in4.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
+          in5.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
         }
       }
       if (useFitResults) {
@@ -108,52 +127,52 @@ int useFitResults=1;  // use fit results for c_t
         title_fit.replace(title_fit.find("mm"), 1, "e");
       }
 
-      if (ilepton==1) data->cd("demoEle");
-      if (ilepton==2) data->cd("demoMuo");
+      if (ilepton==1) data->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) data->cd(("demoMuo"+postfix).c_str());
       h_data = (TH1F*)gDirectory->Get(title.c_str());
-      data_fit->cd("demoEleMuo");
+      data_fit->cd(("demoEleMuo"+postfix).c_str());
       h_data_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
-      if (ilepton==1) mc1->cd("demoEle");
-      if (ilepton==2) mc1->cd("demoMuo");
+      if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
       TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
-      mc1->cd("demoEleMuo");
+      mc1->cd(("demoEleMuo"+postfix).c_str());
       TH1F* h_mc1_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
-      if (ilepton==1) mc2->cd("demoEle");
-      if (ilepton==2) mc2->cd("demoMuo");
+      if (ilepton==1) mc2->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc2->cd(("demoMuo"+postfix).c_str());
       TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
-      mc2->cd("demoEleMuo");
+      mc2->cd(("demoEleMuo"+postfix).c_str());
       TH1F* h_mc2_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
       
-      if (ilepton==1) mc3->cd("demoEle");
-      if (ilepton==2) mc3->cd("demoMuo");
+      if (ilepton==1) mc3->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc3->cd(("demoMuo"+postfix).c_str());
       TH1F* h_mc3 = (TH1F*)gDirectory->Get(title.c_str());
-      mc3->cd("demoEleMuo");
+      mc3->cd(("demoEleMuo"+postfix).c_str());
       TH1F* h_mc3_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
-      if (ilepton==1) mc4->cd("demoEle");
-      if (ilepton==2) mc4->cd("demoMuo");
+      if (ilepton==1) mc4->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc4->cd(("demoMuo"+postfix).c_str());
       TH1F* h_mc4 = (TH1F*)gDirectory->Get(title.c_str());
-      mc4->cd("demoEleMuo");
+      mc4->cd(("demoEleMuo"+postfix).c_str());
       TH1F* h_mc4_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
-//    if (ilepton==1) mc5->cd("demoEle");
-//    if (ilepton==2) mc5->cd("demoMuo");
+//    if (ilepton==1) mc5->cd(("demoEle"+postfix).c_str());
+//    if (ilepton==2) mc5->cd(("demoMuo"+postfix).c_str());
 //    TH1F* h_mc5 = (TH1F*)gDirectory->Get(title.c_str());
-//    mc5->cd("demoEleMuo");
+//    mc5->cd(("demoEleMuo"+postfix).c_str());
 //    TH1F* h_mc5_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
-      if (ilepton==1) mc6->cd("demoEle");
-      if (ilepton==2) mc6->cd("demoMuo");
+      if (ilepton==1) mc6->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc6->cd(("demoMuo"+postfix).c_str());
       TH1F* h_mc6 = (TH1F*)gDirectory->Get(title.c_str());
-      mc6->cd("demoEleMuo");
+      mc6->cd(("demoEleMuo"+postfix).c_str());
       TH1F* h_mc6_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
-      if (ilepton==1) mc7->cd("demoEle");
-      if (ilepton==2) mc7->cd("demoMuo");
+      if (ilepton==1) mc7->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc7->cd(("demoMuo"+postfix).c_str());
       TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
-      mc7->cd("demoEleMuo");
+      mc7->cd(("demoEleMuo"+postfix).c_str());
       TH1F* h_mc7_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
       h_data->Sumw2();
@@ -346,24 +365,24 @@ int useFitResults=1;  // use fit results for c_t
         if (doFit) title = title + "_doFit";
 	ofstream out;
         if (ilepton==1) {
-          gSystem->mkdir((path + "/electrons/" + version + "/ttbar_sub/").c_str(), kTRUE);
-          if (c1) c1->SaveAs((path + "/electrons/" + version + "/ttbar_sub/" + title + ".pdf").c_str());
+          gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub/").c_str(), kTRUE);
+          if (c1) c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".pdf").c_str());
 	  if (doFit==0) {
-	    TFile f((path + "/electrons/" + version + "/ttbar_sub/" + title + ".root").c_str(),"RECREATE");
+	    TFile f((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".root").c_str(),"RECREATE");
             h_data_fit_raw->Write(title.c_str());
             f.Close();
 	  }
-	  if (doFit) out.open((path + "/electrons/" + version + "/ttbar_sub/" + title + ".dat").c_str());
+	  if (doFit) out.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".dat").c_str());
         }
         if (ilepton==2) {
-          gSystem->mkdir((path + "/muons/" + version + "/ttbar_sub/").c_str(), kTRUE);
-          if (c1) c1->SaveAs((path + "/muons/" + version + "/ttbar_sub/" + title + ".pdf").c_str());
+          gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/ttbar_sub/").c_str(), kTRUE);
+          if (c1) c1->SaveAs((path + "/muons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".pdf").c_str());
 	  if (doFit==0) {
-	    TFile f((path + "/muons/" + version + "/ttbar_sub/" + title + ".root").c_str(),"RECREATE");
+	    TFile f((path + "/muons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".root").c_str(),"RECREATE");
             h_data_fit_raw->Write(title.c_str());
             f.Close();
 	  }
-	  if (doFit) out.open((path + "/muons/" + version + "/ttbar_sub/" + title + ".dat").c_str());
+	  if (doFit) out.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".dat").c_str());
         }
 	if (doFit==1) {
 	  out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;

@@ -3,7 +3,26 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp6(string& title="", int plot=0, int isratio=1) {
+void DataMCComp6(int irun=0, string& title="", int plot=0, int isratio=1) {
+
+string subdir="0";
+string postfix="";
+if (irun==1) {             // irun==1 => JEC Up
+  string subdir="1";
+  string postfix="Up";
+}
+if (irun==2) {             // irun==2 => JEC Down
+  string subdir="2";
+  string postfix="Down";
+}
+if (irun==3) {             // irun==3 => PU Up
+  string subdir="3";
+  string postfix="Pup";
+}
+if (irun==4) {             // irun==4 => PU Down
+  string subdir="4";
+  string postfix="Pum";
+}
 
         string title_ee = title;
         string title_ee_b = title;
@@ -28,8 +47,8 @@ void DataMCComp6(string& title="", int plot=0, int isratio=1) {
         TH1F* h_data;
         TH1F* h_data_b;
 
-        TFile f_ee((path + "/electrons/" + version + "/unfolding/" + title_ee + "_unfolding.root").c_str());
-        TFile f_ee_b((path + "/electrons/" + version + "/unfolding/" + title_ee_b + "_unfolding.root").c_str());
+        TFile f_ee((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title_ee + "_unfolding.root").c_str());
+        TFile f_ee_b((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title_ee_b + "_unfolding.root").c_str());
         h_data_ee = (TH1F*)f_ee.Get(title_ee.c_str())->Clone();
         h_data_ee_b = (TH1F*)f_ee_b.Get(title_ee_b.c_str())->Clone();
         h_data_ee->SetDirectory(0);
@@ -37,8 +56,8 @@ void DataMCComp6(string& title="", int plot=0, int isratio=1) {
         f_ee.Close();
         f_ee_b.Close();
 
-        TFile f_mm((path + "/muons/" + version + "/unfolding/" + title_mm + "_unfolding.root").c_str());
-        TFile f_mm_b((path + "/muons/" + version + "/unfolding/" + title_mm_b + "_unfolding.root").c_str());
+        TFile f_mm((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title_mm + "_unfolding.root").c_str());
+        TFile f_mm_b((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title_mm_b + "_unfolding.root").c_str());
         h_data_mm = (TH1F*)f_mm.Get(title_mm.c_str())->Clone();
         h_data_mm_b = (TH1F*)f_mm_b.Get(title_mm_b.c_str())->Clone();
         h_data_mm->SetDirectory(0);
@@ -167,12 +186,12 @@ void DataMCComp6(string& title="", int plot=0, int isratio=1) {
         c1->cd();
 
         if (isratio==0) {
-          gSystem->mkdir((path + "/combined/" + version + "/xsecs/").c_str(), kTRUE);
-          c1->SaveAs((path + "/combined/" + version + "/xsecs/" + title + "_xsecs.pdf").c_str());
+          gSystem->mkdir((path + "/combined/" + version + "/" + subdir + "/xsecs/").c_str(), kTRUE);
+          c1->SaveAs((path + "/combined/" + version + "/" + subdir + "/xsecs/" + title + "_xsecs.pdf").c_str());
         }
         if (isratio==1) {
-          gSystem->mkdir((path + "/combined/" + version + "/ratios/").c_str(), kTRUE);
-          c1->SaveAs((path + "/combined/" + version + "/ratios/" + title + "_ratios.pdf").c_str());
+          gSystem->mkdir((path + "/combined/" + version + "/" + subdir + "/ratios/").c_str(), kTRUE);
+          c1->SaveAs((path + "/combined/" + version + "/" + subdir + "/ratios/" + title + "_ratios.pdf").c_str());
         }
 
 }

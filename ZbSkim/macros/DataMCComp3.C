@@ -3,7 +3,26 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp3(string& title="", int plot=0, int ilepton=1) {
+void DataMCComp3(int irun=0, string& title="", int plot=0, int ilepton=1) {
+
+string subdir="0";
+string postfix="";
+if (irun==1) {             // irun==1 => JEC Up
+  string subdir="1";
+  string postfix="Up";
+}
+if (irun==2) {             // irun==2 => JEC Down
+  string subdir="2";
+  string postfix="Down";
+}
+if (irun==3) {             // irun==3 => PU Up
+  string subdir="3";
+  string postfix="Pup";
+}
+if (irun==4) {             // irun==4 => PU Down
+  string subdir="4";
+  string postfix="Pum";
+}
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -32,12 +51,12 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	  if (itype==2) title_b = "b"+title.substr(1);
 	}
 
-	if (ilepton==1&&itype==0) mc1->cd("demoEle");
-	if (ilepton==2&&itype==0) mc1->cd("demoMuo");
+	if (ilepton==1&&itype==0) mc1->cd(("demoEle"+postfix).c_str());
+	if (ilepton==2&&itype==0) mc1->cd(("demoMuo"+postfix).c_str());
 	if (ilepton==1&&itype==1) mc1->cd("demoEleBtag");
 	if (ilepton==2&&itype==1) mc1->cd("demoMuoBtag");
-	if (ilepton==1&&itype==2) mc1->cd("demoEle");
-	if (ilepton==2&&itype==2) mc1->cd("demoMuo");
+	if (ilepton==1&&itype==2) mc1->cd(("demoEle"+postfix).c_str());
+	if (ilepton==2&&itype==2) mc1->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_reco = (TH1F*)gDirectory->Get(title_b.c_str());
 	if (ilepton==1&&itype==0) mc2->cd("demoEleGen");
 	if (ilepton==2&&itype==0) mc2->cd("demoMuoGen");
@@ -132,20 +151,20 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	if (plot) {
 	  ofstream out;
 	  if (ilepton==1) {
-	    gSystem->mkdir((path + "/electrons/" + version + "/efficiency/").c_str(), kTRUE);
-	    c2->SaveAs((path + "/electrons/" + version + "/efficiency/" + title + "_efficiency.pdf").c_str());
-	    TFile f((path + "/electrons/" + version + "/efficiency/" + title + "_efficiency.root").c_str(),"RECREATE");
+	    gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/efficiency/").c_str(), kTRUE);
+	    c2->SaveAs((path + "/electrons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.pdf").c_str());
+	    TFile f((path + "/electrons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
 	    f.Close();
-	    out.open((path + "/electrons/" + version + "/efficiency/" + title + "_efficiency.dat").c_str());
+	    out.open((path + "/electrons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.dat").c_str());
 	  }
 	  if (ilepton==2) {
-	    gSystem->mkdir((path + "/muons/" + version + "/efficiency/").c_str(), kTRUE);
-	    c2->SaveAs((path + "/muons/" + version + "/efficiency/" + title + "_efficiency.pdf").c_str());
-	    TFile f((path + "/muons/" + version + "/efficiency/" + title + "_efficiency.root").c_str(),"RECREATE");
+	    gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/efficiency/").c_str(), kTRUE);
+	    c2->SaveAs((path + "/muons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.pdf").c_str());
+	    TFile f((path + "/muons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
 	    f.Close();
-	    out.open((path + "/muons/" + version + "/efficiency/" + title + "_efficiency.dat").c_str());
+	    out.open((path + "/muons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.dat").c_str());
 	  }
 	  out << N << " " << errN << endl;
 	  out.close();
