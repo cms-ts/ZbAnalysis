@@ -34,6 +34,18 @@ if (irun==4) {             // irun==4 => PU Down
   string subdir="4";
   string postfix="Pum"; 
 }
+if (irun==5) {             // irun==5 => top bkg
+  string subdir="5";
+  string postfix="";  
+}
+if (irun==6) {             // irun==6 => b purity
+  string subdir="6";
+  string postfix="";   
+}
+if (irun==7) {             // irun==7 => unfolding
+  string subdir="7";
+  string postfix="";   
+}
 
 	if (gROOT->GetVersionInt() >= 53401) {
 	  gROOT->GetColor(kRed)->SetAlpha(0.5);
@@ -303,10 +315,12 @@ if (irun==4) {             // irun==4 => PU Down
 	h_mcg1->Scale(norm1_1);
 	h_mcg2->Scale(norm1_2);
 	h_mc2->Scale(norm2*c1_t);
-	for (int i=0; i<=h_mc2->GetNbinsX()+1; i++) {
-	  float e = h_mc2->GetBinError(i)**2;
-	  e = e + (h_mc2->GetBinContent(i)*(ec1_t/c1_t))**2;
-	  h_mc2->SetBinError(i, TMath::Sqrt(e));
+        if (irun != 5) {
+	  for (int i=0; i<=h_mc2->GetNbinsX()+1; i++) {
+	    float e = h_mc2->GetBinError(i)**2;
+	    e = e + (h_mc2->GetBinContent(i)*(ec1_t/c1_t))**2;
+	    h_mc2->SetBinError(i, TMath::Sqrt(e));
+	  }
 	}
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
@@ -322,10 +336,12 @@ if (irun==4) {             // irun==4 => PU Down
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
 	h_mc2_b->Scale(norm2*c2_t);
-	for (int i=0; i<=h_mc2_b->GetNbinsX()+1; i++) {
-	  float e = h_mc2_b->GetBinError(i)**2;
-	  e = e + (h_mc2_b->GetBinContent(i)*(ec2_t/c2_t))**2;
-	  h_mc2_b->SetBinError(i, TMath::Sqrt(e));
+	if (irun != 5) {
+	  for (int i=0; i<=h_mc2_b->GetNbinsX()+1; i++) {
+	    float e = h_mc2_b->GetBinError(i)**2;
+	    e = e + (h_mc2_b->GetBinContent(i)*(ec2_t/c2_t))**2;
+	    h_mc2_b->SetBinError(i, TMath::Sqrt(e));
+	  }
 	}
 	h_mc3_b->Scale(norm3);
 	h_mc4_b->Scale(norm4);
@@ -363,29 +379,34 @@ if (irun==4) {             // irun==4 => PU Down
 
 	if (h_mc1uds_b) {
 	  h_mc1uds_b->Scale(c_uds);
-	  for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
-	    float e = h_mc1uds_b->GetBinError(i)**2;
-	    e = e + (h_mc1uds_b->GetBinContent(i)*(ec_uds/c_uds))**2;
-	    h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
+	  if (irun != 6) {
+	    for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
+	      float e = h_mc1uds_b->GetBinError(i)**2;
+	      e = e + (h_mc1uds_b->GetBinContent(i)*(ec_uds/c_uds))**2;
+	      h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
+	    }
 	  }
 	}
 	if (h_mc1b_b) {
 	  h_mc1b_b->Scale(c_b);
-	  for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
-	    float e = h_mc1b_b->GetBinError(i)**2;
-	    e = e + (h_mc1b_b->GetBinContent(i)*(ec_b/c_b))**2;
-	    h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
+	  if (irun != 6) {
+	    for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
+	      float e = h_mc1b_b->GetBinError(i)**2;
+	      e = e + (h_mc1b_b->GetBinContent(i)*(ec_b/c_b))**2;
+	      h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
+	    }
 	  }
 	}
 	if (h_mc1c_b) {
 	  h_mc1c_b->Scale(c_c);
-	  for (int i=0; i<=h_mc1c_b->GetNbinsX()+1; i++) {
-	    float e = h_mc1c_b->GetBinError(i)**2;
-	    e = e + (h_mc1c_b->GetBinContent(i)*(ec_c/c_c))**2;
-	    h_mc1c_b->SetBinError(i, TMath::Sqrt(e));
+	  if (irun != 6) {
+	    for (int i=0; i<=h_mc1c_b->GetNbinsX()+1; i++) {
+	      float e = h_mc1c_b->GetBinError(i)**2;
+	      e = e + (h_mc1c_b->GetBinContent(i)*(ec_c/c_c))**2;
+	      h_mc1c_b->SetBinError(i, TMath::Sqrt(e));
+	    }
 	  }
-	}
-
+        }
 	if (unfold==0) {
 	  h_data_b->Add(h_mc1c_b, -1.);
 	  h_data_b->Add(h_mc1uds_b, -1.);
@@ -690,7 +711,7 @@ if (irun==4) {             // irun==4 => PU Down
 	pad2->Draw();
 	pad2->cd();
 
-	TH1F *h_M = h_data_b->Clone("h_M");
+	TH1F *h_M = h_data_b->Clone();
 	h_M->SetTitle("");
 	h_M->SetStats(0);
 	h_M->GetXaxis()->SetTitleOffset(0.9);
@@ -710,7 +731,7 @@ if (irun==4) {             // irun==4 => PU Down
 	h_M->SetMarkerStyle(24);
 	h_M->Draw("EPX0");
 	if (isratio==0) {
-	  TH1F *h_M2= h_data->Clone("h_M2");
+	  TH1F *h_M2= h_data->Clone();
 	  h_M2->GetXaxis()->SetTitleOffset(0.9);
 	  h_M2->GetXaxis()->SetTitleSize(0.14);
 	  h_M2->GetXaxis()->SetLabelFont(42);
@@ -749,7 +770,7 @@ if (irun==4) {             // irun==4 => PU Down
 	pad3->Draw();
 	pad3->cd();
 
-	TH1F *h_S = h_data_b->Clone("h_S");
+	TH1F *h_S = h_data_b->Clone();
 	h_S->SetTitle("");
 	h_S->SetStats(0);
 	h_S->GetXaxis()->SetTitleOffset(0.9);
@@ -769,7 +790,7 @@ if (irun==4) {             // irun==4 => PU Down
 	h_S->SetMarkerStyle(24);
 	h_S->Draw("EPX0");
 	if (isratio==0) {
-	  TH1F *h_S2= h_data->Clone("h_S2");
+	  TH1F *h_S2= h_data->Clone();
 	  h_S2->GetXaxis()->SetTitleOffset(0.9);
 	  h_S2->GetXaxis()->SetTitleSize(0.14);
 	  h_S2->GetXaxis()->SetLabelFont(42);
@@ -808,7 +829,7 @@ if (irun==4) {             // irun==4 => PU Down
 	pad4->Draw();
 	pad4->cd();
 
-	TH1F *h_P = h_data_b->Clone("h_P");
+	TH1F *h_P = h_data_b->Clone();
 	h_P->SetTitle("");
 	h_P->SetStats(0);
 	h_P->GetXaxis()->SetTitleOffset(0.9);
@@ -828,7 +849,7 @@ if (irun==4) {             // irun==4 => PU Down
 	h_P->SetMarkerStyle(24);
 	h_P->Draw("EPX0");
 	if (isratio==0) {
-	  TH1F *h_P2= h_data->Clone("h_P2");
+	  TH1F *h_P2= h_data->Clone();
 	  h_P2->GetXaxis()->SetTitleOffset(0.9);
 	  h_P2->GetXaxis()->SetTitleSize(0.14);
 	  h_P2->GetXaxis()->SetLabelFont(42);
