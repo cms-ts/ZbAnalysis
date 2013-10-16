@@ -2,6 +2,7 @@
 #include "LumiInfo_v11.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/GDR/data/";
 
 TH1F* h_data = 0;
 TH1F* h_data_fit = 0;
@@ -54,6 +55,18 @@ if (irun==6) {             // irun==6 => b purity
 if (irun==7) {             // irun==7 => unfolding
   string subdir="7";
   string postfix="";   
+}
+if (irun==8) {             // irun==8 => unfolding with Sherpa
+  string subdir="8";
+  string postfix="";
+}
+if (irun==9) {             // irun==9 => unfolding with Powheg
+  string subdir="9";
+  string postfix="";
+}
+if (irun==10) {            // irun==10 => bkg
+  string subdir="10";
+  string postfix="";
 }
 
       /* top background */
@@ -207,7 +220,7 @@ if (irun==7) {             // irun==7 => unfolding
       h_mc7_fit->Sumw2();
 
       h_mc1->Scale(norm1);
-      h_mc2->Scale(norm2*c1_t);
+      h_mc2->Scale(norm2);
       h_mc3->Scale(norm3);
       h_mc4->Scale(norm4);
 //    h_mc5->Scale(norm5);
@@ -215,12 +228,15 @@ if (irun==7) {             // irun==7 => unfolding
       h_mc7->Scale(norm7);
       
       h_mc1_fit->Scale(norm1_fit);
-      h_mc2_fit->Scale(norm2_fit*c1_t);
+      h_mc2_fit->Scale(norm2_fit);
       h_mc3_fit->Scale(norm3_fit);
       h_mc4_fit->Scale(norm4_fit);
 //    h_mc5_fit->Scale(norm5_fit);
       h_mc6_fit->Scale(norm6_fit);
       h_mc7_fit->Scale(norm7_fit);
+
+      h_mc2->Scale(c1_t);
+      h_mc2_fit->Scale(c1_t);
 
       h_data->Add(h_mc7, -1.);
       h_data->Add(h_mc6, -1.);
@@ -352,6 +368,22 @@ if (irun==7) {             // irun==7 => unfolding
         OLine->Draw();
 
         c1->cd();
+
+	TLegend *leg;
+	leg = new TLegend(0.5, 0.8, 0.65, 0.9);
+
+	leg->SetBorderSize(0);
+	leg->SetEntrySeparation(0.01);
+	leg->SetFillColor(0);
+	leg->SetFillStyle(0);
+
+	if (ilepton==1) leg->AddEntry(h_data,"Z(#rightarrow ee)+jets","p");
+	if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
+
+	leg->AddEntry(h_data_fit,"Z(#rightarrow e#mu)+jets","l");
+	leg->AddEntry(h_mc2,"t#bar{t}","l");
+
+	leg->Draw();
 
         TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
         latexLabel->Draw("same");

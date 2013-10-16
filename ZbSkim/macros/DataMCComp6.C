@@ -35,6 +35,18 @@ if (irun==7) {             // irun==7 => unfolding
   string subdir="7";
   string postfix="";   
 }
+if (irun==8) {             // irun==8 => unfolding with Sherpa
+  string subdir="8";
+  string postfix="";
+}
+if (irun==9) {             // irun==9 => unfolding with Powheg
+  string subdir="9";
+  string postfix="";
+}
+if (irun==10) {            // irun==10 => bkg
+  string subdir="10";
+  string postfix="";
+}
 
         string title_ee = title;
         string title_ee_b = title;

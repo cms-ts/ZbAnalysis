@@ -106,7 +106,7 @@ string subdir="0";
 	h_data->SetStats(0);
 	h_data_b->SetStats(0);
 
-	const int NMAX=8;
+	const int NMAX=11;
 	TH1F* h_data_scan[NMAX];
 	TH1F* h_data_b_scan[NMAX];
 	for (int i=0;i<NMAX;i++) {
@@ -235,42 +235,68 @@ string subdir="0";
 	  sys_b_pu->SetBinError(i, val);
 	}
 
+	TH1F* sys_bkg = h_data_scan[0]->Clone();
+	TH1F* sys_b_bkg = h_data_b_scan[0]->Clone();
+	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
+	  float val;
+	  val = TMath::Abs(h_data_scan[0]->GetBinContent(i)-h_data_scan[10]->GetBinContent(i));
+	  sys_bkg->SetBinError(i, val);
+	}
+	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
+	  float val;
+	  val = TMath::Abs(h_data_b_scan[0]->GetBinContent(i)-h_data_b_scan[10]->GetBinContent(i));
+	  sys_b_bkg->SetBinError(i, val);
+	}
+
 	TH1F* sys_top = h_data_scan[0]->Clone();
 	TH1F* sys_b_top = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Sqrt(TMath::Max(0.,h_data_scan[0]->GetBinError(i)**2-h_data_scan[5]->GetBinError(i)**2));
+	  val = TMath::Abs(h_data_scan[0]->GetBinContent(i)-h_data_scan[5]->GetBinContent(i));
 	  sys_top->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[0]->GetBinError(i)**2-h_data_b_scan[5]->GetBinError(i)**2));
+	  val = TMath::Abs(h_data_b_scan[0]->GetBinContent(i)-h_data_b_scan[5]->GetBinContent(i));
 	  sys_b_top->SetBinError(i, val);
 	}
 
-	TH1F* sys_btag = h_data_scan[0]->Clone();
-	TH1F* sys_b_btag = h_data_b_scan[0]->Clone();
+	TH1F* sys_bpur = h_data_scan[0]->Clone();
+	TH1F* sys_b_bpur = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Sqrt(TMath::Max(0.,h_data_scan[0]->GetBinError(i)**2-h_data_scan[6]->GetBinError(i)**2));
-	  sys_btag->SetBinError(i, val);
+	  val = TMath::Abs(h_data_scan[0]->GetBinContent(i)-h_data_scan[6]->GetBinContent(i));
+	  sys_bpur->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[0]->GetBinError(i)**2-h_data_b_scan[6]->GetBinError(i)**2));
-	  sys_b_btag->SetBinError(i, val);
+	  val = TMath::Abs(h_data_b_scan[0]->GetBinContent(i)-h_data_b_scan[6]->GetBinContent(i));
+	  sys_b_bpur->SetBinError(i, val);
+	}
+
+	TH1F* stat_unfold = h_data_scan[0]->Clone();
+	TH1F* stat_b_unfold = h_data_b_scan[0]->Clone();
+	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
+	  float val;
+	  val = TMath::Sqrt(TMath::Max(0.,h_data_scan[7]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2));
+	  stat_unfold->SetBinError(i, val);
+	}
+	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
+	  float val;
+	  val = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[7]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2));
+	  stat_b_unfold->SetBinError(i, val);
 	}
 
 	TH1F* sys_unfold = h_data_scan[0]->Clone();
 	TH1F* sys_b_unfold = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Sqrt(TMath::Max(0.,h_data_scan[0]->GetBinError(i)**2-h_data_scan[7]->GetBinError(i)**2));
+	  val = TMath::Abs(h_data_scan[0]->GetBinContent(i)-h_data_scan[9]->GetBinContent(i));
 	  sys_unfold->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[0]->GetBinError(i)**2-h_data_b_scan[7]->GetBinError(i)**2));
+	  val = TMath::Abs(h_data_b_scan[0]->GetBinContent(i)-h_data_b_scan[9]->GetBinContent(i));
 	  sys_b_unfold->SetBinError(i, val);
 	}
 
@@ -282,73 +308,87 @@ string subdir="0";
 	TH1F* h_data_b_tot = h_data_b_scan[0]->Clone();
 
 	cout << h_data->GetName() << endl;
-	cout << std::setw(23) << "stat";
-	cout << std::setw(11) << "jec sys";
-	cout << std::setw(11) << "pu sys";
-	cout << std::setw(11) << "ttbar sys";
-	cout << std::setw(11) << "b-pur sys";
-	cout << std::setw(11) << "unfold sys";
-	cout << std::setw(11) << "tot stat";
-	cout << std::setw(11) << "tot sys";
-	cout << std::setw(11) << "tot error";
+	cout << std::setw(24) << "stat";
+	cout << std::setw(12) << "jec sys";
+	cout << std::setw(12) << "pu sys";
+	cout << std::setw(12) << "bkg sys";
+	cout << std::setw(12) << "ttbar sys";
+	cout << std::setw(12) << "bpur sys";
+	cout << std::setw(12) << "unfold stat";
+	cout << std::setw(12) << "unfold sys";
+	cout << std::setw(12) << "tot stat";
+	cout << std::setw(12) << "tot sys";
+	cout << std::setw(12) << "tot error";
+	cout << std::setw(8) << "%";
 	cout << endl;
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
 	  float val;
 	  val = h_data_stat->GetBinError(i);
-	  val = TMath::Sqrt(TMath::Max(0.,val**2-sys_top->GetBinError(i)**2-sys_btag->GetBinError(i)**2-sys_unfold->GetBinError(i)**2));
 	  h_data_stat->SetBinError(i, val);
-	  val = TMath::Sqrt(sys_jec->GetBinError(i)**2+sys_pu->GetBinError(i)**2+sys_top->GetBinError(i)**2+sys_btag->GetBinError(i)**2+sys_unfold->GetBinError(i)**2);
+	  val = TMath::Sqrt(sys_jec->GetBinError(i)**2+sys_pu->GetBinError(i)**2+sys_bkg->GetBinError(i)**2+sys_top->GetBinError(i)**2+sys_bpur->GetBinError(i)**2+stat_unfold->GetBinError(i)**2+sys_b_unfold->GetBinError(i)**2);
 	  h_data_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_stat->GetBinError(i, val)**2+h_data_syst->GetBinError(i, val)**2);
 	  h_data_tot->SetBinError(i, val);
 	  printf("%02d",i);
 	  cout << " ";
-	  cout << std::fixed << std::setprecision(5) << std::setw(9);
+	  cout << std::fixed << std::setprecision(6) << std::setw(9);
 	  cout << h_data_stat->GetBinContent(i) << " +- " << h_data_stat->GetBinError(i);
 	  cout << " +- " << sys_jec->GetBinError(i);
 	  cout << " +- " << sys_pu->GetBinError(i);
+	  cout << " +- " << sys_bkg->GetBinError(i);
 	  cout << " +- " << sys_top->GetBinError(i);
-	  cout << " +- " << sys_btag->GetBinError(i);
+	  cout << " +- " << sys_bpur->GetBinError(i);
+	  cout << " +- " << stat_unfold->GetBinError(i);
 	  cout << " +- " << sys_unfold->GetBinError(i);
 	  cout << " => ";
 	  cout << h_data_stat->GetBinError(i) << " +- " << h_data_syst->GetBinError(i);
 	  cout << " => ";
 	  cout << h_data_tot->GetBinError(i);
+	  cout << " => ";
+	  cout << std::setprecision(1) << std::setw(4);
+	  cout << 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i));
 	  cout << endl;
 	}
 	cout << h_data_b->GetName() << endl;
-	cout << std::setw(23) << "stat";
-	cout << std::setw(11) << "jec sys";
-	cout << std::setw(11) << "pu sys";
-	cout << std::setw(11) << "ttbar sys";
-	cout << std::setw(11) << "b-pur sys";
-	cout << std::setw(11) << "unfold sys";
-	cout << std::setw(11) << "tot stat";
-	cout << std::setw(11) << "tot sys";
-	cout << std::setw(11) << "tot error";
+	cout << std::setw(24) << "stat";
+	cout << std::setw(12) << "jec sys";
+	cout << std::setw(12) << "pu sys";
+	cout << std::setw(12) << "bkg sys";
+	cout << std::setw(12) << "ttbar sys";
+	cout << std::setw(12) << "bpur sys";
+	cout << std::setw(12) << "unfold stat";
+	cout << std::setw(12) << "unfold sys";
+	cout << std::setw(12) << "tot stat";
+	cout << std::setw(12) << "tot sys";
+	cout << std::setw(12) << "tot error";
+	cout << std::setw(8) << "%";
 	cout << endl;
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
 	  float val;
 	  val = h_data_b_stat->GetBinError(i);
-	  val = TMath::Sqrt(TMath::Max(0.,val**2-sys_b_top->GetBinError(i)**2-sys_b_btag->GetBinError(i)**2-sys_b_unfold->GetBinError(i)**2));
 	  h_data_b_stat->SetBinError(i, val);
-	  val = TMath::Sqrt(sys_b_jec->GetBinError(i)**2+sys_b_pu->GetBinError(i)**2+sys_b_top->GetBinError(i)**2+sys_b_btag->GetBinError(i)**2+sys_b_unfold->GetBinError(i)**2);
+	  val = TMath::Sqrt(sys_b_jec->GetBinError(i)**2+sys_b_pu->GetBinError(i)**2+sys_b_bkg->GetBinError(i)**2+sys_b_top->GetBinError(i)**2+sys_b_bpur->GetBinError(i)**2+stat_b_unfold->GetBinError(i)**2+sys_b_unfold->GetBinError(i)**2);
 	  h_data_b_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_b_stat->GetBinError(i, val)**2+h_data_b_syst->GetBinError(i, val)**2);
 	  h_data_b_tot->SetBinError(i, val);
 	  printf("%02d",i);
 	  cout << " ";
-	  cout << std::fixed << std::setprecision(5) << std::setw(9);
+	  cout << std::fixed << std::setprecision(6) << std::setw(9);
 	  cout << h_data_b_stat->GetBinContent(i) << " +- " << h_data_b_stat->GetBinError(i);
 	  cout << " +- " << sys_b_jec->GetBinError(i);
 	  cout << " +- " << sys_b_pu->GetBinError(i);
+	  cout << " +- " << sys_b_bkg->GetBinError(i);
 	  cout << " +- " << sys_b_top->GetBinError(i);
-	  cout << " +- " << sys_b_btag->GetBinError(i);
+	  cout << " +- " << sys_b_bpur->GetBinError(i);
+	  cout << " +- " << stat_b_unfold->GetBinError(i);
 	  cout << " +- " << sys_b_unfold->GetBinError(i);
 	  cout << " => ";
 	  cout << h_data_b_stat->GetBinError(i) << " +- " << h_data_b_syst->GetBinError(i);
 	  cout << " => ";
 	  cout << h_data_b_tot->GetBinError(i);
+	  cout << " => ";
+	  cout << std::setprecision(1) << std::setw(4);
+	  cout << 100.*(h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_stat->GetBinContent(i));
 	  cout << endl;
 	}
 

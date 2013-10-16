@@ -46,6 +46,18 @@ if (irun==7) {             // irun==7 => unfolding
   string subdir="7";
   string postfix="";   
 }
+if (irun==8) {             // irun==8 => unfolding with Sherpa
+  string subdir="8";
+  string postfix="";
+}
+if (irun==9) {             // irun==9 => unfolding with Powheg
+  string subdir="9";
+  string postfix="";
+}
+if (irun==10) {            // irun==10 => bkg
+  string subdir="10";
+  string postfix="";
+}
 
 	if (gROOT->GetVersionInt() >= 53401) {
 	  gROOT->GetColor(kRed)->SetAlpha(0.5);
@@ -143,6 +155,18 @@ if (irun==7) {             // irun==7 => unfolding
 	double norm6 = ((Lumi2012 * Xsec_ww) / Ngen_ww);
 	double norm7 = ((Lumi2012 * Xsec_wj) / Ngen_wj);
 
+	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
+	double enorm1_1 = ((Lumi2012 * eXsec_dy_1) / Ngen_dy_1);
+	double enorm1_2;
+	if (ilepton==1) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_ee);
+	if (ilepton==2) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_mm);
+	double enorm2 = ((Lumi2012 * eXsec_tt) / Ngen_tt);
+	double enorm3 = ((Lumi2012 * eXsec_zz) / Ngen_zz);
+	double enorm4 = ((Lumi2012 * eXsec_wz) / Ngen_wz);
+	double enorm5 = ((Lumi2012 * eXsec_qcd) / Ngen_qcd);
+	double enorm6 = ((Lumi2012 * eXsec_ww) / Ngen_ww);
+	double enorm7 = ((Lumi2012 * eXsec_wj) / Ngen_wj);
+
 	if (title.empty()) title = "w_jetmultiplicity";
 
 	if (ilepton==1) {
@@ -215,6 +239,7 @@ if (irun==7) {             // irun==7 => unfolding
 	if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
+	TH1F* h_mc1t = (TH1F*)gDirectory->Get(("t"+title.substr(1)).c_str());
 	TH1F* h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 	TH1F* h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
 	TH1F* h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
@@ -286,6 +311,7 @@ if (irun==7) {             // irun==7 => unfolding
 	}
 
 	h_mc1->Sumw2();
+	if (h_mc1t) h_mc1t->Sumw2();
 	h_mcg->Sumw2();
 	h_mcg1->Sumw2();
 	h_mcg2->Sumw2();
@@ -310,18 +336,22 @@ if (irun==7) {             // irun==7 => unfolding
 	h_mc6_b->Sumw2();
 	h_mc7_b->Sumw2();
 
+	if (irun == 10) {
+	  norm1 = norm1 + enorm1;
+	  norm2 = norm2 + enorm2;
+	  norm3 = norm3 + enorm3;
+	  norm4 = norm4 + enorm4;
+	  norm5 = norm5 + enorm5;
+	  norm6 = norm6 + enorm6;
+	  norm7 = norm7 + enorm7;
+	}
+
 	h_mc1->Scale(norm1);
+	if (h_mc1t) h_mc1t->Scale(norm1);
 	h_mcg->Scale(norm1);
 	h_mcg1->Scale(norm1_1);
 	h_mcg2->Scale(norm1_2);
-	h_mc2->Scale(norm2*c1_t);
-        if (irun != 5) {
-	  for (int i=0; i<=h_mc2->GetNbinsX()+1; i++) {
-	    float e = h_mc2->GetBinError(i)**2;
-	    e = e + (h_mc2->GetBinContent(i)*(ec1_t/c1_t))**2;
-	    h_mc2->SetBinError(i, TMath::Sqrt(e));
-	  }
-	}
+	h_mc2->Scale(norm2);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);
@@ -335,19 +365,24 @@ if (irun==7) {             // irun==7 => unfolding
 	h_mcg_b->Scale(norm1);
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
-	h_mc2_b->Scale(norm2*c2_t);
-	if (irun != 5) {
-	  for (int i=0; i<=h_mc2_b->GetNbinsX()+1; i++) {
-	    float e = h_mc2_b->GetBinError(i)**2;
-	    e = e + (h_mc2_b->GetBinContent(i)*(ec2_t/c2_t))**2;
-	    h_mc2_b->SetBinError(i, TMath::Sqrt(e));
-	  }
-	}
+	h_mc2_b->Scale(norm2);
 	h_mc3_b->Scale(norm3);
 	h_mc4_b->Scale(norm4);
 //	h_mc5_b->Scale(norm5);
 	h_mc6_b->Scale(norm6);
 	h_mc7_b->Scale(norm7);
+
+	if (useFitResults) {
+	  h_mc2->Scale(1./norm2);
+	  h_mc2_b->Scale(1./norm2);
+	  if (irun == 10) norm2 = norm2 - enorm2;
+	  h_mc2->Scale(norm2*c1_t);
+	  h_mc2_b->Scale(norm2*c2_t);
+	  if (irun == 5) {
+	    h_mc2->Scale((c1_t+ec1_t)/c1_t);
+	    h_mc2_b->Scale((c2_t+ec2_t)/c2_t);
+	  }
+	}
 
 	if (unfold==0) {
 	  h_data->Add(h_mc7, -1.);
@@ -356,6 +391,7 @@ if (irun==7) {             // irun==7 => unfolding
 	  h_data->Add(h_mc4, -1.);
 	  h_data->Add(h_mc3, -1.);
 	  h_data->Add(h_mc2, -1.);
+	  h_data->Add(h_mc1t, -1.);
 
 	  h_data_b->Add(h_mc7_b, -1.);
 	  h_data_b->Add(h_mc6_b, -1.);
@@ -363,6 +399,7 @@ if (irun==7) {             // irun==7 => unfolding
 	  h_data_b->Add(h_mc4_b, -1.);
 	  h_data_b->Add(h_mc3_b, -1.);
 	  h_data_b->Add(h_mc2_b, -1.);
+	  h_data_b->Add(h_mc1t_b, -1.);
 	}
 
 	TH1F *h_mc1uds_b = h_mc1_b->Clone("h_mc1uds_b");
@@ -379,33 +416,15 @@ if (irun==7) {             // irun==7 => unfolding
 
 	if (h_mc1uds_b) {
 	  h_mc1uds_b->Scale(c_uds);
-	  if (irun != 6) {
-	    for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
-	      float e = h_mc1uds_b->GetBinError(i)**2;
-	      e = e + (h_mc1uds_b->GetBinContent(i)*(ec_uds/c_uds))**2;
-	      h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
-	    }
-	  }
+	  if (irun == 6) h_mc1uds_b->Scale((c_uds+ec_uds)/c_uds);
 	}
 	if (h_mc1b_b) {
 	  h_mc1b_b->Scale(c_b);
-	  if (irun != 6) {
-	    for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
-	      float e = h_mc1b_b->GetBinError(i)**2;
-	      e = e + (h_mc1b_b->GetBinContent(i)*(ec_b/c_b))**2;
-	      h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
-	    }
-	  }
+	  if (irun == 6) h_mc1b_b->Scale((c_b+ec_b)/c_b);
 	}
 	if (h_mc1c_b) {
 	  h_mc1c_b->Scale(c_c);
-	  if (irun != 6) {
-	    for (int i=0; i<=h_mc1c_b->GetNbinsX()+1; i++) {
-	      float e = h_mc1c_b->GetBinError(i)**2;
-	      e = e + (h_mc1c_b->GetBinContent(i)*(ec_c/c_c))**2;
-	      h_mc1c_b->SetBinError(i, TMath::Sqrt(e));
-	    }
-	  }
+	  if (irun == 6) h_mc1c_b->Scale((c_c+ec_c)/c_c);
         }
 	if (unfold==0) {
 	  h_data_b->Add(h_mc1c_b, -1.);

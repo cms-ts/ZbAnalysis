@@ -68,7 +68,18 @@ if (irun==7) {             // irun==7 => unfolding
   string subdir="7";
   string postfix="";  
 }
-     
+if (irun==8) {             // irun==8 => unfolding with Sherpa
+  string subdir="8";
+  string postfix="";
+}
+if (irun==9) {             // irun==9 => unfolding with Powheg
+  string subdir="9";
+  string postfix="";
+}
+if (irun==10) {            // irun==10 => bkg
+  string subdir="10";
+  string postfix="";
+}
 
 	/* top background */
 
@@ -273,30 +284,38 @@ if (irun==7) {             // irun==7 => unfolding
 	h_mc7 -> SetFillColor(kGray);
 	//h_mc7 -> SetFillStyle(3004);
 
+	if (irun == 10) {
+	  norm1 = norm1 + enorm1;
+	  norm2 = norm2 + enorm2;
+	  norm3 = norm3 + enorm3;
+	  norm4 = norm4 + enorm4;
+	  norm5 = norm5 + enorm5;
+	  norm6 = norm6 + enorm6;
+	  norm7 = norm7 + enorm7;
+	}
+
 	h_mc1->Scale(norm1);
 	if (h_mc1b) h_mc1b->Scale(norm1);
 	if (h_mc1c) h_mc1c->Scale(norm1);
 	if (h_mc1t) h_mc1t->Scale(norm1);
-	if (title.find("_b")==string::npos) {
-	  h_mc2->Scale(norm2*c1_t);
-	  for (int i=0; i<=h_mc2->GetNbinsX()+1; i++) {
-	    float e = h_mc2->GetBinError(i)**2;
-	    e = e + (h_mc2->GetBinContent(i)*(ec1_t/c1_t))**2;
-	    h_mc2->SetBinError(i, TMath::Sqrt(e));
-	  }
-	} else {
-	  h_mc2->Scale(norm2*c2_t);
-	  for (int i=0; i<=h_mc2->GetNbinsX()+1; i++) {
-	    float e = h_mc2->GetBinError(i)**2;
-	    e = e + (h_mc2->GetBinContent(i)*(ec2_t/c2_t))**2;
-	    h_mc2->SetBinError(i, TMath::Sqrt(e));
-	  }
-	}
+	h_mc2->Scale(norm2);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);
 	h_mc6->Scale(norm6);
 	h_mc7->Scale(norm7);
+
+	if (useFitResults) {
+	  h_mc2->Scale(1./norm2);
+	  if (irun == 10) norm2 = norm2 - enorm2;
+	  if (title.find("_b")==string::npos) {
+	    h_mc2->Scale(norm2*c1_t);
+	    if (irun == 5) h_mc2->Scale((c1_t+ec1_t)/c1_t);
+	  } else {
+	    h_mc2->Scale(norm2*c2_t);
+	    if (irun == 5) h_mc2->Scale((c2_t+ec2_t)/c2_t);
+	  }
+	}
 
 	if (doBkg) {
 	  h_data->Add(h_mc7, -1.);

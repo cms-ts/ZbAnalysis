@@ -56,6 +56,21 @@ if (irun==7) {             // irun==7 => unfolding
   string subdir="7";
   string postfix="";   
 }
+if (irun==8) {             // irun==8 => unfolding with Sherpa
+  string subdir="8";
+  string postfix="";   
+}
+if (irun==9) {             // irun==9 => unfolding with Powheg
+  string subdir="9";
+  string postfix="";   
+}
+if (irun==10) {            // irun==10 => bkg
+  string subdir="10";
+  string postfix="";
+}
+
+        if (irun==8) imode = 4;
+        if (irun==9) imode = 5;
 
 	//if (!verbose) gErrorIgnoreLevel = kError;
 
@@ -69,7 +84,7 @@ if (irun==7) {             // irun==7 => unfolding
 	double ec_c=0.0;
 	double c_uds=1.0;
 	double ec_uds=0.0;
-
+       
 	ifstream in3;
 	if (imode>=3) {
 	  if (ilepton==1) {
@@ -263,8 +278,8 @@ if (irun==7) {             // irun==7 => unfolding
 	unfold_mc->SetNToys(ntoys);
 	unfold_data->SetNToys(ntoys);
 
-	int dosys = 1; // default 0 -> 0=stat, 1=stat+sys, 2=sys only
-	if (irun == 7) dosys = 0;
+	int dosys = 0; // default 0 -> 0=stat, 1=stat+sys, 2=sys only
+	if (irun == 7) dosys = 1;
 	unfold_mc->IncludeSystematics(dosys);
 	unfold_data->IncludeSystematics(dosys);
 
@@ -455,7 +470,7 @@ if (irun==7) {             // irun==7 => unfolding
         h_ratio->GetXaxis()->SetLabelFont(42);
         h_ratio->GetXaxis()->SetLabelSize(0.08);
         h_ratio->GetXaxis()->SetTitleFont(42);
-        h_ratio->GetYaxis()->SetTitle("reco / truth");
+        h_ratio->GetYaxis()->SetTitle("unfold / truth");
         h_ratio->GetYaxis()->SetNdivisions(505);
         h_ratio->GetYaxis()->SetTitleSize(0.09);
         h_ratio->GetYaxis()->SetLabelSize(0.08);
