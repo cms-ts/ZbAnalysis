@@ -2,7 +2,6 @@
 #include "LumiInfo_v11.h"
 
 #include "fixrange.C"
-
 #include <iomanip>
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
@@ -322,14 +321,14 @@ string subdir="0";
 	cout << std::setw(8) << "%";
 	cout << endl;
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
-	  float val = 0;
+	  float val = 0.0;
 	  val = TMath::Sqrt(val**2+sys_jec->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_pu->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_bkg->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_top->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_bpur->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+stat_unfold->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_b_unfold->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+sys_unfold->GetBinError(i)**2);
 	  h_data_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_stat->GetBinError(i, val)**2+h_data_syst->GetBinError(i, val)**2);
 	  h_data_tot->SetBinError(i, val);
@@ -368,7 +367,7 @@ string subdir="0";
 	cout << std::setw(8) << "%";
 	cout << endl;
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
-	  float val = 0;
+	  float val = 0.0;
 	  val = TMath::Sqrt(val**2+sys_b_jec->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_pu->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_bkg->GetBinError(i)**2);
