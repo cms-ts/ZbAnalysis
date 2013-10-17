@@ -211,26 +211,30 @@ string subdir="0";
 	TH1F* sys_jec = h_data_scan[0]->Clone();
 	TH1F* sys_b_jec = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
-	  float val;
-	  val = TMath::Abs(h_data_scan[2]->GetBinContent(i)-h_data_scan[1]->GetBinContent(i))/2.;
+	  float val = 0.0;
+	  val = TMath::Max(val,TMath::Abs(h_data_scan[2]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)))
+	  val = TMath::Max(val,TMath::Abs(h_data_scan[1]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  sys_jec->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
-	  float val;
-	  val = TMath::Abs(h_data_b_scan[2]->GetBinContent(i)-h_data_b_scan[1]->GetBinContent(i))/2.;
+	  float val = 0.0;
+	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[2]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
+	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[1]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  sys_b_jec->SetBinError(i, val);
 	}
 
 	TH1F* sys_pu = h_data_scan[0]->Clone();
 	TH1F* sys_b_pu = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
-	  float val;
-	  val = TMath::Abs(h_data_scan[4]->GetBinContent(i)-h_data_scan[3]->GetBinContent(i))/2.;
+	  float val = 0.0;
+	  val = TMath::Max(val,TMath::Abs(h_data_scan[3]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
+	  val = TMath::Max(val,TMath::Abs(h_data_scan[4]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  sys_pu->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
-	  float val;
-	  val = TMath::Abs(h_data_b_scan[4]->GetBinContent(i)-h_data_b_scan[3]->GetBinContent(i))/2.;
+	  float val = 0.0;
+	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[3]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
+	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[4]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  sys_b_pu->SetBinError(i, val);
 	}
 
@@ -238,12 +242,12 @@ string subdir="0";
 	TH1F* sys_b_bkg = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Abs(h_data_scan[0]->GetBinContent(i)-h_data_scan[10]->GetBinContent(i));
+	  val = TMath::Abs(h_data_scan[10]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i));
 	  sys_bkg->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Abs(h_data_b_scan[0]->GetBinContent(i)-h_data_b_scan[10]->GetBinContent(i));
+	  val = TMath::Abs(h_data_b_scan[10]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i));
 	  sys_b_bkg->SetBinError(i, val);
 	}
 
@@ -251,12 +255,12 @@ string subdir="0";
 	TH1F* sys_b_top = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Abs(h_data_scan[0]->GetBinContent(i)-h_data_scan[5]->GetBinContent(i));
+	  val = TMath::Abs(h_data_scan[5]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i));
 	  sys_top->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Abs(h_data_b_scan[0]->GetBinContent(i)-h_data_b_scan[5]->GetBinContent(i));
+	  val = TMath::Abs(h_data_b_scan[5]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i));
 	  sys_b_top->SetBinError(i, val);
 	}
 
@@ -264,12 +268,12 @@ string subdir="0";
 	TH1F* sys_b_bpur = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Abs(h_data_scan[0]->GetBinContent(i)-h_data_scan[6]->GetBinContent(i));
+	  val = TMath::Abs(h_data_scan[6]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i));
 	  sys_bpur->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Abs(h_data_b_scan[0]->GetBinContent(i)-h_data_b_scan[6]->GetBinContent(i));
+	  val = TMath::Abs(h_data_b_scan[6]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i));
 	  sys_b_bpur->SetBinError(i, val);
 	}
 
@@ -290,12 +294,12 @@ string subdir="0";
 	TH1F* sys_b_unfold = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Abs(h_data_scan[0]->GetBinContent(i)-h_data_scan[9]->GetBinContent(i));
+	  val = TMath::Abs(h_data_scan[9]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i));
 	  sys_unfold->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
 	  float val;
-	  val = TMath::Abs(h_data_b_scan[0]->GetBinContent(i)-h_data_b_scan[9]->GetBinContent(i));
+	  val = TMath::Abs(h_data_b_scan[9]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i));
 	  sys_b_unfold->SetBinError(i, val);
 	}
 
