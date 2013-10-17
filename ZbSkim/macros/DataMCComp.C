@@ -159,12 +159,10 @@ if (irun==10) {            // irun==10 => bkg
 	  if (title.find("ee")!=string::npos) return;
 	}
 
-	if (ilepton==1)
-	  TFile *data = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
-	if (ilepton==2)
-	  TFile *data = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
-	if (ilepton==3)
-	  TFile *data = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
+	TFile *data;
+	if (ilepton==1) data = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
+	if (ilepton==2) data = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
+	if (ilepton==3) data = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
 
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
