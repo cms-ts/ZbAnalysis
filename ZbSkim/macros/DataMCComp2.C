@@ -60,7 +60,8 @@ if (irun==10) {            // irun==10 => bkg
 }
 
 	if (gROOT->GetVersionInt() >= 53401) {
-	  gROOT->GetColor(kRed)->SetAlpha(0.5);
+	  //gROOT->GetColor(kRed)->SetAlpha(0.5);
+	  gROOT->GetColor(kRed)->SetAlpha(0.0);
 	  gROOT->GetColor(kGreen+2)->SetAlpha(0.5);
 	  gROOT->GetColor(kMagenta-6)->SetAlpha(0.5);
 	  gROOT->GetColor(kBlue-4)->SetAlpha(0.5);
@@ -686,14 +687,14 @@ if (irun==10) {            // irun==10 => bkg
 	    leg->AddEntry(h_data,"Z(#rightarrow ee) DATA","p");
 	    leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
 	    leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
-	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph","l");
+	    //leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph","l");
 	    leg->AddEntry(h_mcg1,"Z(#rightarrow ee) Sherpa","l");
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow ee) Powheg","l");
 	  }
 	  if (ilepton==2){
 	    leg->AddEntry(h_data,"Z(#rightarrow #mu#mu) DATA","p");
 	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu)+b DATA","p");
-	    leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
+	    //leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph","l");
 	    leg->AddEntry(h_mcg1,"Z(#rightarrow #mu#mu) Sherpa","l");
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow #mu#mu) Powheg","l");
@@ -703,14 +704,14 @@ if (irun==10) {            // irun==10 => bkg
 	if (isratio==1) {
 	  if (ilepton==1) {
 	    leg->AddEntry(h_data_b,"Z(#rightarrow ee) DATA","p");
-	    leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
+	    //leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph","l");
 	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow ee) Sherpa","l");
 	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow ee) Powheg","l");
 	  }
 	  if (ilepton==2){
 	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu) DATA","p");
-	    leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
+	    //leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph","l");
 	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow #mu#mu) Sherpa","l");
 	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow #mu#mu) Powheg","l");
