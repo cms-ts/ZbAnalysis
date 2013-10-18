@@ -575,7 +575,11 @@ if (irun==10) {            // irun==10 => bkg
 	if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
 	if (ilepton==3) leg->AddEntry(h_data,"Z(#rightarrow e#mu)+jets","p");
 
-	leg->AddEntry(h_mc1,"Z+jets","f");
+	if (h_mc1c && h_mc1b) {
+	  leg->AddEntry(h_mc1,"Z+uds-jets","f");
+	} else {
+	  leg->AddEntry(h_mc1,"Z+jets","f");
+	}
 	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
 	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
 	if (h_mc1t) leg->AddEntry(h_mc1t,"#tau^{+}#tau^{-}+jets","f");
