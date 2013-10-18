@@ -212,7 +212,7 @@ string subdir="0";
 	TH1F* sys_b_jec = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
 	  float val = 0.0;
-	  val = TMath::Max(val,TMath::Abs(h_data_scan[2]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)))
+	  val = TMath::Max(val,TMath::Abs(h_data_scan[2]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[1]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  sys_jec->SetBinError(i, val);
 	}
