@@ -350,10 +350,8 @@ string subdir="0";
 	}
 
 	cout << h_data->GetName();
-	if (isratio==0) {
-	  cout << std::fixed << std::setprecision(4) << std::setw(10);
-	  cout << " : average unfolded total cross section = " << tot << " +- " << rms << " pb (" << 100*rms/tot << " %)";
-	}
+	cout << std::fixed << std::setprecision(4) << std::setw(10);
+	cout << " : average unfolded total cross section = " << tot << " +- " << rms << " pb (" << 100*rms/tot << " %)";
 	cout << endl;
 	cout << std::setw(25) << "stat";
 	cout << std::setw(12) << "jec sys";
