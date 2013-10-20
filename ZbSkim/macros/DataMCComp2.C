@@ -960,9 +960,11 @@ if (irun==10) {            // irun==10 => bkg
 	if (plot) {
 	  if (unfold==0) {
 	    if (isratio==0) {
+	      ofstream out;
 	      if (ilepton==1) {
 	        gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/xsecs/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/xsecs/" + title_b + "_xsecs.pdf").c_str());
+	        out.open((path + "/electrons/" + version + "/" + subdir + "/xsecs/" + title + ".dat").c_str());
 	        TFile f((path + "/electrons/" + version + "/" + subdir + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
 	        h_data_raw->Write((title+"_raw").c_str());
                 h_data_b_raw->Write((title_b+"_raw").c_str());
@@ -973,6 +975,7 @@ if (irun==10) {            // irun==10 => bkg
 	      if (ilepton==2) {
 	        gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/xsecs/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/muons/" + version + "/" + subdir + "/xsecs/" + title_b + "_xsecs.pdf").c_str());
+	        out.open((path + "/muons/" + version + "/" + subdir + "/xsecs/" + title + ".dat").c_str());
 	        TFile f((path + "/muons/" + version + "/" + subdir + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
 	        h_data_raw->Write((title+"_raw").c_str());
                 h_data_b_raw->Write((title_b+"_raw").c_str());
@@ -980,6 +983,15 @@ if (irun==10) {            // irun==10 => bkg
                 h_data_b->Write(title_b.c_str());
                 f.Close();
 	      }
+	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
+	      out << h_data->Integral(0,h_data->GetNbinsX()) << endl;
+	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
+	      out << h_data_b->Integral(0,h_data_b->GetNbinsX()) << endl;
+	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
+	      out << h_mc1->Integral(0,h_mc1->GetNbinsX()) << endl;
+	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
+	      out << h_mc1b_b->Integral(0,h_mc1b_b->GetNbinsX()) << endl;
+	      out.close();
 	    }
 	    if (isratio==1) {
 	      if (ilepton==1) {
