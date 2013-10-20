@@ -2,6 +2,7 @@
 #include "LumiInfo_v11.h"
 
 #include "fixrange.C"
+#include <iomanip>
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
@@ -655,6 +656,7 @@ if (irun==10) {            // irun==10 => bkg
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
 
 	if (plot) {
+	  ofstream out;
 	  if (ilepton==1) {
 	    gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.pdf").c_str());
@@ -667,6 +669,7 @@ if (irun==10) {            // irun==10 => bkg
 	      TFile f((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
 	      f.Close();
+	      out.open((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + ".dat").c_str());
 	    }
 	  }
 	  if (ilepton==2) {
@@ -681,8 +684,14 @@ if (irun==10) {            // irun==10 => bkg
 	      TFile f((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
 	      f.Close();
+	      out.open((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + ".dat").c_str());
 	    }
 	  }
+	  out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
+	  out << h_data_unfold->Integral(0,h_data_unfold->GetNbinsX()) << endl;
+	  out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
+	  out << h_mc1_truth->Integral(0,h_mc1_truth->GetNbinsX()) << endl;
+	  out.close();
 	}
 
 }
