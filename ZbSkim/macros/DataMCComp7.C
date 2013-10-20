@@ -311,7 +311,43 @@ string subdir="0";
 	TH1F* h_data_tot = h_data_scan[0]->Clone();
 	TH1F* h_data_b_tot = h_data_b_scan[0]->Clone();
 
-	cout << h_data->GetName() << endl;
+	float sum1, sum2, sum3, sum4, sum5;
+	float sum1_b, sum2_b, sum3_b, sum4_b, sum5_b;
+	if (isratio==0) {
+	  ifstream in1, in2, in3, in4, in5;
+	  if (ilepton==1) {
+	    in1.open((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding/" + "w_first_jet_pt" + ".dat").c_str());
+	    in2.open((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding/" + "w_first_jet_eta" + ".dat").c_str());
+	    in3.open((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding/" + "w_pt_Z_ee" + ".dat").c_str());
+	    in4.open((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding/" + "w_Ht" + ".dat").c_str());
+	    in5.open((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding/" + "w_delta_phi_ee" + ".dat").c_str());
+	  }
+	  if (ilepton==2) {
+	    in1.open((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding/" + "w_first_jet_pt" + ".dat").c_str());
+	    in2.open((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding/" + "w_first_jet_eta" + ".dat").c_str());
+	    in3.open((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding/" + "w_pt_Z_mm" + ".dat").c_str());
+	    in4.open((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding/" + "w_Ht" + ".dat").c_str());
+	    in5.open((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding/" + "w_delta_phi_mm" + ".dat").c_str());
+	  }
+	  in1 >> sum1; in1 >> sum1_b;
+	  in2 >> sum2; in2 >> sum2_b;
+	  in3 >> sum3; in3 >> sum3_b;
+	  in4 >> sum4; in4 >> sum4_b;
+	  in5 >> sum5; in5 >> sum5_b;
+	  in1.close();
+	  in2.close();
+	  in3.close();
+	  in4.close();
+	  in5.close();
+	}
+	float tot = (sum1+sum2+sum3+sum4+sum5)/5.;
+	float tot_b = (sum1_b+sum2_b+sum3_b+sum4_b+sum5_b)/5.;
+	float rms = TMath::Sqrt(((sum1-tot)**2+(sum2-tot)**2+(sum3-tot)**2+(sum4-tot)**2+(sum5-tot)**2)/(5-1));
+	float rms_b = TMath::Sqrt(((sum1_b-tot_b)**2+(sum2_b-tot_b)**2+(sum3_b-tot_b)**2+(sum4_b-tot_b)**2+(sum5_b-tot_b)**2)/(5-1));
+
+	cout << h_data->GetName() << " : ";
+	cout << std::fixed << std::setprecision(2) << std::setw(10);
+	cout << "average unfolded total cross section = " << tot << " +- " << rms << " pb (" << 100*rms/tot << " %)" << endl;
 	cout << std::setw(25) << "stat";
 	cout << std::setw(12) << "jec sys";
 	cout << std::setw(12) << "pu sys";
@@ -320,6 +356,7 @@ string subdir="0";
 	cout << std::setw(12) << "bpur sys";
 	cout << std::setw(12) << "unfold stat";
 	cout << std::setw(12) << "unfold sys";
+	cout << std::setw(12) << "unfold rms";
 	cout << std::setw(12) << "tot stat";
 	cout << std::setw(12) << "tot sys";
 	cout << std::setw(12) << "tot error";
@@ -351,6 +388,7 @@ string subdir="0";
 	  cout << " +- " << sys_bpur->GetBinError(i);
 	  cout << " +- " << stat_unfold->GetBinError(i);
 	  cout << " +- " << sys_unfold->GetBinError(i);
+	  cout << " +- " << h_data_stat->GetBinContent(i)*rms/tot;
 	  cout << " => ";
 	  cout << h_data_stat->GetBinError(i) << " +- " << h_data_syst->GetBinError(i);
 	  cout << " => ";
@@ -360,7 +398,9 @@ string subdir="0";
 	  cout << 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i));
 	  cout << endl;
 	}
-	cout << h_data_b->GetName() << endl;
+	cout << h_data_b->GetName() << " : ";
+	cout << std::fixed << std::setprecision(2) << std::setw(10);
+	cout << "average unfolded total cross section = " << tot_b << " +- " << rms_b << " pb (" << 100*rms_b/tot_b << " %)"<< endl;
 	cout << std::setw(25) << "stat";
 	cout << std::setw(12) << "jec sys";
 	cout << std::setw(12) << "pu sys";
@@ -369,6 +409,7 @@ string subdir="0";
 	cout << std::setw(12) << "bpur sys";
 	cout << std::setw(12) << "unfold stat";
 	cout << std::setw(12) << "unfold sys";
+	cout << std::setw(12) << "unfold rms";
 	cout << std::setw(12) << "tot stat";
 	cout << std::setw(12) << "tot sys";
 	cout << std::setw(12) << "tot error";
@@ -400,6 +441,7 @@ string subdir="0";
 	  cout << " +- " << sys_b_bpur->GetBinError(i);
 	  cout << " +- " << stat_b_unfold->GetBinError(i);
 	  cout << " +- " << sys_b_unfold->GetBinError(i);
+	  cout << " +- " << h_data_b_stat->GetBinContent(i)*rms_b/tot_b;
 	  cout << " => ";
 	  cout << h_data_b_stat->GetBinError(i) << " +- " << h_data_b_syst->GetBinError(i);
 	  cout << " => ";
