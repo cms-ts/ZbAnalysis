@@ -984,13 +984,13 @@ if (irun==10) {            // irun==10 => bkg
                 f.Close();
 	      }
 	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
-	      out << h_data->Integral(0,h_data->GetNbinsX()) << endl;
+	      out << h_data->Integral(0, h_data->GetNbinsX(), "width") << endl;
 	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
-	      out << h_data_b->Integral(0,h_data_b->GetNbinsX()) << endl;
+	      out << h_data_b->Integral(0, h_data_b->GetNbinsX(), "width") << endl;
 	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
-	      out << h_mc1->Integral(0,h_mc1->GetNbinsX()) << endl;
+	      out << h_mc1->Integral(0, h_mc1->GetNbinsX(), "width") << endl;
 	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
-	      out << h_mc1b_b->Integral(0,h_mc1b_b->GetNbinsX()) << endl;
+	      out << h_mc1b_b->Integral(0, h_mc1b_b->GetNbinsX(), "width") << endl;
 	      out.close();
 	    }
 	    if (isratio==1) {
@@ -1018,13 +1018,13 @@ if (irun==10) {            // irun==10 => bkg
 	        out.open((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding/" + title + ".dat").c_str());
 	      }
 	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
-	      out << h_data->Integral(0,h_data->GetNbinsX()) << endl;
+	      out << h_data->Integral(0, h_data->GetNbinsX(), "width") << endl;
 	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
-	      out << h_data_b->Integral(0,h_data_b->GetNbinsX()) << endl;
+	      out << h_data_b->Integral(0, h_data_b->GetNbinsX(), "width") << endl;
 	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
-	      out << h_mc1->Integral(0,h_mc1->GetNbinsX()) << endl;
+	      out << h_mc1->Integral(0, h_mc1->GetNbinsX(), "width") << endl;
 	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
-	      out << h_mc1b_b->Integral(0,h_mc1b_b->GetNbinsX()) << endl;
+	      out << h_mc1b_b->Integral(0, h_mc1b_b->GetNbinsX(), "width") << endl;
 	      out.close();
 	    }
 	    if (isratio==1) {
