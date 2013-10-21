@@ -688,6 +688,8 @@ if (irun==10) {            // irun==10 => bkg
 	    }
 	  }
 	  out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
+	  out << h_data_reco->Integral(0,h_data_reco->GetNbinsX()+1) << endl;
+	  out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
 	  out << h_data_unfold->Integral(0,h_data_unfold->GetNbinsX()+1) << endl;
 	  out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
 	  out << h_mc1_truth->Integral(0,h_mc1_truth->GetNbinsX()+1) << endl;
