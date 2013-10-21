@@ -339,6 +339,8 @@ if (irun==10) {            // irun==10 => bkg
 
 	if (irun == 10) {
 	  norm1 = norm1 + enorm1;
+	  norm1_1 = norm1_1 + enorm1_1;
+	  norm1_2 = norm1_2 + enorm1_2;
 	  norm2 = norm2 + enorm2;
 	  norm3 = norm3 + enorm3;
 	  norm4 = norm4 + enorm4;

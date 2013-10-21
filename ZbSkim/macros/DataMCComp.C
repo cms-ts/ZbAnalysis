@@ -148,6 +148,14 @@ if (irun==10) {            // irun==10 => bkg
 	double norm6 = ((Lumi2012 * Xsec_ww) / Ngen_ww);
 	double norm7 = ((Lumi2012 * Xsec_wj) / Ngen_wj);
 
+	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
+	double enorm2 = ((Lumi2012 * eXsec_tt) / Ngen_tt);
+	double enorm3 = ((Lumi2012 * eXsec_zz) / Ngen_zz);
+	double enorm4 = ((Lumi2012 * eXsec_wz) / Ngen_wz);
+	double enorm5 = ((Lumi2012 * eXsec_qcd) / Ngen_qcd);
+	double enorm6 = ((Lumi2012 * eXsec_ww) / Ngen_ww);
+	double enorm7 = ((Lumi2012 * eXsec_wj) / Ngen_wj);
+
 	if (title.empty()) title = "w_jetmultiplicity";
 
 	if (ilepton==1) {
