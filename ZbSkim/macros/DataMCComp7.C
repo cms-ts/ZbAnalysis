@@ -345,8 +345,10 @@ string subdir="0";
 	float rms_b = TMath::Sqrt(((sum1_b-tot_b)**2+(sum2_b-tot_b)**2+(sum3_b-tot_b)**2+(sum4_b-tot_b)**2+(sum5_b-tot_b)**2)/(5-1));
 
 	if (isratio==1) {
-	  rms_b = (tot_b/tot)*TMath::Sqrt((rms/tot)**2+(rms_b/tot_b)**2);
-	  tot_b = tot_b/tot;
+	  float tmp1 = (tot_b/tot);
+	  float tmp2 = (tot_b/tot)*TMath::Sqrt((rms/tot)**2+(rms_b/tot_b)**2);
+	  tot_b = tmp1;
+	  rms_b = tmp2;
 	}
 
 	cout << h_data->GetName();
