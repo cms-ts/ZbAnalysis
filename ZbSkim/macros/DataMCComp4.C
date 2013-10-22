@@ -273,6 +273,7 @@ if (irun==10) {            // irun==10 => bkg
 	}
 
 	int ntoys = 50; // default 50
+	if (irun==7) ntoys = 100;
 	unfold_mc->SetNToys(ntoys);
 	unfold_data->SetNToys(ntoys);
 
