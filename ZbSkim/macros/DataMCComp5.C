@@ -2,7 +2,6 @@
 #include "LumiInfo_v11.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/GDR/data/";
 
 TH1F* h_data = 0;
 TH1F* h_data_fit = 0;
@@ -109,6 +108,14 @@ if (irun==10) {            // irun==10 => bkg
       double norm6 = ((Lumi2012 * Xsec_ww) / Ngen_ww);
       double norm7 = ((Lumi2012 * Xsec_wj) / Ngen_wj);
 
+      double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
+      double enorm2 = ((Lumi2012 * eXsec_tt) / Ngen_tt);
+      double enorm3 = ((Lumi2012 * eXsec_zz) / Ngen_zz);
+      double enorm4 = ((Lumi2012 * eXsec_wz) / Ngen_wz);
+      double enorm5 = ((Lumi2012 * eXsec_qcd) / Ngen_qcd);
+      double enorm6 = ((Lumi2012 * eXsec_ww) / Ngen_ww);
+      double enorm7 = ((Lumi2012 * eXsec_wj) / Ngen_wj);
+
       double norm1_fit = ((Lumi2012_ele_muon * Xsec_dy) / Ngen_dy);
       double norm2_fit = ((Lumi2012_ele_muon * Xsec_tt) / Ngen_tt);
       double norm3_fit = ((Lumi2012_ele_muon * Xsec_zz) / Ngen_zz);
@@ -116,6 +123,14 @@ if (irun==10) {            // irun==10 => bkg
       double norm5_fit = ((Lumi2012_ele_muon * Xsec_qcd) / Ngen_qcd);
       double norm6_fit = ((Lumi2012_ele_muon * Xsec_ww) / Ngen_ww);
       double norm7_fit = ((Lumi2012_ele_muon * Xsec_wj) / Ngen_wj);
+
+      double enorm1_fit = ((Lumi2012_ele_muon * eXsec_dy) / Ngen_dy);
+      double enorm2_fit = ((Lumi2012_ele_muon * eXsec_tt) / Ngen_tt);
+      double enorm3_fit = ((Lumi2012_ele_muon * eXsec_zz) / Ngen_zz);
+      double enorm4_fit = ((Lumi2012_ele_muon * eXsec_wz) / Ngen_wz);
+      double enorm5_fit = ((Lumi2012_ele_muon * eXsec_qcd) / Ngen_qcd);
+      double enorm6_fit = ((Lumi2012_ele_muon * eXsec_ww) / Ngen_ww);
+      double enorm7_fit = ((Lumi2012_ele_muon * eXsec_wj) / Ngen_wj);
 
       if (title.empty()) title = "w_jetmultiplicity";
 
@@ -219,6 +234,16 @@ if (irun==10) {            // irun==10 => bkg
       h_mc6_fit->Sumw2();
       h_mc7_fit->Sumw2();
 
+      if (irun==10) {
+        norm1 = norm1 + enorm1;
+        norm2 = norm2 + enorm2;
+        norm3 = norm3 + enorm3;
+        norm4 = norm4 + enorm4;
+        norm5 = norm5 + enorm5;
+        norm6 = norm6 + enorm6;
+        norm7 = norm7 + enorm7;
+      }
+
       h_mc1->Scale(norm1);
       h_mc2->Scale(norm2);
       h_mc3->Scale(norm3);
@@ -227,6 +252,16 @@ if (irun==10) {            // irun==10 => bkg
       h_mc6->Scale(norm6);
       h_mc7->Scale(norm7);
       
+      if (irun==10) {
+        norm1_fit = norm1_fit + enorm1_fit;
+        norm2_fit = norm2_fit + enorm2_fit;
+        norm3_fit = norm3_fit + enorm3_fit;
+        norm4_fit = norm4_fit + enorm4_fit;
+        norm5_fit = norm5_fit + enorm5_fit;
+        norm6_fit = norm6_fit + enorm6_fit;
+        norm7_fit = norm7_fit + enorm7_fit;
+      }
+
       h_mc1_fit->Scale(norm1_fit);
       h_mc2_fit->Scale(norm2_fit);
       h_mc3_fit->Scale(norm3_fit);
@@ -235,8 +270,24 @@ if (irun==10) {            // irun==10 => bkg
       h_mc6_fit->Scale(norm6_fit);
       h_mc7_fit->Scale(norm7_fit);
 
-      h_mc2->Scale(c1_t);
-      h_mc2_fit->Scale(c1_t);
+      h_mc2->Scale(1./norm2);
+      h_mc2_fit->Scale(1./norm2);
+      if (irun==10) norm2 = norm2 - enorm2;
+      if (title.find("_b")==string::npos) {
+        h_mc2->Scale(norm2*c1_t);
+        h_mc2_fit->Scale(norm2*c1_t);
+        if (irun==5) {
+          h_mc2->Scale((c1_t+ec1_t)/c1_t);
+          h_mc2_fit->Scale((c1_t+ec1_t)/c1_t);
+        }
+      } else {
+        h_mc2->Scale(norm2*c2_t);
+        h_mc2_fit->Scale(norm2*c2_t);
+        if (irun==5) {
+          h_mc2->Scale((c2_t+ec2_t)/c2_t);
+          h_mc2_fit->Scale((c2_t+ec2_t)/c2_t);
+        }
+      }
 
       h_data->Add(h_mc7, -1.);
       h_data->Add(h_mc6, -1.);
