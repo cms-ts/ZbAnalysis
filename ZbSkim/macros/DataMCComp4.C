@@ -277,7 +277,7 @@ if (irun==10) {            // irun==10 => bkg
 	unfold_data->SetNToys(ntoys);
 
 	int dosys = 0; // default 0 -> 0=stat, 1=stat+sys, 2=sys only
-	if (irun == 7) dosys = 1;
+	if (irun==7) dosys = 1;
 	unfold_mc->IncludeSystematics(dosys);
 	unfold_data->IncludeSystematics(dosys);
 

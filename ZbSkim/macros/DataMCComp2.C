@@ -337,7 +337,7 @@ if (irun==10) {            // irun==10 => bkg
 	h_mc6_b->Sumw2();
 	h_mc7_b->Sumw2();
 
-	if (irun == 10) {
+	if (irun==10) {
 	  norm1 = norm1 + enorm1;
 	  norm1_1 = norm1_1 + enorm1_1;
 	  norm1_2 = norm1_2 + enorm1_2;
@@ -378,10 +378,10 @@ if (irun==10) {            // irun==10 => bkg
 	if (useFitResults) {
 	  h_mc2->Scale(1./norm2);
 	  h_mc2_b->Scale(1./norm2);
-	  if (irun == 10) norm2 = norm2 - enorm2;
+	  if (irun==10) norm2 = norm2 - enorm2;
 	  h_mc2->Scale(norm2*c1_t);
 	  h_mc2_b->Scale(norm2*c2_t);
-	  if (irun == 5) {
+	  if (irun==5) {
 	    h_mc2->Scale((c1_t+ec1_t)/c1_t);
 	    h_mc2_b->Scale((c2_t+ec2_t)/c2_t);
 	  }
@@ -419,15 +419,15 @@ if (irun==10) {            // irun==10 => bkg
 
 	if (h_mc1uds_b) {
 	  h_mc1uds_b->Scale(c_uds);
-	  if (irun == 6) h_mc1uds_b->Scale((c_uds+ec_uds)/c_uds);
+	  if (irun==6) h_mc1uds_b->Scale((c_uds+ec_uds)/c_uds);
 	}
 	if (h_mc1b_b) {
 	  h_mc1b_b->Scale(c_b);
-	  if (irun == 6) h_mc1b_b->Scale((c_b+ec_b)/c_b);
+	  if (irun==6) h_mc1b_b->Scale((c_b+ec_b)/c_b);
 	}
 	if (h_mc1c_b) {
 	  h_mc1c_b->Scale(c_c);
-	  if (irun == 6) h_mc1c_b->Scale((c_c+ec_c)/c_c);
+	  if (irun==6) h_mc1c_b->Scale((c_c+ec_c)/c_c);
         }
 	if (unfold==0) {
 	  h_data_b->Add(h_mc1c_b, -1.);
