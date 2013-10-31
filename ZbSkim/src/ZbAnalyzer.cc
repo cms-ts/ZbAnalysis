@@ -113,14 +113,14 @@ private:
     double w0n=1.0;
     double w1n=0.0;
 
-    for (unsigned int i=1;i<jets.size();i++) {
+    for (unsigned int i=0;i<jets.size();i++) {
       if ((jets[i].partonFlavour() == 5 || jets[i].partonFlavour() == 4)) {
         w0n = w0n * (1.0 - BtSF_->Val(jets[i].pt(), jets[i].eta()));
       } else {
         w0n = w0n * (1.0 - LtSF_->Val(jets[i].pt(), jets[i].eta()));
       } 
       double w=1.0;
-      for (unsigned int j=1;j<jets.size();j++) {
+      for (unsigned int j=0;j<jets.size();j++) {
         if ((jets[j].partonFlavour() == 5 || jets[j].partonFlavour() == 4)) {
           if (i==j) {
             w = w * BtSF_->Val(jets[j].pt(), jets[j].eta());
