@@ -45,6 +45,7 @@ fi
 ./merge.sh data-all $VERSION
 
 ./merge.sh DYJetsToLL $VERSION
+./merge.sh DYJetsToLL2 $VERSION
 ./merge.sh QCD $VERSION
 ./merge.sh TTbar $VERSION
 ./merge.sh ZZ $VERSION

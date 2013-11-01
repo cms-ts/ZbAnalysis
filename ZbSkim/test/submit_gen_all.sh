@@ -8,6 +8,8 @@ fi
 
 ./submit_gen.sh DYJetsToLL_gen $VERSION
 
+./submit_gen.sh DYJetsToLL2_gen $VERSION
+
 ./submit_gen.sh DYToEE_powheg_gen $VERSION
 ./submit_gen.sh DYToMuMu_powheg_gen $VERSION
 
