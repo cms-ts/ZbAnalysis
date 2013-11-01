@@ -19,6 +19,12 @@ double Ngen_dy = 30459503;
 double Xsec_dy = 3503.71; // NNLO
 double eXsec_dy = 0;
 
+//////////////////////// DY MadGraph 2
+
+double Ngen_dy2 = 7551580;
+double Xsec_dy2 = 7.07; // LO
+double eXsec_dy2 = 0;
+
 //////////////////////// DY Sherpa
 
 double Ngen_dy_1 = 127014144 * 43915740.0 / 127014144.0;
