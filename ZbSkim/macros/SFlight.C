@@ -6,12 +6,12 @@
 #include <string>
 
 
-// Calculation of the SFb by means of the POG prescription for 2012 data https://twiki.cern.ch/twiki/pub/CMS/BtagPOG/SFb-pt_WITHttbar_payload_EPS13.txt
+// Calculation of the SFb by means of the POG prescription for 2012 data https://twiki.cern.ch/twiki/pub/CMS/BtagPOG/SFlightFuncs_EPS2013.C
 // for the CSVT btagger in ranges of pT and |eta| < 2.4
 
-void SFb(){
+void SFlight(){
 
-       	double SFb;
+       	double SFlight;
 	int i,j;
 	
 	float ptmin[] = {20, 30, 40, 50, 60, 70, 80, 100, 120, 160, 210, 260, 320, 400, 500, 600};
@@ -19,7 +19,7 @@ void SFb(){
 	
 	float pT[]     = {20, 30, 40, 50, 60, 70, 80, 100, 120, 160, 210, 260, 320, 400, 500, 600, 800};
 
-	float SFb_error[] = {
+	float SFlight_error[] = {
 		0.0515703,
 		0.0264008,
 		0.0272757,
@@ -39,10 +39,10 @@ void SFb(){
 
 	for(i=0; i<17; i++){
 		float x = (ptmin[i]+ptmax[i])/2.;
-		SFb = (0.927563+(1.55479e-05*x))+(-1.90666e-07*(x*x));
+		SFlight = ((1.00462+(0.00325971*x))+(-7.79184e-06*(x*x)))+(5.22506e-09*(x*(x*x)));
 		if(i<16){
 //			std::cout<< ptmin[i]<<"<"<<"pT"<<"<"<< ptmax[i] <<"         "<< "SFb = " << SFb <<" +- "<< SFb_error[i] << std::endl;
-			std::cout<< ptmin[i]<<"    "<<ptmax[i]<<"      -2.4       2.4       "<<SFb<<"  "<<SFb_error[i]<<" "<<SFb_error[i]<<std::endl;
+			std::cout<< ptmin[i]<<"    "<<ptmax[i]<<"      -2.4       2.4       "<<SFlight<<"  "<<SFlight_error[i]<<" "<<SFlight_error[i]<<std::endl;
 		}
 	}
 }
