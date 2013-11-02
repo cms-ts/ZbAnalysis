@@ -825,16 +825,12 @@ string subdir="0";
 	  TGraphErrors *g_M2_stat = new TGraphErrors(h_M2_stat);
 
 	  for (int i=0; i<g_M2->GetN(); i++) {
-	    double x, y;
-	    g_M2->GetPoint(i,x,y);
-	    g_M2->SetPoint(i,x-2,y);
-	    g_M2->SetPointError(i,0.,g_M2->GetErrorY(i));
-	    g_M2_stat->GetPoint(i,x,y);
-	    g_M2_stat->SetPoint(i,x-2,y);
-	    g_M2_stat->SetPointError(i,0.,g_M2_stat->GetErrorY(i));
-	    g_M2_tot->GetPoint(i,x,y);
-	    g_M2_tot->SetPoint(i,x-2,y);
-	    g_M2_tot->SetPointError(i,0.,g_M2_tot->GetErrorY(i));
+	    g_M2->SetPoint(i, g_M2->GetX()[i]-2, g_M2->GetY()[i]);
+	    g_M2->SetPointError(i, 0, g_M2->GetEY()[i]);
+	    g_M2_stat->SetPoint(i, g_M2_stat->GetX()[i]-2, g_M2_stat->GetY()[i]);
+	    g_M2_stat->SetPointError(i, 0, g_M2_stat->GetEY()[i]);
+	    g_M2_tot->SetPoint(i, g_M2_tot->GetX()[i]-2, g_M2_tot->GetY()[i]);
+	    g_M2_tot->SetPointError(i, 0, g_M2_tot->GetEY()[i]);
 	  }
 
 	  g_M2->SetMarkerStyle(20);
@@ -909,16 +905,12 @@ string subdir="0";
 	  TGraphErrors *g_S2_stat = new TGraphErrors(h_S2_stat);
 
 	  for (int i=0; i<g_S2->GetN(); i++) {
-	    double x, y;
-	    g_S2->GetPoint(i,x,y);
-	    g_S2->SetPoint(i,x-2,y);
-	    g_S2->SetPointError(i,0.,g_S2->GetErrorY(i));
-	    g_S2_stat->GetPoint(i,x,y);
-	    g_S2_stat->SetPoint(i,x-2,y);
-	    g_S2_stat->SetPointError(i,0.,g_S2_stat->GetErrorY(i));
-	    g_S2_tot->GetPoint(i,x,y);
-	    g_S2_tot->SetPoint(i,x-2,y);
-	    g_S2_tot->SetPointError(i,0.,g_S2_tot->GetErrorY(i));
+	    g_S2->SetPoint(i, g_S2->GetX()[i]-2, g_S2->GetY()[i]);
+	    g_S2->SetPointError(i, 0, g_S2->GetEY()[i]);
+	    g_S2_stat->SetPoint(i, g_S2_stat->GetX()[i]-2, g_S2_stat->GetY()[i]);
+	    g_S2_stat->SetPointError(i, 0, g_S2_stat->GetEY()[i]);
+	    g_S2_tot->SetPoint(i, g_S2_tot->GetX()[i]-2, g_S2_tot->GetY()[i]);
+	    g_S2_tot->SetPointError(i, 0, g_S2_tot->GetEY()[i]);
 	  }
 
 	  g_S2->SetMarkerStyle(20);
@@ -993,16 +985,12 @@ string subdir="0";
 	  TGraphErrors *g_P2_stat = new TGraphErrors(h_P2_stat);
 
 	  for (int i=0; i<g_P2->GetN(); i++) {
-	    double x, y;
-	    g_P2->GetPoint(i,x,y);
-	    g_P2->SetPoint(i,x-2,y);
-	    g_P2->SetPointError(i,0.,g_P2->GetErrorY(i));
-	    g_P2_stat->GetPoint(i,x,y);
-	    g_P2_stat->SetPoint(i,x-2,y);
-	    g_P2_stat->SetPointError(i,0.,g_P2_stat->GetErrorY(i));
-	    g_P2_tot->GetPoint(i,x,y);
-	    g_P2_tot->SetPoint(i,x-2,y);
-	    g_P2_tot->SetPointError(i,0.,g_P2_tot->GetErrorY(i));
+	    g_P2->SetPoint(i, g_P2->GetX()[i]-2, g_P2->GetY()[i]);
+	    g_P2->SetPointError(i, 0, g_P2->GetEY()[i]);
+	    g_P2_stat->SetPoint(i, g_P2_stat->GetX()[i]-2, g_P2_stat->GetY()[i]);
+	    g_P2_stat->SetPointError(i, 0, g_P2_stat->GetEY()[i]);
+	    g_P2_tot->SetPoint(i, g_P2_tot->GetX()[i]-2, g_P2_tot->GetY()[i]);
+	    g_P2_tot->SetPointError(i, 0, g_P2_tot->GetEY()[i]);
 	  }
 
 	  g_P2->SetMarkerStyle(20);
@@ -1035,29 +1023,25 @@ string subdir="0";
 	h_M3_tot->Divide(h_mcg3_b);
 	h_M3_stat->Divide(h_mcg3_b);
 
-	TGraphErrors *g_M = new TGraphErrors(h_M3);
-	TGraphErrors *g_M_tot = new TGraphErrors(h_M3_tot);
-	TGraphErrors *g_M_stat = new TGraphErrors(h_M3_stat);
+	TGraphErrors *g_M3 = new TGraphErrors(h_M3);
+	TGraphErrors *g_M3_tot = new TGraphErrors(h_M3_tot);
+	TGraphErrors *g_M3_stat = new TGraphErrors(h_M3_stat);
 
-	for (int i=0; i<g_M->GetN(); i++) {
-	  double x, y;
-	  g_M->GetPoint(i,x,y);
-	  g_M->SetPoint(i,x+2,y);
-	  g_M->SetPointError(i,0.,g_M->GetErrorY(i));
-	  g_M_stat->GetPoint(i,x,y);
-	  g_M_stat->SetPoint(i,x+2,y);
-	  g_M_stat->SetPointError(i,0.,g_M_stat->GetErrorY(i));
-	  g_M_tot->GetPoint(i,x,y);
-	  g_M_tot->SetPoint(i,x+2,y);
-	  g_M_tot->SetPointError(i,0.,g_M_tot->GetErrorY(i));
+	for (int i=0; i<g_M3->GetN(); i++) {
+	  g_M3->SetPoint(i, g_M3->GetX()[i]+2, g_M3->GetY()[i]);
+	  g_M3->SetPointError(i, 0, g_M3->GetEY()[i]);
+	  g_M3_stat->SetPoint(i, g_M3_stat->GetX()[i]+2, g_M3_stat->GetY()[i]);
+	  g_M3_stat->SetPointError(i, 0, g_M3_stat->GetEY()[i]);
+	  g_M3_tot->SetPoint(i, g_M3_tot->GetX()[i]+2, g_M3_tot->GetY()[i]);
+	  g_M3_tot->SetPointError(i, 0, g_M3_tot->GetEY()[i]);
 	}
 
-	g_M->SetMarkerStyle(25);
-	g_M->Draw("EP0SAME");
-	g_M_stat->SetMarkerStyle(25);
-	g_M_stat->Draw("EP0SAME");
-	g_M_tot->SetMarkerStyle(25);
-	g_M_tot->Draw("EP0SAME");
+	g_M3->SetMarkerStyle(25);
+	g_M3->Draw("EP0SAME");
+	g_M3_stat->SetMarkerStyle(25);
+	g_M3_stat->Draw("EP0SAME");
+	g_M3_tot->SetMarkerStyle(25);
+	g_M3_tot->Draw("EP0SAME");
 
 	c1->cd();
 
