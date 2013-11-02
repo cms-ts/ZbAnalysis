@@ -733,19 +733,19 @@ string subdir="0";
 	    leg->AddEntry(h_data,"Z(#rightarrow ee) DATA","p");
 	    leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
 	    //leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
-	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph","l");
+	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph 5FS","l");
+	    leg->AddEntry(h_mcg3,"Z(#rightarrow ee) MadGraph 4FS","l");
 	    leg->AddEntry(h_mcg1,"Z(#rightarrow ee) Sherpa","l");
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow ee) Powheg","l");
-	    leg->AddEntry(h_mcg3,"Z(#rightarrow ee) MadGraph 4FS","l");
 	  }
 	  if (ilepton==2){
 	    leg->AddEntry(h_data,"Z(#rightarrow #mu#mu) DATA","p");
 	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu)+b DATA","p");
 	    //leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
-	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph","l");
+	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph 5FS","l");
+	    leg->AddEntry(h_mcg3,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
 	    leg->AddEntry(h_mcg1,"Z(#rightarrow #mu#mu) Sherpa","l");
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow #mu#mu) Powheg","l");
-	    leg->AddEntry(h_mcg3,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
 	  }
 	}
 
@@ -753,18 +753,18 @@ string subdir="0";
 	  if (ilepton==1) {
 	    leg->AddEntry(h_data_b,"Z(#rightarrow ee) DATA","p");
 	    //leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
-	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph","l");
+	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph 5FS","l");
+	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow ee) MadGraph 4FS","l");
 	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow ee) Sherpa","l");
 	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow ee) Powheg","l");
-	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow ee) MadGraph 4FS","l");
 	  }
 	  if (ilepton==2){
 	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu) DATA","p");
 	    //leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
-	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph","l");
+	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph 5FS","l");
+	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
 	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow #mu#mu) Sherpa","l");
 	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow #mu#mu) Powheg","l");
-	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
 	  }
 	}
 
@@ -850,7 +850,7 @@ string subdir="0";
 	t2->SetTextFont(42);
 	t2->SetLineWidth(2);
 	t2->SetNDC();
-	t2->DrawLatex(0.15,0.7,"MadGraph / MadGraph 4FS");
+	t2->DrawLatex(0.15,0.7,"MadGraph 5FS / MadGraph 4FS");
 
 	TLine *OLine2 = new TLine(h_M->GetXaxis()->GetXmin(),1.,h_M->GetXaxis()->GetXmax(),1.);
 	OLine2->SetLineColor(kGreen+2);
