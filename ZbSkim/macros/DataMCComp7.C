@@ -72,6 +72,7 @@ string subdir="0";
 	double norm1_2;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
 	if (ilepton==2) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
+	double norm1_3 = ((Lumi2012 * Xsec_dy_3) / Ngen_dy_3);
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -90,6 +91,7 @@ string subdir="0";
 	TFile *mcg2;
 	if (ilepton==1) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	if (ilepton==2) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
+	TFile *mcg3 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
 
 	string title_b = title;
 
@@ -136,25 +138,34 @@ string subdir="0";
 	TH1F* h_mcg2 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg2_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
+	if (ilepton==1) mcg3->cd("demoEleGen");
+	if (ilepton==2) mcg3->cd("demoMuoGen");
+	TH1F* h_mcg3 = (TH1F*)gDirectory->Get(title.c_str());
+	TH1F* h_mcg3_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
 	h_mc1->Sumw2();
 	h_mcg->Sumw2();
 	h_mcg1->Sumw2();
 	h_mcg2->Sumw2();
+	h_mcg3->Sumw2();
 
 	if (h_mc1b_b) h_mc1b_b->Sumw2();
 	h_mcg_b->Sumw2();
 	h_mcg1_b->Sumw2();
 	h_mcg2_b->Sumw2();
+	h_mcg3_b->Sumw2();
 
 	h_mc1->Scale(norm1);
 	h_mcg->Scale(norm1);
 	h_mcg1->Scale(norm1_1);
 	h_mcg2->Scale(norm1_2);
+	h_mcg3->Scale(norm1_3);
 
 	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
 	h_mcg_b->Scale(norm1);
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
+	h_mcg3_b->Scale(norm1_3);
 
 	if (h_mc1b_b) {
 	  h_mc1b_b->Scale(c_b);
@@ -467,16 +478,20 @@ string subdir="0";
 	h_mcg->Scale(1./Lumi2012, "width");
 	h_mcg1->Scale(1./Lumi2012, "width");
 	h_mcg2->Scale(1./Lumi2012, "width");
+	h_mcg3->Scale(1./Lumi2012, "width");
 	h_mcg_b->Scale(1./Lumi2012, "width");
 	h_mcg1_b->Scale(1./Lumi2012, "width");
 	h_mcg2_b->Scale(1./Lumi2012, "width");
+	h_mcg3_b->Scale(1./Lumi2012, "width");
 	if (isratio==1) {
 	  h_mcg_b->Divide(h_mcg);
 	  h_mcg1_b->Divide(h_mcg1);
 	  h_mcg2_b->Divide(h_mcg2);
+	  h_mcg3_b->Divide(h_mcg1);
 	  h_mcg_b->Scale(100.);
 	  h_mcg1_b->Scale(100.);
 	  h_mcg2_b->Scale(100.);
+	  h_mcg3_b->Scale(100.);
 	}
 
 	h_data = fixrange(h_data);
@@ -496,7 +511,9 @@ string subdir="0";
 	h_mcg1 = fixrange(h_mcg1);
 	h_mcg1_b = fixrange(h_mcg1_b);
 	h_mcg2 = fixrange(h_mcg2);
+	h_mcg3 = fixrange(h_mcg3);
 	h_mcg2_b = fixrange(h_mcg2_b);
+	h_mcg3_b = fixrange(h_mcg3_b);
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();
@@ -545,6 +562,14 @@ string subdir="0";
 	h_mcg2_b->SetMarkerColor(kBlue-4);
 	if (isratio==1) {
 	  h_mcg2_b->Draw("E5SAME");
+	}
+
+	h_mcg3_b->SetLineColor(kOrange-4);
+	h_mcg3_b->SetLineWidth(2);
+	h_mcg3_b->SetFillColor(kOrange-4);
+	h_mcg3_b->SetMarkerColor(kOrange-4);
+	if (isratio==1) {
+	  h_mcg3_b->Draw("E5SAME");
 	}
 
 	if (isratio==1) {
@@ -621,6 +646,14 @@ string subdir="0";
 	  tmp2_2->SetFillColor(0);
 	  tmp2_2->DrawClone("HISTLSAME");
 
+	  h_mcg3_b->Draw("E5SAME");
+	  TH1F* tmp2_3 = h_mcg3_b->Clone();
+	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
+	    if (tmp2_3->GetMinimum()==0) tmp2_3->GetXaxis()->SetRangeUser(0, tmp2_3->GetBinCenter(tmp2_3->GetMinimumBin()-1));
+	  }
+	  tmp2_3->SetFillColor(0);
+	  tmp2_3->DrawClone("HISTLSAME");
+
 	  h_data_b_tot->Draw("E1PX0SAME");
 	  h_data_b_stat->Draw("E1PX0SAME");
 
@@ -674,6 +707,11 @@ string subdir="0";
 	  tmp4_2->SetFillColor(0);
 	  tmp4_2->DrawClone("HISTLSAME");
 
+	  h_mcg3->SetLineColor(kOrange-4);
+	  h_mcg3->SetLineWidth(2);
+	  h_mcg3->SetMarkerColor(kOrange-4);
+	  h_mcg3->SetFillColor(kOrange-4);
+
 	  h_data_tot->SetMarkerColor(kRed);
 	  h_data_tot->SetLineColor(kRed);
 	  h_data_tot->SetMarkerStyle(20);
@@ -698,6 +736,7 @@ string subdir="0";
 	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph","l");
 	    leg->AddEntry(h_mcg1,"Z(#rightarrow ee) Sherpa","l");
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow ee) Powheg","l");
+	    leg->AddEntry(h_mcg3,"Z(#rightarrow ee) MadGraph 4FS","l");
 	  }
 	  if (ilepton==2){
 	    leg->AddEntry(h_data,"Z(#rightarrow #mu#mu) DATA","p");
@@ -706,6 +745,7 @@ string subdir="0";
 	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph","l");
 	    leg->AddEntry(h_mcg1,"Z(#rightarrow #mu#mu) Sherpa","l");
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow #mu#mu) Powheg","l");
+	    leg->AddEntry(h_mcg3,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
 	  }
 	}
 
@@ -716,6 +756,7 @@ string subdir="0";
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph","l");
 	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow ee) Sherpa","l");
 	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow ee) Powheg","l");
+	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow ee) MadGraph 4FS","l");
 	  }
 	  if (ilepton==2){
 	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu) DATA","p");
@@ -723,6 +764,7 @@ string subdir="0";
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph","l");
 	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow #mu#mu) Sherpa","l");
 	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow #mu#mu) Powheg","l");
+	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
 	  }
 	}
 
@@ -742,6 +784,11 @@ string subdir="0";
 	TH1F *h_M = h_data_b->Clone();
 	TH1F *h_M_tot = h_data_b_tot->Clone();
 	TH1F *h_M_stat = h_data_b_stat->Clone();
+
+	h_M->Divide(h_mcg_b);
+	h_M_tot->Divide(h_mcg_b);
+	h_M_stat->Divide(h_mcg_b);
+
 	h_M->SetTitle("");
 	h_M->SetStats(0);
 	h_M->GetXaxis()->SetTitleOffset(0.9);
@@ -757,93 +804,45 @@ string subdir="0";
 	h_M->GetYaxis()->SetRangeUser(-0.2, 2.2);
 	h_M->GetYaxis()->SetTitleOffset(0.21);
 	h_M->GetYaxis()->SetTickLength(0.02);
-	h_M->Divide(h_mcg_b);
 	h_M->SetMarkerStyle(24);
 	h_M->Draw("EPX0");
-	h_M_tot->GetXaxis()->SetTitleOffset(0.9);
-	h_M_tot->GetXaxis()->SetTitleSize(0.14);
-	h_M_tot->GetXaxis()->SetLabelFont(42);
-	h_M_tot->GetXaxis()->SetLabelSize(0.12);
-	h_M_tot->GetXaxis()->SetTitleFont(42);
-	h_M_tot->GetXaxis()->SetTickLength(0.1);
-	h_M_tot->GetYaxis()->SetTitle("Data / Theory");
-	h_M_tot->GetYaxis()->SetNdivisions(013);
-	h_M_tot->GetYaxis()->SetTitleSize(0.17);
-	h_M_tot->GetYaxis()->SetLabelSize(0.17);
-	h_M_tot->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	h_M_tot->GetYaxis()->SetTitleOffset(0.21);
-	h_M_tot->GetYaxis()->SetTickLength(0.02);
-	h_M_tot->Divide(h_mcg_b);
 	h_M_tot->SetMarkerStyle(24);
 	h_M_tot->Draw("E1PX0SAME");
-	h_M_stat->GetXaxis()->SetTitleOffset(0.9);
-	h_M_stat->GetXaxis()->SetTitleSize(0.14);
-	h_M_stat->GetXaxis()->SetLabelFont(42);
-	h_M_stat->GetXaxis()->SetLabelSize(0.12);
-	h_M_stat->GetXaxis()->SetTitleFont(42);
-	h_M_stat->GetXaxis()->SetTickLength(0.1);
-	h_M_stat->GetYaxis()->SetTitle("Data / Theory");
-	h_M_stat->GetYaxis()->SetNdivisions(013);
-	h_M_stat->GetYaxis()->SetTitleSize(0.17);
-	h_M_stat->GetYaxis()->SetLabelSize(0.17);
-	h_M_stat->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	h_M_stat->GetYaxis()->SetTitleOffset(0.21);
-	h_M_stat->GetYaxis()->SetTickLength(0.02);
-	h_M_stat->Divide(h_mcg_b);
 	h_M_stat->SetMarkerStyle(24);
 	h_M_stat->Draw("E1PX0SAME");
-	TH1F *h_M2= h_data->Clone();
-	TH1F *h_M2_tot= h_data_tot->Clone();
-	TH1F *h_M2_stat= h_data_stat->Clone();
+
 	if (isratio==0) {
-	  h_M2->GetXaxis()->SetTitleOffset(0.9);
-	  h_M2->GetXaxis()->SetTitleSize(0.14);
-	  h_M2->GetXaxis()->SetLabelFont(42);
-	  h_M2->GetXaxis()->SetLabelSize(0.12);
-	  h_M2->GetXaxis()->SetTitleFont(42);
-	  h_M2->GetXaxis()->SetTickLength(0.1);
-	  h_M2->GetYaxis()->SetTitle("Data / Theory");
-	  h_M2->GetYaxis()->SetNdivisions(013);
-	  h_M2->GetYaxis()->SetTitleSize(0.17);
-	  h_M2->GetYaxis()->SetLabelSize(0.17);
-	  h_M2->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_M2->GetYaxis()->SetTitleOffset(0.21);
-	  h_M2->GetYaxis()->SetTickLength(0.02);
+	  TH1F *h_M2= h_data->Clone();
+	  TH1F *h_M2_tot= h_data_tot->Clone();
+	  TH1F *h_M2_stat= h_data_stat->Clone();
+
 	  h_M2->Divide(h_mcg);
-	  h_M2->SetMarkerStyle(20);
-	  //h_M2->Draw("EPX0SAME");
-	  h_M2_tot->GetXaxis()->SetTitleOffset(0.9);
-	  h_M2_tot->GetXaxis()->SetTitleSize(0.14);
-	  h_M2_tot->GetXaxis()->SetLabelFont(42);
-	  h_M2_tot->GetXaxis()->SetLabelSize(0.12);
-	  h_M2_tot->GetXaxis()->SetTitleFont(42);
-	  h_M2_tot->GetXaxis()->SetTickLength(0.1);
-	  h_M2_tot->GetYaxis()->SetTitle("Data / Theory");
-	  h_M2_tot->GetYaxis()->SetNdivisions(013);
-	  h_M2_tot->GetYaxis()->SetTitleSize(0.17);
-	  h_M2_tot->GetYaxis()->SetLabelSize(0.17);
-	  h_M2_tot->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_M2_tot->GetYaxis()->SetTitleOffset(0.21);
-	  h_M2_tot->GetYaxis()->SetTickLength(0.02);
 	  h_M2_tot->Divide(h_mcg);
-	  h_M2_tot->SetMarkerStyle(20);
-	  h_M2_tot->Draw("EPX0SAME");
-	  h_M2_stat->GetXaxis()->SetTitleOffset(0.9);
-	  h_M2_stat->GetXaxis()->SetTitleSize(0.14);
-	  h_M2_stat->GetXaxis()->SetLabelFont(42);
-	  h_M2_stat->GetXaxis()->SetLabelSize(0.12);
-	  h_M2_stat->GetXaxis()->SetTitleFont(42);
-	  h_M2_stat->GetXaxis()->SetTickLength(0.1);
-	  h_M2_stat->GetYaxis()->SetTitle("Data / Theory");
-	  h_M2_stat->GetYaxis()->SetNdivisions(013);
-	  h_M2_stat->GetYaxis()->SetTitleSize(0.17);
-	  h_M2_stat->GetYaxis()->SetLabelSize(0.17);
-	  h_M2_stat->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_M2_stat->GetYaxis()->SetTitleOffset(0.21);
-	  h_M2_stat->GetYaxis()->SetTickLength(0.02);
 	  h_M2_stat->Divide(h_mcg);
-	  h_M2_stat->SetMarkerStyle(20);
-	  h_M2_stat->Draw("EPX0SAME");
+
+	  TGraphErrors *g_M2 = new TGraphErrors(h_M2);
+	  TGraphErrors *g_M2_tot = new TGraphErrors(h_M2_tot);
+	  TGraphErrors *g_M2_stat = new TGraphErrors(h_M2_stat);
+
+	  for (int i=0; i<g_M2->GetN(); i++) {
+	    double x, y;
+	    g_M2->GetPoint(i,x,y);
+	    g_M2->SetPoint(i,x-2,y);
+	    g_M2->SetPointError(i,0.,g_M2->GetErrorY(i));
+	    g_M2_stat->GetPoint(i,x,y);
+	    g_M2_stat->SetPoint(i,x-2,y);
+	    g_M2_stat->SetPointError(i,0.,g_M2_stat->GetErrorY(i));
+	    g_M2_tot->GetPoint(i,x,y);
+	    g_M2_tot->SetPoint(i,x-2,y);
+	    g_M2_tot->SetPointError(i,0.,g_M2_tot->GetErrorY(i));
+	  }
+
+	  g_M2->SetMarkerStyle(20);
+	  g_M2->Draw("EPX0SAME");
+	  g_M2_tot->SetMarkerStyle(20);
+	  g_M2_tot->Draw("EPX0SAME");
+	  g_M2_stat->SetMarkerStyle(20);
+	  g_M2_stat->Draw("EPX0SAME");
 	}
 
 	TLatex *t2 = new TLatex();
@@ -851,7 +850,7 @@ string subdir="0";
 	t2->SetTextFont(42);
 	t2->SetLineWidth(2);
 	t2->SetNDC();
-	t2->DrawLatex(0.15,0.7,"MadGraph");
+	t2->DrawLatex(0.15,0.7,"MadGraph / MadGraph 4FS");
 
 	TLine *OLine2 = new TLine(h_M->GetXaxis()->GetXmin(),1.,h_M->GetXaxis()->GetXmax(),1.);
 	OLine2->SetLineColor(kGreen+2);
@@ -869,6 +868,11 @@ string subdir="0";
 	TH1F *h_S = h_data_b->Clone();
 	TH1F *h_S_tot = h_data_b_tot->Clone();
 	TH1F *h_S_stat = h_data_b_stat->Clone();
+
+	h_S->Divide(h_mcg1_b);
+	h_S_tot->Divide(h_mcg1_b);
+	h_S_stat->Divide(h_mcg1_b);
+
 	h_S->SetTitle("");
 	h_S->SetStats(0);
 	h_S->GetXaxis()->SetTitleOffset(0.9);
@@ -884,93 +888,45 @@ string subdir="0";
 	h_S->GetYaxis()->SetRangeUser(-0.2, 2.2);
 	h_S->GetYaxis()->SetTitleOffset(0.21);
 	h_S->GetYaxis()->SetTickLength(0.02);
-	h_S->Divide(h_mcg1_b);
 	h_S->SetMarkerStyle(24);
 	h_S->Draw("EPX0");
-	h_S_tot->GetXaxis()->SetTitleOffset(0.9);
-	h_S_tot->GetXaxis()->SetTitleSize(0.14);
-	h_S_tot->GetXaxis()->SetLabelFont(42);
-	h_S_tot->GetXaxis()->SetLabelSize(0.12);
-	h_S_tot->GetXaxis()->SetTitleFont(42);
-	h_S_tot->GetXaxis()->SetTickLength(0.1);
-	h_S_tot->GetYaxis()->SetTitle("Data / Theory");
-	h_S_tot->GetYaxis()->SetNdivisions(013);
-	h_S_tot->GetYaxis()->SetTitleSize(0.17);
-	h_S_tot->GetYaxis()->SetLabelSize(0.17);
-	h_S_tot->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	h_S_tot->GetYaxis()->SetTitleOffset(0.21);
-	h_S_tot->GetYaxis()->SetTickLength(0.02);
-	h_S_tot->Divide(h_mcg1_b);
 	h_S_tot->SetMarkerStyle(24);
 	h_S_tot->Draw("E1PX0SAME");
-	h_S_stat->GetXaxis()->SetTitleOffset(0.9);
-	h_S_stat->GetXaxis()->SetTitleSize(0.14);
-	h_S_stat->GetXaxis()->SetLabelFont(42);
-	h_S_stat->GetXaxis()->SetLabelSize(0.12);
-	h_S_stat->GetXaxis()->SetTitleFont(42);
-	h_S_stat->GetXaxis()->SetTickLength(0.1);
-	h_S_stat->GetYaxis()->SetTitle("Data / Theory");
-	h_S_stat->GetYaxis()->SetNdivisions(013);
-	h_S_stat->GetYaxis()->SetTitleSize(0.17);
-	h_S_stat->GetYaxis()->SetLabelSize(0.17);
-	h_S_stat->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	h_S_stat->GetYaxis()->SetTitleOffset(0.21);
-	h_S_stat->GetYaxis()->SetTickLength(0.02);
-	h_S_stat->Divide(h_mcg1_b);
 	h_S_stat->SetMarkerStyle(24);
 	h_S_stat->Draw("E1PX0SAME");
-	TH1F *h_S2= h_data->Clone();
-	TH1F *h_S2_tot= h_data_tot->Clone();
-	TH1F *h_S2_stat= h_data_stat->Clone();
+
 	if (isratio==0) {
-	  h_S2->GetXaxis()->SetTitleOffset(0.9);
-	  h_S2->GetXaxis()->SetTitleSize(0.14);
-	  h_S2->GetXaxis()->SetLabelFont(42);
-	  h_S2->GetXaxis()->SetLabelSize(0.12);
-	  h_S2->GetXaxis()->SetTitleFont(42);
-	  h_S2->GetXaxis()->SetTickLength(0.1);
-	  h_S2->GetYaxis()->SetTitle("Data / Theory");
-	  h_S2->GetYaxis()->SetNdivisions(013);
-	  h_S2->GetYaxis()->SetTitleSize(0.17);
-	  h_S2->GetYaxis()->SetLabelSize(0.17);
-	  h_S2->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_S2->GetYaxis()->SetTitleOffset(0.21);
-	  h_S2->GetYaxis()->SetTickLength(0.02);
+	  TH1F *h_S2= h_data->Clone();
+	  TH1F *h_S2_tot= h_data_tot->Clone();
+	  TH1F *h_S2_stat= h_data_stat->Clone();
+
 	  h_S2->Divide(h_mcg1);
-	  h_S2->SetMarkerStyle(20);
-	  //h_S2->Draw("EPX0SAME");
-	  h_S2_tot->GetXaxis()->SetTitleOffset(0.9);
-	  h_S2_tot->GetXaxis()->SetTitleSize(0.14);
-	  h_S2_tot->GetXaxis()->SetLabelFont(42);
-	  h_S2_tot->GetXaxis()->SetLabelSize(0.12);
-	  h_S2_tot->GetXaxis()->SetTitleFont(42);
-	  h_S2_tot->GetXaxis()->SetTickLength(0.1);
-	  h_S2_tot->GetYaxis()->SetTitle("Data / Theory");
-	  h_S2_tot->GetYaxis()->SetNdivisions(013);
-	  h_S2_tot->GetYaxis()->SetTitleSize(0.17);
-	  h_S2_tot->GetYaxis()->SetLabelSize(0.17);
-	  h_S2_tot->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_S2_tot->GetYaxis()->SetTitleOffset(0.21);
-	  h_S2_tot->GetYaxis()->SetTickLength(0.02);
 	  h_S2_tot->Divide(h_mcg1);
-	  h_S2_tot->SetMarkerStyle(20);
-	  h_S2_tot->Draw("EPX0SAME");
-	  h_S2_stat->GetXaxis()->SetTitleOffset(0.9);
-	  h_S2_stat->GetXaxis()->SetTitleSize(0.14);
-	  h_S2_stat->GetXaxis()->SetLabelFont(42);
-	  h_S2_stat->GetXaxis()->SetLabelSize(0.12);
-	  h_S2_stat->GetXaxis()->SetTitleFont(42);
-	  h_S2_stat->GetXaxis()->SetTickLength(0.1);
-	  h_S2_stat->GetYaxis()->SetTitle("Data / Theory");
-	  h_S2_stat->GetYaxis()->SetNdivisions(013);
-	  h_S2_stat->GetYaxis()->SetTitleSize(0.17);
-	  h_S2_stat->GetYaxis()->SetLabelSize(0.17);
-	  h_S2_stat->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_S2_stat->GetYaxis()->SetTitleOffset(0.21);
-	  h_S2_stat->GetYaxis()->SetTickLength(0.02);
 	  h_S2_stat->Divide(h_mcg1);
-	  h_S2_stat->SetMarkerStyle(20);
-	  h_S2_stat->Draw("EPX0SAME");
+
+	  TGraphErrors *g_S2 = new TGraphErrors(h_S2);
+	  TGraphErrors *g_S2_tot = new TGraphErrors(h_S2_tot);
+	  TGraphErrors *g_S2_stat = new TGraphErrors(h_S2_stat);
+
+	  for (int i=0; i<g_S2->GetN(); i++) {
+	    double x, y;
+	    g_S2->GetPoint(i,x,y);
+	    g_S2->SetPoint(i,x-2,y);
+	    g_S2->SetPointError(i,0.,g_S2->GetErrorY(i));
+	    g_S2_stat->GetPoint(i,x,y);
+	    g_S2_stat->SetPoint(i,x-2,y);
+	    g_S2_stat->SetPointError(i,0.,g_S2_stat->GetErrorY(i));
+	    g_S2_tot->GetPoint(i,x,y);
+	    g_S2_tot->SetPoint(i,x-2,y);
+	    g_S2_tot->SetPointError(i,0.,g_S2_tot->GetErrorY(i));
+	  }
+
+	  g_S2->SetMarkerStyle(20);
+	  g_S2->Draw("EPX0SAME");
+	  g_S2_tot->SetMarkerStyle(20);
+	  g_S2_tot->Draw("EPX0SAME");
+	  g_S2_stat->SetMarkerStyle(20);
+	  g_S2_stat->Draw("EPX0SAME");
 	}
 
 	TLatex *t3 = new TLatex();
@@ -996,6 +952,11 @@ string subdir="0";
 	TH1F *h_P = h_data_b->Clone();
 	TH1F *h_P_tot = h_data_b_tot->Clone();
 	TH1F *h_P_stat = h_data_b_stat->Clone();
+
+	h_P->Divide(h_mcg2_b);
+	h_P_tot->Divide(h_mcg2_b);
+	h_P_stat->Divide(h_mcg2_b);
+
 	h_P->SetTitle("");
 	h_P->SetStats(0);
 	h_P->GetXaxis()->SetTitleOffset(0.9);
@@ -1011,93 +972,45 @@ string subdir="0";
 	h_P->GetYaxis()->SetRangeUser(-0.2, 2.2);
 	h_P->GetYaxis()->SetTitleOffset(0.32);
 	h_P->GetYaxis()->SetTickLength(0.02);
-	h_P->Divide(h_mcg2_b);
 	h_P->SetMarkerStyle(24);
 	h_P->Draw("EPX0");
-	h_P_tot->GetXaxis()->SetTitleOffset(0.9);
-	h_P_tot->GetXaxis()->SetTitleSize(0.14);
-	h_P_tot->GetXaxis()->SetLabelFont(42);
-	h_P_tot->GetXaxis()->SetLabelSize(0.12);
-	h_P_tot->GetXaxis()->SetTitleFont(42);
-	h_P_tot->GetXaxis()->SetTickLength(0.1);
-	h_P_tot->GetYaxis()->SetTitle("Data / Theory");
-	h_P_tot->GetYaxis()->SetNdivisions(013);
-	h_P_tot->GetYaxis()->SetTitleSize(0.11);
-	h_P_tot->GetYaxis()->SetLabelSize(0.11);
-	h_P_tot->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	h_P_tot->GetYaxis()->SetTitleOffset(0.32);
-	h_P_tot->GetYaxis()->SetTickLength(0.02);
-	h_P_tot->Divide(h_mcg2_b);
 	h_P_tot->SetMarkerStyle(24);
 	h_P_tot->Draw("E1PX0SAME");
-	h_P_stat->GetXaxis()->SetTitleOffset(0.9);
-	h_P_stat->GetXaxis()->SetTitleSize(0.14);
-	h_P_stat->GetXaxis()->SetLabelFont(42);
-	h_P_stat->GetXaxis()->SetLabelSize(0.12);
-	h_P_stat->GetXaxis()->SetTitleFont(42);
-	h_P_stat->GetXaxis()->SetTickLength(0.1);
-	h_P_stat->GetYaxis()->SetTitle("Data / Theory");
-	h_P_stat->GetYaxis()->SetNdivisions(013);
-	h_P_stat->GetYaxis()->SetTitleSize(0.11);
-	h_P_stat->GetYaxis()->SetLabelSize(0.11);
-	h_P_stat->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	h_P_stat->GetYaxis()->SetTitleOffset(0.32);
-	h_P_stat->GetYaxis()->SetTickLength(0.02);
-	h_P_stat->Divide(h_mcg2_b);
 	h_P_stat->SetMarkerStyle(24);
 	h_P_stat->Draw("E1PX0SAME");
-	TH1F *h_P2= h_data->Clone();
-	TH1F *h_P2_tot= h_data_tot->Clone();
-	TH1F *h_P2_stat= h_data_stat->Clone();
+
 	if (isratio==0) {
-	  h_P2->GetXaxis()->SetTitleOffset(0.9);
-	  h_P2->GetXaxis()->SetTitleSize(0.14);
-	  h_P2->GetXaxis()->SetLabelFont(42);
-	  h_P2->GetXaxis()->SetLabelSize(0.12);
-	  h_P2->GetXaxis()->SetTitleFont(42);
-	  h_P2->GetXaxis()->SetTickLength(0.1);
-	  h_P2->GetYaxis()->SetTitle("Data / Theory");
-	  h_P2->GetYaxis()->SetNdivisions(013);
-	  h_P2->GetYaxis()->SetTitleSize(0.11);
-	  h_P2->GetYaxis()->SetLabelSize(0.11);
-	  h_P2->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_P2->GetYaxis()->SetTitleOffset(0.32);
-	  h_P2->GetYaxis()->SetTickLength(0.02);
+	  TH1F *h_P2= h_data->Clone();
+	  TH1F *h_P2_tot= h_data_tot->Clone();
+	  TH1F *h_P2_stat= h_data_stat->Clone();
+
 	  h_P2->Divide(h_mcg2);
-	  h_P2->SetMarkerStyle(20);
-	  //h_P2->Draw("EPX0SAME");
-	  h_P2_tot->GetXaxis()->SetTitleOffset(0.9);
-	  h_P2_tot->GetXaxis()->SetTitleSize(0.14);
-	  h_P2_tot->GetXaxis()->SetLabelFont(42);
-	  h_P2_tot->GetXaxis()->SetLabelSize(0.12);
-	  h_P2_tot->GetXaxis()->SetTitleFont(42);
-	  h_P2_tot->GetXaxis()->SetTickLength(0.1);
-	  h_P2_tot->GetYaxis()->SetTitle("Data / Theory");
-	  h_P2_tot->GetYaxis()->SetNdivisions(013);
-	  h_P2_tot->GetYaxis()->SetTitleSize(0.11);
-	  h_P2_tot->GetYaxis()->SetLabelSize(0.11);
-	  h_P2_tot->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_P2_tot->GetYaxis()->SetTitleOffset(0.32);
-	  h_P2_tot->GetYaxis()->SetTickLength(0.02);
 	  h_P2_tot->Divide(h_mcg2);
-	  h_P2_tot->SetMarkerStyle(20);
-	  h_P2_tot->Draw("E1PX0SAME");
-	  h_P2_stat->GetXaxis()->SetTitleOffset(0.9);
-	  h_P2_stat->GetXaxis()->SetTitleSize(0.14);
-	  h_P2_stat->GetXaxis()->SetLabelFont(42);
-	  h_P2_stat->GetXaxis()->SetLabelSize(0.12);
-	  h_P2_stat->GetXaxis()->SetTitleFont(42);
-	  h_P2_stat->GetXaxis()->SetTickLength(0.1);
-	  h_P2_stat->GetYaxis()->SetTitle("Data / Theory");
-	  h_P2_stat->GetYaxis()->SetNdivisions(013);
-	  h_P2_stat->GetYaxis()->SetTitleSize(0.11);
-	  h_P2_stat->GetYaxis()->SetLabelSize(0.11);
-	  h_P2_stat->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_P2_stat->GetYaxis()->SetTitleOffset(0.32);
-	  h_P2_stat->GetYaxis()->SetTickLength(0.02);
 	  h_P2_stat->Divide(h_mcg2);
-	  h_P2_stat->SetMarkerStyle(20);
-	  h_P2_stat->Draw("E1PX0SAME");
+
+	  TGraphErrors *g_P2 = new TGraphErrors(h_P2);
+	  TGraphErrors *g_P2_tot = new TGraphErrors(h_P2_tot);
+	  TGraphErrors *g_P2_stat = new TGraphErrors(h_P2_stat);
+
+	  for (int i=0; i<g_P2->GetN(); i++) {
+	    double x, y;
+	    g_P2->GetPoint(i,x,y);
+	    g_P2->SetPoint(i,x-2,y);
+	    g_P2->SetPointError(i,0.,g_P2->GetErrorY(i));
+	    g_P2_stat->GetPoint(i,x,y);
+	    g_P2_stat->SetPoint(i,x-2,y);
+	    g_P2_stat->SetPointError(i,0.,g_P2_stat->GetErrorY(i));
+	    g_P2_tot->GetPoint(i,x,y);
+	    g_P2_tot->SetPoint(i,x-2,y);
+	    g_P2_tot->SetPointError(i,0.,g_P2_tot->GetErrorY(i));
+	  }
+
+	  g_P2->SetMarkerStyle(20);
+	  g_P2->Draw("EPX0SAME");
+	  g_P2_tot->SetMarkerStyle(20);
+	  g_P2_tot->Draw("E1PX0SAME");
+	  g_P2_stat->SetMarkerStyle(20);
+	  g_P2_stat->Draw("E1PX0SAME");
 	}
 
 	TLatex *t4 = new TLatex();
@@ -1111,6 +1024,40 @@ string subdir="0";
 	OLine4->SetLineColor(kBlue-4);
 	OLine4->SetLineWidth(2);
 	OLine4->Draw();
+
+	pad2->cd();
+
+	TH1F *h_M3 = h_data_b->Clone();
+	TH1F *h_M3_tot = h_data_b_tot->Clone();
+	TH1F *h_M3_stat = h_data_b_stat->Clone();
+
+	h_M3->Divide(h_mcg3_b);
+	h_M3_tot->Divide(h_mcg3_b);
+	h_M3_stat->Divide(h_mcg3_b);
+
+	TGraphErrors *g_M = new TGraphErrors(h_M3);
+	TGraphErrors *g_M_tot = new TGraphErrors(h_M3_tot);
+	TGraphErrors *g_M_stat = new TGraphErrors(h_M3_stat);
+
+	for (int i=0; i<g_M->GetN(); i++) {
+	  double x, y;
+	  g_M->GetPoint(i,x,y);
+	  g_M->SetPoint(i,x+2,y);
+	  g_M->SetPointError(i,0.,g_M->GetErrorY(i));
+	  g_M_stat->GetPoint(i,x,y);
+	  g_M_stat->SetPoint(i,x+2,y);
+	  g_M_stat->SetPointError(i,0.,g_M_stat->GetErrorY(i));
+	  g_M_tot->GetPoint(i,x,y);
+	  g_M_tot->SetPoint(i,x+2,y);
+	  g_M_tot->SetPointError(i,0.,g_M_tot->GetErrorY(i));
+	}
+
+	g_M->SetMarkerStyle(25);
+	g_M->Draw("EP0SAME");
+	g_M_stat->SetMarkerStyle(25);
+	g_M_stat->Draw("EP0SAME");
+	g_M_tot->SetMarkerStyle(25);
+	g_M_tot->Draw("EP0SAME");
 
 	c1->cd();
 
