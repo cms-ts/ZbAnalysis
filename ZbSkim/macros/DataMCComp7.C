@@ -838,11 +838,11 @@ string subdir="0";
 	  }
 
 	  g_M2->SetMarkerStyle(20);
-	  g_M2->Draw("EPX0SAME");
+	  g_M2->Draw("EP0SAME");
 	  g_M2_tot->SetMarkerStyle(20);
-	  g_M2_tot->Draw("EPX0SAME");
+	  g_M2_tot->Draw("E1P0SAME");
 	  g_M2_stat->SetMarkerStyle(20);
-	  g_M2_stat->Draw("EPX0SAME");
+	  g_M2_stat->Draw("E1P0SAME");
 	}
 
 	TLatex *t2 = new TLatex();
@@ -922,11 +922,11 @@ string subdir="0";
 	  }
 
 	  g_S2->SetMarkerStyle(20);
-	  g_S2->Draw("EPX0SAME");
+	  g_S2->Draw("EP0SAME");
 	  g_S2_tot->SetMarkerStyle(20);
-	  g_S2_tot->Draw("EPX0SAME");
+	  g_S2_tot->Draw("E1P0SAME");
 	  g_S2_stat->SetMarkerStyle(20);
-	  g_S2_stat->Draw("EPX0SAME");
+	  g_S2_stat->Draw("E1P0SAME");
 	}
 
 	TLatex *t3 = new TLatex();
@@ -1006,11 +1006,11 @@ string subdir="0";
 	  }
 
 	  g_P2->SetMarkerStyle(20);
-	  g_P2->Draw("EPX0SAME");
+	  g_P2->Draw("EP0SAME");
 	  g_P2_tot->SetMarkerStyle(20);
-	  g_P2_tot->Draw("E1PX0SAME");
+	  g_P2_tot->Draw("E1P0SAME");
 	  g_P2_stat->SetMarkerStyle(20);
-	  g_P2_stat->Draw("E1PX0SAME");
+	  g_P2_stat->Draw("E1P0SAME");
 	}
 
 	TLatex *t4 = new TLatex();
