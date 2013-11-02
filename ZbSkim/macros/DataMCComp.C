@@ -38,6 +38,10 @@ int useFitResults=1;  // use fit results for c_t
 //int useEleMuo = 0; // use MC or fit results for c_t
 int useEleMuo = 1; // use e-mu fit results for c_t
 
+int useDY = 0; // use MadGraph DY
+//int useDY = 1; // use Sherpa DY
+//int useDY = 2; // use Powheg DY
+
 string subdir="0";
 string postfix="";
 if (irun==1) {             // irun==1 => JEC Up
@@ -140,6 +144,10 @@ if (irun==10) {            // irun==10 => bkg
 	if (ilepton==3) Lumi2012 = Lumi2012_ele_muon;
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
+	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
+	double norm1_2;
+	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
+	if (ilepton==2) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
 	double norm2 = ((Lumi2012 * Xsec_tt) / Ngen_tt);
 	if (useEleMuo && ilepton!=3) norm2 = (Lumi2012 / Lumi2012_ele_muon);
 	double norm3 = ((Lumi2012 * Xsec_zz) / Ngen_zz);
@@ -149,6 +157,10 @@ if (irun==10) {            // irun==10 => bkg
 	double norm7 = ((Lumi2012 * Xsec_wj) / Ngen_wj);
 
 	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
+	double enorm1_1 = ((Lumi2012 * eXsec_dy_1) / Ngen_dy_1);
+	double enorm1_2;
+	if (ilepton==1) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_ee);
+	if (ilepton==2) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_mm);
 	double enorm2 = ((Lumi2012 * eXsec_tt) / Ngen_tt);
 	double enorm3 = ((Lumi2012 * eXsec_zz) / Ngen_zz);
 	double enorm4 = ((Lumi2012 * eXsec_wz) / Ngen_wz);
@@ -173,6 +185,17 @@ if (irun==10) {            // irun==10 => bkg
 	if (ilepton==3) data = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
 
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
+	if (useDY==1) {
+	  norm1 = norm1_1;
+	  enorm1 = enorm1_1;
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+	}
+	if (useDY==2) {
+	  norm1 = norm1_2;
+	  enorm1 = enorm1_2;
+	  if (ilepton==1) mc1 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
+	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
+	}
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
 	TFile *mc3 = TFile::Open((path + "/" + version + "/" + "ZZ.root").c_str());
 	TFile *mc4 = TFile::Open((path + "/" + version + "/" + "WZ.root").c_str());
@@ -731,6 +754,9 @@ if (irun==10) {            // irun==10 => bkg
 	    fitLabel->DrawLatex(0.68, 0.38, buff);
 	  }
 	}
+
+	if (useDY==1) subdir = subdir + "_sherpa";
+	if (useDY==2) subdir = subdir + "_powheg";
 
 	if (plot) {
 	  if (doBkg) title = title + "_doBkg";
