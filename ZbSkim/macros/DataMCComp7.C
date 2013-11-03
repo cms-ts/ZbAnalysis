@@ -32,6 +32,7 @@ string subdir="0";
 	  gROOT->GetColor(kGreen+2)->SetAlpha(0.5);
 	  gROOT->GetColor(kMagenta-6)->SetAlpha(0.5);
 	  gROOT->GetColor(kBlue-4)->SetAlpha(0.5);
+	  gROOT->GetColor(kOrange+7)->SetAlpha(0.5);
 	}
 
 	/* efficiency */
@@ -564,10 +565,10 @@ string subdir="0";
 	  h_mcg2_b->Draw("E5SAME");
 	}
 
-	h_mcg3_b->SetLineColor(kOrange-4);
+	h_mcg3_b->SetLineColor(kOrange+7);
 	h_mcg3_b->SetLineWidth(2);
-	h_mcg3_b->SetFillColor(kOrange-4);
-	h_mcg3_b->SetMarkerColor(kOrange-4);
+	h_mcg3_b->SetFillColor(kOrange+7);
+	h_mcg3_b->SetMarkerColor(kOrange+7);
 	if (isratio==1) {
 	  h_mcg3_b->Draw("E5SAME");
 	}
@@ -707,10 +708,10 @@ string subdir="0";
 	  tmp4_2->SetFillColor(0);
 	  tmp4_2->DrawClone("HISTLSAME");
 
-	  h_mcg3->SetLineColor(kOrange-4);
+	  h_mcg3->SetLineColor(kOrange+7);
 	  h_mcg3->SetLineWidth(2);
-	  h_mcg3->SetMarkerColor(kOrange-4);
-	  h_mcg3->SetFillColor(kOrange-4);
+	  h_mcg3->SetMarkerColor(kOrange+7);
+	  h_mcg3->SetFillColor(kOrange+7);
 
 	  h_data_tot->SetMarkerColor(kRed);
 	  h_data_tot->SetLineColor(kRed);
@@ -1042,6 +1043,11 @@ string subdir="0";
 	g_M3_stat->Draw("EP0SAME");
 	g_M3_tot->SetMarkerStyle(25);
 	g_M3_tot->Draw("EP0SAME");
+
+	TLine *OLine5 = new TLine(h_P->GetXaxis()->GetXmin(),0.93,h_P->GetXaxis()->GetXmax(),0.93);
+	OLine5->SetLineColor(kOrange+7);
+	OLine5->SetLineWidth(2);
+	OLine5->Draw();
 
 	c1->cd();
 
