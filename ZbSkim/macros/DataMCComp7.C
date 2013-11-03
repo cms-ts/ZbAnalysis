@@ -805,6 +805,7 @@ string subdir="0";
 	h_M->GetYaxis()->SetRangeUser(-0.2, 2.2);
 	h_M->GetYaxis()->SetTitleOffset(0.21);
 	h_M->GetYaxis()->SetTickLength(0.02);
+
 	h_M->SetMarkerStyle(24);
 	h_M->Draw("EPX0");
 	h_M_tot->SetMarkerStyle(24);
@@ -885,6 +886,7 @@ string subdir="0";
 	h_S->GetYaxis()->SetRangeUser(-0.2, 2.2);
 	h_S->GetYaxis()->SetTitleOffset(0.21);
 	h_S->GetYaxis()->SetTickLength(0.02);
+
 	h_S->SetMarkerStyle(24);
 	h_S->Draw("EPX0");
 	h_S_tot->SetMarkerStyle(24);
@@ -965,6 +967,7 @@ string subdir="0";
 	h_P->GetYaxis()->SetRangeUser(-0.2, 2.2);
 	h_P->GetYaxis()->SetTitleOffset(0.32);
 	h_P->GetYaxis()->SetTickLength(0.02);
+
 	h_P->SetMarkerStyle(24);
 	h_P->Draw("EPX0");
 	h_P_tot->SetMarkerStyle(24);
