@@ -762,8 +762,9 @@ if (irun==10) {            // irun==10 => bkg
 
 	  TGraphErrors *g_M2 = new TGraphErrors(h_M2);
 
+	  float dx = 0.1*(g_M2->GetXaxis()->GetXmax()-g_M2->GetXaxis()->GetXmin())/g_M2->GetN();
 	  for (int i=0; i<g_M2->GetN(); i++) {
-	    g_M2->SetPoint(i, g_M2->GetX()[i]-2, g_M2->GetY()[i]);
+	    g_M2->SetPoint(i, g_M2->GetX()[i]-dx, g_M2->GetY()[i]);
 	    g_M2->SetPointError(i, 0, g_M2->GetEY()[i]);
 	  }
 
@@ -819,8 +820,9 @@ if (irun==10) {            // irun==10 => bkg
 
 	  TGraphErrors *g_S2 = new TGraphErrors(h_S2);
 
+	  float dx = 0.1*(g_S2->GetXaxis()->GetXmax()-g_S2->GetXaxis()->GetXmin())/g_S2->GetN();
 	  for (int i=0; i<g_S2->GetN(); i++) {
-	    g_S2->SetPoint(i, g_S2->GetX()[i]-2, g_S2->GetY()[i]);
+	    g_S2->SetPoint(i, g_S2->GetX()[i]-dx, g_S2->GetY()[i]);
 	    g_S2->SetPointError(i, 0, g_S2->GetEY()[i]);
 	  }
 
@@ -876,8 +878,9 @@ if (irun==10) {            // irun==10 => bkg
 
 	  TGraphErrors *g_P2 = new TGraphErrors(h_P2);
 
+	  float dx = 0.1*(g_P2->GetXaxis()->GetXmax()-g_P2->GetXaxis()->GetXmin())/g_P2->GetN();
 	  for (int i=0; i<g_P2->GetN(); i++) {
-	    g_P2->SetPoint(i, g_P2->GetX()[i]-2, g_P2->GetY()[i]);
+	    g_P2->SetPoint(i, g_P2->GetX()[i]-dx, g_P2->GetY()[i]);
 	    g_P2->SetPointError(i, 0, g_P2->GetEY()[i]);
 	  }
 

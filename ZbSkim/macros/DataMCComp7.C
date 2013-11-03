@@ -826,12 +826,13 @@ string subdir="0";
 	  TGraphErrors *g_M2_tot = new TGraphErrors(h_M2_tot);
 	  TGraphErrors *g_M2_stat = new TGraphErrors(h_M2_stat);
 
+	  float dx = 0.1*(g_M2->GetXaxis()->GetXmax()-g_M2->GetXaxis()->GetXmin())/g_M2->GetN();
 	  for (int i=0; i<g_M2->GetN(); i++) {
-	    g_M2->SetPoint(i, g_M2->GetX()[i]-2, g_M2->GetY()[i]);
+	    g_M2->SetPoint(i, g_M2->GetX()[i]-dx, g_M2->GetY()[i]);
 	    g_M2->SetPointError(i, 0, g_M2->GetEY()[i]);
-	    g_M2_stat->SetPoint(i, g_M2_stat->GetX()[i]-2, g_M2_stat->GetY()[i]);
+	    g_M2_stat->SetPoint(i, g_M2_stat->GetX()[i]-dx, g_M2_stat->GetY()[i]);
 	    g_M2_stat->SetPointError(i, 0, g_M2_stat->GetEY()[i]);
-	    g_M2_tot->SetPoint(i, g_M2_tot->GetX()[i]-2, g_M2_tot->GetY()[i]);
+	    g_M2_tot->SetPoint(i, g_M2_tot->GetX()[i]-dx, g_M2_tot->GetY()[i]);
 	    g_M2_tot->SetPointError(i, 0, g_M2_tot->GetEY()[i]);
 	  }
 
@@ -907,12 +908,13 @@ string subdir="0";
 	  TGraphErrors *g_S2_tot = new TGraphErrors(h_S2_tot);
 	  TGraphErrors *g_S2_stat = new TGraphErrors(h_S2_stat);
 
+	  float dx = 0.1*(g_S2->GetXaxis()->GetXmax()-g_S2->GetXaxis()->GetXmin())/g_S2->GetN();
 	  for (int i=0; i<g_S2->GetN(); i++) {
-	    g_S2->SetPoint(i, g_S2->GetX()[i]-2, g_S2->GetY()[i]);
+	    g_S2->SetPoint(i, g_S2->GetX()[i]-dx, g_S2->GetY()[i]);
 	    g_S2->SetPointError(i, 0, g_S2->GetEY()[i]);
-	    g_S2_stat->SetPoint(i, g_S2_stat->GetX()[i]-2, g_S2_stat->GetY()[i]);
+	    g_S2_stat->SetPoint(i, g_S2_stat->GetX()[i]-dx, g_S2_stat->GetY()[i]);
 	    g_S2_stat->SetPointError(i, 0, g_S2_stat->GetEY()[i]);
-	    g_S2_tot->SetPoint(i, g_S2_tot->GetX()[i]-2, g_S2_tot->GetY()[i]);
+	    g_S2_tot->SetPoint(i, g_S2_tot->GetX()[i]-dx, g_S2_tot->GetY()[i]);
 	    g_S2_tot->SetPointError(i, 0, g_S2_tot->GetEY()[i]);
 	  }
 
@@ -988,12 +990,13 @@ string subdir="0";
 	  TGraphErrors *g_P2_tot = new TGraphErrors(h_P2_tot);
 	  TGraphErrors *g_P2_stat = new TGraphErrors(h_P2_stat);
 
+	  float dx = 0.1*(g_P2->GetXaxis()->GetXmax()-g_P2->GetXaxis()->GetXmin())/g_P2->GetN();
 	  for (int i=0; i<g_P2->GetN(); i++) {
-	    g_P2->SetPoint(i, g_P2->GetX()[i]-2, g_P2->GetY()[i]);
+	    g_P2->SetPoint(i, g_P2->GetX()[i]-dx, g_P2->GetY()[i]);
 	    g_P2->SetPointError(i, 0, g_P2->GetEY()[i]);
-	    g_P2_stat->SetPoint(i, g_P2_stat->GetX()[i]-2, g_P2_stat->GetY()[i]);
+	    g_P2_stat->SetPoint(i, g_P2_stat->GetX()[i]-dx, g_P2_stat->GetY()[i]);
 	    g_P2_stat->SetPointError(i, 0, g_P2_stat->GetEY()[i]);
-	    g_P2_tot->SetPoint(i, g_P2_tot->GetX()[i]-2, g_P2_tot->GetY()[i]);
+	    g_P2_tot->SetPoint(i, g_P2_tot->GetX()[i]-dx, g_P2_tot->GetY()[i]);
 	    g_P2_tot->SetPointError(i, 0, g_P2_tot->GetEY()[i]);
 	  }
 
@@ -1031,12 +1034,13 @@ string subdir="0";
 	TGraphErrors *g_M3_tot = new TGraphErrors(h_M3_tot);
 	TGraphErrors *g_M3_stat = new TGraphErrors(h_M3_stat);
 
+	float dx = 0.1*(g_M3->GetXaxis()->GetXmax()-g_M3->GetXaxis()->GetXmin())/g_M3->GetN();
 	for (int i=0; i<g_M3->GetN(); i++) {
-	  g_M3->SetPoint(i, g_M3->GetX()[i]+2, g_M3->GetY()[i]);
+	  g_M3->SetPoint(i, g_M3->GetX()[i]+dx, g_M3->GetY()[i]);
 	  g_M3->SetPointError(i, 0, g_M3->GetEY()[i]);
-	  g_M3_stat->SetPoint(i, g_M3_stat->GetX()[i]+2, g_M3_stat->GetY()[i]);
+	  g_M3_stat->SetPoint(i, g_M3_stat->GetX()[i]+dx, g_M3_stat->GetY()[i]);
 	  g_M3_stat->SetPointError(i, 0, g_M3_stat->GetEY()[i]);
-	  g_M3_tot->SetPoint(i, g_M3_tot->GetX()[i]+2, g_M3_tot->GetY()[i]);
+	  g_M3_tot->SetPoint(i, g_M3_tot->GetX()[i]+dx, g_M3_tot->GetY()[i]);
 	  g_M3_tot->SetPointError(i, 0, g_M3_tot->GetEY()[i]);
 	}
 
