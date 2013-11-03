@@ -355,6 +355,7 @@ if (irun==10) {            // irun==10 => bkg
 	  h_data->Add(h_mc4, -1.);
 	  h_data->Add(h_mc3, -1.);
 	  h_data->Add(h_mc2, -1.);
+	  h_data->Add(h_mc1t, -1.);
 	}
 
 	if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
@@ -377,6 +378,7 @@ if (irun==10) {            // irun==10 => bkg
 //	    h_data_fit->Add(h_mc5, -1.);
 	    h_data_fit->Add(h_mc4, -1.);
 	    h_data_fit->Add(h_mc3, -1.);
+	    h_data_fit->Add(h_mc1t, -1.);
 	  }
 	  h_data_fit->Add(h_mc1, -1.);
 	  if (h_mc1b) h_data_fit->Add(h_mc1b, -1.);
@@ -451,6 +453,7 @@ if (irun==10) {            // irun==10 => bkg
 //	    h_data_fit->Add(h_mc5, -1.);
 	    h_data_fit->Add(h_mc4, -1.);
 	    h_data_fit->Add(h_mc3, -1.);
+	    h_data_fit->Add(h_mc1t, -1.);
 	  }
 	  h_mc_fit0 = h_mc1;
 	  if (h_mc1b) h_mc_fit0->Add(h_mc1b, 1.);
@@ -479,6 +482,7 @@ if (irun==10) {            // irun==10 => bkg
 	    h_data_fit->Add(h_mc4, -1.);
 	    h_data_fit->Add(h_mc3, -1.);
 	    h_data_fit->Add(h_mc2, -1.);
+	    h_data_fit->Add(h_mc1t, -1.);
 	  }
 	  h_mc_fit0 = h_mc1;
 	  h_mc_fit1 = h_mc1b;
