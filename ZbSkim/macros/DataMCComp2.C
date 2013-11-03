@@ -735,6 +735,8 @@ if (irun==10) {            // irun==10 => bkg
 	pad2->cd();
 
 	TH1F *h_M = h_data_b->Clone();
+	h_M->Divide(h_mcg_b);
+
 	h_M->SetTitle("");
 	h_M->SetStats(0);
 	h_M->GetXaxis()->SetTitleOffset(0.9);
@@ -750,27 +752,23 @@ if (irun==10) {            // irun==10 => bkg
 	h_M->GetYaxis()->SetRangeUser(-0.2, 2.2);
 	h_M->GetYaxis()->SetTitleOffset(0.21);
 	h_M->GetYaxis()->SetTickLength(0.02);
-	h_M->Divide(h_mcg_b);
+
 	h_M->SetMarkerStyle(24);
 	h_M->Draw("EPX0");
+
 	if (isratio==0) {
 	  TH1F *h_M2= h_data->Clone();
-	  h_M2->GetXaxis()->SetTitleOffset(0.9);
-	  h_M2->GetXaxis()->SetTitleSize(0.14);
-	  h_M2->GetXaxis()->SetLabelFont(42);
-	  h_M2->GetXaxis()->SetLabelSize(0.12);
-	  h_M2->GetXaxis()->SetTitleFont(42);
-	  h_M2->GetXaxis()->SetTickLength(0.1);
-	  h_M2->GetYaxis()->SetTitle("Data / Theory");
-	  h_M2->GetYaxis()->SetNdivisions(013);
-	  h_M2->GetYaxis()->SetTitleSize(0.17);
-	  h_M2->GetYaxis()->SetLabelSize(0.17);
-	  h_M2->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_M2->GetYaxis()->SetTitleOffset(0.21);
-	  h_M2->GetYaxis()->SetTickLength(0.02);
 	  h_M2->Divide(h_mcg);
-	  h_M2->SetMarkerStyle(20);
-	  h_M2->Draw("EPX0SAME");
+
+	  TGraphErrors *g_M2 = new TGraphErrors(h_M2);
+
+	  for (int i=0; i<g_M2->GetN(); i++) {
+	    g_M2->SetPoint(i, g_M2->GetX()[i]-2, g_M2->GetY()[i]);
+	    g_M2->SetPointError(i, 0, g_M2->GetEY()[i]);
+	  }
+
+	  g_M2->SetMarkerStyle(20);
+	  g_M2->Draw("EP0SAME");
 	}
 
 	TLatex *t2 = new TLatex();
@@ -794,6 +792,8 @@ if (irun==10) {            // irun==10 => bkg
 	pad3->cd();
 
 	TH1F *h_S = h_data_b->Clone();
+	h_S->Divide(h_mcg1_b);
+
 	h_S->SetTitle("");
 	h_S->SetStats(0);
 	h_S->GetXaxis()->SetTitleOffset(0.9);
@@ -809,27 +809,23 @@ if (irun==10) {            // irun==10 => bkg
 	h_S->GetYaxis()->SetRangeUser(-0.2, 2.2);
 	h_S->GetYaxis()->SetTitleOffset(0.21);
 	h_S->GetYaxis()->SetTickLength(0.02);
-	h_S->Divide(h_mcg1_b);
+
 	h_S->SetMarkerStyle(24);
 	h_S->Draw("EPX0");
+
 	if (isratio==0) {
 	  TH1F *h_S2= h_data->Clone();
-	  h_S2->GetXaxis()->SetTitleOffset(0.9);
-	  h_S2->GetXaxis()->SetTitleSize(0.14);
-	  h_S2->GetXaxis()->SetLabelFont(42);
-	  h_S2->GetXaxis()->SetLabelSize(0.12);
-	  h_S2->GetXaxis()->SetTitleFont(42);
-	  h_S2->GetXaxis()->SetTickLength(0.1);
-	  h_S2->GetYaxis()->SetTitle("Data / Theory");
-	  h_S2->GetYaxis()->SetNdivisions(013);
-	  h_S2->GetYaxis()->SetTitleSize(0.17);
-	  h_S2->GetYaxis()->SetLabelSize(0.17);
-	  h_S2->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_S2->GetYaxis()->SetTitleOffset(0.21);
-	  h_S2->GetYaxis()->SetTickLength(0.02);
 	  h_S2->Divide(h_mcg1);
-	  h_S2->SetMarkerStyle(20);
-	  h_S2->Draw("EPX0SAME");
+
+	  TGraphErrors *g_S2 = new TGraphErrors(h_S2);
+
+	  for (int i=0; i<g_S2->GetN(); i++) {
+	    g_S2->SetPoint(i, g_S2->GetX()[i]-2, g_S2->GetY()[i]);
+	    g_S2->SetPointError(i, 0, g_S2->GetEY()[i]);
+	  }
+
+	  g_S2->SetMarkerStyle(20);
+	  g_S2->Draw("EP0SAME");
 	}
 
 	TLatex *t3 = new TLatex();
@@ -853,6 +849,8 @@ if (irun==10) {            // irun==10 => bkg
 	pad4->cd();
 
 	TH1F *h_P = h_data_b->Clone();
+	h_P->Divide(h_mcg2_b);
+
 	h_P->SetTitle("");
 	h_P->SetStats(0);
 	h_P->GetXaxis()->SetTitleOffset(0.9);
@@ -868,27 +866,23 @@ if (irun==10) {            // irun==10 => bkg
 	h_P->GetYaxis()->SetRangeUser(-0.2, 2.2);
 	h_P->GetYaxis()->SetTitleOffset(0.32);
 	h_P->GetYaxis()->SetTickLength(0.02);
-	h_P->Divide(h_mcg2_b);
+
 	h_P->SetMarkerStyle(24);
 	h_P->Draw("EPX0");
+
 	if (isratio==0) {
 	  TH1F *h_P2= h_data->Clone();
-	  h_P2->GetXaxis()->SetTitleOffset(0.9);
-	  h_P2->GetXaxis()->SetTitleSize(0.14);
-	  h_P2->GetXaxis()->SetLabelFont(42);
-	  h_P2->GetXaxis()->SetLabelSize(0.12);
-	  h_P2->GetXaxis()->SetTitleFont(42);
-	  h_P2->GetXaxis()->SetTickLength(0.1);
-	  h_P2->GetYaxis()->SetTitle("Data / Theory");
-	  h_P2->GetYaxis()->SetNdivisions(013);
-	  h_P2->GetYaxis()->SetTitleSize(0.11);
-	  h_P2->GetYaxis()->SetLabelSize(0.11);
-	  h_P2->GetYaxis()->SetRangeUser(-0.2, 2.2);
-	  h_P2->GetYaxis()->SetTitleOffset(0.32);
-	  h_P2->GetYaxis()->SetTickLength(0.02);
 	  h_P2->Divide(h_mcg2);
-	  h_P2->SetMarkerStyle(20);
-	  h_P2->Draw("EPX0SAME");
+
+	  TGraphErrors *g_P2 = new TGraphErrors(h_P2);
+
+	  for (int i=0; i<g_P2->GetN(); i++) {
+	    g_P2->SetPoint(i, g_P2->GetX()[i]-2, g_P2->GetY()[i]);
+	    g_P2->SetPointError(i, 0, g_P2->GetEY()[i]);
+	  }
+
+	  g_P2->SetMarkerStyle(20);
+	  g_P2->Draw("EP0SAME");
 	}
 
 	TLatex *t4 = new TLatex();
