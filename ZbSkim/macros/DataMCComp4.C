@@ -504,7 +504,7 @@ if (irun==10) {            // irun==10 => bkg
 	TCanvas* c3 = new TCanvas("c3", "c3", 800, 600);
 	c3->cd();
 	c3->SetLogz();
-	TH2F* h_response = response.Hresponse();
+	TH2F* h_response = response.Hresponse()->Clone();
 	h_response->SetStats(0);
 	h_response->SetTitle("Response matrix: (x,y)=(measured,truth)");
 	h_response->GetXaxis()->SetTitle(tmp->GetXaxis()->GetTitle());
