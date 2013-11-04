@@ -69,6 +69,16 @@ if (irun==10) {            // irun==10 => bkg
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	}
+	if (useDY==2) {
+	  if (ilepton==1) {
+	    mc1 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
+	    mc2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
+	  }
+	  if (ilepton==2) {
+	    mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
+	    mc2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
+	  }
+	}
 
 /* efficiency:  e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b */
 
