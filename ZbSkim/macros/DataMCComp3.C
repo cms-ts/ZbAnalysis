@@ -5,6 +5,10 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp3(int irun=0, string& title="", int plot=0, int ilepton=1) {
 
+int useDY = 0; // use MadGraph DY
+//int useDY = 1; // use Sherpa DY
+//int useDY = 2; // use Powheg DY
+
 string subdir="0";
 string postfix="";
 if (irun==1) {             // irun==1 => JEC Up
@@ -61,6 +65,10 @@ if (irun==10) {            // irun==10 => bkg
 
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (useDY==1) {
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+	}
 
 /* efficiency:  e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b */
 
@@ -171,6 +179,9 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	Label->DrawLatex(0.50, 0.68, buff);
 
 	c2->Update();
+
+	if (useDY==1) subdir = subdir + "_sherpa";
+	if (useDY==2) subdir = subdir + "_powheg";
 
 	if (plot) {
 	  ofstream out;
