@@ -24,6 +24,14 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp2.C\($d,\"w_delta_phi_mm\",1,$i,0\)
   root -l -q -b DataMCComp2.C\($d,\"w_delta_phi_ee\",1,$i,0\)
 
+  root -l -q -b DataMCComp2.C\($d,\"w_single_bjet_pt\",1,$i,0\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_bjet_eta\",1,$i,0\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_pt_Z_ee_b\",1,$i,0\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_pt_Z_mm_b\",1,$i,0\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_delta_ee_b\",1,$i,0\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_delta_mm_b\",1,$i,0\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_Ht_b\",1,$i,0\)
+
   i=$((i+1))
 done
 
@@ -39,6 +47,14 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp2.C\($d,\"w_Ht\",1,$i,1\)
   root -l -q -b DataMCComp2.C\($d,\"w_delta_phi_mm\",1,$i,1\)
   root -l -q -b DataMCComp2.C\($d,\"w_delta_phi_ee\",1,$i,1\)
+
+  root -l -q -b DataMCComp2.C\($d,\"w_single_bjet_pt\",1,$i,1\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_bjet_eta\",1,$i,1\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_pt_Z_ee_b\",1,$i,1\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_pt_Z_mm_b\",1,$i,1\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_delta_ee_b\",1,$i,1\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_delta_mm_b\",1,$i,1\)
+  root -l -q -b DataMCComp2.C\($d,\"w_single_Ht_b\",1,$i,1\)
 
   i=$((i+1))
 done
