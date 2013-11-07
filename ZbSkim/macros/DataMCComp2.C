@@ -206,7 +206,11 @@ if (irun==10) {            // irun==10 => bkg
         }
 
 	if (title.find("_single_")!=string::npos) {
-	  title.erase(title.find("_single_")+1, 7);
+	  if (title.find("_jet_")!=string::npos) {
+	    title.replace(title.find("_single_"), 8, "_first_");
+	  } else {
+	    title.erase(title.find("_single_")+1, 7);
+	  }
 	}
 
 	if (ilepton==1) data->cd(("demoEle"+postfix).c_str());
