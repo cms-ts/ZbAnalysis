@@ -205,6 +205,10 @@ if (irun==10) {            // irun==10 => bkg
 	  title_b = title + "_b";
         }
 
+	if (title.find("_single_")!=string::npos) {
+	  title.erase(title.find("_single_")+1, 7);
+	}
+
 	if (ilepton==1) data->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) data->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_data;
