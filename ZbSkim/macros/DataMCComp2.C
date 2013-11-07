@@ -697,8 +697,8 @@ if (irun==10) {            // irun==10 => bkg
 	  if (ilepton==1) {
 	    leg->AddEntry(h_data,"Z(#rightarrow ee) DATA","p");
 	    leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
-	    leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
-	    //leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph","l");
+	    //leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
+	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph","l");
 	    leg->AddEntry(h_mcg1,"Z(#rightarrow ee) Sherpa","l");
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow ee) Powheg","l");
 	  }
