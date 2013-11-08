@@ -265,10 +265,16 @@ if (irun==10) {            // irun==10 => bkg
 	TH1F* h_mcg1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
+	if (!h_mcg1) h_mcg1 = h_mcg;
+	if (!h_mcg1_b) h_mcg1_b = h_mcg_b;
+
 	if (ilepton==1) mcg2->cd("demoEleGen");
 	if (ilepton==2) mcg2->cd("demoMuoGen");
 	TH1F* h_mcg2 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg2_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
+	if (!h_mcg2) h_mcg2 = h_mcg;
+	if (!h_mcg2_b) h_mcg2_b = h_mcg_b;
 
 	if (ilepton==1) mc2->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) mc2->cd(("demoMuo"+postfix).c_str());
