@@ -138,9 +138,9 @@ private:
       w1n = w1n + w;
     }
 
-    if (k==0) return (1.0-w0n);
-    if (k==1) return (w1n);
-    if (k==2) return (1.0-w0n-w1n);
+    if (k==0) return (1.0-w0n);     // >= 1 b tagged jet
+    if (k==1) return (w1n);         // == 1 b tagged jet
+    if (k==2) return (1.0-w0n-w1n); // >= 2 b tagged jet
     if (k==3) return (1.0-w0n-w1n); /// FIXME //
     return (0);
 
@@ -165,6 +165,7 @@ private:
   std::string lepton_;
   double par_;
   bool usePartonFlavour_;
+  bool pcut_;
   std::string path_;
   unsigned int icut_;
 
@@ -504,6 +505,21 @@ private:
   TH1F*     t_BJP;
   TH1F*     t_JBP;
 
+  TH1F*     w_BJP0;
+  TH1F*     b_BJP0;
+  TH1F*     c_BJP0;
+  TH1F*     t_BJP0;
+
+  TH1F*     w_BJP1;
+  TH1F*     b_BJP1;
+  TH1F*     c_BJP1;
+  TH1F*     t_BJP1;
+
+  TH1F*     w_BJP2;
+  TH1F*     b_BJP2;
+  TH1F*     c_BJP2;
+  TH1F*     t_BJP2;
+
   TH1F*     w_BJP_mass;
   TH1F*     w_JBP_mass;
   TH1F*     b_BJP_mass;
@@ -594,6 +610,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   path_ =   iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
   icut_ =   iConfig.getUntrackedParameter <unsigned int> ("icut", 0);
   usePartonFlavour_ = iConfig.getUntrackedParameter <bool> ("usePartonFlavour", false);
+  pcut_ = iConfig.getUntrackedParameter <bool> ("pcut", false); 
 
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
@@ -915,6 +932,21 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_JBP       =     fs->make < TH1F > ("c_JBP",   "c_JBP", 50, 0, 3);
   t_BJP       =     fs->make < TH1F > ("t_BJP",   "t_BJP", 50, 0, 10);
   t_JBP       =     fs->make < TH1F > ("t_JBP",   "t_JBP", 50, 0, 3);
+
+  w_BJP0       =     fs->make < TH1F > ("w_BJP0",   "w_BJP0", 50, 0, 10);
+  b_BJP0       =     fs->make < TH1F > ("b_BJP0",   "b_BJP0", 50, 0, 10);
+  c_BJP0       =     fs->make < TH1F > ("c_BJP0",   "c_BJP0", 50, 0, 10);
+  t_BJP0       =     fs->make < TH1F > ("t_BJP0",   "t_BJP0", 50, 0, 10);
+
+  w_BJP1       =     fs->make < TH1F > ("w_BJP1",   "w_BJP1", 50, 0, 10);
+  b_BJP1       =     fs->make < TH1F > ("b_BJP1",   "b_BJP1", 50, 0, 10);
+  c_BJP1       =     fs->make < TH1F > ("c_BJP1",   "c_BJP1", 50, 0, 10);
+  t_BJP1       =     fs->make < TH1F > ("t_BJP1",   "t_BJP1", 50, 0, 10);
+  
+  w_BJP2       =     fs->make < TH1F > ("w_BJP2",   "w_BJP2", 50, 0, 10);
+  b_BJP2       =     fs->make < TH1F > ("b_BJP2",   "b_BJP2", 50, 0, 10);
+  c_BJP2       =     fs->make < TH1F > ("c_BJP2",   "c_BJP2", 50, 0, 10);
+  t_BJP2       =     fs->make < TH1F > ("t_BJP2",   "t_BJP2", 50, 0, 10);
 
   w_BJP_mass  =     fs->make < TH1F > ("w_BJP_mass",   "w_BJP_mass", 50, 0, 10);
   w_JBP_mass  =     fs->make < TH1F > ("w_JBP_mass",   "w_JBP_mass", 50, 0, 3);
@@ -1465,8 +1497,14 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   if (icut_==18 && Nb>0 && vect_bjets[0].pt()> 50    && vect_bjets[0].pt()< 60)  iflag_mm=true;
   if (icut_==19 && Nb>0 && vect_bjets[0].pt()> 60    && vect_bjets[0].pt()< 80)  iflag_mm=true;
   if (icut_==20 && Nb>0 && vect_bjets[0].pt()> 80    && vect_bjets[0].pt()< 350) iflag_mm=true;
-  
-  
+
+    if (Nb > 0 && pcut_) {
+    double discrBJP = vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags");
+    ee_event = ee_event && (discrBJP > 5.);
+    mm_event = mm_event && (discrBJP > 5.);
+    em_event = em_event && (discrBJP > 5.);
+    } 
+
   ee_event = ee_event && iflag_ee;
   mm_event = mm_event && iflag_mm;
   em_event = em_event && (iflag_ee || iflag_mm);
@@ -2173,6 +2211,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     scalFac_b = btagSF(isMC, vect_jets, 0);
     double discrBJP = vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags");
     double discrJBP = vect_bjets[0].bDiscriminator("jetProbabilityBJetTags");
+    
     w_BJP->Fill (discrBJP, MyWeight*scalFac_b);
     w_JBP->Fill (discrJBP, MyWeight*scalFac_b);
     if (sumVertexMass > 0.0) {
@@ -2220,7 +2259,52 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       }
     }
   }
-
+   
+  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb == 1 && vtx_cut && met_cut) { 
+    double discrBJP = vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags");
+    scalFac_b = btagSF(isMC, vect_jets, 0);
+    w_BJP0->Fill (discrBJP, MyWeight*scalFac_b);
+    if (ist) {
+      t_BJP0->Fill (discrBJP, MyWeight*scalFac_b);
+    }
+    if (isb && !ist) {
+      b_BJP0->Fill (discrBJP, MyWeight*scalFac_b);
+    }
+    if (isc && !isb && !ist) {
+      c_BJP0->Fill (discrBJP, MyWeight*scalFac_b);
+    }
+  }
+  
+  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 1 && vtx_cut && met_cut) { 
+    double discrBJP = vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags");
+    scalFac_b = btagSF(isMC, vect_jets, 0);
+    w_BJP1->Fill (discrBJP, MyWeight*scalFac_b);
+    if (ist) {
+      t_BJP1->Fill (discrBJP, MyWeight*scalFac_b);
+    }
+    if (isb && !ist) {
+      b_BJP1->Fill (discrBJP, MyWeight*scalFac_b);
+    }
+    if (isc && !isb && !ist) {
+      c_BJP1->Fill (discrBJP, MyWeight*scalFac_b);
+    }
+  }
+  
+  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 1 && vtx_cut && met_cut) { 
+    double discrBJP2 = vect_bjets[1].bDiscriminator("jetBProbabilityBJetTags");
+    scalFac_b = btagSF(isMC, vect_jets, 2);
+    w_BJP2->Fill (discrBJP2, MyWeight*scalFac_b);
+    if (ist) {
+      t_BJP2->Fill (discrBJP2, MyWeight*scalFac_b);
+    }
+    if (isb && !ist) {
+      b_BJP2->Fill (discrBJP2, MyWeight*scalFac_b);
+    }
+    if (isc && !isb && !ist) {
+      c_BJP2->Fill (discrBJP2, MyWeight*scalFac_b);
+    }
+  }
+  
   // ++++++++ JETS PLOTS
 
   if ((ee_event || mm_event || em_event) && Nj > 0 && vtx_cut) {
