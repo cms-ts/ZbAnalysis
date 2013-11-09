@@ -344,11 +344,12 @@ if (irun==10) {            // irun==10 => bkg
 	    h_mc2->SetBinError(i, 0);
 	  }
         }
+	TVirtualFitter::SetDefaultFitter("Minuit2");
 	TVirtualFitter* fitter = TVirtualFitter::Fitter(0, 1);
 	fitter->SetFCN(fcn);
 	double arglist[1] = {-1.0};
 	fitter->ExecuteCommand("SET PRINT", arglist, 1);
-	fitter->SetParameter(0, "c(t)", 0.5, 0.1, 0.0, 1.0);
+	fitter->SetParameter(0, "c(t)", 0.50, 0.01, 0.00, 1.00);
 	fitter->ExecuteCommand("MIGRAD", arglist, 0);
 	h_data_fit->Scale(fitter->GetParameter(0));
       }

@@ -369,6 +369,7 @@ if (irun==10) {            // irun==10 => bkg
 	  h_mc1->SetBinError(i, TMath::Sqrt(e));
 	}
 
+	TVirtualFitter::SetDefaultFitter("Minuit2");
 	TVirtualFitter* fitter;
 	if (doFit==1) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
@@ -441,7 +442,7 @@ if (irun==10) {            // irun==10 => bkg
 	  fitter->SetFCN(fcn);
 	  double arglist[1] = {-1.0};
 	  fitter->ExecuteCommand("SET PRINT", arglist, 1);
-	  fitter->SetParameter(0, "c(t)", 1.0, 0.1, 0.0, 100.0);
+	  fitter->SetParameter(0, "c(t)", 1.00, 0.01, 0.00, 100.00);
 	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
 	  h_mc_fit0->Scale(fitter->GetParameter(0));
 	}
@@ -463,8 +464,8 @@ if (irun==10) {            // irun==10 => bkg
 	  fitter->SetFCN(fcn);
 	  double arglist[1] = {-1.0};
 	  fitter->ExecuteCommand("SET PRINT", arglist, 1);
-	  fitter->SetParameter(0, "c(Z+jets)", 1.0, 0.1, 0.0, 100.0);
-	  fitter->SetParameter(1, "c(t)", 1.0, 0.1, 0.0, 100.0);
+	  fitter->SetParameter(0, "c(Z+jets)", 1.00, 0.01, 0.00, 100.00);
+	  fitter->SetParameter(1, "c(t)", 1.00, 0.01, 0.00, 100.00);
 	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
 	  if (h_mc1b) h_mc_fit0->Add(h_mc1b, -1.);
 	  if (h_mc1c) h_mc_fit0->Add(h_mc1c, -1.);
@@ -525,9 +526,9 @@ if (irun==10) {            // irun==10 => bkg
 	  fitter->SetFCN(fcn);
 	  double arglist[1] = {-1.0};
 	  fitter->ExecuteCommand("SET PRINT", arglist, 1);
-	  fitter->SetParameter(0, "c(uds)", 1.0, 0.1, 0.0, 100.0);
-	  fitter->SetParameter(1, "c(b)", 1.0, 0.1, 0.0, 100.0);
-	  fitter->SetParameter(2, "c(c)", 1.0, 0.1, 0.0, 100.0);
+	  fitter->SetParameter(0, "c(uds)", 1.00, 0.01, 0.00, 100.00);
+	  fitter->SetParameter(1, "c(b)", 1.00, 0.01, 0.00, 100.00);
+	  fitter->SetParameter(2, "c(c)", 1.00, 0.01, 0.00, 100.00);
 	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
 	  h_mc_fit0->Scale(fitter->GetParameter(0));
 	  h_mc_fit1->Scale(fitter->GetParameter(1));
