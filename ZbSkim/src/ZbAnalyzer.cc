@@ -1499,10 +1499,11 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   if (icut_==20 && Nb>0 && vect_bjets[0].pt()> 80    && vect_bjets[0].pt()< 350) iflag_mm=true;
 
     if (Nb > 0 && pcut_) {
-    double discrBJP = vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags");
-    ee_event = ee_event && (discrBJP > 5.);
-    mm_event = mm_event && (discrBJP > 5.);
-    em_event = em_event && (discrBJP > 5.);
+      double discrBJP = vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags");
+      if (discrBJP <= 5.) {
+        Nb = 0;
+        vect_bjets.clear();
+      }
     } 
 
   ee_event = ee_event && iflag_ee;
