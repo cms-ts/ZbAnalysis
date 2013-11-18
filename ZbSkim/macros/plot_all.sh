@@ -90,6 +90,9 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\($d,\"w_Ht\",1,$i\)
   root -l -q -b DataMCComp.C\($d,\"w_Ht_b\",1,$i\)
 
+  root -l -q -b DataMCComp.C\($d,\"w_mass_zb\",1,$i\)
+  root -l -q -b DataMCComp.C\($d,\"w_mass_zj\",1,$i\)
+
   root -l -q -b DataMCComp.C\($d,\"w_first_jet_pt_b\",1,$i\)
   root -l -q -b DataMCComp.C\($d,\"w_first_jet_eta_b\",1,$i\)
   root -l -q -b DataMCComp.C\($d,\"w_second_jet_pt_b\",1,$i\)
@@ -130,6 +133,10 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\($d,\"w_BJP_nomass\",1,$i\)
   root -l -q -b DataMCComp.C\($d,\"w_JBP_nomass\",1,$i\)
 
+  root -l -q -b DataMCComp.C\($d,\"w_BJP0\",1,$i\)
+  root -l -q -b DataMCComp.C\($d,\"w_BJP1\",1,$i\)
+  root -l -q -b DataMCComp.C\($d,\"w_BJP2\",1,$i\)
+
   i=$((i+1))
 done
 
@@ -168,6 +175,9 @@ root -l -q -b DataMCComp.C\($d,\"w_MET_sign_b\",1,3\)
 
 root -l -q -b DataMCComp.C\($d,\"w_Ht\",1,3\)
 root -l -q -b DataMCComp.C\($d,\"w_Ht_b\",1,3\)
+  
+root -l -q -b DataMCComp.C\($d,\"w_mass_zb\",1,$i\)
+root -l -q -b DataMCComp.C\($d,\"w_mass_zj\",1,$i\)
 
 root -l -q -b DataMCComp.C\($d,\"w_bjetmultiplicity\",1,3\)
 root -l -q -b DataMCComp.C\($d,\"w_first_bjet_pt\",1,3\)
@@ -196,6 +206,10 @@ root -l -q -b DataMCComp.C\($d,\"w_JBP_mass\",1,3\)
 
 root -l -q -b DataMCComp.C\($d,\"w_BJP_nomass\",1,3\)
 root -l -q -b DataMCComp.C\($d,\"w_JBP_nomass\",1,3\)
+
+root -l -q -b DataMCComp.C\($d,\"w_BJP0\",1,3\)
+root -l -q -b DataMCComp.C\($d,\"w_BJP1\",1,3\)
+root -l -q -b DataMCComp.C\($d,\"w_BJP2\",1,3\)
 
 i=1
 while [ $i -le 2 ]; do
@@ -248,6 +262,18 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\($d,\"w_JBP_nomass\",1,$i,1,0\)
   root -l -q -b DataMCComp.C\($d,\"w_JBP_nomass\",1,$i,0,3\)
   root -l -q -b DataMCComp.C\($d,\"w_JBP_nomass\",1,$i,1,3\)
+  
+  root -l -q -b DataMCComp.C\($d,\"w_BJP0\",1,$i,1,0\)
+  root -l -q -b DataMCComp.C\($d,\"w_BJP1\",1,$i,0,3\)
+  root -l -q -b DataMCComp.C\($d,\"w_BJP2\",1,$i,1,3\)
+  
+  root -l -q -b DataMCComp.C\($d,\"w_BJP0\",1,$i,1,0\)
+  root -l -q -b DataMCComp.C\($d,\"w_BJP1\",1,$i,0,3\)
+  root -l -q -b DataMCComp.C\($d,\"w_BJP2\",1,$i,1,3\)
+  
+  root -l -q -b DataMCComp.C\($d,\"w_BJP0\",1,$i,1,0\)
+  root -l -q -b DataMCComp.C\($d,\"w_BJP1\",1,$i,0,3\)
+  root -l -q -b DataMCComp.C\($d,\"w_BJP2\",1,$i,1,3\)
 
   i=$((i+1))
 done

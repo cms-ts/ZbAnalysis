@@ -94,6 +94,9 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp5.C\($d,\"w_Ht\",1,$i\)
   root -l -q -b DataMCComp5.C\($d,\"w_Ht_b\",1,$i\)
 
+  root -l -q -b DataMCComp5.C\($d,\"w_mass_zb\",1,$i\)
+  root -l -q -b DataMCComp5.C\($d,\"w_mass_zj\",1,$i\)
+
   root -l -q -b DataMCComp5.C\($d,\"w_first_jet_pt_b\",1,$i\)
   root -l -q -b DataMCComp5.C\($d,\"w_first_jet_eta_b\",1,$i\)
   root -l -q -b DataMCComp5.C\($d,\"w_second_jet_pt_b\",1,$i\)
@@ -133,6 +136,10 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp5.C\($d,\"w_BJP_nomass\",1,$i\)
   root -l -q -b DataMCComp5.C\($d,\"w_JBP_nomass\",1,$i\)
+
+  root -l -q -b DataMCComp5.C\($d,\"w_BJP0\",1,$i\)
+  root -l -q -b DataMCComp5.C\($d,\"w_BJP1\",1,$i\)
+  root -l -q -b DataMCComp5.C\($d,\"w_BJP2\",1,$i\)
 
   i=$((i+1))
 done
