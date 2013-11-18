@@ -1573,11 +1573,11 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       t_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
       t_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
     }
-    if (fabs(vect_jets[0].partonFlavour()) == 5 && !ist) {
+    if (isb && !ist) {
       b_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
       b_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
     }
-    if (fabs(vect_jets[0].partonFlavour()) == 4 && fabs(vect_jets[0].partonFlavour()) != 5 /*isc && !isb*/ && !ist) {
+    if (isc && !isb && !ist) {
       c_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
       c_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
     }
