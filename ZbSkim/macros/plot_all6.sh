@@ -22,6 +22,8 @@ root -l -q -b DataMCComp6.C\($d,\"w_first_bjet_eta\",1,1\)
 root -l -q -b DataMCComp6.C\($d,\"w_pt_Z\",1,1\)
 root -l -q -b DataMCComp6.C\($d,\"w_delta_phi\",1,1\)
 root -l -q -b DataMCComp6.C\($d,\"w_Ht\",1,1\)
+root -l -q -b DataMCComp6.C\($d,\"w_mass_zb\",1,1\)
+root -l -q -b DataMCComp6.C\($d,\"w_mass_zj\",1,1\)
 
 #root -l -q -b DataMCComp6.C\($d,\"w_single_bjet_pt\",1,0\)
 #root -l -q -b DataMCComp6.C\($d,\"w_single_bjet_eta\",1,0\)
