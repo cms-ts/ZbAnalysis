@@ -174,6 +174,8 @@ private:
   TH1F*     w_mass_mm;
   TH1F*     w_mass_ee_b;  // at least one b jet in the event
   TH1F*     w_mass_mm_b;
+  TH1F*     w_mass_zb;
+  TH1F*     w_mass_zj;
   TH1F*     w_delta_ee;
   TH1F*     w_delta_mm;
   TH1F*     w_delta_ee_b;
@@ -240,6 +242,8 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_mass_mm =           fs->make < TH1F > ("w_mass_mm",          "w_mass_mm;Mass [GeV]", 80, 71., 111.);
   w_mass_ee_b =         fs->make < TH1F > ("w_mass_ee_b",        "w_mass_ee_b;Mass [GeV]", 80, 71., 111.);
   w_mass_mm_b =         fs->make < TH1F > ("w_mass_mm_b",        "w_mass_mm_b;Mass [GeV]", 80, 71., 111.);
+  w_mass_zb =           fs->make < TH1F > ("w_mass_zb",          "w_mass_zb", 60, 15., 330.);
+  w_mass_zj =           fs->make < TH1F > ("w_mass_zj",          "w_mass_zj", 60, 15., 330.);
   w_Ht =                fs->make < TH1F > ("w_Ht",               "w_Ht [GeV]", 50, 30., 1000.);
   w_Ht_b =              fs->make < TH1F > ("w_Ht_b",             "w_Ht_b [GeV]", 50, 30., 1000.);
   w_delta_ee =          fs->make < TH1F > ("w_delta_phi_ee",     "w_delta_phi_ee", 12, 0, TMath::Pi ());
@@ -263,6 +267,9 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   produces<std::vector<double>>("myPtZ");
   produces<std::vector<double>>("myPtZb");
 
+  produces<std::vector<double>>("myMassZj");
+  produces<std::vector<double>>("myMassZb");
+
   produces<std::vector<math::XYZTLorentzVector>>("myJets");
   produces<std::vector<math::XYZTLorentzVector>>("myJets2");
   produces<std::vector<double>>("myDeltaPhi");
@@ -273,7 +280,7 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   produces<std::vector<math::XYZTLorentzVector>>("myBJets");
   produces<std::vector<math::XYZTLorentzVector>>("myBJets2");
   produces<std::vector<double>>("myBDeltaPhi");
-
+ 
 }
 
 GenbAnalyzer::~GenbAnalyzer () {
@@ -304,6 +311,9 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   std::auto_ptr<std::vector<double>> myPtZ( new std::vector<double> );
   std::auto_ptr<std::vector<double>> myPtZb( new std::vector<double> );
 
+  std::auto_ptr<std::vector<double>> myMassZj( new std::vector<double> );
+  std::auto_ptr<std::vector<double>> myMassZb( new std::vector<double> );
+
   std::auto_ptr<std::vector<math::XYZTLorentzVector>> myJets( new std::vector<math::XYZTLorentzVector> );
   std::auto_ptr<std::vector<math::XYZTLorentzVector>> myJets2( new std::vector<math::XYZTLorentzVector> );
   std::auto_ptr<std::vector<double>> myDeltaPhi( new std::vector<double> );
@@ -332,9 +342,14 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   double dimuon_phi = 0;
   double dimuon_pt = 0;
 
+  double zb_mass = 0;
+  double zj_mass = 0;
+
   double MyWeight = 1;
 
   double Ht = 0;
+
+  TLorentzVector z;
 
   struct pt_and_particles {
     TLorentzVector p_part;
@@ -460,11 +475,10 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   if ( !ele_dres.lepton_photon.empty() && !pos_dres.lepton_photon.empty() ) {
         vect_ele.push_back(ele_dres.p_part);
         vect_ele.push_back(pos_dres.p_part);
-  	TLorentzVector y;
-  	y = ele_dres.p_part + pos_dres.p_part;
-  	diele_mass = y.M();
-  	diele_pt =   y.Pt();
-	diele_phi =  y.Phi();
+  	z = ele_dres.p_part + pos_dres.p_part;
+  	diele_mass = z.M();
+  	diele_pt =   z.Pt();
+	diele_phi =  z.Phi();
 	if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
 
@@ -536,11 +550,10 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   if ( !mu_dres.lepton_photon.empty() && !antimu_dres.lepton_photon.empty() ) {
         vect_muon.push_back(mu_dres.p_part);
         vect_muon.push_back(antimu_dres.p_part);
-        TLorentzVector y;
-        y = mu_dres.p_part + antimu_dres.p_part;
-        dimuon_mass = y.M();
-        dimuon_pt =   y.Pt();
-        dimuon_phi =  y.Phi();
+        z = mu_dres.p_part + antimu_dres.p_part;
+        dimuon_mass = z.M();
+        dimuon_pt =   z.Pt();
+        dimuon_phi =  z.Phi();
         if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
   }
 
@@ -697,6 +710,16 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     }
   }
 
+  if (Nj > 0) {
+    math::XYZTLorentzVector zj_p(vect_jets[0].px()+z.Px(), vect_jets[0].py()+z.Py(), vect_jets[0].pz()+z.Pz(), vect_jets[0].e()+z.E());
+    zj_mass = zj_p.mass();
+  }
+
+  if (Nj > 0 && Nb > 0) {
+    math::XYZTLorentzVector zb_p(vect_bjets[0].px()+z.Px(), vect_bjets[0].py()+z.Py(), vect_bjets[0].pz()+z.Pz(), vect_bjets[0].e()+z.E());
+    zb_mass = zb_p.mass();
+  }
+
   ee_event = ee_event && (lepton_ == "electron") && !ist;
   mm_event = mm_event && (lepton_ == "muon") && !ist;
 
@@ -725,6 +748,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_first_jet_eta->Fill (vect_jets[0].eta(), MyWeight);
     w_jetmultiplicity->Fill (vect_jets.size(), MyWeight);
     w_Ht->Fill (Ht, MyWeight);
+    w_mass_zj->Fill (zj_mass, MyWeight);
   }
 
   if (ee_event && Nb > 0 && Nj > 0) {
@@ -734,6 +758,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight);
     w_pt_Z_ee_b->Fill (diele_pt, MyWeight);
     w_mass_ee_b->Fill (diele_mass, MyWeight);
+    w_mass_zb->Fill (zb_mass, MyWeight);
   }
 
   if (mm_event && Nb > 0 && Nj > 0) {
@@ -743,6 +768,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight);
     w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight);
     w_mass_mm_b->Fill (dimuon_mass, MyWeight);
+    w_mass_zb->Fill (zb_mass, MyWeight);
   }
 
   if ((ee_event || mm_event) && Nb > 0 && Nj > 0) {
@@ -819,8 +845,10 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   if ((ee_event || mm_event) && Nj > 0) {
     myHt->push_back(Ht);
+    myMassZj->push_back(zj_mass);
     if (Nb > 0) {
       myHtb->push_back(Ht);
+      myMassZb->push_back(zb_mass);
     }
   }
 
@@ -853,6 +881,9 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   iEvent.put( myPtZ, "myPtZ" );
   iEvent.put( myPtZb, "myPtZb" );
+
+  iEvent.put( myMassZj, "myMassZj" );
+  iEvent.put( myMassZb, "myMassZb" );
 
   iEvent.put( myJets, "myJets" );
   iEvent.put( myJets2, "myJets2" );
