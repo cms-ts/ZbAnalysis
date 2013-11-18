@@ -69,6 +69,10 @@ if (irun==10) {            // irun==10 => bkg
   string subdir="10";
   string postfix="";
 }
+if (irun==99) {            // irun==99 => pur
+  string subdir="99";
+  string postfix="Pur";
+}
 
         if (irun==8) imode = 4;
         if (irun==9) imode = 5;

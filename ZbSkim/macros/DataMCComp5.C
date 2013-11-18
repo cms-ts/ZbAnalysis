@@ -67,6 +67,10 @@ if (irun==10) {            // irun==10 => bkg
   string subdir="10";
   string postfix="";
 }
+if (irun==99) {            // irun==99 => pur
+  string subdir="99";
+  string postfix="Pur";
+}
 
       /* top background */
 

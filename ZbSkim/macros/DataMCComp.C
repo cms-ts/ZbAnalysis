@@ -84,6 +84,10 @@ if (irun==10) {            // irun==10 => bkg
   string subdir="10";
   string postfix="";
 }
+if (irun==99) {            // irun==99 => pur
+  string subdir="99";
+  string postfix="Pur";
+}
 
 	/* top background */
 
@@ -529,6 +533,10 @@ if (irun==10) {            // irun==10 => bkg
 	  fitter->SetParameter(0, "c(uds)", 1.00, 0.01, 0.00, 100.00);
 	  fitter->SetParameter(1, "c(b)", 1.00, 0.01, 0.00, 100.00);
 	  fitter->SetParameter(2, "c(c)", 1.00, 0.01, 0.00, 100.00);
+	  if (irun==99) {
+	    fitter->FixParameter(0);
+	    fitter->FixParameter(2);
+	  }
 	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
 	  h_mc_fit0->Scale(fitter->GetParameter(0));
 	  h_mc_fit1->Scale(fitter->GetParameter(1));
@@ -571,7 +579,7 @@ if (irun==10) {            // irun==10 => bkg
 	pad1->SetBottomMargin(0.001);
 	pad1->Draw();
 	pad1->cd();
-	pad1->SetLogy();
+	//pad1->SetLogy();
 	if (title.find("MET")!=string::npos) pad1->SetLogy(0);
 
 	hs->Draw("HIST");
@@ -668,6 +676,10 @@ if (irun==10) {            // irun==10 => bkg
 	  h_ratio->GetXaxis ()->SetTitle("MET Significance [GeV/c]");
 	} else if (title=="w_Ht") {
 	  h_ratio->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
+	} else if (title=="w_mass_zb") {
+	  h_ratio->GetXaxis ()->SetTitle("Zb invariant mass [GeV/c]");
+	} else if (title=="w_mass_zj") {
+	  h_ratio->GetXaxis ()->SetTitle("Zj invariant mass [GeV/c]");
 	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_bjetmultiplicity") {
