@@ -3,6 +3,7 @@
 
 #include "fixrange.C"
 #include <iomanip>
+#include <vector>
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
@@ -23,6 +24,12 @@ TH1F* read(string& path, string& subdir, string& title, int ilepton) {
 }
 
 void DataMCComp7(string& title="", int plot=0, int ilepton=1, int isratio=1) {
+
+int useBpur2=0;
+//int useBpur2=1; // include Bpur2 systematics
+
+int useSherpa=0;
+//int useSherpa=1; // use Sherpa MC prediction
 
 string subdir="0";
 
@@ -109,14 +116,20 @@ string subdir="0";
 	h_data->SetStats(0);
 	h_data_b->SetStats(0);
 
-	const int NMAX=11;
-	TH1F* h_data_scan[NMAX];
-	TH1F* h_data_b_scan[NMAX];
+	vector <TH1F*> h_data_scan;
+	vector <TH1F*> h_data_b_scan;
+	unsigned int NMAX = 11;
+
 	for (int i=0;i<NMAX;i++) {
 	  stringstream ss;
 	  ss << i;
-	  h_data_scan[i] = read(path, ss.str(), title, ilepton);
-	  h_data_b_scan[i] = read(path, ss.str(), title_b, ilepton);
+	  h_data_scan.push_back(read(path, ss.str(), title, ilepton));
+	  h_data_b_scan.push_back(read(path, ss.str(), title_b, ilepton));
+	}
+	if (useBpur2) {
+	  NMAX = NMAX + 1;
+	  h_data_scan.push_back(read(path, "99", title, ilepton));
+	  h_data_b_scan.push_back(read(path, "99", title_b, ilepton));
 	}
 
 	if (ilepton==1) mc1->cd("demoEle");
@@ -290,6 +303,25 @@ string subdir="0";
 	  sys_b_bpur->SetBinError(i, val);
 	}
 
+	TH1F* sys_bpur2 = h_data_scan[0]->Clone();
+	TH1F* sys_b_bpur2 = h_data_b_scan[0]->Clone();
+	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  if (useBpur2) {
+	    val = TMath::Max(val,TMath::Abs(h_data_scan[11]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
+	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_scan[0]->GetBinError(i)**2-h_data_scan[11]->GetBinError(i)**2)));
+	  }
+	  sys_bpur2->SetBinError(i, val);
+	}
+	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  if (useBpur2) {
+	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[11]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
+	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_b_scan[0]->GetBinError(i)**2-h_data_b_scan[11]->GetBinError(i)**2)));
+	  }
+	  sys_b_bpur2->SetBinError(i, val);
+	}
+
 	TH1F* stat_unfold = h_data_scan[0]->Clone();
 	TH1F* stat_b_unfold = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
@@ -373,6 +405,7 @@ string subdir="0";
 	cout << std::setw(12) << "bkg sys";
 	cout << std::setw(12) << "ttbar sys";
 	cout << std::setw(12) << "bpur sys";
+	if (useBpur2) cout << std::setw(12) << "bpur2 sys";
 	cout << std::setw(12) << "unfold stat";
 	cout << std::setw(12) << "unfold sys";
 	cout << std::setw(12) << "unfold rms";
@@ -388,6 +421,7 @@ string subdir="0";
 	  val = TMath::Sqrt(val**2+sys_bkg->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_top->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_bpur->GetBinError(i)**2);
+	  if (useBpur2) val = TMath::Sqrt(val**2+sys_bpur2->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+stat_unfold->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_unfold->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+(h_data_stat->GetBinContent(i)*rms/tot)**2);
@@ -406,6 +440,7 @@ string subdir="0";
 	  cout << " +- " << sys_bkg->GetBinError(i);
 	  cout << " +- " << sys_top->GetBinError(i);
 	  cout << " +- " << sys_bpur->GetBinError(i);
+	  if (useBpur2) cout << " +- " << sys_bpur2->GetBinError(i);
 	  cout << " +- " << stat_unfold->GetBinError(i);
 	  cout << " +- " << sys_unfold->GetBinError(i);
 	  cout << " +- " << h_data_stat->GetBinContent(i)*rms/tot;
@@ -430,6 +465,7 @@ string subdir="0";
 	cout << std::setw(12) << "bkg sys";
 	cout << std::setw(12) << "ttbar sys";
 	cout << std::setw(12) << "bpur sys";
+	if (useBpur2) cout << std::setw(12) << "bpur2 sys";
 	cout << std::setw(12) << "unfold stat";
 	cout << std::setw(12) << "unfold sys";
 	cout << std::setw(12) << "unfold rms";
@@ -445,6 +481,7 @@ string subdir="0";
 	  val = TMath::Sqrt(val**2+sys_b_bkg->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_top->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_bpur->GetBinError(i)**2);
+	  if (useBpur2) val = TMath::Sqrt(val**2+sys_b_bpur2->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+stat_b_unfold->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_unfold->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+(h_data_b_stat->GetBinContent(i)*rms_b/tot_b)**2);
@@ -463,6 +500,7 @@ string subdir="0";
 	  cout << " +- " << sys_b_bkg->GetBinError(i);
 	  cout << " +- " << sys_b_top->GetBinError(i);
 	  cout << " +- " << sys_b_bpur->GetBinError(i);
+	  if (useBpur2) cout << " +- " << sys_b_bpur2->GetBinError(i);
 	  cout << " +- " << stat_b_unfold->GetBinError(i);
 	  cout << " +- " << sys_b_unfold->GetBinError(i);
 	  cout << " +- " << h_data_b_stat->GetBinContent(i)*rms_b/tot_b;
@@ -736,7 +774,7 @@ string subdir="0";
 	    //leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3,"Z(#rightarrow ee) MadGraph 4FS","l");
-	    leg->AddEntry(h_mcg1,"Z(#rightarrow ee) Sherpa","l");
+	    if (useSherpa) leg->AddEntry(h_mcg1,"Z(#rightarrow ee) Sherpa","l");
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow ee) Powheg","l");
 	  }
 	  if (ilepton==2){
@@ -745,7 +783,7 @@ string subdir="0";
 	    //leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
-	    leg->AddEntry(h_mcg1,"Z(#rightarrow #mu#mu) Sherpa","l");
+	    if (useSherpa) leg->AddEntry(h_mcg1,"Z(#rightarrow #mu#mu) Sherpa","l");
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow #mu#mu) Powheg","l");
 	  }
 	}
@@ -756,7 +794,7 @@ string subdir="0";
 	    //leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow ee) MadGraph 4FS","l");
-	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow ee) Sherpa","l");
+	    if (useSherpa) leg->AddEntry(h_mcg1_b,"Z(#rightarrow ee) Sherpa","l");
 	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow ee) Powheg","l");
 	  }
 	  if (ilepton==2){
@@ -764,7 +802,7 @@ string subdir="0";
 	    //leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
-	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow #mu#mu) Sherpa","l");
+	    if (useSherpa) leg->AddEntry(h_mcg1_b,"Z(#rightarrow #mu#mu) Sherpa","l");
 	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow #mu#mu) Powheg","l");
 	  }
 	}
@@ -849,7 +887,11 @@ string subdir="0";
 	t2->SetTextFont(42);
 	t2->SetLineWidth(2);
 	t2->SetNDC();
-	t2->DrawLatex(0.15,0.7,"MadGraph 5FS / MadGraph 4FS");
+	if (useSherpa) {
+	  t2->DrawLatex(0.15,0.7,"MadGraph 5FS / MadGraph 4FS");
+	} else {
+	  t2->DrawLatex(0.15,0.7,"MadGraph 5FS");
+	}
 
 	TLine *OLine2 = new TLine(h_M->GetXaxis()->GetXmin(),1.,h_M->GetXaxis()->GetXmax(),1.);
 	OLine2->SetLineColor(kGreen+2);
@@ -889,11 +931,18 @@ string subdir="0";
 	h_S->GetYaxis()->SetTickLength(0.02);
 
 	h_S->SetMarkerStyle(24);
-	h_S->Draw("EPX0");
+	if (useSherpa) {
+	  h_S->Draw("EPX0");
+	} else {
+	  for (int i=0;i<=h_S->GetNbinsX()+1;i++) {
+	    h_S->SetBinContent(i, -0.5);
+	  }
+	  h_S->Draw("EPX0");
+	}
 	h_S_tot->SetMarkerStyle(24);
-	h_S_tot->Draw("E1PX0SAME");
+	if (useSherpa) h_S_tot->Draw("E1PX0SAME");
 	h_S_stat->SetMarkerStyle(24);
-	h_S_stat->Draw("E1PX0SAME");
+	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
 
 	if (isratio==0) {
 	  TH1F *h_S2= h_data->Clone();
@@ -919,11 +968,11 @@ string subdir="0";
 	  }
 
 	  g_S2->SetMarkerStyle(20);
-	  g_S2->Draw("EP0SAME");
+	  if (useSherpa) g_S2->Draw("EP0SAME");
 	  g_S2_tot->SetMarkerStyle(20);
-	  g_S2_tot->Draw("E1P0SAME");
+	  if (useSherpa) g_S2_tot->Draw("E1P0SAME");
 	  g_S2_stat->SetMarkerStyle(20);
-	  g_S2_stat->Draw("E1P0SAME");
+	  if (useSherpa) g_S2_stat->Draw("E1P0SAME");
 	}
 
 	TLatex *t3 = new TLatex();
@@ -931,12 +980,18 @@ string subdir="0";
 	t3->SetTextFont(42);
 	t3->SetLineWidth(2);
 	t3->SetNDC();
-	t3->DrawLatex(0.15,0.7,"Sherpa");
+	if (useSherpa) {
+	  t3->DrawLatex(0.15,0.7,"Sherpa");
+	} else {
+	  t3->DrawLatex(0.15,0.7,"MadGraph 4FS");
+	}
 
-	TLine *OLine3 = new TLine(h_S->GetXaxis()->GetXmin(),1.,h_S->GetXaxis()->GetXmax(),1.);
-	OLine3->SetLineColor(kMagenta-6);
-	OLine3->SetLineWidth(2);
-	OLine3->Draw();
+	if (useSherpa) {
+	  TLine *OLine3 = new TLine(h_S->GetXaxis()->GetXmin(),1.,h_S->GetXaxis()->GetXmax(),1.);
+	  OLine3->SetLineColor(kMagenta-6);
+	  OLine3->SetLineWidth(2);
+	  OLine3->Draw();
+	}
 
 	c1->cd();
 
@@ -1020,7 +1075,11 @@ string subdir="0";
 	OLine4->SetLineWidth(2);
 	OLine4->Draw();
 
-	pad2->cd();
+	if (useSherpa) {
+	  pad2->cd();
+	} else {
+	  pad3->cd();
+	}
 
 	TH1F *h_M3 = h_data_b->Clone();
 	TH1F *h_M3_tot = h_data_b_tot->Clone();
@@ -1044,11 +1103,18 @@ string subdir="0";
 	  g_M3_tot->SetPointError(i, 0, g_M3_tot->GetEY()[i]);
 	}
 
-	g_M3->SetMarkerStyle(25);
+	if (useSherpa) {
+	  g_M3->SetMarkerStyle(25);
+	} else {
+	  g_M3->SetMarkerStyle(24);
+	  g_M3->SetMarkerColor(kBlack);
+	}
 	g_M3->Draw("EP0SAME");
-	g_M3_stat->SetMarkerStyle(25);
-	g_M3_stat->Draw("EP0SAME");
-	g_M3_tot->SetMarkerStyle(25);
+	if (useSherpa) {
+	  g_M3_tot->SetMarkerStyle(25);
+	} else {
+	  g_M3_tot->SetMarkerStyle(24);
+	}
 	g_M3_tot->Draw("EP0SAME");
 
 	TLine *OLine5 = new TLine(h_P->GetXaxis()->GetXmin(),0.93,h_P->GetXaxis()->GetXmax(),0.93);
