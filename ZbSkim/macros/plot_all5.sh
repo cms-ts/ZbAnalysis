@@ -96,9 +96,6 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp5.C\($d,\"w_Ht\",1,$i\)
   root -l -q -b DataMCComp5.C\($d,\"w_Ht_b\",1,$i\)
 
-  root -l -q -b DataMCComp5.C\($d,\"w_mass_zb\",1,$i\)
-  root -l -q -b DataMCComp5.C\($d,\"w_mass_zj\",1,$i\)
-
   root -l -q -b DataMCComp5.C\($d,\"w_first_jet_pt_b\",1,$i\)
   root -l -q -b DataMCComp5.C\($d,\"w_first_jet_eta_b\",1,$i\)
   root -l -q -b DataMCComp5.C\($d,\"w_second_jet_pt_b\",1,$i\)
