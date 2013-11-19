@@ -2432,14 +2432,14 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut) {
     scalFac_b = btagSF(isMC, vect_jets, 0);
-    w_bjetmultiplicity->Fill (Nb, MyWeight*scalFac_b);
+    w_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight*scalFac_b);
     w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight*scalFac_b);
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight*scalFac_b);
     w_mass_zb->Fill (zb_mass, MyWeight*scalFac_b);
     if (ist) {
-      t_bjetmultiplicity->Fill (Nb, MyWeight*scalFac_b);
+      t_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
       t_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight*scalFac_b);
       t_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight*scalFac_b);
       t_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
@@ -2447,7 +2447,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       t_mass_zb->Fill (zb_mass, MyWeight*scalFac_b);
     }
     if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 5) {
-      b_bjetmultiplicity->Fill (Nb, MyWeight*scalFac_b);
+      b_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
       b_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight*scalFac_b);
       b_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight*scalFac_b);
       b_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
@@ -2455,7 +2455,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       b_mass_zb->Fill(zb_mass, MyWeight*scalFac_b);
     }
     if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 4) {
-      c_bjetmultiplicity->Fill (Nb, MyWeight*scalFac_b);
+      c_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
       c_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight*scalFac_b);
       c_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight*scalFac_b);
       c_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
