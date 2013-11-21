@@ -677,9 +677,9 @@ if (irun==99) {            // irun==99 => pur
 	  h_ratio->GetXaxis ()->SetTitle("MET Significance [GeV/c]");
 	} else if (title=="w_Ht") {
 	  h_ratio->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
-	} else if (title=="w_mass_zb") {
+	} else if (title=="w_mass_Zj_ee_b"||title=="w_mass_Zj_mm_b"||title=="w_mass_Zj_em_b") {
 	  h_ratio->GetXaxis ()->SetTitle("Zb invariant mass [GeV/c]");
-	} else if (title=="w_mass_zj") {
+	} else if (title=="w_mass_Zj_ee"||title=="w_mass_Zj_mm"||title=="w_mass_Zj_em") {
 	  h_ratio->GetXaxis ()->SetTitle("Zj invariant mass [GeV/c]");
 	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");

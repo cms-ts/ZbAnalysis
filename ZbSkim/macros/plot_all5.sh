@@ -79,8 +79,10 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp5.C\($d,\"w_single_delta_phi_ee_b\",1,$i\)
   root -l -q -b DataMCComp5.C\($d,\"w_single_delta_phi_mm_b\",1,$i\)
   root -l -q -b DataMCComp5.C\($d,\"w_single_Ht_b\",1,$i\)
-  root -l -q -b DataMCComp5.C\($d,\"w_mass_zb\",1,$i\)
-  root -l -q -b DataMCComp5.C\($d,\"w_mass_zj\",1,$i\)
+  root -l -q -b DataMCComp5.C\($d,\"w_mass_Zj_ee\",1,$i\)
+  root -l -q -b DataMCComp5.C\($d,\"w_mass_Zj_mm\",1,$i\)
+  root -l -q -b DataMCComp5.C\($d,\"w_mass_Zj_ee_b\",1,$i\)
+  root -l -q -b DataMCComp5.C\($d,\"w_mass_Zj_mm_b\",1,$i\)
  
   root -l -q -b DataMCComp5.C\($d,\"w_second_jet_pt\",1,$i\)
   root -l -q -b DataMCComp5.C\($d,\"w_second_jet_eta\",1,$i\)

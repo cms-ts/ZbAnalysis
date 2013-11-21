@@ -28,8 +28,10 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp4.C\($d,\"w_delta_phi_mm\",1,$i\)
   root -l -q -b DataMCComp4.C\($d,\"w_delta_phi_ee_b\",1,$i\)
   root -l -q -b DataMCComp4.C\($d,\"w_delta_phi_mm_b\",1,$i\)
-  root -l -q -b DataMCComp4.C\($d,\"w_mass_zb\",1,$i\)
-  root -l -q -b DataMCComp4.C\($d,\"w_mass_zj\",1,$i\)
+  root -l -q -b DataMCComp4.C\($d,\"w_mass_Zj_ee\",1,$i\)
+  root -l -q -b DataMCComp4.C\($d,\"w_mass_Zj_mm\",1,$i\)
+  root -l -q -b DataMCComp4.C\($d,\"w_mass_Zj_ee_b\",1,$i\)
+  root -l -q -b DataMCComp4.C\($d,\"w_mass_Zj_mm_b\",1,$i\)
 
   i=$((i+1))
 done
@@ -48,8 +50,8 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp2.C\($d,\"w_Ht\",1,$i,0,1\)
   root -l -q -b DataMCComp2.C\($d,\"w_delta_phi_ee\",1,$i,0,1\)
   root -l -q -b DataMCComp2.C\($d,\"w_delta_phi_mm\",1,$i,0,1\)
-  root -l -q -b DataMCComp2.C\($d,\"w_mass_zb\",1,$i,0,1\)
-  root -l -q -b DataMCComp2.C\($d,\"w_mass_zj\",1,$i,0,1\)
+  root -l -q -b DataMCComp2.C\($d,\"w_mass_Zj_ee\",1,$i,0,1\)
+  root -l -q -b DataMCComp2.C\($d,\"w_mass_Zj_mm\",1,$i,0,1\)
 
   i=$((i+1))
 done
@@ -64,8 +66,8 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp2.C\($d,\"w_Ht\",1,$i,1,1\)
   root -l -q -b DataMCComp2.C\($d,\"w_delta_phi_ee\",1,$i,1,1\)
   root -l -q -b DataMCComp2.C\($d,\"w_delta_phi_mm\",1,$i,1,1\)
-  root -l -q -b DataMCComp2.C\($d,\"w_mass_zb\",1,$i,1,1\)
-  root -l -q -b DataMCComp2.C\($d,\"w_mass_zj\",1,$i,1,1\)
+  root -l -q -b DataMCComp2.C\($d,\"w_mass_Zj_ee\",1,$i,1,1\)
+  root -l -q -b DataMCComp2.C\($d,\"w_mass_Zj_mm\",1,$i,1,1\)
 
   i=$((i+1))
 done

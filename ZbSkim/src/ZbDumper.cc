@@ -111,8 +111,8 @@ class ZbDumper : public edm::EDAnalyzer {
      TH2F* w_pt_Z_mm_b;
      TH2F* w_mass_Zj_ee;
      TH2F* w_mass_Zj_mm;
-     TH2F* w_mass_Zb_ee;
-     TH2F* w_mass_Zb_mm;
+     TH2F* w_mass_Zj_ee_b;
+     TH2F* w_mass_Zj_mm_b;
      TH2F* w_Ht;
      TH2F* w_Ht_b;
      TH2F* w_delta_ee;
@@ -153,10 +153,10 @@ ZbDumper::ZbDumper(const edm::ParameterSet& iConfig) {
    w_pt_Z_ee_b 	     = fs->make < TH2F > ("w_pt_Z_ee_b",       "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
    w_pt_Z_mm_b       = fs->make < TH2F > ("w_pt_Z_mm_b",       "w_pt_Z_mm_b;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
 
-   w_mass_Zj_ee      = fs->make < TH2F > ("w_mass_Zj_ee",      "w_mass_Zj_ee;P_t [GeV]", 60, 15., 330., 60, 15., 330.);
-   w_mass_Zj_mm      = fs->make < TH2F > ("w_mass_Zj_mm",      "w_mass_Zj_mm;P_t [GeV]", 60, 15., 330., 60, 15., 330.);
-   w_mass_Zb_ee      = fs->make < TH2F > ("w_mass_Zb_ee",      "w_mass_Zb_ee;P_t [GeV]", 60, 15., 330., 60, 15., 330.);
-   w_mass_Zb_mm      = fs->make < TH2F > ("w_mass_Zb_mm",      "w_mass_Zb_mm;P_t [GeV]", 60, 15., 330., 60, 15., 330.);
+   w_mass_Zj_ee      = fs->make < TH2F > ("w_mass_Zj_ee",      "w_mass_Zj_ee;P_t [GeV]", 60, 100., 330., 60, 100., 330.);
+   w_mass_Zj_mm      = fs->make < TH2F > ("w_mass_Zj_mm",      "w_mass_Zj_mm;P_t [GeV]", 60, 100., 330., 60, 100., 330.);
+   w_mass_Zj_ee_b    = fs->make < TH2F > ("w_mass_Zj_ee_b",    "w_mass_Zj_ee_b;P_t [GeV]", 60, 100., 330., 60, 100., 330.);
+   w_mass_Zj_mm_b    = fs->make < TH2F > ("w_mass_Zj_mm_b",    "w_mass_Zj_mm_b;P_t [GeV]", 60, 100., 330., 60, 100., 330.);
 
    w_Ht 	     = fs->make < TH2F > ("w_Ht",              "w_Ht [GeV]", 50, 30., 1000.,50, 30., 1000.);
    w_Ht_b 	     = fs->make < TH2F > ("w_Ht_b",            "w_Ht [GeV]", 50, 30., 1000.,50, 30., 1000.);
@@ -349,12 +349,12 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
 
      if (ee_event) {
        w_mass_Zj_ee->Fill(zj_mass->empty() ? -1 : (*zj_mass)[0], gen_zj_mass->empty() ? -1 : (*gen_zj_mass)[0], my_weight);
-       w_mass_Zb_ee->Fill(zb_mass->empty() ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
+       w_mass_Zj_ee_b->Fill(zb_mass->empty() ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
      }
 
      if (mm_event) {
        w_mass_Zj_mm->Fill(zj_mass->empty() ? -1 : (*zj_mass)[0], gen_zj_mass->empty() ? -1 : (*gen_zj_mass)[0], my_weight);
-       w_mass_Zb_mm->Fill(zb_mass->empty() ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
+       w_mass_Zj_mm_b->Fill(zb_mass->empty() ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
      }
 
      if (ee_event || mm_event) {

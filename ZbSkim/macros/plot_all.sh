@@ -90,8 +90,11 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C\($d,\"w_Ht\",1,$i\)
   root -l -q -b DataMCComp.C\($d,\"w_Ht_b\",1,$i\)
 
-  root -l -q -b DataMCComp.C\($d,\"w_mass_zb\",1,$i\)
-  root -l -q -b DataMCComp.C\($d,\"w_mass_zj\",1,$i\)
+  root -l -q -b DataMCComp.C\($d,\"w_mass_Zj_ee\",1,$i\)
+  root -l -q -b DataMCComp.C\($d,\"w_mass_Zj_mm\",1,$i\)
+
+  root -l -q -b DataMCComp.C\($d,\"w_mass_Zj_ee_b\",1,$i\)
+  root -l -q -b DataMCComp.C\($d,\"w_mass_Zj_mm_b\",1,$i\)
 
   root -l -q -b DataMCComp.C\($d,\"w_first_jet_pt_b\",1,$i\)
   root -l -q -b DataMCComp.C\($d,\"w_first_jet_eta_b\",1,$i\)
@@ -176,8 +179,9 @@ root -l -q -b DataMCComp.C\($d,\"w_MET_sign_b\",1,3\)
 root -l -q -b DataMCComp.C\($d,\"w_Ht\",1,3\)
 root -l -q -b DataMCComp.C\($d,\"w_Ht_b\",1,3\)
   
-root -l -q -b DataMCComp.C\($d,\"w_mass_zb\",1,$i\)
-root -l -q -b DataMCComp.C\($d,\"w_mass_zj\",1,$i\)
+root -l -q -b DataMCComp.C\($d,\"w_mass_Zj_em\",1,3\)
+
+root -l -q -b DataMCComp.C\($d,\"w_mass_Zj_em_b\",1,3\)
 
 root -l -q -b DataMCComp.C\($d,\"w_bjetmultiplicity\",1,3\)
 root -l -q -b DataMCComp.C\($d,\"w_first_bjet_pt\",1,3\)
