@@ -497,20 +497,6 @@ process.demoMuoJerDown = cms.EDProducer('ZbAnalyzer',
         lepton  = cms.untracked.string("muon"),
         JER     = cms.untracked.double(-1)
 )       
-process.demoEleMuoJerUp = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileupMC  = cms.untracked.string("S10"),
-        pileupDT  = cms.untracked.string("em"),
-        lepton  = cms.untracked.string("electron+muon"),
-        JER     = cms.untracked.double(1)
-)       
-process.demoEleMuoJerDown = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileupMC  = cms.untracked.string("S10"),
-        pileupDT  = cms.untracked.string("em"),
-        lepton  = cms.untracked.string("electron+muon"),
-        JER     = cms.untracked.double(-1)
-)       
 process.demoEleDump = cms.EDAnalyzer('ZbDumper',
         lepton       = cms.untracked.string("electron")
 )
@@ -558,8 +544,6 @@ process.p = cms.Path(
    process.demoEleJerDown *
    process.demoMuoJerUp *
    process.demoMuoJerDown *
-   process.demoEleMuoJerUp *
-   process.demoEleMuoJerDown *
    process.demoEleDump * process.demoMuoDump
    #process.dump
 )
