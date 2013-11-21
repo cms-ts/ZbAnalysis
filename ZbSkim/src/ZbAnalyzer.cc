@@ -191,6 +191,7 @@ private:
   std::string pileupDT_;
   std::string lepton_;
   double par_;
+  double par2_;
   bool usePartonFlavour_;
   bool pcut_;
   bool useDeltaR_;
@@ -662,6 +663,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   pileupDT_         = iConfig.getUntrackedParameter < std::string > ("pileupDT", "");
   lepton_           = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
   par_              = iConfig.getUntrackedParameter <double> ("JEC", 0);
+  par2_             = iConfig.getUntrackedParameter <double> ("JER", 0);
   path_             = iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
   icut_             = iConfig.getUntrackedParameter <unsigned int> ("icut", 0);
   usePartonFlavour_ = iConfig.getUntrackedParameter <bool> ("usePartonFlavour", false);
@@ -1490,7 +1492,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
     jet_pt = jet_pt * cor;
 
-    int par2_ = 0;
     if (isMC && jet->genJet()) jet_pt = jet_pt_jer(jet_eta, jet_pt, jet->genJet()->pt(), par2_);
 
     // check for no neutrinos

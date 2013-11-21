@@ -18,88 +18,71 @@ process.source = cms.Source("PoolSource",
 process.demoEle = cms.EDProducer('ZbAnalyzer',
 	pileupMC  = cms.untracked.string("S10"),
 	pileupDT  = cms.untracked.string("ee"),
-	lepton  = cms.untracked.string("electron"),
-	JEC     = cms.untracked.double(0),
-	usePartonFlavour = cms.untracked.bool(False)
+	lepton  = cms.untracked.string("electron")
 )
 
 process.demoElePum = cms.EDProducer('ZbAnalyzer',
 	pileupMC  = cms.untracked.string("S10"),
 	pileupDT  = cms.untracked.string("ee_pum"),
-	lepton  = cms.untracked.string("electron"),
-	JEC     = cms.untracked.double(0),
-	usePartonFlavour = cms.untracked.bool(False)
+	lepton  = cms.untracked.string("electron")
 )
 
 process.demoElePup = cms.EDProducer('ZbAnalyzer',
 	pileupMC  = cms.untracked.string("S10"),
 	pileupDT  = cms.untracked.string("ee_pup"),
-	lepton  = cms.untracked.string("electron"),
-	JEC     = cms.untracked.double(0),
-	usePartonFlavour = cms.untracked.bool(False)
+	lepton  = cms.untracked.string("electron")
 )
 
 process.demoEleUp = cms.EDProducer('ZbAnalyzer',
 	pileupMC     = cms.untracked.string("S10"),
 	pileupDT     = cms.untracked.string("ee"),
 	lepton     = cms.untracked.string("electron"),
-	JEC        = cms.untracked.double(1),
-	usePartonFlavour = cms.untracked.bool(False)
+	JEC        = cms.untracked.double(1)
 )
 
 process.demoEleDown = cms.EDProducer('ZbAnalyzer',
 	pileupMC       = cms.untracked.string("S10"),
 	pileupDT       = cms.untracked.string("ee"),
 	lepton 	     = cms.untracked.string("electron"),
-	JEC    	     = cms.untracked.double(-1),
-	usePartonFlavour = cms.untracked.bool(False)
+	JEC    	     = cms.untracked.double(-1)
 )
 
 process.demoMuo = cms.EDProducer('ZbAnalyzer',
 	pileupMC  = cms.untracked.string("S10"),
 	pileupDT  = cms.untracked.string("mm"),
-	lepton  = cms.untracked.string("muon"),
-	JEC     = cms.untracked.double(0),
-	usePartonFlavour = cms.untracked.bool(False)
+	lepton  = cms.untracked.string("muon")
 )
 
 process.demoMuoPum = cms.EDProducer('ZbAnalyzer',
 	pileupMC = cms.untracked.string("S10"),
 	pileupDT = cms.untracked.string("mm_pum"),
-	lepton  = cms.untracked.string("muon"),
-	JEC     = cms.untracked.double(0),
-	usePartonFlavour = cms.untracked.bool(False)
+	lepton  = cms.untracked.string("muon")
 )
 
 process.demoMuoPup = cms.EDProducer('ZbAnalyzer',
 	pileupMC  = cms.untracked.string("S10"),
 	pileupDT = cms.untracked.string("mm_pup"),
-	lepton  = cms.untracked.string("muon"),
-	JEC     = cms.untracked.double(0),
-	usePartonFlavour = cms.untracked.bool(False)
+	lepton  = cms.untracked.string("muon")
 )
 
 process.demoMuoUp = cms.EDProducer('ZbAnalyzer',
 	pileupMC 	   = cms.untracked.string("S10"),
 	pileupDT 	   = cms.untracked.string("mm"),
 	lepton 	   = cms.untracked.string("muon"),
-	JEC    	   = cms.untracked.double(1),
-	usePartonFlavour = cms.untracked.bool(False)
+	JEC    	   = cms.untracked.double(1)
 )
 
 process.demoMuoDown = cms.EDProducer('ZbAnalyzer',
 	pileupMC 	     = cms.untracked.string("S10"),
 	pileupDT 	     = cms.untracked.string("mm"),
 	lepton 	     = cms.untracked.string("muon"),
-	JEC    	     = cms.untracked.double(-1),
-	usePartonFlavour = cms.untracked.bool(False)
+	JEC    	     = cms.untracked.double(-1)
 )
 
 process.demoEleBtag = cms.EDProducer('ZbAnalyzer',
         pileupMC  = cms.untracked.string("S10"),
         pileupDT  = cms.untracked.string("ee"),
         lepton  = cms.untracked.string("electron"),
-        JEC     = cms.untracked.double(0),
 	usePartonFlavour = cms.untracked.bool(True)
 )
 
@@ -107,7 +90,6 @@ process.demoMuoBtag = cms.EDProducer('ZbAnalyzer',
         pileupMC  = cms.untracked.string("S10"),
         pileupDT  = cms.untracked.string("mm"),
         lepton  = cms.untracked.string("muon"),
-        JEC     = cms.untracked.double(0),
 	usePartonFlavour = cms.untracked.bool(True)
 )
 
@@ -134,12 +116,11 @@ process.demoMuoGen = cms.EDProducer('GenbAnalyzer',
 	pileupDT  = cms.untracked.string("mm"),
 	lepton  = cms.untracked.string("muon")
 )
+
 process.demoElePur = cms.EDProducer('ZbAnalyzer',
         pileupMC  = cms.untracked.string("S10"),
         pileupDT  = cms.untracked.string("ee"),
         lepton  = cms.untracked.string("electron"),
-        JEC     = cms.untracked.double(0),
-        usePartonFlavour = cms.untracked.bool(False),
         pcut = cms.untracked.bool(True)
 )
 
@@ -147,11 +128,51 @@ process.demoMuoPur = cms.EDProducer('ZbAnalyzer',
         pileupMC = cms.untracked.string("S10"),
         pileupDT = cms.untracked.string("mm"),
         lepton  = cms.untracked.string("muon"),
-        JEC     = cms.untracked.double(0),
-        usePartonFlavour = cms.untracked.bool(False),
         pcut = cms.untracked.bool(True)
 )
 
+process.demoEleJerUp = cms.EDProducer('ZbAnalyzer',
+        pileupMC = cms.untracked.string("S10"),
+        pileupDT = cms.untracked.string("mm"),
+        lepton  = cms.untracked.string("muon"),
+        JER     = cms.untracked.double(1)
+)       
+        
+process.demoEleJerDown = cms.EDProducer('ZbAnalyzer',
+        pileupMC = cms.untracked.string("S10"),
+        pileupDT = cms.untracked.string("mm"),
+        lepton  = cms.untracked.string("muon"),
+        JER     = cms.untracked.double(-1)
+)       
+        
+process.demoMuoJerUp = cms.EDProducer('ZbAnalyzer',
+        pileupMC = cms.untracked.string("S10"),
+        pileupDT = cms.untracked.string("mm"),
+        lepton  = cms.untracked.string("muon"),
+        JER     = cms.untracked.double(1)
+)       
+        
+process.demoMuoJerDown = cms.EDProducer('ZbAnalyzer',
+        pileupMC = cms.untracked.string("S10"),
+        pileupDT = cms.untracked.string("mm"),
+        lepton  = cms.untracked.string("muon"),
+        JER     = cms.untracked.double(-1)
+)       
+        
+process.demoEleMuoJerUp = cms.EDProducer('ZbAnalyzer',
+        pileupMC  = cms.untracked.string("S10"),
+        pileupDT  = cms.untracked.string("em"),
+        lepton  = cms.untracked.string("electron+muon"),
+        JER     = cms.untracked.double(1)
+)       
+
+process.demoEleMuoJerDown = cms.EDProducer('ZbAnalyzer',
+        pileupMC  = cms.untracked.string("S10"),
+        pileupDT  = cms.untracked.string("em"),
+        lepton  = cms.untracked.string("electron+muon"),
+        JER     = cms.untracked.double(-1)
+)
+        
 process.TFileService = cms.Service("TFileService",
 	fileName = cms.string('ZbTree.root')
 )
@@ -164,5 +185,4 @@ process.demoMuoDump = cms.EDAnalyzer('ZbDumper',
         lepton       = cms.untracked.string("muon")
 )
 
-process.p = cms.Path(process.demoEle*process.demoElePum*process.demoElePup*process.demoEleUp*process.demoEleDown*process.demoMuo*process.demoMuoPum*process.demoMuoPup*process.demoMuoUp*process.demoMuoDown*process.demoEleBtag*process.demoMuoBtag*process.demoEle2*process.demoMuo2*process.demoEleGen*process.demoMuoGen*process.demoElePur*process.demoMuoPur*process.demoEleDump*process.demoMuoDump)
-
+process.p = cms.Path(process.demoEle*process.demoElePum*process.demoElePup*process.demoEleUp*process.demoEleDown*process.demoMuo*process.demoMuoPum*process.demoMuoPup*process.demoMuoUp*process.demoMuoDown*process.demoEleBtag*process.demoMuoBtag*process.demoEle2*process.demoMuo2*process.demoEleGen*process.demoMuoGen*process.demoElePur*process.demoMuoPur*process.demoEleJerUp*process.demoEleJerDown*process.demoMuoJerUp*process.demoMuoJerDown*process.demoEleMuoJerUp*process.demoEleMuoJerDown*process.demoEleDump*process.demoMuoDump)
