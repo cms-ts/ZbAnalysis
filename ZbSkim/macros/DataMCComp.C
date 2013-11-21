@@ -579,8 +579,9 @@ if (irun==99) {            // irun==99 => pur
 	pad1->SetBottomMargin(0.001);
 	pad1->Draw();
 	pad1->cd();
-	//pad1->SetLogy();
-	if (title.find("MET")!=string::npos) pad1->SetLogy(0);
+	pad1->SetLogy();
+	if (title.find("MET")!=string::npos)   pad1->SetLogy(0);
+	if (title.find("mass_")!=string::npos) pad1->SetLogy(0);
 
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
@@ -628,8 +629,8 @@ if (irun==99) {            // irun==99 => pur
 	}
 	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
 	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
-	if (h_mc1t) leg->AddEntry(h_mc1t,"#tau^{+}#tau^{-}+jets","f");
 	if (!doBkg) {
+	  if (h_mc1t) leg->AddEntry(h_mc1t,"#tau^{+}#tau^{-}+jets","f");
 	  leg->AddEntry(h_mc2,"t#bar{t}","f");
 	  leg->AddEntry(h_mc3,"ZZ","f");
 	  leg->AddEntry(h_mc4,"WZ","f");
@@ -708,8 +709,11 @@ if (irun==99) {            // irun==99 => pur
 	  h_ratio->GetXaxis ()->SetTitle("SV mass [GeV/c^{2}]");
 	} else if (title=="w_BJP"||title=="w_JBP") {
 	  h_ratio->GetXaxis ()->SetTitle("JP Discriminator");
+	} else if (title=="w_first_bjet_pt") {
+	  h_ratio->GetXaxis ()->SetTitle("leading b-jet p_{T}");
+	} else if (title=="w_first_bjet_eta") {
+	  h_ratio->GetXaxis ()->SetTitle("leading b-jet #eta");
 	}
-
 	h_ratio->GetXaxis()->SetTitleOffset(0.9);
  	h_ratio->GetXaxis()->SetTitleSize(0.1);
 	h_ratio->GetXaxis()->SetLabelFont(42);
