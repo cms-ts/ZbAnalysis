@@ -29,6 +29,7 @@
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDProducer.h"
+#include "Math/VectorUtil.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -166,6 +167,7 @@ private:
   double par_;
   bool usePartonFlavour_;
   bool pcut_;
+  bool useDeltaR_;
   std::string path_;
   unsigned int icut_;
 
@@ -638,7 +640,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   icut_             = iConfig.getUntrackedParameter <unsigned int> ("icut", 0);
   usePartonFlavour_ = iConfig.getUntrackedParameter <bool> ("usePartonFlavour", false);
   pcut_             = iConfig.getUntrackedParameter <bool> ("pcut", false);
-
+  useDeltaR_        = iConfig.getUntrackedParameter <bool> ("useDeltaR", false);
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
 
@@ -1557,6 +1559,34 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   if (icut_==18 && Nb>0 && vect_bjets[0].pt()> 50    && vect_bjets[0].pt()< 60)  iflag_mm=true;
   if (icut_==19 && Nb>0 && vect_bjets[0].pt()> 60    && vect_bjets[0].pt()< 80)  iflag_mm=true;
   if (icut_==20 && Nb>0 && vect_bjets[0].pt()> 80    && vect_bjets[0].pt()< 350) iflag_mm=true;
+
+  double R = 0.5;
+  double DR_ej = 0;
+  double DR_mj = 0;
+  double DEta_ej = 0;
+  double DPhi_ej = 0;
+  double DEta_mj = 0;
+  double DPhi_mj = 0;
+
+  if (useDeltaR_) {
+    for (unsigned int i=0; i<vect_jets.size(); ++i) {         
+       for (unsigned int j=0; j<vect_ele.size(); ++j) {
+            DEta_ej = fabs(vect_ele[j].eta() - vect_jets[i].eta());
+            DPhi_ej = fabs(vect_ele[j].phi() - vect_jets[i].phi());        
+            if (DPhi_ej > TMath::ACos(-1)) DPhi_ej= 2*TMath::ACos(-1) - DPhi_ej;
+            DR_ej   = sqrt(DEta_ej*DEta_ej + DPhi_ej*DPhi_ej);
+            if (DR_ej < R) iflag_ee = false;
+    }
+       for (unsigned int k=0; k<vect_muon.size(); ++k) {
+              DEta_mj = fabs(vect_muon[k].eta() - vect_jets[i].eta()); 
+              DPhi_mj = fabs(vect_muon[k].phi() - vect_jets[i].phi());
+              if (DPhi_mj > TMath::ACos(-1)) DPhi_mj= 2*TMath::ACos(-1) - DPhi_mj;
+              DR_mj   = sqrt(DEta_mj*DEta_mj + DPhi_mj*DPhi_mj);
+              if (DR_mj < R) iflag_mm = false;
+       }
+    }
+}
+//cout << "DR(e;j) ="<<DR_ej<<"   "<<"DR(m;j) ="<<DR_mj<< endl;
 
   if (Nb > 0 && pcut_) {
     double discrBJP = vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags");
