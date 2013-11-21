@@ -279,6 +279,8 @@ if (irun==99) {            // irun==99 => pur
 
 	int dosys = 0; // default 0 -> 0=stat, 1=stat+sys, 2=sys only
 	if (irun==7) dosys = 1;
+	if (irun==8) dosys = 1;
+	if (irun==9) dosys = 1;
 	unfold_mc->IncludeSystematics(dosys);
 	unfold_data->IncludeSystematics(dosys);
 

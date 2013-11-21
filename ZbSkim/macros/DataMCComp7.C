@@ -339,12 +339,18 @@ string subdir="0";
 	TH1F* sys_b_unfold = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
 	  float val = 0.0;
-	  val = TMath::Max(val,TMath::Abs(h_data_scan[9]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
+	  val = TMath::Max(val,TMath::Abs(h_data_scan[9]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i)));
+	  float err9 = TMath::Sqrt(TMath::Max(0.,h_data_scan[9]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2));
+	  float err7 = TMath::Sqrt(TMath::Max(0.,h_data_scan[7]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2));
+	  val = TMath::Sqrt(TMath::Max(0.,val**2-err9**2-err7**2));
 	  sys_unfold->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
 	  float val = 0.0;
-	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[9]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
+	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[9]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i)));
+	  float err9 = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[9]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2));
+	  float err7 = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[7]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2));
+	  val = TMath::Sqrt(TMath::Max(0.,val**2-err9**2-err7**2));
 	  sys_b_unfold->SetBinError(i, val);
 	}
 
