@@ -3,7 +3,6 @@
 
 #include "fixrange.C"
 #include <iomanip>
-#include <vector>
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
@@ -27,6 +26,9 @@ void DataMCComp7(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 
 int useBpur2=0;
 //int useBpur2=1; // include Bpur2 systematics
+
+int useDR=0;
+//int useDR=1; // include DR systematics
 
 int useSherpa=0;
 //int useSherpa=1; // use Sherpa MC prediction
@@ -116,20 +118,27 @@ string subdir="0";
 	h_data->SetStats(0);
 	h_data_b->SetStats(0);
 
-	vector <TH1F*> h_data_scan;
-	vector <TH1F*> h_data_b_scan;
-	unsigned int NMAX = 14;
+	const unsigned int NMAX = 100;
+	TH1F* h_data_scan[NMAX];
+	TH1F* h_data_b_scan[NMAX];
 
 	for (int i=0;i<NMAX;i++) {
-	  stringstream ss;
-	  ss << i;
-	  h_data_scan.push_back(read(path, ss.str(), title, ilepton));
-	  h_data_b_scan.push_back(read(path, ss.str(), title_b, ilepton));
+	  h_data_scan[i] = 0;
+	  h_data_b_scan[i] = 0;
+	  if (i<=12) {
+	    stringstream ss;
+	    ss << i;
+	    h_data_scan[i] = read(path, ss.str(), title, ilepton);
+	    h_data_b_scan[i] = read(path, ss.str(), title_b, ilepton);
+	  }
+	}
+	if (useDR) {
+	  h_data_scan[88] = read(path, "88", title, ilepton));
+	  h_data_b_scan[88] = read(path, "88", title_b, ilepton));
 	}
 	if (useBpur2) {
-	  NMAX = NMAX + 1;
-	  h_data_scan.push_back(read(path, "99", title, ilepton));
-	  h_data_b_scan.push_back(read(path, "99", title_b, ilepton));
+	  h_data_scan[99] = read(path, "99", title, ilepton);
+	  h_data_b_scan[99] = read(path, "99", title_b, ilepton);
 	}
 
 	if (ilepton==1) mc1->cd("demoEle");
@@ -218,8 +227,8 @@ string subdir="0";
 	h_data->Scale(1./Lumi2012, "width");
 	h_data_b->Scale(1./Lumi2012, "width");
 	for (int i=0;i<NMAX;i++) {
-	  h_data_scan[i]->Scale(1./Lumi2012, "width");
-	  h_data_b_scan[i]->Scale(1./Lumi2012, "width");
+	  if (h_data_scan[i]) h_data_scan[i]->Scale(1./Lumi2012, "width");
+	  if (h_data_b_scan[i]) h_data_b_scan[i]->Scale(1./Lumi2012, "width");
 	}
 	h_mc1->Scale(1./Lumi2012, "width");
 	h_mc1b_b->Scale(1./Lumi2012, "width");
@@ -227,8 +236,8 @@ string subdir="0";
 	  h_data_b->Divide(h_data);
 	  h_data_b->Scale(100.);
 	  for (int i=0;i<NMAX;i++) {
-	    h_data_b_scan[i]->Divide(h_data_scan[i]);
-	    h_data_b_scan[i]->Scale(100.);
+	    if (h_data_scan[i]) h_data_b_scan[i]->Divide(h_data_scan[i]);
+	    if (h_data_b_scan[i]) h_data_b_scan[i]->Scale(100.);
 	  }
 	  h_mc1b_b->Divide(h_mc1);
 	  h_mc1b_b->Scale(100.);
@@ -279,6 +288,25 @@ string subdir="0";
 	  sys_b_pu->SetBinError(i, val);
 	}
 
+	TH1F* sys_dr = h_data_scan[0]->Clone();
+	TH1F* sys_b_dr = h_data_b_scan[0]->Clone();
+	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  if (useDR) {
+	    val = TMath::Max(val,TMath::Abs(h_data_scan[88]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
+	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_scan[0]->GetBinError(i)**2-h_data_scan[88]->GetBinError(i)**2)));
+	  }
+	  sys_dr->SetBinError(i, val);
+	}
+	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  if (useDR) {
+	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[88]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
+	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_b_scan[0]->GetBinError(i)**2-h_data_b_scan[88]->GetBinError(i)**2)));
+	  }
+	  sys_b_dr->SetBinError(i, val);
+	}
+
 	TH1F* sys_bkg = h_data_scan[0]->Clone();
 	TH1F* sys_b_bkg = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
@@ -323,16 +351,16 @@ string subdir="0";
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  if (useBpur2) {
-	    val = TMath::Max(val,TMath::Abs(h_data_scan[11]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
-	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_scan[0]->GetBinError(i)**2-h_data_scan[11]->GetBinError(i)**2)));
+	    val = TMath::Max(val,TMath::Abs(h_data_scan[99]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
+	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_scan[0]->GetBinError(i)**2-h_data_scan[99]->GetBinError(i)**2)));
 	  }
 	  sys_bpur2->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  if (useBpur2) {
-	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[11]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
-	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_b_scan[0]->GetBinError(i)**2-h_data_b_scan[11]->GetBinError(i)**2)));
+	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[99]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
+	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_b_scan[0]->GetBinError(i)**2-h_data_b_scan[99]->GetBinError(i)**2)));
 	  }
 	  sys_b_bpur2->SetBinError(i, val);
 	}
@@ -424,6 +452,7 @@ string subdir="0";
 	cout << std::setw(12) << "jec sys";
 	cout << std::setw(12) << "jer sys";
 	cout << std::setw(12) << "pu sys";
+	if (useDR) cout << std::setw(12) << "DR sys";
 	cout << std::setw(12) << "bkg sys";
 	cout << std::setw(12) << "ttbar sys";
 	cout << std::setw(12) << "bpur sys";
@@ -441,6 +470,7 @@ string subdir="0";
 	  val = TMath::Sqrt(val**2+sys_jec->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_jer->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_pu->GetBinError(i)**2);
+	  if (useDR) val = TMath::Sqrt(val**2+sys_dr->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_bkg->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_top->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_bpur->GetBinError(i)**2);
@@ -461,6 +491,7 @@ string subdir="0";
 	  cout << " +- " << sys_jec->GetBinError(i);
 	  cout << " +- " << sys_jer->GetBinError(i);
 	  cout << " +- " << sys_pu->GetBinError(i);
+	  if (useDR) cout << " +- " << sys_dr->GetBinError(i);
 	  cout << " +- " << sys_bkg->GetBinError(i);
 	  cout << " +- " << sys_top->GetBinError(i);
 	  cout << " +- " << sys_bpur->GetBinError(i);
@@ -487,6 +518,7 @@ string subdir="0";
 	cout << std::setw(12) << "jec sys";
 	cout << std::setw(12) << "jer sys";
 	cout << std::setw(12) << "pu sys";
+	if (useDR) cout << std::setw(12) << "DR sys";
 	cout << std::setw(12) << "bkg sys";
 	cout << std::setw(12) << "ttbar sys";
 	cout << std::setw(12) << "bpur sys";
@@ -504,6 +536,7 @@ string subdir="0";
 	  val = TMath::Sqrt(val**2+sys_b_jec->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_jer->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_pu->GetBinError(i)**2);
+	  if (useDR) val = TMath::Sqrt(val**2+sys_b_dr->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_bkg->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_top->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_bpur->GetBinError(i)**2);
@@ -524,6 +557,7 @@ string subdir="0";
 	  cout << " +- " << sys_b_jec->GetBinError(i);
 	  cout << " +- " << sys_b_jer->GetBinError(i);
 	  cout << " +- " << sys_b_pu->GetBinError(i);
+	  if (useDR) cout << " +- " << sys_b_dr->GetBinError(i);
 	  cout << " +- " << sys_b_bkg->GetBinError(i);
 	  cout << " +- " << sys_b_top->GetBinError(i);
 	  cout << " +- " << sys_b_bpur->GetBinError(i);
@@ -563,8 +597,8 @@ string subdir="0";
 	h_data = fixrange(h_data);
 	h_data_b = fixrange(h_data_b);
 	for (int i=0;i<NMAX;i++) {
-	  h_data_scan[i] = fixrange(h_data_scan[i]);
-	  h_data_b_scan[i] = fixrange(h_data_b_scan[i]);
+	  if (h_data_scan[i]) h_data_scan[i] = fixrange(h_data_scan[i]);
+	  if (h_data_b_scan[i]) h_data_b_scan[i] = fixrange(h_data_b_scan[i]);
 	}
 	h_data_stat = fixrange(h_data_stat);
 	h_data_b_stat = fixrange(h_data_b_stat);
