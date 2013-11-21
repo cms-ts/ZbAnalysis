@@ -159,20 +159,6 @@ process.demoMuoJerDown = cms.EDProducer('ZbAnalyzer',
         JER     = cms.untracked.double(-1)
 )       
         
-process.demoEleMuoJerUp = cms.EDProducer('ZbAnalyzer',
-        pileupMC  = cms.untracked.string("S10"),
-        pileupDT  = cms.untracked.string("em"),
-        lepton  = cms.untracked.string("electron+muon"),
-        JER     = cms.untracked.double(1)
-)       
-
-process.demoEleMuoJerDown = cms.EDProducer('ZbAnalyzer',
-        pileupMC  = cms.untracked.string("S10"),
-        pileupDT  = cms.untracked.string("em"),
-        lepton  = cms.untracked.string("electron+muon"),
-        JER     = cms.untracked.double(-1)
-)
-        
 process.TFileService = cms.Service("TFileService",
 	fileName = cms.string('ZbTree.root')
 )
@@ -185,4 +171,4 @@ process.demoMuoDump = cms.EDAnalyzer('ZbDumper',
         lepton       = cms.untracked.string("muon")
 )
 
-process.p = cms.Path(process.demoEle*process.demoElePum*process.demoElePup*process.demoEleUp*process.demoEleDown*process.demoMuo*process.demoMuoPum*process.demoMuoPup*process.demoMuoUp*process.demoMuoDown*process.demoEleBtag*process.demoMuoBtag*process.demoEle2*process.demoMuo2*process.demoEleGen*process.demoMuoGen*process.demoElePur*process.demoMuoPur*process.demoEleJerUp*process.demoEleJerDown*process.demoMuoJerUp*process.demoMuoJerDown*process.demoEleMuoJerUp*process.demoEleMuoJerDown*process.demoEleDump*process.demoMuoDump)
+process.p = cms.Path(process.demoEle*process.demoElePum*process.demoElePup*process.demoEleUp*process.demoEleDown*process.demoMuo*process.demoMuoPum*process.demoMuoPup*process.demoMuoUp*process.demoMuoDown*process.demoEleBtag*process.demoMuoBtag*process.demoEle2*process.demoMuo2*process.demoEleGen*process.demoMuoGen*process.demoElePur*process.demoMuoPur*process.demoEleJerUp*process.demoEleJerDown*process.demoMuoJerUp*process.demoMuoJerDown*process.demoEleDump*process.demoMuoDump)
