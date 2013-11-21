@@ -118,7 +118,7 @@ string subdir="0";
 
 	vector <TH1F*> h_data_scan;
 	vector <TH1F*> h_data_b_scan;
-	unsigned int NMAX = 11;
+	unsigned int NMAX = 14;
 
 	for (int i=0;i<NMAX;i++) {
 	  stringstream ss;
@@ -247,6 +247,21 @@ string subdir="0";
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[2]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[1]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  sys_b_jec->SetBinError(i, val);
+	}
+
+	TH1F* sys_jer = h_data_scan[0]->Clone();
+	TH1F* sys_b_jer = h_data_b_scan[0]->Clone();
+	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  val = TMath::Max(val,TMath::Abs(h_data_scan[12]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
+	  val = TMath::Max(val,TMath::Abs(h_data_scan[11]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
+	  sys_jer->SetBinError(i, val);
+	}
+	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[12]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
+	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[11]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
+	  sys_b_jer->SetBinError(i, val);
 	}
 
 	TH1F* sys_pu = h_data_scan[0]->Clone();
@@ -407,6 +422,7 @@ string subdir="0";
 	cout << endl;
 	cout << std::setw(25) << "stat";
 	cout << std::setw(12) << "jec sys";
+	cout << std::setw(12) << "jer sys";
 	cout << std::setw(12) << "pu sys";
 	cout << std::setw(12) << "bkg sys";
 	cout << std::setw(12) << "ttbar sys";
@@ -423,6 +439,7 @@ string subdir="0";
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Sqrt(val**2+sys_jec->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+sys_jer->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_pu->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_bkg->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_top->GetBinError(i)**2);
@@ -442,6 +459,7 @@ string subdir="0";
 	  cout << std::fixed << std::setprecision(6) << std::setw(8);
 	  cout << h_data_stat->GetBinError(i);
 	  cout << " +- " << sys_jec->GetBinError(i);
+	  cout << " +- " << sys_jer->GetBinError(i);
 	  cout << " +- " << sys_pu->GetBinError(i);
 	  cout << " +- " << sys_bkg->GetBinError(i);
 	  cout << " +- " << sys_top->GetBinError(i);
@@ -467,6 +485,7 @@ string subdir="0";
 	cout << endl;
 	cout << std::setw(25) << "stat";
 	cout << std::setw(12) << "jec sys";
+	cout << std::setw(12) << "jer sys";
 	cout << std::setw(12) << "pu sys";
 	cout << std::setw(12) << "bkg sys";
 	cout << std::setw(12) << "ttbar sys";
@@ -483,6 +502,7 @@ string subdir="0";
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Sqrt(val**2+sys_b_jec->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+sys_b_jer->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_pu->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_bkg->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_top->GetBinError(i)**2);
@@ -502,6 +522,7 @@ string subdir="0";
 	  cout << std::fixed << std::setprecision(6) << std::setw(8);
 	  cout << h_data_b_stat->GetBinError(i);
 	  cout << " +- " << sys_b_jec->GetBinError(i);
+	  cout << " +- " << sys_b_jer->GetBinError(i);
 	  cout << " +- " << sys_b_pu->GetBinError(i);
 	  cout << " +- " << sys_b_bkg->GetBinError(i);
 	  cout << " +- " << sys_b_top->GetBinError(i);
