@@ -59,6 +59,19 @@ if (irun==10) {            // irun==10 => bkg
   string subdir="10";
   string postfix="";
 }
+if (irun==11) {            // irun==11 => DR lepton-jet cut
+  string subdir="11";
+  string postfix="DR";
+}
+if (irun==12) {            // irun==12 => JER up
+  string subdir="12";
+  string postfix="JerUp";
+}
+if (irun==13) {            // irun==13 => JER down
+  string subdir="13";
+  string postfix="JerDown";
+}
+
 if (irun==99) {            // irun==99 => pur
   string subdir="99";
   string postfix="Pur";
