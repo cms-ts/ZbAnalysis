@@ -273,7 +273,7 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
 
    int k=-1;
    if (jets->size()>0) {
-     double R = 0.1;
+     double R = 0.5;
      for (unsigned int i=0; i<gen_jets2->size(); ++i) {
        if (ROOT::Math::VectorUtil::DeltaR((*jets)[0], (*gen_jets2)[i]) < R) {
          k=i;
@@ -283,7 +283,7 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
    }
    int k_b=-1;
    if (bjets->size()>0) {
-     double R_b = 0.1;
+     double R_b = 0.5;
      for (unsigned int i=0; i<gen_bjets2->size(); ++i) {
        if (ROOT::Math::VectorUtil::DeltaR((*bjets)[0], (*gen_bjets2)[i]) < R_b) {
          k_b=i;
