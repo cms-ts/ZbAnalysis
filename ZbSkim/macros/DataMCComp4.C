@@ -41,10 +41,6 @@ if (irun==4) {             // irun==4 => PU Down
   string subdir="4";
   string postfix="Pum";
 }
-if (irun==4) {             // irun==4 => PU Down
-  string subdir="4";
-  string postfix="Pum";
-}
 if (irun==5) {             // irun==5 => top bkg
   string subdir="5";
   string postfix="";  
