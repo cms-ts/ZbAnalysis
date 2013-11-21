@@ -94,6 +94,12 @@ class ZbDumper : public edm::EDAnalyzer {
       // ----------member data ---------------------------
 
      std::string lepton_;
+     std::string pileupDT_;
+     double par_;
+     double par2_;
+     bool usePartonFlavour_;
+     bool pcut_;
+     bool useDeltaR_;
 
      TH2F* w_first_jet_pt;
      TH2F* w_first_jet_eta;
@@ -129,8 +135,13 @@ class ZbDumper : public edm::EDAnalyzer {
 //
 ZbDumper::ZbDumper(const edm::ParameterSet& iConfig) {
 
+   lepton_           = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
+   pileupDT_         = iConfig.getUntrackedParameter < std::string > ("pileupDT", "");
+   par_              = iConfig.getUntrackedParameter <double> ("JEC", 0);
+   par2_             = iConfig.getUntrackedParameter <double> ("JER", 0);
+   pcut_             = iConfig.getUntrackedParameter <bool> ("pcut", false);   
+   useDeltaR_        = iConfig.getUntrackedParameter <bool> ("useDeltaR", false);
    //now do what ever initialization is needed
-   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
    edm::Service < TFileService > fs;
 
    w_first_jet_pt    = fs->make < TH2F > ("w_first_jet_pt",    "w_first_jet_pt;P_t [GeV]", 50, 30., 700., 50, 30., 700.);
@@ -203,22 +214,32 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
     edm::Handle <std::vector<double>>   gen_bdelta_phi;
     edm::Handle <std::vector<double>>   gen_weight;
 
+    string postfix = "";
+    if (pileupDT_=="ee_pup" || pileupDT_=="mm_pup") postfix = "Pup";
+    if (pileupDT_=="ee_pum" || pileupDT_=="mm_pum") postfix = "Pum";
+    if (par_==+1) postfix = "Up";
+    if (par_==-1) postfix = "Down";
+    if (par2_==+1) postfix = "JerUp";
+    if (par2_==-1) postfix = "JerDown";
+    if (pcut_) postfix = "Pur";
+    if (useDeltaR_) postfix = "DR";
+
    if (lepton_== "electron") {
 
-     iEvent.getByLabel (edm::InputTag("demoEle","myEventWeight"), weight);
-     iEvent.getByLabel (edm::InputTag("demoEle","myElectrons"), electrons);
-     iEvent.getByLabel (edm::InputTag("demoEle","myMuons"), muons);
-     iEvent.getByLabel (edm::InputTag("demoEle","myJets"), jets);
-     iEvent.getByLabel (edm::InputTag("demoEle","myPtZ"), ptZ);
-     iEvent.getByLabel (edm::InputTag("demoEle","myPtZb"), ptZ_b);
-     iEvent.getByLabel (edm::InputTag("demoEle","myMassZj"), zj_mass);
-     iEvent.getByLabel (edm::InputTag("demoEle","myMassZb"), zb_mass);
-     iEvent.getByLabel (edm::InputTag("demoEle","myHt"), Ht);
-     iEvent.getByLabel (edm::InputTag("demoEle","myHtb"), Ht_b);
-     iEvent.getByLabel (edm::InputTag("demoEle","myDeltaPhi"), delta_phi);
-     iEvent.getByLabel (edm::InputTag("demoEle","myBDeltaPhi"), bdelta_phi);
-     iEvent.getByLabel (edm::InputTag("demoEle","myBJets"), bjets);
-     iEvent.getByLabel (edm::InputTag("demoEle","myBJetsWeights"), bweight);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myEventWeight"), weight);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myElectrons"), electrons);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myMuons"), muons);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myJets"), jets);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myPtZ"), ptZ);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myPtZb"), ptZ_b);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myMassZj"), zj_mass);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myMassZb"), zb_mass);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myHt"), Ht);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myHtb"), Ht_b);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myDeltaPhi"), delta_phi);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myBDeltaPhi"), bdelta_phi);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myBJets"), bjets);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myBJetsWeights"), bweight);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myEventWeight"), gen_weight);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myElectrons"), gen_electrons);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myMuons"), gen_muons);
@@ -239,20 +260,20 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
 
    if (lepton_== "muon") {
 
-     iEvent.getByLabel (edm::InputTag("demoMuo","myEventWeight"), weight);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myElectrons"), electrons);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myMuons"), muons);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myJets"), jets);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myPtZ"), ptZ);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myPtZb"), ptZ_b);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myMassZj"), zj_mass);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myMassZb"), zb_mass);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myHt"), Ht);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myHtb"), Ht_b);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myDeltaPhi"), delta_phi);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myBDeltaPhi"), bdelta_phi);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myBJets"), bjets);
-     iEvent.getByLabel (edm::InputTag("demoMuo","myBJetsWeights"), bweight);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myEventWeight"), weight);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myElectrons"), electrons);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myMuons"), muons);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myJets"), jets);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myPtZ"), ptZ);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myPtZb"), ptZ_b);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myMassZj"), zj_mass);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myMassZb"), zb_mass);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myHt"), Ht);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myHtb"), Ht_b);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myDeltaPhi"), delta_phi);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myBDeltaPhi"), bdelta_phi);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myBJets"), bjets);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myBJetsWeights"), bweight);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myEventWeight"), gen_weight);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myElectrons"), gen_electrons);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myMuons"), gen_muons);
