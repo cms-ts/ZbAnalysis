@@ -147,6 +147,32 @@ private:
 
   };
 
+  double jet_pt_jer(double jetEta, double jetPt, double jetPtGen, int syst) {
+
+    if (jetPt <= 0 || jetPtGen <= 0) return jetPt;
+
+    double correctionFactor[5]     = {1.052, 1.057, 1.096, 1.134, 1.288};
+    double correctionFactorUp[5]   = {1.115, 1.114, 1.161, 1.228, 1.488};
+    double correctionFactorDown[5] = {0.990, 1.001, 1.032, 1.042, 1.089};
+
+    int index = 0;
+
+    if (                      fabs(jetEta) <= 0.5) index = 0;
+    if (fabs(jetEta) > 0.5 && fabs(jetEta) <= 1.1) index = 1;
+    if (fabs(jetEta) > 1.1 && fabs(jetEta) <= 1.7) index = 2;
+    if (fabs(jetEta) > 1.7 && fabs(jetEta) <= 2.3) index = 3;
+    if (fabs(jetEta) > 2.3 && fabs(jetEta) <= 3.0) index = 4;
+
+    double jetPtNew = 0.0;
+
+    if (syst ==  0) jetPtNew = jetPtGen + correctionFactor[index] * (jetPt-jetPtGen);
+    if (syst == +1) jetPtNew = jetPtGen + correctionFactorUp[index] * (jetPt-jetPtGen);
+    if (syst == -1) jetPtNew = jetPtGen + correctionFactorDown[index] * (jetPt-jetPtGen);
+
+    return fmax(0.0, jetPtNew);
+
+  };
+
   void fill(TH1F* histogram, double value, double weight=1.0) {
     TAxis* axis = histogram->GetXaxis();
     Int_t nx = histogram->GetNbinsX();
@@ -1450,7 +1476,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   for (vector < pat::Jet >::const_iterator jet = jets->begin(); jet != jets->end(); ++jet) {
 
-    double jet_pt  = jet->pt ();
+    double jet_pt  = jet->pt();
     double jet_eta = jet->eta();
 
     // JEC Uncertainty
@@ -1463,6 +1489,19 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     //cout<< "JEC syst =" << unc << endl;
 
     jet_pt = jet_pt * cor;
+
+    int par2_ = 0;
+    if (isMC && jet->genJet()) jet_pt = jet_pt_jer(jet_eta, jet_pt, jet->genJet()->pt(), par2_);
+
+    // check for no neutrinos
+//    if (isMC && jet->genJet()) {
+//      vector <const reco::GenParticle*> listGenP = jet->genJet()->getGenConstituents();
+//      for (unsigned int i=0; i<listGenP.size(); i++) {
+//        cout << i << " " << listGenP.size() << " : " << listGenP[i]->pdgId();
+//        if (fabs(listGenP[i]->pdgId())==12 || fabs(listGenP[i]->pdgId())==14 || fabs(listGenP[i]->pdgId())==16) cout << " +++ Found neutrino in GenJet +++ ";
+//        cout << endl;    
+//      }
+//    }
 
     if (fabs(jet_eta) < 2.5 && jet_pt > 30) {
 
