@@ -469,6 +469,20 @@ process.demoMuoPur = cms.EDProducer('ZbAnalyzer',
         lepton  = cms.untracked.string("muon"),
         pcut = cms.untracked.bool(True)
 )
+process.demoEleDR = cms.EDProducer('ZbAnalyzer',
+        path = cms.untracked.string("."),
+        pileupMC  = cms.untracked.string("S10"),
+        pileupDT  = cms.untracked.string("ee"),
+        lepton  = cms.untracked.string("electron"),
+        useDeltaR = cms.untracked.bool(True)
+)
+process.demoMuoDR = cms.EDProducer('ZbAnalyzer',
+        path = cms.untracked.string("."),
+        pileupMC = cms.untracked.string("S10"),
+        pileupDT = cms.untracked.string("mm"),
+        lepton  = cms.untracked.string("muon"),
+        useDeltaR = cms.untracked.bool(True)
+)
 process.demoEleJerUp = cms.EDProducer('ZbAnalyzer',
         path = cms.untracked.string("."),
         pileupMC = cms.untracked.string("S10"),
@@ -596,26 +610,30 @@ process.p = cms.Path(
    process.demoEleGen * process.demoMuoGen *
 #   process.MyProcess *
    process.demoEle *
+   process.demoEleBtag *
    process.demoElePum * process.demoElePup *
    process.demoEleUp * process.demoEleDown *
+   process.demoElePur *
+   process.demoEleDR *
+   process.demoEleJerUp * process.demoEleJerDown *
    process.demoMuo *
+   process.demoMuoBtag *
    process.demoMuoPum * process.demoMuoPup *
    process.demoMuoUp * process.demoMuoDown *
-   process.demoEleBtag * process.demoMuoBtag *
-   process.demoElePur *
    process.demoMuoPur *
-   process.demoEleJerUp * process.demoEleJerDown *
+   process.demoMuoDR *
    process.demoMuoJerUp * process.demoMuoJerDown *
    process.demoEleDump *
    process.demoEleDumpPup * process.demoEleDumpPum *
-   process.demoEleDumpPum * process.demoEleDumpUp *
-   process.demoEleDumpDown * process.demoEleDumpPur *
-   process.demoEleDumpDR * process.demoEleDumpJerUp *
-   process.demoEleDumpJerDown * process.demoMuoDump *
+   process.demoEleDumpUp * process.demoEleDumpDown *
+   process.demoEleDumpPur *
+   process.demoEleDumpDR *
+   process.demoEleDumpJerUp * process.demoEleDumpJerDown *
    process.demoMuoDump *
    process.demoMuoDumpPup * process.demoMuoDumpPum *
    process.demoMuoDumpUp * process.demoMuoDumpDown *
-   process.demoMuoDumpPur * process.demoMuoDumpDR *
+   process.demoMuoDumpPur *
+   process.demoMuoDumpDR *
    process.demoMuoDumpJerUp * process.demoMuoDumpJerDown
    #process.dump
 )
