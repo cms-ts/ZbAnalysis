@@ -244,10 +244,10 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_mass_mm =           fs->make < TH1F > ("w_mass_mm",          "w_mass_mm;Mass [GeV]", 80, 71., 111.);
   w_mass_ee_b =         fs->make < TH1F > ("w_mass_ee_b",        "w_mass_ee_b;Mass [GeV]", 80, 71., 111.);
   w_mass_mm_b =         fs->make < TH1F > ("w_mass_mm_b",        "w_mass_mm_b;Mass [GeV]", 80, 71., 111.);
-  w_mass_Zj_ee =        fs->make < TH1F > ("w_mass_Zj_ee",       "w_mass_Zj_ee", 60, 110., 330.);
-  w_mass_Zj_mm =        fs->make < TH1F > ("w_mass_Zj_mm",       "w_mass_Zj_mm", 60, 110., 330.);
-  w_mass_Zj_ee_b =      fs->make < TH1F > ("w_mass_Zj_ee_b",     "w_mass_Zj_ee_b", 60, 110., 330.);
-  w_mass_Zj_mm_b =      fs->make < TH1F > ("w_mass_Zj_mm_b",     "w_mass_Zj_mm_b", 60, 110., 330.);
+  w_mass_Zj_ee =        fs->make < TH1F > ("w_mass_Zj_ee",       "w_mass_Zj_ee", 60, 100., 330.);
+  w_mass_Zj_mm =        fs->make < TH1F > ("w_mass_Zj_mm",       "w_mass_Zj_mm", 60, 100., 330.);
+  w_mass_Zj_ee_b =      fs->make < TH1F > ("w_mass_Zj_ee_b",     "w_mass_Zj_ee_b", 60, 100., 330.);
+  w_mass_Zj_mm_b =      fs->make < TH1F > ("w_mass_Zj_mm_b",     "w_mass_Zj_mm_b", 60, 100., 330.);
   w_Ht =                fs->make < TH1F > ("w_Ht",               "w_Ht [GeV]", 50, 30., 1000.);
   w_Ht_b =              fs->make < TH1F > ("w_Ht_b",             "w_Ht_b [GeV]", 50, 30., 1000.);
   w_delta_ee =          fs->make < TH1F > ("w_delta_phi_ee",     "w_delta_phi_ee", 12, 0, TMath::Pi ());
