@@ -193,7 +193,7 @@ if (irun==99) {            // irun==99 => pur
 	  h_mc1_truth  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd(("demoEle"+postfix).c_str());
 	  h_mc1_reco   = (TH1F*)gDirectory->Get(title_b.c_str());
-	  mc1->cd("demoEleDump");
+	  mc1->cd(("demoEleDump"+postfix).c_str());
 	  h_mc1_matrix = (TH2F*)gDirectory->Get(title.c_str());
 	  mc2->cd("demoEleGen");
 	  h_mc2_truth  = (TH1F*)gDirectory->Get(title.c_str());
@@ -205,7 +205,7 @@ if (irun==99) {            // irun==99 => pur
 	  h_mc1_truth   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd(("demoMuo"+postfix).c_str());
 	  h_mc1_reco    = (TH1F*)gDirectory->Get(title_b.c_str());
-	  mc1->cd("demoMuoDump");
+	  mc1->cd(("demoMuoDump"+postfix).c_str());
 	  h_mc1_matrix  = (TH2F*)gDirectory->Get(title.c_str());
 	  mc2->cd("demoMuoGen");
 	  h_mc2_truth   = (TH1F*)gDirectory->Get(title.c_str());
