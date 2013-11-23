@@ -69,7 +69,7 @@ if (irun==99) {            // irun==99 => pur
         string title_mm = title;
         string title_mm_b = title;
 
-        if (title=="w_pt_Z"||title=="w_delta_phi") {
+        if (title=="w_pt_Z"||title=="w_mass_Zj"||title=="w_delta_phi") {
           title_ee = title_ee + "_ee";
           title_ee_b = title_ee_b + "_ee";
           title_mm = title_mm + "_mm";
