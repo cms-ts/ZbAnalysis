@@ -1175,9 +1175,15 @@ string subdir="0";
 
 	if (useSherpa) {
 	  g_M3->SetMarkerStyle(25);
+	  g_M3_stat->SetMarkerStyle(25);
+	  g_M3_tot->SetMarkerStyle(25);
 	} else {
 	  g_M3->SetMarkerStyle(24);
 	  g_M3->SetMarkerColor(kBlack);
+	  g_M3_stat->SetMarkerStyle(24);
+	  g_M3_stat->SetMarkerColor(kBlack);
+	  g_M3_tot->SetMarkerStyle(24);
+	  g_M3_tot->SetMarkerColor(kBlack);
 	}
 	g_M3->Draw("EP0SAME");
 	if (useSherpa) {
