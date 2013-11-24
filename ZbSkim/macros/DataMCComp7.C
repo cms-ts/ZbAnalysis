@@ -156,15 +156,24 @@ string subdir="0";
 	TH1F* h_mcg1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
+	if (!h_mcg1) h_mcg1 = (TH1F*)h_mcg->Clone();
+	if (!h_mcg1_b) h_mcg1_b = (TH1F*)h_mcg_b->Clone();
+
 	if (ilepton==1) mcg2->cd("demoEleGen");
 	if (ilepton==2) mcg2->cd("demoMuoGen");
 	TH1F* h_mcg2 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg2_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
+	if (!h_mcg2) h_mcg2 = (TH1F*)h_mcg->Clone();
+	if (!h_mcg2_b) h_mcg2_b = (TH1F*)h_mcg_b->Clone();
+
 	if (ilepton==1) mcg3->cd("demoEleGen");
 	if (ilepton==2) mcg3->cd("demoMuoGen");
 	TH1F* h_mcg3 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg3_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
+	if (!h_mcg3) h_mcg3 = (TH1F*)h_mcg->Clone();
+	if (!h_mcg3_b) h_mcg3_b = (TH1F*)h_mcg_b->Clone();
 
 	h_mc1->Sumw2();
 	h_mcg->Sumw2();
