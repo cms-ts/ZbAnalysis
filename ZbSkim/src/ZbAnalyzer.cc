@@ -147,7 +147,7 @@ private:
 
   };
 
-  double jet_pt_jer(double jetEta, double jetPt, double jetPtGen, int syst) {
+  double jetResolutionCorrection(double jetEta, double jetPt, double jetPtGen, int syst) {
 
     if (jetPt <= 0 || jetPtGen <= 0) return jetPt;
 
@@ -163,13 +163,13 @@ private:
     if (fabs(jetEta) > 1.7 && fabs(jetEta) <= 2.3) index = 3;
     if (fabs(jetEta) > 2.3 && fabs(jetEta) <= 3.0) index = 4;
 
-    double jetPtNew = 0.0;
+    double jetPtNew = jetPt;
 
     if (syst ==  0) jetPtNew = jetPtGen + correctionFactor[index] * (jetPt-jetPtGen);
     if (syst == +1) jetPtNew = jetPtGen + correctionFactorUp[index] * (jetPt-jetPtGen);
     if (syst == -1) jetPtNew = jetPtGen + correctionFactorDown[index] * (jetPt-jetPtGen);
 
-    return fmax(0.0, jetPtNew);
+    return fmax(0.0, jetPtNew/jetPt);
 
   };
 
@@ -198,8 +198,8 @@ private:
   std::string path_;
   unsigned int icut_;
 
-  JetCorrectionUncertainty *jecUncDT_;
-  JetCorrectionUncertainty *jecUncMC_;
+  JetCorrectionUncertainty *jetCorrectionUncertaintyDT_;
+  JetCorrectionUncertainty *jetCorrectionUncertaintyMC_;
   edm::LumiReWeighting LumiWeights_;
 
   table* ElSF_;
@@ -1264,9 +1264,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   // ++++++ Pile-Up
 
   bool isMC = false;
-  JetCorrectionUncertainty* jecUnc;
+  JetCorrectionUncertainty* jetCorrectionUncertainty;
 
-  jecUnc = jecUncDT_;
+  jetCorrectionUncertainty = jetCorrectionUncertaintyDT_;
 
   MyWeight = 1.0;
 
@@ -1275,7 +1275,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   if (iEvent.getByLabel (edm::InputTag ("addPileupInfo"), PupInfo))  {
 
     isMC = true;
-    jecUnc = jecUncMC_;
+    jetCorrectionUncertainty = jetCorrectionUncertaintyMC_;
 
     float Tnpv = -1;
 
@@ -1519,22 +1519,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   for (vector < pat::Jet >::const_iterator jet = jets->begin(); jet != jets->end(); ++jet) {
 
-    double jet_pt  = jet->pt();
-    double jet_eta = jet->eta();
-
-    // JEC Uncertainty
-
-    jecUnc->setJetPt(jet_pt);
-    jecUnc->setJetEta(jet_eta);
-    double unc = jecUnc->getUncertainty(true);
-    double cor = (1.0+unc*par_);
-    h_JEC_uncert->Fill (unc);
-    //cout<< "JEC syst =" << unc << endl;
-
-    jet_pt = jet_pt * cor;
-
-    if (isMC && jet->genJet()) jet_pt = jet_pt_jer(jet_eta, jet_pt, jet->genJet()->pt(), par2_);
-
     // check for no neutrinos
 //    if (isMC && jet->genJet()) {
 //      vector <const reco::GenParticle*> listGenP = jet->genJet()->getGenConstituents();
@@ -1545,13 +1529,33 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 //      }
 //    }
 
-    if (fabs(jet_eta) < 2.5 && jet_pt > 30) {
+    // JEC uncertainty
+
+    jetCorrectionUncertainty->setJetPt(jet->pt());
+    jetCorrectionUncertainty->setJetEta(jet->eta());
+    double jecUnc = jetCorrectionUncertainty->getUncertainty(true);
+    h_JEC_uncert->Fill (jecUnc);
+    //cout<< "JEC syst =" << unc << endl;
+
+    // JER corrections
+
+    double jerCor = 1.0;
+    if (isMC && jet->genJet()) jerCor = jetResolutionCorrection(jet->eta(), jet->pt(), jet->genJet()->pt(), par2_);
+
+    pat::Jet jetNew = (*jet);
+    math::XYZTLorentzVector jetNew_p4 = jetNew.p4();
+
+    jetNew_p4 = jetNew_p4 * (1.0 + jecUnc * par_) * jerCor;
+
+    jetNew.setP4(jetNew_p4);
+
+    if (fabs(jetNew.eta()) < 2.5 && jetNew.pt() > 30) {
 
       ++Nj;
 
-      Ht += jet_pt;
+      Ht += jetNew.pt();
 
-      vect_jets.push_back (*jet);
+      vect_jets.push_back (jetNew);
 
       double discrCSV = jet->bDiscriminator("combinedSecondaryVertexBJetTags");
       //cout << discrCSV << endl;
@@ -1574,7 +1578,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
 	++Nb;
 	//cout << Nb << endl;
-        vect_bjets.push_back (*jet);
+        vect_bjets.push_back (jetNew);
       }
     }
   }
@@ -2805,8 +2809,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
 // ------------ method called once each job just before starting event loop ------------
 void ZbAnalyzer::beginJob () {
-  jecUncDT_ = new JetCorrectionUncertainty(path_ + "/" + "Fall12_V7_DATA_Uncertainty_AK5PFchs.txt");
-  jecUncMC_ = new JetCorrectionUncertainty(path_ + "/" + "Fall12_V7_MC_Uncertainty_AK5PFchs.txt");
+  jetCorrectionUncertaintyDT_ = new JetCorrectionUncertainty(path_ + "/" + "Fall12_V7_DATA_Uncertainty_AK5PFchs.txt");
+  jetCorrectionUncertaintyMC_ = new JetCorrectionUncertainty(path_ + "/" + "Fall12_V7_MC_Uncertainty_AK5PFchs.txt");
   LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileupMC_ + ".root", path_ + "/" + "pileup_2012_" + pileupDT_ + ".root", "pileup", "pileup");
 
   ElSF_  = new table(path_ + "/" + "ele_eff.txt");
@@ -2819,8 +2823,8 @@ void ZbAnalyzer::beginJob () {
 
 // ------------ method called once each job just after ending the event loop ------------
 void ZbAnalyzer::endJob () {
-  delete jecUncDT_;
-  delete jecUncMC_;
+  delete jetCorrectionUncertaintyDT_;
+  delete jetCorrectionUncertaintyMC_;
 
   delete ElSF_;
   delete ElSF2_;
