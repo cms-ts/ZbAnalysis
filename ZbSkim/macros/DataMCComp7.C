@@ -30,16 +30,20 @@ int useBpur2=0;
 int useDR=0;
 //int useDR=1; // include DR systematics
 
+int useMC=0;
+//int useMC=1; // use MC prediction
+
 int useSherpa=0;
 //int useSherpa=1; // use Sherpa MC prediction
 
 string subdir="0";
 
 	if (gROOT->GetVersionInt() >= 53401) {
-	  //gROOT->GetColor(kRed)->SetAlpha(0.5);
-	  gROOT->GetColor(kRed)->SetAlpha(0.0);
+	  gROOT->GetColor(kRed)->SetAlpha(0.5);
+	  if (!useMC) gROOT->GetColor(kRed)->SetAlpha(0.0);
 	  gROOT->GetColor(kGreen+2)->SetAlpha(0.5);
 	  gROOT->GetColor(kMagenta-6)->SetAlpha(0.5);
+	  if (!useSherpa) gROOT->GetColor(kMagenta-6)->SetAlpha(0.0);
 	  gROOT->GetColor(kBlue-4)->SetAlpha(0.5);
 	  gROOT->GetColor(kOrange+7)->SetAlpha(0.5);
 	}
@@ -841,7 +845,7 @@ string subdir="0";
 	  if (ilepton==1) {
 	    leg->AddEntry(h_data,"Z(#rightarrow ee) DATA","p");
 	    leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
-	    //leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
+	    if (useMC) leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3,"Z(#rightarrow ee) MadGraph 4FS","l");
 	    if (useSherpa) leg->AddEntry(h_mcg1,"Z(#rightarrow ee) Sherpa","l");
