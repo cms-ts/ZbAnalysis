@@ -1164,128 +1164,133 @@ string subdir="0";
 	  }
 	}
 
-	cout << h_data->GetName();
-	cout << std::fixed << std::setprecision(4) << std::setw(10);
-	cout << " : average unfolded total cross section = " << tot << " +- " << rms << " pb (" << 100*rms/tot << " %)";
-	cout << endl;
-	cout << std::setw(25) << "stat";
-	cout << std::setw(12) << "jec sys";
-	cout << std::setw(12) << "jer sys";
-	cout << std::setw(12) << "pu sys";
-	if (useDR) cout << std::setw(12) << "DR sys";
-	cout << std::setw(12) << "bkg sys";
-	cout << std::setw(12) << "ttbar sys";
-	cout << std::setw(12) << "bpur sys";
-	if (useBpur2) cout << std::setw(12) << "bpur2 sys";
-	cout << std::setw(12) << "unfold stat";
-	cout << std::setw(12) << "unfold sys";
-	cout << std::setw(12) << "unfold rms";
-	cout << std::setw(12) << "tot stat";
-	cout << std::setw(12) << "tot sys";
-	cout << std::setw(12) << "tot error";
-	cout << std::setw(8) << "%";
-	cout << endl;
-	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
-	  printf("%02d",i);
-	  cout << " ";
-	  cout << std::fixed << std::setprecision(6) << std::setw(10);
-	  cout << h_data_stat->GetBinContent(i);
-	  cout << " +- ";
-	  cout << std::fixed << std::setprecision(6) << std::setw(8);
-	  cout << h_data_stat->GetBinError(i);
-	  cout << " +- " << sys_jec->GetBinError(i);
-	  cout << " +- " << sys_jer->GetBinError(i);
-	  cout << " +- " << sys_pu->GetBinError(i);
-	  if (useDR) cout << " +- " << sys_dr->GetBinError(i);
-	  cout << " +- " << sys_bkg->GetBinError(i);
-	  cout << " +- " << sys_top->GetBinError(i);
-	  cout << " +- " << sys_bpur->GetBinError(i);
-	  if (useBpur2) cout << " +- " << sys_bpur2->GetBinError(i);
-	  cout << " +- " << stat_unfold->GetBinError(i);
-	  cout << " +- " << sys_unfold->GetBinError(i);
-	  cout << " +- " << h_data_stat->GetBinContent(i)*rms/tot;
-	  cout << " => ";
-	  cout << h_data_stat->GetBinError(i) << " +- " << h_data_syst->GetBinError(i);
-	  cout << " => ";
-	  cout << h_data_tot->GetBinError(i);
-	  cout << " => ";
-	  cout << std::setprecision(1) << std::setw(4);
-	  cout << 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i));
-	  cout << endl;
-	}
-	cout << h_data_b->GetName();
-	if (isratio==0) {
-	  cout << std::fixed << std::setprecision(4) << std::setw(10);
-	  cout << " : average unfolded total cross section = " << tot_b << " +- " << rms_b << " pb (" << 100*rms_b/tot_b << " %)";
-	}
-	cout << endl;
-	cout << std::setw(25) << "stat";
-	cout << std::setw(12) << "jec sys";
-	cout << std::setw(12) << "jer sys";
-	cout << std::setw(12) << "pu sys";
-	if (useDR) cout << std::setw(12) << "DR sys";
-	cout << std::setw(12) << "bkg sys";
-	cout << std::setw(12) << "ttbar sys";
-	cout << std::setw(12) << "bpur sys";
-	if (useBpur2) cout << std::setw(12) << "bpur2 sys";
-	cout << std::setw(12) << "unfold stat";
-	cout << std::setw(12) << "unfold sys";
-	cout << std::setw(12) << "unfold rms";
-	cout << std::setw(12) << "tot stat";
-	cout << std::setw(12) << "tot sys";
-	cout << std::setw(12) << "tot error";
-	cout << std::setw(8) << "%";
-	cout << endl;
-	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
-	  printf("%02d",i);
-	  cout << " ";
-	  cout << std::fixed << std::setprecision(6) << std::setw(10);
-	  cout << h_data_b_stat->GetBinContent(i);
-	  cout << " +- ";
-	  cout << std::fixed << std::setprecision(6) << std::setw(8);
-	  cout << h_data_b_stat->GetBinError(i);
-	  cout << " +- " << sys_b_jec->GetBinError(i);
-	  cout << " +- " << sys_b_jer->GetBinError(i);
-	  cout << " +- " << sys_b_pu->GetBinError(i);
-	  if (useDR) cout << " +- " << sys_b_dr->GetBinError(i);
-	  cout << " +- " << sys_b_bkg->GetBinError(i);
-	  cout << " +- " << sys_b_top->GetBinError(i);
-	  cout << " +- " << sys_b_bpur->GetBinError(i);
-	  if (useBpur2) cout << " +- " << sys_b_bpur2->GetBinError(i);
-	  cout << " +- " << stat_b_unfold->GetBinError(i);
-	  cout << " +- " << sys_b_unfold->GetBinError(i);
-	  cout << " +- " << h_data_b_stat->GetBinContent(i)*rms_b/tot_b;
-	  cout << " => ";
-	  cout << h_data_b_stat->GetBinError(i) << " +- " << h_data_b_syst->GetBinError(i);
-	  cout << " => ";
-	  cout << h_data_b_tot->GetBinError(i);
-	  cout << " => ";
-	  cout << std::setprecision(1) << std::setw(4);
-	  cout << 100.*(h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_stat->GetBinContent(i));
-	  cout << endl;
-	}
-
 	if (plot) {
+	  ofstream out;
 	  if (isratio==0) {
 	    if (ilepton==1) {
 	      gSystem->mkdir((path + "/electrons/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/electrons/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
+	      out.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b + ".dat").c_str());
 	    }
 	    if (ilepton==2) {
 	      gSystem->mkdir((path + "/muons/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/muons/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
+	      out.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b + ".dat").c_str());
 	    }
 	  }
 	  if (isratio==1) {
 	    if (ilepton==1) {
 	      gSystem->mkdir((path + "/electrons/" + version + "/ratios_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/electrons/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
+	      out.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b + ".dat").c_str());
 	    }
 	    if (ilepton==2) {
 	      gSystem->mkdir((path + "/muons/" + version + "/ratios_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/muons/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
+	      out.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b + ".dat").c_str());
 	    }
 	  }
+	  out << h_data->GetName();
+	  out << std::fixed << std::setprecision(4) << std::setw(10);
+	  out << " : average unfolded total cross section = " << tot << " +- " << rms << " pb (" << 100*rms/tot << " %)";
+	  out << endl;
+	  out << std::setw(25) << "stat";
+	  out << std::setw(12) << "jec sys";
+	  out << std::setw(12) << "jer sys";
+	  out << std::setw(12) << "pu sys";
+	  if (useDR) out << std::setw(12) << "DR sys";
+	  out << std::setw(12) << "bkg sys";
+	  out << std::setw(12) << "ttbar sys";
+	  out << std::setw(12) << "bpur sys";
+	  if (useBpur2) out << std::setw(12) << "bpur2 sys";
+	  out << std::setw(12) << "unfold stat";
+	  out << std::setw(12) << "unfold sys";
+	  out << std::setw(12) << "unfold rms";
+	  out << std::setw(12) << "tot stat";
+	  out << std::setw(12) << "tot sys";
+	  out << std::setw(12) << "tot error";
+	  out << std::setw(8) << "%";
+	  out << endl;
+	  for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
+	    out << std::fixed << std::setw(2);
+	    out << i << " ";
+	    out << std::fixed << std::setprecision(6) << std::setw(10);
+	    out << h_data_stat->GetBinContent(i);
+	    out << " +- ";
+	    out << std::fixed << std::setprecision(6) << std::setw(8);
+	    out << h_data_stat->GetBinError(i);
+	    out << " +- " << sys_jec->GetBinError(i);
+	    out << " +- " << sys_jer->GetBinError(i);
+	    out << " +- " << sys_pu->GetBinError(i);
+	    if (useDR) out << " +- " << sys_dr->GetBinError(i);
+	    out << " +- " << sys_bkg->GetBinError(i);
+	    out << " +- " << sys_top->GetBinError(i);
+	    out << " +- " << sys_bpur->GetBinError(i);
+	    if (useBpur2) out << " +- " << sys_bpur2->GetBinError(i);
+	    out << " +- " << stat_unfold->GetBinError(i);
+	    out << " +- " << sys_unfold->GetBinError(i);
+	    out << " +- " << h_data_stat->GetBinContent(i)*rms/tot;
+	    out << " => ";
+	    out << h_data_stat->GetBinError(i) << " +- " << h_data_syst->GetBinError(i);
+	    out << " => ";
+	    out << h_data_tot->GetBinError(i);
+	    out << " => ";
+	    out << std::setprecision(1) << std::setw(4);
+	    out << 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i));
+	    out << endl;
+	  }
+	  out << h_data_b->GetName();
+	  if (isratio==0) {
+	    out << std::fixed << std::setprecision(4) << std::setw(10);
+	    out << " : average unfolded total cross section = " << tot_b << " +- " << rms_b << " pb (" << 100*rms_b/tot_b << " %)";
+	  }
+	  out << endl;
+	  out << std::setw(25) << "stat";
+	  out << std::setw(12) << "jec sys";
+	  out << std::setw(12) << "jer sys";
+	  out << std::setw(12) << "pu sys";
+	  if (useDR) out << std::setw(12) << "DR sys";
+	  out << std::setw(12) << "bkg sys";
+	  out << std::setw(12) << "ttbar sys";
+	  out << std::setw(12) << "bpur sys";
+	  if (useBpur2) out << std::setw(12) << "bpur2 sys";
+	  out << std::setw(12) << "unfold stat";
+	  out << std::setw(12) << "unfold sys";
+	  out << std::setw(12) << "unfold rms";
+	  out << std::setw(12) << "tot stat";
+	  out << std::setw(12) << "tot sys";
+	  out << std::setw(12) << "tot error";
+	  out << std::setw(8) << "%";
+	  out << endl;
+	  for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
+	    out << std::fixed << std::setw(2);
+	    out << i << " ";
+	    out << std::fixed << std::setprecision(6) << std::setw(10);
+	    out << h_data_b_stat->GetBinContent(i);
+	    out << " +- ";
+	    out << std::fixed << std::setprecision(6) << std::setw(8);
+	    out << h_data_b_stat->GetBinError(i);
+	    out << " +- " << sys_b_jec->GetBinError(i);
+	    out << " +- " << sys_b_jer->GetBinError(i);
+	    out << " +- " << sys_b_pu->GetBinError(i);
+	    if (useDR) out << " +- " << sys_b_dr->GetBinError(i);
+	    out << " +- " << sys_b_bkg->GetBinError(i);
+	    out << " +- " << sys_b_top->GetBinError(i);
+	    out << " +- " << sys_b_bpur->GetBinError(i);
+	    if (useBpur2) out << " +- " << sys_b_bpur2->GetBinError(i);
+	    out << " +- " << stat_b_unfold->GetBinError(i);
+	    out << " +- " << sys_b_unfold->GetBinError(i);
+	    out << " +- " << h_data_b_stat->GetBinContent(i)*rms_b/tot_b;
+	    out << " => ";
+	    out << h_data_b_stat->GetBinError(i) << " +- " << h_data_b_syst->GetBinError(i);
+	    out << " => ";
+	    out << h_data_b_tot->GetBinError(i);
+	    out << " => ";
+	    out << std::setprecision(1) << std::setw(4);
+	    out << 100.*(h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_stat->GetBinContent(i));
+	    out << endl;
+	  }
+	  out.close();
 	}
 }
 
