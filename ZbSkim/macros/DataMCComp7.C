@@ -36,6 +36,10 @@ int useMC=0;
 int useSherpa=0;
 //int useSherpa=1; // use Sherpa MC prediction
 
+double ele_eff_sys=0.015;
+double muo_eff_sys=0.020;
+double btag_sys=0.030;
+
 string subdir="0";
 
 	if (gROOT->GetVersionInt() >= 53401) {
@@ -256,6 +260,21 @@ string subdir="0";
 	  h_mc1b_b->Scale(100.);
 	}
 
+	TH1F* sys_leff = h_data_scan[0]->Clone();
+	TH1F* sys_b_leff = h_data_b_scan[0]->Clone();
+	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  if (ilepton==1) val = ele_eff_sys * h_data_scan[0]->GetBinContent(i);
+	  if (ilepton==2) val = muo_eff_sys * h_data_scan[0]->GetBinContent(i);
+	  sys_leff->SetBinError(i, val);
+	}
+	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  if (ilepton==1) val = ele_eff_sys * h_data_b_scan[0]->GetBinContent(i);
+	  if (ilepton==2) val = muo_eff_sys * h_data_b_scan[0]->GetBinContent(i);
+	  sys_b_leff->SetBinError(i, val);
+	}
+
 	TH1F* sys_jec = h_data_scan[0]->Clone();
 	TH1F* sys_b_jec = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
@@ -378,6 +397,19 @@ string subdir="0";
 	  sys_b_bpur2->SetBinError(i, val);
 	}
 
+	TH1F* sys_btag = h_data_scan[0]->Clone();
+	TH1F* sys_b_btag = h_data_b_scan[0]->Clone();
+	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  val = 0.0;
+	  sys_btag->SetBinError(i, val);
+	}
+	for (int i=0;i<=h_data_b_scan[0]->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  val = btag_sys * h_data_b_scan[0]->GetBinContent(i);
+	  sys_b_btag->SetBinError(i, val);
+	}
+
 	TH1F* stat_unfold = h_data_scan[0]->Clone();
 	TH1F* stat_b_unfold = h_data_b_scan[0]->Clone();
 	for (int i=0;i<=h_data_scan[0]->GetNbinsX()+1;i++) {
@@ -459,6 +491,7 @@ string subdir="0";
 
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
 	  float val = 0.0;
+	  val = TMath::Sqrt(val**2+sys_leff->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_jec->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_jer->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_pu->GetBinError(i)**2);
@@ -467,6 +500,7 @@ string subdir="0";
 	  val = TMath::Sqrt(val**2+sys_top->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_bpur->GetBinError(i)**2);
 	  if (useBpur2) val = TMath::Sqrt(val**2+sys_bpur2->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+sys_btag->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+stat_unfold->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_unfold->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+(h_data_stat->GetBinContent(i)*rms/tot)**2);
@@ -477,6 +511,7 @@ string subdir="0";
 
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
 	  float val = 0.0;
+	  val = TMath::Sqrt(val**2+sys_b_leff->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_jec->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_jer->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_pu->GetBinError(i)**2);
@@ -485,6 +520,7 @@ string subdir="0";
 	  val = TMath::Sqrt(val**2+sys_b_top->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_bpur->GetBinError(i)**2);
 	  if (useBpur2) val = TMath::Sqrt(val**2+sys_b_bpur2->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+sys_b_btag->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+stat_b_unfold->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_unfold->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+(h_data_b_stat->GetBinContent(i)*rms_b/tot_b)**2);
@@ -1170,24 +1206,24 @@ string subdir="0";
 	    if (ilepton==1) {
 	      gSystem->mkdir((path + "/electrons/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/electrons/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
-	      out.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b + ".dat").c_str());
+	      out.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.dat").c_str());
 	    }
 	    if (ilepton==2) {
 	      gSystem->mkdir((path + "/muons/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/muons/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
-	      out.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b + ".dat").c_str());
+	      out.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b + "_xsecs_unfolding.dat").c_str());
 	    }
 	  }
 	  if (isratio==1) {
 	    if (ilepton==1) {
 	      gSystem->mkdir((path + "/electrons/" + version + "/ratios_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/electrons/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
-	      out.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b + ".dat").c_str());
+	      out.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b + "_ratio_unfolding.dat").c_str());
 	    }
 	    if (ilepton==2) {
 	      gSystem->mkdir((path + "/muons/" + version + "/ratios_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/muons/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
-	      out.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b + ".dat").c_str());
+	      out.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.dat").c_str());
 	    }
 	  }
 	  out << h_data->GetName();
@@ -1195,6 +1231,7 @@ string subdir="0";
 	  out << " : average unfolded total cross section = " << tot << " +- " << rms << " pb (" << 100*rms/tot << " %)";
 	  out << endl;
 	  out << std::setw(25) << "stat";
+	  out << std::setw(12) << "leff sys";
 	  out << std::setw(12) << "jec sys";
 	  out << std::setw(12) << "jer sys";
 	  out << std::setw(12) << "pu sys";
@@ -1203,6 +1240,7 @@ string subdir="0";
 	  out << std::setw(12) << "ttbar sys";
 	  out << std::setw(12) << "bpur sys";
 	  if (useBpur2) out << std::setw(12) << "bpur2 sys";
+	  out << std::setw(12) << "btag sys";
 	  out << std::setw(12) << "unfold stat";
 	  out << std::setw(12) << "unfold sys";
 	  out << std::setw(12) << "unfold rms";
@@ -1219,6 +1257,7 @@ string subdir="0";
 	    out << " +- ";
 	    out << std::fixed << std::setprecision(6) << std::setw(8);
 	    out << h_data_stat->GetBinError(i);
+	    out << " +- " << sys_leff->GetBinError(i);
 	    out << " +- " << sys_jec->GetBinError(i);
 	    out << " +- " << sys_jer->GetBinError(i);
 	    out << " +- " << sys_pu->GetBinError(i);
@@ -1227,6 +1266,7 @@ string subdir="0";
 	    out << " +- " << sys_top->GetBinError(i);
 	    out << " +- " << sys_bpur->GetBinError(i);
 	    if (useBpur2) out << " +- " << sys_bpur2->GetBinError(i);
+	    out << " +- " << sys_btag->GetBinError(i);
 	    out << " +- " << stat_unfold->GetBinError(i);
 	    out << " +- " << sys_unfold->GetBinError(i);
 	    out << " +- " << h_data_stat->GetBinContent(i)*rms/tot;
@@ -1246,6 +1286,7 @@ string subdir="0";
 	  }
 	  out << endl;
 	  out << std::setw(25) << "stat";
+	  out << std::setw(12) << "leff sys";
 	  out << std::setw(12) << "jec sys";
 	  out << std::setw(12) << "jer sys";
 	  out << std::setw(12) << "pu sys";
@@ -1254,6 +1295,7 @@ string subdir="0";
 	  out << std::setw(12) << "ttbar sys";
 	  out << std::setw(12) << "bpur sys";
 	  if (useBpur2) out << std::setw(12) << "bpur2 sys";
+	  out << std::setw(12) << "btag sys";
 	  out << std::setw(12) << "unfold stat";
 	  out << std::setw(12) << "unfold sys";
 	  out << std::setw(12) << "unfold rms";
@@ -1270,6 +1312,7 @@ string subdir="0";
 	    out << " +- ";
 	    out << std::fixed << std::setprecision(6) << std::setw(8);
 	    out << h_data_b_stat->GetBinError(i);
+	    out << " +- " << sys_b_leff->GetBinError(i);
 	    out << " +- " << sys_b_jec->GetBinError(i);
 	    out << " +- " << sys_b_jer->GetBinError(i);
 	    out << " +- " << sys_b_pu->GetBinError(i);
@@ -1278,6 +1321,7 @@ string subdir="0";
 	    out << " +- " << sys_b_top->GetBinError(i);
 	    out << " +- " << sys_b_bpur->GetBinError(i);
 	    if (useBpur2) out << " +- " << sys_b_bpur2->GetBinError(i);
+	    out << " +- " << sys_b_btag->GetBinError(i);
 	    out << " +- " << stat_b_unfold->GetBinError(i);
 	    out << " +- " << sys_b_unfold->GetBinError(i);
 	    out << " +- " << h_data_b_stat->GetBinContent(i)*rms_b/tot_b;
