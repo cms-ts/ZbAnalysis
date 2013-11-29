@@ -4,7 +4,7 @@ string version = "v11";
 
 double Lumi2012_ele  = 19789.0; // full 2012 electrons luminosity
 double Lumi2012_muon = 19751.0; // full 2012 muons luminosity
-double Lumi2012_ele_muon = 19780.0; // full 2012 muons luminosity
+double Lumi2012_ele_muon = 19780.0; // full 2012 electrons+muons luminosity
 
 // single period lumi, same for electrons and muons dataset in 1/picobarn
 
