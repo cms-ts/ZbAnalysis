@@ -108,8 +108,7 @@ process.demoMuo2 = cms.EDAnalyzer('ZJetsAnalyzer',
 process.demoEleMuo = cms.EDProducer('ZbAnalyzer',
 	pileupMC  = cms.untracked.string("S10"),
 	pileupDT = cms.untracked.string("em"),
-	lepton  = cms.untracked.string("electron+muon"),
-	JEC     = cms.untracked.double(0)
+	lepton  = cms.untracked.string("electron+muon")
 )
 
 process.demoEleMuoUp = cms.EDProducer('ZbAnalyzer',
@@ -122,7 +121,8 @@ process.demoEleMuoUp = cms.EDProducer('ZbAnalyzer',
 process.demoEleMuoDown = cms.EDProducer('ZbAnalyzer',
 	pileupMC   = cms.untracked.string("S10"),
 	pileupDT = cms.untracked.string("em"),
-	lepton  = cms.untracked.string("electron+muon")
+	lepton  = cms.untracked.string("electron+muon"),
+	JEC     = cms.untracked.double(-1)
 )
 
 process.demoEleMuoPum = cms.EDProducer('ZbAnalyzer',
