@@ -179,6 +179,7 @@ if (irun==99) {            // irun==99 => pur
 	if (ilepton==1) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_ee);
 	if (ilepton==2) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_mm);
 	double enorm2 = ((Lumi2012 * eXsec_tt) / Ngen_tt);
+	if (useEleMuo && ilepton!=3) enorm2 = 0;
 	double enorm3 = ((Lumi2012 * eXsec_zz) / Ngen_zz);
 	double enorm4 = ((Lumi2012 * eXsec_wz) / Ngen_wz);
 	double enorm5 = ((Lumi2012 * eXsec_qcd) / Ngen_qcd);
