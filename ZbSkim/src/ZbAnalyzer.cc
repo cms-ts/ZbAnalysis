@@ -1310,7 +1310,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 #if ECALDRIVEN>0
     if (ele->ecalDrivenMomentum().pt()>=20) {
 #else
-    if (ele->pt()>=20) {
+    if (ele->pt()>20 && fabs(ele->eta())<2.4) {
 #endif
       vect_ele.push_back (*ele);
     }
@@ -1352,7 +1352,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   for (pat::MuonCollection::const_iterator muon = muons->begin (); muon != muons->end (); ++muon) {
 
-    if (muon->pt()>=20) {
+    if (muon->pt()>20 && fabs(muon->eta())<2.4) {
       vect_muon.push_back (*muon);
     }
 
