@@ -1439,20 +1439,20 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       MyWeight = MyWeight * scalFac_first_e * scalFac_second_e;
     }
     if (mm_event) {
-      scalFac_first_m  = MuSF_->Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta()) * MuSF2_->Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta());
-      scalFac_second_m = MuSF_->Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta()) * MuSF2_->Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta());
+      scalFac_first_m  = MuSF_->Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta()) * sqrt(MuSF2_->Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta()));
+      scalFac_second_m = MuSF_->Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta()) * sqrt(MuSF2_->Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta()));
       MyWeight = MyWeight * scalFac_first_m * scalFac_second_m;
       //cout<<vect_muon[imuon0].pt()<<vect_muon[imuon0].eta()<< " mu  SF =" << scalFac_first_m <<endl;
     }
     if (em_event) {
       if (iele1!=-1) {
-        scalFac_first_m  = MuSF_->Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta()) * MuSF2_->Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta());
+        scalFac_first_m  = MuSF_->Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta()) * sqrt(MuSF2_->Val (vect_muon[imuon0].pt(), vect_muon[imuon0].eta()));
         scalFac_second_e =  ElSF_->Val (vect_ele[iele1].pt(), vect_ele[iele1].eta()) * ElSF2_->Val (vect_ele[iele1].pt(), vect_ele[iele1].eta());
         MyWeight = MyWeight * scalFac_first_m * scalFac_second_e;
       }
     if (imuon1!=-1) {
         scalFac_first_e  =  ElSF_->Val (vect_ele[iele0].pt(), vect_ele[iele0].eta()) * ElSF2_->Val (vect_ele[iele0].pt(), vect_ele[iele0].eta());
-        scalFac_second_m = MuSF_->Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta()) * MuSF2_->Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta());
+        scalFac_second_m = MuSF_->Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta()) * sqrt(MuSF2_->Val (vect_muon[imuon1].pt(), vect_muon[imuon1].eta()));
         MyWeight = MyWeight * scalFac_first_e * scalFac_second_m;
       }
     }
