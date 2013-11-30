@@ -1211,14 +1211,14 @@ string subdir="0";
 	    if (ilepton==2) {
 	      gSystem->mkdir((path + "/muons/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/muons/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
-	      out.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b + "_xsecs_unfolding.dat").c_str());
+	      out.open((path + "/muons/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.dat").c_str());
 	    }
 	  }
 	  if (isratio==1) {
 	    if (ilepton==1) {
 	      gSystem->mkdir((path + "/electrons/" + version + "/ratios_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/electrons/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
-	      out.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b + "_ratio_unfolding.dat").c_str());
+	      out.open((path + "/electrons/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.dat").c_str());
 	    }
 	    if (ilepton==2) {
 	      gSystem->mkdir((path + "/muons/" + version + "/ratios_unfolding/").c_str(), kTRUE);
