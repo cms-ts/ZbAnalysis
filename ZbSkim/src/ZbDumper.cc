@@ -362,14 +362,36 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
        w_Ht_b->Fill(Ht_b->empty() ? -1 : (*Ht_b)[0], gen_Ht_b->empty() ? -1 : (*gen_Ht_b)[0], my_bweight);
      }
 
+//     if (ee_event) {
+//       w_delta_ee->Fill(delta_phi->empty() ? -1 : (*delta_phi)[0], gen_delta_phi->empty() ? -1 : (*gen_delta_phi)[0], my_weight);
+//       w_delta_ee_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi->empty() ? -1 : (*gen_bdelta_phi)[0], my_bweight);
+//     }
+
      if (ee_event) {
-       w_delta_ee->Fill(delta_phi->empty() ? -1 : (*delta_phi)[0], gen_delta_phi->empty() ? -1 : (*gen_delta_phi)[0], my_weight);
-       w_delta_ee_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi->empty() ? -1 : (*gen_bdelta_phi)[0], my_bweight);
+       math::XYZTLorentzVector gen_z;
+       if (gen_electrons->size() != 0) gen_z = (*gen_electrons)[0] + (*gen_electrons)[1];
+       double gen_delta_phi = (gen_electrons->empty() || k<0) ? -1 : fabs(gen_z.phi() - (*gen_jets2)[k].phi());
+       double gen_bdelta_phi = (gen_electrons->empty() || k_b<0) ? -1 : fabs(gen_z.phi() - (*gen_bjets2)[k_b].phi());
+       if (gen_delta_phi > acos (-1)) gen_delta_phi = 2 * acos (-1) - gen_delta_phi;
+       if (gen_bdelta_phi > acos (-1)) gen_bdelta_phi = 2 * acos (-1) - gen_bdelta_phi;
+       w_delta_ee->Fill(delta_phi->empty() ? -1 : (*delta_phi)[0], gen_delta_phi, my_weight);
+       w_delta_ee_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi, my_bweight);
      }
 
+//     if (mm_event) {
+//       w_delta_mm->Fill(delta_phi->empty() ? -1 : (*delta_phi)[0], gen_delta_phi->empty() ? -1 : (*gen_delta_phi)[0], my_weight);
+//       w_delta_mm_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi->empty() ? -1 : (*gen_bdelta_phi)[0], my_bweight);
+//     }
+
      if (mm_event) {
-       w_delta_mm->Fill(delta_phi->empty() ? -1 : (*delta_phi)[0], gen_delta_phi->empty() ? -1 : (*gen_delta_phi)[0], my_weight);
-       w_delta_mm_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi->empty() ? -1 : (*gen_bdelta_phi)[0], my_bweight);
+       math::XYZTLorentzVector gen_z;
+       if (gen_muons->size() != 0) gen_z = (*gen_muons)[0] + (*gen_muons)[1];
+       double gen_delta_phi = (gen_muons->empty() || k<0) ? -1 : fabs(gen_z.phi() - (*gen_jets2)[k].phi());
+       double gen_bdelta_phi = (gen_muons->empty() || k_b<0) ? -1 : fabs(gen_z.phi() - (*gen_bjets2)[k_b].phi());
+       if (gen_delta_phi > acos (-1)) gen_delta_phi = 2 * acos (-1) - gen_delta_phi;
+       if (gen_bdelta_phi > acos (-1)) gen_bdelta_phi = 2 * acos (-1) - gen_bdelta_phi;
+       w_delta_mm->Fill(delta_phi->empty() ? -1 : (*delta_phi)[0], gen_delta_phi, my_weight);
+       w_delta_mm_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi, my_bweight);
      }
 
    }
