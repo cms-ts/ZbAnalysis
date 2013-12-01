@@ -231,12 +231,12 @@ if (irun==99) {            // irun==99 => pur
         c1->cd();
 
         if (isratio==0) {
-          gSystem->mkdir((path + "/combined/" + version + "/" + subdir + "/xsecs/").c_str(), kTRUE);
-          c1->SaveAs((path + "/combined/" + version + "/" + subdir + "/xsecs/" + title + "_xsecs.pdf").c_str());
+          gSystem->mkdir((path + "/combined/" + version + "/" + subdir + "/xsecs_unfolding/").c_str(), kTRUE);
+          c1->SaveAs((path + "/combined/" + version + "/" + subdir + "/xsecs_unfolding/" + title + "_xsecs_unfolding.pdf").c_str());
         }
         if (isratio==1) {
-          gSystem->mkdir((path + "/combined/" + version + "/" + subdir + "/ratios/").c_str(), kTRUE);
-          c1->SaveAs((path + "/combined/" + version + "/" + subdir + "/ratios/" + title + "_ratios.pdf").c_str());
+          gSystem->mkdir((path + "/combined/" + version + "/" + subdir + "/ratios_unfolding/").c_str(), kTRUE);
+          c1->SaveAs((path + "/combined/" + version + "/" + subdir + "/ratios_unfolding/" + title + "_ratios_unfolding.pdf").c_str());
         }
 
 }
