@@ -40,12 +40,6 @@ TH1F* read(string& path, string& subdir, string& title, int ilepton, TFile* infi
 
 void DataMCComp8(string& title="", int plot=0, int isratio=1) {
 
-int useBpur2=0;
-//int useBpur2=1; // include Bpur2 systematics
-
-int useDR=0;
-//int useDR=1; // include DR systematics
-
 int useSherpa=0;
 //int useSherpa=1; // use Sherpa MC prediction
 
