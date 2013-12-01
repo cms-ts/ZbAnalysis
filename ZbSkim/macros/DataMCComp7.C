@@ -794,7 +794,7 @@ string subdir="0";
 	  if (ilepton==2){
 	    leg->AddEntry(h_data,"Z(#rightarrow #mu#mu) DATA","p");
 	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu)+b DATA","p");
-	    //leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
+	    if (useMC) leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
 	    if (useSherpa) leg->AddEntry(h_mcg1,"Z(#rightarrow #mu#mu) Sherpa","l");
@@ -805,7 +805,7 @@ string subdir="0";
 	if (isratio==1) {
 	  if (ilepton==1) {
 	    leg->AddEntry(h_data_b,"Z(#rightarrow ee) DATA","p");
-	    //leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
+	    if (useMC) leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow ee) MadGraph 4FS","l");
 	    if (useSherpa) leg->AddEntry(h_mcg1_b,"Z(#rightarrow ee) Sherpa","l");
@@ -813,7 +813,7 @@ string subdir="0";
 	  }
 	  if (ilepton==2){
 	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu) DATA","p");
-	    //leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
+	    if (useMC) leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
 	    if (useSherpa) leg->AddEntry(h_mcg1_b,"Z(#rightarrow #mu#mu) Sherpa","l");
