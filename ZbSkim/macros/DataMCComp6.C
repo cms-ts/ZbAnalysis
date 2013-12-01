@@ -183,6 +183,9 @@ if (irun==99) {            // irun==99 => pur
 
         c1->cd();
 
+        TLatex *latexLabel = CMSPrel((Lumi2012_ele+Lumi2012_muon)/2./1000.,"",0.15,0.94);
+        latexLabel->Draw("same");
+
         TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
         pad2->SetTopMargin(0);
         pad2->SetBottomMargin(0.3);
