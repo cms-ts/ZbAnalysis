@@ -15,7 +15,7 @@ TH1F* read(string& path, string& subdir, string& title, int ilepton) {
   if (ilepton==2) {
     file = TFile::Open((path + "/muons/" + version + "/" + subdir +"/unfolding/" + title + "_unfolding.root").c_str());
   }
-  hist = (TH1F*)file->Get(title.c_str())->Clone();
+  hist = (TH1F*)gDirectory->Get(title.c_str())->Clone();
   hist->SetDirectory(0);
   file->Close();
   return hist;
