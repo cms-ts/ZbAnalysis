@@ -7,19 +7,18 @@
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 TH1F* read(string& path, string& subdir, string& title, int ilepton) {
+  TH1F* hist;
+  TFile* file;
   if (ilepton==1) {
-    TFile f((path + "/electrons/" + version + "/" + subdir +"/unfolding/" + title + "_unfolding.root").c_str());
-    h_data = (TH1F*)f.Get(title.c_str())->Clone();
-    h_data->SetDirectory(0);
-    f.Close();
+    file = TFile::Open((path + "/electrons/" + version + "/" + subdir +"/unfolding/" + title + "_unfolding.root").c_str());
   }
   if (ilepton==2) {
-    TFile f((path + "/muons/" + version + "/" + subdir +"/unfolding/" + title + "_unfolding.root").c_str());
-    h_data = (TH1F*)f.Get(title.c_str())->Clone();
-    h_data->SetDirectory(0);
-    f.Close();
+    file = TFile::Open((path + "/muons/" + version + "/" + subdir +"/unfolding/" + title + "_unfolding.root").c_str());
   }
-  return h_data;
+  hist = (TH1F*)file->Get(title.c_str())->Clone();
+  hist->SetDirectory(0);
+  file->Close();
+  return hist;
 }
 
 void DataMCComp7(string& title="", int plot=0, int ilepton=1, int isratio=1) {
