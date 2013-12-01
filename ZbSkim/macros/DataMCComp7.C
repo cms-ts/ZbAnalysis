@@ -188,7 +188,7 @@ string subdir="0";
 	h_mcg2->Sumw2();
 	h_mcg3->Sumw2();
 
-	if (h_mc1b_b) h_mc1b_b->Sumw2();
+	h_mc1b_b->Sumw2();
 	h_mcg_b->Sumw2();
 	h_mcg1_b->Sumw2();
 	h_mcg2_b->Sumw2();
@@ -200,19 +200,17 @@ string subdir="0";
 	h_mcg2->Scale(norm1_2);
 	h_mcg3->Scale(norm1_3);
 
-	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
+	h_mc1b_b->Scale(norm1);
 	h_mcg_b->Scale(norm1);
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
 	h_mcg3_b->Scale(norm1_3);
 
-	if (h_mc1b_b) {
-	  h_mc1b_b->Scale(c_b);
-	  for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
-	    float e = h_mc1b_b->GetBinError(i)**2;
-	    e = e + (h_mc1b_b->GetBinContent(i)*(ec_b/c_b))**2;
-	    h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
-	  }
+	h_mc1b_b->Scale(c_b);
+	for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
+	  float e = h_mc1b_b->GetBinError(i)**2;
+	  e = e + (h_mc1b_b->GetBinContent(i)*(ec_b/c_b))**2;
+	  h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
         if (ilepton==1) {
