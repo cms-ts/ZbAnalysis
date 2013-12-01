@@ -986,6 +986,13 @@ if (irun==99) {            // irun==99 => pur
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta#phi_{Zb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
+	} else if (title_b=="w_mass_Zj_ee_b" || title_b=="w_mass_Zj_mm_b") {
+	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / dM_{Zj} [pb]");
+	  h_P->GetXaxis()->SetTitle("M(Zj) [rad]");
+	  if (isratio==1) {
+	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / dM_{Zj} [%]");
+	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
+	  }
 	}
 
 	if (plot) {
