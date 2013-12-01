@@ -110,6 +110,11 @@ if (irun==99) {            // irun==99 => pur
         h_data_mm->SetStats(0);
         h_data_mm_b->SetStats(0);
 
+	h_data_ee->Scale(1./Lumi2012_ele, "width");
+	h_data_ee_b->Scale(1./Lumi2012_ele, "width");
+	h_data_mm->Scale(1./Lumi2012_muon, "width");
+	h_data_mm_b->Scale(1./Lumi2012_muon, "width");
+
         TCanvas* c1 = new TCanvas("c", "c", 800, 600);
         c1->cd();
 
