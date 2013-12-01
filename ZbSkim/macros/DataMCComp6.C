@@ -161,22 +161,22 @@ if (irun==99) {            // irun==99 => pur
           h_data_mm_b->Draw("EPXSAME");
         }
 
-        TLegend *leg2 = new TLegend(0.62, 0.580, 0.88, 0.88);
-        leg2->SetBorderSize(0);
-        leg2->SetEntrySeparation(0.01);
-        leg2->SetFillColor(0);
-        leg2->SetFillStyle(0);
+        TLegend *leg = new TLegend(0.62, 0.580, 0.88, 0.88);
+        leg->SetBorderSize(0);
+        leg->SetEntrySeparation(0.01);
+        leg->SetFillColor(0);
+        leg->SetFillStyle(0);
 
         if (isratio==0) {
-          leg2->AddEntry(h_data_ee,"Z(#rightarrow ee) DATA","p");
+          leg->AddEntry(h_data_ee,"Z(#rightarrow ee) DATA","p");
         }
-        leg2->AddEntry(h_data_ee_b,"Z(#rightarrow ee)+b DATA","p");
+        leg->AddEntry(h_data_ee_b,"Z(#rightarrow ee)+b DATA","p");
         if (isratio==0) {
-          leg2->AddEntry(h_data_mm,"Z(#rightarrow #mu#mu) DATA","p");
+          leg->AddEntry(h_data_mm,"Z(#rightarrow #mu#mu) DATA","p");
         }
-        leg2->AddEntry(h_data_mm_b,"Z(#rightarrow #mu#mu)+b DATA","p");
+        leg->AddEntry(h_data_mm_b,"Z(#rightarrow #mu#mu)+b DATA","p");
 
-        leg2->Draw();
+        leg->Draw();
 
         pad1->Update();
         c1->Update();
