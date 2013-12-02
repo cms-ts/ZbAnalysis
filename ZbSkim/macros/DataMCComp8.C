@@ -171,7 +171,7 @@ string subdir="0";
 	  h_data_b->Scale(100.);
 	}
 
-	for (int i=0; i<1; i++) {
+	for (int i=0; i<2; i++) {
 	  ifstream in;
 	  string title_b_tmp = title_b;
 	  if (i==0) {
@@ -180,6 +180,7 @@ string subdir="0";
 	    if (title_b=="w_delta_phi") title_b_tmp="w_delta_phi_ee";
 	    if (title_b=="w_delta_phi_b") title_b_tmp="w_delta_phi_ee_b";
 	    in.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
+//cout << path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat" << endl;
 	  }
 	  if (i==1) {
 	    if (title_b=="w_pt_Z") title_b_tmp="w_pt_Z_mm";
@@ -187,35 +188,33 @@ string subdir="0";
 	    if (title_b=="w_delta_phi") title_b_tmp="w_delta_phi_mm";
 	    if (title_b=="w_delta_phi_b") title_b_tmp="w_delta_phi_mm_b";
 	    in.open((path + "/muons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
+//cout << path + "/muons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat" << endl;
 	  }
 
 	  string tmp;
-	  int n;
 	  float x[2][100][100];
 	  float x_b[2][100][100];
 
-//cout << "one" << endl;
 	  getline(in, tmp);
 	  getline(in, tmp);
 	  for (int j=0; j<h_data->GetNbinsX()+2; j++) {
-	    in >> n;
 	    for (int k=0; k<17; k++){
-	      in >> x[i][k][j];
 	      in >> tmp;
+	      in >> x[i][k][j];
 //cout << x[i][k][j] << " ";
 	    }
+	    in.ignore();
 //cout << endl;
 	  }
-//cout << "two" << endl;
 	  getline(in, tmp);
 	  getline(in, tmp);
 	  for (int j=0; j<h_data_b->GetNbinsX()+2; j++) {
-	    in >> n;
 	    for (int k=0; k<17; k++){
-	      in >> x_b[i][k][j];
 	      in >> tmp;
+	      in >> x_b[i][k][j];
 //cout << x_b[i][k][j] << " ";
 	    }
+	    in.ignore();
 //cout << endl;
 	  }
 	  in.close();
@@ -230,6 +229,12 @@ string subdir="0";
 
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
 	  float val = 0.0;
+	  if (x[0][1][i]*x[1][1][i] != 0) {
+	    val = (x[0][0][i]/(x[0][1][i]**2)+x[1][0][i]/(x[1][1][i]**2))/(1./(x[0][1][i]**2)+1./(x[1][1][i]**2));
+	    h_data_stat->SetBinContent(i, val);
+	    val = sqrt(1./(1./(x[0][1][i]**2)+1./(x[1][1][i]**2)));
+	    h_data_stat->SetBinError(i, val);
+	  }
 	  val = (x[0][14][i]+x[1][14][i])/2.;
 	  h_data_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_stat->GetBinError(i)**2+h_data_syst->GetBinError(i)**2);
@@ -238,6 +243,12 @@ string subdir="0";
 
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
 	  float val = 0.0;
+	  if (x_b[0][1][i]*x_b[1][1][i] != 0) {
+	    val = (x_b[0][0][i]/(x_b[0][1][i]**2)+x_b[1][0][i]/(x_b[1][1][i]**2))/(1./(x_b[0][1][i]**2)+1./(x_b[1][1][i]**2));
+	    h_data_b_stat->SetBinContent(i, val);
+	    val = sqrt(1./(1./(x_b[0][1][i]**2)+1./(x_b[1][1][i]**2)));
+	    h_data_b_stat->SetBinError(i, val);
+	  }
 	  val = (x_b[0][14][i]+x_b[1][14][i])/2.;
 	  h_data_b_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+h_data_b_syst->GetBinError(i)**2);
@@ -884,7 +895,9 @@ string subdir="0";
 	    out << h_data_stat->GetBinContent(i);
 	    out << " +- ";
 	    out << std::fixed << std::setprecision(6) << std::setw(8);
-	    out << h_data_stat->GetBinError(i) << " +- " << h_data_syst->GetBinError(i);
+	    out << h_data_stat->GetBinError(i);
+	    out << " +- ";
+	    out << h_data_syst->GetBinError(i);
 	    out << " => ";
 	    out << h_data_tot->GetBinError(i);
 	    out << " => ";
@@ -905,7 +918,9 @@ string subdir="0";
 	    out << std::fixed << std::setprecision(6) << std::setw(10);
 	    out << h_data_b_stat->GetBinContent(i);
 	    out << " +- ";
-	    out << h_data_b_stat->GetBinError(i) << " +- " << h_data_b_syst->GetBinError(i);
+	    out << h_data_b_stat->GetBinError(i);
+	    out << " +- ";
+	    out << h_data_b_syst->GetBinError(i);
 	    out << " => ";
 	    out << h_data_b_tot->GetBinError(i);
 	    out << " => ";
