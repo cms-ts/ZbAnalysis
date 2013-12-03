@@ -192,14 +192,14 @@ string subdir="0";
 	  }
 
 	  string tmp;
-	  const int NCOL=16;
+	  const int N=16;
 	  float x[2][100][100];
 	  float x_b[2][100][100];
 
 	  getline(in, tmp);
 	  getline(in, tmp);
 	  for (int j=0; j<h_data->GetNbinsX()+2; j++) {
-	    for (int k=0; k<NCOL; k++){
+	    for (int k=0; k<N; k++){
 	      in >> tmp;
 	      in >> x[i][k][j];
 //cout << x[i][k][j] << " ";
@@ -210,7 +210,7 @@ string subdir="0";
 	  getline(in, tmp);
 	  getline(in, tmp);
 	  for (int j=0; j<h_data_b->GetNbinsX()+2; j++) {
-	    for (int k=0; k<NCOL; k++){
+	    for (int k=0; k<N; k++){
 	      in >> tmp;
 	      in >> x_b[i][k][j];
 //cout << x_b[i][k][j] << " ";
@@ -231,12 +231,12 @@ string subdir="0";
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  if (x[0][1][i]*x[1][1][i] != 0) {
-	    val = (x[0][0][i]/(x[0][1][i]**2)+x[1][0][i]/(x[1][1][i]**2))/(1./(x[0][1][i]**2)+1./(x[1][1][i]**2));
+	    val = (x[0][0][i]/(x[0][N-4][i]**2)+x[1][0][i]/(x[1][N-4][i]**2))/(1./(x[0][N-4][i]**2)+1./(x[1][N-4][i]**2));
 	    h_data_stat->SetBinContent(i, val);
-	    val = sqrt(1./(1./(x[0][1][i]**2)+1./(x[1][1][i]**2)));
+	    val = sqrt(1./(1./(x[0][N-4][i]**2)+1./(x[1][N-4][i]**2)));
 	    h_data_stat->SetBinError(i, val);
 	  }
-	  val = (x[0][NCOL-3][i]+x[1][NCOL-3][i])/2.;
+	  val = (x[0][N-3][i]+x[1][N-3][i])/2.;
 	  h_data_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_stat->GetBinError(i)**2+h_data_syst->GetBinError(i)**2);
 	  h_data_tot->SetBinError(i, val);
@@ -245,12 +245,12 @@ string subdir="0";
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  if (x_b[0][1][i]*x_b[1][1][i] != 0) {
-	    val = (x_b[0][0][i]/(x_b[0][1][i]**2)+x_b[1][0][i]/(x_b[1][1][i]**2))/(1./(x_b[0][1][i]**2)+1./(x_b[1][1][i]**2));
+	    val = (x_b[0][0][i]/(x_b[0][N-4][i]**2)+x_b[1][0][i]/(x_b[1][N-4][i]**2))/(1./(x_b[0][N-4][i]**2)+1./(x_b[1][N-4][i]**2));
 	    h_data_b_stat->SetBinContent(i, val);
-	    val = sqrt(1./(1./(x_b[0][1][i]**2)+1./(x_b[1][1][i]**2)));
+	    val = sqrt(1./(1./(x_b[0][N-4][i]**2)+1./(x_b[1][N-4][i]**2)));
 	    h_data_b_stat->SetBinError(i, val);
 	  }
-	  val = (x_b[0][NCOL-3][i]+x_b[1][NCOL-3][i])/2.;
+	  val = (x_b[0][N-3][i]+x_b[1][N-3][i])/2.;
 	  h_data_b_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+h_data_b_syst->GetBinError(i)**2);
 	  h_data_b_tot->SetBinError(i, val);
