@@ -143,8 +143,8 @@ string subdir="0";
 	  }
 	}
 	if (useDR) {
-	  h_data_scan[88] = read(path, "88", title, ilepton));
-	  h_data_b_scan[88] = read(path, "88", title_b, ilepton));
+	  h_data_scan[88] = read(path, "88", title, ilepton);
+	  h_data_b_scan[88] = read(path, "88", title_b, ilepton);
 	}
 	if (useBpur2) {
 	  h_data_scan[99] = read(path, "99", title, ilepton);
