@@ -192,13 +192,14 @@ string subdir="0";
 	  }
 
 	  string tmp;
+	  const int NCOL=16;
 	  float x[2][100][100];
 	  float x_b[2][100][100];
 
 	  getline(in, tmp);
 	  getline(in, tmp);
 	  for (int j=0; j<h_data->GetNbinsX()+2; j++) {
-	    for (int k=0; k<17; k++){
+	    for (int k=0; k<NCOL; k++){
 	      in >> tmp;
 	      in >> x[i][k][j];
 //cout << x[i][k][j] << " ";
@@ -209,7 +210,7 @@ string subdir="0";
 	  getline(in, tmp);
 	  getline(in, tmp);
 	  for (int j=0; j<h_data_b->GetNbinsX()+2; j++) {
-	    for (int k=0; k<17; k++){
+	    for (int k=0; k<NCOL; k++){
 	      in >> tmp;
 	      in >> x_b[i][k][j];
 //cout << x_b[i][k][j] << " ";
@@ -235,7 +236,7 @@ string subdir="0";
 	    val = sqrt(1./(1./(x[0][1][i]**2)+1./(x[1][1][i]**2)));
 	    h_data_stat->SetBinError(i, val);
 	  }
-	  val = (x[0][14][i]+x[1][14][i])/2.;
+	  val = (x[0][NCOL-3][i]+x[1][NCOL-3][i])/2.;
 	  h_data_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_stat->GetBinError(i)**2+h_data_syst->GetBinError(i)**2);
 	  h_data_tot->SetBinError(i, val);
@@ -249,7 +250,7 @@ string subdir="0";
 	    val = sqrt(1./(1./(x_b[0][1][i]**2)+1./(x_b[1][1][i]**2)));
 	    h_data_b_stat->SetBinError(i, val);
 	  }
-	  val = (x_b[0][14][i]+x_b[1][14][i])/2.;
+	  val = (x_b[0][NCOL-3][i]+x_b[1][NCOL-3][i])/2.;
 	  h_data_b_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+h_data_b_syst->GetBinError(i)**2);
 	  h_data_b_tot->SetBinError(i, val);

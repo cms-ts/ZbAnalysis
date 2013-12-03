@@ -29,6 +29,9 @@ int useBpur2=0;
 int useDR=0;
 //int useDR=1; // include DR systematics
 
+int useRMS=0;
+//int useRMS=1; // include xsec RMS
+
 int useMC=0;
 //int useMC=1; // use MC prediction
 
@@ -500,7 +503,7 @@ string subdir="0";
 	  val = TMath::Sqrt(val**2+sys_btag->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+stat_unfold->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_unfold->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+(h_data_stat->GetBinContent(i)*rms/tot)**2);
+	  if (useRMS) val = TMath::Sqrt(val**2+(h_data_stat->GetBinContent(i)*rms/tot)**2);
 	  h_data_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_stat->GetBinError(i)**2+h_data_syst->GetBinError(i)**2);
 	  h_data_tot->SetBinError(i, val);
@@ -520,7 +523,7 @@ string subdir="0";
 	  val = TMath::Sqrt(val**2+sys_b_btag->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+stat_b_unfold->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+sys_b_unfold->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+(h_data_b_stat->GetBinContent(i)*rms_b/tot_b)**2);
+	  if (useRMS) val = TMath::Sqrt(val**2+(h_data_b_stat->GetBinContent(i)*rms_b/tot_b)**2);
 	  h_data_b_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+h_data_b_syst->GetBinError(i)**2);
 	  h_data_b_tot->SetBinError(i, val);
@@ -1240,7 +1243,7 @@ string subdir="0";
 	  out << std::setw(12) << "btag sys";
 	  out << std::setw(12) << "unfold stat";
 	  out << std::setw(12) << "unfold sys";
-	  out << std::setw(12) << "unfold rms";
+	  if (useRMS) out << std::setw(12) << "unfold rms";
 	  out << std::setw(12) << "tot stat";
 	  out << std::setw(12) << "tot sys";
 	  out << std::setw(12) << "tot error";
@@ -1266,7 +1269,7 @@ string subdir="0";
 	    out << " +- " << sys_btag->GetBinError(i);
 	    out << " +- " << stat_unfold->GetBinError(i);
 	    out << " +- " << sys_unfold->GetBinError(i);
-	    out << " +- " << h_data_stat->GetBinContent(i)*rms/tot;
+	    if (useRMS) out << " +- " << h_data_stat->GetBinContent(i)*rms/tot;
 	    out << " => ";
 	    out << h_data_stat->GetBinError(i);
 	    out << " +- ";
@@ -1297,7 +1300,7 @@ string subdir="0";
 	  out << std::setw(12) << "btag sys";
 	  out << std::setw(12) << "unfold stat";
 	  out << std::setw(12) << "unfold sys";
-	  out << std::setw(12) << "unfold rms";
+	  if (useRMS) out << std::setw(12) << "unfold rms";
 	  out << std::setw(12) << "tot stat";
 	  out << std::setw(12) << "tot sys";
 	  out << std::setw(12) << "tot error";
@@ -1323,7 +1326,7 @@ string subdir="0";
 	    out << " +- " << sys_b_btag->GetBinError(i);
 	    out << " +- " << stat_b_unfold->GetBinError(i);
 	    out << " +- " << sys_b_unfold->GetBinError(i);
-	    out << " +- " << h_data_b_stat->GetBinContent(i)*rms_b/tot_b;
+	    if (useRMS) out << " +- " << h_data_b_stat->GetBinContent(i)*rms_b/tot_b;
 	    out << " => ";
 	    out << h_data_b_stat->GetBinError(i);
 	    out << " +- ";
