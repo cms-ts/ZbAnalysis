@@ -201,14 +201,14 @@ if (irun==99) {            // irun==99 => pur
 	  if (title.find("ee")!=string::npos) return;
 	}
 
-	TFile *data;
+	TFile *data=0;
 	if (ilepton==1) data = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
 	if (ilepton==2) data = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
 
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
 	TFile *mcg = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	TFile *mcg1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
-	TFile *mcg2;
+	TFile *mcg2=0;
 	if (ilepton==1) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	if (ilepton==2) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
@@ -236,8 +236,8 @@ if (irun==99) {            // irun==99 => pur
 
 	if (ilepton==1) data->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) data->cd(("demoMuo"+postfix).c_str());
-	TH1F* h_data;
-	TH1F* h_data_b;
+	TH1F* h_data=0;
+	TH1F* h_data_b=0;
 	if (unfold==0) {
 	  h_data = (TH1F*)gDirectory->Get(title.c_str());
 	  h_data_b = (TH1F*)gDirectory->Get(title_b.c_str());
@@ -493,8 +493,8 @@ if (irun==99) {            // irun==99 => pur
 	  h_data_b->Add(h_mc1uds_b, -1.);
 	}
 
-	TH1F *h_data_raw;
-	TH1F *h_data_b_raw;
+	TH1F *h_data_raw=0;
+	TH1F *h_data_b_raw=0;
 	if (unfold==0) {
 	  h_data_raw = (TH1F*)h_data->Clone();
 	  h_data_b_raw = (TH1F*)h_data_b->Clone();
