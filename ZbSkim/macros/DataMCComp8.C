@@ -54,7 +54,7 @@ string subdir="0";
 	  gROOT->GetColor(kOrange+7)->SetAlpha(0.5);
 	}
 
-	double Lumi2012;
+	double Lumi2012=0;
 
 	Lumi2012 = (Lumi2012_ele+Lumi2012_muon)/2.;
 

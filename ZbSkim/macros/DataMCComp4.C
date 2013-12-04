@@ -2,6 +2,16 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v11.h"
 
+/*
+#include "RooUnfold.h"
+#include "RooUnfoldSvd.h"
+#include "RooUnfoldBayes.h"
+#include "RooUnfoldBinByBin.h"
+#include "RooUnfoldResponse.h"
+#include "RooUnfoldParms.h"
+#include "TSVDUnfold_local.h"
+*/
+
 #include "fixrange.C"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
@@ -116,14 +126,14 @@ if (irun==99) {            // irun==99 => pur
 	  in3.close();
 	}
 
-	double Lumi2012;
+	double Lumi2012=0;
 
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
-	double norm1_2;
+	double norm1_2=0;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
 	if (ilepton==2) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
 
@@ -148,11 +158,11 @@ if (irun==99) {            // irun==99 => pur
 	  }
 	}
 
-	TFile* data;
+	TFile* data=0;
 	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/xsecs/" + file + "_xsecs.root").c_str());
 	if (ilepton==2) data = TFile::Open((path + "/muons/" + version + "/" + subdir + "/xsecs/" + file + "_xsecs.root").c_str());
 
-	TFile* mc1;
+	TFile* mc1=0;
 	if (imode==-1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
 	if (imode== 0) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
@@ -164,7 +174,7 @@ if (irun==99) {            // irun==99 => pur
 	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
 
-	TFile* mc2;
+	TFile* mc2=0;
 	if (imode==-1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
 	if (imode== 0) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
@@ -186,11 +196,11 @@ if (irun==99) {            // irun==99 => pur
 	  title_b = "b"+title.substr(1);
 	}
 
-	TH1F* h_mc1_truth;
-	TH1F* h_mc1_reco;
-	TH2F* h_mc1_matrix;
-	TH1F* h_mc2_truth;
-	TH1F* h_mc2_reco;
+	TH1F* h_mc1_truth=0;
+	TH1F* h_mc1_reco=0;
+	TH2F* h_mc1_matrix=0;
+	TH1F* h_mc2_truth=0;
+	TH1F* h_mc2_reco=0;
 
 	if (ilepton==1) {
 	  mc1->cd("demoEleGen");
@@ -273,9 +283,9 @@ if (ilepton==2) {
 	  h_mc2_reco->Scale(c_b);
 	}
 
-	int err;
-	RooUnfold* unfold_mc;
-	RooUnfold* unfold_data;
+	RooUnfold::ErrorTreatment err;
+	RooUnfold* unfold_mc=0;
+	RooUnfold* unfold_data=0;
 
 	if (method==0) {
 	  int kreg = 0; // default 0 -> nbins/2
@@ -330,7 +340,7 @@ if (ilepton==2) {
         pad1->cd();
         pad1->SetLogy();
 
-	TH1F* h_mc2_unfold;
+	TH1F* h_mc2_unfold=0;
 	if (imode<=2) {
 	  err = RooUnfold::kErrors;
 	  h_mc2_unfold = (TH1F*) unfold_mc->Hreco(err);
@@ -364,7 +374,7 @@ if (ilepton==2) {
 	  h_mc1_truth->SetLineStyle(2);
 	}
 
-	TH1F* h_data_unfold;
+	TH1F* h_data_unfold=0;
 	if (imode>=3) {
 	  err = RooUnfold::kErrors;
 	  h_data_unfold = (TH1F*) unfold_data->Hreco(err);
@@ -519,7 +529,7 @@ if (ilepton==2) {
         OLine->SetLineWidth(1);
         OLine->Draw();
 
-	TCanvas* c2;
+	TCanvas* c2=0;
 	if (method==0) {
           c2 = new TCanvas("c2", "c2", 800, 600);
 	  c2->cd();
@@ -548,7 +558,6 @@ if (ilepton==2) {
 	if (response.UseOverflowStatus()) nv = nv + 2;
 	TVectorD err_err(nv);
 	TVectorD err_res(nv);
-	RooUnfold* unfold;
 	if (imode<=2) {
 	  err_err = unfold_mc->ErecoV(RooUnfold::kErrors);
 	  err_res = unfold_mc->ErecoV(RooUnfold::kCovToy);
@@ -639,7 +648,7 @@ if (ilepton==2) {
 	if (imode<=2) parms = new RooUnfoldParms(unfold_mc, err, h_mc2_truth);
 	if (imode>=3) parms = new RooUnfoldParms(unfold_data, err);
 
-	float maxparm;
+	float maxparm=0.0;
 	if (method==0) maxparm = response.GetNbinsMeasured();
 	if (method==1) maxparm = 50.0;
 	if (method==2) maxparm = 1.0;
@@ -650,7 +659,7 @@ if (ilepton==2) {
 	TProfile* hParmChi2 = parms->GetChi2();
 	TProfile* hParmErr = parms->GetRMSError();
 	TProfile* hParmRes = parms->GetMeanResiduals();
-	TH1F* hParmRms = parms->GetRMSResiduals();
+	TH1* hParmRms = parms->GetRMSResiduals();
 
 	hParmChi2->SetStats(0);
 	hParmErr->SetStats(0);

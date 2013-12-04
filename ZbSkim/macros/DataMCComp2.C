@@ -159,14 +159,14 @@ if (irun==99) {            // irun==99 => pur
 	  }
 	}
 
-	double Lumi2012;
+	double Lumi2012=0;
 
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
-	double norm1_2;
+	double norm1_2=0;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
 	if (ilepton==2) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
 	double norm2 = ((Lumi2012 * Xsec_tt) / Ngen_tt);
@@ -179,7 +179,7 @@ if (irun==99) {            // irun==99 => pur
 
 	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
 	double enorm1_1 = ((Lumi2012 * eXsec_dy_1) / Ngen_dy_1);
-	double enorm1_2;
+	double enorm1_2=0;
 	if (ilepton==1) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_ee);
 	if (ilepton==2) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_mm);
 	double enorm2 = ((Lumi2012 * eXsec_tt) / Ngen_tt);
