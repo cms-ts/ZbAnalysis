@@ -502,12 +502,18 @@ private:
   TH1F*     t_pt_Z_em_b;
 
   TH1F*     w_delta_ee;
+  TH1F*     b_delta_ee;
+  TH1F*     c_delta_ee;
+  TH1F*     t_delta_ee;
   TH1F*     w_delta_ee_b;
   TH1F*     b_delta_ee_b;
   TH1F*     c_delta_ee_b;
   TH1F*     t_delta_ee_b;
 
   TH1F*     w_delta_mm;
+  TH1F*     b_delta_mm;
+  TH1F*     c_delta_mm;
+  TH1F*     t_delta_mm;
   TH1F*     w_delta_mm_b;
   TH1F*     b_delta_mm_b;
   TH1F*     c_delta_mm_b;
@@ -967,12 +973,18 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_single_pt_Z_em_b =  fs->make < TH1F > ("c_single_pt_Z_em_b",       "c_single_pt_Z_em_b;P_t [GeV]", 40, 0., 400.);
   t_single_pt_Z_em_b =  fs->make < TH1F > ("t_single_pt_Z_em_b",       "t_single_pt_Z_em_b;P_t [GeV]", 40, 0., 400.);
 
-  w_delta_ee =          fs->make < TH1F > ("w_delta_phi_ee",    "w_delta_phi_ee", 12, 0, TMath::Pi ());
-  w_delta_ee_b =        fs->make < TH1F > ("w_delta_phi_ee_b",  "w_delta_phi_ee_b", 12, 0, TMath::Pi ());
+  w_delta_ee =          fs->make < TH1F > ("w_delta_phi_ee",    "w_delta_phi_ee",   12, 0, TMath::Pi ());
+  b_delta_ee =          fs->make < TH1F > ("b_delta_phi_ee",    "b_delta_phi_ee",   12, 0, TMath::Pi ());
+  c_delta_ee =          fs->make < TH1F > ("c_delta_phi_ee",    "c_delta_phi_ee",   12, 0, TMath::Pi ());
+  t_delta_ee =          fs->make < TH1F > ("t_delta_phi_ee",    "t_delta_phi_ee",   12, 0, TMath::Pi ());
+  w_delta_ee_b =        fs->make < TH1F > ("w_delta_phi_ee_b",  "w_delta_phi_ee_b", 12, 0, TMath::Pi ());  
   b_delta_ee_b =        fs->make < TH1F > ("b_delta_phi_ee_b",  "b_delta_phi_ee_b", 12, 0, TMath::Pi ());
   c_delta_ee_b =        fs->make < TH1F > ("c_delta_phi_ee_b",  "c_delta_phi_ee_b", 12, 0, TMath::Pi ());
   t_delta_ee_b =        fs->make < TH1F > ("t_delta_phi_ee_b",  "t_delta_phi_ee_b", 12, 0, TMath::Pi ());
-  w_delta_mm =          fs->make < TH1F > ("w_delta_phi_mm",    "w_delta_phi_mm", 12, 0, TMath::Pi ());
+  w_delta_mm =          fs->make < TH1F > ("w_delta_phi_mm",    "w_delta_phi_mm",   12, 0, TMath::Pi ());
+  b_delta_mm =          fs->make < TH1F > ("b_delta_phi_mm",    "b_delta_phi_mm",   12, 0, TMath::Pi ());
+  c_delta_mm =          fs->make < TH1F > ("c_delta_phi_mm",    "c_delta_phi_mm",   12, 0, TMath::Pi ());
+  t_delta_mm =          fs->make < TH1F > ("t_delta_phi_mm",    "t_delta_phi_mm",   12, 0, TMath::Pi ());
   w_delta_mm_b =        fs->make < TH1F > ("w_delta_phi_mm_b",  "w_delta_phi_mm_b", 12, 0, TMath::Pi ());
   b_delta_mm_b =        fs->make < TH1F > ("b_delta_phi_mm_b",  "b_delta_phi_mm_b", 12, 0, TMath::Pi ());
   c_delta_mm_b =        fs->make < TH1F > ("c_delta_phi_mm_b",  "c_delta_phi_mm_b", 12, 0, TMath::Pi ());
@@ -1800,16 +1812,19 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       t_mass_ee->Fill (diele_mass, MyWeight);
       t_pt_Z_ee->Fill (diele_pt, MyWeight);
       t_mass_Zj_ee->Fill (zj_ee_mass, MyWeight);
+      t_delta_ee->Fill (delta_phi_ee, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 5) {
       b_mass_ee->Fill (diele_mass, MyWeight);
       b_pt_Z_ee->Fill (diele_pt, MyWeight);
       b_mass_Zj_ee->Fill (zj_ee_mass, MyWeight);
+      b_delta_ee->Fill (delta_phi_ee, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_mass_ee->Fill (diele_mass, MyWeight);
       c_pt_Z_ee->Fill (diele_pt, MyWeight);
       c_mass_Zj_ee->Fill (zj_ee_mass, MyWeight);
+      c_delta_ee->Fill (delta_phi_ee, MyWeight);
     }
     if (Nb > 0 && met_cut) {
       scalFac_b = btagSF(isMC, vect_jets, 0);
@@ -1913,16 +1928,19 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       t_mass_mm->Fill (dimuon_mass, MyWeight);
       t_pt_Z_mm->Fill (dimuon_pt, MyWeight);
       t_mass_Zj_mm->Fill (zj_mm_mass, MyWeight);
+      t_delta_mm->Fill (delta_phi_mm, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 5) {
       b_mass_mm->Fill (dimuon_mass, MyWeight);
       b_pt_Z_mm->Fill (dimuon_pt, MyWeight);
       b_mass_Zj_mm->Fill (zj_mm_mass, MyWeight);
+      b_delta_mm->Fill (delta_phi_mm, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_mass_mm->Fill (dimuon_mass, MyWeight);
       c_pt_Z_mm->Fill (dimuon_pt, MyWeight);
       c_mass_Zj_mm->Fill (zj_mm_mass, MyWeight);
+      c_delta_mm->Fill (delta_phi_mm, MyWeight);
     }
     if (Nb > 0 && met_cut) {
       scalFac_b = btagSF(isMC, vect_jets, 0);
