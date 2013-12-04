@@ -53,7 +53,6 @@ double eXsec_zz = 0.15*Xsec_zz;
 //////////////////////// WZ
 
 double Ngen_wz = 10000283;
-double Ngen_wz = 9970342;
 double Xsec_wz = 33.21;    // NLO with CTEQ
 double eXsec_wz = 0.15*Xsec_wz; 
 
