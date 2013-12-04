@@ -468,13 +468,6 @@ string subdir="0";
 	  syst_b_unfold->SetBinError(i, val);
 	}
 
-	TH1F* h_data_stat = h_data->Clone();
-	TH1F* h_data_b_stat = h_data_b->Clone();
-	TH1F* h_data_syst = h_data->Clone();
-	TH1F* h_data_b_syst = h_data_b->Clone();
-	TH1F* h_data_tot = h_data->Clone();
-	TH1F* h_data_b_tot = h_data_b->Clone();
-
 	float sum1, sum2, sum3, sum4, sum5;
 	float sum1_b, sum2_b, sum3_b, sum4_b, sum5_b;
 	ifstream in1, in2, in3, in4, in5;
@@ -514,6 +507,13 @@ string subdir="0";
 	  tot_b = tmp1;
 	  rms_b = tmp2;
 	}
+
+	TH1F* h_data_stat = h_data->Clone();
+	TH1F* h_data_b_stat = h_data_b->Clone();
+	TH1F* h_data_syst = h_data->Clone();
+	TH1F* h_data_b_syst = h_data_b->Clone();
+	TH1F* h_data_tot = h_data->Clone();
+	TH1F* h_data_b_tot = h_data_b->Clone();
 
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
 	  h_data_stat->SetBinError(i, TMath::Sqrt(h_data_stat->GetBinError(i)**2+stat_top->GetBinError(i)**2));
@@ -1258,7 +1258,7 @@ string subdir="0";
 	  out << std::fixed << std::setprecision(4) << std::setw(10);
 	  out << " : average unfolded total cross section = " << tot << " +- " << rms << " pb (" << 100*rms/tot << " %)";
 	  out << endl;
-	  out << std::setw(25) << "stat";
+	  out << std::setw(25) << "data stat";
 	  out << std::setw(12) << "bkg stat";
 	  out << std::setw(12) << "eff syst";
 	  out << std::setw(12) << "jec syst";
@@ -1317,7 +1317,7 @@ string subdir="0";
 	    out << " : average unfolded total cross section = " << tot_b << " +- " << rms_b << " pb (" << 100*rms_b/tot_b << " %)";
 	  }
 	  out << endl;
-	  out << std::setw(25) << "stat";
+	  out << std::setw(25) << "data stat";
 	  out << std::setw(12) << "bkg stat";
 	  out << std::setw(12) << "eff syst";
 	  out << std::setw(12) << "jec syst";
