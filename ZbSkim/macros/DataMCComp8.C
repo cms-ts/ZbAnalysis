@@ -6,7 +6,7 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-TH1F* read(string& path, string& subdir, string& title, int ilepton, TFile* infile=0) {
+TH1F* read(string& subdir, string& title, int ilepton, TFile* infile=0) {
   TH1F* hist;
   TFile* file = infile;
   string title_tmp = title;
@@ -87,8 +87,8 @@ string subdir="0";
 	TH1F* w_data[2];
 	TH1F* w_data_b[2];
 	for (int i=0; i<2; i++) {
-	  w_data[i] = read(path, subdir, title, i+1);
-	  w_data_b[i] = read(path, subdir, title_b, i+1);
+	  w_data[i] = read(subdir, title, i+1);
+	  w_data_b[i] = read(subdir, title_b, i+1);
 	}
 
 	TH1F* h_data = w_data[0]->Clone();
@@ -109,14 +109,14 @@ string subdir="0";
 	TH1F* w_mcg3[2];
 	TH1F* w_mcg3_b[2];
 	for (int i=0; i<2; i++) {
-	  w_mcg[i] = read(path, subdir, title, i+1, mcg);
-	  w_mcg_b[i] = read(path, subdir, title_b, i+1, mcg);
-	  w_mcg1[i] = read(path, subdir, title, i+1, mcg1);
-	  w_mcg1_b[i] = read(path, subdir, title_b, i+1, mcg1);
-	  w_mcg2[i] = read(path, subdir, title, i+1, mcg2[i]);
-	  w_mcg2_b[i] = read(path, subdir, title_b, i+1, mcg2[i]);
-	  w_mcg3[i] = read(path, subdir, title, i+1, mcg3);
-	  w_mcg3_b[i] = read(path, subdir, title_b, i+1, mcg3);
+	  w_mcg[i] = read(subdir, title, i+1, mcg);
+	  w_mcg_b[i] = read(subdir, title_b, i+1, mcg);
+	  w_mcg1[i] = read(subdir, title, i+1, mcg1);
+	  w_mcg1_b[i] = read(subdir, title_b, i+1, mcg1);
+	  w_mcg2[i] = read(subdir, title, i+1, mcg2[i]);
+	  w_mcg2_b[i] = read(subdir, title_b, i+1, mcg2[i]);
+	  w_mcg3[i] = read(subdir, title, i+1, mcg3);
+	  w_mcg3_b[i] = read(subdir, title_b, i+1, mcg3);
 	}
 
 	TH1F* h_mcg = w_mcg[0]->Clone();

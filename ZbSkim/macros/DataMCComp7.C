@@ -6,7 +6,7 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-TH1F* read(string& path, string& subdir, string& title, int ilepton) {
+TH1F* read(string& subdir, string& title, int ilepton) {
   TH1F* hist;
   TFile* file;
   if (ilepton==1) {
@@ -126,8 +126,8 @@ string subdir="0";
 
 	TH1F* h_data;
 	TH1F* h_data_b;
-        h_data = read(path, subdir, title, ilepton);
-        h_data_b = read(path, subdir, title_b, ilepton);
+        h_data = read(subdir, title, ilepton);
+        h_data_b = read(subdir, title_b, ilepton);
 	h_data->SetStats(0);
 	h_data_b->SetStats(0);
 
@@ -141,17 +141,17 @@ string subdir="0";
 	  if (i<=13) {
 	    stringstream ss;
 	    ss << i;
-	    h_data_scan[i] = read(path, ss.str(), title, ilepton);
-	    h_data_b_scan[i] = read(path, ss.str(), title_b, ilepton);
+	    h_data_scan[i] = read(ss.str(), title, ilepton);
+	    h_data_b_scan[i] = read(ss.str(), title_b, ilepton);
 	  }
 	}
 	if (useSysDR) {
-	  h_data_scan[88] = read(path, "88", title, ilepton);
-	  h_data_b_scan[88] = read(path, "88", title_b, ilepton);
+	  h_data_scan[88] = read("88", title, ilepton);
+	  h_data_b_scan[88] = read("88", title_b, ilepton);
 	}
 	if (useSysBfit2) {
-	  h_data_scan[99] = read(path, "99", title, ilepton);
-	  h_data_b_scan[99] = read(path, "99", title_b, ilepton);
+	  h_data_scan[99] = read("99", title, ilepton);
+	  h_data_b_scan[99] = read("99", title_b, ilepton);
 	}
 
 	if (ilepton==1) mc1->cd("demoEle");
