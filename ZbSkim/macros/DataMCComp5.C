@@ -63,17 +63,21 @@ if (irun==9) {             // irun==9 => unfolding with Powheg
   string subdir="9";
   string postfix="";
 }
-if (irun==10) {            // irun==10 => bkg
+if (irun==10) {            // irun==10 => bkg systematics
   string subdir="10";
   string postfix="";
 }
-if (irun==11) {            // irun==10 => JER Up
+if (irun==11) {            // irun==11 => JER Up
   string subdir="11";
   string postfix="JerUp";
 }
-if (irun==12) {            // irun==10 => JER Down
+if (irun==12) {            // irun==12 => JER Down
   string subdir="12";
   string postfix="JerDown";
+}
+if (irun==13) {            // irun==13 => bkg statistics
+  string subdir="13";
+  string postfix="";
 }
 if (irun==88) {            // irun==88 => deltaR
   string subdir="88";
@@ -303,6 +307,16 @@ if (irun==99) {            // irun==99 => pur
           h_mc2->Scale((c2_t+ec2_t)/c2_t);
           h_mc2_fit->Scale((c2_t+ec2_t)/c2_t);
         }
+      }
+
+      for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+        h_mc1->SetBinError(i, 1.1*h_mc1->GetBinError(i));
+        h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
+        h_mc3->SetBinError(i, 1.1*h_mc3->GetBinError(i));
+        h_mc4->SetBinError(i, 1.1*h_mc4->GetBinError(i));
+//      h_mc5->SetBinError(i, 1.1*h_mc5->GetBinError(i));
+        h_mc6->SetBinError(i, 1.1*h_mc6->GetBinError(i));
+        h_mc7->SetBinError(i, 1.1*h_mc7->GetBinError(i));
       }
 
       h_data->Add(h_mc7, -1.);

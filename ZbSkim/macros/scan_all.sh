@@ -1,7 +1,7 @@
 #!/bin/sh
 
 i=0
-while [ $i -le 12 ]; do
+while [ $i -le 13 ]; do
 
   ./plot_all5.sh $i
   ./plot_all.sh $i

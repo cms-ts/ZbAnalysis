@@ -27,7 +27,7 @@ int useSysBfit2=0;
 //int useSysBfit2=1; // include Bfit2 systematics
 
 int useSysDR=0;
-//int useSysDR=1; // include DR systematics
+//int useSysDR=1; // include deltaR systematics
 
 int useSysRMS=0;
 //int useSysRMS=1; // include xsec RMS systematics
@@ -138,7 +138,7 @@ string subdir="0";
 	for (int i=0;i<NMAX;i++) {
 	  h_data_scan[i] = 0;
 	  h_data_b_scan[i] = 0;
-	  if (i<=12) {
+	  if (i<=13) {
 	    stringstream ss;
 	    ss << i;
 	    h_data_scan[i] = read(path, ss.str(), title, ilepton);
@@ -263,19 +263,38 @@ string subdir="0";
 	  h_mc1b_b->Scale(100.);
 	}
 
-	TH1F* syst_leff = h_data->Clone();
-	TH1F* syst_b_leff = h_data_b->Clone();
+	TH1F* stat_bkg = h_data->Clone();
+	TH1F* stat_b_bkg = h_data_b->Clone();
+	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  val = TMath::Sqrt(TMath::Max(val, h_data_scan[13]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2)/(1.1**2-1));
+	  stat_bkg->SetBinError(i, val);
+	  val = 0.0;
+	  val = TMath::Sqrt(TMath::Max(val, h_data->GetBinError(i)**2-stat_bkg->GetBinError(i)**2));
+	  h_data->SetBinError(i, val);
+	}
+	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
+	  float val = 0.0;
+	  val = TMath::Sqrt(TMath::Max(val, h_data_b_scan[13]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2)/(1.1**2-1));
+	  stat_b_bkg->SetBinError(i, val);
+	  val = 0.0;
+	  val = TMath::Sqrt(TMath::Max(val, h_data_b->GetBinError(i)**2-stat_b_bkg->GetBinError(i)**2));
+	  h_data_b->SetBinError(i, val);
+	}
+
+	TH1F* syst_eff = h_data->Clone();
+	TH1F* syst_b_eff = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  if (ilepton==1) val = ele_eff_sys * h_data_scan[0]->GetBinContent(i);
 	  if (ilepton==2) val = muo_eff_sys * h_data_scan[0]->GetBinContent(i);
-	  syst_leff->SetBinError(i, val);
+	  syst_eff->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  if (ilepton==1) val = ele_eff_sys * h_data_b_scan[0]->GetBinContent(i);
 	  if (ilepton==2) val = muo_eff_sys * h_data_b_scan[0]->GetBinContent(i);
-	  syst_b_leff->SetBinError(i, val);
+	  syst_b_eff->SetBinError(i, val);
 	}
 
 	TH1F* syst_jec = h_data->Clone();
@@ -497,11 +516,12 @@ string subdir="0";
 	}
 
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
+	  h_data_stat->SetBinError(i, TMath::Sqrt(h_data_stat->GetBinError(i)**2+stat_bkg->GetBinError(i)**2));
 	  h_data_stat->SetBinError(i, TMath::Sqrt(h_data_stat->GetBinError(i)**2+stat_top->GetBinError(i)**2));
 	  h_data_stat->SetBinError(i, TMath::Sqrt(h_data_stat->GetBinError(i)**2+stat_bfit->GetBinError(i)**2));
 	  h_data_stat->SetBinError(i, TMath::Sqrt(h_data_stat->GetBinError(i)**2+stat_unfold->GetBinError(i)**2));
 	  float val = 0.0;
-	  val = TMath::Sqrt(val**2+syst_leff->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_eff->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+syst_jec->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+syst_jer->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+syst_pu->GetBinError(i)**2);
@@ -517,11 +537,12 @@ string subdir="0";
 	}
 
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
+	  h_data_b_stat->SetBinError(i, TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+stat_b_bkg->GetBinError(i)**2));
 	  h_data_b_stat->SetBinError(i, TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+stat_b_top->GetBinError(i)**2));
 	  h_data_b_stat->SetBinError(i, TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+stat_b_bfit->GetBinError(i)**2));
 	  h_data_b_stat->SetBinError(i, TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+stat_b_unfold->GetBinError(i)**2));
 	  float val = 0.0;
-	  val = TMath::Sqrt(val**2+syst_b_leff->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_b_eff->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+syst_b_jec->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+syst_b_jer->GetBinError(i)**2);
 	  val = TMath::Sqrt(val**2+syst_b_pu->GetBinError(i)**2);
@@ -1238,7 +1259,8 @@ string subdir="0";
 	  out << " : average unfolded total cross section = " << tot << " +- " << rms << " pb (" << 100*rms/tot << " %)";
 	  out << endl;
 	  out << std::setw(25) << "stat";
-	  out << std::setw(12) << "leff syst";
+	  out << std::setw(12) << "bkg stat";
+	  out << std::setw(12) << "eff syst";
 	  out << std::setw(12) << "jec syst";
 	  out << std::setw(12) << "jer syst";
 	  out << std::setw(12) << "pu syst";
@@ -1264,7 +1286,8 @@ string subdir="0";
 	    out << " +- ";
 	    out << std::fixed << std::setprecision(6) << std::setw(8);
 	    out << h_data->GetBinError(i);
-	    out << " +- " << syst_leff->GetBinError(i);
+	    out << " +- " << stat_bkg->GetBinError(i);
+	    out << " +- " << syst_eff->GetBinError(i);
 	    out << " +- " << syst_jec->GetBinError(i);
 	    out << " +- " << syst_jer->GetBinError(i);
 	    out << " +- " << syst_pu->GetBinError(i);
@@ -1295,7 +1318,8 @@ string subdir="0";
 	  }
 	  out << endl;
 	  out << std::setw(25) << "stat";
-	  out << std::setw(12) << "leff syst";
+	  out << std::setw(12) << "bkg stat";
+	  out << std::setw(12) << "eff syst";
 	  out << std::setw(12) << "jec syst";
 	  out << std::setw(12) << "jer syst";
 	  out << std::setw(12) << "pu syst";
@@ -1321,7 +1345,8 @@ string subdir="0";
 	    out << " +- ";
 	    out << std::fixed << std::setprecision(6) << std::setw(8);
 	    out << h_data_b->GetBinError(i);
-	    out << " +- " << syst_b_leff->GetBinError(i);
+	    out << " +- " << stat_b_bkg->GetBinError(i);
+	    out << " +- " << syst_b_eff->GetBinError(i);
 	    out << " +- " << syst_b_jec->GetBinError(i);
 	    out << " +- " << syst_b_jer->GetBinError(i);
 	    out << " +- " << syst_b_pu->GetBinError(i);

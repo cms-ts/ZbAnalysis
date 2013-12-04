@@ -61,17 +61,21 @@ if (irun==9) {             // irun==9 => unfolding with Powheg
   string subdir="9";
   string postfix="";   
 }
-if (irun==10) {            // irun==10 => bkg
+if (irun==10) {            // irun==10 => bkg systematics
   string subdir="10";
   string postfix="";
 }
-if (irun==11) {            // irun==10 => JER Up
+if (irun==11) {            // irun==11 => JER Up
   string subdir="11";
   string postfix="JerUp";
 }
-if (irun==12) {            // irun==10 => JER Down
+if (irun==12) {            // irun==12 => JER Down
   string subdir="12";
   string postfix="JerDown";
+}
+if (irun==13) {            // irun==13 => bkg statistics
+  string subdir="13";
+  string postfix="";
 }
 if (irun==88) {            // irun==88 => deltaR
   string subdir="88";

@@ -192,7 +192,7 @@ string subdir="0";
 	  }
 
 	  string tmp;
-	  const int N=15;
+	  const int N=16;
 	  float x[2][100][100];
 	  float x_b[2][100][100];
 
@@ -231,13 +231,13 @@ string subdir="0";
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  if (x[0][0][i]*x[1][0][i] != 0) {
-	    val = (x[0][0][i]/(x[0][N-4][i]**2+x[0][2][i]**2)+x[1][0][i]/(x[1][N-4][i]**2+x[1][2][i]**2))/(1./(x[0][N-4][i]**2+x[0][2][i]**2)+1./(x[1][N-4][i]**2+x[1][2][i]**2));
+	    val = (x[0][0][i]/(x[0][N-4][i]**2+x[0][3][i]**2)+x[1][0][i]/(x[1][N-4][i]**2+x[1][3][i]**2))/(1./(x[0][N-4][i]**2+x[0][3][i]**2)+1./(x[1][N-4][i]**2+x[1][3][i]**2));
 	    h_data_stat->SetBinContent(i, val);
 	    val = TMath::Sqrt(1./(1./(x[0][N-4][i]**2)+1./(x[1][N-4][i]**2)));
 	    h_data_stat->SetBinError(i, val);
 	  }
-	  val = (TMath::Sqrt(x[0][N-3][i]**2-x[0][2][i]**2)+TMath::Sqrt(x[1][N-3][i]**2-x[1][2][i]**2))/2.;
-	  val = TMath::Sqrt(val**2+(1./(1./(x[0][2][i]**2)+1./(x[1][2][i]**2))));
+	  val = (TMath::Sqrt(x[0][N-3][i]**2-x[0][3][i]**2)+TMath::Sqrt(x[1][N-3][i]**2-x[1][3][i]**2))/2.;
+	  val = TMath::Sqrt(val**2+(1./(1./(x[0][3][i]**2)+1./(x[1][3][i]**2))));
 	  h_data_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_stat->GetBinError(i)**2+h_data_syst->GetBinError(i)**2);
 	  h_data_tot->SetBinError(i, val);
@@ -246,13 +246,13 @@ string subdir="0";
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  if (x_b[0][0][i]*x_b[1][0][i] != 0) {
-	    val = (x_b[0][0][i]/(x_b[0][N-4][i]**2+x_b[0][2][i]**2)+x_b[1][0][i]/(x_b[1][N-4][i]**2+x_b[1][2][i]**2))/(1./(x_b[0][N-4][i]**2+x_b[0][2][i]**2)+1./(x_b[1][N-4][i]**2+x_b[1][2][i]**2));
+	    val = (x_b[0][0][i]/(x_b[0][N-4][i]**2+x_b[0][3][i]**2)+x_b[1][0][i]/(x_b[1][N-4][i]**2+x_b[1][3][i]**2))/(1./(x_b[0][N-4][i]**2+x_b[0][3][i]**2)+1./(x_b[1][N-4][i]**2+x_b[1][3][i]**2));
 	    h_data_b_stat->SetBinContent(i, val);
 	    val = TMath::Sqrt(1./(1./(x_b[0][N-4][i]**2)+1./(x_b[1][N-4][i]**2)));
 	    h_data_b_stat->SetBinError(i, val);
 	  }
-	  val = (TMath::Sqrt(x_b[0][N-3][i]**2-x_b[0][2][i]**2)+TMath::Sqrt(x_b[1][N-3][i]**2-x_b[1][2][i]**2))/2.;
-	  val = TMath::Sqrt(val**2+(1./(1./(x_b[0][2][i]**2)+1./(x_b[1][2][i]**2))));
+	  val = (TMath::Sqrt(x_b[0][N-3][i]**2-x_b[0][3][i]**2)+TMath::Sqrt(x_b[1][N-3][i]**2-x_b[1][3][i]**2))/2.;
+	  val = TMath::Sqrt(val**2+(1./(1./(x_b[0][3][i]**2)+1./(x_b[1][3][i]**2))));
 	  h_data_b_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+h_data_b_syst->GetBinError(i)**2);
 	  h_data_b_tot->SetBinError(i, val);
