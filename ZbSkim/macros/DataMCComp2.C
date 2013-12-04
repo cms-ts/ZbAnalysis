@@ -464,7 +464,7 @@ if (irun==99) {            // irun==99 => pur
 	  h_data_b->Add(h_mc1t_b, -1.);
 	}
 
-	TH1F *h_mc1uds_b = h_mc1_b->Clone("h_mc1uds_b");
+	TH1F *h_mc1uds_b = (TH1F*)h_mc1_b->Clone("h_mc1uds_b");
 	if (h_mc1b_b) h_mc1uds_b->Add(h_mc1b_b, -1);
 	if (h_mc1c_b) h_mc1uds_b->Add(h_mc1c_b, -1);
 	if (h_mc1t_b) h_mc1uds_b->Add(h_mc1t_b, -1);
@@ -657,7 +657,7 @@ if (irun==99) {            // irun==99 => pur
 	  h_mc1b_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b->GetBinContent(h_data_b->GetMinimumBin())));
 
 	  h_mc1b_b->Draw("E5");
-	  TH1F* tmp1 = h_mc1b_b->Clone();
+	  TH1F* tmp1 = (TH1F*)h_mc1b_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp1->GetMinimum()==0) tmp1->GetXaxis()->SetRangeUser(0, tmp1->GetBinCenter(tmp1->GetMinimumBin()-1));
 	  }
@@ -665,7 +665,7 @@ if (irun==99) {            // irun==99 => pur
 	  tmp1->DrawClone("HISTLSAME");
 
 	  h_mcg_b->Draw("E5SAME");
-	  TH1F* tmp2 = h_mcg_b->Clone();
+	  TH1F* tmp2 = (TH1F*)h_mcg_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2->GetMinimum()==0) tmp2->GetXaxis()->SetRangeUser(0, tmp2->GetBinCenter(tmp2->GetMinimumBin()-1));
 	  }
@@ -673,7 +673,7 @@ if (irun==99) {            // irun==99 => pur
 	  tmp2->DrawClone("HISTLSAME");
 
 	  h_mcg1_b->Draw("E5SAME");
-	  TH1F* tmp2_1 = h_mcg1_b->Clone();
+	  TH1F* tmp2_1 = (TH1F*)h_mcg1_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2_1->GetMinimum()==0) tmp2_1->GetXaxis()->SetRangeUser(0, tmp2_1->GetBinCenter(tmp2_1->GetMinimumBin()-1));
 	  }
@@ -681,7 +681,7 @@ if (irun==99) {            // irun==99 => pur
 	  tmp2_1->DrawClone("HISTLSAME");
 
 	  h_mcg2_b->Draw("E5SAME");
-	  TH1F* tmp2_2 = h_mcg2_b->Clone();
+	  TH1F* tmp2_2 = (TH1F*)h_mcg2_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2_2->GetMinimum()==0) tmp2_2->GetXaxis()->SetRangeUser(0, tmp2_2->GetBinCenter(tmp2_2->GetMinimumBin()-1));
 	  }
@@ -695,7 +695,7 @@ if (irun==99) {            // irun==99 => pur
 	  h_mc1->SetMarkerColor(kRed);
 	  h_mc1->SetFillColor(kRed);
 	  h_mc1->Draw("E5SAME");
-	  TH1F* tmp3 = h_mc1->Clone();
+	  TH1F* tmp3 = (TH1F*)h_mc1->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp3->GetMinimum()==0) tmp3->GetXaxis()->SetRangeUser(0, tmp3->GetBinCenter(tmp3->GetMinimumBin()-1));
 	  }
@@ -707,7 +707,7 @@ if (irun==99) {            // irun==99 => pur
 	  h_mcg->SetMarkerColor(kGreen+2);
 	  h_mcg->SetFillColor(kGreen+2);
 	  h_mcg->Draw("E5SAME");
-	  TH1F* tmp4 = h_mcg->Clone();
+	  TH1F* tmp4 = (TH1F*)h_mcg->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4->GetMinimum()==0) tmp4->GetXaxis()->SetRangeUser(0, tmp4->GetBinCenter(tmp4->GetMinimumBin()-1));
 	  }
@@ -719,7 +719,7 @@ if (irun==99) {            // irun==99 => pur
 	  h_mcg1->SetMarkerColor(kMagenta-6);
 	  h_mcg1->SetFillColor(kMagenta-6);
 	  h_mcg1->Draw("E5SAME");
-	  TH1F* tmp4_1 = h_mcg1->Clone();
+	  TH1F* tmp4_1 = (TH1F*)h_mcg1->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4_1->GetMinimum()==0) tmp4_1->GetXaxis()->SetRangeUser(0, tmp4_1->GetBinCenter(tmp4_1->GetMinimumBin()-1));
 	  }
@@ -731,7 +731,7 @@ if (irun==99) {            // irun==99 => pur
 	  h_mcg2->SetMarkerColor(kBlue-4);
 	  h_mcg2->SetFillColor(kBlue-4);
 	  h_mcg2->Draw("E5SAME");
-	  TH1F* tmp4_2 = h_mcg2->Clone();
+	  TH1F* tmp4_2 = (TH1F*)h_mcg2->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4_2->GetMinimum()==0) tmp4_2->GetXaxis()->SetRangeUser(0, tmp4_2->GetBinCenter(tmp4_2->GetMinimumBin()-1));
 	  }
@@ -792,7 +792,7 @@ if (irun==99) {            // irun==99 => pur
 	pad2->Draw();
 	pad2->cd();
 
-	TH1F *h_M = h_data_b->Clone();
+	TH1F *h_M = (TH1F*)h_data_b->Clone();
 	h_M->Divide(h_mcg_b);
 
 	h_M->SetTitle("");
@@ -815,7 +815,7 @@ if (irun==99) {            // irun==99 => pur
 	h_M->Draw("EPX0");
 
 	if (isratio==0) {
-	  TH1F *h_M2= h_data->Clone();
+	  TH1F *h_M2= (TH1F*)h_data->Clone();
 	  h_M2->Divide(h_mcg);
 
 	  TGraphErrors *g_M2 = new TGraphErrors(h_M2);
@@ -850,7 +850,7 @@ if (irun==99) {            // irun==99 => pur
 	pad3->Draw();
 	pad3->cd();
 
-	TH1F *h_S = h_data_b->Clone();
+	TH1F *h_S = (TH1F*)h_data_b->Clone();
 	h_S->Divide(h_mcg1_b);
 
 	h_S->SetTitle("");
@@ -873,7 +873,7 @@ if (irun==99) {            // irun==99 => pur
 	h_S->Draw("EPX0");
 
 	if (isratio==0) {
-	  TH1F *h_S2= h_data->Clone();
+	  TH1F *h_S2= (TH1F*)h_data->Clone();
 	  h_S2->Divide(h_mcg1);
 
 	  TGraphErrors *g_S2 = new TGraphErrors(h_S2);
@@ -908,7 +908,7 @@ if (irun==99) {            // irun==99 => pur
 	pad4->Draw();
 	pad4->cd();
 
-	TH1F *h_P = h_data_b->Clone();
+	TH1F *h_P = (TH1F*)h_data_b->Clone();
 	h_P->Divide(h_mcg2_b);
 
 	h_P->SetTitle("");
@@ -931,7 +931,7 @@ if (irun==99) {            // irun==99 => pur
 	h_P->Draw("EPX0");
 
 	if (isratio==0) {
-	  TH1F *h_P2= h_data->Clone();
+	  TH1F *h_P2= (TH1F*)h_data->Clone();
 	  h_P2->Divide(h_mcg2);
 
 	  TGraphErrors *g_P2 = new TGraphErrors(h_P2);

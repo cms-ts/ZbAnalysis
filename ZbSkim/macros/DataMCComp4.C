@@ -486,8 +486,8 @@ if (ilepton==2) {
         pad2->cd();
 
         TH1F* h_ratio;
-        if (imode<=2) h_ratio = (TH1F*) h_mc2_unfold->Clone();
-        if (imode>=3) h_ratio = (TH1F*) h_data_unfold->Clone();
+        if (imode<=2) h_ratio = (TH1F*)h_mc2_unfold->Clone();
+        if (imode>=3) h_ratio = (TH1F*)h_data_unfold->Clone();
 
 	h_ratio->SetTitle("");
         h_ratio->SetStats(0);
@@ -532,7 +532,7 @@ if (ilepton==2) {
 	TCanvas* c3 = new TCanvas("c3", "c3", 800, 600);
 	c3->cd();
 	c3->SetLogz();
-	TH2F* h_response = response.Hresponse()->Clone();
+	TH2F* h_response = (TH2F*)response.Hresponse()->Clone();
 	h_response->SetStats(0);
 	h_response->SetTitle("Response matrix: (x,y)=(measured,truth)");
 	h_response->GetXaxis()->SetTitle(tmp->GetXaxis()->GetTitle());

@@ -196,8 +196,8 @@ if (irun==99) {            // irun==99 => pur
         pad2->Draw();
         pad2->cd();
 
-        TH1F* h_ratio = h_data_ee->Clone("h_ratio");
-        TH1F* h_ratio_b = h_data_ee_b->Clone("h_ratio_b");
+        TH1F* h_ratio = (TH1F*)h_data_ee->Clone("h_ratio");
+        TH1F* h_ratio_b = (TH1F*)h_data_ee_b->Clone("h_ratio_b");
         if (isratio==0) {
           h_ratio->Divide(h_data_mm);
           h_ratio_b->Divide(h_data_mm_b);

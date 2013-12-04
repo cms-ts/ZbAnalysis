@@ -91,10 +91,10 @@ string subdir="0";
 	  w_data_b[i] = read(subdir, title_b, i+1);
 	}
 
-	TH1F* h_data = w_data[0]->Clone();
+	TH1F* h_data = (TH1F*)w_data[0]->Clone();
 	h_data->Add(w_data[1]);
 	h_data->Scale(0.5);
-	TH1F* h_data_b = w_data_b[0]->Clone();
+	TH1F* h_data_b = (TH1F*)w_data_b[0]->Clone();
 	h_data_b->Add(w_data_b[1]);
 	h_data_b->Scale(0.5);
 	h_data->SetStats(0);
@@ -119,28 +119,28 @@ string subdir="0";
 	  w_mcg3_b[i] = read(subdir, title_b, i+1, mcg3);
 	}
 
-	TH1F* h_mcg = w_mcg[0]->Clone();
+	TH1F* h_mcg = (TH1F*)w_mcg[0]->Clone();
 	h_mcg->Add(w_mcg[1]);
 	h_mcg->Scale(0.5);
-	TH1F* h_mcg_b = w_mcg_b[0]->Clone();
+	TH1F* h_mcg_b = (TH1F*)w_mcg_b[0]->Clone();
 	h_mcg_b->Add(w_mcg_b[1]);
 	h_mcg_b->Scale(0.5);
-	TH1F* h_mcg1 = w_mcg1[0]->Clone();
+	TH1F* h_mcg1 = (TH1F*)w_mcg1[0]->Clone();
 	h_mcg1->Add(w_mcg1[1]);
 	h_mcg1->Scale(0.5);
-	TH1F* h_mcg1_b = w_mcg1_b[0]->Clone();
+	TH1F* h_mcg1_b = (TH1F*)w_mcg1_b[0]->Clone();
 	h_mcg1_b->Add(w_mcg1_b[1]);
 	h_mcg1_b->Scale(0.5);
-	TH1F* h_mcg2 = w_mcg2[0]->Clone();
+	TH1F* h_mcg2 = (TH1F*)w_mcg2[0]->Clone();
 	h_mcg2->Add(w_mcg2[1]);
 	h_mcg2->Scale(0.5);
-	TH1F* h_mcg2_b = w_mcg2_b[0]->Clone();
+	TH1F* h_mcg2_b = (TH1F*)w_mcg2_b[0]->Clone();
 	h_mcg2_b->Add(w_mcg2_b[1]);
 	h_mcg2_b->Scale(0.5);
-	TH1F* h_mcg3 = w_mcg3[0]->Clone();
+	TH1F* h_mcg3 = (TH1F*)w_mcg3[0]->Clone();
 	h_mcg3->Add(w_mcg3[1]);
 	h_mcg3->Scale(0.5);
-	TH1F* h_mcg3_b = w_mcg3_b[0]->Clone();
+	TH1F* h_mcg3_b = (TH1F*)w_mcg3_b[0]->Clone();
 	h_mcg3_b->Add(w_mcg3_b[1]);
 	h_mcg3_b->Scale(0.5);
 
@@ -221,12 +221,12 @@ string subdir="0";
 	  in.close();
 	}
 
-	TH1F* h_data_stat = h_data->Clone();
-	TH1F* h_data_b_stat = h_data_b->Clone();
-	TH1F* h_data_syst = h_data->Clone();
-	TH1F* h_data_b_syst = h_data_b->Clone();
-	TH1F* h_data_tot = h_data->Clone();
-	TH1F* h_data_b_tot = h_data_b->Clone();
+	TH1F* h_data_stat = (TH1F*)h_data->Clone();
+	TH1F* h_data_b_stat = (TH1F*)h_data_b->Clone();
+	TH1F* h_data_syst = (TH1F*)h_data->Clone();
+	TH1F* h_data_b_syst = (TH1F*)h_data_b->Clone();
+	TH1F* h_data_tot = (TH1F*)h_data->Clone();
+	TH1F* h_data_b_tot = (TH1F*)h_data_b->Clone();
 
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
 	  float val = 0.0;
@@ -384,7 +384,7 @@ string subdir="0";
 	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b->GetBinContent(h_data_b->GetMinimumBin())));
 
 	  h_mcg_b->Draw("E5");
-	  TH1F* tmp2 = h_mcg_b->Clone();
+	  TH1F* tmp2 = (TH1F*)h_mcg_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2->GetMinimum()==0) tmp2->GetXaxis()->SetRangeUser(0, tmp2->GetBinCenter(tmp2->GetMinimumBin()-1));
 	  }
@@ -392,7 +392,7 @@ string subdir="0";
 	  tmp2->DrawClone("HISTLSAME");
 
 	  h_mcg1_b->Draw("E5SAME");
-	  TH1F* tmp2_1 = h_mcg1_b->Clone();
+	  TH1F* tmp2_1 = (TH1F*)h_mcg1_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2_1->GetMinimum()==0) tmp2_1->GetXaxis()->SetRangeUser(0, tmp2_1->GetBinCenter(tmp2_1->GetMinimumBin()-1));
 	  }
@@ -400,7 +400,7 @@ string subdir="0";
 	  tmp2_1->DrawClone("HISTLSAME");
 
 	  h_mcg2_b->Draw("E5SAME");
-	  TH1F* tmp2_2 = h_mcg2_b->Clone();
+	  TH1F* tmp2_2 = (TH1F*)h_mcg2_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2_2->GetMinimum()==0) tmp2_2->GetXaxis()->SetRangeUser(0, tmp2_2->GetBinCenter(tmp2_2->GetMinimumBin()-1));
 	  }
@@ -408,7 +408,7 @@ string subdir="0";
 	  tmp2_2->DrawClone("HISTLSAME");
 
 	  h_mcg3_b->Draw("E5SAME");
-	  TH1F* tmp2_3 = h_mcg3_b->Clone();
+	  TH1F* tmp2_3 = (TH1F*)h_mcg3_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2_3->GetMinimum()==0) tmp2_3->GetXaxis()->SetRangeUser(0, tmp2_3->GetBinCenter(tmp2_3->GetMinimumBin()-1));
 	  }
@@ -425,7 +425,7 @@ string subdir="0";
 	  h_mcg->SetMarkerColor(kGreen+2);
 	  h_mcg->SetFillColor(kGreen+2);
 	  h_mcg->Draw("E5SAME");
-	  TH1F* tmp4 = h_mcg->Clone();
+	  TH1F* tmp4 = (TH1F*)h_mcg->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4->GetMinimum()==0) tmp4->GetXaxis()->SetRangeUser(0, tmp4->GetBinCenter(tmp4->GetMinimumBin()-1));
 	  }
@@ -437,7 +437,7 @@ string subdir="0";
 	  h_mcg1->SetMarkerColor(kMagenta-6);
 	  h_mcg1->SetFillColor(kMagenta-6);
 	  h_mcg1->Draw("E5SAME");
-	  TH1F* tmp4_1 = h_mcg1->Clone();
+	  TH1F* tmp4_1 = (TH1F*)h_mcg1->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4_1->GetMinimum()==0) tmp4_1->GetXaxis()->SetRangeUser(0, tmp4_1->GetBinCenter(tmp4_1->GetMinimumBin()-1));
 	  }
@@ -449,7 +449,7 @@ string subdir="0";
 	  h_mcg2->SetMarkerColor(kBlue-4);
 	  h_mcg2->SetFillColor(kBlue-4);
 	  h_mcg2->Draw("E5SAME");
-	  TH1F* tmp4_2 = h_mcg2->Clone();
+	  TH1F* tmp4_2 = (TH1F*)h_mcg2->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4_2->GetMinimum()==0) tmp4_2->GetXaxis()->SetRangeUser(0, tmp4_2->GetBinCenter(tmp4_2->GetMinimumBin()-1));
 	  }
@@ -507,9 +507,9 @@ string subdir="0";
 	pad2->Draw();
 	pad2->cd();
 
-	TH1F *h_M = h_data_b->Clone();
-	TH1F *h_M_tot = h_data_b_tot->Clone();
-	TH1F *h_M_stat = h_data_b_stat->Clone();
+	TH1F *h_M = (TH1F*)h_data_b->Clone();
+	TH1F *h_M_tot = (TH1F*)h_data_b_tot->Clone();
+	TH1F *h_M_stat = (TH1F*)h_data_b_stat->Clone();
 
 	h_M->Divide(h_mcg_b);
 	h_M_tot->Divide(h_mcg_b);
@@ -539,9 +539,9 @@ string subdir="0";
 	h_M_stat->Draw("E1PX0SAME");
 
 	if (isratio==0) {
-	  TH1F *h_M2= h_data->Clone();
-	  TH1F *h_M2_tot= h_data_tot->Clone();
-	  TH1F *h_M2_stat= h_data_stat->Clone();
+	  TH1F *h_M2= (TH1F*)h_data->Clone();
+	  TH1F *h_M2_tot= (TH1F*)h_data_tot->Clone();
+	  TH1F *h_M2_stat= (TH1F*)h_data_stat->Clone();
 
 	  h_M2->Divide(h_mcg);
 	  h_M2_tot->Divide(h_mcg);
@@ -593,9 +593,9 @@ string subdir="0";
 	pad3->Draw();
 	pad3->cd();
 
-	TH1F *h_S = h_data_b->Clone();
-	TH1F *h_S_tot = h_data_b_tot->Clone();
-	TH1F *h_S_stat = h_data_b_stat->Clone();
+	TH1F *h_S = (TH1F*)h_data_b->Clone();
+	TH1F *h_S_tot = (TH1F*)h_data_b_tot->Clone();
+	TH1F *h_S_stat = (TH1F*)h_data_b_stat->Clone();
 
 	h_S->Divide(h_mcg1_b);
 	h_S_tot->Divide(h_mcg1_b);
@@ -632,9 +632,9 @@ string subdir="0";
 	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
 
 	if (isratio==0) {
-	  TH1F *h_S2= h_data->Clone();
-	  TH1F *h_S2_tot= h_data_tot->Clone();
-	  TH1F *h_S2_stat= h_data_stat->Clone();
+	  TH1F *h_S2= (TH1F*)h_data->Clone();
+	  TH1F *h_S2_tot= (TH1F*)h_data_tot->Clone();
+	  TH1F *h_S2_stat= (TH1F*)h_data_stat->Clone();
 
 	  h_S2->Divide(h_mcg1);
 	  h_S2_tot->Divide(h_mcg1);
@@ -688,9 +688,9 @@ string subdir="0";
 	pad4->Draw();
 	pad4->cd();
 
-	TH1F *h_P = h_data_b->Clone();
-	TH1F *h_P_tot = h_data_b_tot->Clone();
-	TH1F *h_P_stat = h_data_b_stat->Clone();
+	TH1F *h_P = (TH1F*)h_data_b->Clone();
+	TH1F *h_P_tot = (TH1F*)h_data_b_tot->Clone();
+	TH1F *h_P_stat = (TH1F*)h_data_b_stat->Clone();
 
 	h_P->Divide(h_mcg2_b);
 	h_P_tot->Divide(h_mcg2_b);
@@ -720,9 +720,9 @@ string subdir="0";
 	h_P_stat->Draw("E1PX0SAME");
 
 	if (isratio==0) {
-	  TH1F *h_P2= h_data->Clone();
-	  TH1F *h_P2_tot= h_data_tot->Clone();
-	  TH1F *h_P2_stat= h_data_stat->Clone();
+	  TH1F *h_P2= (TH1F*)h_data->Clone();
+	  TH1F *h_P2_tot= (TH1F*)h_data_tot->Clone();
+	  TH1F *h_P2_stat= (TH1F*)h_data_stat->Clone();
 
 	  h_P2->Divide(h_mcg2);
 	  h_P2_tot->Divide(h_mcg2);
@@ -768,9 +768,9 @@ string subdir="0";
 	  pad3->cd();
 	}
 
-	TH1F *h_M3 = h_data_b->Clone();
-	TH1F *h_M3_tot = h_data_b_tot->Clone();
-	TH1F *h_M3_stat = h_data_b_stat->Clone();
+	TH1F *h_M3 = (TH1F*)h_data_b->Clone();
+	TH1F *h_M3_tot = (TH1F*)h_data_b_tot->Clone();
+	TH1F *h_M3_stat = (TH1F*)h_data_b_stat->Clone();
 
 	h_M3->Divide(h_mcg3_b);
 	h_M3_tot->Divide(h_mcg3_b);

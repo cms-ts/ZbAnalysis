@@ -423,7 +423,7 @@ if (irun==99) {            // irun==99 => pur
 	pad2->Draw();
 	pad2->cd();
 
-	TH1F* h_ratio = h_data->Clone("h_ratio");
+	TH1F* h_ratio = (TH1F*)h_data->Clone("h_ratio");
 	h_ratio->Divide(h_data_fit);
 
 	h_ratio->SetTitle("");

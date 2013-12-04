@@ -575,7 +575,7 @@ if (irun==99) {            // irun==99 => pur
 	  h_mc_fit2->Scale(fitter->GetParameter(2));
 	}
 
-	TH1F *ht = h_mc1->Clone("ht");
+	TH1F *ht = (TH1F*)h_mc1->Clone("ht");
 	ht->Reset();
 	if (h_mc1t) ht->Add(h_mc1t);
 	if (!doBkg) {
@@ -677,7 +677,7 @@ if (irun==99) {            // irun==99 => pur
 
 	c1->cd();
 
-	TH1F *h_ratio = h_data->Clone("h_ratio");
+	TH1F *h_ratio = (TH1F*)h_data->Clone("h_ratio");
 
 	TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
 	pad2->SetTopMargin(0);
