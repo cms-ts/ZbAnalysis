@@ -8,7 +8,7 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 TH1F* read(string subdir, string title, int ilepton) {
   TH1F* hist;
-  TFile* file;
+  TFile* file=0;
   if (ilepton==1) {
     file = TFile::Open((path + "/electrons/" + version + "/" + subdir +"/unfolding/" + title + "_unfolding.root").c_str());
   }
@@ -78,14 +78,14 @@ string subdir="0";
 	in >> c_c >> ec_c;
 	in.close();
 
-	double Lumi2012;
+	double Lumi2012=0;
 
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
-	double norm1_2;
+	double norm1_2=0;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
 	if (ilepton==2) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
 	double norm1_3 = ((Lumi2012 * Xsec_dy_3) / Ngen_dy_3);
@@ -104,7 +104,7 @@ string subdir="0";
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
 	TFile *mcg = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	TFile *mcg1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
-	TFile *mcg2;
+	TFile *mcg2=0;
 	if (ilepton==1) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	if (ilepton==2) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	TFile *mcg3 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
