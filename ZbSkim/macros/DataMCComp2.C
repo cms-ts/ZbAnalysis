@@ -423,25 +423,27 @@ if (irun==99) {            // irun==99 => pur
 	  }
 	}
 
-	for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	  h_mc1->SetBinError(i, 1.1*h_mc1->GetBinError(i));
-	  if (h_mc1t) h_mc1t->SetBinError(i, 1.1*h_mc1t->GetBinError(i));
-	  h_mc1_b->SetBinError(i, 1.1*h_mc1_b->GetBinError(i));
-	  if (h_mc1b_b) h_mc1b_b->SetBinError(i, 1.1*h_mc1b_b->GetBinError(i));
-	  if (h_mc1c_b) h_mc1c_b->SetBinError(i, 1.1*h_mc1c_b->GetBinError(i));
-	  if (h_mc1t_b) h_mc1t_b->SetBinError(i, 1.1*h_mc1t_b->GetBinError(i));
-	  h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
-	  h_mc2_b->SetBinError(i, 1.1*h_mc2_b->GetBinError(i));
-	  h_mc3->SetBinError(i, 1.1*h_mc3->GetBinError(i));
-	  h_mc3_b->SetBinError(i, 1.1*h_mc3_b->GetBinError(i));
-	  h_mc4->SetBinError(i, 1.1*h_mc4->GetBinError(i));
-	  h_mc4_b->SetBinError(i, 1.1*h_mc4_b->GetBinError(i));
-//	  h_mc5->SetBinError(i, 1.1*h_mc5->GetBinError(i));
-//	  h_mc5_b->SetBinError(i, 1.1*h_mc5_b->GetBinError(i));
-	  h_mc6->SetBinError(i, 1.1*h_mc6->GetBinError(i));
-	  h_mc6_b->SetBinError(i, 1.1*h_mc6_b->GetBinError(i));
-	  h_mc7->SetBinError(i, 1.1*h_mc7->GetBinError(i));
-	  h_mc7_b->SetBinError(i, 1.1*h_mc7_b->GetBinError(i));
+	if (irun==13) {
+	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+	    h_mc1->SetBinError(i, 1.1*h_mc1->GetBinError(i));
+	    if (h_mc1t) h_mc1t->SetBinError(i, 1.1*h_mc1t->GetBinError(i));
+	    h_mc1_b->SetBinError(i, 1.1*h_mc1_b->GetBinError(i));
+	    if (h_mc1b_b) h_mc1b_b->SetBinError(i, 1.1*h_mc1b_b->GetBinError(i));
+	    if (h_mc1c_b) h_mc1c_b->SetBinError(i, 1.1*h_mc1c_b->GetBinError(i));
+	    if (h_mc1t_b) h_mc1t_b->SetBinError(i, 1.1*h_mc1t_b->GetBinError(i));
+	    h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
+	    h_mc2_b->SetBinError(i, 1.1*h_mc2_b->GetBinError(i));
+	    h_mc3->SetBinError(i, 1.1*h_mc3->GetBinError(i));
+	    h_mc3_b->SetBinError(i, 1.1*h_mc3_b->GetBinError(i));
+	    h_mc4->SetBinError(i, 1.1*h_mc4->GetBinError(i));
+	    h_mc4_b->SetBinError(i, 1.1*h_mc4_b->GetBinError(i));
+//	    h_mc5->SetBinError(i, 1.1*h_mc5->GetBinError(i));
+//	    h_mc5_b->SetBinError(i, 1.1*h_mc5_b->GetBinError(i));
+	    h_mc6->SetBinError(i, 1.1*h_mc6->GetBinError(i));
+	    h_mc6_b->SetBinError(i, 1.1*h_mc6_b->GetBinError(i));
+	    h_mc7->SetBinError(i, 1.1*h_mc7->GetBinError(i));
+	    h_mc7_b->SetBinError(i, 1.1*h_mc7_b->GetBinError(i));
+	  }
 	}
 
 	if (unfold==0) {
