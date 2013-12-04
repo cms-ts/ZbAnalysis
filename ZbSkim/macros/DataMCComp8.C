@@ -192,7 +192,7 @@ string subdir="0";
 	  }
 
 	  string tmp;
-	  const int N=16;
+	  const int N=15;
 	  float x[2][100][100];
 	  float x_b[2][100][100];
 

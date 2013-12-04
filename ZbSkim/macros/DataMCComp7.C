@@ -23,14 +23,17 @@ TH1F* read(string& path, string& subdir, string& title, int ilepton) {
 
 void DataMCComp7(string& title="", int plot=0, int ilepton=1, int isratio=1) {
 
-int useBpur2=0;
-//int useBpur2=1; // include Bpur2 systematics
+int useSysBfit2=0;
+//int useSysBfit2=1; // include Bfit2 systematics
 
-int useDR=0;
-//int useDR=1; // include DR systematics
+int useSysDR=0;
+//int useSysDR=1; // include DR systematics
 
-int useRMS=0;
-//int useRMS=1; // include xsec RMS
+int useSysRMS=0;
+//int useSysRMS=1; // include xsec RMS systematics
+
+int useSysUnfold=0;
+//int useSysUnfold=1; // include unfolding systematics
 
 int useMC=0;
 //int useMC=1; // use MC prediction
@@ -142,11 +145,11 @@ string subdir="0";
 	    h_data_b_scan[i] = read(path, ss.str(), title_b, ilepton);
 	  }
 	}
-	if (useDR) {
+	if (useSysDR) {
 	  h_data_scan[88] = read(path, "88", title, ilepton);
 	  h_data_b_scan[88] = read(path, "88", title_b, ilepton);
 	}
-	if (useBpur2) {
+	if (useSysBfit2) {
 	  h_data_scan[99] = read(path, "99", title, ilepton);
 	  h_data_b_scan[99] = read(path, "99", title_b, ilepton);
 	}
@@ -260,154 +263,154 @@ string subdir="0";
 	  h_mc1b_b->Scale(100.);
 	}
 
-	TH1F* sys_leff = h_data->Clone();
-	TH1F* sys_b_leff = h_data_b->Clone();
+	TH1F* syst_leff = h_data->Clone();
+	TH1F* syst_b_leff = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  if (ilepton==1) val = ele_eff_sys * h_data_scan[0]->GetBinContent(i);
 	  if (ilepton==2) val = muo_eff_sys * h_data_scan[0]->GetBinContent(i);
-	  sys_leff->SetBinError(i, val);
+	  syst_leff->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  if (ilepton==1) val = ele_eff_sys * h_data_b_scan[0]->GetBinContent(i);
 	  if (ilepton==2) val = muo_eff_sys * h_data_b_scan[0]->GetBinContent(i);
-	  sys_b_leff->SetBinError(i, val);
+	  syst_b_leff->SetBinError(i, val);
 	}
 
-	TH1F* sys_jec = h_data->Clone();
-	TH1F* sys_b_jec = h_data_b->Clone();
+	TH1F* syst_jec = h_data->Clone();
+	TH1F* syst_b_jec = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[2]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[1]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
-	  sys_jec->SetBinError(i, val);
+	  syst_jec->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[2]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[1]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
-	  sys_b_jec->SetBinError(i, val);
+	  syst_b_jec->SetBinError(i, val);
 	}
 
-	TH1F* sys_jer = h_data->Clone();
-	TH1F* sys_b_jer = h_data_b->Clone();
+	TH1F* syst_jer = h_data->Clone();
+	TH1F* syst_b_jer = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[12]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[11]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
-	  sys_jer->SetBinError(i, val);
+	  syst_jer->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[12]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[11]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
-	  sys_b_jer->SetBinError(i, val);
+	  syst_b_jer->SetBinError(i, val);
 	}
 
-	TH1F* sys_pu = h_data->Clone();
-	TH1F* sys_b_pu = h_data_b->Clone();
+	TH1F* syst_pu = h_data->Clone();
+	TH1F* syst_b_pu = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[3]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[4]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
-	  sys_pu->SetBinError(i, val);
+	  syst_pu->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[3]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[4]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
-	  sys_b_pu->SetBinError(i, val);
+	  syst_b_pu->SetBinError(i, val);
 	}
 
-	TH1F* sys_dr = h_data->Clone();
-	TH1F* sys_b_dr = h_data_b->Clone();
+	TH1F* syst_dr = h_data->Clone();
+	TH1F* syst_b_dr = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
-	  if (useDR) {
+	  if (useSysDR) {
 	    val = TMath::Max(val,TMath::Abs(h_data_scan[88]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_scan[0]->GetBinError(i)**2-h_data_scan[88]->GetBinError(i)**2)));
 	  }
-	  sys_dr->SetBinError(i, val);
+	  syst_dr->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
-	  if (useDR) {
+	  if (useSysDR) {
 	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[88]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_b_scan[0]->GetBinError(i)**2-h_data_b_scan[88]->GetBinError(i)**2)));
 	  }
-	  sys_b_dr->SetBinError(i, val);
+	  syst_b_dr->SetBinError(i, val);
 	}
 
-	TH1F* sys_bkg = h_data->Clone();
-	TH1F* sys_b_bkg = h_data_b->Clone();
+	TH1F* syst_bkg = h_data->Clone();
+	TH1F* syst_b_bkg = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[10]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
-	  sys_bkg->SetBinError(i, val);
+	  syst_bkg->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[10]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
-	  sys_b_bkg->SetBinError(i, val);
+	  syst_b_bkg->SetBinError(i, val);
 	}
 
-	TH1F* sys_top = h_data->Clone();
-	TH1F* sys_b_top = h_data_b->Clone();
+	TH1F* stat_top = h_data->Clone();
+	TH1F* stat_b_top = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[5]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
-	  sys_top->SetBinError(i, val);
+	  stat_top->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[5]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
-	  sys_b_top->SetBinError(i, val);
+	  stat_b_top->SetBinError(i, val);
 	}
 
-	TH1F* sys_bpur = h_data->Clone();
-	TH1F* sys_b_bpur = h_data_b->Clone();
+	TH1F* stat_bfit = h_data->Clone();
+	TH1F* stat_b_bfit = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[6]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
-	  sys_bpur->SetBinError(i, val);
+	  stat_bfit->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[6]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
-	  sys_b_bpur->SetBinError(i, val);
+	  stat_b_bfit->SetBinError(i, val);
 	}
 
-	TH1F* sys_bpur2 = h_data->Clone();
-	TH1F* sys_b_bpur2 = h_data_b->Clone();
+	TH1F* syst_bfit2 = h_data->Clone();
+	TH1F* syst_b_bfit2 = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
-	  if (useBpur2) {
+	  if (useSysBfit2) {
 	    val = TMath::Max(val,TMath::Abs(h_data_scan[99]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_scan[0]->GetBinError(i)**2-h_data_scan[99]->GetBinError(i)**2)));
 	  }
-	  sys_bpur2->SetBinError(i, val);
+	  syst_bfit2->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
-	  if (useBpur2) {
+	  if (useSysBfit2) {
 	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[99]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_b_scan[0]->GetBinError(i)**2-h_data_b_scan[99]->GetBinError(i)**2)));
 	  }
-	  sys_b_bpur2->SetBinError(i, val);
+	  syst_b_bfit2->SetBinError(i, val);
 	}
 
-	TH1F* sys_btag = h_data->Clone();
-	TH1F* sys_b_btag = h_data_b->Clone();
+	TH1F* syst_btag = h_data->Clone();
+	TH1F* syst_b_btag = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = 0.0;
-	  sys_btag->SetBinError(i, val);
+	  syst_btag->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
 	  val = btag_sys * h_data_b_scan[0]->GetBinContent(i);
-	  sys_b_btag->SetBinError(i, val);
+	  syst_b_btag->SetBinError(i, val);
 	}
 
 	TH1F* stat_unfold = h_data->Clone();
@@ -423,23 +426,27 @@ string subdir="0";
 	  stat_b_unfold->SetBinError(i, val);
 	}
 
-	TH1F* sys_unfold = h_data->Clone();
-	TH1F* sys_b_unfold = h_data_b->Clone();
+	TH1F* syst_unfold = h_data->Clone();
+	TH1F* syst_b_unfold = h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  float val = 0.0;
-	  val = TMath::Max(val,TMath::Abs(h_data_scan[9]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i)));
-	  float err9 = TMath::Sqrt(TMath::Max(0.,h_data_scan[9]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2));
-	  float err7 = TMath::Sqrt(TMath::Max(0.,h_data_scan[7]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2));
-	  val = TMath::Sqrt(TMath::Max(0.,val**2-err9**2-err7**2));
-	  sys_unfold->SetBinError(i, val);
+	  if (useSysUnfold) {
+	    val = TMath::Max(val,TMath::Abs(h_data_scan[9]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i)));
+	    float err9 = TMath::Sqrt(TMath::Max(0.,h_data_scan[9]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2));
+	    float err7 = TMath::Sqrt(TMath::Max(0.,h_data_scan[7]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2));
+	    val = TMath::Sqrt(TMath::Max(0.,val**2-err9**2-err7**2));
+	  }
+	  syst_unfold->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  float val = 0.0;
-	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[9]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i)));
-	  float err9 = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[9]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2));
-	  float err7 = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[7]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2));
-	  val = TMath::Sqrt(TMath::Max(0.,val**2-err9**2-err7**2));
-	  sys_b_unfold->SetBinError(i, val);
+	  if (useSysUnfold) {
+	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[9]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i)));
+	    float err9 = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[9]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2));
+	    float err7 = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[7]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2));
+	    val = TMath::Sqrt(TMath::Max(0.,val**2-err9**2-err7**2));
+	  }
+	  syst_b_unfold->SetBinError(i, val);
 	}
 
 	TH1F* h_data_stat = h_data->Clone();
@@ -490,40 +497,40 @@ string subdir="0";
 	}
 
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
+	  h_data_stat->SetBinError(i, TMath::Sqrt(h_data_stat->GetBinError(i)**2+stat_top->GetBinError(i)**2));
+	  h_data_stat->SetBinError(i, TMath::Sqrt(h_data_stat->GetBinError(i)**2+stat_bfit->GetBinError(i)**2));
 	  h_data_stat->SetBinError(i, TMath::Sqrt(h_data_stat->GetBinError(i)**2+stat_unfold->GetBinError(i)**2));
 	  float val = 0.0;
-	  val = TMath::Sqrt(val**2+sys_leff->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_jec->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_jer->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_pu->GetBinError(i)**2);
-	  if (useDR) val = TMath::Sqrt(val**2+sys_dr->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_bkg->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_top->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_bpur->GetBinError(i)**2);
-	  if (useBpur2) val = TMath::Sqrt(val**2+sys_bpur2->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_btag->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_unfold->GetBinError(i)**2);
-	  if (useRMS) val = TMath::Sqrt(val**2+(h_data_stat->GetBinContent(i)*rms/tot)**2);
+	  val = TMath::Sqrt(val**2+syst_leff->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_jec->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_jer->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_pu->GetBinError(i)**2);
+	  if (useSysDR) val = TMath::Sqrt(val**2+syst_dr->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_bkg->GetBinError(i)**2);
+	  if (useSysBfit2) val = TMath::Sqrt(val**2+syst_bfit2->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_btag->GetBinError(i)**2);
+	  if (useSysUnfold) val = TMath::Sqrt(val**2+syst_unfold->GetBinError(i)**2);
+	  if (useSysRMS) val = TMath::Sqrt(val**2+(h_data_stat->GetBinContent(i)*rms/tot)**2);
 	  h_data_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_stat->GetBinError(i)**2+h_data_syst->GetBinError(i)**2);
 	  h_data_tot->SetBinError(i, val);
 	}
 
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
+	  h_data_b_stat->SetBinError(i, TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+stat_b_top->GetBinError(i)**2));
+	  h_data_b_stat->SetBinError(i, TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+stat_b_bfit->GetBinError(i)**2));
 	  h_data_b_stat->SetBinError(i, TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+stat_b_unfold->GetBinError(i)**2));
 	  float val = 0.0;
-	  val = TMath::Sqrt(val**2+sys_b_leff->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_b_jec->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_b_jer->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_b_pu->GetBinError(i)**2);
-	  if (useDR) val = TMath::Sqrt(val**2+sys_b_dr->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_b_bkg->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_b_top->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_b_bpur->GetBinError(i)**2);
-	  if (useBpur2) val = TMath::Sqrt(val**2+sys_b_bpur2->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_b_btag->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+sys_b_unfold->GetBinError(i)**2);
-	  if (useRMS) val = TMath::Sqrt(val**2+(h_data_b_stat->GetBinContent(i)*rms_b/tot_b)**2);
+	  val = TMath::Sqrt(val**2+syst_b_leff->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_b_jec->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_b_jer->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_b_pu->GetBinError(i)**2);
+	  if (useSysDR) val = TMath::Sqrt(val**2+syst_b_dr->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_b_bkg->GetBinError(i)**2);
+	  if (useSysBfit2) val = TMath::Sqrt(val**2+syst_b_bfit2->GetBinError(i)**2);
+	  val = TMath::Sqrt(val**2+syst_b_btag->GetBinError(i)**2);
+	  if (useSysUnfold) val = TMath::Sqrt(val**2+syst_b_unfold->GetBinError(i)**2);
+	  if (useSysRMS) val = TMath::Sqrt(val**2+(h_data_b_stat->GetBinContent(i)*rms_b/tot_b)**2);
 	  h_data_b_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+h_data_b_syst->GetBinError(i)**2);
 	  h_data_b_tot->SetBinError(i, val);
@@ -1231,21 +1238,21 @@ string subdir="0";
 	  out << " : average unfolded total cross section = " << tot << " +- " << rms << " pb (" << 100*rms/tot << " %)";
 	  out << endl;
 	  out << std::setw(25) << "stat";
-	  out << std::setw(12) << "leff sys";
-	  out << std::setw(12) << "jec sys";
-	  out << std::setw(12) << "jer sys";
-	  out << std::setw(12) << "pu sys";
-	  if (useDR) out << std::setw(12) << "DR sys";
-	  out << std::setw(12) << "bkg sys";
-	  out << std::setw(12) << "ttbar sys";
-	  out << std::setw(12) << "bpur sys";
-	  if (useBpur2) out << std::setw(12) << "bpur2 sys";
-	  out << std::setw(12) << "btag sys";
+	  out << std::setw(12) << "leff syst";
+	  out << std::setw(12) << "jec syst";
+	  out << std::setw(12) << "jer syst";
+	  out << std::setw(12) << "pu syst";
+	  if (useSysDR) out << std::setw(12) << "DR syst";
+	  out << std::setw(12) << "bkg syst";
+	  out << std::setw(12) << "ttbar stat";
+	  out << std::setw(12) << "bfit stat";
+	  if (useSysBfit2) out << std::setw(12) << "bfit2 syst";
+	  out << std::setw(12) << "btag syst";
 	  out << std::setw(12) << "unfold stat";
-	  out << std::setw(12) << "unfold sys";
-	  if (useRMS) out << std::setw(12) << "unfold rms";
+	  if (useSysUnfold) out << std::setw(12) << "unfold syst";
+	  if (useSysRMS) out << std::setw(12) << "unfold rms";
 	  out << std::setw(12) << "tot stat";
-	  out << std::setw(12) << "tot sys";
+	  out << std::setw(12) << "tot syst";
 	  out << std::setw(12) << "tot error";
 	  out << std::setw(8) << "%";
 	  out << endl;
@@ -1257,19 +1264,19 @@ string subdir="0";
 	    out << " +- ";
 	    out << std::fixed << std::setprecision(6) << std::setw(8);
 	    out << h_data->GetBinError(i);
-	    out << " +- " << sys_leff->GetBinError(i);
-	    out << " +- " << sys_jec->GetBinError(i);
-	    out << " +- " << sys_jer->GetBinError(i);
-	    out << " +- " << sys_pu->GetBinError(i);
-	    if (useDR) out << " +- " << sys_dr->GetBinError(i);
-	    out << " +- " << sys_bkg->GetBinError(i);
-	    out << " +- " << sys_top->GetBinError(i);
-	    out << " +- " << sys_bpur->GetBinError(i);
-	    if (useBpur2) out << " +- " << sys_bpur2->GetBinError(i);
-	    out << " +- " << sys_btag->GetBinError(i);
+	    out << " +- " << syst_leff->GetBinError(i);
+	    out << " +- " << syst_jec->GetBinError(i);
+	    out << " +- " << syst_jer->GetBinError(i);
+	    out << " +- " << syst_pu->GetBinError(i);
+	    if (useSysDR) out << " +- " << syst_dr->GetBinError(i);
+	    out << " +- " << syst_bkg->GetBinError(i);
+	    out << " +- " << stat_top->GetBinError(i);
+	    out << " +- " << stat_bfit->GetBinError(i);
+	    if (useSysBfit2) out << " +- " << syst_bfit2->GetBinError(i);
+	    out << " +- " << syst_btag->GetBinError(i);
 	    out << " +- " << stat_unfold->GetBinError(i);
-	    out << " +- " << sys_unfold->GetBinError(i);
-	    if (useRMS) out << " +- " << h_data->GetBinContent(i)*rms/tot;
+	    if (useSysUnfold) out << " +- " << syst_unfold->GetBinError(i);
+	    if (useSysRMS) out << " +- " << h_data->GetBinContent(i)*rms/tot;
 	    out << " => ";
 	    out << h_data_stat->GetBinError(i);
 	    out << " +- ";
@@ -1288,21 +1295,21 @@ string subdir="0";
 	  }
 	  out << endl;
 	  out << std::setw(25) << "stat";
-	  out << std::setw(12) << "leff sys";
-	  out << std::setw(12) << "jec sys";
-	  out << std::setw(12) << "jer sys";
-	  out << std::setw(12) << "pu sys";
-	  if (useDR) out << std::setw(12) << "DR sys";
-	  out << std::setw(12) << "bkg sys";
-	  out << std::setw(12) << "ttbar sys";
-	  out << std::setw(12) << "bpur sys";
-	  if (useBpur2) out << std::setw(12) << "bpur2 sys";
-	  out << std::setw(12) << "btag sys";
+	  out << std::setw(12) << "leff syst";
+	  out << std::setw(12) << "jec syst";
+	  out << std::setw(12) << "jer syst";
+	  out << std::setw(12) << "pu syst";
+	  if (useSysDR) out << std::setw(12) << "DR syst";
+	  out << std::setw(12) << "bkg syst";
+	  out << std::setw(12) << "ttbar stat";
+	  out << std::setw(12) << "bfit stat";
+	  if (useSysBfit2) out << std::setw(12) << "bfit2 syst";
+	  out << std::setw(12) << "btag syst";
 	  out << std::setw(12) << "unfold stat";
-	  out << std::setw(12) << "unfold sys";
-	  if (useRMS) out << std::setw(12) << "unfold rms";
+	  if (useSysUnfold) out << std::setw(12) << "unfold syst";
+	  if (useSysRMS) out << std::setw(12) << "unfold rms";
 	  out << std::setw(12) << "tot stat";
-	  out << std::setw(12) << "tot sys";
+	  out << std::setw(12) << "tot syst";
 	  out << std::setw(12) << "tot error";
 	  out << std::setw(8) << "%";
 	  out << endl;
@@ -1314,19 +1321,19 @@ string subdir="0";
 	    out << " +- ";
 	    out << std::fixed << std::setprecision(6) << std::setw(8);
 	    out << h_data_b->GetBinError(i);
-	    out << " +- " << sys_b_leff->GetBinError(i);
-	    out << " +- " << sys_b_jec->GetBinError(i);
-	    out << " +- " << sys_b_jer->GetBinError(i);
-	    out << " +- " << sys_b_pu->GetBinError(i);
-	    if (useDR) out << " +- " << sys_b_dr->GetBinError(i);
-	    out << " +- " << sys_b_bkg->GetBinError(i);
-	    out << " +- " << sys_b_top->GetBinError(i);
-	    out << " +- " << sys_b_bpur->GetBinError(i);
-	    if (useBpur2) out << " +- " << sys_b_bpur2->GetBinError(i);
-	    out << " +- " << sys_b_btag->GetBinError(i);
+	    out << " +- " << syst_b_leff->GetBinError(i);
+	    out << " +- " << syst_b_jec->GetBinError(i);
+	    out << " +- " << syst_b_jer->GetBinError(i);
+	    out << " +- " << syst_b_pu->GetBinError(i);
+	    if (useSysDR) out << " +- " << syst_b_dr->GetBinError(i);
+	    out << " +- " << syst_b_bkg->GetBinError(i);
+	    out << " +- " << stat_b_top->GetBinError(i);
+	    out << " +- " << stat_b_bfit->GetBinError(i);
+	    if (useSysBfit2) out << " +- " << syst_b_bfit2->GetBinError(i);
+	    out << " +- " << syst_b_btag->GetBinError(i);
 	    out << " +- " << stat_b_unfold->GetBinError(i);
-	    out << " +- " << sys_b_unfold->GetBinError(i);
-	    if (useRMS) out << " +- " << h_data_b->GetBinContent(i)*rms_b/tot_b;
+	    if (useSysUnfold) out << " +- " << syst_b_unfold->GetBinError(i);
+	    if (useSysRMS) out << " +- " << h_data_b->GetBinContent(i)*rms_b/tot_b;
 	    out << " => ";
 	    out << h_data_b_stat->GetBinError(i);
 	    out << " +- ";
