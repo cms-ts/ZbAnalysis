@@ -1,12 +1,12 @@
+#include "DataMCComp.h"
 #include "LumiLabel.C"
 #include "LumiInfo_v11.h"
 
 #include "fixrange.C"
-#include <iomanip>
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-TH1F* read(string& subdir, string& title, int ilepton, TFile* infile=0) {
+TH1F* read(string subdir, string title, int ilepton, TFile* infile=0) {
   TH1F* hist;
   TFile* file = infile;
   string title_tmp = title;
@@ -38,7 +38,7 @@ TH1F* read(string& subdir, string& title, int ilepton, TFile* infile=0) {
   return hist;
 }
 
-void DataMCComp8(string& title="", int plot=0, int isratio=1) {
+void DataMCComp8(string title="", int plot=0, int isratio=1) {
 
 int useSherpa=0;
 //int useSherpa=1; // use Sherpa MC prediction
@@ -229,7 +229,7 @@ string subdir="0";
 	TH1F* h_data_b_tot = (TH1F*)h_data_b->Clone();
 
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  if (x[0][0][i]*x[1][0][i] != 0) {
 	    val = (x[0][0][i]/(x[0][N-4][i]**2+x[0][2][i]**2+x[0][3][i]**2+x[0][11][i]**2)+x[1][0][i]/(x[1][N-4][i]**2+x[1][2][i]**2+x[1][3][i]**2+x[1][11][i]**2))/(1./(x[0][N-4][i]**2+x[0][2][i]**2+x[0][3][i]**2+x[0][11][i]**2)+1./(x[1][N-4][i]**2+x[1][2][i]**2+x[1][3][i]**2+x[1][11][i]**2));
 	    h_data_stat->SetBinContent(i, val);
@@ -244,7 +244,7 @@ string subdir="0";
 	}
 
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  if (x_b[0][0][i]*x_b[1][0][i] != 0) {
 	    val = (x_b[0][0][i]/(x_b[0][N-4][i]**2+x_b[0][2][i]**2+x_b[0][3][i]**2+x_b[0][11][i]**2)+x_b[1][0][i]/(x_b[1][N-4][i]**2+x_b[1][2][i]**2+x_b[1][3][i]**2+x_b[1][11][i]**2))/(1./(x_b[0][N-4][i]**2+x_b[0][2][i]**2+x_b[0][3][i]**2+x_b[0][11][i]**2)+1./(x_b[1][N-4][i]**2+x_b[1][2][i]**2+x_b[1][3][i]**2+x_b[1][11][i]**2));
 	    h_data_b_stat->SetBinContent(i, val);

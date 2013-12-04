@@ -1,3 +1,4 @@
+#include "DataMCComp.h"
 #include "LumiLabel.C"
 #include "LumiInfo_v11.h"
 
@@ -10,17 +11,17 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   double chisq = 0.0;
   for (int i=1; i<=h_data->GetNbinsX(); i++) {
     double xn = h_data->GetBinContent(i);
-    double xd = h_data->GetBinError(i)**2;
+    double xd = pow(h_data->GetBinError(i),2);
     if (npar>0) {
       xn = xn - par[0]*h_data_fit->GetBinContent(i);
-      xd = xd + (par[0]*h_data_fit->GetBinError(i))**2;
+      xd = xd + pow(par[0]*h_data_fit->GetBinError(i),2);
     }
     if (xd!=0) chisq = chisq + (xn*xn)/xd;
   }
   fun = chisq;
 }
 
-void DataMCComp5(int irun=0, string& title="", int plot=0, int ilepton=1, int doFit=0) {
+void DataMCComp5(int irun=0, string title="", int plot=0, int ilepton=1, int doFit=0) {
 
 //int useFitResults=0; // use MC predictions for c_t
 int useFitResults=1;  // use fit results for c_t
@@ -28,64 +29,64 @@ int useFitResults=1;  // use fit results for c_t
 string subdir="0";
 string postfix="";
 if (irun==1) {             // irun==1 => JEC Up
-  string subdir="1";
-  string postfix="Up";
+  subdir="1";
+  postfix="Up";
 }
 if (irun==2) {             // irun==2 => JEC Down
-  string subdir="2";
-  string postfix="Down";
+  subdir="2";
+  postfix="Down";
 }
 if (irun==3) {             // irun==3 => PU Up
-  string subdir="3";
-  string postfix="Pup";
+  subdir="3";
+  postfix="Pup";
 }
 if (irun==4) {             // irun==4 => PU Down
-  string subdir="4";
-  string postfix="Pum";
+  subdir="4";
+  postfix="Pum";
 }
 if (irun==5) {             // irun==5 => top bkg
-  string subdir="5";
-  string postfix="";  
+  subdir="5";
+  postfix="";  
 }
 if (irun==6) {             // irun==6 => b purity
-  string subdir="6";
-  string postfix="";   
+  subdir="6";
+  postfix="";   
 }
 if (irun==7) {             // irun==7 => unfolding
-  string subdir="7";
-  string postfix="";   
+  subdir="7";
+  postfix="";   
 }
 if (irun==8) {             // irun==8 => unfolding with Sherpa
-  string subdir="8";
-  string postfix="";
+  subdir="8";
+  postfix="";
 }
 if (irun==9) {             // irun==9 => unfolding with Powheg
-  string subdir="9";
-  string postfix="";
+  subdir="9";
+  postfix="";
 }
 if (irun==10) {            // irun==10 => bkg systematics
-  string subdir="10";
-  string postfix="";
+  subdir="10";
+  postfix="";
 }
 if (irun==11) {            // irun==11 => JER Up
-  string subdir="11";
-  string postfix="JerUp";
+  subdir="11";
+  postfix="JerUp";
 }
 if (irun==12) {            // irun==12 => JER Down
-  string subdir="12";
-  string postfix="JerDown";
+  subdir="12";
+  postfix="JerDown";
 }
 if (irun==13) {            // irun==13 => bkg statistics
-  string subdir="13";
-  string postfix="";
+  subdir="13";
+  postfix="";
 }
 if (irun==88) {            // irun==88 => deltaR
-  string subdir="88";
-  string postfix="DR";
+  subdir="88";
+  postfix="DR";
 }
 if (irun==99) {            // irun==99 => pur
-  string subdir="99";
-  string postfix="Pur";
+  subdir="99";
+  postfix="Pur";
 }
 
       /* top background */
@@ -115,7 +116,7 @@ if (irun==99) {            // irun==99 => pur
         in5.close();
       }
 
-      double Lumi2012;
+      double Lumi2012=0;
       
       if (ilepton==1) Lumi2012 = Lumi2012_ele;
       if (ilepton==2) Lumi2012 = Lumi2012_muon;
@@ -163,11 +164,11 @@ if (irun==99) {            // irun==99 => pur
 	if (title.find("ee")!=string::npos) return;
       }
 
-      TFile *data;
+      TFile *data=0;
       if (ilepton==1) data = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
       if (ilepton==2) data = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
 
-      TFile *data_fit;
+      TFile *data_fit=0;
       data_fit = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
 
       TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
@@ -339,6 +340,8 @@ if (irun==99) {            // irun==99 => pur
 
       h_data_fit->Scale(Lumi2012/Lumi2012_ele_muon);
 
+      TVirtualFitter::SetDefaultFitter("Minuit2");
+      TVirtualFitter* fitter=0;
       if (doFit==1) {
         for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
 	  bool skip = false;
@@ -376,8 +379,7 @@ if (irun==99) {            // irun==99 => pur
 	    h_mc2->SetBinError(i, 0);
 	  }
         }
-	TVirtualFitter::SetDefaultFitter("Minuit2");
-	TVirtualFitter* fitter = TVirtualFitter::Fitter(0, 1);
+	fitter = TVirtualFitter::Fitter(0, 1);
 	fitter->SetFCN(fcn);
 	double arglist[1] = {-1.0};
 	fitter->ExecuteCommand("SET PRINT", arglist, 1);
@@ -386,7 +388,7 @@ if (irun==99) {            // irun==99 => pur
 	h_data_fit->Scale(fitter->GetParameter(0));
       }
 
-      TCanvas* c1;
+      TCanvas* c1=0;
       if (doFit) {
         c1 = new TCanvas("c", "c", 800, 600);
         c1->cd();

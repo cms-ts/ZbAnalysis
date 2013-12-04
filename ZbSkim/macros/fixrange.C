@@ -1,3 +1,7 @@
+#include "TH1F.h"
+#include "TH2F.h"
+#include "TMath.h"
+
 TH1F* fixrange(TH1F* old) {
 
   float x1, x2;

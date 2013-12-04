@@ -1,12 +1,12 @@
+#include "DataMCComp.h"
 #include "LumiLabel.C"
 #include "LumiInfo_v11.h"
 
 #include "fixrange.C"
-#include <iomanip>
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-TH1F* read(string& subdir, string& title, int ilepton) {
+TH1F* read(string subdir, string title, int ilepton) {
   TH1F* hist;
   TFile* file;
   if (ilepton==1) {
@@ -21,7 +21,7 @@ TH1F* read(string& subdir, string& title, int ilepton) {
   return hist;
 }
 
-void DataMCComp7(string& title="", int plot=0, int ilepton=1, int isratio=1) {
+void DataMCComp7(string title="", int plot=0, int ilepton=1, int isratio=1) {
 
 int useSysBfit2=0;
 //int useSysBfit2=1; // include Bfit2 systematics
@@ -57,13 +57,6 @@ string subdir="0";
 	  gROOT->GetColor(kOrange+7)->SetAlpha(0.5);
 	}
 
-	/* efficiency */
-
-	double e_Z=1.0;
-	double ee_Z=0.0;
-	double e_Zb=1.0;
-	double ee_Zb=0.0;
-
 	/* purity */
 
 	double c_b=1.0;
@@ -73,17 +66,17 @@ string subdir="0";
 	double c_uds=1.0;
 	double ec_uds=0.0;
 
-	ifstream in3;
+	ifstream in;
 	if (ilepton==1) {
-	  in3.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
+	  in.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
 	}
 	if (ilepton==2) {
-	  in3.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
+	  in.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
 	}
-	in3 >> c_uds >> ec_uds;
-	in3 >> c_b >> ec_b;
-	in3 >> c_c >> ec_c;
-	in3.close();
+	in >> c_uds >> ec_uds;
+	in >> c_b >> ec_b;
+	in >> c_c >> ec_c;
+	in.close();
 
 	double Lumi2012;
 
@@ -131,7 +124,7 @@ string subdir="0";
 	h_data->SetStats(0);
 	h_data_b->SetStats(0);
 
-	const unsigned int NMAX = 100;
+	const int NMAX = 100;
 	TH1F* h_data_scan[NMAX];
 	TH1F* h_data_b_scan[NMAX];
 
@@ -214,8 +207,8 @@ string subdir="0";
 
 	h_mc1b_b->Scale(c_b);
 	for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
-	  float e = h_mc1b_b->GetBinError(i)**2;
-	  e = e + (h_mc1b_b->GetBinContent(i)*(ec_b/c_b))**2;
+	  float e = pow(h_mc1b_b->GetBinError(i),2);
+	  e = e + pow(h_mc1b_b->GetBinContent(i)*(ec_b/c_b),2);
 	  h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
@@ -266,32 +259,32 @@ string subdir="0";
 	TH1F* stat_bkg = (TH1F*)h_data->Clone();
 	TH1F* stat_b_bkg = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
-	  val = TMath::Sqrt(TMath::Max(val, h_data_scan[13]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2)/(1.1**2-1));
+	  double val = 0.0;
+	  val = TMath::Sqrt(TMath::Max(val, pow(h_data_scan[13]->GetBinError(i),2)-pow(h_data_scan[0]->GetBinError(i),2))/(pow(1.1,2)-1));
 	  stat_bkg->SetBinError(i, val);
 	  val = 0.0;
-	  val = TMath::Sqrt(TMath::Max(val, h_data->GetBinError(i)**2-stat_bkg->GetBinError(i)**2));
+	  val = TMath::Sqrt(TMath::Max(val, pow(h_data->GetBinError(i),2)-pow(stat_bkg->GetBinError(i),2)));
 	  h_data->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
-	  val = TMath::Sqrt(TMath::Max(val, h_data_b_scan[13]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2)/(1.1**2-1));
+	  double val = 0.0;
+	  val = TMath::Sqrt(TMath::Max(val, pow(h_data_b_scan[13]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2))/(pow(1.1,2)-1));
 	  stat_b_bkg->SetBinError(i, val);
 	  val = 0.0;
-	  val = TMath::Sqrt(TMath::Max(val, h_data_b->GetBinError(i)**2-stat_b_bkg->GetBinError(i)**2));
+	  val = TMath::Sqrt(TMath::Max(val, pow(h_data_b->GetBinError(i),2)-pow(stat_b_bkg->GetBinError(i),2)));
 	  h_data_b->SetBinError(i, val);
 	}
 
 	TH1F* syst_eff = (TH1F*)h_data->Clone();
 	TH1F* syst_b_eff = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  if (ilepton==1) val = ele_eff_sys * h_data_scan[0]->GetBinContent(i);
 	  if (ilepton==2) val = muo_eff_sys * h_data_scan[0]->GetBinContent(i);
 	  syst_eff->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  if (ilepton==1) val = ele_eff_sys * h_data_b_scan[0]->GetBinContent(i);
 	  if (ilepton==2) val = muo_eff_sys * h_data_b_scan[0]->GetBinContent(i);
 	  syst_b_eff->SetBinError(i, val);
@@ -300,13 +293,13 @@ string subdir="0";
 	TH1F* syst_jec = (TH1F*)h_data->Clone();
 	TH1F* syst_b_jec = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[2]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[1]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  syst_jec->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[2]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[1]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  syst_b_jec->SetBinError(i, val);
@@ -315,13 +308,13 @@ string subdir="0";
 	TH1F* syst_jer = (TH1F*)h_data->Clone();
 	TH1F* syst_b_jer = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[12]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[11]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  syst_jer->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[12]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[11]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  syst_b_jer->SetBinError(i, val);
@@ -330,13 +323,13 @@ string subdir="0";
 	TH1F* syst_pu = (TH1F*)h_data->Clone();
 	TH1F* syst_b_pu = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[3]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[4]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  syst_pu->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[3]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[4]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  syst_b_pu->SetBinError(i, val);
@@ -345,18 +338,18 @@ string subdir="0";
 	TH1F* syst_dr = (TH1F*)h_data->Clone();
 	TH1F* syst_b_dr = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  if (useSysDR) {
 	    val = TMath::Max(val,TMath::Abs(h_data_scan[88]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
-	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_scan[0]->GetBinError(i)**2-h_data_scan[88]->GetBinError(i)**2)));
+	    val = TMath::Sqrt(TMath::Max(0.0,pow(val,2)-TMath::Abs(pow(h_data_scan[0]->GetBinError(i),2)-pow(h_data_scan[88]->GetBinError(i),2))));
 	  }
 	  syst_dr->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  if (useSysDR) {
 	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[88]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
-	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_b_scan[0]->GetBinError(i)**2-h_data_b_scan[88]->GetBinError(i)**2)));
+	    val = TMath::Sqrt(TMath::Max(0.0,pow(val,2)-TMath::Abs(pow(h_data_b_scan[0]->GetBinError(i),2)-pow(h_data_b_scan[88]->GetBinError(i),2))));
 	  }
 	  syst_b_dr->SetBinError(i, val);
 	}
@@ -364,12 +357,12 @@ string subdir="0";
 	TH1F* syst_bkg = (TH1F*)h_data->Clone();
 	TH1F* syst_b_bkg = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[10]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  syst_bkg->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[10]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  syst_b_bkg->SetBinError(i, val);
 	}
@@ -377,12 +370,12 @@ string subdir="0";
 	TH1F* stat_top = (TH1F*)h_data->Clone();
 	TH1F* stat_b_top = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[5]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  stat_top->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[5]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  stat_b_top->SetBinError(i, val);
 	}
@@ -390,12 +383,12 @@ string subdir="0";
 	TH1F* stat_bfit = (TH1F*)h_data->Clone();
 	TH1F* stat_b_bfit = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_scan[6]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
 	  stat_bfit->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = TMath::Max(val,TMath::Abs(h_data_b_scan[6]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
 	  stat_b_bfit->SetBinError(i, val);
 	}
@@ -403,18 +396,18 @@ string subdir="0";
 	TH1F* syst_bfit2 = (TH1F*)h_data->Clone();
 	TH1F* syst_b_bfit2 = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  if (useSysBfit2) {
 	    val = TMath::Max(val,TMath::Abs(h_data_scan[99]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
-	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_scan[0]->GetBinError(i)**2-h_data_scan[99]->GetBinError(i)**2)));
+	    val = TMath::Sqrt(TMath::Max(0.0,pow(val,2)-TMath::Abs(pow(h_data_scan[0]->GetBinError(i),2)-pow(h_data_scan[99]->GetBinError(i),2))));
 	  }
 	  syst_bfit2->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  if (useSysBfit2) {
 	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[99]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
-	    val = TMath::Sqrt(TMath::Max(0.0,val**2-TMath::Abs(h_data_b_scan[0]->GetBinError(i)**2-h_data_b_scan[99]->GetBinError(i)**2)));
+	    val = TMath::Sqrt(TMath::Max(0.0,pow(val,2)-TMath::Abs(pow(h_data_b_scan[0]->GetBinError(i),2)-pow(h_data_b_scan[99]->GetBinError(i),2))));
 	  }
 	  syst_b_bfit2->SetBinError(i, val);
 	}
@@ -422,12 +415,12 @@ string subdir="0";
 	TH1F* syst_btag = (TH1F*)h_data->Clone();
 	TH1F* syst_b_btag = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = 0.0;
 	  syst_btag->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  val = btag_sys * h_data_b_scan[0]->GetBinContent(i);
 	  syst_b_btag->SetBinError(i, val);
 	}
@@ -435,35 +428,35 @@ string subdir="0";
 	TH1F* stat_unfold = (TH1F*)h_data->Clone();
 	TH1F* stat_b_unfold = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val;
-	  val = TMath::Sqrt(TMath::Max(0.,h_data_scan[7]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2));
+	  double val;
+	  val = TMath::Sqrt(TMath::Max(0.,pow(h_data_scan[7]->GetBinError(i),2)-pow(h_data_scan[0]->GetBinError(i),2)));
 	  stat_unfold->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val;
-	  val = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[7]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2));
+	  double val;
+	  val = TMath::Sqrt(TMath::Max(0.,pow(h_data_b_scan[7]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2)));
 	  stat_b_unfold->SetBinError(i, val);
 	}
 
 	TH1F* syst_unfold = (TH1F*)h_data->Clone();
 	TH1F* syst_b_unfold = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  if (useSysUnfold) {
 	    val = TMath::Max(val,TMath::Abs(h_data_scan[9]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i)));
-	    float err9 = TMath::Sqrt(TMath::Max(0.,h_data_scan[9]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2));
-	    float err7 = TMath::Sqrt(TMath::Max(0.,h_data_scan[7]->GetBinError(i)**2-h_data_scan[0]->GetBinError(i)**2));
-	    val = TMath::Sqrt(TMath::Max(0.,val**2-err9**2-err7**2));
+	    float err9 = TMath::Sqrt(TMath::Max(0.,pow(h_data_scan[9]->GetBinError(i),2)-pow(h_data_scan[0]->GetBinError(i),2)));
+	    float err7 = TMath::Sqrt(TMath::Max(0.,pow(h_data_scan[7]->GetBinError(i),2)-pow(h_data_scan[0]->GetBinError(i),2)));
+	    val = TMath::Sqrt(TMath::Max(0.,pow(val,2)-pow(err9,2)-pow(err7,2)));
 	  }
 	  syst_unfold->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  float val = 0.0;
+	  double val = 0.0;
 	  if (useSysUnfold) {
 	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[9]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i)));
-	    float err9 = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[9]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2));
-	    float err7 = TMath::Sqrt(TMath::Max(0.,h_data_b_scan[7]->GetBinError(i)**2-h_data_b_scan[0]->GetBinError(i)**2));
-	    val = TMath::Sqrt(TMath::Max(0.,val**2-err9**2-err7**2));
+	    float err9 = TMath::Sqrt(TMath::Max(0.,pow(h_data_b_scan[9]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2)));
+	    float err7 = TMath::Sqrt(TMath::Max(0.,pow(h_data_b_scan[7]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2)));
+	    val = TMath::Sqrt(TMath::Max(0.,pow(val,2)-pow(err9,2)-pow(err7,2)));
 	  }
 	  syst_b_unfold->SetBinError(i, val);
 	}
@@ -498,12 +491,12 @@ string subdir="0";
 
 	float tot = (sum1+sum2+sum3+sum4+sum5)/5.;
 	float tot_b = (sum1_b+sum2_b+sum3_b+sum4_b+sum5_b)/5.;
-	float rms = TMath::Sqrt(((sum1-tot)**2+(sum2-tot)**2+(sum3-tot)**2+(sum4-tot)**2+(sum5-tot)**2)/(5-1));
-	float rms_b = TMath::Sqrt(((sum1_b-tot_b)**2+(sum2_b-tot_b)**2+(sum3_b-tot_b)**2+(sum4_b-tot_b)**2+(sum5_b-tot_b)**2)/(5-1));
+	float rms = TMath::Sqrt((pow(sum1-tot,2)+pow(sum2-tot,2)+pow(sum3-tot,2)+pow(sum4-tot,2)+pow(sum5-tot,2))/(5-1));
+	float rms_b = TMath::Sqrt((pow(sum1_b-tot_b,2)+pow(sum2_b-tot_b,2)+pow(sum3_b-tot_b,2)+pow(sum4_b-tot_b,2)+pow(sum5_b-tot_b,2))/(5-1));
 
 	if (isratio==1) {
 	  float tmp1 = (tot_b/tot);
-	  float tmp2 = (tot_b/tot)*TMath::Sqrt((rms/tot)**2+(rms_b/tot_b)**2);
+	  float tmp2 = (tot_b/tot)*TMath::Sqrt(pow(rms/tot,2)+pow(rms_b/tot_b,2));
 	  tot_b = tmp1;
 	  rms_b = tmp2;
 	}
@@ -516,44 +509,44 @@ string subdir="0";
 	TH1F* h_data_b_tot = (TH1F*)h_data_b->Clone();
 
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
-	  h_data_stat->SetBinError(i, TMath::Sqrt(h_data_stat->GetBinError(i)**2+stat_top->GetBinError(i)**2));
-	  h_data_stat->SetBinError(i, TMath::Sqrt(h_data_stat->GetBinError(i)**2+stat_bfit->GetBinError(i)**2));
-	  float val = 0.0;
-	  val = TMath::Sqrt(val**2+stat_bkg->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_eff->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_jec->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_jer->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_pu->GetBinError(i)**2);
-	  if (useSysDR) val = TMath::Sqrt(val**2+syst_dr->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_bkg->GetBinError(i)**2);
-	  if (useSysBfit2) val = TMath::Sqrt(val**2+syst_bfit2->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_btag->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+stat_unfold->GetBinError(i)**2);
-	  if (useSysUnfold) val = TMath::Sqrt(val**2+syst_unfold->GetBinError(i)**2);
-	  if (useSysRMS) val = TMath::Sqrt(val**2+(h_data_stat->GetBinContent(i)*rms/tot)**2);
+	  h_data_stat->SetBinError(i, TMath::Sqrt(pow(h_data_stat->GetBinError(i),2)+pow(stat_top->GetBinError(i),2)));
+	  h_data_stat->SetBinError(i, TMath::Sqrt(pow(h_data_stat->GetBinError(i),2)+pow(stat_bfit->GetBinError(i),2)));
+	  double val = 0.0;
+	  val = TMath::Sqrt(pow(val,2)+pow(stat_bkg->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_eff->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_jec->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_jer->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_pu->GetBinError(i),2));
+	  if (useSysDR) val = TMath::Sqrt(pow(val,2)+pow(syst_dr->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_bkg->GetBinError(i),2));
+	  if (useSysBfit2) val = TMath::Sqrt(pow(val,2)+pow(syst_bfit2->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_btag->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(stat_unfold->GetBinError(i),2));
+	  if (useSysUnfold) val = TMath::Sqrt(pow(val,2)+pow(syst_unfold->GetBinError(i),2));
+	  if (useSysRMS) val = TMath::Sqrt(pow(val,2)+pow(h_data_stat->GetBinContent(i)*rms/tot,2));
 	  h_data_syst->SetBinError(i, val);
-	  val = TMath::Sqrt(h_data_stat->GetBinError(i)**2+h_data_syst->GetBinError(i)**2);
+	  val = TMath::Sqrt(pow(h_data_stat->GetBinError(i),2)+pow(h_data_syst->GetBinError(i),2));
 	  h_data_tot->SetBinError(i, val);
 	}
 
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
-	  h_data_b_stat->SetBinError(i, TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+stat_b_top->GetBinError(i)**2));
-	  h_data_b_stat->SetBinError(i, TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+stat_b_bfit->GetBinError(i)**2));
-	  float val = 0.0;
-	  val = TMath::Sqrt(val**2+stat_b_bkg->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_b_eff->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_b_jec->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_b_jer->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_b_pu->GetBinError(i)**2);
-	  if (useSysDR) val = TMath::Sqrt(val**2+syst_b_dr->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_b_bkg->GetBinError(i)**2);
-	  if (useSysBfit2) val = TMath::Sqrt(val**2+syst_b_bfit2->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+syst_b_btag->GetBinError(i)**2);
-	  val = TMath::Sqrt(val**2+stat_b_unfold->GetBinError(i)**2);
-	  if (useSysUnfold) val = TMath::Sqrt(val**2+syst_b_unfold->GetBinError(i)**2);
-	  if (useSysRMS) val = TMath::Sqrt(val**2+(h_data_b_stat->GetBinContent(i)*rms_b/tot_b)**2);
+	  h_data_b_stat->SetBinError(i, TMath::Sqrt(pow(h_data_b_stat->GetBinError(i),2)+pow(stat_b_top->GetBinError(i),2)));
+	  h_data_b_stat->SetBinError(i, TMath::Sqrt(pow(h_data_b_stat->GetBinError(i),2)+pow(stat_b_bfit->GetBinError(i),2)));
+	  double val = 0.0;
+	  val = TMath::Sqrt(pow(val,2)+pow(stat_b_bkg->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_eff->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_jec->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_jer->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_pu->GetBinError(i),2));
+	  if (useSysDR) val = TMath::Sqrt(pow(val,2)+pow(syst_b_dr->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_bkg->GetBinError(i),2));
+	  if (useSysBfit2) val = TMath::Sqrt(pow(val,2)+pow(syst_b_bfit2->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_btag->GetBinError(i),2));
+	  val = TMath::Sqrt(pow(val,2)+pow(stat_b_unfold->GetBinError(i),2));
+	  if (useSysUnfold) val = TMath::Sqrt(pow(val,2)+pow(syst_b_unfold->GetBinError(i),2));
+	  if (useSysRMS) val = TMath::Sqrt(pow(val,2)+pow(h_data_b_stat->GetBinContent(i)*rms_b/tot_b,2));
 	  h_data_b_syst->SetBinError(i, val);
-	  val = TMath::Sqrt(h_data_b_stat->GetBinError(i)**2+h_data_b_syst->GetBinError(i)**2);
+	  val = TMath::Sqrt(pow(h_data_b_stat->GetBinError(i),2)+pow(h_data_b_syst->GetBinError(i),2));
 	  h_data_b_tot->SetBinError(i, val);
 	}
 

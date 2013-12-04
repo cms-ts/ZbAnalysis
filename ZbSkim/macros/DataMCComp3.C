@@ -1,9 +1,10 @@
+#include "DataMCComp.h"
 #include "LumiLabel.C"
 #include "LumiInfo_v11.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp3(int irun=0, string& title="", int plot=0, int ilepton=1) {
+void DataMCComp3(int irun=0, string title="", int plot=0, int ilepton=1) {
 
 int useDY = 0; // use MadGraph DY
 //int useDY = 1; // use Sherpa DY
@@ -12,64 +13,64 @@ int useDY = 0; // use MadGraph DY
 string subdir="0";
 string postfix="";
 if (irun==1) {             // irun==1 => JEC Up
-  string subdir="1";
-  string postfix="Up";
+  subdir="1";
+  postfix="Up";
 }
 if (irun==2) {             // irun==2 => JEC Down
-  string subdir="2";
-  string postfix="Down";
+  subdir="2";
+  postfix="Down";
 }
 if (irun==3) {             // irun==3 => PU Up
-  string subdir="3";
-  string postfix="Pup";
+  subdir="3";
+  postfix="Pup";
 }
 if (irun==4) {             // irun==4 => PU Down
-  string subdir="4";
-  string postfix="Pum";
+  subdir="4";
+  postfix="Pum";
 }
 if (irun==5) {             // irun==5 => top bkg
-  string subdir="5";
-  string postfix="";  
+  subdir="5";
+  postfix="";  
 }
 if (irun==6) {             // irun==6 => b purity
-  string subdir="6";
-  string postfix="";   
+  subdir="6";
+  postfix="";   
 }
 if (irun==7) {             // irun==7 => unfolding
-  string subdir="7";
-  string postfix="";   
+  subdir="7";
+  postfix="";   
 }
 if (irun==8) {             // irun==8 => unfolding with Sherpa
-  string subdir="8";
-  string postfix="";
+  subdir="8";
+  postfix="";
 }
 if (irun==9) {             // irun==9 => unfolding with Powheg
-  string subdir="9";
-  string postfix="";
+  subdir="9";
+  postfix="";
 }
 if (irun==10) {            // irun==10 => bkg systematics
-  string subdir="10";
-  string postfix="";
+  subdir="10";
+  postfix="";
 }
 if (irun==11) {            // irun==11 => JER Up
-  string subdir="11";
-  string postfix="JerUp";
+  subdir="11";
+  postfix="JerUp";
 }
 if (irun==12) {            // irun==12 => JER Down
-  string subdir="12";
-  string postfix="JerDown";
+  subdir="12";
+  postfix="JerDown";
 }
 if (irun==13) {            // irun==13 => bkg statistics
-  string subdir="13";
-  string postfix="";
+  subdir="13";
+  postfix="";
 }
 if (irun==88) {            // irun==88 => deltaR
-  string subdir="88";
-  string postfix="DR";
+  subdir="88";
+  postfix="DR";
 }
 if (irun==99) {            // irun==99 => pur
-  string subdir="99";
-  string postfix="Pur";
+  subdir="99";
+  postfix="Pur";
 }
 
 	if (title.empty()) title = "w_jetmultiplicity";

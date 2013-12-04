@@ -1,12 +1,12 @@
+#include "DataMCComp.h"
 #include "LumiLabel.C"
 #include "LumiInfo_v11.h"
 
 #include "fixrange.C"
-#include <iomanip>
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp4(int irun=0, string& title="", int plot=0, int ilepton=1, int imode=3, int method=0) {
+void DataMCComp4(int irun=0, string title="", int plot=0, int ilepton=1, int imode=3, int method=0) {
 
 bool verbose = false;
 // bool verbose = true;
@@ -26,64 +26,64 @@ bool verbose = false;
 string subdir="0";
 string postfix="";
 if (irun==1) {             // irun==1 => JEC Up
-  string subdir="1";
-  string postfix="Up";
+  subdir="1";
+  postfix="Up";
 }
 if (irun==2) {             // irun==2 => JEC Down
-  string subdir="2";
-  string postfix="Down";
+  subdir="2";
+  postfix="Down";
 }
 if (irun==3) {             // irun==3 => PU Up
-  string subdir="3";
-  string postfix="Pup";
+  subdir="3";
+  postfix="Pup";
 }
 if (irun==4) {             // irun==4 => PU Down
-  string subdir="4";
-  string postfix="Pum";
+  subdir="4";
+  postfix="Pum";
 }
 if (irun==5) {             // irun==5 => top bkg
-  string subdir="5";
-  string postfix="";  
+  subdir="5";
+  postfix="";  
 }
 if (irun==6) {             // irun==6 => b purity
-  string subdir="6";
-  string postfix="";   
+  subdir="6";
+  postfix="";   
 }
 if (irun==7) {             // irun==7 => unfolding
-  string subdir="7";
-  string postfix="";   
+  subdir="7";
+  postfix="";   
 }
 if (irun==8) {             // irun==8 => unfolding with Sherpa
-  string subdir="8";
-  string postfix="";   
+  subdir="8";
+  postfix="";   
 }
 if (irun==9) {             // irun==9 => unfolding with Powheg
-  string subdir="9";
-  string postfix="";   
+  subdir="9";
+  postfix="";   
 }
 if (irun==10) {            // irun==10 => bkg systematics
-  string subdir="10";
-  string postfix="";
+  subdir="10";
+  postfix="";
 }
 if (irun==11) {            // irun==11 => JER Up
-  string subdir="11";
-  string postfix="JerUp";
+  subdir="11";
+  postfix="JerUp";
 }
 if (irun==12) {            // irun==12 => JER Down
-  string subdir="12";
-  string postfix="JerDown";
+  subdir="12";
+  postfix="JerDown";
 }
 if (irun==13) {            // irun==13 => bkg statistics
-  string subdir="13";
-  string postfix="";
+  subdir="13";
+  postfix="";
 }
 if (irun==88) {            // irun==88 => deltaR
-  string subdir="88";
-  string postfix="DR";
+  subdir="88";
+  postfix="DR";
 }
 if (irun==99) {            // irun==99 => pur
-  string subdir="99";
-  string postfix="Pur";
+  subdir="99";
+  postfix="Pur";
 }
 
         if (irun==8) imode = 4;
@@ -273,6 +273,7 @@ if (ilepton==2) {
 	  h_mc2_reco->Scale(c_b);
 	}
 
+	int err;
 	RooUnfold* unfold_mc;
 	RooUnfold* unfold_data;
 
@@ -312,12 +313,12 @@ if (ilepton==2) {
 
 	if (imode<=2) {
 	  unfold_mc->Print();
-	  int err = RooUnfold::kErrors;
+	  err = RooUnfold::kErrors;
 	  unfold_mc->PrintTable(cout, h_mc2_truth, err);
 	}
 	if (imode>=3) {
 	  unfold_data->Print();
-	  int err = RooUnfold::kErrors;
+	  err = RooUnfold::kErrors;
 	  unfold_data->PrintTable(cout, 0, err);
 	}
 
@@ -331,13 +332,13 @@ if (ilepton==2) {
 
 	TH1F* h_mc2_unfold;
 	if (imode<=2) {
-	  int err = RooUnfold::kErrors;
+	  err = RooUnfold::kErrors;
 	  h_mc2_unfold = (TH1F*) unfold_mc->Hreco(err);
 
-	  float vmin = TMath::Max(1.0, 0.1*h_mc2_reco->GetMinimum());
+	  double vmin = TMath::Max(1.0, 0.1*h_mc2_reco->GetMinimum());
 	  h_mc2_unfold->SetMinimum(vmin);
 
-	  float vmax = TMath::Max(0.0, h_mc2_unfold->GetMaximum());
+	  double vmax = TMath::Max(0.0, h_mc2_unfold->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc2_reco->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc2_truth->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc1_reco->GetMaximum());
@@ -365,10 +366,10 @@ if (ilepton==2) {
 
 	TH1F* h_data_unfold;
 	if (imode>=3) {
-	  int err = RooUnfold::kErrors;
+	  err = RooUnfold::kErrors;
 	  h_data_unfold = (TH1F*) unfold_data->Hreco(err);
 
-	  float vmax = TMath::Max(0.0, h_data_unfold->GetMaximum());
+	  double vmax = TMath::Max(0.0, h_data_unfold->GetMaximum());
 	  vmax = TMath::Max(vmax, h_data_reco->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc1_reco->GetMaximum());
 	  vmax = TMath::Max(vmax, h_mc1_truth->GetMaximum());
@@ -586,7 +587,7 @@ if (ilepton==2) {
 	}
 	h_err_err->Scale(100);
 	h_err_res->Scale(100);
-	float vmax = TMath::Max(0.0, h_err_err->GetMaximum());
+	double vmax = TMath::Max(0.0, h_err_err->GetMaximum());
 	vmax = TMath::Max(vmax, h_err_res->GetMaximum());
 	h_err_err->SetMaximum(1.5*vmax);
 	h_err_err->SetStats(0);
@@ -611,7 +612,7 @@ if (ilepton==2) {
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
 
 	TH2F* h_err_cov;
-	int err = RooUnfold::kCovariance;
+	err = RooUnfold::kCovariance;
 	if (imode<=2) h_err_cov = new TH2F(TMatrix(unfold_mc->Ereco(err)));
 	if (imode>=3) h_err_cov = new TH2F(TMatrix(unfold_data->Ereco(err)));
 
@@ -634,7 +635,7 @@ if (ilepton==2) {
         if (method==2) t->DrawLatex(0.01,0.95,"BinByBin");
 
 	RooUnfoldParms* parms;
-	int err = RooUnfold::kErrors;
+	err = RooUnfold::kErrors;
 	if (imode<=2) parms = new RooUnfoldParms(unfold_mc, err, h_mc2_truth);
 	if (imode>=3) parms = new RooUnfoldParms(unfold_data, err);
 
