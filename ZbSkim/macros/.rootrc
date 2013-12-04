@@ -1,1 +1,2 @@
-ACLiC.IncludePaths:     -I/gpfs/cms/users/candelis/RooUnfold/src
+Unix.*.Root.DynamicPath: .:$(ROOTSYS)/lib:/gpfs/cms/users/candelis/RooUnfold
+ACLiC.IncludePaths:      -I/gpfs/cms/users/candelis/RooUnfold/src

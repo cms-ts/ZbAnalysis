@@ -99,8 +99,6 @@ if (irun==99) {            // irun==99 => pur
 
 	//if (!verbose) gErrorIgnoreLevel = kError;
 
-	gSystem->Load("libRooUnfold");
-
 	/* purity */
 
         double c_b=1.0;
