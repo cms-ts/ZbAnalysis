@@ -165,6 +165,7 @@ string subdir="0";
 	float x_b[2][100][100];
 
 	for (int i=0; i<2; i++) {
+
 	  ifstream in;
 	  string title_b_tmp = title_b;
 	  if (i==0) {
@@ -172,32 +173,35 @@ string subdir="0";
 	    if (title_b=="w_pt_Z_b") title_b_tmp="w_pt_Z_ee_b";
 	    if (title_b=="w_delta_phi") title_b_tmp="w_delta_phi_ee";
 	    if (title_b=="w_delta_phi_b") title_b_tmp="w_delta_phi_ee_b";
-	    in.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
-//cout << path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat" << endl;
+	    if (isratio==0) in.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
+	    if (isratio==1) in.open((path + "/electrons/" + version + "/" + "/ratios_unfolding/" + title_b_tmp + "_ratio_unfolding.dat").c_str());
 	  }
 	  if (i==1) {
 	    if (title_b=="w_pt_Z") title_b_tmp="w_pt_Z_mm";
 	    if (title_b=="w_pt_Z_b") title_b_tmp="w_pt_Z_mm_b";
 	    if (title_b=="w_delta_phi") title_b_tmp="w_delta_phi_mm";
 	    if (title_b=="w_delta_phi_b") title_b_tmp="w_delta_phi_mm_b";
-	    in.open((path + "/muons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
-//cout << path + "/muons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat" << endl;
+	    if (isratio==0) in.open((path + "/muons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
+	    if (isratio==1) in.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b_tmp + "_ratio_unfolding.dat").c_str());
 	  }
 
 	  string tmp;
 
-	  getline(in, tmp);
-	  getline(in, tmp);
-	  getline(in, tmp);
-	  for (int j=0; j<h_data->GetNbinsX()+2; j++) {
-	    for (int k=0; k<N; k++){
-	      in >> tmp;
-	      in >> x[i][k][j];
+	  if (isratio==0) {
+	    getline(in, tmp);
+	    getline(in, tmp);
+	    getline(in, tmp);
+	    for (int j=0; j<h_data->GetNbinsX()+2; j++) {
+	      for (int k=0; k<N; k++){
+	        in >> tmp;
+	        in >> x[i][k][j];
 //cout << x[i][k][j] << " ";
-	    }
-	    in.ignore();
+	      }
+	      in.ignore();
 //cout << endl;
+	    }
 	  }
+
 	  getline(in, tmp);
 	  getline(in, tmp);
 	  getline(in, tmp);
@@ -211,6 +215,7 @@ string subdir="0";
 //cout << endl;
 	  }
 	  in.close();
+
 	}
 
 	TH1F* h_data_stat = (TH1F*)h_data->Clone();
@@ -254,17 +259,6 @@ string subdir="0";
 	  h_data_b_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(pow(h_data_b_stat->GetBinError(i),2)+pow(h_data_b_syst->GetBinError(i),2));
 	  h_data_b_tot->SetBinError(i, val);
-	}
-
-	if (isratio==1) {
-	  h_data_b->Divide(h_data);
-	  h_data_b_stat->Divide(h_data_stat);
-	  h_data_b_syst->Divide(h_data_syst);
-	  h_data_b_tot->Divide(h_data_tot);
-	  h_data_b->Scale(100.);
-	  h_data_b_stat->Scale(100.);
-	  h_data_b_syst->Scale(100.);
-	  h_data_b_tot->Scale(100.);
 	}
 
 	h_mcg->Scale(1./Lumi2012, "width");
@@ -849,33 +843,35 @@ string subdir="0";
 	    out.open((path + "/combined/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.dat").c_str());
 	    out1.open((path + "/combined/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.txt").c_str());
 	  }
-	  out << h_data->GetName();
-	  out << endl;
-	  out << std::setw(25) << "total";
-	  out << std::setw(12) << "total";
-	  out << std::setw(12) << "total";
-	  out << endl;
-	  out << std::setw(25) << "stat";
-	  out << std::setw(12) << "sys";
-	  out << std::setw(12) << "error";
-	  out << std::setw(8) << "%";
-	  out << endl;
-	  for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
-	    out << std::fixed;
-	    out << std::setw(2) << i;
-	    out << " ";
-	    out << std::setprecision(6);
-	    out << std::setw(10) << h_data_stat->GetBinContent(i);
-	    out << " +- ";
-	    out << std::setw(8) << h_data_stat->GetBinError(i);
-	    out << " +- ";
-	    out << std::setw(8) << h_data_syst->GetBinError(i);
-	    out << " => ";
-	    out << std::setw(8) << h_data_tot->GetBinError(i);
-	    out << " => ";
-	    out << std::setprecision(1);
-	    out << std::setw(4) << 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i));
+	  if (isratio==0) {
+	    out << h_data->GetName();
 	    out << endl;
+	    out << std::setw(25) << "total";
+	    out << std::setw(12) << "total";
+	    out << std::setw(12) << "total";
+	    out << endl;
+	    out << std::setw(25) << "stat";
+	    out << std::setw(12) << "sys";
+	    out << std::setw(12) << "error";
+	    out << std::setw(8) << "%";
+	    out << endl;
+	    for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
+	      out << std::fixed;
+	      out << std::setw(2) << i;
+	      out << " ";
+	      out << std::setprecision(6);
+	      out << std::setw(10) << h_data_stat->GetBinContent(i);
+	      out << " +- ";
+	      out << std::setw(8) << h_data_stat->GetBinError(i);
+	      out << " +- ";
+	      out << std::setw(8) << h_data_syst->GetBinError(i);
+	      out << " => ";
+	      out << std::setw(8) << h_data_tot->GetBinError(i);
+	      out << " => ";
+	      out << std::setprecision(1);
+	      out << std::setw(4) << 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i));
+	      out << endl;
+	    }
 	  }
 	  out << h_data_b->GetName();
 	  out << endl;
@@ -906,28 +902,30 @@ string subdir="0";
 	    out << endl;
 	  }
 	  out.close();
-	  out1 << h_data->GetName() << " - RELATIVE ERRORS";
-	  out1 << endl;
-	  out1 << std::setw(7) << "total";
-	  out1 << std::setw(8) << "total";
-	  out1 << std::setw(8) << "total";
-	  out1 << endl;
-	  out1 << std::setw(7) << "stat";
-	  out1 << std::setw(8) << "sys";
-	  out1 << std::setw(8) << "error";
-	  out1 << endl;
-	  for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
-	    double val = 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : 1./h_data_stat->GetBinContent(i));
-	    out1 << std::fixed;
-	    out1 << std::setw(2) << i;
-	    out1 << " ";
-	    out1 << std::setprecision(1);
-	    out1 << std::setw(4) << h_data_stat->GetBinError(i)*val;
-	    out1 << " +- ";
-	    out1 << std::setw(4) << h_data_syst->GetBinError(i)*val;
-	    out1 << " => ";
-	    out1 << std::setw(4) << h_data_tot->GetBinError(i)*val;
+	  if (isratio==0) {
+	    out1 << h_data->GetName() << " - RELATIVE ERRORS";
 	    out1 << endl;
+	    out1 << std::setw(7) << "total";
+	    out1 << std::setw(8) << "total";
+	    out1 << std::setw(8) << "total";
+	    out1 << endl;
+	    out1 << std::setw(7) << "stat";
+	    out1 << std::setw(8) << "sys";
+	    out1 << std::setw(8) << "error";
+	    out1 << endl;
+	    for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
+	      double val = 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : 1./h_data_stat->GetBinContent(i));
+	      out1 << std::fixed;
+	      out1 << std::setw(2) << i;
+	      out1 << " ";
+	      out1 << std::setprecision(1);
+	      out1 << std::setw(4) << h_data_stat->GetBinError(i)*val;
+	      out1 << " +- ";
+	      out1 << std::setw(4) << h_data_syst->GetBinError(i)*val;
+	      out1 << " => ";
+	      out1 << std::setw(4) << h_data_tot->GetBinError(i)*val;
+	      out1 << endl;
+	    }
 	  }
 	  out1 << h_data_b->GetName() << " - RELATIVE ERRORS";
 	  out1 << endl;
