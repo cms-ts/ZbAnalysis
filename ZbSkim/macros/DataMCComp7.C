@@ -795,11 +795,6 @@ string subdir="0";
 	  h_data_tot->Draw("E1PX0SAME");
 	  h_data_stat->Draw("E1PX0SAME");
 
-	  h_data->SetMarkerColor(kBlack);
-	  h_data->SetLineColor(kBlack);
-	  h_data->SetMarkerStyle(20);
-	  h_data->SetMarkerSize (0.7);
-
 	  if (ilepton==1) {
 	    leg->AddEntry(h_data,"Z(#rightarrow ee) DATA","p");
 	    leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
@@ -898,9 +893,9 @@ string subdir="0";
 	  }
 
 	  g_M2_tot->SetMarkerStyle(20);
-	  g_M2_tot->Draw("E1P0SAME");
+	  g_M2_tot->Draw("E1PX0SAME");
 	  g_M2_stat->SetMarkerStyle(20);
-	  g_M2_stat->Draw("E1P0SAME");
+	  g_M2_stat->Draw("E1PX0SAME");
 	}
 
 	TLatex *t2 = new TLatex();
@@ -980,9 +975,9 @@ string subdir="0";
 	  }
 
 	  g_S2_tot->SetMarkerStyle(20);
-	  if (useSherpa) g_S2_tot->Draw("E1P0SAME");
+	  if (useSherpa) g_S2_tot->Draw("E1PX0SAME");
 	  g_S2_stat->SetMarkerStyle(20);
-	  if (useSherpa) g_S2_stat->Draw("E1P0SAME");
+	  if (useSherpa) g_S2_stat->Draw("E1PX0SAME");
 	}
 
 	TLatex *t3 = new TLatex();
@@ -1057,9 +1052,9 @@ string subdir="0";
 	  }
 
 	  g_P2_tot->SetMarkerStyle(20);
-	  g_P2_tot->Draw("E1P0SAME");
+	  g_P2_tot->Draw("E1PX0SAME");
 	  g_P2_stat->SetMarkerStyle(20);
-	  g_P2_stat->Draw("E1P0SAME");
+	  g_P2_stat->Draw("E1PX0SAME");
 	}
 
 	TLatex *t4 = new TLatex();
@@ -1111,7 +1106,7 @@ string subdir="0";
 	} else {
 	  g_M3_tot->SetMarkerStyle(24);
 	}
-	g_M3_tot->Draw("E1P0SAME");
+	g_M3_tot->Draw("E1PX0SAME");
 
 	TLine *OLine5 = new TLine(h_P_tot->GetXaxis()->GetXmin(),0.93,h_P_tot->GetXaxis()->GetXmax(),0.93);
 	OLine5->SetLineColor(kOrange+7);

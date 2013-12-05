@@ -116,29 +116,13 @@ string subdir="0";
 	}
 
 	TH1F* h_mcg = (TH1F*)w_mcg[0]->Clone();
-	h_mcg->Add(w_mcg[1]);
-	h_mcg->Scale(0.5);
 	TH1F* h_mcg_b = (TH1F*)w_mcg_b[0]->Clone();
-	h_mcg_b->Add(w_mcg_b[1]);
-	h_mcg_b->Scale(0.5);
 	TH1F* h_mcg1 = (TH1F*)w_mcg1[0]->Clone();
-	h_mcg1->Add(w_mcg1[1]);
-	h_mcg1->Scale(0.5);
 	TH1F* h_mcg1_b = (TH1F*)w_mcg1_b[0]->Clone();
-	h_mcg1_b->Add(w_mcg1_b[1]);
-	h_mcg1_b->Scale(0.5);
 	TH1F* h_mcg2 = (TH1F*)w_mcg2[0]->Clone();
-	h_mcg2->Add(w_mcg2[1]);
-	h_mcg2->Scale(0.5);
 	TH1F* h_mcg2_b = (TH1F*)w_mcg2_b[0]->Clone();
-	h_mcg2_b->Add(w_mcg2_b[1]);
-	h_mcg2_b->Scale(0.5);
 	TH1F* h_mcg3 = (TH1F*)w_mcg3[0]->Clone();
-	h_mcg3->Add(w_mcg3[1]);
-	h_mcg3->Scale(0.5);
 	TH1F* h_mcg3_b = (TH1F*)w_mcg3_b[0]->Clone();
-	h_mcg3_b->Add(w_mcg3_b[1]);
-	h_mcg3_b->Scale(0.5);
 
 	h_mcg->Sumw2();
 	h_mcg1->Sumw2();
@@ -149,6 +133,58 @@ string subdir="0";
 	h_mcg1_b->Sumw2();
 	h_mcg2_b->Sumw2();
 	h_mcg3_b->Sumw2();
+
+	for (int i=0;i<=h_mcg->GetNbinsX()+1;i++) {
+	  double val = 0.0;
+	  if (w_mcg[0]->GetBinContent(i)*w_mcg[1]->GetBinContent(i) != 0) {
+	    val = (w_mcg[0]->GetBinContent(i)/pow(w_mcg[0]->GetBinError(i),2)+w_mcg[1]->GetBinContent(i)/pow(w_mcg[1]->GetBinError(i),2))/(1./pow(w_mcg[0]->GetBinError(i),2)+1./pow(w_mcg[1]->GetBinError(i),2));
+	    h_mcg->SetBinContent(i, val);
+	    val = TMath::Sqrt(1./(1./pow(w_mcg[0]->GetBinError(i),2)+1./pow(w_mcg[1]->GetBinError(i),2)));
+	    h_mcg->SetBinError(i, val);
+	  }
+	  if (w_mcg_b[0]->GetBinContent(i)*w_mcg_b[1]->GetBinContent(i) != 0) {
+	    val = (w_mcg_b[0]->GetBinContent(i)/pow(w_mcg_b[0]->GetBinError(i),2)+w_mcg_b[1]->GetBinContent(i)/pow(w_mcg_b[1]->GetBinError(i),2))/(1./pow(w_mcg_b[0]->GetBinError(i),2)+1./pow(w_mcg_b[1]->GetBinError(i),2));
+	    h_mcg_b->SetBinContent(i, val);
+	    val = TMath::Sqrt(1./(1./pow(w_mcg_b[0]->GetBinError(i),2)+1./pow(w_mcg_b[1]->GetBinError(i),2)));
+	    h_mcg_b->SetBinError(i, val);
+	  }
+	  if (w_mcg1[0]->GetBinContent(i)*w_mcg1[1]->GetBinContent(i) != 0) {
+	    val = (w_mcg1[0]->GetBinContent(i)/pow(w_mcg1[0]->GetBinError(i),2)+w_mcg1[1]->GetBinContent(i)/pow(w_mcg1[1]->GetBinError(i),2))/(1./pow(w_mcg1[0]->GetBinError(i),2)+1./pow(w_mcg1[1]->GetBinError(i),2));
+	    h_mcg1->SetBinContent(i, val);
+	    val = TMath::Sqrt(1./(1./pow(w_mcg1[0]->GetBinError(i),2)+1./pow(w_mcg1[1]->GetBinError(i),2)));
+	    h_mcg1->SetBinError(i, val);
+	  }
+	  if (w_mcg1_b[0]->GetBinContent(i)*w_mcg1_b[1]->GetBinContent(i) != 0) {
+	    val = (w_mcg1_b[0]->GetBinContent(i)/pow(w_mcg1_b[0]->GetBinError(i),2)+w_mcg1_b[1]->GetBinContent(i)/pow(w_mcg1_b[1]->GetBinError(i),2))/(1./pow(w_mcg1_b[0]->GetBinError(i),2)+1./pow(w_mcg1_b[1]->GetBinError(i),2));
+	    h_mcg1_b->SetBinContent(i, val);
+	    val = TMath::Sqrt(1./(1./pow(w_mcg1_b[0]->GetBinError(i),2)+1./pow(w_mcg1_b[1]->GetBinError(i),2)));
+	    h_mcg1_b->SetBinError(i, val);
+	  }
+	  if (w_mcg2[0]->GetBinContent(i)*w_mcg2[1]->GetBinContent(i) != 0) {
+	    val = (w_mcg2[0]->GetBinContent(i)/pow(w_mcg2[0]->GetBinError(i),2)+w_mcg2[1]->GetBinContent(i)/pow(w_mcg2[1]->GetBinError(i),2))/(1./pow(w_mcg2[0]->GetBinError(i),2)+1./pow(w_mcg2[1]->GetBinError(i),2));
+	    h_mcg2->SetBinContent(i, val);
+	    val = TMath::Sqrt(1./(1./pow(w_mcg2[0]->GetBinError(i),2)+1./pow(w_mcg2[1]->GetBinError(i),2)));
+	    h_mcg2->SetBinError(i, val);
+	  }
+	  if (w_mcg2_b[0]->GetBinContent(i)*w_mcg2_b[1]->GetBinContent(i) != 0) {
+	    val = (w_mcg2_b[0]->GetBinContent(i)/pow(w_mcg2_b[0]->GetBinError(i),2)+w_mcg2_b[1]->GetBinContent(i)/pow(w_mcg2_b[1]->GetBinError(i),2))/(1./pow(w_mcg2_b[0]->GetBinError(i),2)+1./pow(w_mcg2_b[1]->GetBinError(i),2));
+	    h_mcg2_b->SetBinContent(i, val);
+	    val = TMath::Sqrt(1./(1./pow(w_mcg2_b[0]->GetBinError(i),2)+1./pow(w_mcg2_b[1]->GetBinError(i),2)));
+	    h_mcg2_b->SetBinError(i, val);
+	  }
+	  if (w_mcg3[0]->GetBinContent(i)*w_mcg3[1]->GetBinContent(i) != 0) {
+	    val = (w_mcg3[0]->GetBinContent(i)/pow(w_mcg3[0]->GetBinError(i),2)+w_mcg3[1]->GetBinContent(i)/pow(w_mcg3[1]->GetBinError(i),2))/(1./pow(w_mcg3[0]->GetBinError(i),2)+1./pow(w_mcg3[1]->GetBinError(i),2));
+	    h_mcg3->SetBinContent(i, val);
+	    val = TMath::Sqrt(1./(1./pow(w_mcg3[0]->GetBinError(i),2)+1./pow(w_mcg3[1]->GetBinError(i),2)));
+	    h_mcg3->SetBinError(i, val);
+	  }
+	  if (w_mcg3_b[0]->GetBinContent(i)*w_mcg3_b[1]->GetBinContent(i) != 0) {
+	    val = (w_mcg3_b[0]->GetBinContent(i)/pow(w_mcg3_b[0]->GetBinError(i),2)+w_mcg3_b[1]->GetBinContent(i)/pow(w_mcg3_b[1]->GetBinError(i),2))/(1./pow(w_mcg3_b[0]->GetBinError(i),2)+1./pow(w_mcg3_b[1]->GetBinError(i),2));
+	    h_mcg3_b->SetBinContent(i, val);
+	    val = TMath::Sqrt(1./(1./pow(w_mcg3_b[0]->GetBinError(i),2)+1./pow(w_mcg3_b[1]->GetBinError(i),2)));
+	    h_mcg3_b->SetBinError(i, val);
+	  }
+	}
 
 	h_mcg->Scale(norm1);
 	h_mcg1->Scale(norm1_1);
@@ -472,11 +508,6 @@ string subdir="0";
 	  h_data_tot->Draw("E1PX0SAME");
 	  h_data_stat->Draw("E1PX0SAME");
 
-	  h_data->SetMarkerColor(kBlack);
-	  h_data->SetLineColor(kBlack);
-	  h_data->SetMarkerStyle(20);
-	  h_data->SetMarkerSize (0.7);
-
 	  leg->AddEntry(h_data,"Z(#rightarrow ll) DATA","p");
 	  leg->AddEntry(h_data_b,"Z(#rightarrow ll)+b DATA","p");
 	  leg->AddEntry(h_mcg,"Z(#rightarrow ll) MadGraph 5FS","l");
@@ -552,9 +583,9 @@ string subdir="0";
 	  }
 
 	  g_M2_tot->SetMarkerStyle(20);
-	  g_M2_tot->Draw("E1P0SAME");
+	  g_M2_tot->Draw("E1PX0SAME");
 	  g_M2_stat->SetMarkerStyle(20);
-	  g_M2_stat->Draw("E1P0SAME");
+	  g_M2_stat->Draw("E1PX0SAME");
 	}
 
 	TLatex *t2 = new TLatex();
@@ -605,12 +636,12 @@ string subdir="0";
 
 	h_S_tot->SetMarkerStyle(24);
 	if (useSherpa) {
-	  h_S_tot->Draw("EPX0");
+	  h_S_tot->Draw("E1PX0");
 	} else {
 	  for (int i=0;i<=h_S_tot->GetNbinsX()+1;i++) {
 	    h_S_tot->SetBinContent(i, -0.5);
 	  }
-	  h_S_tot->Draw("EPX0");
+	  h_S_tot->Draw("E1PX0");
 	}
 	h_S_stat->SetMarkerStyle(24);
 	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
@@ -634,9 +665,9 @@ string subdir="0";
 	  }
 
 	  g_S2_tot->SetMarkerStyle(20);
-	  if (useSherpa) g_S2_tot->Draw("E1P0SAME");
+	  if (useSherpa) g_S2_tot->Draw("E1PX0SAME");
 	  g_S2_stat->SetMarkerStyle(20);
-	  if (useSherpa) g_S2_stat->Draw("E1P0SAME");
+	  if (useSherpa) g_S2_stat->Draw("E1PX0SAME");
 	}
 
 	TLatex *t3 = new TLatex();
@@ -711,9 +742,9 @@ string subdir="0";
 	  }
 
 	  g_P2_tot->SetMarkerStyle(20);
-	  g_P2_tot->Draw("E1P0SAME");
+	  g_P2_tot->Draw("E1PX0SAME");
 	  g_P2_stat->SetMarkerStyle(20);
-	  g_P2_stat->Draw("E1P0SAME");
+	  g_P2_stat->Draw("E1PX0SAME");
 	}
 
 	TLatex *t4 = new TLatex();
@@ -765,7 +796,7 @@ string subdir="0";
 	} else {
 	  g_M3_tot->SetMarkerStyle(24);
 	}
-	g_M3_tot->Draw("EP0SAME");
+	g_M3_tot->Draw("E1PX0SAME");
 
 	TLine *OLine5 = new TLine(h_P_tot->GetXaxis()->GetXmin(),0.93,h_P_tot->GetXaxis()->GetXmax(),0.93);
 	OLine5->SetLineColor(kOrange+7);
