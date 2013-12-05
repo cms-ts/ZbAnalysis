@@ -11,6 +11,8 @@ TH1F* h_mc_fit2 = 0;
 
 void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   double chisq = 0.0;
+  if (iflag) {};
+  if (gin) {};
   for (int i=1; i<=h_data_fit->GetNbinsX(); i++) {
     double xn = h_data_fit->GetBinContent(i);
     double xd = pow(h_data_fit->GetBinError(i),2);
