@@ -648,15 +648,8 @@ string subdir="0";
 	}
 
 	if (isratio==1) {
-	  h_data_b->GetYaxis()->SetTitle("#sigma_{Z+b-jets}/#sigma_{Z+jets} [%]");
+	  h_data_b_tot->GetYaxis()->SetTitle("#sigma_{Z+b-jets}/#sigma_{Z+jets} [%]");
 	}
-	h_data_b->GetYaxis()->SetTitleOffset(1.2);
-	h_data_b->GetXaxis()->SetTitleOffset(1.3);
-	h_data_b->SetMarkerColor(kBlack);
-	h_data_b->SetLineColor(kBlack);
-	h_data_b->SetMarkerStyle(24);
-	h_data_b->SetMarkerSize(0.7);
-	h_data_b->SetStats(0);
 	h_data_b_tot->GetYaxis()->SetTitleOffset(1.2);
 	h_data_b_tot->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_tot->SetMarkerColor(kRed+1);
@@ -685,8 +678,8 @@ string subdir="0";
 	if (isratio==0) {
 	  pad1->SetLogy();
 
-	  h_mc1b_b->SetMaximum(4*h_data->GetMaximum());
-	  h_mc1b_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b->GetBinContent(h_data_b->GetMinimumBin())));
+	  h_mc1b_b->SetMaximum(4*h_data_tot->GetMaximum());
+	  h_mc1b_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b_tot->GetBinContent(h_data_b_tot->GetMinimumBin())));
 
 	  h_mc1b_b->Draw("E5");
 	  TH1F* tmp1 = (TH1F*)h_mc1b_b->Clone();
@@ -796,8 +789,8 @@ string subdir="0";
 	  h_data_stat->Draw("E1PX0SAME");
 
 	  if (ilepton==1) {
-	    leg->AddEntry(h_data,"Z(#rightarrow ee) DATA","p");
-	    leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
+	    leg->AddEntry(h_data_stat,"Z(#rightarrow ee) DATA","p");
+	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow ee)+b DATA","p");
 	    if (useMC) leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3,"Z(#rightarrow ee) MadGraph 4FS","l");
@@ -805,8 +798,8 @@ string subdir="0";
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow ee) Powheg","l");
 	  }
 	  if (ilepton==2){
-	    leg->AddEntry(h_data,"Z(#rightarrow #mu#mu) DATA","p");
-	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu)+b DATA","p");
+	    leg->AddEntry(h_data_stat,"Z(#rightarrow #mu#mu) DATA","p");
+	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow #mu#mu)+b DATA","p");
 	    if (useMC) leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
@@ -817,7 +810,7 @@ string subdir="0";
 
 	if (isratio==1) {
 	  if (ilepton==1) {
-	    leg->AddEntry(h_data_b,"Z(#rightarrow ee) DATA","p");
+	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow ee) DATA","p");
 	    if (useMC) leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow ee) MadGraph 4FS","l");
@@ -825,7 +818,7 @@ string subdir="0";
 	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow ee) Powheg","l");
 	  }
 	  if (ilepton==2){
-	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu) DATA","p");
+	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow #mu#mu) DATA","p");
 	    if (useMC) leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");

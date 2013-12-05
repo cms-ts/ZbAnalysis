@@ -271,12 +271,12 @@ string subdir="0";
 	    h_data_tot->SetBinContent(i, val);
 	    val = TMath::Sqrt(1./(1./pow(x[0][N-4][i],2)+1./pow(x[1][N-4][i],2)));
 	    h_data_stat->SetBinError(i, val);
+	    val = (TMath::Sqrt(pow(x[0][N-3][i],2)-pow(x[0][2][i],2)-pow(x[0][3][i],2)-pow(x[0][11][i],2))+TMath::Sqrt(pow(x[1][N-3][i],2)-pow(x[1][2][i],2)-pow(x[1][3][i],2)-pow(x[1][11][i],2)))/2.;
+	    val = TMath::Sqrt(pow(val,2)+(1./(1./(pow(x[0][2][i],2)+pow(x[0][3][i],2)+pow(x[0][11][i],2))+1./(pow(x[1][2][i],2)+pow(x[1][3][i],2)+pow(x[1][11][i],2)))));
+	    h_data_syst->SetBinError(i, val);
+	    val = TMath::Sqrt(pow(h_data_stat->GetBinError(i),2)+pow(h_data_syst->GetBinError(i),2));
+	    h_data_tot->SetBinError(i, val);
 	  }
-	  val = (TMath::Sqrt(pow(x[0][N-3][i],2)-pow(x[0][2][i],2)-pow(x[0][3][i],2)-pow(x[0][11][i],2))+TMath::Sqrt(pow(x[1][N-3][i],2)-pow(x[1][2][i],2)-pow(x[1][3][i],2)-pow(x[1][11][i],2)))/2.;
-	  val = TMath::Sqrt(pow(val,2)+(1./(1./(pow(x[0][2][i],2)+pow(x[0][3][i],2)+pow(x[0][11][i],2))+1./(pow(x[1][2][i],2)+pow(x[1][3][i],2)+pow(x[1][11][i],2)))));
-	  h_data_syst->SetBinError(i, val);
-	  val = TMath::Sqrt(pow(h_data_stat->GetBinError(i),2)+pow(h_data_syst->GetBinError(i),2));
-	  h_data_tot->SetBinError(i, val);
 	}
 
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
@@ -289,12 +289,12 @@ string subdir="0";
 	    h_data_b_tot->SetBinContent(i, val);
 	    val = TMath::Sqrt(1./(1./pow(x_b[0][N-4][i],2)+1./pow(x_b[1][N-4][i],2)));
 	    h_data_b_stat->SetBinError(i, val);
+	    val = (TMath::Sqrt(pow(x_b[0][N-3][i],2)-pow(x_b[0][2][i],2)-pow(x_b[0][3][i],2)-pow(x_b[0][11][i],2))+TMath::Sqrt(pow(x_b[1][N-3][i],2)-pow(x_b[1][2][i],2)-pow(x_b[1][3][i],2)-pow(x_b[1][11][i],2)))/2.;
+	    val = TMath::Sqrt(pow(val,2)+(1./(1./(pow(x_b[0][2][i],2)+pow(x_b[0][3][i],2)+pow(x_b[0][11][i],2))+1./(pow(x_b[1][2][i],2)+pow(x_b[1][3][i],2)+pow(x_b[1][11][i],2)))));
+	    h_data_b_syst->SetBinError(i, val);
+	    val = TMath::Sqrt(pow(h_data_b_stat->GetBinError(i),2)+pow(h_data_b_syst->GetBinError(i),2));
+	    h_data_b_tot->SetBinError(i, val);
 	  }
-	  val = (TMath::Sqrt(pow(x_b[0][N-3][i],2)-pow(x_b[0][2][i],2)-pow(x_b[0][3][i],2)-pow(x_b[0][11][i],2))+TMath::Sqrt(pow(x_b[1][N-3][i],2)-pow(x_b[1][2][i],2)-pow(x_b[1][3][i],2)-pow(x_b[1][11][i],2)))/2.;
-	  val = TMath::Sqrt(pow(val,2)+(1./(1./(pow(x_b[0][2][i],2)+pow(x_b[0][3][i],2)+pow(x_b[0][11][i],2))+1./(pow(x_b[1][2][i],2)+pow(x_b[1][3][i],2)+pow(x_b[1][11][i],2)))));
-	  h_data_b_syst->SetBinError(i, val);
-	  val = TMath::Sqrt(pow(h_data_b_stat->GetBinError(i),2)+pow(h_data_b_syst->GetBinError(i),2));
-	  h_data_b_tot->SetBinError(i, val);
 	}
 
 	h_mcg->Scale(1./Lumi2012, "width");
@@ -381,15 +381,8 @@ string subdir="0";
 	}
 
 	if (isratio==1) {
-	  h_data_b->GetYaxis()->SetTitle("#sigma_{Z+b-jets}/#sigma_{Z+jets} [%]");
+	  h_data_b_tot->GetYaxis()->SetTitle("#sigma_{Z+b-jets}/#sigma_{Z+jets} [%]");
 	}
-	h_data_b->GetYaxis()->SetTitleOffset(1.2);
-	h_data_b->GetXaxis()->SetTitleOffset(1.3);
-	h_data_b->SetMarkerColor(kBlack);
-	h_data_b->SetLineColor(kBlack);
-	h_data_b->SetMarkerStyle(24);
-	h_data_b->SetMarkerSize(0.7);
-	h_data_b->SetStats(0);
 	h_data_b_tot->GetYaxis()->SetTitleOffset(1.2);
 	h_data_b_tot->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_tot->SetMarkerColor(kRed+1);
@@ -418,8 +411,8 @@ string subdir="0";
 	if (isratio==0) {
 	  pad1->SetLogy();
 
-	  h_mcg_b->SetMaximum(4*h_data->GetMaximum());
-	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b->GetBinContent(h_data_b->GetMinimumBin())));
+	  h_mcg_b->SetMaximum(4*h_data_tot->GetMaximum());
+	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b_tot->GetBinContent(h_data_b_tot->GetMinimumBin())));
 
 	  h_mcg_b->Draw("E5");
 	  TH1F* tmp2 = (TH1F*)h_mcg_b->Clone();
@@ -508,8 +501,8 @@ string subdir="0";
 	  h_data_tot->Draw("E1PX0SAME");
 	  h_data_stat->Draw("E1PX0SAME");
 
-	  leg->AddEntry(h_data,"Z(#rightarrow ll) DATA","p");
-	  leg->AddEntry(h_data_b,"Z(#rightarrow ll)+b DATA","p");
+	  leg->AddEntry(h_data_stat,"Z(#rightarrow ll) DATA","p");
+	  leg->AddEntry(h_data_b_stat,"Z(#rightarrow ll)+b DATA","p");
 	  leg->AddEntry(h_mcg,"Z(#rightarrow ll) MadGraph 5FS","l");
 	  leg->AddEntry(h_mcg3,"Z(#rightarrow ll) MadGraph 4FS","l");
 	  if (useSherpa) leg->AddEntry(h_mcg1,"Z(#rightarrow ll) Sherpa","l");
@@ -517,7 +510,7 @@ string subdir="0";
 	}
 
 	if (isratio==1) {
-	  leg->AddEntry(h_data_b,"Z(#rightarrow ll) DATA","p");
+	  leg->AddEntry(h_data_b_stat,"Z(#rightarrow ll) DATA","p");
 	  leg->AddEntry(h_mcg_b,"Z(#rightarrow ll) MadGraph 5FS","l");
 	  leg->AddEntry(h_mcg3_b,"Z(#rightarrow ll) MadGraph 4FS","l");
 	  if (useSherpa) leg->AddEntry(h_mcg1_b,"Z(#rightarrow ll) Sherpa","l");
