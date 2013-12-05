@@ -265,7 +265,6 @@ string subdir="0";
 	  double val = 0.0;
 	  if (x[0][0][i]*x[1][0][i] != 0) {
 	    val = (x[0][0][i]/(pow(x[0][N-4][i],2)+pow(x[0][2][i],2)+pow(x[0][3][i],2)+pow(x[0][11][i],2))+x[1][0][i]/(pow(x[1][N-4][i],2)+pow(x[1][2][i],2)+pow(x[1][3][i],2)+pow(x[1][11][i],2)))/(1./(pow(x[0][N-4][i],2)+pow(x[0][2][i],2)+pow(x[0][3][i],2)+pow(x[0][11][i],2))+1./(pow(x[1][N-4][i],2)+pow(x[1][2][i],2)+pow(x[1][3][i],2)+pow(x[1][11][i],2)));
-	    h_data->SetBinContent(i, val);
 	    h_data_stat->SetBinContent(i, val);
 	    h_data_syst->SetBinContent(i, val);
 	    h_data_tot->SetBinContent(i, val);
@@ -283,7 +282,6 @@ string subdir="0";
 	  double val = 0.0;
 	  if (x_b[0][0][i]*x_b[1][0][i] != 0) {
 	    val = (x_b[0][0][i]/(pow(x_b[0][N-4][i],2)+pow(x_b[0][2][i],2)+pow(x_b[0][3][i],2)+pow(x_b[0][11][i],2))+x_b[1][0][i]/(pow(x_b[1][N-4][i],2)+pow(x_b[1][2][i],2)+pow(x_b[1][3][i],2)+pow(x_b[1][11][i],2)))/(1./(pow(x_b[0][N-4][i],2)+pow(x_b[0][2][i],2)+pow(x_b[0][3][i],2)+pow(x_b[0][11][i],2))+1./(pow(x_b[1][N-4][i],2)+pow(x_b[1][2][i],2)+pow(x_b[1][3][i],2)+pow(x_b[1][11][i],2)));
-	    h_data_b->SetBinContent(i, val);
 	    h_data_b_stat->SetBinContent(i, val);
 	    h_data_b_syst->SetBinContent(i, val);
 	    h_data_b_tot->SetBinContent(i, val);
