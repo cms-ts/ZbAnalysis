@@ -1222,17 +1222,19 @@ string subdir="0";
 	}
 
 	if (plot) {
-	  ofstream out;
+	  ofstream out, out1;
 	  if (isratio==0) {
 	    if (ilepton==1) {
 	      gSystem->mkdir((path + "/electrons/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/electrons/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
 	      out.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.dat").c_str());
+	      out1.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.txt").c_str());
 	    }
 	    if (ilepton==2) {
 	      gSystem->mkdir((path + "/muons/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/muons/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
 	      out.open((path + "/muons/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.dat").c_str());
+	      out1.open((path + "/muons/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.txt").c_str());
 	    }
 	  }
 	  if (isratio==1) {
@@ -1240,130 +1242,397 @@ string subdir="0";
 	      gSystem->mkdir((path + "/electrons/" + version + "/ratios_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/electrons/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
 	      out.open((path + "/electrons/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.dat").c_str());
+	      out1.open((path + "/electrons/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.txt").c_str());
 	    }
 	    if (ilepton==2) {
 	      gSystem->mkdir((path + "/muons/" + version + "/ratios_unfolding/").c_str(), kTRUE);
 	      c1->SaveAs((path + "/muons/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
 	      out.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.dat").c_str());
+	      out1.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.txt").c_str());
 	    }
 	  }
 	  out << h_data->GetName();
-	  out << std::fixed << std::setprecision(4) << std::setw(10);
-	  out << " : average unfolded total cross section = " << tot << " +- " << rms << " pb (" << 100*rms/tot << " %)";
+	  out << std::fixed << std::setprecision(4);
+	  out << " : average unfolded total cross section = " << tot << " +- " << rms << " pb (" << 100*(rms/tot) << " %)";
 	  out << endl;
-	  out << std::setw(25) << "data stat";
-	  out << std::setw(12) << "bkg stat";
-	  out << std::setw(12) << "eff syst";
-	  out << std::setw(12) << "jec syst";
-	  out << std::setw(12) << "jer syst";
-	  out << std::setw(12) << "pu syst";
-	  if (useSysDR) out << std::setw(12) << "DR syst";
-	  out << std::setw(12) << "bkg syst";
-	  out << std::setw(12) << "ttbar stat";
-	  out << std::setw(12) << "bfit stat";
-	  if (useSysBfit2) out << std::setw(12) << "bfit2 syst";
-	  out << std::setw(12) << "btag syst";
-	  out << std::setw(12) << "unfold stat";
-	  if (useSysUnfold) out << std::setw(12) << "unfold syst";
-	  if (useSysRMS) out << std::setw(12) << "unfold rms";
-	  out << std::setw(12) << "tot stat";
-	  out << std::setw(12) << "tot syst";
-	  out << std::setw(12) << "tot error";
+	  out << std::setw(25) << "data";
+	  out << std::setw(12) << "bkg";
+	  out << std::setw(12) << "eff";
+	  out << std::setw(12) << "jec";
+	  out << std::setw(12) << "jer";
+	  out << std::setw(12) << "pu";
+	  if (useSysDR) out << std::setw(12) << "DR";
+	  out << std::setw(12) << "bkg";
+	  out << std::setw(12) << "ttbar";
+	  out << std::setw(12) << "bfit";
+	  if (useSysBfit2) out << std::setw(12) << "bfit2";
+	  out << std::setw(12) << "btag";
+	  out << std::setw(12) << "unfold";
+	  if (useSysUnfold) out << std::setw(12) << "unfold";
+	  if (useSysRMS) out << std::setw(12) << "unfold";
+	  out << std::setw(12) << "total";
+	  out << std::setw(12) << "total";
+	  out << std::setw(12) << "total";
+	  out << endl;
+	  out << std::setw(25) << "stat";
+	  out << std::setw(12) << "stat";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "syst";
+	  if (useSysDR) out << std::setw(12) << "syst";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "stat";
+	  out << std::setw(12) << "stat";
+	  if (useSysBfit2) out << std::setw(12) << "syst";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "stat";
+	  if (useSysUnfold) out << std::setw(12) << "syst";
+	  if (useSysRMS) out << std::setw(12) << "rms";
+	  out << std::setw(12) << "stat";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "error";
 	  out << std::setw(8) << "%";
 	  out << endl;
 	  for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	    out << std::fixed << std::setw(2);
-	    out << i << " ";
-	    out << std::fixed << std::setprecision(6) << std::setw(10);
-	    out << h_data->GetBinContent(i);
+	    out << std::fixed;
+	    out << std::setw(2) << i;
+	    out << " ";
+	    out << std::setprecision(6);
+	    out << std::setw(10) << h_data->GetBinContent(i);
 	    out << " +- ";
-	    out << std::fixed << std::setprecision(6) << std::setw(8);
-	    out << h_data->GetBinError(i);
-	    out << " +- " << stat_bkg->GetBinError(i);
-	    out << " +- " << syst_eff->GetBinError(i);
-	    out << " +- " << syst_jec->GetBinError(i);
-	    out << " +- " << syst_jer->GetBinError(i);
-	    out << " +- " << syst_pu->GetBinError(i);
-	    if (useSysDR) out << " +- " << syst_dr->GetBinError(i);
-	    out << " +- " << syst_bkg->GetBinError(i);
-	    out << " +- " << stat_top->GetBinError(i);
-	    out << " +- " << stat_bfit->GetBinError(i);
-	    if (useSysBfit2) out << " +- " << syst_bfit2->GetBinError(i);
-	    out << " +- " << syst_btag->GetBinError(i);
-	    out << " +- " << stat_unfold->GetBinError(i);
-	    if (useSysUnfold) out << " +- " << syst_unfold->GetBinError(i);
-	    if (useSysRMS) out << " +- " << h_data->GetBinContent(i)*rms/tot;
-	    out << " => ";
-	    out << h_data_stat->GetBinError(i);
+	    out << std::setw(8) << h_data->GetBinError(i);
 	    out << " +- ";
-	    out << h_data_syst->GetBinError(i);
+	    out << std::setw(8) << stat_bkg->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << syst_eff->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << syst_jec->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << syst_jer->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << syst_pu->GetBinError(i);
+	    if (useSysDR) {
+	      out << " +- ";
+	      out << std::setw(8) << syst_dr->GetBinError(i);
+	    }
+	    out << " +- ";
+	    out << std::setw(8) << syst_bkg->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << stat_top->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << stat_bfit->GetBinError(i);
+	    if (useSysBfit2) {
+	      out << " +- ";
+	      out << std::setw(8) << syst_bfit2->GetBinError(i);
+	    }
+	    out << " +- ";
+	    out << std::setw(8) << syst_btag->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << stat_unfold->GetBinError(i);
+	    if (useSysUnfold) {
+	      out << " +- ";
+	      out << std::setw(8) << syst_unfold->GetBinError(i);
+	    }
+	    if (useSysRMS) {
+	      out << " +- ";
+	      out << std::setw(8) << h_data->GetBinContent(i)*(rms/tot);
+	    }
 	    out << " => ";
-	    out << h_data_tot->GetBinError(i);
+	    out << std::setw(8) << h_data_stat->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << h_data_syst->GetBinError(i);
 	    out << " => ";
-	    out << std::setprecision(1) << std::setw(4);
-	    out << 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i));
+	    out << std::setw(8) << h_data_tot->GetBinError(i);
+	    out << " => ";
+	    out << std::setprecision(1);
+	    out << std::setw(4) << 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i));
 	    out << endl;
 	  }
 	  out << h_data_b->GetName();
 	  if (isratio==0) {
-	    out << std::fixed << std::setprecision(4) << std::setw(10);
-	    out << " : average unfolded total cross section = " << tot_b << " +- " << rms_b << " pb (" << 100*rms_b/tot_b << " %)";
+	    out << std::fixed << std::setprecision(4);
+	    out << " : average unfolded total cross section = " << tot_b << " +- " << rms_b << " pb (" << 100*(rms_b/tot_b) << " %)";
 	  }
 	  out << endl;
-	  out << std::setw(25) << "data stat";
-	  out << std::setw(12) << "bkg stat";
-	  out << std::setw(12) << "eff syst";
-	  out << std::setw(12) << "jec syst";
-	  out << std::setw(12) << "jer syst";
-	  out << std::setw(12) << "pu syst";
-	  if (useSysDR) out << std::setw(12) << "DR syst";
-	  out << std::setw(12) << "bkg syst";
-	  out << std::setw(12) << "ttbar stat";
-	  out << std::setw(12) << "bfit stat";
-	  if (useSysBfit2) out << std::setw(12) << "bfit2 syst";
-	  out << std::setw(12) << "btag syst";
-	  out << std::setw(12) << "unfold stat";
-	  if (useSysUnfold) out << std::setw(12) << "unfold syst";
-	  if (useSysRMS) out << std::setw(12) << "unfold rms";
-	  out << std::setw(12) << "tot stat";
-	  out << std::setw(12) << "tot syst";
-	  out << std::setw(12) << "tot error";
+	  out << std::setw(25) << "data";
+	  out << std::setw(12) << "bkg";
+	  out << std::setw(12) << "eff";
+	  out << std::setw(12) << "jec";
+	  out << std::setw(12) << "jer";
+	  out << std::setw(12) << "pu";
+	  if (useSysDR) out << std::setw(12) << "DR";
+	  out << std::setw(12) << "bkg";
+	  out << std::setw(12) << "ttbar";
+	  out << std::setw(12) << "bfit";
+	  if (useSysBfit2) out << std::setw(12) << "bfit2";
+	  out << std::setw(12) << "btag";
+	  out << std::setw(12) << "unfold";
+	  if (useSysUnfold) out << std::setw(12) << "unfold";
+	  if (useSysRMS) out << std::setw(12) << "unfold";
+	  out << std::setw(12) << "total";
+	  out << std::setw(12) << "total";
+	  out << std::setw(12) << "total";
+	  out << endl;
+	  out << std::setw(25) << "stat";
+	  out << std::setw(12) << "stat";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "syst";
+	  if (useSysDR) out << std::setw(12) << "syst";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "stat";
+	  out << std::setw(12) << "stat";
+	  if (useSysBfit2) out << std::setw(12) << "syst";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "stat";
+	  if (useSysUnfold) out << std::setw(12) << "syst";
+	  if (useSysRMS) out << std::setw(12) << "rms";
+	  out << std::setw(12) << "stat";
+	  out << std::setw(12) << "syst";
+	  out << std::setw(12) << "error";
 	  out << std::setw(8) << "%";
 	  out << endl;
 	  for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	    out << std::fixed << std::setw(2);
-	    out << i << " ";
-	    out << std::fixed << std::setprecision(6) << std::setw(10);
-	    out << h_data_b->GetBinContent(i);
+	    out << std::fixed;
+	    out << std::setw(2) << i;
+	    out << " ";
+	    out << std::setprecision(6);
+	    out << std::setw(10) << h_data_b->GetBinContent(i);
 	    out << " +- ";
-	    out << std::fixed << std::setprecision(6) << std::setw(8);
-	    out << h_data_b->GetBinError(i);
-	    out << " +- " << stat_b_bkg->GetBinError(i);
-	    out << " +- " << syst_b_eff->GetBinError(i);
-	    out << " +- " << syst_b_jec->GetBinError(i);
-	    out << " +- " << syst_b_jer->GetBinError(i);
-	    out << " +- " << syst_b_pu->GetBinError(i);
-	    if (useSysDR) out << " +- " << syst_b_dr->GetBinError(i);
-	    out << " +- " << syst_b_bkg->GetBinError(i);
-	    out << " +- " << stat_b_top->GetBinError(i);
-	    out << " +- " << stat_b_bfit->GetBinError(i);
-	    if (useSysBfit2) out << " +- " << syst_b_bfit2->GetBinError(i);
-	    out << " +- " << syst_b_btag->GetBinError(i);
-	    out << " +- " << stat_b_unfold->GetBinError(i);
-	    if (useSysUnfold) out << " +- " << syst_b_unfold->GetBinError(i);
-	    if (useSysRMS) out << " +- " << h_data_b->GetBinContent(i)*rms_b/tot_b;
-	    out << " => ";
-	    out << h_data_b_stat->GetBinError(i);
+	    out << std::setw(8) << h_data_b->GetBinError(i);
 	    out << " +- ";
-	    out << h_data_b_syst->GetBinError(i);
+	    out << std::setw(8) << stat_b_bkg->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << syst_b_eff->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << syst_b_jec->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << syst_b_jer->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << syst_b_pu->GetBinError(i);
+	    if (useSysDR) {
+	      out << " +- ";
+	      out << std::setw(8) << syst_b_dr->GetBinError(i);
+	    }
+	    out << " +- ";
+	    out << std::setw(8) << syst_b_bkg->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << stat_b_top->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << stat_b_bfit->GetBinError(i);
+	    if (useSysBfit2) {
+	      out << " +- ";
+	      out << std::setw(8) << syst_b_bfit2->GetBinError(i);
+	    }
+	    out << " +- ";
+	    out << std::setw(8) << syst_b_btag->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << stat_b_unfold->GetBinError(i);
+	    if (useSysUnfold) {
+	      out << " +- ";
+	      out << std::setw(8) << syst_b_unfold->GetBinError(i);
+	    }
+	    if (useSysRMS) {
+	      out << " +- ";
+	      out << std::setw(8) << h_data_b->GetBinContent(i)*(rms_b/tot_b);
+	    }
 	    out << " => ";
-	    out << h_data_b_tot->GetBinError(i);
+	    out << std::setw(8) << h_data_b_stat->GetBinError(i);
+	    out << " +- ";
+	    out << std::setw(8) << h_data_b_syst->GetBinError(i);
 	    out << " => ";
-	    out << std::setprecision(1) << std::setw(4);
-	    out << 100.*(h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_stat->GetBinContent(i));
+	    out << std::setw(8) << h_data_b_tot->GetBinError(i);
+	    out << " => ";
+	    out << std::setprecision(1);
+	    out << std::setw(4) << 100.*(h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_stat->GetBinContent(i));
 	    out << endl;
 	  }
 	  out.close();
+	  out1 << h_data->GetName() << " - RELATIVE ERRORS";
+	  out1 << endl;
+	  out1 << std::setw(7) << "data";
+	  out1 << std::setw(8) << "bkg";
+	  out1 << std::setw(8) << "eff";
+	  out1 << std::setw(8) << "jec";
+	  out1 << std::setw(8) << "jer";
+	  out1 << std::setw(8) << "pu";
+	  if (useSysDR) out1 << std::setw(8) << "DR";
+	  out1 << std::setw(8) << "bkg";
+	  out1 << std::setw(8) << "ttbar";
+	  out1 << std::setw(8) << "bfit";
+	  if (useSysBfit2) out1 << std::setw(8) << "bfit2";
+	  out1 << std::setw(8) << "btag";
+	  out1 << std::setw(8) << "unfold";
+	  if (useSysUnfold) out1 << std::setw(8) << "unfold";
+	  if (useSysRMS) out1 << std::setw(8) << "unfold";
+	  out1 << std::setw(8) << "total";
+	  out1 << std::setw(8) << "total";
+	  out1 << std::setw(8) << "total";
+	  out1 << endl;
+	  out1 << std::setw(7) << "stat";
+	  out1 << std::setw(8) << "stat";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "syst";
+	  if (useSysDR) out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "stat";
+	  out1 << std::setw(8) << "stat";
+	  if (useSysBfit2) out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "stat";
+	  if (useSysUnfold) out1 << std::setw(8) << "syst";
+	  if (useSysRMS) out1 << std::setw(8) << "rms";
+	  out1 << std::setw(8) << "stat";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "error";
+	  out1 << endl;
+	  for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
+	    double val = 100.*(h_data->GetBinContent(i)==0 ? 0 : 1./h_data->GetBinContent(i));
+	    out1 << std::fixed;
+	    out1 << std::setw(2) << i;
+	    out1 << " ";
+	    out1 << std::setprecision(1);
+	    out1 << std::setw(4) << h_data->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << stat_bkg->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_eff->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_jec->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_jer->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_pu->GetBinError(i)*val;
+	    if (useSysDR) {
+	      out1 << " +- ";
+	      out1 << std::setw(4) << syst_dr->GetBinError(i)*val;
+	    }
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_bkg->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << stat_top->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << stat_bfit->GetBinError(i)*val;
+	    if (useSysBfit2) {
+	      out1 << " +- ";
+	      out1 << std::setw(4) << syst_bfit2->GetBinError(i)*val;
+	    }
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_btag->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << stat_unfold->GetBinError(i)*val;
+	    if (useSysUnfold) {
+	      out1 << " +- ";
+	      out1 << std::setw(4) << syst_unfold->GetBinError(i)*val;
+	    }
+	    if (useSysRMS) {
+	      out1 << " +- ";
+	      out1 << std::setw(4) << h_data->GetBinContent(i)*(rms/tot)*val;
+	    }
+	    out1 << " => ";
+	    out1 << std::setw(4) << h_data_stat->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << h_data_syst->GetBinError(i)*val;
+	    out1 << " => ";
+	    out1 << std::setw(4) << h_data_tot->GetBinError(i)*val;
+	    out1 << endl;
+	  }
+	  out1 << h_data_b->GetName() << " - RELATIVE ERRORS";
+	  out1 << endl;
+	  out1 << std::setw(7) << "data";
+	  out1 << std::setw(8) << "bkg";
+	  out1 << std::setw(8) << "eff";
+	  out1 << std::setw(8) << "jec";
+	  out1 << std::setw(8) << "jer";
+	  out1 << std::setw(8) << "pu";
+	  if (useSysDR) out1 << std::setw(8) << "DR";
+	  out1 << std::setw(8) << "bkg";
+	  out1 << std::setw(8) << "ttbar";
+	  out1 << std::setw(8) << "bfit";
+	  if (useSysBfit2) out1 << std::setw(8) << "bfit2";
+	  out1 << std::setw(8) << "btag";
+	  out1 << std::setw(8) << "unfold";
+	  if (useSysUnfold) out1 << std::setw(8) << "unfold";
+	  if (useSysRMS) out1 << std::setw(8) << "unfold";
+	  out1 << std::setw(8) << "total";
+	  out1 << std::setw(8) << "total";
+	  out1 << std::setw(8) << "total";
+	  out1 << endl;
+	  out1 << std::setw(7) << "stat";
+	  out1 << std::setw(8) << "stat";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "syst";
+	  if (useSysDR) out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "stat";
+	  out1 << std::setw(8) << "stat";
+	  if (useSysBfit2) out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "stat";
+	  if (useSysUnfold) out1 << std::setw(8) << "syst";
+	  if (useSysRMS) out1 << std::setw(8) << "rms";
+	  out1 << std::setw(8) << "stat";
+	  out1 << std::setw(8) << "syst";
+	  out1 << std::setw(8) << "error";
+	  out1 << endl;
+	  for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
+	    double val = 100.*(h_data_b->GetBinContent(i)==0 ? 0 : 1./h_data_b->GetBinContent(i));
+	    out1 << std::fixed;
+	    out1 << std::setw(2) << i;
+	    out1 << " ";
+	    out1 << std::setprecision(1);
+	    out1 << std::setw(4) << h_data_b->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << stat_b_bkg->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_b_eff->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_b_jec->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_b_jer->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_b_pu->GetBinError(i)*val;
+	    if (useSysDR) {
+	      out1 << " +- ";
+	      out1 << std::setw(4) << syst_b_dr->GetBinError(i)*val;
+	    }
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_b_bkg->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << stat_b_top->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << stat_b_bfit->GetBinError(i)*val;
+	    if (useSysBfit2) {
+	      out1 << " +- ";
+	      out1 << std::setw(4) << syst_b_bfit2->GetBinError(i)*val;
+	    }
+	    out1 << " +- ";
+	    out1 << std::setw(4) << syst_b_btag->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << stat_b_unfold->GetBinError(i)*val;
+	    if (useSysUnfold) {
+	      out1 << " +- ";
+	      out1 << std::setw(4) << syst_b_unfold->GetBinError(i)*val;
+	    }
+	    if (useSysRMS) {
+	      out1 << " +- ";
+	      out1 << std::setw(4) << h_data_b->GetBinContent(i)*(rms_b/tot_b)*val;
+	    }
+	    out1 << " => ";
+	    out1 << std::setw(4) << h_data_b_stat->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << h_data_b_syst->GetBinError(i)*val;
+	    out1 << " => ";
+	    out1 << std::setw(4) << h_data_b_tot->GetBinError(i)*val;
+	    out1 << endl;
+	  }
+	  out1.close();
 	}
 }
 

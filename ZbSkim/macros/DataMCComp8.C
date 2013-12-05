@@ -195,6 +195,7 @@ string subdir="0";
 
 	  getline(in, tmp);
 	  getline(in, tmp);
+	  getline(in, tmp);
 	  for (int j=0; j<h_data->GetNbinsX()+2; j++) {
 	    for (int k=0; k<N; k++){
 	      in >> tmp;
@@ -204,6 +205,7 @@ string subdir="0";
 	    in.ignore();
 //cout << endl;
 	  }
+	  getline(in, tmp);
 	  getline(in, tmp);
 	  getline(in, tmp);
 	  for (int j=0; j<h_data_b->GetNbinsX()+2; j++) {
@@ -870,65 +872,123 @@ string subdir="0";
 	}
 
 	if (plot) {
-	  ofstream out;
+	  ofstream out, out1;
 	  if (isratio==0) {
 	    gSystem->mkdir((path + "/combined/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/combined/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
 	    out.open((path + "/combined/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.dat").c_str());
+	    out1.open((path + "/combined/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.txt").c_str());
 	  }
 	  if (isratio==1) {
 	    gSystem->mkdir((path + "/combined/" + version + "/ratios_unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/combined/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
 	    out.open((path + "/combined/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.dat").c_str());
+	    out1.open((path + "/combined/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.txt").c_str());
 	  }
 	  out << h_data->GetName();
 	  out << endl;
-	  out << std::setw(25) << "tot stat";
-	  out << std::setw(12) << "tot sys";
-	  out << std::setw(12) << "tot error";
+	  out << std::setw(25) << "total";
+	  out << std::setw(12) << "total";
+	  out << std::setw(12) << "total";
+	  out << endl;
+	  out << std::setw(25) << "stat";
+	  out << std::setw(12) << "sys";
+	  out << std::setw(12) << "error";
 	  out << std::setw(8) << "%";
 	  out << endl;
 	  for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
-	    out << std::fixed << std::setw(2);
-	    out << i << " ";
-	    out << std::fixed << std::setprecision(6) << std::setw(10);
-	    out << h_data_stat->GetBinContent(i);
+	    out << std::fixed;
+	    out << std::setw(2) << i;
+	    out << " ";
+	    out << std::setprecision(6);
+	    out << std::setw(10) << h_data_stat->GetBinContent(i);
 	    out << " +- ";
-	    out << std::fixed << std::setprecision(6) << std::setw(8);
-	    out << h_data_stat->GetBinError(i);
+	    out << std::setw(8) << h_data_stat->GetBinError(i);
 	    out << " +- ";
-	    out << h_data_syst->GetBinError(i);
+	    out << std::setw(8) << h_data_syst->GetBinError(i);
 	    out << " => ";
-	    out << h_data_tot->GetBinError(i);
+	    out << std::setw(8) << h_data_tot->GetBinError(i);
 	    out << " => ";
-	    out << std::setprecision(1) << std::setw(4);
-	    out << 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i));
+	    out << std::setprecision(1);
+	    out << std::setw(4) << 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i));
 	    out << endl;
 	  }
 	  out << h_data_b->GetName();
 	  out << endl;
-	  out << std::setw(25) << "tot stat";
-	  out << std::setw(12) << "tot sys";
-	  out << std::setw(12) << "tot error";
+	  out << std::setw(25) << "total";
+	  out << std::setw(12) << "total";
+	  out << std::setw(12) << "total";
+	  out << endl;
+	  out << std::setw(25) << "stat";
+	  out << std::setw(12) << "sys";
+	  out << std::setw(12) << "error";
 	  out << std::setw(8) << "%";
 	  out << endl;
 	  for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
-	    out << std::fixed << std::setw(2);
-	    out << i << " ";
-	    out << std::fixed << std::setprecision(6) << std::setw(10);
-	    out << h_data_b_stat->GetBinContent(i);
+	    out << std::fixed;
+	    out << std::setw(2) << i;
+	    out << " ";
+	    out << std::setprecision(6);
+	    out << std::setw(10) << h_data_b_stat->GetBinContent(i);
 	    out << " +- ";
-	    out << h_data_b_stat->GetBinError(i);
+	    out << std::setw(8) << h_data_b_stat->GetBinError(i);
 	    out << " +- ";
-	    out << h_data_b_syst->GetBinError(i);
+	    out << std::setw(8) << h_data_b_syst->GetBinError(i);
 	    out << " => ";
-	    out << h_data_b_tot->GetBinError(i);
+	    out << std::setw(8) << h_data_b_tot->GetBinError(i);
 	    out << " => ";
-	    out << std::setprecision(1) << std::setw(4);
-	    out << 100.*(h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_stat->GetBinContent(i));
+	    out << std::setprecision(1);
+	    out << std::setw(4) << 100.*(h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_stat->GetBinContent(i));
 	    out << endl;
 	  }
 	  out.close();
+	  out1 << h_data->GetName() << " - RELATIVE ERRORS";
+	  out1 << endl;
+	  out1 << std::setw(7) << "total";
+	  out1 << std::setw(8) << "total";
+	  out1 << std::setw(8) << "total";
+	  out1 << endl;
+	  out1 << std::setw(7) << "stat";
+	  out1 << std::setw(8) << "sys";
+	  out1 << std::setw(8) << "error";
+	  out1 << endl;
+	  for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
+	    double val = 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : 1./h_data_stat->GetBinContent(i));
+	    out1 << std::fixed;
+	    out1 << std::setw(2) << i;
+	    out1 << " ";
+	    out1 << std::setprecision(1);
+	    out1 << std::setw(4) << h_data_stat->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << h_data_syst->GetBinError(i)*val;
+	    out1 << " => ";
+	    out1 << std::setw(4) << h_data_tot->GetBinError(i)*val;
+	    out1 << endl;
+	  }
+	  out1 << h_data_b->GetName() << " - RELATIVE ERRORS";
+	  out1 << endl;
+	  out1 << std::setw(7) << "total";
+	  out1 << std::setw(8) << "total";
+	  out1 << std::setw(8) << "total";
+	  out1 << endl;
+	  out1 << std::setw(7) << "stat";
+	  out1 << std::setw(8) << "sys";
+	  out1 << std::setw(8) << "error";
+	  out1 << endl;
+	  for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
+	    double val = 100.*(h_data_b_stat->GetBinContent(i)==0 ? 0 : 1./h_data_b_stat->GetBinContent(i));
+	    out1 << std::fixed;
+	    out1 << std::setw(2) << i;
+	    out1 << " ";
+	    out1 << std::setprecision(1);
+	    out1 << std::setw(4) << h_data_b_stat->GetBinError(i)*val;
+	    out1 << " +- ";
+	    out1 << std::setw(4) << h_data_b_syst->GetBinError(i)*val;
+	    out1 << " => ";
+	    out1 << std::setw(4) << h_data_b_tot->GetBinError(i)*val;
+	    out1 << endl;
+	  }
+	  out1.close();
 	}
 }
 
