@@ -99,6 +99,10 @@ if (irun==13) {            // irun==13 => bkg statistics
   subdir="13";
   postfix="";
 }
+if (irun==77) {            // irun==77 => unfolding with MadGraph 4FS
+  subdir="77";
+  postfix="";
+}
 if (irun==88) {            // irun==88 => deltaR
   subdir="88";
   postfix="DR";

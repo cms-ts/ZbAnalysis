@@ -26,6 +26,7 @@ bool verbose = false;
 // imode =  3; // unfolding data with MadGraph
 // imode =  4; // unfolding data with Sherpa
 // imode =  5; // unfolding data with Powheg
+// imode =  6; // unfolding data with MadGraph 4FS
 
 // method = 0; // use SVD
 // method = 1; // use Bayes
@@ -85,6 +86,10 @@ if (irun==13) {            // irun==13 => bkg statistics
   subdir="13";
   postfix="";
 }
+if (irun==77) {            // irun==77 => unfolding with MadGraph 4FS
+  subdir="77";
+  postfix="";
+}
 if (irun==88) {            // irun==88 => deltaR
   subdir="88";
   postfix="DR";
@@ -96,6 +101,7 @@ if (irun==99) {            // irun==99 => pur
 
         if (irun==8) imode = 4;
         if (irun==9) imode = 5;
+        if (irun==77) imode = 6;
 
 	//if (!verbose) gErrorIgnoreLevel = kError;
 
@@ -169,6 +175,7 @@ if (irun==99) {            // irun==99 => pur
 	  if (ilepton==1) mc1 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
+	if (imode== 6) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
 
 	TFile* mc2=0;
 	if (imode==-1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
@@ -181,6 +188,7 @@ if (irun==99) {            // irun==99 => pur
 	if (imode== 3) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 4) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 5) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (imode== 6) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 
 	TH1F* h_data_reco;
 	data->cd();

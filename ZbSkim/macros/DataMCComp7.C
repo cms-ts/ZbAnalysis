@@ -35,6 +35,9 @@ int useSysRMS=0;
 int useSysUnfold=0;
 //int useSysUnfold=1; // include unfolding systematics
 
+int useSysUnfold4FS=0;
+//int useSysUnfold4FS=1; // include unfolding systematics
+
 int useMC=0;
 //int useMC=1; // use MC prediction
 
@@ -137,6 +140,10 @@ string subdir="0";
 	    h_data_scan[i] = read(ss.str(), title, ilepton);
 	    h_data_b_scan[i] = read(ss.str(), title_b, ilepton);
 	  }
+	}
+	if (useSysUnfold4FS) {
+	  h_data_scan[77] = read("77", title, ilepton);
+	  h_data_b_scan[77] = read("77", title_b, ilepton);
 	}
 	if (useSysDR) {
 	  h_data_scan[88] = read("88", title, ilepton);
@@ -457,6 +464,11 @@ string subdir="0";
 	    float err9 = TMath::Sqrt(TMath::Max(0.,pow(h_data_b_scan[9]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2)));
 	    float err7 = TMath::Sqrt(TMath::Max(0.,pow(h_data_b_scan[7]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2)));
 	    val = TMath::Sqrt(TMath::Max(0.,pow(val,2)-pow(err9,2)-pow(err7,2)));
+	    if (useSysUnfold4FS) {
+	      val = TMath::Max(val,TMath::Abs(h_data_b_scan[77]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i)));
+	      float err77 = TMath::Sqrt(TMath::Max(0.,pow(h_data_b_scan[77]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2)));
+	      val = TMath::Sqrt(TMath::Max(0.,pow(val,2)-pow(err77,2)-pow(err7,2)));
+	    }
 	  }
 	  syst_b_unfold->SetBinError(i, val);
 	}
