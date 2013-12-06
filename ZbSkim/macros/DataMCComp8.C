@@ -196,6 +196,32 @@ string subdir="0";
 	h_mcg2_b->Scale(norm1_2);
 	h_mcg3_b->Scale(norm1_3);
 
+	h_data->Scale(1./Lumi2012, "width");
+	h_data_b->Scale(1./Lumi2012, "width");
+	if (isratio==1) {
+	  h_data_b->Divide(h_data);
+	  h_data_b->Scale(100.);
+	}
+
+	h_mcg->Scale(1./Lumi2012, "width");
+	h_mcg1->Scale(1./Lumi2012, "width");
+	h_mcg2->Scale(1./Lumi2012, "width");
+	h_mcg3->Scale(1./Lumi2012, "width");
+	h_mcg_b->Scale(1./Lumi2012, "width");
+	h_mcg1_b->Scale(1./Lumi2012, "width");
+	h_mcg2_b->Scale(1./Lumi2012, "width");
+	h_mcg3_b->Scale(1./Lumi2012, "width");
+	if (isratio==1) {
+	  h_mcg_b->Divide(h_mcg);
+	  h_mcg1_b->Divide(h_mcg1);
+	  h_mcg2_b->Divide(h_mcg2);
+	  h_mcg3_b->Divide(h_mcg1);
+	  h_mcg_b->Scale(100.);
+	  h_mcg1_b->Scale(100.);
+	  h_mcg2_b->Scale(100.);
+	  h_mcg3_b->Scale(100.);
+	}
+
 	const int N=16;
 	float x[2][100][100];
 	float x_b[2][100][100];
@@ -293,25 +319,6 @@ string subdir="0";
 	    val = TMath::Sqrt(pow(h_data_b_stat->GetBinError(i),2)+pow(h_data_b_syst->GetBinError(i),2));
 	    h_data_b_tot->SetBinError(i, val);
 	  }
-	}
-
-	h_mcg->Scale(1./Lumi2012, "width");
-	h_mcg1->Scale(1./Lumi2012, "width");
-	h_mcg2->Scale(1./Lumi2012, "width");
-	h_mcg3->Scale(1./Lumi2012, "width");
-	h_mcg_b->Scale(1./Lumi2012, "width");
-	h_mcg1_b->Scale(1./Lumi2012, "width");
-	h_mcg2_b->Scale(1./Lumi2012, "width");
-	h_mcg3_b->Scale(1./Lumi2012, "width");
-	if (isratio==1) {
-	  h_mcg_b->Divide(h_mcg);
-	  h_mcg1_b->Divide(h_mcg1);
-	  h_mcg2_b->Divide(h_mcg2);
-	  h_mcg3_b->Divide(h_mcg1);
-	  h_mcg_b->Scale(100.);
-	  h_mcg1_b->Scale(100.);
-	  h_mcg2_b->Scale(100.);
-	  h_mcg3_b->Scale(100.);
 	}
 
 	h_data = fixrange(h_data);
