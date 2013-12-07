@@ -222,7 +222,7 @@ string subdir="0";
 	  h_mcg3_b->Scale(100.);
 	}
 
-	const int N=16;
+	const int N=17;
 	float x[2][100][100];
 	float x_b[2][100][100];
 
