@@ -392,10 +392,10 @@ string subdir="0";
 	TH1F* h_data_b = (TH1F*)w_data_b[0]->Clone();
 	TH1F* h_data_stat = (TH1F*)w_data[0]->Clone();
 	TH1F* h_data_b_stat = (TH1F*)w_data_b[0]->Clone();
-        TH1F* h_data_syst = (TH1F*)h_data->Clone();
-        TH1F* h_data_b_syst = (TH1F*)h_data->Clone();
-        TH1F* h_data_tot = (TH1F*)h_data->Clone();
-        TH1F* h_data_b_tot = (TH1F*)h_data->Clone();
+        TH1F* h_data_syst = (TH1F*)w_data[0]->Clone();
+        TH1F* h_data_b_syst = (TH1F*)w_data[0]->Clone();
+        TH1F* h_data_tot = (TH1F*)w_data[0]->Clone();
+        TH1F* h_data_b_tot = (TH1F*)w_data[0]->Clone();
 
 	TH1F* stat_bkg = (TH1F*)w_data[0]->Clone();
 	TH1F* stat_b_bkg = (TH1F*)w_data_b[0]->Clone();
