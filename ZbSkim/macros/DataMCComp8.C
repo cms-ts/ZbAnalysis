@@ -878,6 +878,11 @@ string subdir="0";
 	h_data_b = fixrange(h_data_b);
 	h_data_stat = fixrange(h_data_stat);
 	h_data_b_stat = fixrange(h_data_b_stat);
+	h_data_syst = fixrange(h_data_syst);
+	h_data_b_syst = fixrange(h_data_b_syst);
+	h_data_tot = fixrange(h_data_tot);
+	h_data_b_tot = fixrange(h_data_b_tot);
+
 	h_mcg = fixrange(h_mcg);
 	h_mcg_b = fixrange(h_mcg_b);
 	h_mcg1 = fixrange(h_mcg1);

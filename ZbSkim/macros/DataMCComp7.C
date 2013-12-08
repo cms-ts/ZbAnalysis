@@ -589,8 +589,11 @@ string subdir="0";
 	}
 	h_data_stat = fixrange(h_data_stat);
 	h_data_b_stat = fixrange(h_data_b_stat);
+	h_data_syst = fixrange(h_data_syst);
+	h_data_b_syst = fixrange(h_data_b_syst);
 	h_data_tot = fixrange(h_data_tot);
 	h_data_b_tot = fixrange(h_data_b_tot);
+
 	h_mc1 = fixrange(h_mc1);
 	h_mc1b_b = fixrange(h_mc1b_b);
 	h_mcg = fixrange(h_mcg);
