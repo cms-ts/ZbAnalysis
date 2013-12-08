@@ -15,18 +15,18 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   if (gin) {};
   for (int i=1; i<=h_data_fit->GetNbinsX(); i++) {
     double xn = h_data_fit->GetBinContent(i);
-    double xd = pow(h_data_fit->GetBinError(i),2);
+    double xd = TMath::Power(h_data_fit->GetBinError(i),2);
     if (npar>0) {
       xn = xn - par[0]*h_mc_fit0->GetBinContent(i);
-      xd = xd + pow(par[0]*h_mc_fit0->GetBinError(i),2);
+      xd = xd + TMath::Power(par[0]*h_mc_fit0->GetBinError(i),2);
     }
     if (npar>1) {
       xn = xn - par[1]*h_mc_fit1->GetBinContent(i);
-      xd = xd + pow(par[1]*h_mc_fit1->GetBinError(i),2);
+      xd = xd + TMath::Power(par[1]*h_mc_fit1->GetBinError(i),2);
     }
     if (npar>2) {
       xn = xn - par[2]*h_mc_fit2->GetBinContent(i);
-      xd = xd + pow(par[2]*h_mc_fit2->GetBinError(i),2);
+      xd = xd + TMath::Power(par[2]*h_mc_fit2->GetBinError(i),2);
     }
     if (xd!=0) chisq = chisq + (xn*xn)/xd;
   }
@@ -405,10 +405,10 @@ if (irun==99) {            // irun==99 => pur
 	if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
 	if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
 	for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	  float e = pow(h_mc1->GetBinError(i),2);
-	  if (h_mc1b) e = e - pow(h_mc1b->GetBinError(i),2);
-	  if (h_mc1c) e = e - pow(h_mc1c->GetBinError(i),2);
-	  if (h_mc1t) e = e - pow(h_mc1t->GetBinError(i),2);
+	  float e = TMath::Power(h_mc1->GetBinError(i),2);
+	  if (h_mc1b) e = e - TMath::Power(h_mc1b->GetBinError(i),2);
+	  if (h_mc1c) e = e - TMath::Power(h_mc1c->GetBinError(i),2);
+	  if (h_mc1t) e = e - TMath::Power(h_mc1t->GetBinError(i),2);
 	  h_mc1->SetBinError(i, TMath::Sqrt(e));
 	}
 
@@ -429,7 +429,7 @@ if (irun==99) {            // irun==99 => pur
 	  if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
 	  h_mc_fit0 = h_mc2;
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-	    float e = pow(h_data_fit->GetBinError(i),2);
+	    float e = TMath::Power(h_data_fit->GetBinError(i),2);
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {

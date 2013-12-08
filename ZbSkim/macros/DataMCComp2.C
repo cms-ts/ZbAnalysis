@@ -473,10 +473,10 @@ if (irun==99) {            // irun==99 => pur
 	if (h_mc1c_b) h_mc1uds_b->Add(h_mc1c_b, -1);
 	if (h_mc1t_b) h_mc1uds_b->Add(h_mc1t_b, -1);
 	for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
-	  float e = pow(h_mc1uds_b->GetBinError(i),2);
-	  if (h_mc1b_b) e = e - pow(h_mc1b_b->GetBinError(i),2);
-	  if (h_mc1c_b) e = e - pow(h_mc1c_b->GetBinError(i),2);
-	  if (h_mc1t_b) e = e - pow(h_mc1t_b->GetBinError(i),2);
+	  float e = TMath::Power(h_mc1uds_b->GetBinError(i),2);
+	  if (h_mc1b_b) e = e - TMath::Power(h_mc1b_b->GetBinError(i),2);
+	  if (h_mc1c_b) e = e - TMath::Power(h_mc1c_b->GetBinError(i),2);
+	  if (h_mc1t_b) e = e - TMath::Power(h_mc1t_b->GetBinError(i),2);
 	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
 	}
 

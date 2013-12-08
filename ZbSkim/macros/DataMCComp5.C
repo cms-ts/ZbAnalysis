@@ -13,10 +13,10 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   if (gin) {};
   for (int i=1; i<=h_data->GetNbinsX(); i++) {
     double xn = h_data->GetBinContent(i);
-    double xd = pow(h_data->GetBinError(i),2);
+    double xd = TMath::Power(h_data->GetBinError(i),2);
     if (npar>0) {
       xn = xn - par[0]*h_data_fit->GetBinContent(i);
-      xd = xd + pow(par[0]*h_data_fit->GetBinError(i),2);
+      xd = xd + TMath::Power(par[0]*h_data_fit->GetBinError(i),2);
     }
     if (xd!=0) chisq = chisq + (xn*xn)/xd;
   }

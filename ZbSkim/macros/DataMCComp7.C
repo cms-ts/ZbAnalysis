@@ -214,8 +214,8 @@ string subdir="0";
 
 	h_mc1b_b->Scale(c_b);
 	for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
-	  float e = pow(h_mc1b_b->GetBinError(i),2);
-	  e = e + pow(h_mc1b_b->GetBinContent(i)*(ec_b/c_b),2);
+	  float e = TMath::Power(h_mc1b_b->GetBinError(i),2);
+	  e = e + TMath::Power(h_mc1b_b->GetBinContent(i)*(ec_b/c_b),2);
 	  h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
@@ -267,18 +267,18 @@ string subdir="0";
 	TH1F* stat_b_bkg = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  double val = 0.0;
-	  val = TMath::Sqrt(TMath::Max(val, pow(h_data_scan[13]->GetBinError(i),2)-pow(h_data_scan[0]->GetBinError(i),2))/(pow(1.1,2)-1));
+	  val = TMath::Sqrt(TMath::Max(val, TMath::Power(h_data_scan[13]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2))/(TMath::Power(1.1,2)-1));
 	  stat_bkg->SetBinError(i, val);
 	  val = 0.0;
-	  val = TMath::Sqrt(TMath::Max(val, pow(h_data->GetBinError(i),2)-pow(stat_bkg->GetBinError(i),2)));
+	  val = TMath::Sqrt(TMath::Max(val, TMath::Power(h_data->GetBinError(i),2)-TMath::Power(stat_bkg->GetBinError(i),2)));
 	  h_data->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  double val = 0.0;
-	  val = TMath::Sqrt(TMath::Max(val, pow(h_data_b_scan[13]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2))/(pow(1.1,2)-1));
+	  val = TMath::Sqrt(TMath::Max(val, TMath::Power(h_data_b_scan[13]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2))/(TMath::Power(1.1,2)-1));
 	  stat_b_bkg->SetBinError(i, val);
 	  val = 0.0;
-	  val = TMath::Sqrt(TMath::Max(val, pow(h_data_b->GetBinError(i),2)-pow(stat_b_bkg->GetBinError(i),2)));
+	  val = TMath::Sqrt(TMath::Max(val, TMath::Power(h_data_b->GetBinError(i),2)-TMath::Power(stat_b_bkg->GetBinError(i),2)));
 	  h_data_b->SetBinError(i, val);
 	}
 
@@ -348,7 +348,7 @@ string subdir="0";
 	  double val = 0.0;
 	  if (useSysDR) {
 	    val = TMath::Max(val,TMath::Abs(h_data_scan[88]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
-	    val = TMath::Sqrt(TMath::Max(0.0,pow(val,2)-TMath::Abs(pow(h_data_scan[0]->GetBinError(i),2)-pow(h_data_scan[88]->GetBinError(i),2))));
+	    val = TMath::Sqrt(TMath::Max(0.0,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_scan[0]->GetBinError(i),2)-TMath::Power(h_data_scan[88]->GetBinError(i),2))));
 	  }
 	  syst_dr->SetBinError(i, val);
 	}
@@ -356,7 +356,7 @@ string subdir="0";
 	  double val = 0.0;
 	  if (useSysDR) {
 	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[88]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
-	    val = TMath::Sqrt(TMath::Max(0.0,pow(val,2)-TMath::Abs(pow(h_data_b_scan[0]->GetBinError(i),2)-pow(h_data_b_scan[88]->GetBinError(i),2))));
+	    val = TMath::Sqrt(TMath::Max(0.0,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_b_scan[0]->GetBinError(i),2)-TMath::Power(h_data_b_scan[88]->GetBinError(i),2))));
 	  }
 	  syst_b_dr->SetBinError(i, val);
 	}
@@ -406,7 +406,7 @@ string subdir="0";
 	  double val = 0.0;
 	  if (useSysBfit2) {
 	    val = TMath::Max(val,TMath::Abs(h_data_scan[99]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i)));
-	    val = TMath::Sqrt(TMath::Max(0.0,pow(val,2)-TMath::Abs(pow(h_data_scan[0]->GetBinError(i),2)-pow(h_data_scan[99]->GetBinError(i),2))));
+	    val = TMath::Sqrt(TMath::Max(0.0,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_scan[0]->GetBinError(i),2)-TMath::Power(h_data_scan[99]->GetBinError(i),2))));
 	  }
 	  syst_bfit2->SetBinError(i, val);
 	}
@@ -414,7 +414,7 @@ string subdir="0";
 	  double val = 0.0;
 	  if (useSysBfit2) {
 	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[99]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i)));
-	    val = TMath::Sqrt(TMath::Max(0.0,pow(val,2)-TMath::Abs(pow(h_data_b_scan[0]->GetBinError(i),2)-pow(h_data_b_scan[99]->GetBinError(i),2))));
+	    val = TMath::Sqrt(TMath::Max(0.0,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_b_scan[0]->GetBinError(i),2)-TMath::Power(h_data_b_scan[99]->GetBinError(i),2))));
 	  }
 	  syst_b_bfit2->SetBinError(i, val);
 	}
@@ -436,12 +436,12 @@ string subdir="0";
 	TH1F* stat_b_unfold = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  double val;
-	  val = TMath::Sqrt(TMath::Max(0.,pow(h_data_scan[7]->GetBinError(i),2)-pow(h_data_scan[0]->GetBinError(i),2)));
+	  val = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2)));
 	  stat_unfold->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  double val;
-	  val = TMath::Sqrt(TMath::Max(0.,pow(h_data_b_scan[7]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2)));
+	  val = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2)));
 	  stat_b_unfold->SetBinError(i, val);
 	}
 
@@ -451,9 +451,9 @@ string subdir="0";
 	  double val = 0.0;
 	  if (useSysUnfold) {
 	    val = TMath::Max(val,TMath::Abs(h_data_scan[9]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i)));
-	    float err9 = TMath::Sqrt(TMath::Max(0.,pow(h_data_scan[9]->GetBinError(i),2)-pow(h_data_scan[0]->GetBinError(i),2)));
-	    float err7 = TMath::Sqrt(TMath::Max(0.,pow(h_data_scan[7]->GetBinError(i),2)-pow(h_data_scan[0]->GetBinError(i),2)));
-	    val = TMath::Sqrt(TMath::Max(0.,pow(val,2)-pow(err9,2)-pow(err7,2)));
+	    float err9 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_scan[9]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2)));
+	    float err7 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2)));
+	    val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Power(err9,2)-TMath::Power(err7,2)));
 	  }
 	  syst_unfold->SetBinError(i, val);
 	}
@@ -461,13 +461,13 @@ string subdir="0";
 	  double val = 0.0;
 	  if (useSysUnfold) {
 	    val = TMath::Max(val,TMath::Abs(h_data_b_scan[9]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i)));
-	    float err9 = TMath::Sqrt(TMath::Max(0.,pow(h_data_b_scan[9]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2)));
-	    float err7 = TMath::Sqrt(TMath::Max(0.,pow(h_data_b_scan[7]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2)));
-	    val = TMath::Sqrt(TMath::Max(0.,pow(val,2)-pow(err9,2)-pow(err7,2)));
+	    float err9 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[9]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2)));
+	    float err7 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2)));
+	    val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Power(err9,2)-TMath::Power(err7,2)));
 	    if (useSysUnfold4FS) {
 	      val = TMath::Max(val,TMath::Abs(h_data_b_scan[77]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i)));
-	      float err77 = TMath::Sqrt(TMath::Max(0.,pow(h_data_b_scan[77]->GetBinError(i),2)-pow(h_data_b_scan[0]->GetBinError(i),2)));
-	      val = TMath::Sqrt(TMath::Max(0.,pow(val,2)-pow(err77,2)-pow(err7,2)));
+	      float err77 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[77]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2)));
+	      val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Power(err77,2)-TMath::Power(err7,2)));
 	    }
 	  }
 	  syst_b_unfold->SetBinError(i, val);
@@ -503,12 +503,12 @@ string subdir="0";
 
 	float tot = (sum1+sum2+sum3+sum4+sum5)/5.;
 	float tot_b = (sum1_b+sum2_b+sum3_b+sum4_b+sum5_b)/5.;
-	float rms = TMath::Sqrt((pow(sum1-tot,2)+pow(sum2-tot,2)+pow(sum3-tot,2)+pow(sum4-tot,2)+pow(sum5-tot,2))/(5-1));
-	float rms_b = TMath::Sqrt((pow(sum1_b-tot_b,2)+pow(sum2_b-tot_b,2)+pow(sum3_b-tot_b,2)+pow(sum4_b-tot_b,2)+pow(sum5_b-tot_b,2))/(5-1));
+	float rms = TMath::Sqrt((TMath::Power(sum1-tot,2)+TMath::Power(sum2-tot,2)+TMath::Power(sum3-tot,2)+TMath::Power(sum4-tot,2)+TMath::Power(sum5-tot,2))/(5-1));
+	float rms_b = TMath::Sqrt((TMath::Power(sum1_b-tot_b,2)+TMath::Power(sum2_b-tot_b,2)+TMath::Power(sum3_b-tot_b,2)+TMath::Power(sum4_b-tot_b,2)+TMath::Power(sum5_b-tot_b,2))/(5-1));
 
 	if (isratio==1) {
 	  float tmp1 = (tot_b/tot);
-	  float tmp2 = (tot_b/tot)*TMath::Sqrt(pow(rms/tot,2)+pow(rms_b/tot_b,2));
+	  float tmp2 = (tot_b/tot)*TMath::Sqrt(TMath::Power(rms/tot,2)+TMath::Power(rms_b/tot_b,2));
 	  tot_b = tmp1;
 	  rms_b = tmp2;
 	}
@@ -521,44 +521,44 @@ string subdir="0";
 	TH1F* h_data_b_tot = (TH1F*)h_data_b->Clone();
 
 	for (int i=0;i<=h_data_stat->GetNbinsX()+1;i++) {
-	  h_data_stat->SetBinError(i, TMath::Sqrt(pow(h_data_stat->GetBinError(i),2)+pow(stat_top->GetBinError(i),2)));
-	  h_data_stat->SetBinError(i, TMath::Sqrt(pow(h_data_stat->GetBinError(i),2)+pow(stat_bfit->GetBinError(i),2)));
+	  h_data_stat->SetBinError(i, TMath::Sqrt(TMath::Power(h_data_stat->GetBinError(i),2)+TMath::Power(stat_top->GetBinError(i),2)));
+	  h_data_stat->SetBinError(i, TMath::Sqrt(TMath::Power(h_data_stat->GetBinError(i),2)+TMath::Power(stat_bfit->GetBinError(i),2)));
 	  double val = 0.0;
-	  val = TMath::Sqrt(pow(val,2)+pow(stat_bkg->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_eff->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_jec->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_jer->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_pu->GetBinError(i),2));
-	  if (useSysDR) val = TMath::Sqrt(pow(val,2)+pow(syst_dr->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_bkg->GetBinError(i),2));
-	  if (useSysBfit2) val = TMath::Sqrt(pow(val,2)+pow(syst_bfit2->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_btag->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(stat_unfold->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_unfold->GetBinError(i),2));
-	  if (useSysRMS) val = TMath::Sqrt(pow(val,2)+pow(h_data_stat->GetBinContent(i)*rms/tot,2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_bkg->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_eff->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_jec->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_jer->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_pu->GetBinError(i),2));
+	  if (useSysDR) val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_dr->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_bkg->GetBinError(i),2));
+	  if (useSysBfit2) val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_bfit2->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_btag->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_unfold->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_unfold->GetBinError(i),2));
+	  if (useSysRMS) val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(h_data_stat->GetBinContent(i)*rms/tot,2));
 	  h_data_syst->SetBinError(i, val);
-	  val = TMath::Sqrt(pow(h_data_stat->GetBinError(i),2)+pow(h_data_syst->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(h_data_stat->GetBinError(i),2)+TMath::Power(h_data_syst->GetBinError(i),2));
 	  h_data_tot->SetBinError(i, val);
 	}
 
 	for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
-	  h_data_b_stat->SetBinError(i, TMath::Sqrt(pow(h_data_b_stat->GetBinError(i),2)+pow(stat_b_top->GetBinError(i),2)));
-	  h_data_b_stat->SetBinError(i, TMath::Sqrt(pow(h_data_b_stat->GetBinError(i),2)+pow(stat_b_bfit->GetBinError(i),2)));
+	  h_data_b_stat->SetBinError(i, TMath::Sqrt(TMath::Power(h_data_b_stat->GetBinError(i),2)+TMath::Power(stat_b_top->GetBinError(i),2)));
+	  h_data_b_stat->SetBinError(i, TMath::Sqrt(TMath::Power(h_data_b_stat->GetBinError(i),2)+TMath::Power(stat_b_bfit->GetBinError(i),2)));
 	  double val = 0.0;
-	  val = TMath::Sqrt(pow(val,2)+pow(stat_b_bkg->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_eff->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_jec->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_jer->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_pu->GetBinError(i),2));
-	  if (useSysDR) val = TMath::Sqrt(pow(val,2)+pow(syst_b_dr->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_bkg->GetBinError(i),2));
-	  if (useSysBfit2) val = TMath::Sqrt(pow(val,2)+pow(syst_b_bfit2->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_btag->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(stat_b_unfold->GetBinError(i),2));
-	  val = TMath::Sqrt(pow(val,2)+pow(syst_b_unfold->GetBinError(i),2));
-	  if (useSysRMS) val = TMath::Sqrt(pow(val,2)+pow(h_data_b_stat->GetBinContent(i)*rms_b/tot_b,2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_b_bkg->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_eff->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_jec->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_jer->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_pu->GetBinError(i),2));
+	  if (useSysDR) val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_dr->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_bkg->GetBinError(i),2));
+	  if (useSysBfit2) val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_bfit2->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_btag->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_b_unfold->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_unfold->GetBinError(i),2));
+	  if (useSysRMS) val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(h_data_b_stat->GetBinContent(i)*rms_b/tot_b,2));
 	  h_data_b_syst->SetBinError(i, val);
-	  val = TMath::Sqrt(pow(h_data_b_stat->GetBinError(i),2)+pow(h_data_b_syst->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(h_data_b_stat->GetBinError(i),2)+TMath::Power(h_data_b_syst->GetBinError(i),2));
 	  h_data_b_tot->SetBinError(i, val);
 	}
 
