@@ -138,6 +138,7 @@ if (irun==99) {            // irun==99 => pur
 	double norm1_2=0;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
 	if (ilepton==2) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
+	double norm1_3 = ((Lumi2012 * Xsec_dy_3) / Ngen_dy_3);
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -268,6 +269,10 @@ if (ilepton==2) {
 	if (imode==5) {
 	  h_mc1_truth->Scale(norm1_2/norm1);
 	  h_mc1_reco->Scale(norm1_2/norm1);
+	}
+	if (imode==6) {
+	  h_mc1_truth->Scale(norm1_3/norm1);
+	  h_mc1_reco->Scale(norm1_3/norm1);
 	}
 	h_mc2_truth->Scale(norm1);
 	h_mc2_reco->Scale(norm1);
