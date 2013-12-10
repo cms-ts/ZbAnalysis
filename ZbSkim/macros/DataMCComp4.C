@@ -517,8 +517,8 @@ if (ilepton==2) {
         h_ratio->GetXaxis()->SetLabelFont(42);
         h_ratio->GetXaxis()->SetLabelSize(0.08);
         h_ratio->GetXaxis()->SetTitleFont(42);
-        if (imode<=2) h_ratio->GetYaxis()->SetTitle("unfold / reco");
-        if (imode>=3) h_ratio->GetYaxis()->SetTitle("unfold / truth");
+        if (imode<=2) h_ratio->GetYaxis()->SetTitle("unfold / truth");
+        if (imode>=3) h_ratio->GetYaxis()->SetTitle("unfold / reco");
         h_ratio->GetYaxis()->SetNdivisions(505);
         h_ratio->GetYaxis()->SetTitleSize(0.09);
         h_ratio->GetYaxis()->SetLabelSize(0.08);
