@@ -465,6 +465,7 @@ string subdir="0";
 	    float err7 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2)));
 	    val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Power(err9,2)-TMath::Power(err7,2)));
 	    if (useSysUnfold4FS) {
+	      val = 0.0;
 	      val = TMath::Max(val,TMath::Abs(h_data_b_scan[77]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i)));
 	      float err77 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[77]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2)));
 	      val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Power(err77,2)-TMath::Power(err7,2)));
