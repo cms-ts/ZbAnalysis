@@ -435,12 +435,12 @@ string subdir="0";
 	TH1F* stat_unfold = (TH1F*)h_data->Clone();
 	TH1F* stat_b_unfold = (TH1F*)h_data_b->Clone();
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	  double val;
+	  double val = 0.0;
 	  val = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2)));
 	  stat_unfold->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	  double val;
+	  double val = 0.0;
 	  val = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2)));
 	  stat_b_unfold->SetBinError(i, val);
 	}
