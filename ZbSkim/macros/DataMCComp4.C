@@ -731,7 +731,7 @@ if (ilepton==2) {
 	      TFile f((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
 	      f.Close();
-	      out.open((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + ".dat").c_str());
+	      out.open((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.dat").c_str());
 	    }
 	  }
 	  if (ilepton==2) {
@@ -746,7 +746,7 @@ if (ilepton==2) {
 	      TFile f((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
 	      f.Close();
-	      out.open((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + ".dat").c_str());
+	      out.open((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.dat").c_str());
 	    }
 	  }
 	  if (imode>=3) {
