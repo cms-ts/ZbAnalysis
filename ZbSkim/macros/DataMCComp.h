@@ -5,6 +5,7 @@
 #include "TColor.h"
 #include "TFile.h"
 #include "TLine.h"
+#include "TMarker.h"
 #include "TStyle.h"
 #include "TH1F.h"
 #include "TH2F.h"
