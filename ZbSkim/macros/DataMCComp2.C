@@ -1033,7 +1033,7 @@ if (irun==99) {            // irun==99 => pur
 	      if (ilepton==1) {
 	        gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/xsecs/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/xsecs/" + title_b + "_xsecs.pdf").c_str());
-	        out.open((path + "/electrons/" + version + "/" + subdir + "/xsecs/" + title + ".dat").c_str());
+	        out.open((path + "/electrons/" + version + "/" + subdir + "/xsecs/" + title + "_xsecs.dat").c_str());
 	        TFile f((path + "/electrons/" + version + "/" + subdir + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
 	        h_data_raw->Write((title+"_raw").c_str());
                 h_data_b_raw->Write((title_b+"_raw").c_str());
@@ -1044,7 +1044,7 @@ if (irun==99) {            // irun==99 => pur
 	      if (ilepton==2) {
 	        gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/xsecs/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/muons/" + version + "/" + subdir + "/xsecs/" + title_b + "_xsecs.pdf").c_str());
-	        out.open((path + "/muons/" + version + "/" + subdir + "/xsecs/" + title + ".dat").c_str());
+	        out.open((path + "/muons/" + version + "/" + subdir + "/xsecs/" + title + "_xsecs.dat").c_str());
 	        TFile f((path + "/muons/" + version + "/" + subdir + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
 	        h_data_raw->Write((title+"_raw").c_str());
                 h_data_b_raw->Write((title_b+"_raw").c_str());
@@ -1079,12 +1079,12 @@ if (irun==99) {            // irun==99 => pur
 	      if (ilepton==1) {
 	        gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
-	        out.open((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding/" + title + ".dat").c_str());
+	        out.open((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding/" + title + "_xsecs_unfolding.dat").c_str());
 	      }
 	      if (ilepton==2) {
 	        gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
-	        out.open((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding/" + title + ".dat").c_str());
+	        out.open((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding/" + title + "_xsecs_unfolding.dat").c_str());
 	      }
 	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
 	      out << h_data->Integral(0, h_data->GetNbinsX()+1, "width") << endl;
