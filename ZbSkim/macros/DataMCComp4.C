@@ -14,7 +14,7 @@
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
-void DataMCComp4(int irun=0, string title="", int plot=0, int ilepton=1, int imode=3, int method=0) {
+void DataMCComp4(int irun=0, string title="", int plot=0, int ilepton=1, int imode=4, int method=0) {
 
 bool verbose = false;
 // bool verbose = true;
@@ -23,10 +23,11 @@ bool verbose = false;
 // imode =  0; // identity test using MadGraph GEN
 // imode =  1; // closure test using MadGraph + Sherpa
 // imode =  2; // closure test using MadGraph + Powheg
-// imode =  3; // unfolding data with MadGraph
-// imode =  4; // unfolding data with Sherpa
-// imode =  5; // unfolding data with Powheg
-// imode =  6; // unfolding data with MadGraph 4FS
+// imode =  3; // closure test using MadGraph + MadGraph 4FS
+// imode =  4; // unfolding data with MadGraph
+// imode =  5; // unfolding data with Sherpa
+// imode =  6; // unfolding data with Powheg
+// imode =  7; // unfolding data with MadGraph 4FS
 
 // method = 0; // use SVD
 // method = 1; // use Bayes
@@ -99,11 +100,11 @@ if (irun==99) {            // irun==99 => pur
   postfix="Pur";
 }
 
-        if (irun==8) imode = 4;
-        if (irun==9) imode = 5;
-        if (irun==77) imode = 6;
+        if (irun==8) imode = 5;
+        if (irun==9) imode = 6;
+        if (irun==77) imode = 7;
 
-	if (imode<=2 && subdir!="0") return;
+	if (imode<=3 && subdir!="0") return;
 
 	//if (!verbose) gErrorIgnoreLevel = kError;
 
@@ -116,18 +117,18 @@ if (irun==99) {            // irun==99 => pur
 	double c_uds=1.0;
 	double ec_uds=0.0;
        
-	ifstream in3;
-	if (imode>=3) {
+	ifstream in;
+	if (imode>=4) {
 	  if (ilepton==1) {
-	    in3.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
+	    in.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
 	  }
 	  if (ilepton==2) {
-	    in3.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
+	    in.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
 	  }
-	  in3 >> c_uds >> ec_uds;
-	  in3 >> c_b >> ec_b;
-	  in3 >> c_c >> ec_c;
-	  in3.close();
+	  in >> c_uds >> ec_uds;
+	  in >> c_b >> ec_b;
+	  in >> c_c >> ec_c;
+	  in.close();
 	}
 
 	double Lumi2012=0;
@@ -173,12 +174,13 @@ if (irun==99) {            // irun==99 => pur
 	if (imode== 1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 2) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 3) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	if (imode== 4) mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
-	if (imode== 5) {
+	if (imode== 4) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (imode== 5) mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+	if (imode== 6) {
 	  if (ilepton==1) mc1 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
-	if (imode== 6) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
+	if (imode== 7) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
 
 	TFile* mc2=0;
 	if (imode==-1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
@@ -188,10 +190,11 @@ if (irun==99) {            // irun==99 => pur
 	  if (ilepton==1) mc2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	  if (ilepton==2) mc2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
-	if (imode== 3) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (imode== 3) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
 	if (imode== 4) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 5) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 6) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (imode== 7) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 
 	TH1F* h_data_reco;
 	data->cd();
@@ -251,7 +254,7 @@ if (irun==99) {            // irun==99 => pur
 // FIX: SHERPA
 if (ilepton==2) {
   if (imode==1) h_mc2_reco->Scale(0.9488);
-  if (imode==4) {
+  if (imode==5) {
     h_mc1_reco->Scale(0.9488);
     h_mc1_matrix->Scale(0.9488);
   }
@@ -264,15 +267,15 @@ if (ilepton==2) {
 
 	h_mc1_truth->Scale(norm1);
 	h_mc1_reco->Scale(norm1);
-	if (imode==4) {
+	if (imode==5) {
 	  h_mc1_truth->Scale(norm1_1/norm1);
 	  h_mc1_reco->Scale(norm1_1/norm1);
 	}
-	if (imode==5) {
+	if (imode==6) {
 	  h_mc1_truth->Scale(norm1_2/norm1);
 	  h_mc1_reco->Scale(norm1_2/norm1);
 	}
-	if (imode==6) {
+	if (imode==7) {
 	  h_mc1_truth->Scale(norm1_3/norm1);
 	  h_mc1_reco->Scale(norm1_3/norm1);
 	}
@@ -285,6 +288,10 @@ if (ilepton==2) {
 	if (imode==2) {
 	  h_mc2_truth->Scale(norm1_2/norm1);
 	  h_mc2_reco->Scale(norm1_2/norm1);
+	}
+	if (imode==3) {
+	  h_mc2_truth->Scale(norm1_3/norm1);
+	  h_mc2_reco->Scale(norm1_3/norm1);
 	}
 
 	if (title.find("_b")!=string::npos) {
@@ -341,12 +348,12 @@ if (ilepton==2) {
 	unfold_mc->IncludeSystematics(dosys);
 	unfold_data->IncludeSystematics(dosys);
 
-	if (imode<=2) {
+	if (imode<=3) {
 	  unfold_mc->Print();
 	  err = RooUnfold::kErrors;
 	  unfold_mc->PrintTable(cout, h_mc2_truth, err);
 	}
-	if (imode>=3) {
+	if (imode>=4) {
 	  unfold_data->Print();
 	  err = RooUnfold::kErrors;
 	  unfold_data->PrintTable(cout, 0, err);
@@ -361,7 +368,7 @@ if (ilepton==2) {
         pad1->SetLogy();
 
 	TH1F* h_mc2_unfold=0;
-	if (imode<=2) {
+	if (imode<=3) {
 	  err = RooUnfold::kErrors;
 	  h_mc2_unfold = (TH1F*) unfold_mc->Hreco(err);
 
@@ -395,7 +402,7 @@ if (ilepton==2) {
 	}
 
 	TH1F* h_data_unfold=0;
-	if (imode>=3) {
+	if (imode>=4) {
 	  err = RooUnfold::kErrors;
 	  h_data_unfold = (TH1F*) unfold_data->Hreco(err);
 
@@ -429,14 +436,14 @@ if (ilepton==2) {
 	}
 
 	TH1F* tmp;
-	if (imode<=2) tmp = h_mc2_reco;
-	if (imode>=3) tmp = h_data_reco;
+	if (imode<=3) tmp = h_mc2_reco;
+	if (imode>=4) tmp = h_data_reco;
 	tmp->SetTitle("");
 	tmp->SetStats(0);
 	tmp->GetYaxis()->SetTitle("Events");
 
-	if (imode<=2) tmp = h_mc2_unfold;
-	if (imode>=3) tmp = h_data_unfold;
+	if (imode<=3) tmp = h_mc2_unfold;
+	if (imode>=4) tmp = h_data_unfold;
 	if (title=="w_first_jet_pt") {
 	  tmp->GetXaxis()->SetTitle("leading jet p_{T} [GeV/c]");
 	} else if (title=="w_first_jet_eta") {
@@ -466,17 +473,21 @@ if (ilepton==2) {
         leg1->SetFillColor(0);
         leg1->SetFillStyle(0);
 
-        if (imode<=3) {
+        if (imode<=4) {
           leg1->AddEntry(h_mc1_reco,"MADGRAPH reco","l");
           leg1->AddEntry(h_mc1_truth,"MADGRAPH truth","l");
 	}
-        if (imode==4) {
+        if (imode==5) {
           leg1->AddEntry(h_mc1_reco,"SHERPA reco","l");
           leg1->AddEntry(h_mc1_truth,"SHERPA truth","l");
 	}
-        if (imode==5) {
+        if (imode==6) {
           leg1->AddEntry(h_mc1_reco,"POWHEG reco","l");
           leg1->AddEntry(h_mc1_truth,"POWHEG truth","l");
+	}
+        if (imode==7) {
+          leg1->AddEntry(h_mc1_reco,"MADGRAPH 4FS reco","l");
+          leg1->AddEntry(h_mc1_truth,"MADGRAPH 4FS truth","l");
 	}
         if (imode<=0) leg1->AddEntry(h_mc2_unfold,"MADGRAPH unfold","l");
         if (imode==1) {
@@ -489,7 +500,12 @@ if (ilepton==2) {
           leg1->AddEntry(h_mc2_truth,"POWHEG truth","l");
           leg1->AddEntry(h_mc2_unfold,"POWHEG unfold","l");
         }
-        if (imode>=3) {
+        if (imode==3) {
+          leg1->AddEntry(h_mc2_reco,"MADGRAPH 4FS reco","l");
+          leg1->AddEntry(h_mc2_truth,"MADGRAPH 4FS truth","l");
+          leg1->AddEntry(h_mc2_unfold,"MADGRAPH 4FS unfold","l");
+        }
+        if (imode>=4) {
           leg1->AddEntry(h_data_reco,"DATA reco","p");
           leg1->AddEntry(h_data_unfold,"DATA unfold","p");
         }
@@ -517,8 +533,8 @@ if (ilepton==2) {
         pad2->cd();
 
         TH1F* h_ratio;
-        if (imode<=2) h_ratio = (TH1F*)h_mc2_unfold->Clone();
-        if (imode>=3) h_ratio = (TH1F*)h_data_unfold->Clone();
+        if (imode<=3) h_ratio = (TH1F*)h_mc2_unfold->Clone();
+        if (imode>=4) h_ratio = (TH1F*)h_data_unfold->Clone();
 
 	h_ratio->SetTitle("");
         h_ratio->SetStats(0);
@@ -535,8 +551,8 @@ if (ilepton==2) {
         h_ratio->GetYaxis()->SetRangeUser(0.3, 1.7);
         if (imode<=0) h_ratio->GetYaxis()->SetRangeUser(0.95, 1.05);
         h_ratio->GetYaxis()->SetTitleOffset(0.4);
-        if (imode<=2) h_ratio->Divide(h_mc2_truth);
-        if (imode>=3) {
+        if (imode<=3) h_ratio->Divide(h_mc2_truth);
+        if (imode>=4) {
           h_ratio->Divide(h_mc1_truth);
           h_ratio->SetMarkerStyle(20);
         }
@@ -555,8 +571,8 @@ if (ilepton==2) {
 	  c2->cd();
 	  c2->SetLogy();
 	  TH1D* d;
-	  if (imode<=2) d = ((RooUnfoldSvd*)unfold_mc)->Impl()->GetD();
-	  if (imode>=3) d = ((RooUnfoldSvd*)unfold_data)->Impl()->GetD();
+	  if (imode<=3) d = ((RooUnfoldSvd*)unfold_mc)->Impl()->GetD();
+	  if (imode>=4) d = ((RooUnfoldSvd*)unfold_data)->Impl()->GetD();
 	  d->DrawCopy();
 	  if (method==0) {
 	    TMarker *marker = new TMarker(kreg,d->GetYaxis()->GetXmin(),20);
@@ -583,11 +599,11 @@ if (ilepton==2) {
 	if (response.UseOverflowStatus()) nv = nv + 2;
 	TVectorD err_err(nv);
 	TVectorD err_res(nv);
-	if (imode<=2) {
+	if (imode<=3) {
 	  err_err = unfold_mc->ErecoV(RooUnfold::kErrors);
 	  err_res = unfold_mc->ErecoV(RooUnfold::kCovToy);
 	}
-	if (imode>=3) {
+	if (imode>=4) {
 	  err_err = unfold_data->ErecoV(RooUnfold::kErrors);
 	  err_res = unfold_data->ErecoV(RooUnfold::kCovToy);
 	}
@@ -611,11 +627,11 @@ if (ilepton==2) {
 
 	TCanvas* c4 = new TCanvas("c4", "c4", 800, 600);
 	c4->cd();
-	if (imode<=2) {
+	if (imode<=3) {
 	  h_err_err->Divide(h_mc2_unfold);
 	  h_err_res->Divide(h_mc2_unfold);
 	}
-	if (imode>=3) {
+	if (imode>=4) {
 	  h_err_err->Divide(h_data_unfold);
 	  h_err_res->Divide(h_data_unfold);
 	}
@@ -647,8 +663,8 @@ if (ilepton==2) {
 
 	TH2F* h_err_cov;
 	err = RooUnfold::kCovariance;
-	if (imode<=2) h_err_cov = new TH2F(TMatrix(unfold_mc->Ereco(err)));
-	if (imode>=3) h_err_cov = new TH2F(TMatrix(unfold_data->Ereco(err)));
+	if (imode<=3) h_err_cov = new TH2F(TMatrix(unfold_mc->Ereco(err)));
+	if (imode>=4) h_err_cov = new TH2F(TMatrix(unfold_data->Ereco(err)));
 
 	TCanvas* c5 = new TCanvas("c5", "c5", 800, 600);
 	c5->cd();
@@ -670,8 +686,8 @@ if (ilepton==2) {
 
 	RooUnfoldParms* parms;
 	err = RooUnfold::kErrors;
-	if (imode<=2) parms = new RooUnfoldParms(unfold_mc, err, h_mc2_truth);
-	if (imode>=3) parms = new RooUnfoldParms(unfold_data, err);
+	if (imode<=3) parms = new RooUnfoldParms(unfold_mc, err, h_mc2_truth);
+	if (imode>=4) parms = new RooUnfoldParms(unfold_data, err);
 
 	float maxparm=0.0;
 	if (method==0) maxparm = response.GetNbinsMeasured();
@@ -722,6 +738,7 @@ if (ilepton==2) {
 	if (imode==0) title = title + "_identity_madgraph";
 	if (imode==1) title = title + "_closure_sherpa";
 	if (imode==2) title = title + "_closure_powheg";
+	if (imode==3) title = title + "_closure_madgraph4fs";
 
 	if (plot) {
 	  ofstream out;
@@ -733,7 +750,7 @@ if (ilepton==2) {
 	    if (c4) c4->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
 	    if (c5) c5->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_covariance.pdf").c_str());
 	    if (c6) c6->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_scan.pdf").c_str());
-	    if (imode>=3) {
+	    if (imode>=4) {
 	      TFile f((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
 	      f.Close();
@@ -748,14 +765,14 @@ if (ilepton==2) {
 	    if (c4) c4->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
 	    if (c5) c5->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_covariance.pdf").c_str());
 	    if (c6) c6->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_scan.pdf").c_str());
-	    if (imode>=3) {
+	    if (imode>=4) {
 	      TFile f((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
 	      f.Close();
 	      out.open((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.dat").c_str());
 	    }
 	  }
-	  if (imode>=3) {
+	  if (imode>=4) {
 	    out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
 	    out << h_data_reco->Integral(0,h_data_reco->GetNbinsX()+1) << endl;
 	    out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
