@@ -297,13 +297,17 @@ if (ilepton==2) {
 	RooUnfold* unfold_data=0;
 
 	int kreg = 0; // default 0 -> nbins/2
+
+	kreg = response.GetNbinsMeasured()/2;
 	if (title.find("jet_eta")!=string::npos) kreg = 4;
+
 	if (method==0) {
 	  unfold_mc = new RooUnfoldSvd(&response, h_mc2_reco, kreg);
 	  unfold_data = new RooUnfoldSvd(&response, h_data_reco, kreg);
 	}
 
 	int niter = 4; // default 4 -> number of iterations
+
 	if (method==1) {
 	  unfold_mc = new RooUnfoldBayes(&response, h_mc2_reco, niter);
 	  unfold_data = new RooUnfoldBayes(&response, h_data_reco, niter);
@@ -553,7 +557,7 @@ if (ilepton==2) {
 	  if (imode>=3) d = ((RooUnfoldSvd*)unfold_data)->Impl()->GetD();
 	  d->DrawCopy();
 	  if (method==0) {
-	    TMarker *marker = new TMarker(kreg,d->GetYaxis()->GetXmin(),20);
+	    TMarker *marker = new TMarker(kreg+0.5,d->GetYaxis()->GetXmin(),20);
 	    marker->SetMarkerColor(kRed);
 	    marker->Draw();
 	  }
