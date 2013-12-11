@@ -557,7 +557,7 @@ if (ilepton==2) {
 	  if (imode>=3) d = ((RooUnfoldSvd*)unfold_data)->Impl()->GetD();
 	  d->DrawCopy();
 	  if (method==0) {
-	    TMarker *marker = new TMarker(kreg+0.5,d->GetYaxis()->GetXmin(),20);
+	    TMarker *marker = new TMarker(kreg,d->GetYaxis()->GetXmin(),20);
 	    marker->SetMarkerColor(kRed);
 	    marker->Draw();
 	  }
