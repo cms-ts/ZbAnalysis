@@ -558,7 +558,7 @@ if (ilepton==2) {
         }
         h_ratio->SetMarkerSize(0.7);
         h_ratio->Draw("EPX0");
-        if (imode<=2) h_ratio->Draw("EP0SAME");
+        if (imode<=3) h_ratio->Draw("EP0SAME");
 
         TLine* OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
         OLine->SetLineColor(kRed);
