@@ -735,13 +735,15 @@ if (ilepton==2) {
 	      out.open((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + ".dat").c_str());
 	    }
 	  }
-	  out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
-	  out << h_data_reco->Integral(0,h_data_reco->GetNbinsX()+1) << endl;
-	  out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
-	  out << h_data_unfold->Integral(0,h_data_unfold->GetNbinsX()+1) << endl;
-	  out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
-	  out << h_mc1_truth->Integral(0,h_mc1_truth->GetNbinsX()+1) << endl;
-	  out.close();
+	  if (imode>=3) {
+	    out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
+	    out << h_data_reco->Integral(0,h_data_reco->GetNbinsX()+1) << endl;
+	    out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
+	    out << h_data_unfold->Integral(0,h_data_unfold->GetNbinsX()+1) << endl;
+	    out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
+	    out << h_mc1_truth->Integral(0,h_mc1_truth->GetNbinsX()+1) << endl;
+	    out.close();
+	  }
 	}
 
 }
