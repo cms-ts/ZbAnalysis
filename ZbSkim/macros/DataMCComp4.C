@@ -103,6 +103,8 @@ if (irun==99) {            // irun==99 => pur
         if (irun==9) imode = 5;
         if (irun==77) imode = 6;
 
+	if (imode<=2 && subdir!="0") return;
+
 	//if (!verbose) gErrorIgnoreLevel = kError;
 
 	/* purity */
@@ -716,6 +718,10 @@ if (ilepton==2) {
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+
+	if (imode==0) title = title + "_identity_madgraph";
+	if (imode==1) title = title + "_closure_sherpa";
+	if (imode==2) title = title + "_closure_powheg";
 
 	if (plot) {
 	  ofstream out;
