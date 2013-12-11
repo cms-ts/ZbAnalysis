@@ -320,6 +320,9 @@ if (ilepton==2) {
 
 	int ntoys = 50; // default 50
 	if (irun==7) ntoys = 100;
+	if (irun==8) ntoys = 100;
+	if (irun==9) ntoys = 100;
+	if (irun==77) ntoys = 100;
 	unfold_mc->SetNToys(ntoys);
 	unfold_data->SetNToys(ntoys);
 
@@ -327,6 +330,7 @@ if (ilepton==2) {
 	if (irun==7) dosys = 1;
 	if (irun==8) dosys = 1;
 	if (irun==9) dosys = 1;
+	if (irun==77) dosys = 1;
 	unfold_mc->IncludeSystematics(dosys);
 	unfold_data->IncludeSystematics(dosys);
 
