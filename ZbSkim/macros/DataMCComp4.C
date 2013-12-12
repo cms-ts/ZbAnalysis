@@ -726,24 +726,44 @@ if (ilepton==2) {
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+	if (method==0) {
+	  TMarker *marker = new TMarker(kreg,hParmChi2->GetYaxis()->GetXmin(),20);
+	  marker->SetMarkerColor(kRed);
+	  marker->Draw();
+	}
 	c6->cd(2);
 	hParmErr->Draw("P");
 	hParmErr->GetXaxis()->SetTitle("regparm");
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+	if (method==0) {
+	  TMarker *marker = new TMarker(kreg,hParmErr->GetYaxis()->GetXmin(),20);
+	  marker->SetMarkerColor(kRed);
+	  marker->Draw();
+	}
 	c6->cd(3);
 	hParmRes->Draw("P");
 	hParmRes->GetXaxis()->SetTitle("regparm");
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+	if (method==0) {
+	  TMarker *marker = new TMarker(kreg,hParmRes->GetYaxis()->GetXmin(),20);
+	  marker->SetMarkerColor(kRed);
+	  marker->Draw();
+	}
 	c6->cd(4);
 	hParmRms->Draw("P");
 	hParmRms->GetXaxis()->SetTitle("regparm");
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+	if (method==0) {
+	  TMarker *marker = new TMarker(kreg,hParmRms->GetYaxis()->GetXmin(),20);
+	  marker->SetMarkerColor(kRed);
+	  marker->Draw();
+	}
 
 	if (imode==0) title = title + "_identity_madgraph";
 	if (imode==1) title = title + "_closure_sherpa";
