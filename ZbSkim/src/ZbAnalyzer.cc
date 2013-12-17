@@ -1546,8 +1546,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
     jetCorrectionUncertainty->setJetPt(jet->pt());
     jetCorrectionUncertainty->setJetEta(jet->eta());
-    double jecUnc = 0.0;
-    if (isMC) jecUnc = jetCorrectionUncertainty->getUncertainty(true);
+    double jecUnc = jetCorrectionUncertainty->getUncertainty(true);
+    if (isMC) jecUnc = 0.0;
     h_JEC_uncert->Fill (jecUnc);
     //cout<< "JEC syst =" << unc << endl;
 
