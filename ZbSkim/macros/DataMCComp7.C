@@ -457,7 +457,6 @@ string subdir="0";
 	    val = val - (TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
 	    val = TMath::Sqrt(TMath::Max(0.,val));
 	    if (useSysUnfoldSherpa) {
-	      val = 0.0;
 	      val = TMath::Abs(h_data_scan[8]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i));
 	      val = TMath::Power(val,2);
 	      val = val - (TMath::Power(h_data_scan[8]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
@@ -476,7 +475,6 @@ string subdir="0";
 	    val = val - (TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
 	    val = TMath::Sqrt(TMath::Max(0.,val));
 	    if (useSysUnfoldSherpa) {
-	      val = 0.0;
 	      val = TMath::Abs(h_data_b_scan[8]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
 	      val = TMath::Power(val,2);
 	      val = val - (TMath::Power(h_data_b_scan[8]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
@@ -484,7 +482,6 @@ string subdir="0";
 	      val = TMath::Sqrt(TMath::Max(0.,val));
 	    }
 	    if (useSysUnfoldMadGraph4FS) {
-	      val = 0.0;
 	      val = TMath::Abs(h_data_b_scan[77]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
 	      val = TMath::Power(val,2);
 	      val = val - (TMath::Power(h_data_b_scan[77]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
