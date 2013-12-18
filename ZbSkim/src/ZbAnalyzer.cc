@@ -198,8 +198,7 @@ private:
   std::string path_;
   unsigned int icut_;
 
-  JetCorrectionUncertainty *jetCorrectionUncertaintyDT_;
-  JetCorrectionUncertainty *jetCorrectionUncertaintyMC_;
+  JetCorrectionUncertainty *jetCorrectionUncertainty_;
   edm::LumiReWeighting LumiWeights_;
 
   table* ElSF_;
@@ -1277,9 +1276,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   // ++++++ Pile-Up
 
   bool isMC = false;
-  JetCorrectionUncertainty* jetCorrectionUncertainty;
-
-  jetCorrectionUncertainty = jetCorrectionUncertaintyDT_;
 
   MyWeight = 1.0;
 
@@ -1288,7 +1284,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   if (iEvent.getByLabel (edm::InputTag ("addPileupInfo"), PupInfo))  {
 
     isMC = true;
-    jetCorrectionUncertainty = jetCorrectionUncertaintyMC_;
 
     float Tnpv = -1;
 
@@ -1544,10 +1539,12 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
     // JEC uncertainty
 
-    jetCorrectionUncertainty->setJetPt(jet->pt());
-    jetCorrectionUncertainty->setJetEta(jet->eta());
-    double jecUnc = jetCorrectionUncertainty->getUncertainty(true);
-    if (isMC) jecUnc = 0.0;
+    double jecUnc = 0.0;
+    if (!isMC) {
+      jetCorrectionUncertainty_->setJetPt(jet->pt());
+      jetCorrectionUncertainty_->setJetEta(jet->eta());
+      jecUnc = jetCorrectionUncertainty_->getUncertainty(true);
+    }
     h_JEC_uncert->Fill (jecUnc);
     //cout<< "JEC syst =" << unc << endl;
 
@@ -2829,8 +2826,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
 // ------------ method called once each job just before starting event loop ------------
 void ZbAnalyzer::beginJob () {
-  jetCorrectionUncertaintyDT_ = new JetCorrectionUncertainty(path_ + "/" + "Summer13_V4_DATA_Uncertainty_AK5PFchs.txt");
-  jetCorrectionUncertaintyMC_ = new JetCorrectionUncertainty(path_ + "/" + "Summer13_V4_MC_Uncertainty_AK5PFchs.txt");
+  jetCorrectionUncertainty_ = new JetCorrectionUncertainty(path_ + "/" + "Summer13_V4_DATA_Uncertainty_AK5PFchs.txt");
   LumiWeights_ = edm::LumiReWeighting(path_ + "/" + "pileup_" + pileupMC_ + ".root", path_ + "/" + "pileup_2012_" + pileupDT_ + ".root", "pileup", "pileup");
 
   ElSF_  = new table(path_ + "/" + "ele_eff.txt");
@@ -2844,8 +2840,7 @@ void ZbAnalyzer::beginJob () {
 
 // ------------ method called once each job just after ending the event loop ------------
 void ZbAnalyzer::endJob () {
-  delete jetCorrectionUncertaintyDT_;
-  delete jetCorrectionUncertaintyMC_;
+  delete jetCorrectionUncertainty_;
 
   delete ElSF_;
   delete ElSF2_;
