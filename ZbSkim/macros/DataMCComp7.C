@@ -32,8 +32,8 @@ int useSysDR=0;
 int useSysRMS=0;
 //int useSysRMS=1; // include xsec RMS systematics
 
-int useSysUnfold=0;
-//int useSysUnfold=1; // include unfolding systematics
+//int useSysUnfold=0;
+int useSysUnfold=1; // include unfolding systematics
 
 int useSysUnfoldSherpa=0;
 //int useSysUnfoldSherpa=1; // use Sherpa for unfolding systematics
