@@ -313,11 +313,11 @@ if (ilepton==2) {
 	if (title=="w_delta_phi_ee" || title=="w_delta_phi_mm") kreg = 3; // OK
 	if (title=="w_first_bjet_eta") kreg = 2; // ~OK
 	if (title=="w_first_bjet_pt") kreg = 2; // OK
-	if (title=="w_first_jet_eta") kreg = 4; // ~OK
-	if (title=="w_first_jet_pt") kreg = 10; // OK
-	if (title=="w_mass_Zj_ee_b" || title=="w_mass_Zj_mm_b") kreg = 10; // OK
-	if (title=="w_mass_Zj_ee" || title=="w_mass_Zj_mm") kreg = 10; // OK
-	if (title=="w_pt_Z_ee_b" || title=="w_pt_Z_mm_b") kreg = 4; // ~OK
+	if (title=="w_first_jet_eta") kreg = 3; // ~OK
+	if (title=="w_first_jet_pt") kreg = 5; // OK
+	if (title=="w_mass_Zj_ee_b" || title=="w_mass_Zj_mm_b") kreg = 18; // OK
+	if (title=="w_mass_Zj_ee" || title=="w_mass_Zj_mm") kreg = 18; // OK
+	if (title=="w_pt_Z_ee_b" || title=="w_pt_Z_mm_b") kreg = 8; // ~OK
 	if (title=="w_pt_Z_ee" || title=="w_pt_Z_mm") kreg = 12; // OK
 
 	if (method==0) {
@@ -716,6 +716,8 @@ if (ilepton==2) {
 	hParmErr->SetStats(0);
 	hParmRes->SetStats(0);
 	hParmRms->SetStats(0);
+
+	hParmChi2->SetMaximum(5000.);
 
 	TCanvas* c6 = new TCanvas("c6", "c6", 800, 600);
 	c6->cd();
