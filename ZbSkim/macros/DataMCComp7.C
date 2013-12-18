@@ -452,13 +452,17 @@ string subdir="0";
 	  double val = 0.0;
 	  if (useSysUnfold) {
 	    val = TMath::Abs(h_data_scan[9]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i));
-	    float err9 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_scan[9]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2)));
-	    val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Power(err9,2)-TMath::Power(stat_unfold->GetBinError(i),2)));
+	    val = TMath::Power(val,2);
+	    val = val - (TMath::Power(h_data_scan[9]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
+	    val = val - (TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
+	    val = TMath::Sqrt(TMath::Max(0.,val));
 	    if (useSysUnfoldSherpa) {
 	      val = 0.0;
 	      val = TMath::Abs(h_data_scan[8]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i));
-	      float err8 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_scan[8]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2)));
-	      val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Power(err8,2)-TMath::Power(stat_unfold->GetBinError(i),2)));
+	      val = TMath::Power(val,2);
+	      val = val - (TMath::Power(h_data_scan[8]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
+	      val = val - (TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
+	      val = TMath::Sqrt(TMath::Max(0.,val));
 	    }
 	  }
 	  syst_unfold->SetBinError(i, val);
@@ -467,19 +471,25 @@ string subdir="0";
 	  double val = 0.0;
 	  if (useSysUnfold) {
 	    val = TMath::Abs(h_data_b_scan[9]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
-	    float err9 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[9]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2)));
-	    val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Power(err9,2)-TMath::Power(stat_b_unfold->GetBinError(i),2)));
+	    val = TMath::Power(val,2);
+	    val = val - (TMath::Power(h_data_b_scan[9]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	    val = val - (TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	    val = TMath::Sqrt(TMath::Max(0.,val));
 	    if (useSysUnfoldSherpa) {
 	      val = 0.0;
 	      val = TMath::Abs(h_data_b_scan[8]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
-	      float err8 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[8]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2)));
-	      val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Power(err8,2)-TMath::Power(stat_b_unfold->GetBinError(i),2)));
+	      val = TMath::Power(val,2);
+	      val = val - (TMath::Power(h_data_b_scan[8]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	      val = val - (TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	      val = TMath::Sqrt(TMath::Max(0.,val));
 	    }
 	    if (useSysUnfoldMadGraph4FS) {
 	      val = 0.0;
 	      val = TMath::Abs(h_data_b_scan[77]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
-	      float err77 = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[77]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2)));
-	      val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Power(err77,2)-TMath::Power(stat_b_unfold->GetBinError(i),2)));
+	      val = TMath::Power(val,2);
+	      val = val - (TMath::Power(h_data_b_scan[77]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	      val = val - (TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	      val = TMath::Sqrt(TMath::Max(0.,val));
 	    }
 	  }
 	  syst_b_unfold->SetBinError(i, val);
@@ -1182,6 +1192,8 @@ string subdir="0";
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_delta_phi_ee_b" || title_b=="w_delta_phi_mm_b") {
+	  leg->SetX1(0.12);
+	  leg->SetX2(0.38);
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{bZ} [pb]");
 	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi(bZ) [rad]");
 	  if (isratio==1) {
