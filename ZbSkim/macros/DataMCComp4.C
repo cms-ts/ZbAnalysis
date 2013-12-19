@@ -251,16 +251,6 @@ if (irun==99) {            // irun==99 => pur
 	h_mc2_truth = fixrange(h_mc2_truth);
 	h_mc2_reco = fixrange(h_mc2_reco);
 
-// FIX: SHERPA
-if (ilepton==2) {
-  if (imode==1) h_mc2_reco->Scale(0.9488);
-  if (imode==5) {
-    h_mc1_reco->Scale(0.9488);
-    h_mc1_matrix->Scale(0.9488);
-  }
-}
-// FIX: SHERPA
-
 	RooUnfoldResponse response(h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 	response.UseOverflow(kTRUE);
 	if (verbose) response.Print();

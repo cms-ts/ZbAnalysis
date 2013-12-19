@@ -133,12 +133,6 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	if (ilepton==2&&itype==2) mc2->cd("demoMuoBtag");
 	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
 
-// FIX: SHERPA
-if (ilepton==2 && useDY==1) {
-  h_reco->Scale(0.9488);
-}
-// FIX: SHERPA
-
 	h_reco->Sumw2();
 	h_gen->Sumw2();
 	double N = h_reco->GetEffectiveEntries() / h_gen->GetEffectiveEntries();
