@@ -35,11 +35,11 @@ int useSysRMS=0;
 //int useSysUnfold=0;
 int useSysUnfold=1; // include unfolding systematics
 
-int useSysUnfoldSherpa=0;
-//int useSysUnfoldSherpa=1; // use Sherpa for unfolding systematics
+//int useSysUnfoldSherpa=0;
+int useSysUnfoldSherpa=1; // use Sherpa for unfolding systematics
 
-int useSysUnfoldMadGraph4FS=0;
-//int useSysUnfoldMadGraph4FS=1; // use MadGraph 4FS for unfolding systematics
+//int useSysUnfoldMadGraph4FS=0;
+int useSysUnfoldMadGraph4FS=1; // use MadGraph 4FS for unfolding systematics
 
 int useMC=0;
 //int useMC=1; // use MC prediction
@@ -453,14 +453,14 @@ string subdir="0";
 	  if (useSysUnfold) {
 	    val = TMath::Abs(h_data_scan[9]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i));
 	    val = TMath::Power(val,2);
-	    val = val - (TMath::Power(h_data_scan[9]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
-	    val = val - (TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
+	    //val = val - (TMath::Power(h_data_scan[9]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
+	    //val = val - (TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
 	    val = TMath::Sqrt(TMath::Max(0.,val));
 	    if (useSysUnfoldSherpa) {
 	      val = TMath::Abs(h_data_scan[8]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i));
 	      val = TMath::Power(val,2);
-	      val = val - (TMath::Power(h_data_scan[8]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
-	      val = val - (TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
+	      //val = val - (TMath::Power(h_data_scan[8]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
+	      //val = val - (TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
 	      val = TMath::Sqrt(TMath::Max(0.,val));
 	    }
 	  }
@@ -471,21 +471,21 @@ string subdir="0";
 	  if (useSysUnfold) {
 	    val = TMath::Abs(h_data_b_scan[9]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
 	    val = TMath::Power(val,2);
-	    val = val - (TMath::Power(h_data_b_scan[9]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
-	    val = val - (TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	    //val = val - (TMath::Power(h_data_b_scan[9]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	    //val = val - (TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
 	    val = TMath::Sqrt(TMath::Max(0.,val));
 	    if (useSysUnfoldSherpa) {
 	      val = TMath::Abs(h_data_b_scan[8]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
 	      val = TMath::Power(val,2);
-	      val = val - (TMath::Power(h_data_b_scan[8]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
-	      val = val - (TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	      //val = val - (TMath::Power(h_data_b_scan[8]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	      //val = val - (TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
 	      val = TMath::Sqrt(TMath::Max(0.,val));
 	    }
 	    if (useSysUnfoldMadGraph4FS) {
 	      val = TMath::Abs(h_data_b_scan[77]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
 	      val = TMath::Power(val,2);
-	      val = val - (TMath::Power(h_data_b_scan[77]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
-	      val = val - (TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	      //val = val - (TMath::Power(h_data_b_scan[77]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
+	      //val = val - (TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
 	      val = TMath::Sqrt(TMath::Max(0.,val));
 	    }
 	  }
