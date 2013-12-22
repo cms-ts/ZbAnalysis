@@ -35,11 +35,11 @@ int useSysRMS=0;
 //int useSysUnfold=0;
 int useSysUnfold=1; // include unfolding systematics
 
-//int useSysUnfoldSherpa=0;
-int useSysUnfoldSherpa=1; // use Sherpa for unfolding systematics
+int useSysUnfoldSherpa=0;
+//int useSysUnfoldSherpa=1; // use Sherpa for unfolding systematics
 
-//int useSysUnfoldMadGraph4FS=0;
-int useSysUnfoldMadGraph4FS=1; // use MadGraph 4FS for unfolding systematics
+int useSysUnfoldMadGraph4FS=0;
+//int useSysUnfoldMadGraph4FS=1; // use MadGraph 4FS for unfolding systematics
 
 int useMC=0;
 //int useMC=1; // use MC prediction
