@@ -41,6 +41,9 @@ int useSysUnfoldSherpa=0;
 int useSysUnfoldMadGraph4FS=0;
 //int useSysUnfoldMadGraph4FS=1; // use MadGraph 4FS for unfolding systematics
 
+//int useSysUnfoldWeight=0;
+int useSysUnfoldWeight=1; // use data weighted MC for unfolding systematics
+
 int useMC=0;
 //int useMC=1; // use MC prediction
 
@@ -147,6 +150,10 @@ string subdir="0";
 	if (useSysUnfoldMadGraph4FS) {
 	  h_data_scan[77] = read("77", title, ilepton);
 	  h_data_b_scan[77] = read("77", title_b, ilepton);
+	}
+	if (useSysUnfoldWeight) {
+	  h_data_scan[66] = read("66", title, ilepton);
+	  h_data_b_scan[66] = read("66", title_b, ilepton);
 	}
 	if (useSysDR) {
 	  h_data_scan[88] = read("88", title, ilepton);
@@ -463,6 +470,9 @@ string subdir="0";
 	      //val = val - (TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2));
 	      val = TMath::Sqrt(TMath::Max(0.,val));
 	    }
+	    if (useSysUnfoldWeight) {
+	      val = TMath::Abs(h_data_scan[66]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i));
+	    }
 	  }
 	  syst_unfold->SetBinError(i, val);
 	}
@@ -487,6 +497,9 @@ string subdir="0";
 	      //val = val - (TMath::Power(h_data_b_scan[77]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
 	      //val = val - (TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2));
 	      val = TMath::Sqrt(TMath::Max(0.,val));
+	    }
+	    if (useSysUnfoldWeight) {
+	      val = TMath::Abs(h_data_b_scan[66]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i));
 	    }
 	  }
 	  syst_b_unfold->SetBinError(i, val);

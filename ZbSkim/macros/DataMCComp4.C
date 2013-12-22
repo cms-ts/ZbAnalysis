@@ -255,6 +255,19 @@ if (irun==99) {            // irun==99 => pur
 	h_mc2_truth = fixrange(h_mc2_truth);
 	h_mc2_reco = fixrange(h_mc2_reco);
 
+	if (irun==66) {
+	  for (int i=0;i<=h_mc1_matrix->GetNbinsX()+1;i++) {
+	    for (int j=0;j<=h_mc1_matrix->GetNbinsY()+1;j++) {
+	      float val = h_mc1_matrix->GetBinContent(i,j);
+	      if (h_data_reco->GetBinContent(i)*h_mc1_reco->GetBinContent(i)!=0) {
+	        val = val * (h_data_reco->GetBinContent(i) / h_mc1_reco->GetBinContent(i));
+	        val = val / (h_data_reco->Integral(0,h_data_reco->GetNbinsX()+1) / h_mc1_reco->Integral(0,h_mc1_reco->GetNbinsX()+1));
+	      }
+	      h_mc1_matrix->SetBinContent(i,j,val);
+	    }
+	  }
+	}
+
 	RooUnfoldResponse response(h_mc1_reco, h_mc1_truth, h_mc1_matrix);
 	response.UseOverflow(kTRUE);
 	if (verbose) response.Print();
