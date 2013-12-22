@@ -492,12 +492,12 @@ if (irun==99) {            // irun==99 => pur
         char buff[100];
         sprintf(buff, "c_{t} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
         fitLabel->DrawLatex(0.68, 0.68, buff);
-        if (ilepton==1) sprintf(buff, "I_{ee} = %5.1f", h_data->Integral());
-        if (ilepton==2) sprintf(buff, "I_{#mu#mu} = %5.1f", h_data->Integral());
+        if (ilepton==1) sprintf(buff, "I_{ee} = %5.1f", h_data->Integral(0,h_data->GetNbinsX()+1));
+        if (ilepton==2) sprintf(buff, "I_{#mu#mu} = %5.1f", h_data->Integral(0,h_data->GetNbinsX()+1));
         fitLabel->DrawLatex(0.68, 0.63, buff);
-        sprintf(buff, "I_{e#mu} = %5.1f #pm %5.1f", h_data_fit->Integral(), h_data_fit->Integral()*fitter->GetParError(0)/fitter->GetParameter(0));
+        sprintf(buff, "I_{e#mu} = %5.1f #pm %5.1f", h_data_fit->Integral(0,h_data_fit->GetNbinsX()+1), h_data_fit->Integral(0,h_data_fit->GetNbinsX()+1)*fitter->GetParError(0)/fitter->GetParameter(0));
         fitLabel->DrawLatex(0.68, 0.58, buff);
-        sprintf(buff, "I_{t#bar{t}}  = %5.1f", h_mc2->Integral());
+        sprintf(buff, "I_{t#bar{t}}  = %5.1f", h_mc2->Integral(0,h_mc2->GetNbinsX()+1));
         fitLabel->DrawLatex(0.68, 0.53, buff);
       }
 
