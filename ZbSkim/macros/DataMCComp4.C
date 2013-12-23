@@ -265,6 +265,12 @@ if (irun==99) {            // irun==99 => pur
 	      }
 	      h_mc1_matrix->SetBinContent(i,j,val);
 	    }
+	    float val = h_mc1_reco->GetBinContent(i);
+	    if (h_data_reco->GetBinContent(i)*h_mc1_reco->GetBinContent(i)!=0) {
+	      val = val * (h_data_reco->GetBinContent(i) / h_mc1_reco->GetBinContent(i));
+	      val = val / (h_data_reco->Integral(0,h_data_reco->GetNbinsX()+1) / h_mc1_reco->Integral(0,h_mc1_reco->GetNbinsX()+1));
+	    }
+	    h_mc1_reco->SetBinContent(i,val); 
 	  }
 	}
 
