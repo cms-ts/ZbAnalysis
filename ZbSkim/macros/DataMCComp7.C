@@ -297,12 +297,14 @@ string subdir="0";
 	  double val = 0.0;
 	  if (ilepton==1) val = ele_eff_sys * h_data_scan[0]->GetBinContent(i);
 	  if (ilepton==2) val = muo_eff_sys * h_data_scan[0]->GetBinContent(i);
+	  if (isratio) val = 0.0;
 	  syst_eff->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  double val = 0.0;
 	  if (ilepton==1) val = ele_eff_sys * h_data_b_scan[0]->GetBinContent(i);
 	  if (ilepton==2) val = muo_eff_sys * h_data_b_scan[0]->GetBinContent(i);
+	  if (isratio) val = 0.0;
 	  syst_b_eff->SetBinError(i, val);
 	}
 
@@ -511,11 +513,13 @@ string subdir="0";
 	for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
 	  double val = 0.0;
 	  val = lumi_sys * h_data_scan[0]->GetBinContent(i);
+	  if (isratio) val = 0.0;
 	  syst_lumi->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  double val = 0.0;
 	  val = lumi_sys * h_data_b_scan[0]->GetBinContent(i);
+	  if (isratio) val = 0.0;
 	  syst_b_lumi->SetBinError(i, val);
 	}
 
