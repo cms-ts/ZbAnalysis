@@ -3,6 +3,7 @@
 #include "LumiInfo_v11.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/lalicata/work/test/data";
 
 TH1F* h_data = 0;
 TH1F* h_data_fit = 0;
@@ -23,13 +24,15 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   fun = chisq;
 }
 
-void DataMCComp5(int irun=0, string title="", int plot=0, int ilepton=1, int doFit=0) {
+void DataMCComp5(int irun=0, string title="", int plot=0, int ilepton=1, int doFit=0, int numB=0) {
 
 //int useFitResults=0; // use MC predictions for c_t
 int useFitResults=1;  // use fit results for c_t
 
+char* bSel="Z + (#geq 1) b-jet";
 string subdir="0";
 string postfix="";
+string dirbSel="";
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
   postfix="Up";
@@ -98,6 +101,16 @@ if (irun==99) {            // irun==99 => pur
   subdir="99";
   postfix="Pur";
 }
+if (numB==1) {
+  postfix="1b" + postfix;
+  dirbSel="_1b";
+  bSel="Z + (= 1) b-jet";
+}
+if (numB==2) {
+  postfix="2b" + postfix;
+  dirbSel="_2b";
+  bSel="Z + (#geq 2) b-jet";
+}
 
       /* top background */
 
@@ -109,14 +122,14 @@ if (irun==99) {            // irun==99 => pur
       ifstream in4, in5;
       if (ilepton==1) {
         if (useFitResults) {
-          in4.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
-          in5.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
+          in4.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
+          in5.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
         }
       }
       if (ilepton==2) {
         if (useFitResults) {
-          in4.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
-          in5.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
+          in4.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
+          in5.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
         }
       }
       if (useFitResults) {
@@ -197,7 +210,7 @@ if (irun==99) {            // irun==99 => pur
       if (title_fit.find("mm")!=string::npos) {
         title_fit.replace(title_fit.find("mm"), 1, "e");
       }
-
+ 
       if (ilepton==1) data->cd(("demoEle"+postfix).c_str());
       if (ilepton==2) data->cd(("demoMuo"+postfix).c_str());
       h_data = (TH1F*)gDirectory->Get(title.c_str());
@@ -484,6 +497,11 @@ if (irun==99) {            // irun==99 => pur
         TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
         latexLabel->Draw("same");
 
+        TLatex * lab = new TLatex ();
+  	lab->SetTextSize (0.0275);
+  	lab->SetTextFont (42);
+  	lab->DrawLatex (0.63, 0.65, bSel);
+
         TLatex *fitLabel = new TLatex();
         fitLabel->SetTextSize(0.0275);
         fitLabel->SetTextFont(42);
@@ -505,24 +523,24 @@ if (irun==99) {            // irun==99 => pur
         if (doFit) title = title + "_doFit";
 	ofstream out;
         if (ilepton==1) {
-          gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub/").c_str(), kTRUE);
-          if (c1) c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".pdf").c_str());
+          gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/").c_str(), kTRUE);
+          if (c1) c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + title + ".pdf").c_str());
 	  if (doFit==0) {
-	    TFile f((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".root").c_str(),"RECREATE");
+	    TFile f((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + title + ".root").c_str(),"RECREATE");
             h_data_fit_raw->Write(title.c_str());
             f.Close();
 	  }
-	  if (doFit) out.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".dat").c_str());
+	  if (doFit) out.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + title + ".dat").c_str());
         }
         if (ilepton==2) {
-          gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/ttbar_sub/").c_str(), kTRUE);
-          if (c1) c1->SaveAs((path + "/muons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".pdf").c_str());
+          gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/").c_str(), kTRUE);
+          if (c1) c1->SaveAs((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + title + ".pdf").c_str());
 	  if (doFit==0) {
-	    TFile f((path + "/muons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".root").c_str(),"RECREATE");
+	    TFile f((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + title + ".root").c_str(),"RECREATE");
             h_data_fit_raw->Write(title.c_str());
             f.Close();
 	  }
-	  if (doFit) out.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".dat").c_str());
+	  if (doFit) out.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + title + ".dat").c_str());
         }
 	if (doFit==1) {
 	  out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;
