@@ -3,6 +3,7 @@
 #include "LumiInfo_v11.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 TH1F* h_data_fit = 0;
 TH1F* h_mc_fit0 = 0;
@@ -33,7 +34,7 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   fun = chisq;
 }
 
-void DataMCComp(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0) {
+void DataMCComp(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0, int numB=0) {
 
 //int useFitResults=0; // use MC predictions for c_t
 int useFitResults=1;  // use fit results for c_t
@@ -45,8 +46,10 @@ int useDY = 0; // use MadGraph DY
 //int useDY = 1; // use Sherpa DY
 //int useDY = 2; // use Powheg DY
 
+char* bSel="Z + (#geq 1) b-jet";
 string subdir="0";
 string postfix="";
+string dirbSel="";
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
   postfix="Up";
@@ -115,6 +118,16 @@ if (irun==99) {            // irun==99 => pur
   subdir="99";
   postfix="Pur";
 }
+if (numB==1) {
+  postfix="1b" + postfix;
+  dirbSel="_1b";
+  bSel="Z + (= 1) b-jet";
+}
+if (numB==2) {
+  postfix="2b" + postfix;
+  dirbSel="_2b";
+  bSel="Z + (#geq 2) b-jet";
+}
 
 	/* top background */
 
@@ -131,28 +144,28 @@ if (irun==99) {            // irun==99 => pur
 	ifstream in4, in5, in6, in7;
 	if (ilepton==1) {
 	  if (useFitResults) {
-	    in4.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
-	    in5.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
+	    in4.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
+	    in5.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
-	      in6.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub/" + "w_mass_ee_wide_doFit" + ".dat").c_str());
-	      in7.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub/" + "w_mass_ee_b_wide_doFit" + ".dat").c_str());
+	      in6.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_ee_wide_doFit" + ".dat").c_str());
+	      in7.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_ee_b_wide_doFit" + ".dat").c_str());
 	    }
 	  }
 	}
 	if (ilepton==2) {
 	  if (useFitResults) {
-	    in4.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
-	    in5.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
+	    in4.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
+	    in5.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
-	      in6.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub/" + "w_mass_mm_wide_doFit" + ".dat").c_str());
-	      in7.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub/" + "w_mass_mm_b_wide_doFit" + ".dat").c_str());
+	      in6.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_mm_wide_doFit" + ".dat").c_str());
+	      in7.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_mm_b_wide_doFit" + ".dat").c_str());
 	    }
 	  }
 	}
 	if (ilepton==3) {
 	  if (useFitResults) {
-	    in4.open((path + "/electrons+muons/" + version + "/" + subdir + "/distributions/" + "w_MET_doFit" + ".dat").c_str());
-	    in5.open((path + "/electrons+muons/" + version + "/" + subdir + "/distributions/" + "w_MET_b_doFit" + ".dat").c_str());
+	    in4.open((path + "/electrons+muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
+	    in5.open((path + "/electrons+muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
 	  }
 	}
 	if (useFitResults) {
@@ -257,11 +270,11 @@ if (irun==99) {            // irun==99 => pur
 
 	if (useEleMuo) {
 	  if (ilepton==1) {
-	    mc2 = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".root").c_str());
+	    mc2 = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + title + ".root").c_str());
 	    h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
 	  }
 	  if (ilepton==2) {
-	    mc2 = TFile::Open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub/" + title + ".root").c_str());
+	    mc2 = TFile::Open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + title + ".root").c_str());
 	    h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
 	  }
 	}
@@ -782,6 +795,11 @@ if (irun==99) {            // irun==99 => pur
  	TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
 	latexLabel->Draw("same");
 
+        TLatex * lab = new TLatex ();
+        lab->SetTextSize (0.0275);
+        lab->SetTextFont (42);
+        lab->DrawLatex (0.63, 0.65, bSel);
+
 	if (doFit) {
 	  TLatex *fitLabel = new TLatex();
 	  fitLabel->SetTextSize(0.0275);
@@ -829,19 +847,19 @@ if (irun==99) {            // irun==99 => pur
 	  if (doFit) title = title + "_doFit";
 	  ofstream out;
 	  if (ilepton==1) {
-	    gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/distributions/").c_str(), kTRUE);
-	    c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/distributions/" + title + ".pdf").c_str());
-	    if (doFit) out.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + title + ".dat").c_str());
+	    gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/").c_str(), kTRUE);
+	    c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + title + ".pdf").c_str());
+	    if (doFit) out.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + title + ".dat").c_str());
 	  }
 	  if (ilepton==2) {
-	    gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/distributions/").c_str(), kTRUE);
-	    c1->SaveAs((path + "/muons/" + version + "/" + subdir + "/distributions/" + title + ".pdf").c_str());
-	    if (doFit) out.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + title + ".dat").c_str());
+	    gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/").c_str(), kTRUE);
+	    c1->SaveAs((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + title + ".pdf").c_str());
+	    if (doFit) out.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + title + ".dat").c_str());
 	  }
 	  if (ilepton==3) {
-	    gSystem->mkdir((path + "/electrons+muons/" + version + "/" + subdir + "/distributions/").c_str(), kTRUE);
-	    c1->SaveAs((path + "/electrons+muons/" + version + "/" + subdir + "/distributions/" + title + ".pdf").c_str());
-	    if (doFit) out.open((path + "/electrons+muons/" + version + "/" + subdir + "/distributions/" + title + ".dat").c_str());
+	    gSystem->mkdir((path + "/electrons+muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/").c_str(), kTRUE);
+	    c1->SaveAs((path + "/electrons+muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + title + ".pdf").c_str());
+	    if (doFit) out.open((path + "/electrons+muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + title + ".dat").c_str());
 	  }
 	  if (doFit==1) {
 	    out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;
