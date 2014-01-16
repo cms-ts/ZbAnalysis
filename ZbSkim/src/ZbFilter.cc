@@ -113,25 +113,9 @@ ZbFilter::~ZbFilter() {
 bool ZbFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) {
    using namespace edm;
 
-   //get electron collection
-   //edm::Handle<std::vector<reco::PFCandidate> > electrons;
-   //iEvent.getByLabel("pfIsolatedElectronsPFlow", electrons);
-   
-   //get muon collection
-   //edm::Handle<std::vector<reco::PFCandidate>  > muons;
-   //iEvent.getByLabel("pfIsolatedMuonsPFlow", muons);
-    
    //get jet collection
    edm::Handle<std::vector<pat::Jet>  > jets;
    iEvent.getByLabel("goodJets",jets);
-
-   //get electron collection
-   edm::Handle<pat::MuonCollection> Trigmuons;
-   iEvent.getByLabel("matchedMuons", Trigmuons);
-
-   //get muon collection
-   edm::Handle<pat::ElectronCollection> Trigelectrons;
-   iEvent.getByLabel("matchedElectrons", Trigelectrons);
 
    // Get the Z->mm collection
    edm::Handle<reco::CompositeCandidateCollection> zmm;
