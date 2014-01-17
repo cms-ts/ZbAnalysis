@@ -29,7 +29,7 @@ void DataMCComp5(int irun=0, string title="", int plot=0, int ilepton=1, int doF
 //int useFitResults=0; // use MC predictions for c_t
 int useFitResults=1;  // use fit results for c_t
 
-char* bSel="Z + (#geq 1) b-jet";
+string bSel="Z + (#geq 1) b-jet";
 string subdir="0";
 string postfix="";
 string dirbSel="";
@@ -500,7 +500,7 @@ if (numB==2) {
         TLatex * lab = new TLatex ();
   	lab->SetTextSize (0.0275);
   	lab->SetTextFont (42);
-  	lab->DrawLatex (0.63, 0.65, bSel);
+  	lab->DrawLatex (0.63, 0.65, bSel.c_str());
 
         TLatex *fitLabel = new TLatex();
         fitLabel->SetTextSize(0.0275);
