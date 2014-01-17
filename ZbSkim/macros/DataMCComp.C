@@ -46,7 +46,7 @@ int useDY = 0; // use MadGraph DY
 //int useDY = 1; // use Sherpa DY
 //int useDY = 2; // use Powheg DY
 
-char* bSel="Z + (#geq 1) b-jet";
+string bSel="Z + (#geq 1) b-jet";
 string subdir="0";
 string postfix="";
 string dirbSel="";
@@ -798,7 +798,7 @@ if (numB==2) {
         TLatex * lab = new TLatex ();
         lab->SetTextSize (0.0275);
         lab->SetTextFont (42);
-        lab->DrawLatex (0.63, 0.65, bSel);
+        lab->DrawLatex (0.63, 0.65, bSel.c_str());
 
 	if (doFit) {
 	  TLatex *fitLabel = new TLatex();
