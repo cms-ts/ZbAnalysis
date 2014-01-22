@@ -71,7 +71,7 @@ double eXsec_ww = 0.15*Xsec_ww;
 //////////////////////// Wj
 
 double Ngen_wj = 57709905;
-double Xsec_wj = 31200; // NLO with CTEQ
+double Xsec_wj = 36703.2; // NNLO
 double eXsec_wj = 0.15*Xsec_wj; 
 
 ///////////////////////
