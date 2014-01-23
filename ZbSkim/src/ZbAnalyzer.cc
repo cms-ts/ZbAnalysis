@@ -94,10 +94,10 @@ private:
   virtual void produce (edm::Event &, const edm::EventSetup &);
   virtual void endJob ();
 
-  virtual void beginRun (edm::Run const &, edm::EventSetup const &);
-  virtual void endRun (edm::Run const &, edm::EventSetup const &);
-  virtual void beginLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
-  virtual void endLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
+  virtual void beginRun (edm::Run &, edm::EventSetup const &);
+  virtual void endRun (edm::Run &, edm::EventSetup const &);
+  virtual void beginLuminosityBlock (edm::LuminosityBlock &, edm::EventSetup const &);
+  virtual void endLuminosityBlock (edm::LuminosityBlock &, edm::EventSetup const &);
 
 #define ECALDRIVEN 0
 
@@ -1356,6 +1356,10 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   double scalFac_second_m = 1;
   double scalFac_b = 1;
 
+  double lepton1_eta = 9999;
+  double lepton1_phi = 9999;
+  double lepton2_eta = 9999;
+  double lepton2_phi = 9999;
   // ++++++ Pile-Up
 
   bool isMC = false;
@@ -1548,6 +1552,35 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
   }
 
+  if (ee_event) {
+    lepton1_eta = vect_ele[iele0].eta(); 
+    lepton1_phi = vect_ele[iele0].phi();
+    lepton2_eta = vect_ele[iele1].eta();
+    lepton2_phi = vect_ele[iele1].phi();
+  }
+
+  if (mm_event) {
+    lepton1_eta = vect_muon[imuon0].eta();
+    lepton1_phi = vect_muon[imuon0].phi();
+    lepton2_eta = vect_muon[imuon1].eta();
+    lepton2_phi = vect_muon[imuon1].phi();
+  }
+
+  if (em_event) {
+    if (iele1!=-1) {
+      lepton1_eta = vect_muon[imuon0].eta();
+      lepton1_phi = vect_muon[imuon0].phi();
+      lepton2_eta = vect_ele[iele1].eta();
+      lepton2_phi = vect_ele[iele1].phi();
+    }
+    if (imuon1!=-1) {
+      lepton1_eta = vect_ele[iele0].eta();
+      lepton1_phi = vect_ele[iele0].phi();
+      lepton2_eta = vect_muon[imuon1].eta();
+      lepton2_phi = vect_muon[imuon1].phi();
+    }
+  }
+
   // ++++++++ VERTICES
 
   bool vtx_cut = true;
@@ -1607,7 +1640,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   vector < pat::Jet > vect_jets;
   vector < pat::Jet > vect_bjets;
-
+ 
   for (vector < pat::Jet >::const_iterator jet = jets->begin(); jet != jets->end(); ++jet) {
 
     // check for no neutrinos
@@ -1643,7 +1676,21 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
     jetNew.setP4(jetNew_p4);
 
-    if (fabs(jetNew.eta()) < 2.5 && jetNew.pt() > 30) {
+    double etaj = jetNew.eta();
+    double phij = jetNew.phi();
+
+    double delta_eta1 = lepton1_eta - etaj;
+    double delta_phi1 = fabs(lepton1_phi - phij);
+    if (delta_phi1 > acos(-1)) delta_phi1 = 2*acos(-1) - delta_phi1;
+
+    double delta_eta2 = lepton2_eta - etaj;
+    double delta_phi2 = fabs(lepton2_phi - phij);
+    if (delta_phi2 > acos(-1)) delta_phi2 = 2*acos(-1) - delta_phi2;
+
+    double deltaR_jl1 = sqrt(pow(delta_eta1,2) + pow(delta_phi1,2));
+    double deltaR_jl2 = sqrt(pow(delta_eta2,2) + pow(delta_phi2,2));    
+   
+    if (fabs(jetNew.eta()) < 2.5 && jetNew.pt() > 30 && deltaR_jl1 > 0.5 && deltaR_jl2 > 0.5 && (ee_event || mm_event || em_event)) {
 
       ++Nj;
 
@@ -1689,7 +1736,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   if (Nb > 1) {
       delta_phi_2b = fabs(vect_bjets[0].phi() - vect_bjets[1].phi());
-      if (delta_phi_2b > acos (-1)) delta_phi_2b = 2 * acos (-1) - delta_phi_2b;
+      if (delta_phi_2b > acos(-1)) delta_phi_2b = 2 * acos(-1) - delta_phi_2b;
   }
 
   bool iflag_ee=false;
@@ -3027,19 +3074,19 @@ void ZbAnalyzer::endJob () {
 }
 
 // ------------ method called when starting to processes a run ------------
-void ZbAnalyzer::beginRun (edm::Run const &, edm::EventSetup const &) {
+void ZbAnalyzer::beginRun (edm::Run &, edm::EventSetup const &) {
 }
 
 // ------------ method called when ending the processing of a run ------------
-void ZbAnalyzer::endRun (edm::Run const &, edm::EventSetup const &) {
+void ZbAnalyzer::endRun (edm::Run &, edm::EventSetup const &) {
 }
 
 // ------------ method called when starting to processes a luminosity block ------------
-void ZbAnalyzer::beginLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &) {
+void ZbAnalyzer::beginLuminosityBlock (edm::LuminosityBlock &, edm::EventSetup const &) {
 }
 
 // ------------ method called when ending the processing of a luminosity block ------------
-void ZbAnalyzer::endLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &) {
+void ZbAnalyzer::endLuminosityBlock (edm::LuminosityBlock &, edm::EventSetup const &) {
 }
 
 // define this as a plug-in
