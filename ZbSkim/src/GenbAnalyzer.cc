@@ -126,15 +126,17 @@ private:
     }
   }
 
-  bool hasBAncestors (reco::GenParticle gp) {
-    if (gp.status()<1||gp.status()>3) return false;
-    if (isB(gp)) return true;
-    if (gp.numberOfMothers()==0) return false;
+  reco::GenParticle* hasBAncestors (reco::GenParticle gp) {
+    reco::GenParticle* Bpart = NULL;
+    if (gp.status()<1||gp.status()>3) return NULL;
+    if (isB(gp)) return &gp;
+    if (gp.numberOfMothers()==0) return NULL;
     bool found = false;
-    for (unsigned int im=0;im<gp.numberOfMothers();im++) {
+    for (unsigned int im=0; im<gp.numberOfMothers() && !found; im++) {
       found = found || hasBAncestors(*gp.motherRef(im));
+      if (found) Bpart = &gp; 
     }
-    return found;
+    return Bpart;
   }
 
   // ----------member data ---------------------------
@@ -143,6 +145,7 @@ private:
   std::string pileupDT_;
   std::string lepton_;
   std::string path_;
+  double numB_;
   bool rivet_;
 
   edm::LumiReWeighting LumiWeights_;
@@ -184,6 +187,7 @@ private:
   TH1F*     w_delta_mm_b;
   TH1F*     w_Ht;
   TH1F*     w_Ht_b;
+  TH1F*     w_delta_phi_2b;
 
   TH1F*     w_single_bjet_pt;
   TH1F*     w_single_bjet_eta;
@@ -216,6 +220,7 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   pileupDT_ = iConfig.getUntrackedParameter < std::string > ("pileupDT", "");
   lepton_ = iConfig.getUntrackedParameter < std::string > ("lepton", "electron");
   path_ =   iConfig.getUntrackedParameter < std::string > ("path", "/gpfs/cms/users/candelis/work/ZbSkim/test");
+  numB_ =  iConfig.getUntrackedParameter <double> ("numB", 0);
 
   rivet_  = iConfig.getUntrackedParameter < bool > ("rivet", false);
 
@@ -254,6 +259,7 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_delta_mm =          fs->make < TH1F > ("w_delta_phi_mm",     "w_delta_phi_mm", 12, 0, TMath::Pi ());
   w_delta_ee_b =        fs->make < TH1F > ("w_delta_phi_ee_b",   "w_delta_phi_ee_b", 12, 0, TMath::Pi ());
   w_delta_mm_b =        fs->make < TH1F > ("w_delta_phi_mm_b",   "w_delta_phi_mm_b", 12, 0, TMath::Pi ());
+  w_delta_phi_2b =      fs->make < TH1F > ("w_delta_phi_2b",     "w_delta_phi_2b",   12, 0, TMath::Pi ());
 
   w_single_bjet_pt =           fs->make < TH1F > ("w_single_bjet_pt",         "w_single_bjet_pt;P_t [GeV]", 50, 30., 700.);
   w_single_bjet_eta =          fs->make < TH1F > ("w_single_bjet_eta",        "w_single_bjet_eta", 16, -2.5, 2.5);
@@ -262,7 +268,7 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_single_delta_ee_b =        fs->make < TH1F > ("w_single_delta_phi_ee_b",  "w_single_delta_phi_ee_b", 12, 0, TMath::Pi ());
   w_single_delta_mm_b =        fs->make < TH1F > ("w_single_delta_phi_mm_b",  "w_single_delta_phi_mm_b", 12, 0, TMath::Pi ());
   w_single_Ht_b =              fs->make < TH1F > ("w_single_Ht_b",            "w_single_Ht [GeV]", 50, 30., 1000.);
-
+ 
   produces<std::vector<double>>("myEventWeight");
 
   produces<std::vector<math::XYZTLorentzVector>>("myElectrons");
@@ -333,6 +339,8 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   bool mm_event = false;
   bool ist = false;
 
+  bool b_selection = true;
+
   int Nj = 0;
   int Nj2 = 0;
   int Nb = 0;
@@ -364,6 +372,11 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   struct pt_and_particles antimu_dres;
   vector<unsigned int> mu_photons;
   vector<unsigned int> antimu_photons;
+
+  double lepton1_eta = -9999;
+  double lepton1_phi = -9999;
+  double lepton2_eta = -9999;
+  double lepton2_phi = -9999;
 
   // ++++++ Pile-Up
 
@@ -560,6 +573,20 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
         if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
   }
 
+  if (ee_event) {
+    lepton1_eta = ele_dres.p_part.Eta();
+    lepton2_eta = pos_dres.p_part.Eta();
+    lepton1_phi = ele_dres.p_part.Phi();
+    lepton2_phi = pos_dres.p_part.Phi();
+   }
+
+  if (mm_event) {
+    lepton1_eta = mu_dres.p_part.Eta();
+    lepton2_eta = antimu_dres.p_part.Eta();
+    lepton1_phi = mu_dres.p_part.Phi();
+    lepton2_phi = antimu_dres.p_part.Phi();
+   }
+
   vector<reco::GenParticle> part_jets;
   vector<reco::GenParticle> part_jets_st1;
 
@@ -642,12 +669,26 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   vector<fastjet::PseudoJet> jets = sorted_by_pt(cseq.inclusive_jets(0.0));
   for (unsigned int i = 0; i < jets.size(); i++) {
 	double etaj = jets[i].eta();
+	double phij = jets[i].phi();
 	double ptj = jets[i].perp();
-
+	       
 	if (fabs(etaj) < 2.5 && ptj > 30) {
-		Nj++;
-		vect_jets.push_back(jets[i]);
-		Ht = Ht + jets[i].perp();
+          double delta_eta1 = lepton1_eta - etaj;
+          double delta_phi1 = fabs(lepton1_phi - phij);
+          if (delta_phi1 > acos(-1)) delta_phi1 = 2*acos(-1) - delta_phi1;
+
+          double delta_eta2 = lepton2_eta - etaj;
+          double delta_phi2 = fabs(lepton2_phi - phij);
+          if (delta_phi2 > acos(-1)) delta_phi2 = 2*acos(-1) - delta_phi2;
+
+          double deltaR_jl1 = sqrt(pow(delta_eta1,2) + pow(delta_phi1,2));
+          double deltaR_jl2 = sqrt(pow(delta_eta2,2) + pow(delta_phi2,2));
+	  
+	  if (deltaR_jl1 > 0.5 && deltaR_jl2 > 0.5 && (ee_event || mm_event)) { 
+	    Nj++;
+            vect_jets.push_back(jets[i]);
+            Ht = Ht + jets[i].perp();
+          }
         }
 	Nj2++;
 	vect_jets2.push_back(jets[i]);
@@ -663,6 +704,11 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   bool Bjet_found = false;
   bool Bjet2_found = false;
 
+  double B_eta = 9999;
+  double B_phi = 9999;
+
+  double deltaR_Bb = 9999;
+
   for(unsigned int k = 0; k < vect_jets.size() ; k++) {
     Bjet_found = false;
     vector<fastjet::PseudoJet> constituents = cseq.constituents(vect_jets[k]);
@@ -670,15 +716,43 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     for (unsigned int c = 0; c < constituents.size() && !Bjet_found; c++) {
       int index = constituents.at(c).user_index();
       reco::GenParticle gp = part_jets_st1.at(index);
-      if (hasBAncestors(gp)) {
+      if (hasBAncestors(gp)!=NULL) {
         Bjet_found = true;
+        B_eta = gp.eta();
+	B_phi = gp.phi();
       }
     }
 
-    if(Bjet_found) {
-      vect_bjets.push_back(vect_jets[k]);
-      Nb++;
-    }
+    if (Bjet_found) {
+      double eta_bj = vect_jets[k].eta();
+      double phi_bj = vect_jets[k].phi();
+
+      double deltaEta_Bb = eta_bj - B_eta; 
+      double deltaPhi_Bb = fabs(phi_bj - B_phi);
+      if (deltaPhi_Bb > acos(-1)) deltaPhi_Bb = 2*acos(-1) - deltaPhi_Bb;
+
+      deltaR_Bb = sqrt(pow(deltaEta_Bb,2) + pow(deltaPhi_Bb,2)); 
+
+      if (deltaR_Bb < 0.5) {
+        vect_bjets.push_back(vect_jets[k]);
+        Nb++;
+      }
+   }  
+ }  
+
+  if (Nb != 1 && numB_ == 1) {
+    b_selection = false;
+  }
+
+  if (Nb < 2 && numB_ == 2) {
+    b_selection = false;
+  }
+
+  double delta_phi_2b = 0;
+
+  if (Nb > 1) {
+      delta_phi_2b = fabs(vect_bjets[0].phi() - vect_bjets[1].phi());
+      if (delta_phi_2b > acos(-1)) delta_phi_2b = 2 * acos(-1) - delta_phi_2b;
   }
 
   for(unsigned int k = 0; k < vect_jets2.size() ; k++) {
@@ -749,7 +823,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_Ht->Fill (Ht, MyWeight);
   }
 
-  if (ee_event && Nb > 0 && Nj > 0) {
+  if (ee_event && Nb > 0 && Nj > 0 && b_selection) {
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
@@ -761,7 +835,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_mass_Zj_ee_b->Fill (zb_ee_mass, MyWeight);
   }
 
-  if (mm_event && Nb > 0 && Nj > 0) {
+  if (mm_event && Nb > 0 && Nj > 0 && b_selection) {
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
@@ -773,12 +847,15 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_mass_Zj_mm_b->Fill (zb_mm_mass, MyWeight);
   }
 
-  if ((ee_event || mm_event) && Nb > 0 && Nj > 0) {
+  if ((ee_event || mm_event) && Nb > 0 && Nj > 0 && b_selection) {
     w_bjetmultiplicity->Fill (Nb, MyWeight);
     w_Ht_b->Fill (Ht, MyWeight);
+    if (Nb > 1) {
+      w_delta_phi_2b->Fill (delta_phi_2b, MyWeight);
+    }
   }
 
-  if (ee_event && Nb > 0 && Nj > 0) {
+  if (ee_event && Nb > 0 && Nj > 0 && b_selection) {
     double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi_std());
     if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
     w_delta_ee_b->Fill(delta_phi_ee_b, MyWeight);
@@ -787,7 +864,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
       w_single_pt_Z_ee_b->Fill (diele_pt, MyWeight);
     }
   }
-  if (mm_event && Nb > 0 && Nj > 0) {
+  if (mm_event && Nb > 0 && Nj > 0 && b_selection) {
     double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi_std());
     if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
     w_delta_mm_b->Fill(delta_phi_mm_b, MyWeight);
@@ -797,7 +874,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     }
   }
 
-  if ((ee_event || mm_event) && Nb > 0 && Nj == 1) {
+  if ((ee_event || mm_event) && Nb > 0 && Nj == 1 && b_selection) {
     w_single_Ht_b->Fill (Ht, MyWeight);
     w_single_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_single_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
@@ -813,7 +890,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[0].Px(),vect_ele[0].Py(),vect_ele[0].Pz(),vect_ele[0].E()));
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[1].Px(),vect_ele[1].Py(),vect_ele[1].Pz(),vect_ele[1].E()));
     myPtZ->push_back(diele_pt);
-    if (Nb > 0) {
+    if (Nb > 0 && b_selection) {
       myPtZb->push_back(diele_pt);
     }
   }
@@ -822,7 +899,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[0].Px(),vect_muon[0].Py(),vect_muon[0].Pz(),vect_muon[0].E()));
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[1].Px(),vect_muon[1].Py(),vect_muon[1].Pz(),vect_muon[1].E()));
     myPtZ->push_back(dimuon_pt);
-    if (Nb > 0) {
+    if (Nb > 0 && b_selection) {
       myPtZb->push_back(dimuon_pt);
     }
   }
@@ -847,7 +924,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   if ((ee_event || mm_event) && Nj > 0) {
     myHt->push_back(Ht);
-    if (Nb > 0) {
+    if (Nb > 0 && b_selection) {
       myHtb->push_back(Ht);
     }
   }
@@ -859,7 +936,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     math::XYZTLorentzVector zj_ee_p(vect_jets[0].px()+z_ee.Px(), vect_jets[0].py()+z_ee.Py(), vect_jets[0].pz()+z_ee.Pz(), vect_jets[0].e()+z_ee.E());
     double zj_ee_mass = zj_ee_p.mass();
     myMassZj->push_back(zj_ee_mass);
-    if (Nb > 0) {
+    if (Nb > 0 && b_selection) {
       double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi_std());
       if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
       myBDeltaPhi->push_back(delta_phi_ee_b);
@@ -876,7 +953,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     math::XYZTLorentzVector zj_mm_p(vect_jets[0].px()+z_mm.Px(), vect_jets[0].py()+z_mm.Py(), vect_jets[0].pz()+z_mm.Pz(), vect_jets[0].e()+z_mm.E());
     double zj_mm_mass = zj_mm_p.mass();
     myMassZj->push_back(zj_mm_mass);
-    if (Nb > 0) {
+    if (Nb > 0 && b_selection) {
       double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi_std());
       if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
       myBDeltaPhi->push_back(delta_phi_mm_b);
