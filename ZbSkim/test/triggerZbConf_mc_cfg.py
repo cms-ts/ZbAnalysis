@@ -235,8 +235,59 @@ removeCleaningFromTriggerMatching(process)
 
 ############## Making Z to ee
 
+process.regressedElectrons = cms.EDProducer("RegressionEnergyPatElectronProducer",
+           debug                = cms.untracked.bool(False),
+           inputElectronsTag    = cms.InputTag('selectedPatElectronsTriggerMatch'),
+           inputCollectionType  = cms.uint32(1), # 1:PATElectron
+           useRecHitCollections = cms.bool(True), # True: RecHits have not been embedded into the PATElectron
+           produceValueMaps     = cms.bool(False), # False for PAT
+           regressionInputFile  = cms.string("EgammaAnalysis/ElectronTools/data/eleEnergyRegWeights_WithSubClusters_VApr15.root"),
+           energyRegressionType = cms.uint32(2), # Regression type - 1: ECAL regression w/o subclusters 2: ECAL regression w/ subclusters
+           rhoCollection        = cms.InputTag('kt6PFJets:rho:RECO'),
+           vertexCollection     = cms.InputTag('offlinePrimaryVertices'),
+           # Not used if inputCollectionType is set to 1                                         
+           nameEnergyReg      = cms.string("eneRegForGsfEle"),
+           nameEnergyErrorReg = cms.string("eneErrorRegForGsfEle"),
+           # Used only if useRecHitCollections is set to true 
+           recHitCollectionEB = cms.InputTag('reducedEcalRecHitsEB'),
+           recHitCollectionEE = cms.InputTag('reducedEcalRecHitsEE')
+)
+
+process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+    calibratedElectrons = cms.PSet(
+        initialSeed = cms.untracked.uint32(1),
+        engineName = cms.untracked.string('TRandom3')
+    ),
+)
+
+process.calibratedElectrons = cms.EDProducer("CalibratedPatElectronProducer",
+                inputPatElectronsTag  = cms.InputTag('regressedElectrons'),
+                #inputElectronsTag  = cms.InputTag('selectedParElectronsTriggerMatch'),
+                # name of the ValueMaps containing the regression outputs                               
+                #nameEnergyReg      = cms.InputTag('eleRegressionEnergy:eneRegForGsfEle'),        
+                #nameEnergyErrorReg = cms.InputTag('eleRegressionEnergy:eneErrorRegForGsfEle'),   
+                # The rechits are needed to compute r9                                     
+                #recHitCollectionEB = cms.InputTag('reducedEcalRecHitsEB'),
+                #recHitCollectionEE = cms.InputTag('reducedEcalRecHitsEE'),
+                #outputGsfElectronCollectionLabel = cms.string('calibratedGsfElectrons'),         
+                #nameNewEnergyReg       = cms.string('eneRegForGsfEle'), # the ValueMaps are re-created with the new collection as key.
+                #nameNewEnergyErrorReg  = cms.string('eneErrorRegForGsfEle'),  
+                isMC              = cms.bool(True),
+                verbose           = cms.bool(False),
+                synchronization   = cms.bool(False),
+                updateEnergyError = cms.bool(True),
+                correctionsType          = cms.int32(2),
+                applyLinearityCorrection = cms.bool(True),
+                combinationType          = cms.int32(3),
+                lumiRatio                = cms.double(0.0),
+                inputDataset                   = cms.string("Summer12_LegacyPaper"),
+                combinationRegressionInputPath = cms.string("EgammaAnalysis/ElectronTools/data/eleEnergyRegWeights_WithSubClusters_VApr15.root"),
+                scaleCorrectionsInputPath      = cms.string("EgammaAnalysis/ElectronTools/data/scalesNewReg-May2013.csv"),
+                linearityCorrectionsInputPath  = cms.string("EgammaAnalysis/ElectronTools/data/linearityNewReg-May2013.csv")
+)
+
 process.matchedElectrons = selectedPatElectrons.clone(
-		     src = cms.InputTag('selectedPatElectronsTriggerMatch'),
+		     src = cms.InputTag('calibratedElectrons'),
 		     cut = cms.string(
 			'pt > 10 & abs(eta) < 2.4 &'
 			'(('
@@ -381,6 +432,8 @@ process.p = cms.Path(
    process.zmuMatchedmuMatched *
    process.selectedTriggeredPatElectrons *
    process.selectedPatElectronsTriggerMatch *
+   process.regressedElectrons *
+   process.calibratedElectrons *
    process.matchedElectrons *
    process.zeleMatchedeleMatched *
    process.selectedTriggeredPatMuonsEM *
@@ -406,6 +459,8 @@ process.out.outputCommands += patTriggerEventContent
 process.out.outputCommands += [
 	'keep *_addPileupInfo_*_*',
 	'keep *_matchedElectrons_*_*',
+        'keep *_regressedElectrons_*_*',
+        'keep *_calibratedElectrons_*_*',
 	'keep *_matchedMuons_*_*',
 	'keep *_matchedElectronsEM_*_*',
 	'keep *_matchedMuonsEM_*_*',
