@@ -672,7 +672,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 	double phij = jets[i].phi();
 	double ptj = jets[i].perp();
 	       
-	if (fabs(etaj) < 2.5 && ptj > 30) {
+	if (fabs(etaj) < 2.4 && ptj > 30) {
           double delta_eta1 = lepton1_eta - etaj;
           double delta_phi1 = fabs(lepton1_phi - phij);
           if (delta_phi1 > acos(-1)) delta_phi1 = 2*acos(-1) - delta_phi1;
