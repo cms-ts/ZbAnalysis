@@ -126,17 +126,16 @@ private:
     }
   }
 
-  reco::GenParticle* hasBAncestors (reco::GenParticle gp) {
-    reco::GenParticle* Bpart = NULL;
-    if (gp.status()<1||gp.status()>3) return NULL;
-    if (isB(gp)) return &gp;
-    if (gp.numberOfMothers()==0) return NULL;
-    bool found = false;
-    for (unsigned int im=0; im<gp.numberOfMothers() && !found; im++) {
-      found = found || hasBAncestors(*gp.motherRef(im));
-      if (found) Bpart = &gp; 
+  const reco::GenParticle* getBAncestors (const reco::GenParticle* gp) {
+    if (gp->status()<1||gp->status()>3) return NULL;
+    if (isB(*gp)) return gp;
+    if (gp->numberOfMothers()==0) return NULL;
+    for (unsigned int im=0; im<gp->numberOfMothers(); im++) {
+      const reco::GenParticle *p = gp->motherRef(im).get();
+      const reco::GenParticle* mom = getBAncestors(p);
+      if (mom != NULL) return mom; 
     }
-    return Bpart;
+    return NULL;
   }
 
   // ----------member data ---------------------------
@@ -268,7 +267,7 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_single_delta_ee_b =        fs->make < TH1F > ("w_single_delta_phi_ee_b",  "w_single_delta_phi_ee_b", 12, 0, TMath::Pi ());
   w_single_delta_mm_b =        fs->make < TH1F > ("w_single_delta_phi_mm_b",  "w_single_delta_phi_mm_b", 12, 0, TMath::Pi ());
   w_single_Ht_b =              fs->make < TH1F > ("w_single_Ht_b",            "w_single_Ht [GeV]", 50, 30., 1000.);
- 
+  
   produces<std::vector<double>>("myEventWeight");
 
   produces<std::vector<math::XYZTLorentzVector>>("myElectrons");
@@ -704,23 +703,23 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   bool Bjet_found = false;
   bool Bjet2_found = false;
 
-  double B_eta = 9999;
-  double B_phi = 9999;
-
-  double deltaR_Bb = 9999;
-
   for(unsigned int k = 0; k < vect_jets.size() ; k++) {
     Bjet_found = false;
+    double B_eta = 9999;
+    double B_phi = 9999;
+    double deltaR_Bb = 9999;
+
     vector<fastjet::PseudoJet> constituents = cseq.constituents(vect_jets[k]);
 
     for (unsigned int c = 0; c < constituents.size() && !Bjet_found; c++) {
       int index = constituents.at(c).user_index();
       reco::GenParticle gp = part_jets_st1.at(index);
-      if (hasBAncestors(gp)!=NULL) {
+      const reco::GenParticle* bpart = getBAncestors(&gp);
+      if (bpart!=NULL) {
         Bjet_found = true;
-        B_eta = gp.eta();
-	B_phi = gp.phi();
-      }
+        B_eta = bpart->eta();
+        B_phi = bpart->phi();
+     }
     }
 
     if (Bjet_found) {
@@ -737,8 +736,8 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
         vect_bjets.push_back(vect_jets[k]);
         Nb++;
       }
-   }  
- }  
+    }  
+  }  
 
   if (Nb != 1 && numB_ == 1) {
     b_selection = false;
@@ -757,19 +756,36 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   for(unsigned int k = 0; k < vect_jets2.size() ; k++) {
     Bjet2_found = false;
+    double B_eta2 = 9999;
+    double B_phi2 = 9999;
+    double deltaR_Bb2 = 9999;
+
     vector<fastjet::PseudoJet> constituents = cseq.constituents(vect_jets2[k]);
 
     for (unsigned int c = 0; c < constituents.size() && !Bjet2_found; c++) {
       int index = constituents.at(c).user_index();
       reco::GenParticle gp = part_jets_st1.at(index);
-      if (hasBAncestors(gp)){
+      const reco::GenParticle * bpart2 = getBAncestors(&gp);
+      if (bpart2!=NULL) {
         Bjet2_found = true;
+        B_eta2 = bpart2->eta();
+        B_phi2 = bpart2->phi();
       }
     }
+    if (Bjet2_found) {
+      double eta_bj = vect_jets2[k].eta();
+      double phi_bj = vect_jets2[k].phi();
 
-    if(Bjet2_found) {
-      vect_bjets2.push_back(vect_jets2[k]);
-      Nb2++;
+      double deltaEta_Bb = eta_bj - B_eta2;
+      double deltaPhi_Bb = fabs(phi_bj - B_phi2);
+      if (deltaPhi_Bb > acos(-1)) deltaPhi_Bb = 2*acos(-1) - deltaPhi_Bb;
+
+      deltaR_Bb2 = sqrt(pow(deltaEta_Bb,2) + pow(deltaPhi_Bb,2));
+
+      if (deltaR_Bb2 < 0.5) {
+        vect_bjets2.push_back(vect_jets2[k]);
+        Nb2++;
+      }
     }
   }
 
