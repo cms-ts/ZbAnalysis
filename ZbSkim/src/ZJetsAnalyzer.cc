@@ -332,10 +332,10 @@ double scalFac_second_ele=1;
 double scalFac_second_muon=1;
 
 double run_number=0;
-double lumiRun=0;
+//double lumiRun=0;
 
-int NZ_ele_run = 0;
-int NZ_muon_run=0;
+//int NZ_ele_run = 0;
+//int NZ_muon_run=0;
 
 bool ee_event=false;
 bool mm_event=false;
@@ -603,7 +603,7 @@ if(zmm->size()==1 && vect_jet_pt.size()!=0 && mm_event){
 }
 
 run_number=iEvent.run();
-lumiRun=RunLumi_->luminosity(run_number);
+//lumiRun=RunLumi_->luminosity(run_number);
 
 if(NZ_ele==1 || NZ_muon==1)
 //h_runNumber->Fill(run_number,1/lumiRun);
