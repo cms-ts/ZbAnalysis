@@ -251,6 +251,12 @@ private:
   TH1F*     c_delta_phi_2b;
   TH1F*     t_delta_phi_2b;
 
+  TH1F*     w_DR_bb;
+  TH1F*     b_DR_bb;
+  TH1F*     c_DR_bb;
+  TH1F*     t_DR_bb;
+  TH1F*     bb_DR_bb;
+
   TH1F*     w_first_jet_pt;	// leading jet of any type
   TH1F*     b_first_jet_pt;
   TH1F*     c_first_jet_pt;
@@ -839,6 +845,12 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_delta_phi_2b =      fs->make < TH1F > ("b_delta_phi_2b",    "b_delta_phi_2b",   12, 0, TMath::Pi ());
   c_delta_phi_2b =      fs->make < TH1F > ("c_delta_phi_2b",    "c_delta_phi_2b",   12, 0, TMath::Pi ());
   t_delta_phi_2b =      fs->make < TH1F > ("t_delta_phi_2b",    "t_delta_phi_2b",   12, 0, TMath::Pi ());
+
+  w_DR_bb =      fs->make < TH1F > ("w_DR_bb",    "w_DR_bb",   50, 0, 5);
+  b_DR_bb =      fs->make < TH1F > ("b_DR_bb",    "b_DR_bb",   50, 0, 5);
+  c_DR_bb =      fs->make < TH1F > ("c_DR_bb",    "c_DR_bb",   50, 0, 5);
+  t_DR_bb =      fs->make < TH1F > ("t_DR_bb",    "t_DR_bb",   50, 0, 5);
+  bb_DR_bb =     fs->make < TH1F > ("bb_DR_bb",   "bb_DR_bb",  50, 0, 5);
 
   w_first_jet_pt_b =    fs->make < TH1F > ("w_first_jet_pt_b",   "w_first_jet_pt_b;P_t [GeV]", 50, 30., 700.);
   b_first_jet_pt_b =    fs->make < TH1F > ("b_first_jet_pt_b",   "b_first_jet_pt_b;P_t [GeV]", 50, 30., 700.);
@@ -1813,10 +1825,14 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   }
  
   double delta_phi_2b = 0;
+  double delta_eta_2b = 0;
+  double DR_bb = 0;
 
   if (Nb > 1) {
       delta_phi_2b = fabs(vect_bjets[0].phi() - vect_bjets[1].phi());
+      delta_eta_2b = fabs(vect_bjets[0].eta() - vect_bjets[1].eta());
       if (delta_phi_2b > acos(-1)) delta_phi_2b = 2 * acos(-1) - delta_phi_2b;
+      DR_bb = TMath::Sqrt(delta_phi_2b*delta_phi_2b + delta_eta_2b*delta_eta_2b);
   }
 
   bool iflag_ee=false;
@@ -2895,6 +2911,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_jets, 2);
     if (Nb > 1) {
       w_delta_phi_2b->Fill (delta_phi_2b, MyWeight*scalFac_b);
+      w_DR_bb->Fill (DR_bb, MyWeight*scalFac_b);
     }
     w_bjetmultiplicity_exc->Fill (Nb, MyWeight*scalFac_b);
     w_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
@@ -2905,6 +2922,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (ist) {
       if (Nb > 1) {
         t_delta_phi_2b->Fill (delta_phi_2b, MyWeight*scalFac_b);
+        t_DR_bb->Fill (DR_bb, MyWeight*scalFac_b);
       }
       t_bjetmultiplicity_exc->Fill (Nb, MyWeight*scalFac_b);
       t_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
@@ -2916,6 +2934,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 5) {
       if (Nb > 1) {
         b_delta_phi_2b->Fill (delta_phi_2b, MyWeight*scalFac_b);
+        b_DR_bb->Fill (DR_bb, MyWeight*scalFac_b);
       }
       b_bjetmultiplicity_exc->Fill (Nb, MyWeight*scalFac_b);
       b_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
@@ -2931,6 +2950,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 4) {
       if (Nb > 1) {
         c_delta_phi_2b->Fill (delta_phi_2b, MyWeight*scalFac_b);
+        c_DR_bb->Fill (DR_bb, MyWeight*scalFac_b);
       }
       c_bjetmultiplicity_exc->Fill (Nb, MyWeight*scalFac_b);
       c_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
