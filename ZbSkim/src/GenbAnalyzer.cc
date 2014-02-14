@@ -156,9 +156,13 @@ private:
   TH1F*     h_ele_pt;
   TH1F*     h_muon_pt;
   TH1F*     w_pt_Z_ee;
+  TH1F*     w_y_Z_ee;
   TH1F*     w_pt_Z_mm;
+  TH1F*     w_y_Z_mm;
   TH1F*     w_pt_Z_ee_b;
   TH1F*     w_pt_Z_mm_b;
+  TH1F*     w_y_Z_ee_b;
+  TH1F*     w_y_Z_mm_b;
 
   TH1F*     w_jetmultiplicity;
   TH1F*     w_first_jet_pt;      // leading jet of any type
@@ -244,6 +248,10 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_pt_Z_mm =           fs->make < TH1F > ("w_pt_Z_mm",          "w_pt_Z_mm;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_ee_b =         fs->make < TH1F > ("w_pt_Z_ee_b",        "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_mm_b =         fs->make < TH1F > ("w_pt_Z_mm_b",        "w_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
+  w_y_Z_ee =          fs->make < TH1F > ("w_y_Z_ee",         "w_y_Z_ee;abs(y_Z)", 10, 0., 2.);
+  w_y_Z_mm =          fs->make < TH1F > ("w_y_Z_mm",         "w_y_Z_mm;abs(y_Z)", 10, 0., 2.);
+  w_y_Z_ee_b =          fs->make < TH1F > ("w_y_Z_ee_b",         "w_y_Z_ee_b;abs(y_Z)", 10, 0., 2.);
+  w_y_Z_mm_b =          fs->make < TH1F > ("w_y_Z_mm_b",         "w_y_Z_mm_b;abs(y_Z)", 10, 0., 2.);
   w_mass_ee =           fs->make < TH1F > ("w_mass_ee",          "w_mass_ee;Mass [GeV]", 80, 71., 111.);
   w_mass_mm =           fs->make < TH1F > ("w_mass_mm",          "w_mass_mm;Mass [GeV]", 80, 71., 111.);
   w_mass_ee_b =         fs->make < TH1F > ("w_mass_ee_b",        "w_mass_ee_b;Mass [GeV]", 80, 71., 111.);
@@ -348,10 +356,12 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   double diele_mass = 0;
   double diele_phi = 0;
   double diele_pt = 0;
+  double diele_y = 0;
 
   double dimuon_mass = 0;
   double dimuon_phi = 0;
   double dimuon_pt = 0;
+  double dimuon_y = 0;
 
   double MyWeight = 1;
 
@@ -492,6 +502,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   	diele_mass = z_ee.M();
   	diele_pt =   z_ee.Pt();
 	diele_phi =  z_ee.Phi();
+        diele_y = z_ee.Rapidity();
 	if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
 
@@ -569,6 +580,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
         dimuon_mass = z_mm.M();
         dimuon_pt =   z_mm.Pt();
         dimuon_phi =  z_mm.Phi();
+        dimuon_y = z_mm.Rapidity();
         if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
   }
 
@@ -811,6 +823,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_second_ele_pt->Fill (pos_dres.p_part.Pt(), MyWeight);
     w_mass_ee->Fill(diele_mass, MyWeight);
     w_pt_Z_ee->Fill(diele_pt, MyWeight);
+    w_y_Z_ee->Fill(diele_y, MyWeight);
     double delta_phi_ee = fabs(diele_phi - vect_jets[0].phi_std());
     if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
     w_delta_ee->Fill(delta_phi_ee, MyWeight);
@@ -824,6 +837,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_second_muon_pt->Fill (antimu_dres.p_part.Pt(), MyWeight);
     w_mass_mm->Fill(dimuon_mass, MyWeight);
     w_pt_Z_mm->Fill(dimuon_pt, MyWeight);
+    w_y_Z_mm->Fill(dimuon_y, MyWeight);
     double delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi_std());
     if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
     w_delta_mm->Fill(delta_phi_mm, MyWeight);
@@ -845,6 +859,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
     w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight);
     w_pt_Z_ee_b->Fill (diele_pt, MyWeight);
+    w_y_Z_ee_b->Fill (diele_y, MyWeight);
     w_mass_ee_b->Fill (diele_mass, MyWeight);
     math::XYZTLorentzVector zb_ee_p(vect_bjets[0].px()+z_ee.Px(), vect_bjets[0].py()+z_ee.Py(), vect_bjets[0].pz()+z_ee.Pz(), vect_bjets[0].e()+z_ee.E());
     double zb_ee_mass = zb_ee_p.mass();
@@ -857,6 +872,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
     w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight);
     w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight);
+    w_y_Z_mm_b->Fill (dimuon_y, MyWeight);
     w_mass_mm_b->Fill (dimuon_mass, MyWeight);
     math::XYZTLorentzVector zb_mm_p(vect_bjets[0].px()+z_mm.Px(), vect_bjets[0].py()+z_mm.Py(), vect_bjets[0].pz()+z_mm.Pz(), vect_bjets[0].e()+z_mm.E());
     double zb_mm_mass = zb_mm_p.mass();
