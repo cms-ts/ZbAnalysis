@@ -248,10 +248,10 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_pt_Z_mm =           fs->make < TH1F > ("w_pt_Z_mm",          "w_pt_Z_mm;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_ee_b =         fs->make < TH1F > ("w_pt_Z_ee_b",        "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_mm_b =         fs->make < TH1F > ("w_pt_Z_mm_b",        "w_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
-  w_y_Z_ee =          fs->make < TH1F > ("w_y_Z_ee",         "w_y_Z_ee;abs(y_Z)", 10, 0., 2.);
-  w_y_Z_mm =          fs->make < TH1F > ("w_y_Z_mm",         "w_y_Z_mm;abs(y_Z)", 10, 0., 2.);
-  w_y_Z_ee_b =          fs->make < TH1F > ("w_y_Z_ee_b",         "w_y_Z_ee_b;abs(y_Z)", 10, 0., 2.);
-  w_y_Z_mm_b =          fs->make < TH1F > ("w_y_Z_mm_b",         "w_y_Z_mm_b;abs(y_Z)", 10, 0., 2.);
+  w_y_Z_ee =            fs->make < TH1F > ("w_y_Z_ee",           "w_y_Z_ee;y_Z",   20, -2.0, 2.0);
+  w_y_Z_mm =            fs->make < TH1F > ("w_y_Z_mm",           "w_y_Z_mm;y_Z",   20, -2.0, 2.0);
+  w_y_Z_ee_b =          fs->make < TH1F > ("w_y_Z_ee_b",         "w_y_Z_ee_b;y_Z", 20, -2.0, 2.0);
+  w_y_Z_mm_b =          fs->make < TH1F > ("w_y_Z_mm_b",         "w_y_Z_mm_b;y_Z", 20, -2.0, 2.0);
   w_mass_ee =           fs->make < TH1F > ("w_mass_ee",          "w_mass_ee;Mass [GeV]", 80, 71., 111.);
   w_mass_mm =           fs->make < TH1F > ("w_mass_mm",          "w_mass_mm;Mass [GeV]", 80, 71., 111.);
   w_mass_ee_b =         fs->make < TH1F > ("w_mass_ee_b",        "w_mass_ee_b;Mass [GeV]", 80, 71., 111.);
