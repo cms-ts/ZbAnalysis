@@ -283,6 +283,9 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
 
   produces<std::vector<double>>("myPtZ");
   produces<std::vector<double>>("myPtZb");
+  
+  produces<std::vector<double>>("myYZ");
+  produces<std::vector<double>>("myYZb");
 
   produces<std::vector<double>>("myMassZj");
   produces<std::vector<double>>("myMassZb");
@@ -327,6 +330,9 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   std::auto_ptr<std::vector<double>> myPtZ( new std::vector<double> );
   std::auto_ptr<std::vector<double>> myPtZb( new std::vector<double> );
+  
+  std::auto_ptr<std::vector<double>> myYZ( new std::vector<double> );
+  std::auto_ptr<std::vector<double>> myYZb( new std::vector<double> );
 
   std::auto_ptr<std::vector<double>> myMassZj( new std::vector<double> );
   std::auto_ptr<std::vector<double>> myMassZb( new std::vector<double> );
@@ -922,8 +928,10 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[0].Px(),vect_ele[0].Py(),vect_ele[0].Pz(),vect_ele[0].E()));
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[1].Px(),vect_ele[1].Py(),vect_ele[1].Pz(),vect_ele[1].E()));
     myPtZ->push_back(diele_pt);
+    myYZ->push_back(diele_y);
     if (Nb > 0 && b_selection) {
       myPtZb->push_back(diele_pt);
+      myYZb->push_back(diele_y);
     }
   }
 
@@ -931,8 +939,10 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[0].Px(),vect_muon[0].Py(),vect_muon[0].Pz(),vect_muon[0].E()));
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[1].Px(),vect_muon[1].Py(),vect_muon[1].Pz(),vect_muon[1].E()));
     myPtZ->push_back(dimuon_pt);
+    myYZ->push_back(dimuon_y);
     if (Nb > 0 && b_selection) {
       myPtZb->push_back(dimuon_pt);
+      myYZb->push_back(dimuon_y);
     }
   }
 
@@ -1002,6 +1012,9 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   iEvent.put( myPtZ, "myPtZ" );
   iEvent.put( myPtZb, "myPtZb" );
+  
+  iEvent.put( myYZ,  "myYZ" );
+  iEvent.put( myYZb, "myYZb" );
 
   iEvent.put( myMassZj, "myMassZj" );
   iEvent.put( myMassZb, "myMassZb" );
