@@ -109,6 +109,10 @@ class ZbDumper : public edm::EDAnalyzer {
      TH2F* w_pt_Z_mm;
      TH2F* w_pt_Z_ee_b;
      TH2F* w_pt_Z_mm_b;
+     TH2F* w_y_Z_ee;
+     TH2F* w_y_Z_mm;
+     TH2F* w_y_Z_ee_b;
+     TH2F* w_y_Z_mm_b;
      TH2F* w_mass_Zj_ee;
      TH2F* w_mass_Zj_mm;
      TH2F* w_mass_Zj_ee_b;
@@ -152,6 +156,10 @@ ZbDumper::ZbDumper(const edm::ParameterSet& iConfig) {
    w_pt_Z_mm         = fs->make < TH2F > ("w_pt_Z_mm",         "w_pt_Z_mm;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
    w_pt_Z_ee_b 	     = fs->make < TH2F > ("w_pt_Z_ee_b",       "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
    w_pt_Z_mm_b       = fs->make < TH2F > ("w_pt_Z_mm_b",       "w_pt_Z_mm_b;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
+   w_y_Z_ee          = fs->make < TH2F > ("w_y_Z_ee",          "w_y_Z_ee;y",   20, -2.0, 2.0, 20, -2.0, 2.0);
+   w_y_Z_mm          = fs->make < TH2F > ("w_y_Z_mm",          "w_y_Z_mm;y",   20, -2.0, 2.0, 20, -2.0, 2.0);
+   w_y_Z_ee_b 	     = fs->make < TH2F > ("w_y_Z_ee_b",        "w_y_Z_ee_b;y", 20, -2.0, 2.0, 20, -2.0, 2.0);
+   w_y_Z_mm_b        = fs->make < TH2F > ("w_y_Z_mm_b",        "w_y_Z_mm_b;y", 20, -2.0, 2.0, 20, -2.0, 2.0);
 
    w_mass_Zj_ee      = fs->make < TH2F > ("w_mass_Zj_ee",      "w_mass_Zj_ee;P_t [GeV]", 60, 100., 330., 60, 100., 330.);
    w_mass_Zj_mm      = fs->make < TH2F > ("w_mass_Zj_mm",      "w_mass_Zj_mm;P_t [GeV]", 60, 100., 330., 60, 100., 330.);
@@ -190,6 +198,8 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
     edm::Handle <std::vector<math::XYZTLorentzVector>> bjets;
     edm::Handle <std::vector<double>>   ptZ;
     edm::Handle <std::vector<double>>   ptZ_b;
+    edm::Handle <std::vector<double>>   yZ;
+    edm::Handle <std::vector<double>>   yZ_b;
     edm::Handle <std::vector<double>>   zj_mass;
     edm::Handle <std::vector<double>>   zb_mass;
     edm::Handle <std::vector<double>>   Ht;
@@ -206,6 +216,8 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
     edm::Handle <std::vector<math::XYZTLorentzVector>> gen_bjets2;
     edm::Handle <std::vector<double>>   gen_ptZ;
     edm::Handle <std::vector<double>>   gen_ptZ_b;
+    edm::Handle <std::vector<double>>   gen_yZ;
+    edm::Handle <std::vector<double>>   gen_yZ_b;
     edm::Handle <std::vector<double>>   gen_zj_mass;
     edm::Handle <std::vector<double>>   gen_zb_mass;
     edm::Handle <std::vector<double>>   gen_Ht;
@@ -232,6 +244,8 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myJets"), jets);
      iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myPtZ"), ptZ);
      iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myPtZb"), ptZ_b);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myYZ"), yZ);
+     iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myYZb"), yZ_b);
      iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myMassZj"), zj_mass);
      iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myMassZb"), zb_mass);
      iEvent.getByLabel (edm::InputTag("demoEle"+postfix,"myHt"), Ht);
@@ -247,6 +261,8 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      iEvent.getByLabel (edm::InputTag("demoEleGen","myJets2"), gen_jets2);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myPtZ"), gen_ptZ);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myPtZb"), gen_ptZ_b);
+     iEvent.getByLabel (edm::InputTag("demoEleGen","myYZ"), gen_yZ);
+     iEvent.getByLabel (edm::InputTag("demoEleGen","myYZb"), gen_yZ_b);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myMassZj"), gen_zj_mass);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myMassZb"), gen_zb_mass);
      iEvent.getByLabel (edm::InputTag("demoEleGen","myHt"), gen_Ht);
@@ -266,6 +282,8 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myJets"), jets);
      iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myPtZ"), ptZ);
      iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myPtZb"), ptZ_b);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myYZ"), yZ);
+     iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myYZb"), yZ_b);
      iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myMassZj"), zj_mass);
      iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myMassZb"), zb_mass);
      iEvent.getByLabel (edm::InputTag("demoMuo"+postfix,"myHt"), Ht);
@@ -281,6 +299,8 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myJets2"), gen_jets2);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myPtZ"), gen_ptZ);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myPtZb"), gen_ptZ_b);
+     iEvent.getByLabel (edm::InputTag("demoMuoGen","myYZ"), gen_yZ);
+     iEvent.getByLabel (edm::InputTag("demoMuoGen","myYZb"), gen_yZ_b);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myMassZj"), gen_zj_mass);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myMassZb"), gen_zb_mass);
      iEvent.getByLabel (edm::InputTag("demoMuoGen","myHt"), gen_Ht);
@@ -315,11 +335,11 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
 
    if (k!=-1) {
      if ((*gen_jets2)[k].pt() < 30) k=-1;
-     if (fabs((*gen_jets2)[k].eta()) > 2.5) k=-1;
+     if (fabs((*gen_jets2)[k].eta()) > 2.4) k=-1;
    }
    if (k_b!=-1) {
      if ((*gen_bjets2)[k_b].pt() < 30) k_b=-1;
-     if (fabs((*gen_bjets2)[k_b].eta()) > 2.5) k_b=-1;
+     if (fabs((*gen_bjets2)[k_b].eta()) > 2.4) k_b=-1;
    }
 
    double my_weight = weight->empty() ? ( gen_weight->empty() ? -1 : (*gen_weight)[0] ) : (*weight)[0];
@@ -346,6 +366,17 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
        w_pt_Z_mm->Fill(ptZ->empty() ? -1 : (*ptZ)[0], gen_ptZ->empty() ? -1 : (*gen_ptZ)[0], my_weight);
        w_pt_Z_mm_b->Fill(ptZ_b->empty() ? -1 : (*ptZ_b)[0], gen_ptZ_b->empty() ? -1 : (*gen_ptZ_b)[0], my_bweight);
      }
+     
+     if (ee_event) {
+       w_y_Z_ee->Fill(yZ->empty() ? -1 : (*yZ)[0], gen_yZ->empty() ? -1 : (*gen_yZ)[0], my_weight);
+       w_y_Z_ee_b->Fill(yZ_b->empty() ? -1 : (*yZ_b)[0], gen_yZ_b->empty() ? -1 : (*gen_yZ_b)[0], my_bweight);
+     }
+
+     if (mm_event) {
+       w_y_Z_mm->Fill(yZ->empty() ? -1 : (*yZ)[0], gen_yZ->empty() ? -1 : (*gen_yZ)[0], my_weight);
+       w_y_Z_mm_b->Fill(yZ_b->empty() ? -1 : (*yZ_b)[0], gen_yZ_b->empty() ? -1 : (*gen_yZ_b)[0], my_bweight);
+     }
+
 
      if (ee_event) {
        w_mass_Zj_ee->Fill(zj_mass->empty() ? -1 : (*zj_mass)[0], gen_zj_mass->empty() ? -1 : (*gen_zj_mass)[0], my_weight);
