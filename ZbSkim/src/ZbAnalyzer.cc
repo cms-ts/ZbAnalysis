@@ -1491,6 +1491,9 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
 
   produces<std::vector<double>>("myPtZ");
   produces<std::vector<double>>("myPtZb");
+  
+  produces<std::vector<double>>("myYZ");
+  produces<std::vector<double>>("myYZb");
 
   produces<std::vector<double>>("myMassZj");
   produces<std::vector<double>>("myMassZb");
@@ -1576,6 +1579,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   std::auto_ptr<std::vector<double>> myPtZ( new std::vector<double> );
   std::auto_ptr<std::vector<double>> myPtZb( new std::vector<double> );
+  
+  std::auto_ptr<std::vector<double>> myYZ( new std::vector<double> );
+  std::auto_ptr<std::vector<double>> myYZb( new std::vector<double> );
 
   std::auto_ptr<std::vector<double>> myMassZj( new std::vector<double> );
   std::auto_ptr<std::vector<double>> myMassZb( new std::vector<double> );
@@ -3513,11 +3519,13 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[iele0].px(),vect_ele[iele0].py(),vect_ele[iele0].pz(),vect_ele[iele0].energy()));
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[iele1].px(),vect_ele[iele1].py(),vect_ele[iele1].pz(),vect_ele[iele1].energy()));
     myPtZ->push_back(diele_pt);
+    myYZ->push_back(diele_y);
     math::XYZTLorentzVector zj_ee_p = vect_jets[0].p4() + z_ee;
     double zj_ee_mass = zj_ee_p.mass();
     myMassZj->push_back(zj_ee_mass);
     if (Nb > 0 && met_cut && b_selection) {
       myPtZb->push_back(diele_pt);
+      myYZb->push_back(diele_y);
       math::XYZTLorentzVector zb_ee_p = vect_jets[0].p4() + z_ee;
       double zb_ee_mass = zb_ee_p.mass();
       myMassZb->push_back(zb_ee_mass);
@@ -3528,11 +3536,13 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[imuon0].px(),vect_muon[imuon0].py(),vect_muon[imuon0].pz(),vect_muon[imuon0].energy()));
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[imuon1].px(),vect_muon[imuon1].py(),vect_muon[imuon1].pz(),vect_muon[imuon1].energy()));
     myPtZ->push_back(dimuon_pt);
+    myYZ->push_back(dimuon_y);
     math::XYZTLorentzVector zj_mm_p = vect_jets[0].p4() + z_mm;
     double zj_mm_mass = zj_mm_p.mass();
     myMassZj->push_back(zj_mm_mass);
     if (Nb > 0 && met_cut && b_selection) {
       myPtZb->push_back(dimuon_pt);
+      myYZb->push_back(dimuon_y);
       math::XYZTLorentzVector zb_mm_p = vect_jets[0].p4() + z_mm;
       double zb_mm_mass = zb_mm_p.mass();
       myMassZb->push_back(zb_mm_mass);
@@ -3590,6 +3600,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   iEvent.put( myPtZ, "myPtZ" );
   iEvent.put( myPtZb, "myPtZb" );
+  
+  iEvent.put( myYZ, "myYZ" );
+  iEvent.put( myYZb, "myYZb" );
 
   iEvent.put( myMassZj, "myMassZj" );
   iEvent.put( myMassZb, "myMassZb" );
