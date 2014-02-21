@@ -19,6 +19,8 @@ cd -
 i=1
 while [ $i -le 2 ]; do
 
+  root -l -q -b DataMCComp5.C+\($d,\"w_mass_ee_wide\",1,$i,1,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_mass_mm_wide\",1,$i,1,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_mass_ee_b_wide\",1,$i,1,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_mass_mm_b_wide\",1,$i,1,$n\)
 
@@ -34,9 +36,6 @@ i=1
 while [ $i -le 2 ]; do
 
   if [ $n -eq 0 ]; then
-
-    root -l -q -b DataMCComp5.C+\($d,\"w_mass_ee_wide\",1,$i,1,$n\)
-    root -l -q -b DataMCComp5.C+\($d,\"w_mass_mm_wide\",1,$i,1,$n\)
 
     root -l -q -b DataMCComp5.C+\($d,\"h_pu_weights\",1,$i,0,$n\)
     root -l -q -b DataMCComp5.C+\($d,\"h_recoVTX\",1,$i,0,$n\)
@@ -58,9 +57,6 @@ while [ $i -le 2 ]; do
     root -l -q -b DataMCComp5.C+\($d,\"w_mass_Zj_mm\",1,$i,0,$n\)
 
     root -l -q -b DataMCComp5.C+\($d,\"w_numberOfZ\",1,$i,0,$n\)
-
-    root -l -q -b DataMCComp5.C+\($d,\"w_mass_ee_wide\",1,$i,0,$n\)
-    root -l -q -b DataMCComp5.C+\($d,\"w_mass_mm_wide\",1,$i,0,$n\)
 
     root -l -q -b DataMCComp5.C+\($d,\"w_mass_ee\",1,$i,0,$n\)
     root -l -q -b DataMCComp5.C+\($d,\"w_mass_mm\",1,$i,0,$n\)
@@ -85,6 +81,9 @@ while [ $i -le 2 ]; do
     root -l -q -b DataMCComp5.C+\($d,\"h_scaleFactor_first_muon\",1,$i,0,$n\)
     root -l -q -b DataMCComp5.C+\($d,\"h_scaleFactor_second_muon\",1,$i,0,$n\)
   fi
+
+  root -l -q -b DataMCComp5.C+\($d,\"w_mass_ee_wide\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_mass_mm_wide\",1,$i,0,$n\)
 
   root -l -q -b DataMCComp5.C+\($d,\"w_mass_ee_b_wide\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_mass_mm_b_wide\",1,$i,0,$n\)
