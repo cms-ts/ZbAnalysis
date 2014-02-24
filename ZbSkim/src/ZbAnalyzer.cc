@@ -974,9 +974,9 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
 
   //Mass. Inv
   w_bb_mass =     fs->make < TH1F > ("w_bb_mass",   "w_bb_mass;Mass [GeV]", 30, 0., 300);
-  b_bb_mass =     fs->make < TH1F > ("b_bb_mass",   "w_bb_mass;Mass [GeV]", 30, 0., 300);
-  c_bb_mass =     fs->make < TH1F > ("c_bb_mass",   "w_bb_mass;Mass [GeV]", 30, 0., 300);
-  t_bb_mass =     fs->make < TH1F > ("t_bb_mass",   "w_bb_mass;Mass [GeV]", 30, 0., 300);
+  b_bb_mass =     fs->make < TH1F > ("b_bb_mass",   "b_bb_mass;Mass [GeV]", 30, 0., 300);
+  c_bb_mass =     fs->make < TH1F > ("c_bb_mass",   "c_bb_mass;Mass [GeV]", 30, 0., 300);
+  t_bb_mass =     fs->make < TH1F > ("t_bb_mass",   "t_bb_mass;Mass [GeV]", 30, 0., 300);
   w_eebb_mass =     fs->make < TH1F > ("w_eebb_mass",   "w_eebb_mass;Mass [GeV]", 30, 150., 500.);
   b_eebb_mass =     fs->make < TH1F > ("b_eebb_mass",   "b_eebb_mass;Mass [GeV]", 30, 150., 500.);
   c_eebb_mass =     fs->make < TH1F > ("c_eebb_mass",   "c_eebb_mass;Mass [GeV]", 30, 150., 500.);

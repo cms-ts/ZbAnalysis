@@ -60,6 +60,9 @@ while [ $i -le 2 ]; do
     root -l -q -b DataMCComp.C+\($d,\"w_mass_mm\",1,$i,0,0,$n\)
     root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_mm\",1,$i,0,0,$n\)
 
+    root -l -q -b DataMCComp.C+\($d,\"w_Phi_star_ee\",1,$i,0,0,$n\)
+    root -l -q -b DataMCComp.C+\($d,\"w_Phi_star_mm\",1,$i,0,0,$n\)
+
     root -l -q -b DataMCComp.C+\($d,\"w_mass_Zj_ee\",1,$i,0,0,$n\)
   
     root -l -q -b DataMCComp.C+\($d,\"w_secondvtx_N\",1,$i,0,0,$n\)
@@ -94,7 +97,9 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_ee_b\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_mm_b\",1,$i,0,0,$n\)
 
-     
+  root -l -q -b DataMCComp.C+\($d,\"w_Phi_star_ee_b\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_Phi_star_mm_b\",1,$i,0,0,$n\)
+   
   root -l -q -b DataMCComp.C+\($d,\"w_single_pt_Z_ee_b\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_single_pt_Z_mm_b\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_single_bjet_pt\",1,$i,0,0,$n\)
@@ -130,6 +135,18 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C+\($d,\"w_second_bjet_eta\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_third_bjet_pt\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_third_bjet_eta\",1,$i,0,0,$n\)
+
+  root -l -q -b DataMCComp.C+\($d,\"w_DR_eeb_min\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_DR_eeb_max\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_DR_mmb_min\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_DR_mmb_max\",1,$i,0,0,$n\)
+
+  root -l -q -b DataMCComp.C+\($d,\"w_A_eeb\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_A_mmb\",1,$i,0,0,$n\)
+
+  root -l -q -b DataMCComp.C+\($d,\"w_bb_mass\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_eebb_mass\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_mmbb_mass\",1,$i,0,0,$n\)
 
   root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass_jet\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass_trk\",1,$i,0,0,$n\)
@@ -170,6 +187,8 @@ if [ $n -eq 0 ]; then
   root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_em\",1,3,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_mass_Zj_em\",1,3,0,0,$n\)
 
+  root -l -q -b DataMCComp.C+\($d,\"w_Phi_star_em\",1,3,0,0,$n\)
+
   root -l -q -b DataMCComp.C+\($d,\"w_jetmultiplicity\",1,3,0,0,$n\)
 
   root -l -q -b DataMCComp.C+\($d,\"w_first_jet_pt\",1,3,0,0,$n\)
@@ -188,13 +207,13 @@ root -l -q -b DataMCComp.C+\($d,\"w_mass_em_b\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_em_b\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_em_b\",1,3,0,0,$n\)
 
-
 root -l -q -b DataMCComp.C+\($d,\"w_single_pt_Z_em_b\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_single_bjet_pt\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_single_bjet_eta\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_single_delta_phi_em_b\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_single_Ht_b\",1,3,0,0,$n\)
 
+root -l -q -b DataMCComp.C+\($d,\"w_Phi_star_em_b\",1,3,0,0,$n\)
 
 root -l -q -b DataMCComp.C+\($d,\"w_MET\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_MET_sign\",1,3,0,0,$n\)
@@ -204,7 +223,6 @@ root -l -q -b DataMCComp.C+\($d,\"w_MET_sign_b\",1,3,0,0,$n\)
 
 root -l -q -b DataMCComp.C+\($d,\"w_Ht_b\",1,3,0,0,$n\)
   
-
 root -l -q -b DataMCComp.C+\($d,\"w_mass_Zj_em_b\",1,3,0,0,$n\)
 
 root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_2b\",1,3,0,0,$n\)
@@ -216,6 +234,14 @@ root -l -q -b DataMCComp.C+\($d,\"w_second_bjet_pt\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_second_bjet_eta\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_third_bjet_pt\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_third_bjet_eta\",1,3,0,0,$n\)
+
+root -l -q -b DataMCComp.C+\($d,\"w_DR_emb_min\",1,3,0,0,$n\)
+root -l -q -b DataMCComp.C+\($d,\"w_DR_emb_max\",1,3,0,0,$n\)
+
+root -l -q -b DataMCComp.C+\($d,\"w_A_emb\",1,3,0,0,$n\)
+
+root -l -q -b DataMCComp.C+\($d,\"w_bb_mass\",1,3,0,0,$n\)
+root -l -q -b DataMCComp.C+\($d,\"w_embb_mass\",1,3,0,0,$n\)
 
 root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass_jet\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass_trk\",1,3,0,0,$n\)
