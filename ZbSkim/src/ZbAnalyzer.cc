@@ -3094,12 +3094,12 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       if (Nb == 1 && numB_ == 1 && findBjet(vect_jets, vect_bjets)) {
         bb_BJP->Fill (discrBJP, MyWeight*scalFac_b);
       }
-      if (Nb > 1) {
-        b_BJP_sub->Fill (discrBJP_sub, MyWeight*scalFac_b);
-        b_JBP_sub->Fill (discrJBP_sub, MyWeight*scalFac_b);
-        b_BJP_2D->Fill (discrBJP, discrBJP_sub, MyWeight*scalFac_b);
-        b_JBP_2D->Fill (discrJBP, discrJBP_sub, MyWeight*scalFac_b);
-      }
+      //if (Nb > 1) {
+        //b_BJP_sub->Fill (discrBJP_sub, MyWeight*scalFac_b);
+        //b_JBP_sub->Fill (discrJBP_sub, MyWeight*scalFac_b);
+        //b_BJP_2D->Fill (discrBJP, discrBJP_sub, MyWeight*scalFac_b);
+        //b_JBP_2D->Fill (discrJBP, discrJBP_sub, MyWeight*scalFac_b);
+      //}
       if (sumVertexMass > 0.0) {
         b_BJP_mass->Fill (discrBJP, MyWeight*scalFac_b);
         b_JBP_mass->Fill (discrJBP, MyWeight*scalFac_b);
