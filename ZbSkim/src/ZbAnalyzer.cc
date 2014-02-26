@@ -2615,7 +2615,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     h_mass_em->Fill (dielemuon_mass);
     w_mass_em->Fill (dielemuon_mass, MyWeight);
     w_pt_Z_em->Fill (dielemuon_pt, MyWeight);
-    w_y_Z_em->Fill (fabs(dielemuon_y), MyWeight);
+    w_y_Z_em->Fill (dielemuon_y, MyWeight);
     w_delta_em->Fill (delta_phi_em, MyWeight);
     math::XYZTLorentzVector zj_em_p = vect_jets[0].p4() + z_em;
     double zj_em_mass = zj_em_p.mass();
@@ -2623,19 +2623,19 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (ist) {
       t_mass_em->Fill (dielemuon_mass, MyWeight);
       t_pt_Z_em->Fill (dielemuon_pt, MyWeight);
-      t_y_Z_em->Fill (fabs(dielemuon_y), MyWeight);
+      t_y_Z_em->Fill (dielemuon_y, MyWeight);
       t_mass_Zj_em->Fill (zj_em_mass, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 5) {
       b_mass_em->Fill (dielemuon_mass, MyWeight);
       b_pt_Z_em->Fill (dielemuon_pt, MyWeight);
-      b_y_Z_em->Fill (fabs(dielemuon_y), MyWeight);
+      b_y_Z_em->Fill (dielemuon_y, MyWeight);
       b_mass_Zj_em->Fill (zj_em_mass, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_mass_em->Fill (dielemuon_mass, MyWeight);
       c_pt_Z_em->Fill (dielemuon_pt, MyWeight);
-      c_y_Z_em->Fill (fabs(dielemuon_y), MyWeight);
+      c_y_Z_em->Fill (dielemuon_y, MyWeight);
       c_mass_Zj_em->Fill (zj_em_mass, MyWeight);
     }
     if (Nb > 0 && met_cut && b_selection) {
@@ -2644,7 +2644,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
       w_mass_em_b->Fill (dielemuon_mass, MyWeight*scalFac_b);
       w_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
-      w_y_Z_em_b->Fill (fabs(dielemuon_y), MyWeight*scalFac_b);
+      w_y_Z_em_b->Fill (dielemuon_y, MyWeight*scalFac_b);
       math::XYZTLorentzVector zb_em_p = vect_bjets[0].p4() + z_em; 
       double zb_em_mass = zb_em_p.mass();
       w_mass_Zj_em_b->Fill (zb_em_mass, MyWeight*scalFac_b);
@@ -2658,7 +2658,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       if (ist) {
         t_mass_em_b->Fill (dielemuon_mass, MyWeight*scalFac_b);
         t_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
-        t_y_Z_em_b->Fill (fabs(dielemuon_y), MyWeight*scalFac_b);
+        t_y_Z_em_b->Fill (dielemuon_y, MyWeight*scalFac_b);
         t_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
         t_mass_Zj_em_b->Fill (zb_em_mass, MyWeight*scalFac_b);
 	if (Nj == 1) {
@@ -2669,12 +2669,12 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 5) {
         b_mass_em_b->Fill (dielemuon_mass, MyWeight*scalFac_b);
         b_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
-	b_y_Z_em_b->Fill (fabs(dielemuon_y), MyWeight*scalFac_b);
+	b_y_Z_em_b->Fill (dielemuon_y, MyWeight*scalFac_b);
         b_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
         b_mass_Zj_em_b->Fill (zb_em_mass, MyWeight*scalFac_b);
         if (Nb == 1 && numB_ == 1 && findBjet(vect_jets, vect_bjets)) {
           bb_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
-	  bb_y_Z_em_b->Fill (fabs(dielemuon_y), MyWeight*scalFac_b);
+	  bb_y_Z_em_b->Fill (dielemuon_y, MyWeight*scalFac_b);
           bb_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
         }
 	if (Nj == 1) {
@@ -2685,7 +2685,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 4) {
         c_mass_em_b->Fill (dielemuon_mass, MyWeight*scalFac_b);
         c_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
-	c_y_Z_em_b->Fill (fabs(dielemuon_y), MyWeight*scalFac_b);
+	c_y_Z_em_b->Fill (dielemuon_y, MyWeight*scalFac_b);
         c_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
         c_mass_Zj_em_b->Fill (zb_em_mass, MyWeight*scalFac_b);
         if (Nj == 1) {
