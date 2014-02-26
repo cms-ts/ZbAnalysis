@@ -1612,16 +1612,19 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   double diele_phi = 0;
   double diele_pt = 0;
   double diele_y = 0;
+  double diele_eta = 0;
 
   double dimuon_mass = 0;
   double dimuon_phi = 0;
   double dimuon_pt = 0;
   double dimuon_y = 0;
+  double dimuon_eta = 0;
 
   double dielemuon_mass = 0;
   double dielemuon_phi = 0;
   double dielemuon_pt = 0;
   double dielemuon_y = 0;
+  double dielemuon_eta = 0;
 
   double Ht = 0;
 
@@ -1701,6 +1704,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     diele_pt = z_ee.pt();
     diele_phi = z_ee.phi();
     diele_y = z_ee.Rapidity();
+    diele_eta = z_ee.eta();
     if (diele_mass>71 && diele_mass<111) ee_event = true;
   }
 
@@ -1731,6 +1735,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     dimuon_pt = z_mm.pt();
     dimuon_phi = z_mm.phi();
     dimuon_y = z_mm.Rapidity();
+    dimuon_eta = z_mm.eta();
     if (dimuon_mass>71 && dimuon_mass<111) mm_event = true;
   }
 
@@ -1771,6 +1776,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       dielemuon_pt   = z_em.pt();
       dielemuon_phi  = z_em.phi();
       dielemuon_y  = z_em.Rapidity();
+      dielemuon_eta = z_em.eta();
       if (dielemuon_mass>71 && dielemuon_mass<111) em_event = true;
     }
     if (imuon1!=-1) {
@@ -1779,6 +1785,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       dielemuon_phi  = z_em.phi();
       dielemuon_pt   = z_em.pt();
       dielemuon_y  = z_em.Rapidity();
+      dielemuon_eta = z_em.eta();
       if (dielemuon_mass>71 && dielemuon_mass<111) em_event = true;
     }
 
@@ -2152,8 +2159,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   em_event = em_event && (iflag_ee || iflag_mm);
 
   // Zbb Angular Variables and invariant mass		
-  double diele_eta = z_ee.eta();
-
   double delta_phi_eeb = 0;
   double delta_eta_eeb = 0;
   double DR_eeb = 0;
@@ -2205,17 +2210,17 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         if (DR_eeb >= DR_eeb_max) DR_eeb_max = DR_eeb;
       }
       if (mm_event) {
-	delta_phi_mmb = fabs(diele_phi - vect_bjets[i].phi());
+	delta_phi_mmb = fabs(dimuon_phi - vect_bjets[i].phi());
         if (delta_phi_mmb > acos(-1)) delta_phi_mmb = 2 * acos(-1) - delta_phi_mmb;
-      	delta_eta_mmb = fabs(diele_eta - vect_bjets[i].eta());
+      	delta_eta_mmb = fabs(dimuon_eta - vect_bjets[i].eta());
         DR_mmb = TMath::Sqrt(delta_phi_mmb*delta_phi_mmb + delta_eta_mmb*delta_eta_mmb);
         if (DR_mmb <= DR_mmb_min) DR_mmb_min = DR_mmb;
         if (DR_mmb >= DR_mmb_max) DR_mmb_max = DR_mmb;
       }
       if (em_event) {
-	delta_phi_emb = fabs(diele_phi - vect_bjets[i].phi());
+	delta_phi_emb = fabs(dielemuon_phi - vect_bjets[i].phi());
         if (delta_phi_emb > acos(-1)) delta_phi_emb = 2 * acos(-1) - delta_phi_emb;
-      	delta_eta_emb = fabs(diele_eta - vect_bjets[i].eta());
+      	delta_eta_emb = fabs(dielemuon_eta - vect_bjets[i].eta());
         DR_emb = TMath::Sqrt(delta_phi_emb*delta_phi_emb + delta_eta_emb*delta_eta_emb);
         if (DR_emb <= DR_emb_min) DR_emb_min = DR_emb;
         if (DR_emb >= DR_emb_max) DR_emb_max = DR_emb;
