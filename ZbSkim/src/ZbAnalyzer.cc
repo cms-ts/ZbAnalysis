@@ -1207,10 +1207,10 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_pt_Z_em =           fs->make < TH1F > ("c_pt_Z_em",         "c_pt_Z_em;P_t [GeV]", 40, 0., 400.);
   t_pt_Z_em =           fs->make < TH1F > ("t_pt_Z_em",         "t_pt_Z_em;P_t [GeV]", 40, 0., 400.);
 
-  w_y_Z_em =           fs->make < TH1F > ("w_y_Z_em",         "w_y_Z_em;abs(y_Z)", 10, 0., 2.0);
-  b_y_Z_em =           fs->make < TH1F > ("b_y_Z_em",         "b_y_Z_em;abs(y_Z)", 10, 0., 2.0);
-  c_y_Z_em =           fs->make < TH1F > ("c_y_Z_em",         "c_y_Z_em;abs(y_Z)", 10, 0., 2.0);
-  t_y_Z_em =           fs->make < TH1F > ("t_y_Z_em",         "t_y_Z_em;abs(y_Z)", 10, 0., 2.0);
+  w_y_Z_em =           fs->make < TH1F > ("w_y_Z_em",         "w_y_Z_em;abs(y_Z)", 20, -2.0, 2.0);
+  b_y_Z_em =           fs->make < TH1F > ("b_y_Z_em",         "b_y_Z_em;abs(y_Z)", 20, -2.0, 2.0);
+  c_y_Z_em =           fs->make < TH1F > ("c_y_Z_em",         "c_y_Z_em;abs(y_Z)", 20, -2.0, 2.0);
+  t_y_Z_em =           fs->make < TH1F > ("t_y_Z_em",         "t_y_Z_em;abs(y_Z)", 20, -2.0, 2.0);
 
   w_mass_ee_b_wide =    fs->make < TH1F > ("w_mass_ee_b_wide",  "w_mass_ee_b_wide;Mass [GeV]", 40, 50., 200.);
   b_mass_ee_b_wide =    fs->make < TH1F > ("b_mass_ee_b_wide",  "b_mass_ee_b_wide;Mass [GeV]", 40, 50., 200.);
