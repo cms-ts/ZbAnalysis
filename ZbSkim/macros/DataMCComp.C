@@ -9,6 +9,7 @@ TH1F* h_data_fit = 0;
 TH1F* h_mc_fit0 = 0;
 TH1F* h_mc_fit1 = 0;
 TH1F* h_mc_fit2 = 0;
+TH1F* h_mc1bb = 0;
 
 void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   double chisq = 0.0;
@@ -34,7 +35,9 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   fun = chisq;
 }
 
-void DataMCComp(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0, int numB=0) {
+void DataMCComp(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0, int numB=0, int bb=0) {
+
+// bb parameter -> 2 b-jet found with partonFlavour   
 
 //int useFitResults=0; // use MC predictions for c_t
 int useFitResults=1;  // use fit results for c_t
@@ -46,10 +49,14 @@ int useDY = 0; // use MadGraph DY
 //int useDY = 1; // use Sherpa DY
 //int useDY = 2; // use Powheg DY
 
-string bSel="Z + (#geq 1) b-jet";
+int bbBkg = 0;
+int bbSig = 0;
+
+string bSel=" ";
 string subdir="0";
 string postfix="";
 string dirbSel="";
+
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
   postfix="Up";
@@ -129,6 +136,9 @@ if (numB==2) {
   bSel="Z + (#geq 2) b-jet";
 }
 
+	if (numB==1 && bb==1) bbBkg=1;     
+        if (doFit==4) bbSig=1;
+
 	/* top background */
 
 	double c1_t=1.0;
@@ -180,6 +190,21 @@ if (numB==2) {
 	    in7.close();
 	  }
 	}
+
+        double fScal=1.0;
+        double efScal=0.0;
+
+        if (bbBkg) {
+          ifstream in8;
+          if (ilepton==1) {
+            in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_BJP_doFit" + ".dat").c_str());
+          }
+          if (ilepton==2) {
+            in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_BJP_doFit" + ".dat").c_str());
+          }         
+          in8 >> fScal >> efScal;
+        }
+
 
 	double Lumi2012=0;
 
@@ -262,6 +287,8 @@ if (numB==2) {
 	TH1F* h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
 	TH1F* h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
 	TH1F* h_mc1t = (TH1F*)gDirectory->Get(("t"+title.substr(1)).c_str());
+        if (bbBkg)  h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
+        if (bbSig)  h_mc1bb = (TH1F*)gDirectory->Get(("bbSig"+title.substr(1)).c_str());       
 
 	if (ilepton==1) mc2->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) mc2->cd(("demoMuo"+postfix).c_str());
@@ -329,6 +356,12 @@ if (numB==2) {
 	  h_mc1t->SetFillColor(kOrange-4);
 	  //h_mc1t->SetFillStyle(3004);
 	}
+        if (bbBkg || bbSig) {
+          h_mc1bb->Sumw2();
+          h_mc1bb->SetLineColor(kBlack);
+          h_mc1bb->SetFillColor(kYellow+2);
+          h_mc1bb->SetFillStyle(3254);
+	}
 
 	h_mc2 -> Sumw2();
 	h_mc2 -> SetLineColor(kBlack);
@@ -374,12 +407,18 @@ if (numB==2) {
 	if (h_mc1b) h_mc1b->Scale(norm1);
 	if (h_mc1c) h_mc1c->Scale(norm1);
 	if (h_mc1t) h_mc1t->Scale(norm1);
+	if (bbBkg || bbSig) h_mc1bb->Scale(norm1);
+        if (bbBkg)  h_mc1bb->Scale(fScal); 
+
 	h_mc2->Scale(norm2);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
 //	h_mc5->Scale(norm5);
 	h_mc6->Scale(norm6);
 	h_mc7->Scale(norm7);
+
+     
+        if (bbBkg || bbSig) h_mc1b->Add(h_mc1bb, -1.); 
 
 	if (useFitResults) {
 	  h_mc2->Scale(1./norm2);
@@ -397,6 +436,7 @@ if (numB==2) {
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
 	    h_mc1->SetBinError(i, 1.1*h_mc1->GetBinError(i));
 	    if (h_mc1b) h_mc1b->SetBinError(i, 1.1*h_mc1b->GetBinError(i));
+            if (bbBkg || bbSig) h_mc1bb->SetBinError(i, 1.1*h_mc1bb->GetBinError(i));
 	    if (h_mc1c) h_mc1c->SetBinError(i, 1.1*h_mc1c->GetBinError(i));
 	    if (h_mc1t) h_mc1t->SetBinError(i, 1.1*h_mc1t->GetBinError(i));
 	    h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
@@ -421,9 +461,11 @@ if (numB==2) {
 	if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
 	if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
 	if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
+        if (bbBkg || bbSig) h_mc1->Add(h_mc1bb, -1.);
 	for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
 	  float e = TMath::Power(h_mc1->GetBinError(i),2);
 	  if (h_mc1b) e = e - TMath::Power(h_mc1b->GetBinError(i),2);
+          if (bbBkg || bbSig) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
 	  if (h_mc1c) e = e - TMath::Power(h_mc1c->GetBinError(i),2);
 	  if (h_mc1t) e = e - TMath::Power(h_mc1t->GetBinError(i),2);
 	  h_mc1->SetBinError(i, TMath::Sqrt(e));
@@ -443,6 +485,7 @@ if (numB==2) {
 	  }
 	  h_data_fit->Add(h_mc1, -1.);
 	  if (h_mc1b) h_data_fit->Add(h_mc1b, -1.);
+          if (bbBkg || bbSig) h_data_fit->Add(h_mc1bb, -1.);
 	  if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
 	  h_mc_fit0 = h_mc2;
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
@@ -480,6 +523,8 @@ if (numB==2) {
 	      h_mc1->SetBinError(i, 0);
 	      if (h_mc1b) h_mc1b->SetBinContent(i, 0);
 	      if (h_mc1b) h_mc1b->SetBinError(i, 0);
+	      if (bbBkg || bbSig) h_mc1bb->SetBinContent(i, 0);
+              if (bbBkg || bbSig) h_mc1bb->SetBinError(i, 0);
 	      if (h_mc1c) h_mc1c->SetBinContent(i, 0);
 	      if (h_mc1c) h_mc1c->SetBinError(i, 0);
 	      if (h_mc1t) h_mc1t->SetBinContent(i, 0);
@@ -546,7 +591,7 @@ if (numB==2) {
 	    h_data_fit->Add(h_mc1t, -1.);
 	  }
 	  h_mc_fit0 = h_mc1;
-	  h_mc_fit1 = h_mc1b;
+          h_mc_fit1 = h_mc1b;
 	  h_mc_fit2 = h_mc1c;
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
 	    bool skip = false;
@@ -598,6 +643,33 @@ if (numB==2) {
 	  h_mc_fit1->Scale(fitter->GetParameter(1));
 	  h_mc_fit2->Scale(fitter->GetParameter(2));
 	}
+        if (doFit==4) {
+          h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
+          if (!doBkg) {
+            h_data_fit->Add(h_mc7, -1.);
+            h_data_fit->Add(h_mc6, -1.);
+//          h_data_fit->Add(h_mc5, -1.);
+            h_data_fit->Add(h_mc4, -1.);
+            h_data_fit->Add(h_mc3, -1.);
+            h_data_fit->Add(h_mc2, -1.);
+            h_data_fit->Add(h_mc1t, -1.);
+          }
+          h_data_fit->Add(h_mc1, -1.);
+          if (h_mc1b) h_data_fit->Add(h_mc1b, -1.);
+          if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
+          h_mc_fit0 = h_mc1bb;
+          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+            float e = TMath::Power(h_data_fit->GetBinError(i),2);
+            h_data_fit->SetBinError(i, TMath::Sqrt(e));
+          }
+          fitter = TVirtualFitter::Fitter(0, 1);
+          fitter->SetFCN(fcn);
+          double arglist[1] = {-1.0};
+          fitter->ExecuteCommand("SET PRINT", arglist, 1);
+          fitter->SetParameter(0, "c(b)", 1.00, 0.01, 0.00, 100.00);
+          fitter->ExecuteCommand("MIGRAD", arglist, 0);
+          h_mc_fit0->Scale(fitter->GetParameter(0));
+        }
 
 	TH1F *ht = (TH1F*)h_mc1->Clone("ht");
 	ht->Reset();
@@ -611,9 +683,10 @@ if (numB==2) {
 	  ht->Add(h_mc2);
 	}
 	if (h_mc1b) ht->Add(h_mc1b);
+        if (bbBkg || bbSig) ht->Add(h_mc1bb);
 	if (h_mc1c) ht->Add(h_mc1c);
 	ht->Add(h_mc1);
-
+ 
 	THStack *hs = new THStack("hs","");
 	if (h_mc1t) hs->Add(h_mc1t);
 	if (!doBkg) {
@@ -624,6 +697,7 @@ if (numB==2) {
 	  hs->Add(h_mc3);
 	  hs->Add(h_mc2);
 	}
+        if (bbBkg || bbSig) hs->Add(h_mc1bb);
 	if (h_mc1b) hs->Add(h_mc1b);
 	if (h_mc1c) hs->Add(h_mc1c);
 	hs->Add(h_mc1);
@@ -638,6 +712,7 @@ if (numB==2) {
 	pad1->SetLogy();
 	if (title.find("MET")!=string::npos)   pad1->SetLogy(0);
 	if (title.find("mass_")!=string::npos) pad1->SetLogy(0);
+        if (title.find("y_Z")!=string::npos) pad1->SetLogy(0);
 
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
@@ -645,15 +720,18 @@ if (numB==2) {
 	hs->GetXaxis()->SetTitleOffset(0.7);
 	hs->SetMinimum(8);
 
+
 	h_data->Draw("EPX0SAMES");
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
 	h_data->SetMarkerSize (1.0);
-	//h_data->SetStats(0);
+	if (title=="w_delta_phi_2b" || title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b" ) h_data->SetStats(0);
 
 	TLegend *leg;
 	if (doBkg) {
-	  if (h_mc1c && h_mc1b) {
+	  if (h_mc1c && h_mc1b && (bbBkg || bbSig)) {
+	    leg = new TLegend(0.62, 0.714, 0.88, 0.88);       
+	  } else if (h_mc1c && h_mc1b) {
 	    leg = new TLegend(0.62, 0.747, 0.88, 0.88);
 	  } else if (h_mc1c || h_mc1b) {
 	    leg = new TLegend(0.62, 0.780, 0.88, 0.88);
@@ -661,7 +739,9 @@ if (numB==2) {
 	    leg = new TLegend(0.62, 0.813, 0.88, 0.88);
 	  }
 	} else {
-	  if (h_mc1c && h_mc1b) {
+          if (h_mc1c && h_mc1b && (bbBkg || bbSig)) {
+            leg = new TLegend(0.62, 0.547, 0.88, 0.88);
+	  } else if (h_mc1c && h_mc1b) {
 	    leg = new TLegend(0.62, 0.580, 0.88, 0.88);
 	  } else if (h_mc1c || h_mc1b) {
 	    leg = new TLegend(0.62, 0.613, 0.88, 0.88);
@@ -685,6 +765,7 @@ if (numB==2) {
 	}
 	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
 	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
+        if (bbBkg || bbSig) leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
 	if (!doBkg) {
 	  if (h_mc1t) leg->AddEntry(h_mc1t,"#tau^{+}#tau^{-}+jets","f");
 	  leg->AddEntry(h_mc2,"t#bar{t}","f");
@@ -723,7 +804,7 @@ if (numB==2) {
 	  h_ratio->GetXaxis ()->SetTitle("jet p_{T} [GeV/c]");
 	} else if (title=="w_secondvtx_N") {
 	  h_ratio->GetXaxis ()->SetTitle("CSV discriminator");
-	} else if (title=="w_recoVTX") {
+	} else if (title=="w_recoVTX" || title=="h_recoVTX") {
 	  h_ratio->GetXaxis ()->SetTitle("Number of offline vertices");
 	} else if (title=="w_muon_pt") {
 	  h_ratio->GetXaxis ()->SetTitle("muon p_{T} [GeV/c]");
@@ -739,7 +820,9 @@ if (numB==2) {
 	  h_ratio->GetXaxis ()->SetTitle("Zj invariant mass [GeV/c]");
 	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
-	} else if (title=="w_bjetmultiplicity") {
+	} else if (title=="w_y_Z_ee_b" || title=="w_y_Z_mm_b") {
+          h_ratio->GetXaxis ()->SetTitle("y_{Z}");
+        } else if (title=="w_bjetmultiplicity") {
 	  h_ratio->GetXaxis ()->SetTitle("b-jet multiplicity");
 	} else if (title=="w_first_jet_pt_b") {
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
@@ -761,7 +844,11 @@ if (numB==2) {
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(jZ) [rad]");
 	} else if (title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b") {
 	  h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bZ) [rad]");
-	} else if (title=="SVTX_mass_jet"||title=="SVTX_mass_trk"||title=="SVTX_mass") {
+	} else if (title=="w_delta_phi_2b") {
+          h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bb) [rad]");
+        } else if (title=="w_DR_bb") {
+          h_ratio->GetXaxis ()->SetTitle("#Delta R(bb) [rad]");
+        } else if (title=="SVTX_mass_jet"||title=="SVTX_mass_trk"||title=="SVTX_mass") {
 	  h_ratio->GetXaxis ()->SetTitle("SV mass [GeV/c^{2}]");
 	} else if (title=="w_BJP"||title=="w_JBP") {
 	  h_ratio->GetXaxis ()->SetTitle("JP Discriminator");
@@ -791,6 +878,9 @@ if (numB==2) {
 	OLine->Draw();
 
 	c1->cd();
+
+        if (title.find("_b")!=string::npos && numB==0) bSel="Z + (#geq 1) b-jet";
+        if ((title=="w_BJP"||title=="w_JBP") && numB==0) bSel="Z + (#geq 1) b-jet";
 
  	TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
 	latexLabel->Draw("same");
@@ -837,15 +927,20 @@ if (numB==2) {
 	    sprintf(buff, "f_{c}   = %4.1f #pm %3.1f %%", f_c, ef_c);
 	    fitLabel->DrawLatex(0.68, 0.38, buff);
 	  }
+          if (doFit==4) {
+            sprintf(buff, "c_{b} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
+            fitLabel->DrawLatex(0.68, 0.48, buff);
+          }
 	}
 
+         
 	if (useDY==1) subdir = subdir + "_sherpa";
 	if (useDY==2) subdir = subdir + "_powheg";
 
 	if (plot) {
 	  if (doBkg) title = title + "_doBkg";
 	  if (doFit) title = title + "_doFit";
-	  ofstream out;
+	  ofstream out,out2;
 	  if (ilepton==1) {
 	    gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + title + ".pdf").c_str());
@@ -876,6 +971,10 @@ if (numB==2) {
 	    out << fitter->GetParameter(2) << " " << fitter->GetParError(2) << endl;
 	    out.close();
 	  }
-	}
-}
+          if (doFit==4) {
+            out << fitter->GetParameter(0) << " " << fitter->GetParError(0) << endl;
+            out.close();
+          }
 
+	}       
+}
