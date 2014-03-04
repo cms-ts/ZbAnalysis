@@ -1272,7 +1272,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_y_Z_em_b=           fs->make < TH1F > ("b_y_Z_em_b",         "b_y_Z_em_b;abs(y_Z)", 20, -2.0, 2.0);
   c_y_Z_em_b=           fs->make < TH1F > ("c_y_Z_em_b",         "c_y_Z_em_b;abs(y_Z)", 20, -2.0, 2.0);
   t_y_Z_em_b=           fs->make < TH1F > ("t_y_Z_em_b",         "t_y_Z_em_b;abs(y_Z)", 20, -2.0, 2.0);
-  bbBkg_y_Z_em_b=       fs->make < TH1F > ("bbBkg_y_Z_em_b",     "bbBkg_y_Z_em_b;abs(y_Z)", 10, 0., 2.0);
+  bbBkg_y_Z_em_b=       fs->make < TH1F > ("bbBkg_y_Z_em_b",     "bbBkg_y_Z_em_b;abs(y_Z)", 20, -2.0, 2.0);
 
   w_single_pt_Z_ee_b =  fs->make < TH1F > ("w_single_pt_Z_ee_b",       "w_single_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
   b_single_pt_Z_ee_b =  fs->make < TH1F > ("b_single_pt_Z_ee_b",       "b_single_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
