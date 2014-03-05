@@ -1,6 +1,6 @@
 #include "DataMCComp.h"
 #include "LumiLabel.C"
-#include "LumiInfo_v11.h"
+#include "LumiInfo_v12.h"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 //string path = "/gpfs/cms/users/lalicata/work/test/data";
