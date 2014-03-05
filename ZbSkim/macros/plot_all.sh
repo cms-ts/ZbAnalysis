@@ -25,8 +25,6 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C+\($d,\"w_MET\",1,$i,0,1,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_MET_b\",1,$i,0,1,$n\)
 
-  root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,0,4,2,1\)
-  
   i=$((i+1))
 done
 
@@ -62,8 +60,10 @@ while [ $i -le 2 ]; do
 
     root -l -q -b DataMCComp.C+\($d,\"w_mass_ee\",1,$i,0,0,$n\)
     root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_ee\",1,$i,0,0,$n\)
+    root -l -q -b DataMCComp.C+\($d,\"w_y_Z_ee\",1,$i,0,0,$n\)
     root -l -q -b DataMCComp.C+\($d,\"w_mass_mm\",1,$i,0,0,$n\)
     root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_mm\",1,$i,0,0,$n\)
+    root -l -q -b DataMCComp.C+\($d,\"w_y_Z_mm\",1,$i,0,0,$n\)
 
     root -l -q -b DataMCComp.C+\($d,\"w_Phi_star_ee\",1,$i,0,0,$n\)
     root -l -q -b DataMCComp.C+\($d,\"w_Phi_star_mm\",1,$i,0,0,$n\)
@@ -97,12 +97,12 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp.C+\($d,\"w_mass_mm_b\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_mass_ee_b\",1,$i,0,0,$n\)
-  root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_ee_b\",1,$i,0,0,$n,1\)
-  root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_mm_b\",1,$i,0,0,$n,1\)
-  root -l -q -b DataMCComp.C+\($d,\"w_y_Z_ee_b\",1,$i,0,0,$n,1\)
-  root -l -q -b DataMCComp.C+\($d,\"w_y_Z_mm_b\",1,$i,0,0,$n,1\)
-  root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_ee_b\",1,$i,0,0,$n,1\)
-  root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_mm_b\",1,$i,0,0,$n,1\)
+  root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_ee_b\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_mm_b\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_y_Z_ee_b\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_y_Z_mm_b\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_ee_b\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_mm_b\",1,$i,0,0,$n\)
 
   root -l -q -b DataMCComp.C+\($d,\"w_Phi_star_ee_b\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_Phi_star_mm_b\",1,$i,0,0,$n\)
@@ -121,7 +121,7 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C+\($d,\"w_MET_sign\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_MET_sign_b\",1,$i,0,0,$n\)
 
-  root -l -q -b DataMCComp.C+\($d,\"w_Ht_b\",1,$i,0,0,$n,1\)
+  root -l -q -b DataMCComp.C+\($d,\"w_Ht_b\",1,$i,0,0,$n\)
  
   root -l -q -b DataMCComp.C+\($d,\"w_mass_Zj_ee_b\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_mass_Zj_mm_b\",1,$i,0,0,$n\)
@@ -136,8 +136,8 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_2b\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_bjetmultiplicity_exc\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_bjetmultiplicity\",1,$i,0,0,$n\)
-  root -l -q -b DataMCComp.C+\($d,\"w_first_bjet_pt\",1,$i,0,0,$n,1\)
-  root -l -q -b DataMCComp.C+\($d,\"w_first_bjet_eta\",1,$i,0,0,$n,1\)
+  root -l -q -b DataMCComp.C+\($d,\"w_first_bjet_pt\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_first_bjet_eta\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_second_bjet_pt\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_second_bjet_eta\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_third_bjet_pt\",1,$i,0,0,$n\)
@@ -157,12 +157,12 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass_jet\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass_trk\",1,$i,0,0,$n\)
-  root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass\",1,$i,0,0,$n,1\)
+  root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass_sub\",1,$i,0,0,$n\)
 
   root -l -q -b DataMCComp.C+\($d,\"w_secondvtx_N_zoom\",1,$i,0,0,$n\)
 
-  root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,0,0,$n,1\)
+  root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_BJP_sub\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_JBP\",1,$i,0,0,$n\)
 
@@ -192,6 +192,7 @@ if [ $n -eq 0 ]; then
   root -l -q -b DataMCComp.C+\($d,\"w_mass_em\",1,3,0,0,$n\)
  
   root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_em\",1,3,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_y_Z_em\",1,3,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_mass_Zj_em\",1,3,0,0,$n\)
 
   root -l -q -b DataMCComp.C+\($d,\"w_Phi_star_em\",1,3,0,0,$n\)
@@ -212,6 +213,7 @@ root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_em\",1,3,0,0,$n\)
 
 root -l -q -b DataMCComp.C+\($d,\"w_mass_em_b\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_em_b\",1,3,0,0,$n\)
+root -l -q -b DataMCComp.C+\($d,\"w_y_Z_em_b\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_em_b\",1,3,0,0,$n\)
 
 root -l -q -b DataMCComp.C+\($d,\"w_single_pt_Z_em_b\",1,3,0,0,$n\)
@@ -256,7 +258,7 @@ root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass\",1,3,0,0,$n\)
 
 root -l -q -b DataMCComp.C+\($d,\"w_secondvtx_N_zoom\",1,3,0,0,$n\)
 
-root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,3,0,0,$n,1\)
+root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_JBP\",1,3,0,0,$n\)
 
 root -l -q -b DataMCComp.C+\($d,\"w_secondvtx_N_mass\",1,3,0,0,$n\)
@@ -288,9 +290,9 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp.C+\($d,\"w_mass_mm_b_wide\",1,$i,0,1,$n\)
 
-  root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass\",1,$i,1,0,$n,1\)
-  root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass\",1,$i,0,3,$n,1\)
-  root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass\",1,$i,1,3,$n,1\)
+  root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass\",1,$i,1,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass\",1,$i,0,3,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass\",1,$i,1,3,$n\)
  
   root -l -q -b DataMCComp.C+\($d,\"w_secondvtx_N_zoom\",1,$i,1,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_secondvtx_N_zoom\",1,$i,0,3,$n\)
@@ -304,11 +306,9 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C+\($d,\"w_secondvtx_N_nomass\",1,$i,0,3,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_secondvtx_N_nomass\",1,$i,1,3,$n\)
 
-  root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,1,0,$n,1\)
-  if [ $n -ne 2 ]; then
-    root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,0,3,$n,1\)
-    root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,1,3,$n,1\)
-  fi
+  root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,1,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,0,3,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,1,3,$n\)
 
   root -l -q -b DataMCComp.C+\($d,\"w_BJP_mass\",1,$i,1,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_BJP_mass\",1,$i,0,3,$n\)
