@@ -25,6 +25,7 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C+\($d,\"w_MET\",1,$i,0,1,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_MET_b\",1,$i,0,1,$n\)
 
+  root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,1,4,2,1\)
   root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,0,4,2,1\)
   
   i=$((i+1))
