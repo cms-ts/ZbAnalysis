@@ -368,13 +368,13 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
      }
      
      if (ee_event) {
-       w_y_Z_ee->Fill(yZ->empty() ? -1 : (*yZ)[0], gen_yZ->empty() ? -1 : (*gen_yZ)[0], my_weight);
-       w_y_Z_ee_b->Fill(yZ_b->empty() ? -1 : (*yZ_b)[0], gen_yZ_b->empty() ? -1 : (*gen_yZ_b)[0], my_bweight);
+       w_y_Z_ee->Fill(yZ->empty() ? -3 : (*yZ)[0], gen_yZ->empty() ? -3 : (*gen_yZ)[0], my_weight);
+       w_y_Z_ee_b->Fill(yZ_b->empty() ? -3 : (*yZ_b)[0], gen_yZ_b->empty() ? -3 : (*gen_yZ_b)[0], my_bweight);
      }
 
      if (mm_event) {
-       w_y_Z_mm->Fill(yZ->empty() ? -1 : (*yZ)[0], gen_yZ->empty() ? -1 : (*gen_yZ)[0], my_weight);
-       w_y_Z_mm_b->Fill(yZ_b->empty() ? -1 : (*yZ_b)[0], gen_yZ_b->empty() ? -1 : (*gen_yZ_b)[0], my_bweight);
+       w_y_Z_mm->Fill(yZ->empty() ? -3 : (*yZ)[0], gen_yZ->empty() ? -3 : (*gen_yZ)[0], my_weight);
+       w_y_Z_mm_b->Fill(yZ_b->empty() ? -3 : (*yZ_b)[0], gen_yZ_b->empty() ? -3 : (*gen_yZ_b)[0], my_bweight);
      }
 
 
