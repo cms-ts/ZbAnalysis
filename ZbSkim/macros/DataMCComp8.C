@@ -15,6 +15,8 @@ TH1F* read(string subdir, string title, int ilepton, TFile* infile=0) {
     if (title=="w_pt_Z_b") title_tmp="w_pt_Z_ee_b";
     if (title=="w_delta_phi") title_tmp="w_delta_phi_ee";
     if (title=="w_delta_phi_b") title_tmp="w_delta_phi_ee_b";
+    if (title=="w_mass_Zj") title_tmp="w_mass_Zj_ee";
+    if (title=="w_mass_Zj_b") title_tmp="w_mass_Zj_ee_b";
     if (file) {
       file->cd("demoEleGen");
     } else {
@@ -26,6 +28,8 @@ TH1F* read(string subdir, string title, int ilepton, TFile* infile=0) {
     if (title=="w_pt_Z_b") title_tmp="w_pt_Z_mm_b";
     if (title=="w_delta_phi") title_tmp="w_delta_phi_mm";
     if (title=="w_delta_phi_b") title_tmp="w_delta_phi_mm_b";
+    if (title=="w_mass_Zj") title_tmp="w_mass_Zj_mm";
+    if (title=="w_mass_Zj_b") title_tmp="w_mass_Zj_mm_b";
     if (file) {
       file->cd("demoMuoGen");
     } else {
@@ -224,7 +228,7 @@ string subdir="0";
 	  h_mcg_b->Divide(h_mcg);
 	  h_mcg1_b->Divide(h_mcg1);
 	  h_mcg2_b->Divide(h_mcg2);
-	  h_mcg3_b->Divide(h_mcg1);
+	  h_mcg3_b->Divide(h_mcg); 
 	  h_mcg_b->Scale(100.);
 	  h_mcg1_b->Scale(100.);
 	  h_mcg2_b->Scale(100.);
@@ -324,6 +328,8 @@ string subdir="0";
 	    if (title_b=="w_pt_Z_b") title_b_tmp="w_pt_Z_ee_b";
 	    if (title_b=="w_delta_phi") title_b_tmp="w_delta_phi_ee";
 	    if (title_b=="w_delta_phi_b") title_b_tmp="w_delta_phi_ee_b";
+	    if (title_b=="w_mass_Zj") title_b_tmp="w_mass_Zj_ee";
+	    if (title_b=="w_mass_Zj_b") title_b_tmp="w_mass_Zj_ee_b";
 	    if (isratio==0) in.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
 	    if (isratio==1) in.open((path + "/electrons/" + version + "/" + "/ratios_unfolding/" + title_b_tmp + "_ratio_unfolding.dat").c_str());
 	  }
@@ -332,7 +338,9 @@ string subdir="0";
 	    if (title_b=="w_pt_Z_b") title_b_tmp="w_pt_Z_mm_b";
 	    if (title_b=="w_delta_phi") title_b_tmp="w_delta_phi_mm";
 	    if (title_b=="w_delta_phi_b") title_b_tmp="w_delta_phi_mm_b";
-	    if (isratio==0) in.open((path + "/muons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
+	    if (title_b=="w_mass_Zj") title_b_tmp="w_mass_Zj_mm";
+	    if (title_b=="w_mass_Zj_b") title_b_tmp="w_mass_Zj_mm_b";
+            if (isratio==0) in.open((path + "/muons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
 	    if (isratio==1) in.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b_tmp + "_ratio_unfolding.dat").c_str());
 	  }
 

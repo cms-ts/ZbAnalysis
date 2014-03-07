@@ -15,6 +15,7 @@ root -l -q -b DataMCComp8.C+\(\"w_pt_Z\",1,0\)
 root -l -q -b DataMCComp8.C+\(\"w_y_Z\",1,0\)
 root -l -q -b DataMCComp8.C+\(\"w_delta_phi\",1,0\)
 root -l -q -b DataMCComp8.C+\(\"w_Ht\",1,0\)
+root -l -q -b DataMCComp8.C+\(\"w_mass_Zj\",1,0\)
 
 root -l -q -b DataMCComp8.C+\(\"w_first_bjet_pt\",1,1\)
 root -l -q -b DataMCComp8.C+\(\"w_first_bjet_eta\",1,1\)
@@ -22,5 +23,6 @@ root -l -q -b DataMCComp8.C+\(\"w_pt_Z\",1,1\)
 root -l -q -b DataMCComp8.C+\(\"w_y_Z\",1,1\)
 root -l -q -b DataMCComp8.C+\(\"w_delta_phi\",1,1\)
 root -l -q -b DataMCComp8.C+\(\"w_Ht\",1,1\)
+root -l -q -b DataMCComp8.C+\(\"w_mass_Zj\",1,1\)
 
 exit
