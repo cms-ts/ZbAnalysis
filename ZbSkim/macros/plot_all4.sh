@@ -10,7 +10,7 @@ export ROOT_HIST=0
 unset PYTHIA8175DATA
 unset G4NEUTRONXS
 
-cd $CMS_PATH/slc6_amd64_gcc462/cms/cmssw/CMSSW_5_3_14_patch1
+cd $CMS_PATH/slc6_amd64_gcc472/cms/cmssw-patch/CMSSW_5_3_14_patch1
 eval `scramv1 runtime -sh`
 cd -
 
