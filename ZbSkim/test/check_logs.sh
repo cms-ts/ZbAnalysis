@@ -71,6 +71,10 @@ for D in $DIRS; do
       fi
 
       if [ $do_check -eq 1 ]; then
+        E=`grep "cmsRun: command not found" $F`
+        if [ ! -z "$E" ]; then
+          echo "ERROR: cmsRun: command not found in "$F
+        fi
         E=`grep "Begin Fatal Exception" $F`
         if [ ! -z "$E" ]; then
           echo "ERROR: exception in "$F
