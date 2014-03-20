@@ -228,7 +228,7 @@ string subdir="0";
 	  h_mcg_b->Divide(h_mcg);
 	  h_mcg1_b->Divide(h_mcg1);
 	  h_mcg2_b->Divide(h_mcg2);
-	  h_mcg3_b->Divide(h_mcg); 
+	  h_mcg3_b->Divide(h_mcg); /* !!! */
 	  h_mcg_b->Scale(100.);
 	  h_mcg1_b->Scale(100.);
 	  h_mcg2_b->Scale(100.);
@@ -1494,18 +1494,20 @@ string subdir="0";
 	}
 
 	if (plot) {
-	  ofstream out, out1;
+	  ofstream out, out1, out2;
 	  if (isratio==0) {
 	    gSystem->mkdir((path + "/combined/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/combined/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
 	    out.open((path + "/combined/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.dat").c_str());
 	    out1.open((path + "/combined/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.txt").c_str());
+	    out2.open((path + "/combined/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.tex").c_str());
 	  }
 	  if (isratio==1) {
 	    gSystem->mkdir((path + "/combined/" + version + "/ratios_unfolding/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/combined/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
 	    out.open((path + "/combined/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.dat").c_str());
 	    out1.open((path + "/combined/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.txt").c_str());
+	    out2.open((path + "/combined/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.tex").c_str());
 	  }
 	  if (isratio==0) {
 	    out << h_data->GetName();
@@ -1823,6 +1825,161 @@ string subdir="0";
 	    out1 << endl;
 	  }
 	  out1.close();
+	  if (isratio==0) {
+	    //out2 << h_data->GetName() << " - RELATIVE ERRORS";
+	    //out2 << endl;
+	    out2 << std::setw(7) << "\\textbf{data} &"  ;
+	    out2 << std::setw(8) << "\\textbf{bkg} &"   ;
+	    out2 << std::setw(8) << "\\textbf{eff} &"   ;
+	    out2 << std::setw(8) << "\\textbf{jec} &"   ;
+	    out2 << std::setw(8) << "\\textbf{jer} &"   ;
+	    out2 << std::setw(8) << "\\textbf{pu} &"    ;
+	    out2 << std::setw(8) << "\\textbf{bkg} &"   ;
+	    out2 << std::setw(8) << "\\textbf{ttbar} &" ;
+	    out2 << std::setw(8) << "\\textbf{bfit} &"  ;
+	    out2 << std::setw(8) << "\\textbf{btag} &"  ;
+	    out2 << std::setw(8) << "\\textbf{unfold} &";
+	    out2 << std::setw(8) << "\\textbf{unfold} &";
+	    out2 << std::setw(8) << "\\textbf{lumi} &"  ;
+	    out2 << std::setw(8) << "\\textbf{total} &" ;
+	    out2 << std::setw(8) << "\\textbf{total} &" ;
+	    out2 << std::setw(8) << "\\textbf{total} &" ;
+	    out2 << endl;
+	    out2 << std::setw(7) << "\\textbf{stat} & ";
+	    out2 << std::setw(8) << "\\textbf{stat} & ";
+	    out2 << std::setw(8) << "\\textbf{syst} & ";
+	    out2 << std::setw(8) << "\\textbf{syst} & ";
+	    out2 << std::setw(8) << "\\textbf{syst} & ";
+	    out2 << std::setw(8) << "\\textbf{syst} & ";
+	    out2 << std::setw(8) << "\\textbf{syst} & ";
+	    out2 << std::setw(8) << "\\textbf{stat} & ";
+	    out2 << std::setw(8) << "\\textbf{stat} & ";
+	    out2 << std::setw(8) << "\\textbf{syst} & ";
+	    out2 << std::setw(8) << "\\textbf{stat} & ";
+	    out2 << std::setw(8) << "\\textbf{syst} & ";
+	    out2 << std::setw(8) << "\\textbf{syst} & ";
+	    out2 << std::setw(8) << "\\textbf{stat} & ";
+	    out2 << std::setw(8) << "\\textbf{syst} & ";
+	    out2 << std::setw(8) << "\\textbf{error & ";
+	    out2 << endl;
+	    for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
+	      double val = 100.*(h_data->GetBinContent(i)==0 ? 0 : 1./h_data->GetBinContent(i));
+	      out2 << std::fixed;
+	      out2 << std::setw(2) << i;
+	      out2 << " ";
+	      out2 << std::setprecision(1);
+	      out2 << std::setw(4) << h_data->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << stat_bkg->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << syst_eff->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << syst_jec->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << syst_jer->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << syst_pu->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << syst_bkg->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << stat_top->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << stat_bfit->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << syst_btag->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << stat_unfold->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << syst_unfold->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << syst_lumi->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << h_data_stat->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << h_data_syst->GetBinError(i)*val;
+	      out2 << " & ";
+	      out2 << std::setw(4) << h_data_tot->GetBinError(i)*val;
+	      out2 << std::setw(4) << "\\tabularnewline" << "   " << "\\hline";
+	      out2 << endl;
+	    }
+	  }
+	  //out2 << h_data_b->GetName() << " - RELATIVE ERRORS";
+	  //out2 << endl;
+	  out2 << std::setw(7) << "\\textbf{data} &";
+	  out2 << std::setw(8) << "\\textbf{bkg} &";
+	  out2 << std::setw(8) << "\\textbf{eff} &";
+	  out2 << std::setw(8) << "\\textbf{jec} &";
+	  out2 << std::setw(8) << "\\textbf{jer} &";
+	  out2 << std::setw(8) << "\\textbf{pu} &";
+	  out2 << std::setw(8) << "\\textbf{bkg} &";
+	  out2 << std::setw(8) << "\\textbf{ttbar} &";
+	  out2 << std::setw(8) << "\\textbf{bfit} &";
+	  out2 << std::setw(8) << "\\textbf{btag} &";
+	  out2 << std::setw(8) << "\\textbf{unfold} &";
+	  out2 << std::setw(8) << "\\textbf{unfold} &";
+	  out2 << std::setw(8) << "\\textbf{lumi} &";
+	  out2 << std::setw(8) << "\\textbf{total} &";
+	  out2 << std::setw(8) << "\\textbf{total} &";
+	  out2 << std::setw(8) << "\\textbf{total} &";
+	  out2 << endl;
+	  out2 << std::setw(7) << "\\textbf{stat} &";
+	  out2 << std::setw(8) << "\\textbf{stat} &";
+	  out2 << std::setw(8) << "\\textbf{syst} &";
+	  out2 << std::setw(8) << "\\textbf{syst} &";
+	  out2 << std::setw(8) << "\\textbf{syst} &";
+	  out2 << std::setw(8) << "\\textbf{syst} &";
+	  out2 << std::setw(8) << "\\textbf{syst} &";
+	  out2 << std::setw(8) << "\\textbf{stat} &";
+	  out2 << std::setw(8) << "\\textbf{stat} &";
+	  out2 << std::setw(8) << "\\textbf{syst} &";
+	  out2 << std::setw(8) << "\\textbf{stat} &";
+	  out2 << std::setw(8) << "\\textbf{syst} &";
+	  out2 << std::setw(8) << "\\textbf{syst} &";
+	  out2 << std::setw(8) << "\\textbf{stat} &";
+	  out2 << std::setw(8) << "\\textbf{syst} &";
+	  out2 << std::setw(8) << "\\textbf{error} &";
+	  out2 << endl;
+	  for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
+	    double val = 100.*(h_data_b->GetBinContent(i)==0 ? 0 : 1./h_data_b->GetBinContent(i));
+	    out2 << std::fixed;
+	    out2 << std::setw(2) << i;
+	    out2 << " ";
+	    out2 << std::setprecision(1);
+	    out2 << std::setw(4) << h_data_b->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << stat_b_bkg->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << syst_b_eff->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << syst_b_jec->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << syst_b_jer->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << syst_b_pu->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << syst_b_bkg->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << stat_b_top->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << stat_b_bfit->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << syst_b_btag->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << stat_b_unfold->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << syst_b_unfold->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << syst_b_lumi->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << h_data_b_stat->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << h_data_b_syst->GetBinError(i)*val;
+	    out2 << " & ";
+	    out2 << std::setw(4) << h_data_b_tot->GetBinError(i)*val;
+	    out2 << std::setw(4) << "\\tabularnewline" << "   " << "\\hline";
+	    out2 << endl;
+	  }
+           
 	}
 }
 
