@@ -503,9 +503,13 @@ if (irun==99) {            // irun==99 => pur
 
 	TH1F *h_data_raw=0;
 	TH1F *h_data_b_raw=0;
+	TH1F *h_data_raw2=0;
+	TH1F *h_data_b_raw2=0;
 	if (unfold==0) {
 	  h_data_raw = (TH1F*)h_data->Clone();
 	  h_data_b_raw = (TH1F*)h_data_b->Clone();
+	  h_data_raw2 = (TH1F*)h_data->Clone();
+	  h_data_b_raw2 = (TH1F*)h_data_b->Clone();
 	}
 
 	if (useBinnedEfficiency==0) {
@@ -530,6 +534,8 @@ if (irun==99) {            // irun==99 => pur
 	    if (unfold==0) {
 	      h_data->Divide(h);
 	      h_data_b->Divide(h_b);
+	      h_data_raw2->Divide(h);
+	      h_data_b_raw2->Divide(h_b);
 	    }
 	    h_mc1->Divide(h);
 	    h_mc1b_b->Divide(h_b);
@@ -546,12 +552,16 @@ if (irun==99) {            // irun==99 => pur
 	    if (unfold==0) {
 	      h_data->Divide(h);
 	      h_data_b->Divide(h_b);
+	      h_data_raw2->Divide(h); 
+	      h_data_b_raw2->Divide(h_b);
 	    }
 	    h_mc1->Divide(h);
 	    h_mc1b_b->Divide(h_b);
           }
 	}
 
+	h_data_raw2->Scale(1./Lumi2012, "width");
+	h_data_b_raw2->Scale(1./Lumi2012, "width");
 	h_data->Scale(1./Lumi2012, "width");
 	h_data_b->Scale(1./Lumi2012, "width");
 	h_mc1->Scale(1./Lumi2012, "width");
@@ -578,6 +588,8 @@ if (irun==99) {            // irun==99 => pur
 	  h_mcg2_b->Scale(100.);
 	}
 
+	h_data_raw2 = fixrange(h_data_raw2);
+	h_data_b_raw2 = fixrange(h_data_b_raw2);
 	h_data = fixrange(h_data);
 	h_data_b = fixrange(h_data_b);
 	h_mc1 = fixrange(h_mc1);
@@ -1041,8 +1053,12 @@ if (irun==99) {            // irun==99 => pur
 	        TFile f((path + "/electrons/" + version + "/" + subdir + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
 	        h_data_raw->Write((title+"_raw").c_str());
                 h_data_b_raw->Write((title_b+"_raw").c_str());
+	        h_data_raw2->Write((title+"_raw2").c_str());
+                h_data_b_raw2->Write((title_b+"_raw2").c_str());
                 h_data->Write(title.c_str());
                 h_data_b->Write(title_b.c_str());
+		h_mc1->Write((title + "_MC").c_str());
+		h_mc1b_b->Write((title_b + "_MC").c_str());
                 f.Close();
 	      }
 	      if (ilepton==2) {
@@ -1052,8 +1068,12 @@ if (irun==99) {            // irun==99 => pur
 	        TFile f((path + "/muons/" + version + "/" + subdir + "/xsecs/" + title_b + "_xsecs.root").c_str(),"RECREATE");
 	        h_data_raw->Write((title+"_raw").c_str());
                 h_data_b_raw->Write((title_b+"_raw").c_str());
+	        h_data_raw2->Write((title+"_raw2").c_str());
+                h_data_b_raw2->Write((title_b+"_raw2").c_str());
                 h_data->Write(title.c_str());
                 h_data_b->Write(title_b.c_str());
+		h_mc1->Write((title + "_MC").c_str());
+		h_mc1b_b->Write((title_b + "_MC").c_str());
                 f.Close();
 	      }
 	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
