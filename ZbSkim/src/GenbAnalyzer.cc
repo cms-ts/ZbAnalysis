@@ -157,18 +157,24 @@ private:
   TH1F*     h_muon_pt;
   TH1F*     w_pt_Z_ee;
   TH1F*     w_y_Z_ee;
+  TH1F*     w_y_Z_ee_abs;
   TH1F*     w_pt_Z_mm;
   TH1F*     w_y_Z_mm;
+  TH1F*     w_y_Z_mm_abs;
   TH1F*     w_pt_Z_ee_b;
   TH1F*     w_pt_Z_mm_b;
   TH1F*     w_y_Z_ee_b;
+  TH1F*     w_y_Z_ee_b_abs;
   TH1F*     w_y_Z_mm_b;
+  TH1F*     w_y_Z_mm_b_abs;
 
   TH1F*     w_jetmultiplicity;
   TH1F*     w_first_jet_pt;      // leading jet of any type
   TH1F*     w_first_jet_eta;
+  TH1F*     w_first_jet_eta_abs;
   TH1F*     w_first_bjet_pt;
   TH1F*     w_first_bjet_eta;
+  TH1F*     w_first_bjet_eta_abs;
   TH1F*     w_bjetmultiplicity;
   TH1F*     w_first_jet_pt_b;   // leading jet with at least one b jet in the event
   TH1F*     w_first_jet_eta_b;
@@ -191,6 +197,7 @@ private:
   TH1F*     w_Ht;
   TH1F*     w_Ht_b;
   TH1F*     w_delta_phi_2b;
+  TH1F*     w_DR_bb;
 
   TH1F*     w_single_bjet_pt;
   TH1F*     w_single_bjet_eta;
@@ -260,7 +267,9 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_first_bjet_pt =     fs->make < TH1F > ("w_first_bjet_pt",    "w_first_bjet_pt; [GeV]", 50, 30., 700.);
   w_first_jet_pt =      fs->make < TH1F > ("w_first_jet_pt",     "w_first_jet_pt; [GeV]", 50, 30., 700.);
   w_first_jet_eta =     fs->make < TH1F > ("w_first_jet_eta",    "w_first_jet_eta", 16, -2.5, 2.5);
+  w_first_jet_eta_abs = fs->make < TH1F > ("w_first_jet_eta_abs","w_first_jet_eta_abs", 8, 0, 2.5);
   w_first_bjet_eta =    fs->make < TH1F > ("w_first_bjet_eta",   "w_first_bjet_eta", 16, -2.5, 2.5);
+  w_first_bjet_eta_abs =fs->make < TH1F > ("w_first_bjet_eta_abs","w_first_bjet_eta_abs", 8, 0, 2.5);
   w_first_jet_pt_b =    fs->make < TH1F > ("w_first_jet_pt_b",   "w_first_jet_pt_b;P_t [GeV]", 50, 30., 700.);
   w_first_jet_eta_b =   fs->make < TH1F > ("w_first_jet_eta_b",  "w_first_jet_eta_b;Eta", 16, -2.5, 2.5);
   w_pt_Z_ee =           fs->make < TH1F > ("w_pt_Z_ee",          "w_pt_Z_ee;P_t [GeV]", 40, 0., 400.);
@@ -268,17 +277,21 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_pt_Z_ee_b =         fs->make < TH1F > ("w_pt_Z_ee_b",        "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_mm_b =         fs->make < TH1F > ("w_pt_Z_mm_b",        "w_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
   w_y_Z_ee =            fs->make < TH1F > ("w_y_Z_ee",           "w_y_Z_ee;y_Z",   20, -2.0, 2.0);
+  w_y_Z_ee_abs =        fs->make < TH1F > ("w_y_Z_ee_abs",       "w_y_Z_ee_abs;abs(y_Z)",   10, 0, 2.0);
   w_y_Z_mm =            fs->make < TH1F > ("w_y_Z_mm",           "w_y_Z_mm;y_Z",   20, -2.0, 2.0);
+  w_y_Z_mm_abs =        fs->make < TH1F > ("w_y_Z_mm_abs",       "w_y_Z_mm_abs;abs(y_Z)",   10, 0, 2.0);
   w_y_Z_ee_b =          fs->make < TH1F > ("w_y_Z_ee_b",         "w_y_Z_ee_b;y_Z", 20, -2.0, 2.0);
+  w_y_Z_ee_b_abs =      fs->make < TH1F > ("w_y_Z_ee_b_abs",     "w_y_Z_ee_b_abs;abs(y_Z)", 10, 0, 2.0);
   w_y_Z_mm_b =          fs->make < TH1F > ("w_y_Z_mm_b",         "w_y_Z_mm_b;y_Z", 20, -2.0, 2.0);
+  w_y_Z_mm_b_abs =      fs->make < TH1F > ("w_y_Z_mm_b_abs",     "w_y_Z_mm_b_abs;abs(y_Z)", 10, 0, 2.0);
   w_mass_ee =           fs->make < TH1F > ("w_mass_ee",          "w_mass_ee;Mass [GeV]", 80, 71., 111.);
   w_mass_mm =           fs->make < TH1F > ("w_mass_mm",          "w_mass_mm;Mass [GeV]", 80, 71., 111.);
   w_mass_ee_b =         fs->make < TH1F > ("w_mass_ee_b",        "w_mass_ee_b;Mass [GeV]", 80, 71., 111.);
   w_mass_mm_b =         fs->make < TH1F > ("w_mass_mm_b",        "w_mass_mm_b;Mass [GeV]", 80, 71., 111.);
-  w_mass_Zj_ee =        fs->make < TH1F > ("w_mass_Zj_ee",       "w_mass_Zj_ee", 60, 100., 330.);
-  w_mass_Zj_mm =        fs->make < TH1F > ("w_mass_Zj_mm",       "w_mass_Zj_mm", 60, 100., 330.);
-  w_mass_Zj_ee_b =      fs->make < TH1F > ("w_mass_Zj_ee_b",     "w_mass_Zj_ee_b", 60, 100., 330.);
-  w_mass_Zj_mm_b =      fs->make < TH1F > ("w_mass_Zj_mm_b",     "w_mass_Zj_mm_b", 60, 100., 330.);
+  w_mass_Zj_ee =        fs->make < TH1F > ("w_mass_Zj_ee",       "w_mass_Zj_ee", 15, 100., 330.);
+  w_mass_Zj_mm =        fs->make < TH1F > ("w_mass_Zj_mm",       "w_mass_Zj_mm", 15, 100., 330.);
+  w_mass_Zj_ee_b =      fs->make < TH1F > ("w_mass_Zj_ee_b",     "w_mass_Zj_ee_b", 15, 100., 330.);
+  w_mass_Zj_mm_b =      fs->make < TH1F > ("w_mass_Zj_mm_b",     "w_mass_Zj_mm_b", 15, 100., 330.);
   w_Ht =                fs->make < TH1F > ("w_Ht",               "w_Ht [GeV]", 50, 30., 1000.);
   w_Ht_b =              fs->make < TH1F > ("w_Ht_b",             "w_Ht_b [GeV]", 50, 30., 1000.);
   w_delta_ee =          fs->make < TH1F > ("w_delta_phi_ee",     "w_delta_phi_ee", 12, 0, TMath::Pi ());
@@ -286,6 +299,7 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_delta_ee_b =        fs->make < TH1F > ("w_delta_phi_ee_b",   "w_delta_phi_ee_b", 12, 0, TMath::Pi ());
   w_delta_mm_b =        fs->make < TH1F > ("w_delta_phi_mm_b",   "w_delta_phi_mm_b", 12, 0, TMath::Pi ());
   w_delta_phi_2b =      fs->make < TH1F > ("w_delta_phi_2b",     "w_delta_phi_2b",   12, 0, TMath::Pi ());
+  w_DR_bb =             fs->make < TH1F > ("w_DR_bb",            "w_DR_bb",   25, 0, 4);
 
   w_single_bjet_pt =           fs->make < TH1F > ("w_single_bjet_pt",         "w_single_bjet_pt;P_t [GeV]", 50, 30., 700.);
   w_single_bjet_eta =          fs->make < TH1F > ("w_single_bjet_eta",        "w_single_bjet_eta", 16, -2.5, 2.5);
@@ -338,7 +352,21 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   produces<std::vector<math::XYZTLorentzVector>>("myBJets");
   produces<std::vector<math::XYZTLorentzVector>>("myBJets2");
   produces<std::vector<double>>("myBDeltaPhi");
- 
+
+  produces<std::vector<double>>("myDRbb");
+  produces<std::vector<double>>("myDeltaPhibb");
+
+  produces<std::vector<double>>("myDRZbMin");
+  produces<std::vector<double>>("myDRZbMax");
+
+  produces<std::vector<double>>("myAZb");
+
+  produces<std::vector<double>>("myPhiStar");
+  produces<std::vector<double>>("myPhiStarb");
+
+  produces<std::vector<double>>("mybbMass");
+  produces<std::vector<double>>("mybbZMass");
+
 }
 
 GenbAnalyzer::~GenbAnalyzer () {
@@ -385,6 +413,20 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   std::auto_ptr<std::vector<math::XYZTLorentzVector>> myBJets( new std::vector<math::XYZTLorentzVector> );
   std::auto_ptr<std::vector<math::XYZTLorentzVector>> myBJets2( new std::vector<math::XYZTLorentzVector> );
   std::auto_ptr<std::vector<double>> myBDeltaPhi( new std::vector<double> );
+
+  std::auto_ptr<std::vector<double>> myDRbb( new std::vector<double> );
+  std::auto_ptr<std::vector<double>> myDeltaPhibb( new std::vector<double> );
+
+  std::auto_ptr<std::vector<double>> myDRZbMin( new std::vector<double> );
+  std::auto_ptr<std::vector<double>> myDRZbMax( new std::vector<double> );
+
+  std::auto_ptr<std::vector<double>> myAZb( new std::vector<double> );
+
+  std::auto_ptr<std::vector<double>> myPhiStar( new std::vector<double> );
+  std::auto_ptr<std::vector<double>> myPhiStarb( new std::vector<double> );
+
+  std::auto_ptr<std::vector<double>> mybbMass( new std::vector<double> );
+  std::auto_ptr<std::vector<double>> mybbZMass( new std::vector<double> );
 
   bool ee_event = false;
   bool mm_event = false;
@@ -846,6 +888,8 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   std::sort( vect_bjets2.begin(), vect_bjets2.end(), order_jets() );
 
   double delta_phi_2b = 0;
+  double delta_eta_2b = 0;
+  double DR_bb = 999;
 
   for (std::vector <reco::GenParticle>::const_iterator thepart = genPart->begin(); thepart != genPart->end(); thepart++) {
     if (thepart->pdgId()==23) {
@@ -881,6 +925,8 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   if (Nb > 1) {
       delta_phi_2b = fabs(vect_bjets[0].phi() - vect_bjets[1].phi());
       if (delta_phi_2b > acos(-1)) delta_phi_2b = 2 * acos(-1) - delta_phi_2b;
+      delta_eta_2b = fabs(vect_bjets[0].eta() - vect_bjets[1].eta());
+      DR_bb = sqrt(delta_phi_2b*delta_phi_2b + delta_eta_2b*delta_eta_2b);
       math::XYZTLorentzVector bb(vect_bjets[0].px() + vect_bjets[1].px() , vect_bjets[0].py() + vect_bjets[1].py() , vect_bjets[0].pz() + vect_bjets[1].pz() , vect_bjets[0].e() + vect_bjets[1].e());
       bb_mass = bb.mass();
       if (ee_event) {
@@ -912,7 +958,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
       A_eeb = (DR_eeb_max - DR_eeb_min)/(DR_eeb_min + DR_eeb_max);
       A_mmb = (DR_mmb_max - DR_mmb_min)/(DR_mmb_min + DR_mmb_max);
   }
-
+ 
   //Phi*
   double DEta_ee = 999;
   double DPhi_ee = 999;
@@ -940,6 +986,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_mass_ee->Fill(diele_mass, MyWeight);
     w_pt_Z_ee->Fill(diele_pt, MyWeight);
     w_y_Z_ee->Fill(diele_y, MyWeight);
+    w_y_Z_ee_abs->Fill(fabs(diele_y), MyWeight);
     w_Phi_star_ee->Fill (Phi_star_ee, MyWeight);
     double delta_phi_ee = fabs(diele_phi - vect_jets[0].phi_std());
     if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
@@ -955,6 +1002,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_mass_mm->Fill(dimuon_mass, MyWeight);
     w_pt_Z_mm->Fill(dimuon_pt, MyWeight);
     w_y_Z_mm->Fill(dimuon_y, MyWeight);
+    w_y_Z_mm_abs->Fill(fabs(dimuon_y), MyWeight);
     w_Phi_star_mm->Fill (Phi_star_mm, MyWeight);
     double delta_phi_mm = fabs(dimuon_phi - vect_jets[0].phi_std());
     if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
@@ -967,6 +1015,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   if ((ee_event || mm_event) && Nj > 0) {
     w_first_jet_pt->Fill (vect_jets[0].pt(), MyWeight);
     w_first_jet_eta->Fill (vect_jets[0].eta(), MyWeight);
+    w_first_jet_eta_abs->Fill (fabs(vect_jets[0].eta()), MyWeight);
     w_jetmultiplicity->Fill (vect_jets.size(), MyWeight);
     w_Ht->Fill (Ht, MyWeight);
   }
@@ -974,10 +1023,12 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   if (ee_event && Nb > 0 && Nj > 0 && b_selection) {
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
+    w_first_bjet_eta_abs->Fill (fabs(vect_bjets[0].eta()), MyWeight);
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
     w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight);
     w_pt_Z_ee_b->Fill (diele_pt, MyWeight);
     w_y_Z_ee_b->Fill (diele_y, MyWeight);
+    w_y_Z_ee_b_abs->Fill (fabs(diele_y), MyWeight);
     w_Phi_star_ee_b->Fill (Phi_star_ee, MyWeight);
     w_mass_ee_b->Fill (diele_mass, MyWeight);
     math::XYZTLorentzVector zb_ee_p(vect_bjets[0].px()+z_ee.Px(), vect_bjets[0].py()+z_ee.Py(), vect_bjets[0].pz()+z_ee.Pz(), vect_bjets[0].e()+z_ee.E());
@@ -992,6 +1043,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight);
     w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight);
     w_y_Z_mm_b->Fill (dimuon_y, MyWeight);
+    w_y_Z_mm_b_abs->Fill (fabs(dimuon_y), MyWeight);
     w_Phi_star_mm_b->Fill (Phi_star_mm, MyWeight);
     w_mass_mm_b->Fill (dimuon_mass, MyWeight);
     math::XYZTLorentzVector zb_mm_p(vect_bjets[0].px()+z_mm.Px(), vect_bjets[0].py()+z_mm.Py(), vect_bjets[0].pz()+z_mm.Pz(), vect_bjets[0].e()+z_mm.E());
@@ -1004,6 +1056,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_Ht_b->Fill (Ht, MyWeight);
     if (Nb > 1) {
       w_delta_phi_2b->Fill (delta_phi_2b, MyWeight);
+      w_DR_bb->Fill (DR_bb, MyWeight);
     }
   }
 
@@ -1060,9 +1113,17 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     myElectrons->push_back(math::XYZTLorentzVector(vect_ele[1].Px(),vect_ele[1].Py(),vect_ele[1].Pz(),vect_ele[1].E()));
     myPtZ->push_back(diele_pt);
     myYZ->push_back(diele_y);
+    myPhiStar->push_back(Phi_star_ee);
     if (Nb > 0 && b_selection) {
       myPtZb->push_back(diele_pt);
       myYZb->push_back(diele_y);
+      myPhiStarb->push_back(Phi_star_ee);
+      if (Nb > 1) {
+        myDRZbMin->push_back(DR_eeb_min);
+        myDRZbMax->push_back(DR_eeb_max);
+        myAZb->push_back(A_eeb); 
+        mybbZMass->push_back(eebb_mass);
+      }
     }
   }
 
@@ -1071,9 +1132,17 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     myMuons->push_back(math::XYZTLorentzVector(vect_muon[1].Px(),vect_muon[1].Py(),vect_muon[1].Pz(),vect_muon[1].E()));
     myPtZ->push_back(dimuon_pt);
     myYZ->push_back(dimuon_y);
+    myPhiStar->push_back(Phi_star_mm);
     if (Nb > 0 && b_selection) {
       myPtZb->push_back(dimuon_pt);
       myYZb->push_back(dimuon_y);
+      myPhiStarb->push_back(Phi_star_mm);
+      if (Nb > 1) {
+        myDRZbMin->push_back(DR_mmb_min); 
+        myDRZbMax->push_back(DR_mmb_max);
+        myAZb->push_back(A_mmb);
+        mybbZMass->push_back(mmbb_mass);
+      }
     }
   }
 
@@ -1099,6 +1168,11 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     myHt->push_back(Ht);
     if (Nb > 0 && b_selection) {
       myHtb->push_back(Ht);
+      if (Nb > 1) {
+        myDeltaPhibb->push_back(delta_phi_2b);
+        mybbMass->push_back(bb_mass);
+	myDRbb->push_back(DR_bb); 
+      }
     }
   }
 
@@ -1163,6 +1237,19 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   iEvent.put( myBDeltaPhi, "myBDeltaPhi" );
 
+  iEvent.put( myDRbb, "myDRbb" );
+  iEvent.put( myDeltaPhibb, "myDeltaPhibb" );
+
+  iEvent.put( myDRZbMin, "myDRZbMin" );
+  iEvent.put( myDRZbMax, "myDRZbMax" );
+ 
+  iEvent.put( myAZb, "myAZb" );
+
+  iEvent.put( myPhiStar, "myPhiStar" );
+  iEvent.put( myPhiStarb, "myPhiStarb" );
+
+  iEvent.put( mybbMass, "mybbMass" );
+  iEvent.put( mybbZMass, "mybbZMass" );
 }
 
 // ------------ method called once each job just before starting event loop ------------
