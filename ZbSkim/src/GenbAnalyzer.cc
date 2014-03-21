@@ -91,8 +91,8 @@ private:
   virtual void produce (edm::Event &, const edm::EventSetup &);
   virtual void endJob ();
 
-  virtual void beginRun (edm::Run const &, edm::EventSetup const &);
-  virtual void endRun (edm::Run const &, edm::EventSetup const &);
+  virtual void beginRun (edm::Run &, edm::EventSetup const &);
+  virtual void endRun (edm::Run &, edm::EventSetup const &);
   virtual void beginLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
   virtual void endLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
 
@@ -1264,11 +1264,11 @@ void GenbAnalyzer::endJob () {
 }
 
 // ------------ method called when starting to processes a run ------------
-void GenbAnalyzer::beginRun (edm::Run const &, edm::EventSetup const &) {
+void GenbAnalyzer::beginRun (edm::Run &, edm::EventSetup const &) {
 }
 
 // ------------ method called when ending the processing of a run ------------
-void GenbAnalyzer::endRun (edm::Run const &, edm::EventSetup const &) {
+void GenbAnalyzer::endRun (edm::Run &, edm::EventSetup const &) {
 }
 
 // ------------ method called when starting to processes a luminosity block ------------
