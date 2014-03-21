@@ -40,6 +40,6 @@ cd $OUTDIR/$VERSION/${JOBDIR}_patgen
 
 find $DATADIR/$VERSION/$JOBDIR -maxdepth 1 -name '*.root' | \
 xargs -n 50 \
-bsub -q $QUEUE -J $JOBDIR -e /dev/null -o /dev/null $WORKDIR/GDR/job_patgen.sh $P
+bsub -q $QUEUE -J $JOBDIR -e /dev/null -o /dev/null $WORKDIR/job_patgen.sh $P
 
 exit
