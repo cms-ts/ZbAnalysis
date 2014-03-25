@@ -2,7 +2,7 @@
 
 ulimit -c 0
 
-cd /gpfs/cms/users/candelis/CMSSW_5_3_11
+cd /gpfs/cms/users/candelis/CMSSW_5_3_14_patch1
 eval `scramv1 runtime -sh`
 cd -
 
