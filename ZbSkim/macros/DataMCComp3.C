@@ -2,9 +2,10 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v12.h"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
-void DataMCComp3(int irun=0, string title="", int plot=0, int ilepton=1) {
+void DataMCComp3(int irun=0, string title="", int plot=0, int ilepton=1, int numB=0) {
 
 int useDY = 0; // use MadGraph DY
 //int useDY = 1; // use Sherpa DY
@@ -12,6 +13,8 @@ int useDY = 0; // use MadGraph DY
 
 string subdir="0";
 string postfix="";
+string dirbSel="";
+string bSel="";
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
   postfix="Up";
@@ -80,6 +83,16 @@ if (irun==99) {            // irun==99 => pur
   subdir="99";
   postfix="Pur";
 }
+if (numB==1) {
+  postfix="1b" + postfix;
+  dirbSel="_1b";
+  bSel="Z + (= 1) b-jet";
+}
+if (numB==2) {
+  postfix="2b" + postfix;
+  dirbSel="_2b";
+  bSel="Z + (#geq 2) b-jet";
+}
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -129,10 +142,10 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	if (ilepton==1&&itype==2) mc1->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2&&itype==2) mc1->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_reco = (TH1F*)gDirectory->Get(title_b.c_str());
-	if (ilepton==1&&itype==0) mc2->cd("demoEleGen");
-	if (ilepton==2&&itype==0) mc2->cd("demoMuoGen");
-	if (ilepton==1&&itype==1) mc2->cd("demoEleGen");
-	if (ilepton==2&&itype==1) mc2->cd("demoMuoGen");
+	if (ilepton==1&&itype==0) mc2->cd(("demoEleGen"+postfix).c_str());
+	if (ilepton==2&&itype==0) mc2->cd(("demoMuoGen"+postfix).c_str());
+	if (ilepton==1&&itype==1) mc2->cd(("demoEleGen"+postfix).c_str());
+	if (ilepton==2&&itype==1) mc2->cd(("demoMuoGen"+postfix).c_str());
 	if (ilepton==1&&itype==2) mc2->cd("demoEleBtag");
 	if (ilepton==2&&itype==2) mc2->cd("demoMuoBtag");
 	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
@@ -225,20 +238,20 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	if (plot) {
 	  ofstream out;
 	  if (ilepton==1) {
-	    gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/efficiency/").c_str(), kTRUE);
-	    c2->SaveAs((path + "/electrons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.pdf").c_str());
-	    TFile f((path + "/electrons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.root").c_str(),"RECREATE");
+	    gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/").c_str(), kTRUE);
+	    c2->SaveAs((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + title + "_efficiency.pdf").c_str());
+	    TFile f((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + title + "_efficiency.root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
 	    f.Close();
-	    out.open((path + "/electrons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.dat").c_str());
+	    out.open((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + title + "_efficiency.dat").c_str());
 	  }
 	  if (ilepton==2) {
-	    gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/efficiency/").c_str(), kTRUE);
-	    c2->SaveAs((path + "/muons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.pdf").c_str());
-	    TFile f((path + "/muons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.root").c_str(),"RECREATE");
+	    gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/").c_str(), kTRUE);
+	    c2->SaveAs((path + "/muons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + title + "_efficiency.pdf").c_str());
+	    TFile f((path + "/muons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + title + "_efficiency.root").c_str(),"RECREATE");
 	    h_reco->Write(title.c_str());
 	    f.Close();
-	    out.open((path + "/muons/" + version + "/" + subdir + "/efficiency/" + title + "_efficiency.dat").c_str());
+	    out.open((path + "/muons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + title + "_efficiency.dat").c_str());
 	  }
 	  out << N << " " << errN << endl;
 	  out.close();
