@@ -12,8 +12,8 @@
 
 #include "fixrange.C"
 
-//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-string path = "/gpfs/cms/users/lalicata/work/test/data/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 void DataMCComp4(int irun=0, string title="", int plot=0, int ilepton=1, int imode=4, int method=0, int numB=0) {
 
