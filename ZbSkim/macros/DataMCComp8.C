@@ -66,6 +66,9 @@ void DataMCComp8(string title="", int plot=0, int isratio=1) {
 int useSherpa=0;
 //int useSherpa=1; // use Sherpa MC prediction
 
+//int useNewPowheg=0;
+int useNewPowheg=1; // use new Powheg MC prediction
+
 string subdir="0";
 
 	if (gROOT->GetVersionInt() >= 53401) {
@@ -93,6 +96,14 @@ string subdir="0";
 	TFile *mcg2[2];
 	mcg2[0] = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	mcg2[1] = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
+	if (useNewPowheg) {
+          Ngen_dy_2_ee = 100*10000;
+          Ngen_dy_2_mm = 100*10000;
+	  Xsec_dy_2 = 333.866;
+          norm1_2 = ((Lumi2012 * Xsec_dy_2) / ((Ngen_dy_2_ee+Ngen_dy_2_mm)/2.));
+	  mcg2[0] = TFile::Open((path + "/../../powheg/data/" + version + "/" + "powheg_ele.root").c_str());
+	  mcg2[1] = TFile::Open((path + "/../../powheg/data/" + version + "/" + "powheg_muo.root").c_str());
+	}
 	TFile *mcg3 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
 
 	string title_b = title;
