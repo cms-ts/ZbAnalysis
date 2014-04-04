@@ -12,9 +12,10 @@
 
 #include "fixrange.C"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
-void DataMCComp4(int irun=0, string title="", int plot=0, int ilepton=1, int imode=4, int method=0) {
+void DataMCComp4(int irun=0, string title="", int plot=0, int ilepton=1, int imode=4, int method=0, int numB=0) {
 
 bool verbose = false;
 // bool verbose = true;
@@ -35,6 +36,8 @@ bool verbose = false;
 
 string subdir="0";
 string postfix="";
+string dirbSel="";
+string bSel="";
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
   postfix="Up";
@@ -103,6 +106,16 @@ if (irun==99) {            // irun==99 => pur
   subdir="99";
   postfix="Pur";
 }
+if (numB==1) {
+  postfix="1b" + postfix;
+  dirbSel="_1b";
+  bSel="Z + (= 1) b-jet";
+}
+if (numB==2) {
+  postfix="2b" + postfix;
+  dirbSel="_2b";
+  bSel="Z + (#geq 2) b-jet";
+}
 
         if (irun==8) imode = 5;
         if (irun==9) imode = 6;
@@ -124,15 +137,20 @@ if (irun==99) {            // irun==99 => pur
 	ifstream in;
 	if (imode>=4) {
 	  if (ilepton==1) {
-	    in.open((path + "/electrons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
+	    in.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_BJP_doFit" + ".dat").c_str());
 	  }
 	  if (ilepton==2) {
-	    in.open((path + "/muons/" + version + "/" + subdir + "/distributions/" + "w_BJP_doFit" + ".dat").c_str());
+	    in.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_BJP_doFit" + ".dat").c_str());
 	  }
-	  in >> c_uds >> ec_uds;
-	  in >> c_b >> ec_b;
-	  in >> c_c >> ec_c;
-	  in.close();
+          if (numB!=2) {
+	    in >> c_uds >> ec_uds;
+	    in >> c_b >> ec_b;
+	    in >> c_c >> ec_c;
+	    in.close();
+          }
+          if (numB==2) {
+            in >> c_b >> ec_b;
+          }
 	}
 
 	double Lumi2012=0;
@@ -169,8 +187,8 @@ if (irun==99) {            // irun==99 => pur
 	}
 
 	TFile* data=0;
-	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/xsecs/" + file + "_xsecs.root").c_str());
-	if (ilepton==2) data = TFile::Open((path + "/muons/" + version + "/" + subdir + "/xsecs/" + file + "_xsecs.root").c_str());
+	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/xsecs" + dirbSel + "/" + file + "_xsecs.root").c_str());
+	if (ilepton==2) data = TFile::Open((path + "/muons/" + version + "/" + subdir + "/xsecs" + dirbSel + "/" + file + "_xsecs.root").c_str());
 
 	TFile* mc1=0;
 	if (imode==-1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
@@ -217,25 +235,25 @@ if (irun==99) {            // irun==99 => pur
 	TH1F* h_mc2_reco=0;
 
 	if (ilepton==1) {
-	  mc1->cd("demoEleGen");
+	  mc1->cd(("demoEleGen"+postfix).c_str());
 	  h_mc1_truth  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd(("demoEle"+postfix).c_str());
 	  h_mc1_reco   = (TH1F*)gDirectory->Get(title_b.c_str());
 	  mc1->cd(("demoEleDump"+postfix).c_str());
 	  h_mc1_matrix = (TH2F*)gDirectory->Get(title.c_str());
-	  mc2->cd("demoEleGen");
+	  mc2->cd(("demoEleGen"+postfix).c_str());
 	  h_mc2_truth  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc2->cd(("demoEle"+postfix).c_str());
 	  h_mc2_reco   = (TH1F*)gDirectory->Get(title_b.c_str());
 	}
 	if (ilepton==2) {
-	  mc1->cd("demoMuoGen");
+	  mc1->cd(("demoMuoGen"+postfix).c_str());
 	  h_mc1_truth   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd(("demoMuo"+postfix).c_str());
 	  h_mc1_reco    = (TH1F*)gDirectory->Get(title_b.c_str());
 	  mc1->cd(("demoMuoDump"+postfix).c_str());
 	  h_mc1_matrix  = (TH2F*)gDirectory->Get(title.c_str());
-	  mc2->cd("demoMuoGen");
+	  mc2->cd(("demoMuoGen"+postfix).c_str());
 	  h_mc2_truth   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc2->cd(("demoMuo"+postfix).c_str());
 	  h_mc2_reco    = (TH1F*)gDirectory->Get(title_b.c_str());
@@ -254,8 +272,8 @@ if (irun==99) {            // irun==99 => pur
 	h_mc1_matrix = fixrange(h_mc1_matrix);
 	h_mc2_truth = fixrange(h_mc2_truth);
 	h_mc2_reco = fixrange(h_mc2_reco);
-
-	if (irun==66) {
+        
+        if (irun==66) {
 	  for (int i=0;i<=h_mc1_matrix->GetNbinsX()+1;i++) {
 	    for (int j=0;j<=h_mc1_matrix->GetNbinsY()+1;j++) {
 	      float val = h_mc1_matrix->GetBinContent(i,j);
@@ -788,33 +806,33 @@ if (irun==99) {            // irun==99 => pur
 	if (plot) {
 	  ofstream out;
 	  if (ilepton==1) {
-	    gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/unfolding/").c_str(), kTRUE);
-	    c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.pdf").c_str());
-	    if (c2) c2->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
-	    if (c3) c3->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_response.pdf").c_str());
-	    if (c4) c4->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
-	    if (c5) c5->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_covariance.pdf").c_str());
-	    if (c6) c6->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_scan.pdf").c_str());
+	    gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/").c_str(), kTRUE);
+	    c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.pdf").c_str());
+	    if (c2) c2->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding_check.pdf").c_str());
+	    if (c3) c3->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding_response.pdf").c_str());
+	    if (c4) c4->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding_errors.pdf").c_str());
+	    if (c5) c5->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding_covariance.pdf").c_str());
+	    if (c6) c6->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding_scan.pdf").c_str());
 	    if (imode>=4) {
-	      TFile f((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
+	      TFile f((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
 	      f.Close();
-	      out.open((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.dat").c_str());
+	      out.open((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.dat").c_str());
 	    }
 	  }
 	  if (ilepton==2) {
-	    gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/unfolding/").c_str(), kTRUE);
-	    c1->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.pdf").c_str());
-	    if (c2) c2->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_check.pdf").c_str());
-	    if (c3) c3->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_response.pdf").c_str());
-	    if (c4) c4->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_errors.pdf").c_str());
-	    if (c5) c5->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_covariance.pdf").c_str());
-	    if (c6) c6->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding_scan.pdf").c_str());
+	    gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/").c_str(), kTRUE);
+	    c1->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.pdf").c_str());
+	    if (c2) c2->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding_check.pdf").c_str());
+	    if (c3) c3->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding_response.pdf").c_str());
+	    if (c4) c4->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding_errors.pdf").c_str());
+	    if (c5) c5->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding_covariance.pdf").c_str());
+	    if (c6) c6->SaveAs((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding_scan.pdf").c_str());
 	    if (imode>=4) {
-	      TFile f((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.root").c_str(),"RECREATE");
+	      TFile f((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.root").c_str(),"RECREATE");
 	      h_data_unfold->Write(title.c_str());
 	      f.Close();
-	      out.open((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.dat").c_str());
+	      out.open((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.dat").c_str());
 	    }
 	  }
 	  if (imode>=4) {
