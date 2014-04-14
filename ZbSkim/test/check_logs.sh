@@ -83,6 +83,10 @@ for D in $DIRS; do
         if [ ! -z "$E" ]; then
           echo "ERROR: fatal system signal in "$F
         fi
+        E=`grep "Abort" $F`
+        if [ ! -z "$E" ]; then
+          echo "ERROR: abort in "$F
+        fi
       fi
 
     fi
