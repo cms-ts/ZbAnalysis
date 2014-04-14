@@ -66,7 +66,9 @@ while [ $i -le 2 ]; do
     root -l -q -b DataMCComp5.C+\($d,\"w_pt_Z_ee\",1,$i,0,$n\)
     root -l -q -b DataMCComp5.C+\($d,\"w_pt_Z_mm\",1,$i,0,$n\)
     root -l -q -b DataMCComp5.C+\($d,\"w_y_Z_ee\",1,$i,0,$n\)
+    root -l -q -b DataMCComp5.C+\($d,\"w_y_Z_ee_abs\",1,$i,0,$n\)
     root -l -q -b DataMCComp5.C+\($d,\"w_y_Z_mm\",1,$i,0,$n\)
+    root -l -q -b DataMCComp5.C+\($d,\"w_y_Z_mm_abs\",1,$i,0,$n\)
 
     root -l -q -b DataMCComp5.C+\($d,\"w_Phi_star_ee\",1,$i,0,$n\)
     root -l -q -b DataMCComp5.C+\($d,\"w_Phi_star_mm\",1,$i,0,$n\)
@@ -104,7 +106,9 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp5.C+\($d,\"w_pt_Z_ee_b\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_pt_Z_mm_b\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_y_Z_ee_b\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_y_Z_ee_b_abs\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_y_Z_mm_b\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_y_Z_mm_b_abs\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_delta_phi_ee_b\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_delta_phi_mm_b\",1,$i,0,$n\)
 
