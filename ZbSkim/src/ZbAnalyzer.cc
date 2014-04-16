@@ -1773,10 +1773,10 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   double scalFac_second_m = 1;
   double scalFac_b = 1;
 
-  double lepton1_eta = 9999;
-  double lepton1_phi = 9999;
-  double lepton2_eta = 9999;
-  double lepton2_phi = 9999;
+  double lepton1_eta = -9999;
+  double lepton1_phi = -9999;
+  double lepton2_eta = -9999;
+  double lepton2_phi = -9999;
   // ++++++ Pile-Up
 
   bool isMC = false;
@@ -1958,21 +1958,21 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
   }
 
-  if (ee_event) {
+  if (lepton_=="electron" && iele1!=-1) {
     lepton1_eta = vect_ele[iele0].eta(); 
     lepton1_phi = vect_ele[iele0].phi();
     lepton2_eta = vect_ele[iele1].eta();
     lepton2_phi = vect_ele[iele1].phi();
   }
 
-  if (mm_event) {
+  if (lepton_=="muon" && imuon1!=-1) {
     lepton1_eta = vect_muon[imuon0].eta();
     lepton1_phi = vect_muon[imuon0].phi();
     lepton2_eta = vect_muon[imuon1].eta();
     lepton2_phi = vect_muon[imuon1].phi();
   }
 
-  if (em_event) {
+  if (lepton_=="electron+muon" && (iele1!=-1 || imuon1!=-1)) {
     if (iele1!=-1) {
       lepton1_eta = vect_muon[imuon0].eta();
       lepton1_phi = vect_muon[imuon0].phi();
@@ -2103,6 +2103,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
  
   for (vector < pat::Jet >::const_iterator jet = jets->begin(); jet != jets->end(); ++jet) {
 
+    double deltaR_jl1 = -9999;
+    double deltaR_jl2 = -9999;
+
     // check for no neutrinos
 //    if (isMC && jet->genJet()) {
 //      vector <const reco::GenParticle*> listGenP = jet->genJet()->getGenConstituents();
@@ -2147,10 +2150,12 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     double delta_phi2 = fabs(lepton2_phi - phij);
     if (delta_phi2 > acos(-1)) delta_phi2 = 2*acos(-1) - delta_phi2;
 
-    double deltaR_jl1 = sqrt(pow(delta_eta1,2) + pow(delta_phi1,2));
-    double deltaR_jl2 = sqrt(pow(delta_eta2,2) + pow(delta_phi2,2));    
-   
-    if (fabs(jetNew.eta()) < 2.4 && jetNew.pt() > 30 && deltaR_jl1 > 0.5 && deltaR_jl2 > 0.5 && (ee_event || mm_event || em_event)) {
+    if (lepton1_eta!=-9999 && lepton2_eta!=-9999 && lepton1_phi!=-9999 && lepton2_phi!=-9999 ) {
+      deltaR_jl1 = sqrt(pow(delta_eta1,2) + pow(delta_phi1,2));
+      deltaR_jl2 = sqrt(pow(delta_eta2,2) + pow(delta_phi2,2));    
+    }
+
+    if (fabs(jetNew.eta()) < 2.4 && jetNew.pt() > 30 && deltaR_jl1 > 0.5 && deltaR_jl2 > 0.5) {
 
       ++Nj;
 
