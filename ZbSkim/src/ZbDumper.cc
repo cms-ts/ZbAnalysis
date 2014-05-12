@@ -207,23 +207,23 @@ ZbDumper::ZbDumper(const edm::ParameterSet& iConfig) {
   
    w_DR_bb           = fs->make < TH2F > ("w_DR_bb",           "w_DR_bb", 25, 0, 4, 25, 0, 4);
  
-   w_DR_eeb_min      = fs->make < TH2F > ("w_DR_eeb_min",      "w_DR_eeb_min", 25, 0., 4., 25, 0., 4.);
-   w_DR_eeb_max      = fs->make < TH2F > ("w_DR_eeb_max",      "w_DR_eeb_max", 25, 1.5, 5., 25, 1.5, 5.);
-   w_DR_mmb_min      = fs->make < TH2F > ("w_DR_mmb_min",      "w_DR_mmb_min", 25, 0., 4., 25, 0., 4.);
-   w_DR_mmb_max      = fs->make < TH2F > ("w_DR_mmb_max",      "w_DR_mmb_max", 25, 1.5, 5., 25, 1.5, 5.);
+   w_DR_eeb_min      = fs->make < TH2F > ("w_DR_eeb_min",      "w_DR_eeb_min", 15, 0., 4., 15, 0., 4.);
+   w_DR_eeb_max      = fs->make < TH2F > ("w_DR_eeb_max",      "w_DR_eeb_max", 15, 1.5, 5., 15, 1.5, 5.);
+   w_DR_mmb_min      = fs->make < TH2F > ("w_DR_mmb_min",      "w_DR_mmb_min", 15, 0., 4., 15, 0., 4.);
+   w_DR_mmb_max      = fs->make < TH2F > ("w_DR_mmb_max",      "w_DR_mmb_max", 15, 1.5, 5., 15, 1.5, 5.);
 
-   w_Phi_star_ee     = fs->make < TH2F > ("w_Phi_star_ee",     "w_Phi_star_ee; Phi*", 40, 0., 1., 40, 0., 1.);
-   w_Phi_star_ee_b   = fs->make < TH2F > ("w_Phi_star_ee_b",   "w_Phi_star_ee_b; Phi*", 40, 0., 1., 40, 0., 1.);
-   w_Phi_star_mm     = fs->make < TH2F > ("w_Phi_star_mm",     "w_Phi_star_mm; Phi*", 40, 0., 1., 40, 0., 1.);
-   w_Phi_star_mm_b   = fs->make < TH2F > ("w_Phi_star_mm_b",   "w_Phi_star_mm_b; Phi*", 40, 0., 1., 40, 0., 1.);
+   w_Phi_star_ee     = fs->make < TH2F > ("w_Phi_star_ee",     "w_Phi_star_ee; Phi*", 10, 0., 1., 10, 0., 1.);
+   w_Phi_star_ee_b   = fs->make < TH2F > ("w_Phi_star_ee_b",   "w_Phi_star_ee_b; Phi*", 10, 0., 1., 10, 0., 1.);
+   w_Phi_star_mm     = fs->make < TH2F > ("w_Phi_star_mm",     "w_Phi_star_mm; Phi*", 10, 0., 1., 10, 0., 1.);
+   w_Phi_star_mm_b   = fs->make < TH2F > ("w_Phi_star_mm_b",   "w_Phi_star_mm_b; Phi*", 10, 0., 1., 10, 0., 1.);
 
    w_bb_mass         = fs->make < TH2F > ("w_bb_mass",         "w_bb_mass;Mass [GeV]", 15, 0., 400., 15, 0., 400.);   
    
    w_eebb_mass       = fs->make < TH2F > ("w_eebb_mass",       "w_eebb_mass;Mass [GeV]", 15, 150., 500., 15, 150., 500.);
    w_mmbb_mass       = fs->make < TH2F > ("w_mmbb_mass",       "w_mmbb_mass;Mass [GeV]", 15, 150., 500., 15, 150., 500.);
 
-   w_A_eeb           = fs->make < TH2F > ("w_A_eeb",           "w_A_eeb; A", 40, 0., 1., 40, 0., 1.);
-   w_A_mmb           = fs->make < TH2F > ("w_A_mmb",           "w_A_mmb; A", 40, 0., 1., 40, 0., 1.);
+   w_A_eeb           = fs->make < TH2F > ("w_A_eeb",           "w_A_eeb; A", 10, 0., 1., 10, 0., 1.);
+   w_A_mmb           = fs->make < TH2F > ("w_A_mmb",           "w_A_mmb; A", 10, 0., 1., 10, 0., 1.);
 }
 
 ZbDumper::~ZbDumper() {
