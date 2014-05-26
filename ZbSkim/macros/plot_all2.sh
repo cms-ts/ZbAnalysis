@@ -64,7 +64,7 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp2.C+\($d,\"w_mass_Zj_ee\",1,$i,0\)
   root -l -q -b DataMCComp2.C+\($d,\"w_mass_Zj_mm\",1,$i,0\)
 
-  if [ $n -eq 0 ]; then
+  if [ $n -ne 0 ]; then
     root -l -q -b DataMCComp2.C+\($d,\"w_Phi_star_ee_b\",1,$i,0,0,$n\)
     root -l -q -b DataMCComp2.C+\($d,\"w_Phi_star_mm_b\",1,$i,0,0,$n\)
   fi
