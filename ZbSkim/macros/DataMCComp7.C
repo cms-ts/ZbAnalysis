@@ -10,10 +10,10 @@ TH1F* read(string subdir, string title, int ilepton) {
   TH1F* hist;
   TFile* file=0;
   if (ilepton==1) {
-    file = TFile::Open((path + "/electrons/" + version + "/" + subdir +"/unfolding/" + title + "_unfolding.root").c_str());
+    file = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.root").c_str());
   }
   if (ilepton==2) {
-    file = TFile::Open((path + "/muons/" + version + "/" + subdir +"/unfolding/" + title + "_unfolding.root").c_str());
+    file = TFile::Open((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title + "_unfolding.root").c_str());
   }
   hist = (TH1F*)gDirectory->Get(title.c_str())->Clone();
   hist->SetDirectory(0);
