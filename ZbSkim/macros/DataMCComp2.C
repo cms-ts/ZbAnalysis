@@ -307,7 +307,6 @@ if (numB==2) {
 	  h_data->SetStats(0);
 	  h_data_b->SetStats(0);
 	}
-
 	if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
@@ -384,7 +383,7 @@ if (numB==2) {
 	TH1F* h_mc7_b = (TH1F*)gDirectory->Get(title_b.c_str());
         
         if (!drawInclusive) {
-          h_data = (TH1F*)h_data_b->Clone();
+          h_data = (TH1F*)h_data->Clone();
           h_mc1 = (TH1F*)h_mc1->Clone();
           h_mc1t = (TH1F*)h_mc1t->Clone();
           h_mcg = (TH1F*)h_mcg->Clone();
@@ -609,8 +608,10 @@ if (numB==2) {
           }
 	}
 
-        h_data_raw2->Scale(1./Lumi2012, "width");
-        h_data_b_raw2->Scale(1./Lumi2012, "width");
+        if (unfold==0) {
+          h_data_raw2->Scale(1./Lumi2012, "width");
+          h_data_b_raw2->Scale(1./Lumi2012, "width");
+        }
 	h_data->Scale(1./Lumi2012, "width");
 	h_data_b->Scale(1./Lumi2012, "width");
 	h_mc1->Scale(1./Lumi2012, "width");
@@ -637,9 +638,11 @@ if (numB==2) {
 	  h_mcg2_b->Scale(100.);
 	}
 
-        if (numB!=2) { 
-          h_data_raw2 = fixrange(h_data_raw2);
-          h_data_b_raw2 = fixrange(h_data_b_raw2);
+        if (numB!=2) {
+          if (unfold==0) { 
+            h_data_raw2 = fixrange(h_data_raw2);
+            h_data_b_raw2 = fixrange(h_data_b_raw2);
+          }
 	  h_data = fixrange(h_data);
 	  h_data_b = fixrange(h_data_b);
 	  h_mc1 = fixrange(h_mc1);
