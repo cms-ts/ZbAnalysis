@@ -252,37 +252,38 @@ if (numB==2) {
 
 	string title_b = title;
 
-	if (title.find("_bjet_")!=string::npos) {
-	  title.erase(title.find("_bjet_")+1, 1);
-	} else {
-	  title_b = title + "_b";
-        }
+        if (drawInclusive) {
 
-	if (title.find("_single_")!=string::npos) {
-	  if (title.find("_jet_")!=string::npos) {
-	    title.replace(title.find("_single_"), 8, "_first_");
+	  if (title.find("_bjet_")!=string::npos) {
+	    title.erase(title.find("_bjet_")+1, 1);
 	  } else {
-	    title.erase(title.find("_single_")+1, 7);
-	  }
-	}
+	    title_b = title + "_b";
+          }
 
-        if (title.find("_abs")!=string::npos) {
+	  if (title.find("_single_")!=string::npos) {
+	    if (title.find("_jet_")!=string::npos) {
+	      title.replace(title.find("_single_"), 8, "_first_");
+	    } else {
+	      title.erase(title.find("_single_")+1, 7);
+	    }
+	  }
+        }        
+
+        if (title.find("_abs")!=string::npos && !drawInclusive) {
           title_b = title;
           title_b = title_b.replace(title_b.find("_abs"), 4, "_b_abs");
-        }
-
-        if (!drawInclusive) {
-          title_b = title;
         }
        
 	if (ilepton==1) data->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) data->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_data=0;
 	TH1F* h_data_b=0;
+
 	if (unfold==0) {
 	  h_data = (TH1F*)gDirectory->Get(title.c_str());
 	  h_data_b = (TH1F*)gDirectory->Get(title_b.c_str());
 	}
+
 	if (unfold==1) {
           if (ilepton==1) {
 	    TFile f((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.root").c_str());
@@ -315,7 +316,7 @@ if (numB==2) {
 	TH1F* h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
 	TH1F* h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
 	TH1F* h_mc1t_b = (TH1F*)gDirectory->Get(("t"+title_b.substr(1)).c_str());
-    
+   
 	if (ilepton==1) mcg->cd(("demoEleGen"+postfix).c_str());
 	if (ilepton==2) mcg->cd(("demoMuoGen"+postfix).c_str());
 	TH1F* h_mcg = (TH1F*)gDirectory->Get(title.c_str());
@@ -397,6 +398,7 @@ if (numB==2) {
           h_mc7 = (TH1F*)h_mc7->Clone();
         }
 
+
 	if (unfold==0) {
 	  h_data->Sumw2();
 	  h_data_b->Sumw2();
@@ -413,6 +415,7 @@ if (numB==2) {
 //	h_mc5->Sumw2();
 	h_mc6->Sumw2();
 	h_mc7->Sumw2();
+
 
 	h_mc1_b->Sumw2();
 	if (h_mc1b_b) h_mc1b_b->Sumw2();
@@ -465,6 +468,7 @@ if (numB==2) {
 //	h_mc5_b->Scale(norm5);
 	h_mc6_b->Scale(norm6);
 	h_mc7_b->Scale(norm7);
+
 
 	if (useFitResults) {
 	  h_mc2->Scale(1./norm2);
@@ -571,8 +575,8 @@ if (numB==2) {
 
 	if (useBinnedEfficiency==1) {
           if (ilepton==1) {
-	    TFile f((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + string(h_data->GetName()) + "_efficiency.root").c_str());
-	    TFile f_b((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
+            TFile f((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + string(h_data->GetName()) + "_efficiency.root").c_str());
+            TFile f_b((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
 	    TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
 	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
 	    h->SetDirectory(0);
@@ -589,9 +593,9 @@ if (numB==2) {
 	    h_mc1b_b->Divide(h_b);
           }
 	  if (ilepton==2) {
-	    TFile f((path + "/muons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/"  + string(h_data->GetName()) + "_efficiency.root").c_str());
+	    TFile f((path + "/muons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + string(h_data->GetName()) + "_efficiency.root").c_str());
 	    TFile f_b((path + "/muons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
-	    TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
+            TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
 	    TH1F* h_b = (TH1F*)f_b.Get(h_data_b->GetName())->Clone();
 	    h->SetDirectory(0);
 	    h_b->SetDirectory(0);
@@ -638,7 +642,7 @@ if (numB==2) {
 	  h_mcg2_b->Scale(100.);
 	}
 
-        if (numB!=2) {
+        if (numB==0) {
           if (unfold==0) { 
             h_data_raw2 = fixrange(h_data_raw2);
             h_data_b_raw2 = fixrange(h_data_b_raw2);
@@ -890,7 +894,6 @@ if (numB==2) {
 	if (isratio==0) {
 	  TH1F *h_M2= (TH1F*)h_data->Clone();
 	  h_M2->Divide(h_mcg);
-
 	  TGraphErrors *g_M2 = new TGraphErrors(h_M2);
 
 	  float dx = 0.1*(g_M2->GetXaxis()->GetXmax()-g_M2->GetXaxis()->GetXmin())/g_M2->GetN();
