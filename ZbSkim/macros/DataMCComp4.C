@@ -150,6 +150,7 @@ if (numB==2) {
           }
           if (numB==2) {
             in >> c_b >> ec_b;
+            in.close();
           }
 	}
 
@@ -178,13 +179,15 @@ if (numB==2) {
 
 	string file = title;
 
-	if (file.find("_b")==string::npos) {
-	  if (file.find("_jet_")!=string::npos) {
-	    file.insert(file.find("_jet_")+1, "b");
-	  } else {
-	    file = file + "_b";
+        if (numB==0) {
+	  if (file.find("_b")==string::npos) {
+	    if (file.find("_jet_")!=string::npos) {
+	      file.insert(file.find("_jet_")+1, "b");
+	    } else {
+	      file = file + "_b";
+	    }
 	  }
-	}
+        }
 
 	TFile* data=0;
 	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/xsecs" + dirbSel + "/" + file + "_xsecs.root").c_str());
@@ -224,7 +227,7 @@ if (numB==2) {
 
 	string title_b = title;
 
-	if (title.find("_b")!=string::npos) {
+	if (title.find("_b")!=string::npos || numB==1 || numB==2) {
 	  title_b = "b"+title.substr(1);
 	}
 
@@ -325,12 +328,14 @@ if (numB==2) {
 	  h_mc2_reco->Scale(norm1_3/norm1);
 	}
 
-	if (title.find("_b")!=string::npos) {
+	if (title.find("_b")!=string::npos || numB==1 || numB==2) {
 	  h_mc1_truth->Scale(c_b);
 	  h_mc1_reco->Scale(c_b);
 	  h_mc2_truth->Scale(c_b);
 	  h_mc2_reco->Scale(c_b);
 	}
+
+
 
 	RooUnfold::ErrorTreatment err;
 	RooUnfold* unfold_mc=0;
@@ -350,6 +355,13 @@ if (numB==2) {
 	if (title=="w_mass_Zj_ee" || title=="w_mass_Zj_mm") kreg = 2;
 	if (title=="w_pt_Z_ee_b" || title=="w_pt_Z_mm_b") kreg = 10; // ~OK
 	if (title=="w_pt_Z_ee" || title=="w_pt_Z_mm") kreg = 9;
+        if (title=="w_DR_eeb_min" || title=="w_DR_mmb_min") kreg = 8;
+        if (title=="w_DR_eeb_max" || title=="w_DR_mmb_max") kreg = 9;
+        if (title=="w_Phi_star_ee_b" || title=="w_Phi_star_mm_b") kreg = 4;
+        if (title=="w_bb_mass") kreg = 6;
+        if (title=="w_delta_phi_2b") kreg = 4;
+        if (title=="w_eebb_mass" || title=="w_mmbb_mass") kreg = 6;
+        if (title=="w_A_eeb" || title=="w_A_mmb") kreg = 18;
 
 	if (method==0) {
 	  unfold_mc = new RooUnfoldSvd(&response, h_mc2_reco, kreg);
@@ -442,6 +454,8 @@ if (numB==2) {
 	  h_mc1_truth->SetLineStyle(2);
 	}
 
+
+
 	TH1F* h_data_unfold=0;
 	if (imode>=4) {
 	  err = RooUnfold::kErrors;
@@ -476,6 +490,8 @@ if (numB==2) {
 	  h_mc1_reco->Draw("HISTSAME");
 	}
 
+
+
 	TH1F* tmp;
 	if (imode<=3) tmp = h_mc2_reco;
 	if (imode>=4) tmp = h_data_reco;
@@ -506,7 +522,22 @@ if (numB==2) {
 	  tmp->GetXaxis()->SetTitle("#Delta #phi(bZ) [rad]");
 	} else if (title=="w_Ht_b") {
           tmp->GetXaxis()->SetTitle("H_{T} [GeV/c]");
-	}
+	} else if (title=="w_DR_bb") {
+          tmp->GetXaxis()->SetTitle("#Delta R(bb) [rad]");
+        } else if (title=="w_DR_eeb_min" || title=="w_DR_mmb_min") {
+          tmp->GetXaxis()->SetTitle("#Delta R(Zb) min [rad]");
+        } else if (title=="w_DR_eeb_max" || title=="w_DR_mmb_max") {
+          tmp->GetXaxis()->SetTitle("#Delta R(Zb) max [rad]");
+        } else if (title=="w_bb_mass") {
+          tmp->GetXaxis()->SetTitle("m(bb) [GeV/c^{2}]");
+        } else if (title=="w_eebb_mass" || title=="w_mmbb_mass") {
+          tmp->GetXaxis()->SetTitle("m(Zbb) [GeV/c^{2}]");
+        } else if (title=="w_delta_phi_2b") {
+          tmp->GetXaxis()->SetTitle("#Delta#phi(bb) [rad]");
+        }
+
+
+
 
         TLegend* leg1 = new TLegend(0.42, 0.580, 0.68, 0.88);
         leg1->SetBorderSize(0);
@@ -551,6 +582,8 @@ if (numB==2) {
           leg1->AddEntry(h_data_unfold,"DATA unfold","p");
         }
 
+
+
         leg1->Draw();
 
         TLatex* t = new TLatex();
@@ -580,6 +613,9 @@ if (numB==2) {
 	h_ratio->SetTitle("");
         h_ratio->SetStats(0);
 
+
+
+
         h_ratio->GetXaxis()->SetTitleOffset(0.9);
         h_ratio->GetXaxis()->SetTitleSize(0.1);
         h_ratio->GetXaxis()->SetLabelFont(42);
@@ -605,6 +641,8 @@ if (numB==2) {
         OLine->SetLineColor(kRed);
         OLine->SetLineWidth(1);
         OLine->Draw();
+
+
 
 	TCanvas* c2=0;
 	if (method==0) {
@@ -635,6 +673,8 @@ if (numB==2) {
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+
+
 
 	int nv = response.GetNbinsMeasured();
 	if (response.UseOverflowStatus()) nv = nv + 2;
@@ -687,6 +727,8 @@ if (numB==2) {
 	h_err_err->Draw("HIST");
 	h_err_res->Draw("PSAME");
 
+
+
 	TLegend* leg2 = new TLegend (0.70, 0.75, 0.89, 0.89);
 	leg2->SetBorderSize(0);
 	leg2->SetEntrySeparation(0.01);
@@ -721,6 +763,8 @@ if (numB==2) {
 	gStyle->SetPaintTextFormat("+11.1e");
 	h_err_cov->Draw("TEXT30");
 
+
+
         if (method==0) t->DrawLatex(0.01,0.95,"SVD");
         if (method==1) t->DrawLatex(0.01,0.95,"Bayes");
         if (method==2) t->DrawLatex(0.01,0.95,"BinByBin");
@@ -749,6 +793,8 @@ if (numB==2) {
 	hParmRms->SetStats(0);
 
 	hParmChi2->SetMaximum(5000.);
+
+
 
 	TCanvas* c6 = new TCanvas("c6", "c6", 800, 600);
 	c6->cd();
@@ -802,6 +848,8 @@ if (numB==2) {
 	if (imode==1) title = title + "_closure_sherpa";
 	if (imode==2) title = title + "_closure_powheg";
 	if (imode==3) title = title + "_closure_madgraph4fs";
+
+
 
 	if (plot) {
 	  ofstream out;
