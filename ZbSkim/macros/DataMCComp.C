@@ -416,8 +416,7 @@ if (numB==2) {
 //	h_mc5->Scale(norm5);
 	h_mc6->Scale(norm6);
 	h_mc7->Scale(norm7);
-
-     
+ 
         if (bbBkg || bbSig) h_mc1b->Add(h_mc1bb, -1.); 
 
 	if (useFitResults) {
@@ -713,6 +712,9 @@ if (numB==2) {
 	if (title.find("MET")!=string::npos)   pad1->SetLogy(0);
 	if (title.find("mass_")!=string::npos) pad1->SetLogy(0);
         if (title.find("y_Z")!=string::npos) pad1->SetLogy(0);
+        if (title.find("DR_bb")!=string::npos) pad1->SetLogy(0);
+//        if (title.find("DR_jj")!=string::npos) pad1->SetLogy(0);
+//        if (title.find("w_eebb_mass")!=string::npos || title.find("w_mmbb_mass")!=string::npos) pad1->SetLogy(0);
 
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
@@ -848,6 +850,14 @@ if (numB==2) {
           h_ratio->GetXaxis ()->SetTitle("#Delta#phi(bb) [rad]");
         } else if (title=="w_DR_bb") {
           h_ratio->GetXaxis ()->SetTitle("#Delta R(bb) [rad]");
+        } else if (title=="w_DR_eeb_min" || title=="w_DR_mmb_min") {
+          h_ratio->GetXaxis ()->SetTitle("#Delta R(Zb) min [rad]");
+        } else if (title=="w_DR_eeb_max" || title=="w_DR_mmb_max") {
+          h_ratio->GetXaxis ()->SetTitle("#Delta R(Zb) max [rad]");
+        } else if (title=="w_bb_mass") {
+          h_ratio->GetXaxis ()->SetTitle("m(bb) [GeV/c^{2}]");
+        } else if (title=="w_eebb_mass" || title=="w_mmbb_mass") {
+          h_ratio->GetXaxis ()->SetTitle("m(Zbb) [GeV/c^{2}]");
         } else if (title=="SVTX_mass_jet"||title=="SVTX_mass_trk"||title=="SVTX_mass") {
 	  h_ratio->GetXaxis ()->SetTitle("SV mass [GeV/c^{2}]");
 	} else if (title=="w_BJP"||title=="w_JBP") {
@@ -877,8 +887,8 @@ if (numB==2) {
 	OLine->SetLineWidth(2);
 	OLine->Draw();
 
-	c1->cd();
 
+	c1->cd();
         if (title.find("_b")!=string::npos && numB==0) bSel="Z + (#geq 1) b-jet";
         if ((title=="w_BJP"||title=="w_JBP") && numB==0) bSel="Z + (#geq 1) b-jet";
 
@@ -932,8 +942,7 @@ if (numB==2) {
             fitLabel->DrawLatex(0.68, 0.48, buff);
           }
 	}
-
-         
+ 
 	if (useDY==1) subdir = subdir + "_sherpa";
 	if (useDY==2) subdir = subdir + "_powheg";
 
