@@ -141,6 +141,7 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp5.C+\($d,\"w_third_jet_eta_b\",1,$i,0,$n\)
 
   root -l -q -b DataMCComp5.C+\($d,\"w_delta_phi_2b\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_DR_bb\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_bjetmultiplicity_exc\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_bjetmultiplicity\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_first_bjet_pt\",1,$i,0,$n\)
