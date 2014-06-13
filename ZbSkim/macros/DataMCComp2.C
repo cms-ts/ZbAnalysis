@@ -142,7 +142,7 @@ if (numB==2) {
 	if (ilepton==1) {
 	  in1.open((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + "w_first_jet_eta" + "_efficiency.dat").c_str());
 	  in2.open((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + "w_first_bjet_eta" + "_efficiency.dat").c_str());
-	  if (useFitResults) {
+          if (useFitResults) {
 	    in3.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_BJP_doFit" + ".dat").c_str());
 	    in4.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
 	    in5.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
@@ -155,7 +155,7 @@ if (numB==2) {
 	if (ilepton==2) {
 	  in1.open((path + "/muons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + "w_first_jet_eta" + "_efficiency.dat").c_str());
 	  in2.open((path + "/muons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + "w_first_bjet_eta" + "_efficiency.dat").c_str());
-	  if (useFitResults) {
+          if (useFitResults) {
 	    in3.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_BJP_doFit" + ".dat").c_str());
 	    in4.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
 	    in5.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
@@ -273,7 +273,7 @@ if (numB==2) {
           title_b = title;
           title_b = title_b.replace(title_b.find("_abs"), 4, "_b_abs");
         }
-       
+
 	if (ilepton==1) data->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) data->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_data=0;
@@ -316,25 +316,27 @@ if (numB==2) {
 	TH1F* h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
 	TH1F* h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
 	TH1F* h_mc1t_b = (TH1F*)gDirectory->Get(("t"+title_b.substr(1)).c_str());
-   
+
 	if (ilepton==1) mcg->cd(("demoEleGen"+postfix).c_str());
 	if (ilepton==2) mcg->cd(("demoMuoGen"+postfix).c_str());
 	TH1F* h_mcg = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-	if (ilepton==1) mcg1->cd(("demoEleGen"+postfix).c_str());
-	if (ilepton==2) mcg1->cd(("demoMuoGen"+postfix).c_str());
+        bool cdmcg1;
+      
+	if (ilepton==1) cdmcg1 = mcg1->cd(("demoEleGen"+postfix).c_str());
+	if (ilepton==2) cdmcg1 = mcg1->cd(("demoMuoGen"+postfix).c_str());
 	TH1F* h_mcg1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg1_b = (TH1F*)gDirectory->Get(title_b.c_str());
-
-	if (!h_mcg1) h_mcg1 = (TH1F*)h_mcg->Clone();
-	if (!h_mcg1_b) h_mcg1_b = (TH1F*)h_mcg_b->Clone();
+        
+        if (!h_mcg1 || !cdmcg1) h_mcg1 = (TH1F*)h_mcg->Clone();
+	if (!h_mcg1_b || !cdmcg1) h_mcg1_b = (TH1F*)h_mcg_b->Clone();
 
 	if (ilepton==1) mcg2->cd(("demoEleGen"+postfix).c_str());
 	if (ilepton==2) mcg2->cd(("demoMuoGen"+postfix).c_str());
 	TH1F* h_mcg2 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg2_b = (TH1F*)gDirectory->Get(title_b.c_str());
-
+ 
 	if (!h_mcg2) h_mcg2 = (TH1F*)h_mcg->Clone();
 	if (!h_mcg2_b) h_mcg2_b = (TH1F*)h_mcg_b->Clone();
 
@@ -398,7 +400,6 @@ if (numB==2) {
           h_mc7 = (TH1F*)h_mc7->Clone();
         }
 
-
 	if (unfold==0) {
 	  h_data->Sumw2();
 	  h_data_b->Sumw2();
@@ -415,7 +416,6 @@ if (numB==2) {
 //	h_mc5->Sumw2();
 	h_mc6->Sumw2();
 	h_mc7->Sumw2();
-
 
 	h_mc1_b->Sumw2();
 	if (h_mc1b_b) h_mc1b_b->Sumw2();
@@ -468,7 +468,6 @@ if (numB==2) {
 //	h_mc5_b->Scale(norm5);
 	h_mc6_b->Scale(norm6);
 	h_mc7_b->Scale(norm7);
-
 
 	if (useFitResults) {
 	  h_mc2->Scale(1./norm2);
@@ -573,6 +572,7 @@ if (numB==2) {
 	  h_mc1b_b->Scale(1./e_Zb);
 	}
 
+
 	if (useBinnedEfficiency==1) {
           if (ilepton==1) {
             TFile f((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + string(h_data->GetName()) + "_efficiency.root").c_str());
@@ -642,23 +642,21 @@ if (numB==2) {
 	  h_mcg2_b->Scale(100.);
 	}
 
-        if (numB==0) {
-          if (unfold==0) { 
-            h_data_raw2 = fixrange(h_data_raw2);
-            h_data_b_raw2 = fixrange(h_data_b_raw2);
-          }
-	  h_data = fixrange(h_data);
-	  h_data_b = fixrange(h_data_b);
-	  h_mc1 = fixrange(h_mc1);
- 	  h_mc1b_b = fixrange(h_mc1b_b);
-	  h_mcg = fixrange(h_mcg);
-	  h_mcg_b = fixrange(h_mcg_b);
-	  h_mcg1 = fixrange(h_mcg1);
- 	  h_mcg1_b = fixrange(h_mcg1_b);
-	  h_mcg2 = fixrange(h_mcg2);
-	  h_mcg2_b = fixrange(h_mcg2_b);
-        }
-
+        if (unfold==0) { 
+          h_data_raw2 = fixrange(h_data_raw2);
+          h_data_b_raw2 = fixrange(h_data_b_raw2);
+        }       
+	h_data = fixrange(h_data);
+	h_data_b = fixrange(h_data_b);
+	h_mc1 = fixrange(h_mc1);
+ 	h_mc1b_b = fixrange(h_mc1b_b);
+	h_mcg = fixrange(h_mcg);
+	h_mcg_b = fixrange(h_mcg_b);
+	h_mcg1 = fixrange(h_mcg1);
+ 	h_mcg1_b = fixrange(h_mcg1_b);
+	h_mcg2 = fixrange(h_mcg2);
+	h_mcg2_b = fixrange(h_mcg2_b);
+  
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();
 
@@ -750,8 +748,8 @@ if (numB==2) {
 	  tmp2->SetFillColor(0);
 	  tmp2->DrawClone("HISTLSAME");
 
-	  h_mcg1_b->Draw("E5SAME");
-	  TH1F* tmp2_1 = (TH1F*)h_mcg1_b->Clone();
+          h_mcg1_b->Draw("E5SAME");
+          TH1F* tmp2_1 = (TH1F*)h_mcg1_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2_1->GetMinimum()==0) tmp2_1->GetXaxis()->SetRangeUser(0, tmp2_1->GetBinCenter(tmp2_1->GetMinimumBin()-1));
 	  }
