@@ -152,8 +152,11 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 
 	h_reco->Sumw2();
 	h_gen->Sumw2();
-	double N = h_reco->GetEffectiveEntries() / h_gen->GetEffectiveEntries();
-	double errN = TMath::Sqrt(h_reco->GetEffectiveEntries()) / h_gen->GetEffectiveEntries();
+
+	double N = 1.0;
+	double errN = 0.0;
+	N = h_reco->IntegralAndError(0,h_reco->GetNbinsX()+1,errN) / h_gen->Integral(0,h_gen->GetNbinsX()+1);
+	errN = errN / h_gen->Integral(0,h_gen->GetNbinsX()+1);
 
 //	TCanvas* c1 = new TCanvas("c1", "c1", 800, 600);
 //	c1->cd();
