@@ -175,6 +175,9 @@ private:
   TH1F*     w_first_bjet_pt;
   TH1F*     w_first_bjet_eta;
   TH1F*     w_first_bjet_eta_abs;
+  TH1F*     w_second_bjet_pt;
+  TH1F*     w_second_bjet_eta;
+  TH1F*     w_second_bjet_eta_abs;
   TH1F*     w_bjetmultiplicity;
   TH1F*     w_first_jet_pt_b;   // leading jet with at least one b jet in the event
   TH1F*     w_first_jet_eta_b;
@@ -272,6 +275,9 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_first_bjet_eta_abs =fs->make < TH1F > ("w_first_bjet_eta_abs","w_first_bjet_eta_abs", 8, 0, 2.5);
   w_first_jet_pt_b =    fs->make < TH1F > ("w_first_jet_pt_b",   "w_first_jet_pt_b;P_t [GeV]", 50, 30., 700.);
   w_first_jet_eta_b =   fs->make < TH1F > ("w_first_jet_eta_b",  "w_first_jet_eta_b;Eta", 16, -2.5, 2.5);
+  w_second_bjet_pt =    fs->make < TH1F > ("w_second_bjet_pt",   "w_second_bjet_pt; [GeV]", 50, 30., 500.);
+  w_second_bjet_eta =   fs->make < TH1F > ("w_second_bjet_eta",  "w_second_bjet_eta", 16, -2.5, 2.5);
+  w_second_bjet_eta_abs=fs->make < TH1F > ("w_second_bjet_eta_abs","w_second_bjet_eta_abs", 8, 0, 2.5);
   w_pt_Z_ee =           fs->make < TH1F > ("w_pt_Z_ee",          "w_pt_Z_ee;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_mm =           fs->make < TH1F > ("w_pt_Z_mm",          "w_pt_Z_mm;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_ee_b =         fs->make < TH1F > ("w_pt_Z_ee_b",        "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
@@ -299,7 +305,7 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   w_delta_ee_b =        fs->make < TH1F > ("w_delta_phi_ee_b",   "w_delta_phi_ee_b", 12, 0, TMath::Pi ());
   w_delta_mm_b =        fs->make < TH1F > ("w_delta_phi_mm_b",   "w_delta_phi_mm_b", 12, 0, TMath::Pi ());
   w_delta_phi_2b =      fs->make < TH1F > ("w_delta_phi_2b",     "w_delta_phi_2b",   12, 0, TMath::Pi ());
-  w_DR_bb =             fs->make < TH1F > ("w_DR_bb",            "w_DR_bb", 25, 0, 4);
+  w_DR_bb =             fs->make < TH1F > ("w_DR_bb",            "w_DR_bb", 30, 0, 5);
 
   w_single_bjet_pt =           fs->make < TH1F > ("w_single_bjet_pt",         "w_single_bjet_pt;P_t [GeV]", 50, 30., 700.);
   w_single_bjet_eta =          fs->make < TH1F > ("w_single_bjet_eta",        "w_single_bjet_eta", 16, -2.5, 2.5);
@@ -1026,6 +1032,11 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_first_bjet_eta_abs->Fill (fabs(vect_bjets[0].eta()), MyWeight);
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
     w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight);
+    if (Nb > 1) {
+      w_second_bjet_pt->Fill (vect_bjets[1].pt(), MyWeight);
+      w_second_bjet_eta->Fill (vect_bjets[1].eta(), MyWeight);
+      w_second_bjet_eta_abs->Fill (fabs(vect_bjets[1].eta()), MyWeight);
+    }
     w_pt_Z_ee_b->Fill (diele_pt, MyWeight);
     w_y_Z_ee_b->Fill (diele_y, MyWeight);
     w_y_Z_ee_b_abs->Fill (fabs(diele_y), MyWeight);
@@ -1039,8 +1050,14 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   if (mm_event && Nb > 0 && Nj > 0 && b_selection) {
     w_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight);
     w_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
+    w_first_bjet_eta_abs->Fill (fabs(vect_bjets[0].eta()), MyWeight);
     w_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight);
     w_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight);
+    if (Nb > 1) {
+      w_second_bjet_pt->Fill (vect_bjets[1].pt(), MyWeight);
+      w_second_bjet_eta->Fill (vect_bjets[1].eta(), MyWeight);
+      w_second_bjet_eta_abs->Fill (fabs(vect_bjets[1].eta()), MyWeight);
+    }
     w_pt_Z_mm_b->Fill (dimuon_pt, MyWeight);
     w_y_Z_mm_b->Fill (dimuon_y, MyWeight);
     w_y_Z_mm_b_abs->Fill (fabs(dimuon_y), MyWeight);
