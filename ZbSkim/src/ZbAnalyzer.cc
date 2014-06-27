@@ -1021,11 +1021,11 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   t_delta_phi_jj =      fs->make < TH1F > ("t_delta_phi_jj",    "t_delta_phi_jj",   12, 0, TMath::Pi ());
 
 
-  w_DR_bb =      fs->make < TH1F > ("w_DR_bb",    "w_DR_bb",   25, 0, 4);
-  b_DR_bb =      fs->make < TH1F > ("b_DR_bb",    "b_DR_bb",   25, 0, 4);
-  c_DR_bb =      fs->make < TH1F > ("c_DR_bb",    "c_DR_bb",   25, 0, 4);
-  t_DR_bb =      fs->make < TH1F > ("t_DR_bb",    "t_DR_bb",   25, 0, 4);
-  bbBkg_DR_bb =  fs->make < TH1F > ("bbBkg_DR_bb","bbBkg_DR_bb",  25, 0, 4);
+  w_DR_bb =      fs->make < TH1F > ("w_DR_bb",    "w_DR_bb",   30, 0, 5);
+  b_DR_bb =      fs->make < TH1F > ("b_DR_bb",    "b_DR_bb",   30, 0, 5);
+  c_DR_bb =      fs->make < TH1F > ("c_DR_bb",    "c_DR_bb",   30, 0, 5);
+  t_DR_bb =      fs->make < TH1F > ("t_DR_bb",    "t_DR_bb",   30, 0, 5);
+  bbBkg_DR_bb =  fs->make < TH1F > ("bbBkg_DR_bb","bbBkg_DR_bb",  30, 0, 5);
 
   w_DR_jj =      fs->make < TH1F > ("w_DR_jj",    "w_DR_jj",   50, 0, 8);
   b_DR_jj =      fs->make < TH1F > ("b_DR_jj",    "b_DR_jj",   50, 0, 8);
