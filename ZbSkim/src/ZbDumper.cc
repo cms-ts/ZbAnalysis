@@ -108,6 +108,9 @@ class ZbDumper : public edm::EDAnalyzer {
      TH2F* w_first_bjet_pt;
      TH2F* w_first_bjet_eta;
      TH2F* w_first_bjet_eta_abs;
+     TH2F* w_second_bjet_pt;
+     TH2F* w_second_bjet_eta;
+     TH2F* w_second_bjet_eta_abs;
      TH2F* w_pt_Z_ee;
      TH2F* w_pt_Z_mm;
      TH2F* w_pt_Z_ee_b;
@@ -176,6 +179,9 @@ ZbDumper::ZbDumper(const edm::ParameterSet& iConfig) {
    w_first_bjet_pt   = fs->make < TH2F > ("w_first_bjet_pt",   "w_first_bjet_pt;P_t [GeV]", 50, 30., 700., 50, 30., 700.);
    w_first_bjet_eta  = fs->make < TH2F > ("w_first_bjet_eta",  "w_first_bjet_eta;Eta", 16, -2.5, 2.5,16, -2.5, 2.5);
    w_first_bjet_eta_abs  = fs->make < TH2F > ("w_first_bjet_eta_abs",  "w_first_bjet_eta_abs;abs(Eta)", 8, 0, 2.5, 8, 0, 2.5);
+   w_second_bjet_pt   = fs->make < TH2F > ("w_second_bjet_pt",   "w_second_bjet_pt;P_t [GeV]", 50, 30., 500., 50, 30., 500.);
+   w_second_bjet_eta  = fs->make < TH2F > ("w_second_bjet_eta",  "w_second_bjet_eta;Eta", 16, -2.5, 2.5,16, -2.5, 2.5);
+   w_second_bjet_eta_abs  = fs->make < TH2F > ("w_second_bjet_eta_abs",  "w_second_bjet_eta_abs;abs(Eta)", 8, 0, 2.5, 8, 0, 2.5);
    w_pt_Z_ee         = fs->make < TH2F > ("w_pt_Z_ee",         "w_pt_Z_ee;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
    w_pt_Z_mm         = fs->make < TH2F > ("w_pt_Z_mm",         "w_pt_Z_mm;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
    w_pt_Z_ee_b 	     = fs->make < TH2F > ("w_pt_Z_ee_b",       "w_pt_Z_ee_b;P_t [GeV]", 40, 0., 400., 40, 0., 400.);
@@ -205,7 +211,7 @@ ZbDumper::ZbDumper(const edm::ParameterSet& iConfig) {
 
    w_delta_phi_2b    = fs->make < TH2F > ("w_delta_phi_2b",    "w_delta_phi_2b", 12, 0, TMath::Pi (), 12, 0, TMath::Pi ());
   
-   w_DR_bb           = fs->make < TH2F > ("w_DR_bb",           "w_DR_bb", 25, 0, 4, 25, 0, 4);
+   w_DR_bb           = fs->make < TH2F > ("w_DR_bb",           "w_DR_bb", 30, 0, 5, 30, 0, 5);
  
    w_DR_eeb_min      = fs->make < TH2F > ("w_DR_eeb_min",      "w_DR_eeb_min", 15, 0., 4., 15, 0., 4.);
    w_DR_eeb_max      = fs->make < TH2F > ("w_DR_eeb_max",      "w_DR_eeb_max", 15, 1.5, 5., 15, 1.5, 5.);
@@ -448,6 +454,17 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
        }
      }
    }
+   int k_b2=-1;
+   if (bjets->size()>1) {
+     double R_b = 0.5;
+     for (unsigned int i=0; i<gen_bjets2->size(); ++i) {
+       int j = i;
+       if (ROOT::Math::VectorUtil::DeltaR((*bjets)[1], (*gen_bjets2)[i]) < R_b && j!=k_b) {
+         k_b2=i;
+         R_b = ROOT::Math::VectorUtil::DeltaR((*bjets)[1], (*gen_bjets2)[i]);
+       }
+     }
+   }
 
    if (k!=-1) {
      if ((*gen_jets2)[k].pt() < 30) k=-1;
@@ -456,6 +473,10 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
    if (k_b!=-1) {
      if ((*gen_bjets2)[k_b].pt() < 30) k_b=-1;
      if (fabs((*gen_bjets2)[k_b].eta()) > 2.4) k_b=-1;
+   }
+   if (k_b2!=-1) {
+     if ((*gen_bjets2)[k_b2].pt() < 30) k_b2=-1;
+     if (fabs((*gen_bjets2)[k_b2].eta()) > 2.4) k_b2=-1;
    }
 
    double my_weight = weight->empty() ? ( gen_weight->empty() ? -1 : (*gen_weight)[0] ) : (*weight)[0];
@@ -472,6 +493,12 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
        w_first_jet_eta_abs->Fill(jets->empty() ? -3 : fabs((*jets)[0].eta()), k<0 ? -3 : fabs((*gen_jets2)[k].eta()), my_weight);
        w_first_bjet_pt->Fill(bjets->empty() ? -1 : (*bjets)[0].pt(), k_b<0 ? -1 : (*gen_bjets2)[k_b].pt(), my_bweight);
        w_first_bjet_eta->Fill(bjets->empty() ? -3 : (*bjets)[0].eta(), k_b<0 ? -3 : (*gen_bjets2)[k_b].eta(), my_bweight);
+       w_first_bjet_eta_abs->Fill(bjets->empty() ? -3 : fabs((*bjets)[0].eta()), k_b<0 ? -3 : fabs((*gen_bjets2)[k_b].eta()), my_bweight);
+       if (numB_==2) {
+         w_second_bjet_pt->Fill(bjets->empty() ? -1 : (*bjets)[1].pt(), k_b2<0 ? -1 : (*gen_bjets2)[k_b2].pt(), my_bweight);
+         w_second_bjet_eta->Fill(bjets->empty() ? -3 : (*bjets)[1].eta(), k_b2<0 ? -3 : (*gen_bjets2)[k_b2].eta(), my_bweight);
+         w_second_bjet_eta_abs->Fill(bjets->empty() ? -3 : fabs((*bjets)[1].eta()), k_b2<0 ? -3 : fabs((*gen_bjets2)[k_b2].eta()), my_bweight);
+       }
      }
 
      if (ee_event) {
