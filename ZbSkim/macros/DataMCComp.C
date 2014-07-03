@@ -2,8 +2,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v12.h"
 
-//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-string path = "/gpfs/cms/users/lalicata/work/test/data/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 TH1F* h_data_fit = 0;
 TH1F* h_mc_fit0 = 0;
