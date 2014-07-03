@@ -1,5 +1,3 @@
-#include "CMS_lumi.h"
-
 TLatex * CMSPrel (Float_t Lumi, TString _decaychannel) {
 
   TLatex * latexLabel = new TLatex ();
