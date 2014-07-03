@@ -5,6 +5,7 @@
 #include "fixrange.C"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 TH1F* read(string subdir, string title, int ilepton, TFile* infile=0) {
   TH1F* hist;
@@ -982,7 +983,7 @@ string subdir="0";
 	h_mcg2_b = fixrange(h_mcg2_b);
 	h_mcg3_b = fixrange(h_mcg3_b);
 
-	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
+	TCanvas* c1 = new TCanvas("c", "c", 10, 10, 800, 600);
 	c1->cd();
 
 	h_mcg_b->SetTitle("");
@@ -1171,8 +1172,23 @@ string subdir="0";
 	leg->Draw();
 
 	c1->cd();
-
- 	TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
+        
+ 	//TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
+ 	TLatex *latexLabel;
+        if (isratio==1) {
+          latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
+        }
+        if (isratio==0) {
+          if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_pt_Z_b") {
+            latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
+          }
+          if (title_b=="w_delta_phi_b") {
+            latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+          }
+          if (title_b=="w_first_bjet_eta") {
+            latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+          }
+        }
 	latexLabel->Draw("same");
 
 	TPad *pad2 = new TPad("pad2","pad2",0,0.29,1,0.4);
