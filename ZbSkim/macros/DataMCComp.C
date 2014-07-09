@@ -10,6 +10,7 @@ TH1F* h_mc_fit0 = 0;
 TH1F* h_mc_fit1 = 0;
 TH1F* h_mc_fit2 = 0;
 TH1F* h_mc1bb = 0;
+TH1F* h_mcO = 0;
 
 void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   double chisq = 0.0;
@@ -226,6 +227,12 @@ if (numB==2) {
 	double norm5 = ((Lumi2012 * Xsec_qcd) / Ngen_qcd);
 	double norm6 = ((Lumi2012 * Xsec_ww) / Ngen_ww);
 	double norm7 = ((Lumi2012 * Xsec_wj) / Ngen_wj);
+	double norm8 = ((Lumi2012 * Xsec_tS) / Ngen_tS);
+	double norm9 = ((Lumi2012 * Xsec_tT) / Ngen_tT);
+	double norm10 = ((Lumi2012 * Xsec_tW) / Ngen_tW);
+	double norm11 = ((Lumi2012 * Xsec_tSb) / Ngen_tSb);
+	double norm12 = ((Lumi2012 * Xsec_tTb) / Ngen_tTb);
+	double norm13 = ((Lumi2012 * Xsec_tWb) / Ngen_tWb);
 
 	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
 	double enorm1_1 = ((Lumi2012 * eXsec_dy_1) / Ngen_dy_1);
@@ -239,6 +246,12 @@ if (numB==2) {
 	double enorm5 = ((Lumi2012 * eXsec_qcd) / Ngen_qcd);
 	double enorm6 = ((Lumi2012 * eXsec_ww) / Ngen_ww);
 	double enorm7 = ((Lumi2012 * eXsec_wj) / Ngen_wj);
+	double enorm8 = ((Lumi2012 * eXsec_tS) / Ngen_tS);
+	double enorm9 = ((Lumi2012 * eXsec_tT) / Ngen_tT);
+	double enorm10 = ((Lumi2012 * eXsec_tW) / Ngen_tW);
+	double enorm11 = ((Lumi2012 * eXsec_tSb) / Ngen_tSb);
+	double enorm12 = ((Lumi2012 * eXsec_tTb) / Ngen_tTb);
+	double enorm13 = ((Lumi2012 * eXsec_tWb) / Ngen_tWb);
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -276,6 +289,12 @@ if (numB==2) {
 //	TFile *mc5 = TFile::Open((path + "/" + version + "/" + "QCD.root").c_str());
 	TFile *mc6 = TFile::Open((path + "/" + version + "/" + "WW.root").c_str());
 	TFile *mc7 = TFile::Open((path + "/" + version + "/" + "Wj.root").c_str());
+	TFile *mc8 = TFile::Open((path + "/" + version + "/" + "T_s.root").c_str());
+	TFile *mc9 = TFile::Open((path + "/" + version + "/" + "T_t.root").c_str());
+	TFile *mc10 = TFile::Open((path + "/" + version + "/" + "T_tW.root").c_str());
+	TFile *mc11 = TFile::Open((path + "/" + version + "/" + "TBar_s.root").c_str());
+	TFile *mc12 = TFile::Open((path + "/" + version + "/" + "TBar_t.root").c_str());
+	TFile *mc13 = TFile::Open((path + "/" + version + "/" + "TBar_tW.root").c_str());
 
 	if (ilepton==1) data->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) data->cd(("demoMuo"+postfix).c_str());
@@ -333,7 +352,35 @@ if (numB==2) {
 	if (ilepton==3) mc7->cd(("demoEleMuo"+postfix).c_str());
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 
+	if (ilepton==1) mc8->cd(("demoEle"+postfix).c_str());
+	if (ilepton==2) mc8->cd(("demoMuo"+postfix).c_str());
+	if (ilepton==3) mc8->cd(("demoEleMuo"+postfix).c_str());
+	TH1F* h_mc8 = (TH1F*)gDirectory->Get(title.c_str());
 
+	if (ilepton==1) mc9->cd(("demoEle"+postfix).c_str());
+	if (ilepton==2) mc9->cd(("demoMuo"+postfix).c_str());
+	if (ilepton==3) mc9->cd(("demoEleMuo"+postfix).c_str());
+	TH1F* h_mc9 = (TH1F*)gDirectory->Get(title.c_str());
+
+	if (ilepton==1) mc10->cd(("demoEle"+postfix).c_str());
+	if (ilepton==2) mc10->cd(("demoMuo"+postfix).c_str());
+	if (ilepton==3) mc10->cd(("demoEleMuo"+postfix).c_str());
+	TH1F* h_mc10 = (TH1F*)gDirectory->Get(title.c_str());
+
+	if (ilepton==1) mc11->cd(("demoEle"+postfix).c_str());
+	if (ilepton==2) mc11->cd(("demoMuo"+postfix).c_str());
+	if (ilepton==3) mc11->cd(("demoEleMuo"+postfix).c_str());
+	TH1F* h_mc11 = (TH1F*)gDirectory->Get(title.c_str());
+
+	if (ilepton==1) mc12->cd(("demoEle"+postfix).c_str());
+	if (ilepton==2) mc12->cd(("demoMuo"+postfix).c_str());
+	if (ilepton==3) mc12->cd(("demoEleMuo"+postfix).c_str());
+	TH1F* h_mc12 = (TH1F*)gDirectory->Get(title.c_str());
+
+	if (ilepton==1) mc13->cd(("demoEle"+postfix).c_str());
+	if (ilepton==2) mc13->cd(("demoMuo"+postfix).c_str());
+	if (ilepton==3) mc13->cd(("demoEleMuo"+postfix).c_str());
+	TH1F* h_mc13 = (TH1F*)gDirectory->Get(title.c_str());
 
 	h_data -> Sumw2();
 
@@ -397,8 +444,6 @@ if (numB==2) {
 	h_mc7 -> SetFillColor(kGray);
 	//h_mc7 -> SetFillStyle(3004);
 
-
-
 	if (irun==10) {
 	  norm1 = norm1 + enorm1;
 	  norm2 = norm2 + enorm2;
@@ -422,8 +467,27 @@ if (numB==2) {
 //	h_mc5->Scale(norm5);
 	h_mc6->Scale(norm6);
 	h_mc7->Scale(norm7);
+	h_mc8->Scale(norm8);
+	h_mc9->Scale(norm9);
+	h_mc10->Scale(norm10);
+	h_mc11->Scale(norm11);
+	h_mc12->Scale(norm12);
+	h_mc13->Scale(norm13);
 
-   
+        h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
+
+  	h_mcO->Add(h_mc13); 
+  	h_mcO->Add(h_mc12); 
+  	h_mcO->Add(h_mc11); 
+  	h_mcO->Add(h_mc10); 
+  	h_mcO->Add(h_mc9); 
+  	h_mcO->Add(h_mc8); 
+
+	h_mcO -> Sumw2();
+        h_mcO -> SetLineColor(kBlack);
+        h_mcO -> SetFillColor(kOrange+1);
+        //h_mcO -> SetFillStyle(3004); 
+
         if (bbBkg || bbSig) h_mc1b->Add(h_mc1bb, -1.); 
 
 	if (useFitResults) {
@@ -455,6 +519,7 @@ if (numB==2) {
 	}
 
 	if (doBkg) {
+	  h_data->Add(h_mcO, -1.);
 	  h_data->Add(h_mc7, -1.);
 	  h_data->Add(h_mc6, -1.);
 //	  h_data->Add(h_mc5, -1.);
@@ -682,6 +747,7 @@ if (numB==2) {
 	ht->Reset();
 	if (h_mc1t) ht->Add(h_mc1t);
 	if (!doBkg) {
+	  ht->Add(h_mcO);
 	  ht->Add(h_mc7);
 	  ht->Add(h_mc6);
 //	  ht->Add(h_mc5);
@@ -698,6 +764,7 @@ if (numB==2) {
 	THStack *hs = new THStack("hs","");
 	if (h_mc1t) hs->Add(h_mc1t);
 	if (!doBkg) {
+	  hs->Add(h_mcO);
 //	  hs->Add(h_mc5);
 	  hs->Add(h_mc6);
 	  hs->Add(h_mc7);
@@ -783,6 +850,7 @@ if (numB==2) {
 	  leg->AddEntry(h_mc4,"WZ","f");
 	  leg->AddEntry(h_mc7,"W+jets", "f");
 	  leg->AddEntry(h_mc6,"WW","f");
+	  leg->AddEntry(h_mcO,"Others","f");
 //	  leg->AddEntry(h_mc5,"QCD","f");
 	}
 	leg->Draw();
