@@ -7,6 +7,7 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 TH1F* h_data = 0;
 TH1F* h_data_fit = 0;
+TH1F* h_mcO = 0;
 
 void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   double chisq = 0.0;
@@ -151,6 +152,13 @@ if (numB==2) {
       double norm5 = ((Lumi2012 * Xsec_qcd) / Ngen_qcd);
       double norm6 = ((Lumi2012 * Xsec_ww) / Ngen_ww);
       double norm7 = ((Lumi2012 * Xsec_wj) / Ngen_wj);
+      double norm8 = ((Lumi2012 * Xsec_tS) / Ngen_tS);
+      double norm9 = ((Lumi2012 * Xsec_tT) / Ngen_tT);
+      double norm10 = ((Lumi2012 * Xsec_tW) / Ngen_tW);
+      double norm11 = ((Lumi2012 * Xsec_tSb) / Ngen_tSb);
+      double norm12 = ((Lumi2012 * Xsec_tTb) / Ngen_tTb);
+      double norm13 = ((Lumi2012 * Xsec_tWb) / Ngen_tWb);
+
 
       double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
       double enorm2 = ((Lumi2012 * eXsec_tt) / Ngen_tt);
@@ -159,7 +167,13 @@ if (numB==2) {
       double enorm5 = ((Lumi2012 * eXsec_qcd) / Ngen_qcd);
       double enorm6 = ((Lumi2012 * eXsec_ww) / Ngen_ww);
       double enorm7 = ((Lumi2012 * eXsec_wj) / Ngen_wj);
-
+      double enorm8 = ((Lumi2012 * eXsec_tS) / Ngen_tS);
+      double enorm9 = ((Lumi2012 * eXsec_tT) / Ngen_tT);
+      double enorm10 = ((Lumi2012 * eXsec_tW) / Ngen_tW);
+      double enorm11 = ((Lumi2012 * eXsec_tSb) / Ngen_tSb);
+      double enorm12 = ((Lumi2012 * eXsec_tTb) / Ngen_tTb);
+      double enorm13 = ((Lumi2012 * eXsec_tWb) / Ngen_tWb);
+      
       double norm1_fit = ((Lumi2012_ele_muon * Xsec_dy) / Ngen_dy);
       double norm2_fit = ((Lumi2012_ele_muon * Xsec_tt) / Ngen_tt);
       double norm3_fit = ((Lumi2012_ele_muon * Xsec_zz) / Ngen_zz);
@@ -201,6 +215,12 @@ if (numB==2) {
 //    TFile *mc5 = TFile::Open((path + "/" + version + "/" + "QCD.root").c_str());
       TFile *mc6 = TFile::Open((path + "/" + version + "/" + "WW.root").c_str());
       TFile *mc7 = TFile::Open((path + "/" + version + "/" + "Wj.root").c_str());
+      TFile *mc8 = TFile::Open((path + "/" + version + "/" + "T_s.root").c_str());
+      TFile *mc9 = TFile::Open((path + "/" + version + "/" + "T_t.root").c_str());
+      TFile *mc10 = TFile::Open((path + "/" + version + "/" + "T_tW.root").c_str());
+      TFile *mc11 = TFile::Open((path + "/" + version + "/" + "TBar_s.root").c_str());
+      TFile *mc12 = TFile::Open((path + "/" + version + "/" + "TBar_t.root").c_str());
+      TFile *mc13 = TFile::Open((path + "/" + version + "/" + "TBar_tW.root").c_str());
 
       string title_fit = title;
 
@@ -259,6 +279,42 @@ if (numB==2) {
       mc7->cd(("demoEleMuo"+postfix).c_str());
       TH1F* h_mc7_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
+      if (ilepton==1) mc8->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc8->cd(("demoMuo"+postfix).c_str());
+      TH1F* h_mc8 = (TH1F*)gDirectory->Get(title.c_str());
+      mc8->cd(("demoEleMuo"+postfix).c_str());
+      TH1F* h_mc8_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
+
+      if (ilepton==1) mc9->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc9->cd(("demoMuo"+postfix).c_str());
+      TH1F* h_mc9 = (TH1F*)gDirectory->Get(title.c_str());
+      mc9->cd(("demoEleMuo"+postfix).c_str());
+      TH1F* h_mc9_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
+
+      if (ilepton==1) mc10->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc10->cd(("demoMuo"+postfix).c_str());
+      TH1F* h_mc10 = (TH1F*)gDirectory->Get(title.c_str());
+      mc10->cd(("demoEleMuo"+postfix).c_str());
+      TH1F* h_mc10_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
+
+      if (ilepton==1) mc11->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc11->cd(("demoMuo"+postfix).c_str());
+      TH1F* h_mc11 = (TH1F*)gDirectory->Get(title.c_str());
+      mc11->cd(("demoEleMuo"+postfix).c_str());
+      TH1F* h_mc11_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
+
+      if (ilepton==1) mc12->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc12->cd(("demoMuo"+postfix).c_str());
+      TH1F* h_mc12 = (TH1F*)gDirectory->Get(title.c_str());
+      mc12->cd(("demoEleMuo"+postfix).c_str());
+      TH1F* h_mc12_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
+
+      if (ilepton==1) mc13->cd(("demoEle"+postfix).c_str());
+      if (ilepton==2) mc13->cd(("demoMuo"+postfix).c_str());
+      TH1F* h_mc13 = (TH1F*)gDirectory->Get(title.c_str());
+      mc13->cd(("demoEleMuo"+postfix).c_str());
+      TH1F* h_mc13_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
+
       h_data->Sumw2();
       h_data_fit->Sumw2();
 
@@ -295,7 +351,21 @@ if (numB==2) {
 //    h_mc5->Scale(norm5);
       h_mc6->Scale(norm6);
       h_mc7->Scale(norm7);
-      
+      h_mc8->Scale(norm8);
+      h_mc9->Scale(norm9);
+      h_mc10->Scale(norm10);
+      h_mc11->Scale(norm11);
+      h_mc12->Scale(norm12);
+      h_mc13->Scale(norm13);
+
+      h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
+
+      h_mcO->Add(h_mc13);
+      h_mcO->Add(h_mc12);
+      h_mcO->Add(h_mc11);
+      h_mcO->Add(h_mc10);
+      h_mcO->Add(h_mc9);
+ 
       if (irun==10) {
         norm1_fit = norm1_fit + enorm1_fit;
         norm2_fit = norm2_fit + enorm2_fit;
@@ -332,8 +402,12 @@ if (numB==2) {
           h_mc2_fit->Scale((c2_t+ec2_t)/c2_t);
         }
       }
-
-      if (irun==13) {
+        h_mcO -> Sumw2();
+        h_mcO -> SetLineColor(kBlack);
+        h_mcO -> SetFillColor(kGreen);
+        //h_mcO -> SetFillStyle(3004); 
+     
+       if (irun==13) {
         for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
           h_mc1->SetBinError(i, 1.1*h_mc1->GetBinError(i));
           h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
@@ -344,7 +418,8 @@ if (numB==2) {
           h_mc7->SetBinError(i, 1.1*h_mc7->GetBinError(i));
         }
       }
-
+      
+      h_data->Add(h_mcO, -1.);
       h_data->Add(h_mc7, -1.);
       h_data->Add(h_mc6, -1.);
 //    h_data->Add(h_mc5, -1.);
