@@ -15,6 +15,7 @@ string subdir="0";
 string postfix="";
 string dirbSel="";
 string bSel="";
+string genPostfix="";
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
   postfix="Up";
@@ -84,14 +85,16 @@ if (irun==99) {            // irun==99 => pur
   postfix="Pur";
 }
 if (numB==1) {
-  postfix="1b" + postfix;
+  postfix = postfix + "1b";
   dirbSel="_1b";
   bSel="Z + (= 1) b-jet";
+  genPostfix= "1b";
 }
 if (numB==2) {
-  postfix="2b" + postfix;
+  postfix = postfix + "2b";
   dirbSel="_2b";
   bSel="Z + (#geq 2) b-jet";
+  genPostfix= "2b";
 }
 
 	if (title.empty()) title = "w_jetmultiplicity";
@@ -130,24 +133,25 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 
 	string title_b = title;
 
-	if (title.find("_b")!=string::npos) {
+        //if (title.find("_b")!=string::npos) {
+	if (title.find("_b")!=string::npos || numB==1 || numB==2) {
 	  if (itype==0) title_b = "b"+title.substr(1);
 	  if (itype==2) title_b = "b"+title.substr(1);
 	}
-
+ 
 	if (ilepton==1&&itype==0) mc1->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2&&itype==0) mc1->cd(("demoMuo"+postfix).c_str());
-	if (ilepton==1&&itype==1) mc1->cd("demoEleBtag");
-	if (ilepton==2&&itype==1) mc1->cd("demoMuoBtag");
+	if (ilepton==1&&itype==1) mc1->cd(("demoEleBtag"+genPostfix).c_str());
+	if (ilepton==2&&itype==1) mc1->cd(("demoMuoBtag"+genPostfix).c_str());
 	if (ilepton==1&&itype==2) mc1->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2&&itype==2) mc1->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_reco = (TH1F*)gDirectory->Get(title_b.c_str());
-	if (ilepton==1&&itype==0) mc2->cd(("demoEleGen"+postfix).c_str());
-	if (ilepton==2&&itype==0) mc2->cd(("demoMuoGen"+postfix).c_str());
-	if (ilepton==1&&itype==1) mc2->cd(("demoEleGen"+postfix).c_str());
-	if (ilepton==2&&itype==1) mc2->cd(("demoMuoGen"+postfix).c_str());
-	if (ilepton==1&&itype==2) mc2->cd("demoEleBtag");
-	if (ilepton==2&&itype==2) mc2->cd("demoMuoBtag");
+	if (ilepton==1&&itype==0) mc2->cd(("demoEleGen"+genPostfix).c_str());
+	if (ilepton==2&&itype==0) mc2->cd(("demoMuoGen"+genPostfix).c_str());
+	if (ilepton==1&&itype==1) mc2->cd(("demoEleGen"+genPostfix).c_str());
+	if (ilepton==2&&itype==1) mc2->cd(("demoMuoGen"+genPostfix).c_str());
+	if (ilepton==1&&itype==2) mc2->cd(("demoEleBtag"+genPostfix).c_str());
+	if (ilepton==2&&itype==2) mc2->cd(("demoMuoBtag"+genPostfix).c_str());
 	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
 
 	h_reco->Sumw2();
