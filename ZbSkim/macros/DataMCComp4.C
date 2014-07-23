@@ -38,6 +38,7 @@ string subdir="0";
 string postfix="";
 string dirbSel="";
 string bSel="";
+string genPostfix="";
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
   postfix="Up";
@@ -107,14 +108,16 @@ if (irun==99) {            // irun==99 => pur
   postfix="Pur";
 }
 if (numB==1) {
-  postfix="1b" + postfix;
+  postfix = postfix + "1b";
   dirbSel="_1b";
   bSel="Z + (= 1) b-jet";
+  genPostfix = "1b";
 }
 if (numB==2) {
-  postfix="2b" + postfix;
+  postfix = postfix + "2b";
   dirbSel="_2b";
   bSel="Z + (#geq 2) b-jet";
+  genPostfix = "2b";
 }
 
         if (irun==8) imode = 5;
@@ -180,14 +183,18 @@ if (numB==2) {
 	string file = title;
 
         if (numB==0) {
-	  if (file.find("_b")==string::npos) {
-	    if (file.find("_jet_")!=string::npos) {
-	      file.insert(file.find("_jet_")+1, "b");
-	    } else {
-	      file = file + "_b";
-	    }
+	if (file.find("_b")==string::npos) {
+	  if (file.find("_jet_")!=string::npos) {
+	    file.insert(file.find("_jet_")+1, "b");
+	  } else {
+	    file = file + "_b";
 	  }
+	}
         }
+ 
+        //if (numB!=0) {
+	  //file = title;
+        //}
 
 	TFile* data=0;
 	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/xsecs" + dirbSel + "/" + file + "_xsecs.root").c_str());
@@ -238,25 +245,25 @@ if (numB==2) {
 	TH1F* h_mc2_reco=0;
 
 	if (ilepton==1) {
-	  mc1->cd(("demoEleGen"+postfix).c_str());
+	  mc1->cd(("demoEleGen"+genPostfix).c_str());
 	  h_mc1_truth  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd(("demoEle"+postfix).c_str());
 	  h_mc1_reco   = (TH1F*)gDirectory->Get(title_b.c_str());
 	  mc1->cd(("demoEleDump"+postfix).c_str());
 	  h_mc1_matrix = (TH2F*)gDirectory->Get(title.c_str());
-	  mc2->cd(("demoEleGen"+postfix).c_str());
+	  mc2->cd(("demoEleGen"+genPostfix).c_str());
 	  h_mc2_truth  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc2->cd(("demoEle"+postfix).c_str());
 	  h_mc2_reco   = (TH1F*)gDirectory->Get(title_b.c_str());
 	}
 	if (ilepton==2) {
-	  mc1->cd(("demoMuoGen"+postfix).c_str());
+	  mc1->cd(("demoMuoGen"+genPostfix).c_str());
 	  h_mc1_truth   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd(("demoMuo"+postfix).c_str());
 	  h_mc1_reco    = (TH1F*)gDirectory->Get(title_b.c_str());
 	  mc1->cd(("demoMuoDump"+postfix).c_str());
 	  h_mc1_matrix  = (TH2F*)gDirectory->Get(title.c_str());
-	  mc2->cd(("demoMuoGen"+postfix).c_str());
+	  mc2->cd(("demoMuoGen"+genPostfix).c_str());
 	  h_mc2_truth   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc2->cd(("demoMuo"+postfix).c_str());
 	  h_mc2_reco    = (TH1F*)gDirectory->Get(title_b.c_str());
@@ -328,6 +335,7 @@ if (numB==2) {
 	  h_mc2_reco->Scale(norm1_3/norm1);
 	}
 
+        //if (title.find("_b")!=string::npos) {
 	if (title.find("_b")!=string::npos || numB==1 || numB==2) {
 	  h_mc1_truth->Scale(c_b);
 	  h_mc1_reco->Scale(c_b);
