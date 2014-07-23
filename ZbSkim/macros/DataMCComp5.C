@@ -103,12 +103,12 @@ if (irun==99) {            // irun==99 => pur
   postfix="Pur";
 }
 if (numB==1) {
-  postfix="1b" + postfix;
+  postfix=postfix + "1b";
   dirbSel="_1b";
   bSel="Z + (= 1) b-jet";
 }
 if (numB==2) {
-  postfix="2b" + postfix;
+  postfix=postfix + "2b";
   dirbSel="_2b";
   bSel="Z + (#geq 2) b-jet";
 }
