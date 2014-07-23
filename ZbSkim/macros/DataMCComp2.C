@@ -25,6 +25,8 @@ string subdir="0";
 string postfix="";
 string dirbSel="";
 string bSel="";
+string genPostfix="";
+
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
   postfix="Up";
@@ -94,16 +96,18 @@ if (irun==99) {            // irun==99 => pur
   postfix="Pur";
 }
 if (numB==1) {
-  postfix="1b" + postfix;
+  postfix = postfix + "1b";
   dirbSel="_1b";
   bSel="Z + (= 1) b-jet";
   drawInclusive = 0;
+  genPostfix = "1b";
 }
 if (numB==2) {
-  postfix="2b" + postfix;
+  postfix = postfix + "2b";
   dirbSel="_2b";
   bSel="Z + (#geq 2) b-jet";
   drawInclusive = 0;
+  genPostfix = "2b";
 }
 
 
@@ -317,23 +321,23 @@ if (numB==2) {
 	TH1F* h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
 	TH1F* h_mc1t_b = (TH1F*)gDirectory->Get(("t"+title_b.substr(1)).c_str());
 
-	if (ilepton==1) mcg->cd(("demoEleGen"+postfix).c_str());
-	if (ilepton==2) mcg->cd(("demoMuoGen"+postfix).c_str());
+	if (ilepton==1) mcg->cd(("demoEleGen"+genPostfix).c_str());
+	if (ilepton==2) mcg->cd(("demoMuoGen"+genPostfix).c_str());
 	TH1F* h_mcg = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
         bool cdmcg1;
       
-	if (ilepton==1) cdmcg1 = mcg1->cd(("demoEleGen"+postfix).c_str());
-	if (ilepton==2) cdmcg1 = mcg1->cd(("demoMuoGen"+postfix).c_str());
+	if (ilepton==1) cdmcg1 = mcg1->cd(("demoEleGen"+genPostfix).c_str());
+	if (ilepton==2) cdmcg1 = mcg1->cd(("demoMuoGen"+genPostfix).c_str());
 	TH1F* h_mcg1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg1_b = (TH1F*)gDirectory->Get(title_b.c_str());
         
         if (!h_mcg1 || !cdmcg1) h_mcg1 = (TH1F*)h_mcg->Clone();
 	if (!h_mcg1_b || !cdmcg1) h_mcg1_b = (TH1F*)h_mcg_b->Clone();
 
-	if (ilepton==1) mcg2->cd(("demoEleGen"+postfix).c_str());
-	if (ilepton==2) mcg2->cd(("demoMuoGen"+postfix).c_str());
+	if (ilepton==1) mcg2->cd(("demoEleGen"+genPostfix).c_str());
+	if (ilepton==2) mcg2->cd(("demoMuoGen"+genPostfix).c_str());
 	TH1F* h_mcg2 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg2_b = (TH1F*)gDirectory->Get(title_b.c_str());
  
