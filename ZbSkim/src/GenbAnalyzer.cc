@@ -776,9 +776,9 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   vector<fastjet::PseudoJet> jets = sorted_by_pt(cseq.inclusive_jets(0.0));
   for (unsigned int i = 0; i < jets.size(); i++) {
 	double etaj = jets[i].eta();
-	double phij = jets[i].phi();
+	double phij = jets[i].phi_std();
 	double ptj = jets[i].perp();
-	       
+	        
 	if (fabs(etaj) < 2.4 && ptj > 30) {
           double delta_eta1 = lepton1_eta - etaj;
           double delta_phi1 = fabs(lepton1_phi - phij);
@@ -831,8 +831,8 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
     if (Bjet_found) {
       double eta_bj = vect_jets[k].eta();
-      double phi_bj = vect_jets[k].phi();
-
+      double phi_bj = vect_jets[k].phi_std();
+   
       double deltaEta_Bb = eta_bj - B_eta; 
       double deltaPhi_Bb = fabs(phi_bj - B_phi);
       if (deltaPhi_Bb > acos(-1)) deltaPhi_Bb = 2*acos(-1) - deltaPhi_Bb;
@@ -874,7 +874,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     }
     if (Bjet2_found) {
       double eta_bj = vect_jets2[k].eta();
-      double phi_bj = vect_jets2[k].phi();
+      double phi_bj = vect_jets2[k].phi_std();
 
       double deltaEta_Bb = eta_bj - B_eta2;
       double deltaPhi_Bb = fabs(phi_bj - B_phi2);
@@ -929,7 +929,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
   double mmbb_mass = 0;
 
   if (Nb > 1) {
-      delta_phi_2b = fabs(vect_bjets[0].phi() - vect_bjets[1].phi());
+      delta_phi_2b = fabs(vect_bjets[0].phi_std() - vect_bjets[1].phi_std());
       if (delta_phi_2b > acos(-1)) delta_phi_2b = 2 * acos(-1) - delta_phi_2b;
       delta_eta_2b = fabs(vect_bjets[0].eta() - vect_bjets[1].eta());
       DR_bb = sqrt(delta_phi_2b*delta_phi_2b + delta_eta_2b*delta_eta_2b);
@@ -945,7 +945,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
       }
       for (unsigned int i=0; i<vect_bjets.size(); i++) {
         if (ee_event) {
-  	  delta_phi_eeb = fabs(diele_phi - vect_bjets[i].phi());
+  	  delta_phi_eeb = fabs(diele_phi - vect_bjets[i].phi_std());
           if (delta_phi_eeb > acos(-1)) delta_phi_eeb = 2 * acos(-1) - delta_phi_eeb;
       	  delta_eta_eeb = fabs(diele_eta - vect_bjets[i].eta());
           DR_eeb = TMath::Sqrt(delta_phi_eeb*delta_phi_eeb + delta_eta_eeb*delta_eta_eeb);
@@ -953,7 +953,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
           if (DR_eeb >= DR_eeb_max) DR_eeb_max = DR_eeb;
         }
         if (mm_event) {
-	  delta_phi_mmb = fabs(dimuon_phi - vect_bjets[i].phi());
+	  delta_phi_mmb = fabs(dimuon_phi - vect_bjets[i].phi_std());
           if (delta_phi_mmb > acos(-1)) delta_phi_mmb = 2 * acos(-1) - delta_phi_mmb;
       	  delta_eta_mmb = fabs(dimuon_eta - vect_bjets[i].eta());
           DR_mmb = TMath::Sqrt(delta_phi_mmb*delta_phi_mmb + delta_eta_mmb*delta_eta_mmb);
