@@ -66,19 +66,17 @@ getattr(process,'patType1CorrectedPFMet'+postfix).srcType1Corrections = cms.VInp
     cms.InputTag("patPFJetMETtype1p2Corr"+postfix,"type1"),
     cms.InputTag("patPFMETtype0Corr"+postfix)
 )
+getattr(process,'patType1p2CorrectedPFMet'+postfix).srcType1Corrections = cms.VInputTag(
+    cms.InputTag("patPFJetMETtype1p2Corr"+postfix,"type1"),
+    cms.InputTag("patPFMETtype0Corr"+postfix)
+)
 
 ########## to turn on MET x/y shift corrections
 
 process.pfMEtSysShiftCorr.parameter = process.pfMEtSysShiftCorrParameters_2012runAvsNvtx_mc
 
-process.pfType1CorrectedMet.srcType1Corrections = cms.VInputTag(
-		    cms.InputTag('pfJetMETcorr', 'type1'),
-		        cms.InputTag('pfMEtSysShiftCorr')  
-)
-process.pfType1p2CorrectedMet.srcType1Corrections = cms.VInputTag(
-		    cms.InputTag('pfJetMETcorr', 'type1'),
-		    cms.InputTag('pfMEtSysShiftCorr')       
-)
+getattr(process,'patType1CorrectedPFMet'+postfix).srcType1Corrections.append(cms.InputTag('pfMEtSysShiftCorr'))
+getattr(process,'patType1p2CorrectedPFMet'+postfix).srcType1Corrections.append(cms.InputTag('pfMEtSysShiftCorr'))
 
 ########### mu Trigger Matching
 
@@ -419,11 +417,10 @@ process.MyProcess = cms.EDFilter('ZbFilter')
 
 process.p = cms.Path(
    process.goodOfflinePrimaryVertices *
+   process.pfMEtSysShiftCorrSequence *
    getattr(process,"patPF2PATSequence"+postfix) *
    process.recoTauClassicHPSSequence *
    process.goodJets *
-   process.pfMEtSysShiftCorrSequence *
-   process.producePFMETCorrections *
    process.patTrigger *
    process.selectedTriggeredPatMuons *
    process.selectedPatMuonsTriggerMatch *
