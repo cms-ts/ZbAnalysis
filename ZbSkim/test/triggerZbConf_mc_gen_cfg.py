@@ -56,7 +56,7 @@ usePFnoPU     = True
 useNoMuon     = True # before electron top projection
 useNoElectron = True # before jet top projection
 useNoJet      = True # before tau top projection
-useNoTau      = True # before MET top projection
+useNoTau      = False # before MET top projection
 
 ########## to turn on MET type-0+1 corrections
 
