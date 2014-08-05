@@ -967,8 +967,7 @@ if (numB==2) {
         //if (title.find("_b")!=string::npos && numB==0) bSel="Z + (#geq 1) b-jet";
         //if ((title=="w_BJP"||title=="w_JBP") && numB==0) bSel="Z + (#geq 1) b-jet";
 
- 	//TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.77,0.94);
- 	TLatex *latexLabel;
+ 	TLatex *latexLabel = CMSFinal2 (Lumi2012/1000., "Z+(#geq 1)b-jet selection", 0, 0.6, 0.4);
         
 	  if (numB==0 && title.find("_b")==string::npos) {
             if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
@@ -996,7 +995,6 @@ if (numB==2) {
           }
         
         if (!labelDone) {
-          //latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
           latexLabel = CMSFinal2 (Lumi2012/1000., "Z+(#geq 1)b-jet selection", 0, 0.6, 0.4);
         } 
 	latexLabel->Draw("same");
