@@ -7,10 +7,13 @@
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
-TH1F* read(string subdir, string title, int ilepton, TFile* infile=0) {
+TH1F* read(string subdir, string title, int ilepton, TFile* infile=0, string dirbSel="") {
   TH1F* hist;
   TFile* file = infile;
   string title_tmp = title;
+  string postfix = "";
+  if (dirbSel=="_1b") postfix = "1b";
+  if (dirbSel=="_2b") postfix = "2b";
   if (ilepton==1) {
     if (title=="w_pt_Z") title_tmp="w_pt_Z_ee";
     if (title=="w_pt_Z_b") title_tmp="w_pt_Z_ee_b";
@@ -18,10 +21,14 @@ TH1F* read(string subdir, string title, int ilepton, TFile* infile=0) {
     if (title=="w_delta_phi_b") title_tmp="w_delta_phi_ee_b";
     if (title=="w_mass_Zj") title_tmp="w_mass_Zj_ee";
     if (title=="w_mass_Zj_b") title_tmp="w_mass_Zj_ee_b";
+    if (title=="w_Zbb_mass") title_tmp="w_eebb_mass";
+    if (title=="w_DR_Zb_min") title_tmp="w_DR_eeb_min";
+    if (title=="w_DR_Zb_max") title_tmp="w_DR_eeb_max";
+    if (title=="w_A_Zb") title_tmp="w_A_eeb";
     if (file) {
-      file->cd("demoEleGen");
+      file->cd(("demoEleGen"+postfix).c_str());
     } else {
-      file = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/unfolding/" + title_tmp + "_unfolding.root").c_str());
+      file = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title_tmp + "_unfolding.root").c_str());
     }
   }
   if (ilepton==2) {
@@ -31,10 +38,15 @@ TH1F* read(string subdir, string title, int ilepton, TFile* infile=0) {
     if (title=="w_delta_phi_b") title_tmp="w_delta_phi_mm_b";
     if (title=="w_mass_Zj") title_tmp="w_mass_Zj_mm";
     if (title=="w_mass_Zj_b") title_tmp="w_mass_Zj_mm_b";
+    if (title=="w_Zbb_mass") title_tmp="w_mmbb_mass";
+    if (title=="w_DR_Zb_min") title_tmp="w_DR_mmb_min";
+    if (title=="w_DR_Zb_max") title_tmp="w_DR_mmb_max";
+    if (title=="w_A_Zb") title_tmp="w_A_mmb";
+
     if (file) {
-      file->cd("demoMuoGen");
+      file->cd(("demoMuoGen"+postfix).c_str());
     } else {
-      file = TFile::Open((path + "/muons/" + version + "/" + subdir + "/unfolding/" + title_tmp + "_unfolding.root").c_str());
+      file = TFile::Open((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title_tmp + "_unfolding.root").c_str());
     }
   }
   hist = (TH1F*)gDirectory->Get(title_tmp.c_str())->Clone();
@@ -62,7 +74,7 @@ double calc(int iflag, double cont1, double cont2, double stat1, double stat2, d
   return val;
 }
 
-void DataMCComp8(string title="", int plot=0, int isratio=1) {
+void DataMCComp8(string title="", int plot=0, int isratio=1, int numB=0) {
 
 int useSherpa=0;
 //int useSherpa=1; // use Sherpa MC prediction
@@ -70,7 +82,25 @@ int useSherpa=0;
 //int useNewPowheg=0;
 int useNewPowheg=1; // use new Powheg MC prediction
 
+int drawInclusive = 1; // do plot the "inclusive" histogram
+
 string subdir="0";
+string postfix="";
+string dirbSel="";
+string bSel="";
+
+if (numB==1) {
+  postfix = postfix + "1b";
+  dirbSel="_1b";
+  bSel="Z + (= 1) b-jet";
+  drawInclusive = 0;
+}
+if (numB==2) {
+  postfix = postfix + "2b";
+  dirbSel="_2b";
+  bSel="Z + (#geq 2) b-jet";
+  drawInclusive = 0;
+}
 
 	if (gROOT->GetVersionInt() >= 53401) {
 	  gROOT->GetColor(kRed)->SetAlpha(0.5);
@@ -104,22 +134,24 @@ string subdir="0";
           norm1_2 = ((Lumi2012 * Xsec_dy_2) / ((Ngen_dy_2_ee+Ngen_dy_2_mm)/2.));
 	  mcg2[0] = TFile::Open((path + "/../../powheg/data/" + version + "/" + "powheg_ele.root").c_str());
 	  mcg2[1] = TFile::Open((path + "/../../powheg/data/" + version + "/" + "powheg_muo.root").c_str());
-	}
+ 	}
 	TFile *mcg3 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
 
 	string title_b = title;
-
-	if (title.find("_bjet_")!=string::npos) {
-	  title.erase(title.find("_bjet_")+1, 1);
-	} else {
-	  title_b = title + "_b";
-	}
+        
+        if (numB==0) {
+	  if (title.find("_bjet_")!=string::npos) {
+	    title.erase(title.find("_bjet_")+1, 1);
+	  } else {
+	    title_b = title + "_b";
+	  }
+        }
 
 	TH1F* w_data[2];
 	TH1F* w_data_b[2];
 	for (int i=0; i<2; i++) {
-	  w_data[i] = read(subdir, title, i+1);
-	  w_data_b[i] = read(subdir, title_b, i+1);
+	  w_data[i] = read(subdir, title, i+1, 0, dirbSel);
+	  w_data_b[i] = read(subdir, title_b, i+1, 0, dirbSel);
 	  w_data[i]->Scale(1./Lumi2012, "width");
 	  w_data_b[i]->Scale(1./Lumi2012, "width");
 	  if (isratio==1) {
@@ -137,14 +169,14 @@ string subdir="0";
 	TH1F* w_mcg3[2];
 	TH1F* w_mcg3_b[2];
 	for (int i=0; i<2; i++) {
-	  w_mcg[i] = read(subdir, title, i+1, mcg);
-	  w_mcg_b[i] = read(subdir, title_b, i+1, mcg);
-	  w_mcg1[i] = read(subdir, title, i+1, mcg1);
-	  w_mcg1_b[i] = read(subdir, title_b, i+1, mcg1);
-	  w_mcg2[i] = read(subdir, title, i+1, mcg2[i]);
-	  w_mcg2_b[i] = read(subdir, title_b, i+1, mcg2[i]);
-	  w_mcg3[i] = read(subdir, title, i+1, mcg3);
-	  w_mcg3_b[i] = read(subdir, title_b, i+1, mcg3);
+	  w_mcg[i] = read(subdir, title, i+1, mcg, dirbSel);
+	  w_mcg_b[i] = read(subdir, title_b, i+1, mcg, dirbSel);
+	  w_mcg1[i] = read(subdir, title, i+1, mcg1, dirbSel);
+	  w_mcg1_b[i] = read(subdir, title_b, i+1, mcg1, dirbSel);
+	  w_mcg2[i] = read(subdir, title, i+1, mcg2[i], dirbSel);
+	  w_mcg2_b[i] = read(subdir, title_b, i+1, mcg2[i], dirbSel);
+	  w_mcg3[i] = read(subdir, title, i+1, mcg3, dirbSel);
+	  w_mcg3_b[i] = read(subdir, title_b, i+1, mcg3, dirbSel);
 	}
 
 	TH1F* h_mcg = (TH1F*)w_mcg[0]->Clone();
@@ -166,6 +198,7 @@ string subdir="0";
 	h_mcg2_b->Sumw2();
 	h_mcg3_b->Sumw2();
 
+        
 	for (int i=0;i<=h_mcg->GetNbinsX()+1;i++) {
 	  double val = 0.0;
 	  if (w_mcg[0]->GetBinContent(i)*w_mcg[1]->GetBinContent(i) != 0) {
@@ -333,6 +366,7 @@ string subdir="0";
 	  w_syst_tot[i] = (TH1F*)w_data[0]->Clone();
 	  w_syst_b_tot[i] = (TH1F*)w_data_b[0]->Clone();
 
+          
 	  ifstream in;
 	  string title_b_tmp = title_b;
 	  if (i==0) {
@@ -342,8 +376,12 @@ string subdir="0";
 	    if (title_b=="w_delta_phi_b") title_b_tmp="w_delta_phi_ee_b";
 	    if (title_b=="w_mass_Zj") title_b_tmp="w_mass_Zj_ee";
 	    if (title_b=="w_mass_Zj_b") title_b_tmp="w_mass_Zj_ee_b";
-	    if (isratio==0) in.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
-	    if (isratio==1) in.open((path + "/electrons/" + version + "/" + "/ratios_unfolding/" + title_b_tmp + "_ratio_unfolding.dat").c_str());
+            if (title_b=="w_Zbb_mass") title_b_tmp="w_eebb_mass";
+            if (title_b=="w_DR_Zb_min") title_b_tmp="w_DR_eeb_min";
+            if (title_b=="w_DR_Zb_max") title_b_tmp="w_DR_eeb_max";
+            if (title_b=="w_A_Zb") title_b_tmp="w_A_eeb";
+	    if (isratio==0) in.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
+	    if (isratio==1) in.open((path + "/electrons/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b_tmp + "_ratio_unfolding.dat").c_str());
 	  }
 	  if (i==1) {
 	    if (title_b=="w_pt_Z") title_b_tmp="w_pt_Z_mm";
@@ -352,8 +390,12 @@ string subdir="0";
 	    if (title_b=="w_delta_phi_b") title_b_tmp="w_delta_phi_mm_b";
 	    if (title_b=="w_mass_Zj") title_b_tmp="w_mass_Zj_mm";
 	    if (title_b=="w_mass_Zj_b") title_b_tmp="w_mass_Zj_mm_b";
-            if (isratio==0) in.open((path + "/muons/" + version + "/" + "/xsecs_unfolding/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
-	    if (isratio==1) in.open((path + "/muons/" + version + "/" + "/ratios_unfolding/" + title_b_tmp + "_ratio_unfolding.dat").c_str());
+            if (title_b=="w_Zbb_mass") title_b_tmp="w_mmbb_mass";
+            if (title_b=="w_DR_Zb_min") title_b_tmp="w_DR_mmb_min";
+            if (title_b=="w_DR_Zb_max") title_b_tmp="w_DR_mmb_max";
+            if (title_b=="w_A_Zb") title_b_tmp="w_A_mmb";
+            if (isratio==0) in.open((path + "/muons/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
+	    if (isratio==1) in.open((path + "/muons/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b_tmp + "_ratio_unfolding.dat").c_str());
 	  }
 
 	  string tmp;
@@ -929,7 +971,7 @@ string subdir="0";
 			w_stat_b_bkg[0]->GetBinError(i), w_stat_b_bkg[1]->GetBinError(i),
 			w_syst_b_eff[0]->GetBinError(i), w_syst_b_eff[1]->GetBinError(i),
 			w_syst_b_jer[0]->GetBinError(i), w_syst_b_jer[1]->GetBinError(i),
-			w_syst_b_jec[0]->GetBinError(i), w_syst_b_jec[1]->GetBinError(i),
+		w_syst_b_jec[0]->GetBinError(i), w_syst_b_jec[1]->GetBinError(i),
 			w_syst_b_pu[0]->GetBinError(i), w_syst_b_pu[1]->GetBinError(i),
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
@@ -1105,37 +1147,37 @@ string subdir="0";
 	  h_mcg->SetLineWidth(2);
 	  h_mcg->SetMarkerColor(kGreen+2);
 	  h_mcg->SetFillColor(kGreen+2);
-	  h_mcg->Draw("E5SAME");
+	  if (drawInclusive) h_mcg->Draw("E5SAME");
 	  TH1F* tmp4 = (TH1F*)h_mcg->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4->GetMinimum()==0) tmp4->GetXaxis()->SetRangeUser(0, tmp4->GetBinCenter(tmp4->GetMinimumBin()-1));
 	  }
 	  tmp4->SetFillColor(0);
-	  tmp4->DrawClone("HISTLSAME");
+	  if (drawInclusive) tmp4->DrawClone("HISTLSAME");
 
 	  h_mcg1->SetLineColor(kMagenta-6);
 	  h_mcg1->SetLineWidth(2);
 	  h_mcg1->SetMarkerColor(kMagenta-6);
 	  h_mcg1->SetFillColor(kMagenta-6);
-	  h_mcg1->Draw("E5SAME");
+	  if (drawInclusive) h_mcg1->Draw("E5SAME");
 	  TH1F* tmp4_1 = (TH1F*)h_mcg1->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4_1->GetMinimum()==0) tmp4_1->GetXaxis()->SetRangeUser(0, tmp4_1->GetBinCenter(tmp4_1->GetMinimumBin()-1));
 	  }
 	  tmp4_1->SetFillColor(0);
-	  tmp4_1->DrawClone("HISTLSAME");
+	  if (drawInclusive) tmp4_1->DrawClone("HISTLSAME");
 
 	  h_mcg2->SetLineColor(kBlue-4);
 	  h_mcg2->SetLineWidth(2);
 	  h_mcg2->SetMarkerColor(kBlue-4);
 	  h_mcg2->SetFillColor(kBlue-4);
-	  h_mcg2->Draw("E5SAME");
+	  if (drawInclusive) h_mcg2->Draw("E5SAME");
 	  TH1F* tmp4_2 = (TH1F*)h_mcg2->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4_2->GetMinimum()==0) tmp4_2->GetXaxis()->SetRangeUser(0, tmp4_2->GetBinCenter(tmp4_2->GetMinimumBin()-1));
 	  }
 	  tmp4_2->SetFillColor(0);
-	  tmp4_2->DrawClone("HISTLSAME");
+	  if (drawInclusive) tmp4_2->DrawClone("HISTLSAME");
 
 	  h_mcg3->SetLineColor(kOrange+7);
 	  h_mcg3->SetLineWidth(2);
@@ -1150,10 +1192,10 @@ string subdir="0";
 	  h_data_stat->SetMarkerColor(kBlack);
 	  h_data_stat->SetMarkerStyle(20);
 	  h_data_stat->SetMarkerSize (0.7);
-	  h_data_tot->Draw("E1PX0SAME");
-	  h_data_stat->Draw("E1PX0SAME");
+	  if (drawInclusive) h_data_tot->Draw("E1PX0SAME");
+	  if (drawInclusive) h_data_stat->Draw("E1PX0SAME");
 
-	  leg->AddEntry(h_data_stat,"Z(#rightarrow ll) DATA","p");
+	  if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow ll) DATA","p");
 	  leg->AddEntry(h_data_b_stat,"Z(#rightarrow ll)+b DATA","p");
 	  leg->AddEntry(h_mcg,"Z(#rightarrow ll) MadGraph 5FS","l");
 	  leg->AddEntry(h_mcg3,"Z(#rightarrow ll) MadGraph 4FS","l");
@@ -1172,17 +1214,17 @@ string subdir="0";
 	leg->Draw();
 
 	c1->cd();
-        
+       
  	//TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
  	TLatex *latexLabel;
         if (isratio==1) {
           latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
         }
         if (isratio==0) {
-          if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_pt_Z_b") {
+          if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb") {
             latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
           }
-          if (title_b=="w_delta_phi_b") {
+          if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b") {
             latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
           }
           if (title_b=="w_first_bjet_eta") {
@@ -1243,9 +1285,9 @@ string subdir="0";
 	  }
 
 	  g_M2_tot->SetMarkerStyle(20);
-	  g_M2_tot->Draw("E1PX0SAME");
+	  if (drawInclusive) g_M2_tot->Draw("E1PX0SAME");
 	  g_M2_stat->SetMarkerStyle(20);
-	  g_M2_stat->Draw("E1PX0SAME");
+	  if (drawInclusive) g_M2_stat->Draw("E1PX0SAME");
 	}
 
 	TLatex *t2 = new TLatex();
@@ -1402,9 +1444,9 @@ string subdir="0";
 	  }
 
 	  g_P2_tot->SetMarkerStyle(20);
-	  g_P2_tot->Draw("E1PX0SAME");
+	  if (drawInclusive) g_P2_tot->Draw("E1PX0SAME");
 	  g_P2_stat->SetMarkerStyle(20);
-	  g_P2_stat->Draw("E1PX0SAME");
+	  if (drawInclusive) g_P2_stat->Draw("E1PX0SAME");
 	}
 
 	TLatex *t4 = new TLatex();
@@ -1523,18 +1565,18 @@ string subdir="0";
 	if (plot) {
 	  ofstream out, out1, out2;
 	  if (isratio==0) {
-	    gSystem->mkdir((path + "/combined/" + version + "/xsecs_unfolding/").c_str(), kTRUE);
-	    c1->SaveAs((path + "/combined/" + version + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.pdf").c_str());
-	    out.open((path + "/combined/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.dat").c_str());
-	    out1.open((path + "/combined/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.txt").c_str());
-	    out2.open((path + "/combined/" + version + "/" + "/xsecs_unfolding/" + title_b + "_xsecs_unfolding.tex").c_str());
+	    gSystem->mkdir((path + "/combined/" + version + "/xsecs_unfolding" + dirbSel + "/").c_str(), kTRUE);
+	    c1->SaveAs((path + "/combined/" + version + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.pdf").c_str());
+	    out.open((path + "/combined/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.dat").c_str());
+	    out1.open((path + "/combined/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.txt").c_str());
+	    out2.open((path + "/combined/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.tex").c_str());
 	  }
 	  if (isratio==1) {
-	    gSystem->mkdir((path + "/combined/" + version + "/ratios_unfolding/").c_str(), kTRUE);
-	    c1->SaveAs((path + "/combined/" + version + "/ratios_unfolding/" + title_b + "_ratio_unfolding.pdf").c_str());
-	    out.open((path + "/combined/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.dat").c_str());
-	    out1.open((path + "/combined/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.txt").c_str());
-	    out2.open((path + "/combined/" + version + "/" + "/ratios_unfolding/" + title_b + "_ratio_unfolding.tex").c_str());
+	    gSystem->mkdir((path + "/combined/" + version + "/ratios_unfolding" + dirbSel + "/").c_str(), kTRUE);
+	    c1->SaveAs((path + "/combined/" + version + "/ratios_unfolding" + dirbSel + "/" + title_b + "_ratio_unfolding.pdf").c_str());
+	    out.open((path + "/combined/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b + "_ratio_unfolding.dat").c_str());
+	    out1.open((path + "/combined/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b + "_ratio_unfolding.txt").c_str());
+	    out2.open((path + "/combined/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b + "_ratio_unfolding.tex").c_str());
 	  }
 	  if (isratio==0) {
 	    out << h_data->GetName();
