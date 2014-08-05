@@ -1215,8 +1215,8 @@ if (numB==2) {
 
 	c1->cd();
        
- 	//TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
- 	TLatex *latexLabel;
+ 	TLatex *latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection" , 0, 0.135, 0.51);
+ 	
         if (isratio==1) {
           latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
         }
