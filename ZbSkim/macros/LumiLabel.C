@@ -1,5 +1,8 @@
 TLatex * CMSPrel (Float_t Lumi, TString _decaychannel) {
 
+  Lumi = 1.0*Lumi;
+  _decaychannel = _decaychannel + "";
+
   TLatex * latexLabel = new TLatex ();
   latexLabel->SetTextSize (0.0275);
   latexLabel->SetTextFont (42);
@@ -17,6 +20,11 @@ TLatex * CMSPrel (Float_t Lumi, TString _decaychannel) {
 
 TLatex * CMSPrel (Float_t Lumi, TString _decaychannel, double x, double y) {
 
+  Lumi = 1.0*Lumi;
+  _decaychannel = _decaychannel + "";
+  x = 1*x;
+  y = 1*y;
+
   TLatex *latexLabel = new TLatex ();
   latexLabel->SetTextSize (0.0275);
   latexLabel->SetTextFont (42);
@@ -30,6 +38,11 @@ TLatex * CMSPrel (Float_t Lumi, TString _decaychannel, double x, double y) {
 }
 
 TLatex * CMSFinal (Float_t Lumi, TString _decaychannel, int pos, double x, double y) {
+
+  Lumi = 1.0*Lumi;
+  _decaychannel = _decaychannel + "";
+  x = 1*x;
+  y = 1*y;
 
   TLatex *latexLabel = new TLatex();
   latexLabel->SetTextFont(43);
@@ -62,6 +75,11 @@ TLatex * CMSFinal (Float_t Lumi, TString _decaychannel, int pos, double x, doubl
 }
 
 TLatex * CMSFinal2 (Float_t Lumi, TString _decaychannel, int pos, double x, double y) {
+
+  Lumi = 1.0*Lumi;
+  _decaychannel = _decaychannel + "";
+  x = 1*x;
+  y = 1*y;
 
   TLatex *latexLabel = new TLatex();
 
