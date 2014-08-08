@@ -343,8 +343,6 @@ if (numB==2) {
 	  h_mc2_reco->Scale(c_b);
 	}
 
-
-
 	RooUnfold::ErrorTreatment err;
 	RooUnfold* unfold_mc=0;
 	RooUnfold* unfold_data=0;
@@ -462,8 +460,6 @@ if (numB==2) {
 	  h_mc1_truth->SetLineStyle(2);
 	}
 
-
-
 	TH1F* h_data_unfold=0;
 	if (imode>=4) {
 	  err = RooUnfold::kErrors;
@@ -497,8 +493,6 @@ if (numB==2) {
 	  h_mc1_reco->SetLineStyle(2);
 	  h_mc1_reco->Draw("HISTSAME");
 	}
-
-
 
 	TH1F* tmp;
 	if (imode<=3) tmp = h_mc2_reco;
@@ -544,9 +538,6 @@ if (numB==2) {
           tmp->GetXaxis()->SetTitle("#Delta#phi(bb) [rad]");
         }
 
-
-
-
         TLegend* leg1 = new TLegend(0.42, 0.580, 0.68, 0.88);
         leg1->SetBorderSize(0);
         leg1->SetEntrySeparation(0.01);
@@ -590,8 +581,6 @@ if (numB==2) {
           leg1->AddEntry(h_data_unfold,"DATA unfold","p");
         }
 
-
-
         leg1->Draw();
 
         TLatex* t = new TLatex();
@@ -621,9 +610,6 @@ if (numB==2) {
 	h_ratio->SetTitle("");
         h_ratio->SetStats(0);
 
-
-
-
         h_ratio->GetXaxis()->SetTitleOffset(0.9);
         h_ratio->GetXaxis()->SetTitleSize(0.1);
         h_ratio->GetXaxis()->SetLabelFont(42);
@@ -649,8 +635,6 @@ if (numB==2) {
         OLine->SetLineColor(kRed);
         OLine->SetLineWidth(1);
         OLine->Draw();
-
-
 
 	TCanvas* c2=0;
 	if (method==0) {
@@ -681,8 +665,6 @@ if (numB==2) {
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
-
-
 
 	int nv = response.GetNbinsMeasured();
 	if (response.UseOverflowStatus()) nv = nv + 2;
@@ -735,8 +717,6 @@ if (numB==2) {
 	h_err_err->Draw("HIST");
 	h_err_res->Draw("PSAME");
 
-
-
 	TLegend* leg2 = new TLegend (0.70, 0.75, 0.89, 0.89);
 	leg2->SetBorderSize(0);
 	leg2->SetEntrySeparation(0.01);
@@ -771,8 +751,6 @@ if (numB==2) {
 	gStyle->SetPaintTextFormat("+11.1e");
 	h_err_cov->Draw("TEXT30");
 
-
-
         if (method==0) t->DrawLatex(0.01,0.95,"SVD");
         if (method==1) t->DrawLatex(0.01,0.95,"Bayes");
         if (method==2) t->DrawLatex(0.01,0.95,"BinByBin");
@@ -801,8 +779,6 @@ if (numB==2) {
 	hParmRms->SetStats(0);
 
 	hParmChi2->SetMaximum(5000.);
-
-
 
 	TCanvas* c6 = new TCanvas("c6", "c6", 800, 600);
 	c6->cd();
@@ -856,8 +832,6 @@ if (numB==2) {
 	if (imode==1) title = title + "_closure_sherpa";
 	if (imode==2) title = title + "_closure_powheg";
 	if (imode==3) title = title + "_closure_madgraph4fs";
-
-
 
 	if (plot) {
 	  ofstream out;
