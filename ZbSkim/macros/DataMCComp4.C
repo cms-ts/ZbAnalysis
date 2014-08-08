@@ -367,7 +367,7 @@ if (numB==2) {
         if (title=="w_bb_mass") kreg = 6;
         if (title=="w_delta_phi_2b") kreg = 4;
         if (title=="w_eebb_mass" || title=="w_mmbb_mass") kreg = 6;
-        if (title=="w_A_eeb" || title=="w_A_mmb") kreg = 18;
+        if (title=="w_A_eeb" || title=="w_A_mmb") kreg = 6;
 
 	if (method==0) {
 	  unfold_mc = new RooUnfoldSvd(&response, h_mc2_reco, kreg);
