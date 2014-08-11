@@ -491,14 +491,18 @@ if (numB==2) {
         if (bbBkg || bbSig) h_mc1b->Add(h_mc1bb, -1.); 
 
 	if (useFitResults) {
-	  h_mc2->Scale(1./norm2);
-	  if (irun==10) norm2 = norm2 - enorm2;
 	  if (title.find("_b")==string::npos) {
-	    h_mc2->Scale(norm2*c1_t);
-	    if (irun==5) h_mc2->Scale((c1_t+ec1_t)/c1_t);
+	    if (irun==5) {
+	      h_mc2->Scale(c1_t+ec1_t);
+	    } else {
+	      h_mc2->Scale(c1_t);
+	    }
 	  } else {
-	    h_mc2->Scale(norm2*c2_t);
-	    if (irun==5) h_mc2->Scale((c2_t+ec2_t)/c2_t);
+	    if (irun==5) {
+	      h_mc2->Scale(c2_t+ec2_t);
+	    } else {
+	      h_mc2->Scale(c2_t);
+	    }
 	  }
 	}
 
