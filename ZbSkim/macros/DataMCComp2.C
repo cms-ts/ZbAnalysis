@@ -436,15 +436,15 @@ if (numB==2) {
 	h_mc7_b->Sumw2();
 
 	if (irun==10) {
-	  norm1 = norm1 + enorm1;
-	  norm1_1 = norm1_1 + enorm1_1;
-	  norm1_2 = norm1_2 + enorm1_2;
-	  norm2 = norm2 + enorm2;
-	  norm3 = norm3 + enorm3;
-	  norm4 = norm4 + enorm4;
-	  norm5 = norm5 + enorm5;
-	  norm6 = norm6 + enorm6;
-	  norm7 = norm7 + enorm7;
+	  norm1 = norm1 + 0.1*enorm1;
+	  norm1_1 = norm1_1 + 0.1*enorm1_1;
+	  norm1_2 = norm1_2 + 0.1*enorm1_2;
+	  norm2 = norm2 + 0.1*enorm2;
+	  norm3 = norm3 + 0.1*enorm3;
+	  norm4 = norm4 + 0.1*enorm4;
+	  norm5 = norm5 + 0.1*enorm5;
+	  norm6 = norm6 + 0.1*enorm6;
+	  norm7 = norm7 + 0.1*enorm7;
 	}
 
 	h_mc1->Scale(norm1);
@@ -475,8 +475,8 @@ if (numB==2) {
 
 	if (useFitResults) {
 	  if (irun==5) {
-	    h_mc2->Scale(c1_t+ec1_t);
-	    h_mc2_b->Scale(c2_t+ec2_t);
+	    h_mc2->Scale(c1_t+0.1*ec1_t);
+	    h_mc2_b->Scale(c2_t+0.1*ec2_t);
 	  } else {
 	    h_mc2->Scale(c1_t);
 	    h_mc2_b->Scale(c2_t);
@@ -538,21 +538,21 @@ if (numB==2) {
 
 	if (h_mc1uds_b) {
 	  if (irun==6) {
-	    h_mc1uds_b->Scale(c_uds+ec_uds);
+	    h_mc1uds_b->Scale(c_uds+0.1*ec_uds);
 	  } else {
 	    h_mc1uds_b->Scale(c_uds);
 	  }
 	}
 	if (h_mc1b_b) {
 	  if (irun==6) {
-	    h_mc1b_b->Scale(c_b+ec_b);
+	    h_mc1b_b->Scale(c_b+0.1*ec_b);
 	  } else {
 	    h_mc1b_b->Scale(c_b);
 	  }
 	}
 	if (h_mc1c_b) {
 	  if (irun==6) {
-	    h_mc1c_b->Scale(c_c+ec_c);
+	    h_mc1c_b->Scale(c_c+0.1*ec_c);
 	  } else {
 	    h_mc1c_b->Scale(c_c);
 	  }

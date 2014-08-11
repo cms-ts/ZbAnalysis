@@ -335,13 +335,13 @@ if (numB==2) {
       h_mc7_fit->Sumw2();
 
       if (irun==10) {
-        norm1 = norm1 + enorm1;
-        norm2 = norm2 + enorm2;
-        norm3 = norm3 + enorm3;
-        norm4 = norm4 + enorm4;
-        norm5 = norm5 + enorm5;
-        norm6 = norm6 + enorm6;
-        norm7 = norm7 + enorm7;
+        norm1 = norm1 + 0.1*enorm1;
+        norm2 = norm2 + 0.1*enorm2;
+        norm3 = norm3 + 0.1*enorm3;
+        norm4 = norm4 + 0.1*enorm4;
+        norm5 = norm5 + 0.1*enorm5;
+        norm6 = norm6 + 0.1*enorm6;
+        norm7 = norm7 + 0.1*enorm7;
       }
 
       h_mc1->Scale(norm1);
@@ -367,13 +367,13 @@ if (numB==2) {
       h_mcO->Add(h_mc9);
  
       if (irun==10) {
-        norm1_fit = norm1_fit + enorm1_fit;
-        norm2_fit = norm2_fit + enorm2_fit;
-        norm3_fit = norm3_fit + enorm3_fit;
-        norm4_fit = norm4_fit + enorm4_fit;
-        norm5_fit = norm5_fit + enorm5_fit;
-        norm6_fit = norm6_fit + enorm6_fit;
-        norm7_fit = norm7_fit + enorm7_fit;
+        norm1_fit = norm1_fit + 0.1*enorm1_fit;
+        norm2_fit = norm2_fit + 0.1*enorm2_fit;
+        norm3_fit = norm3_fit + 0.1*enorm3_fit;
+        norm4_fit = norm4_fit + 0.1*enorm4_fit;
+        norm5_fit = norm5_fit + 0.1*enorm5_fit;
+        norm6_fit = norm6_fit + 0.1*enorm6_fit;
+        norm7_fit = norm7_fit + 0.1*enorm7_fit;
       }
 
       h_mc1_fit->Scale(norm1_fit);
@@ -386,16 +386,16 @@ if (numB==2) {
 
       if (title.find("_b")==string::npos) {
         if (irun==5) {
-          h_mc2->Scale(c1_t+ec1_t);
-          h_mc2_fit->Scale(c1_t+ec1_t);
+          h_mc2->Scale(c1_t+0.1*ec1_t);
+          h_mc2_fit->Scale(c1_t+0.1*ec1_t);
         }
           h_mc2->Scale(c1_t);
           h_mc2_fit->Scale(c1_t);
         }
       } else {
         if (irun==5) {
-          h_mc2->Scale(c2_t+ec2_t);
-          h_mc2_fit->Scale(c2_t+ec2_t);
+          h_mc2->Scale(c2_t+0.1*ec2_t);
+          h_mc2_fit->Scale(c2_t+0.1*ec2_t);
         } else {
           h_mc2->Scale(c2_t);
           h_mc2_fit->Scale(c2_t);

@@ -445,13 +445,13 @@ if (numB==2) {
 	//h_mc7 -> SetFillStyle(3004);
 
 	if (irun==10) {
-	  norm1 = norm1 + enorm1;
-	  norm2 = norm2 + enorm2;
-	  norm3 = norm3 + enorm3;
-	  norm4 = norm4 + enorm4;
-	  norm5 = norm5 + enorm5;
-	  norm6 = norm6 + enorm6;
-	  norm7 = norm7 + enorm7;
+	  norm1 = norm1 + 0.1*enorm1;
+	  norm2 = norm2 + 0.1*enorm2;
+	  norm3 = norm3 + 0.1*enorm3;
+	  norm4 = norm4 + 0.1*enorm4;
+	  norm5 = norm5 + 0.1*enorm5;
+	  norm6 = norm6 + 0.1*enorm6;
+	  norm7 = norm7 + 0.1*enorm7;
 	}
 
 	h_mc1->Scale(norm1);
@@ -493,13 +493,13 @@ if (numB==2) {
 	if (useFitResults) {
 	  if (title.find("_b")==string::npos) {
 	    if (irun==5) {
-	      h_mc2->Scale(c1_t+ec1_t);
+	      h_mc2->Scale(c1_t+0.1*ec1_t);
 	    } else {
 	      h_mc2->Scale(c1_t);
 	    }
 	  } else {
 	    if (irun==5) {
-	      h_mc2->Scale(c2_t+ec2_t);
+	      h_mc2->Scale(c2_t+0.1*ec2_t);
 	    } else {
 	      h_mc2->Scale(c2_t);
 	    }
