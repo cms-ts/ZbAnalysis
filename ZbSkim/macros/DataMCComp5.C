@@ -384,22 +384,21 @@ if (numB==2) {
       h_mc6_fit->Scale(norm6_fit);
       h_mc7_fit->Scale(norm7_fit);
 
-      h_mc2->Scale(1./norm2);
-      h_mc2_fit->Scale(1./norm2_fit);
-      if (irun==10) norm2 = norm2 - enorm2;
       if (title.find("_b")==string::npos) {
-        h_mc2->Scale(norm2*c1_t);
-        h_mc2_fit->Scale(norm2_fit*c1_t);
         if (irun==5) {
-          h_mc2->Scale((c1_t+ec1_t)/c1_t);
-          h_mc2_fit->Scale((c1_t+ec1_t)/c1_t);
+          h_mc2->Scale(c1_t+ec1_t);
+          h_mc2_fit->Scale(c1_t+ec1_t);
+        }
+          h_mc2->Scale(c1_t);
+          h_mc2_fit->Scale(c1_t);
         }
       } else {
-        h_mc2->Scale(norm2*c2_t);
-        h_mc2_fit->Scale(norm2_fit*c2_t);
         if (irun==5) {
-          h_mc2->Scale((c2_t+ec2_t)/c2_t);
-          h_mc2_fit->Scale((c2_t+ec2_t)/c2_t);
+          h_mc2->Scale(c2_t+ec2_t);
+          h_mc2_fit->Scale(c2_t+ec2_t);
+        } else {
+          h_mc2->Scale(c2_t);
+          h_mc2_fit->Scale(c2_t);
         }
       }
         h_mcO -> Sumw2();
