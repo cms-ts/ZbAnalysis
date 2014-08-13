@@ -260,18 +260,6 @@ if (numB==2) {
 	h_mcg2_b->Sumw2();
 	h_mcg3_b->Sumw2();
 
-	h_mc1->Scale(norm1);
-	h_mcg->Scale(norm1);
-	h_mcg1->Scale(norm1_1);
-	h_mcg2->Scale(norm1_2);
-	h_mcg3->Scale(norm1_3);
-
-	h_mc1b_b->Scale(norm1);
-	h_mcg_b->Scale(norm1);
-	h_mcg1_b->Scale(norm1_1);
-	h_mcg2_b->Scale(norm1_2);
-	h_mcg3_b->Scale(norm1_3);
-
 	h_mc1b_b->Scale(c_b);
 	for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
 	  float e = TMath::Power(h_mc1b_b->GetBinError(i),2);
@@ -304,6 +292,36 @@ if (numB==2) {
 	  h_mc1b_b->Divide(h_b);
         }
 
+	h_data = fixrange(h_data);
+	h_data_b = fixrange(h_data_b);
+	for (int i=0;i<NMAX;i++) {
+	  if (h_data_scan[i]) h_data_scan[i] = fixrange(h_data_scan[i]);
+	  if (h_data_b_scan[i]) h_data_b_scan[i] = fixrange(h_data_b_scan[i]);
+	}
+
+	h_mc1 = fixrange(h_mc1);
+	h_mc1b_b = fixrange(h_mc1b_b);
+	h_mcg = fixrange(h_mcg);
+	h_mcg_b = fixrange(h_mcg_b);
+	h_mcg1 = fixrange(h_mcg1);
+	h_mcg1_b = fixrange(h_mcg1_b);
+	h_mcg2 = fixrange(h_mcg2);
+	h_mcg3 = fixrange(h_mcg3);
+	h_mcg2_b = fixrange(h_mcg2_b);
+	h_mcg3_b = fixrange(h_mcg3_b);
+
+	h_mc1->Scale(norm1);
+	h_mcg->Scale(norm1);
+	h_mcg1->Scale(norm1_1);
+	h_mcg2->Scale(norm1_2);
+	h_mcg3->Scale(norm1_3);
+
+	h_mc1b_b->Scale(norm1);
+	h_mcg_b->Scale(norm1);
+	h_mcg1_b->Scale(norm1_1);
+	h_mcg2_b->Scale(norm1_2);
+	h_mcg3_b->Scale(norm1_3);
+
 	h_data->Scale(1./Lumi2012, "width");
 	h_data_b->Scale(1./Lumi2012, "width");
 	for (int i=0;i<NMAX;i++) {
@@ -321,6 +339,25 @@ if (numB==2) {
 	  }
 	  h_mc1b_b->Divide(h_mc1);
 	  h_mc1b_b->Scale(100.);
+	}
+
+	h_mcg->Scale(1./Lumi2012, "width");
+	h_mcg1->Scale(1./Lumi2012, "width");
+	h_mcg2->Scale(1./Lumi2012, "width");
+	h_mcg3->Scale(1./Lumi2012, "width");
+	h_mcg_b->Scale(1./Lumi2012, "width");
+	h_mcg1_b->Scale(1./Lumi2012, "width");
+	h_mcg2_b->Scale(1./Lumi2012, "width");
+	h_mcg3_b->Scale(1./Lumi2012, "width");
+	if (isratio==1) {
+	  h_mcg_b->Divide(h_mcg);
+	  h_mcg1_b->Divide(h_mcg1);
+	  h_mcg2_b->Divide(h_mcg2);
+	  h_mcg3_b->Divide(h_mcg);  
+	  h_mcg_b->Scale(100.);
+	  h_mcg1_b->Scale(100.);
+	  h_mcg2_b->Scale(100.);
+	  h_mcg3_b->Scale(100.);
 	}
 
 	TH1F* stat_bkg = (TH1F*)h_data->Clone();
@@ -667,49 +704,6 @@ if (numB==2) {
 	  val = TMath::Sqrt(TMath::Power(h_data_b_stat->GetBinError(i),2)+TMath::Power(h_data_b_syst->GetBinError(i),2));
 	  h_data_b_tot->SetBinError(i, val);
 	}
-
-	h_mcg->Scale(1./Lumi2012, "width");
-	h_mcg1->Scale(1./Lumi2012, "width");
-	h_mcg2->Scale(1./Lumi2012, "width");
-	h_mcg3->Scale(1./Lumi2012, "width");
-	h_mcg_b->Scale(1./Lumi2012, "width");
-	h_mcg1_b->Scale(1./Lumi2012, "width");
-	h_mcg2_b->Scale(1./Lumi2012, "width");
-	h_mcg3_b->Scale(1./Lumi2012, "width");
-	if (isratio==1) {
-	  h_mcg_b->Divide(h_mcg);
-	  h_mcg1_b->Divide(h_mcg1);
-	  h_mcg2_b->Divide(h_mcg2);
-	  h_mcg3_b->Divide(h_mcg);  
-	  h_mcg_b->Scale(100.);
-	  h_mcg1_b->Scale(100.);
-	  h_mcg2_b->Scale(100.);
-	  h_mcg3_b->Scale(100.);
-	}
-
-	h_data = fixrange(h_data);
-	h_data_b = fixrange(h_data_b);
-	for (int i=0;i<NMAX;i++) {
-	  if (h_data_scan[i]) h_data_scan[i] = fixrange(h_data_scan[i]);
-	  if (h_data_b_scan[i]) h_data_b_scan[i] = fixrange(h_data_b_scan[i]);
-	}
-	h_data_stat = fixrange(h_data_stat);
-	h_data_b_stat = fixrange(h_data_b_stat);
-	h_data_syst = fixrange(h_data_syst);
-	h_data_b_syst = fixrange(h_data_b_syst);
-	h_data_tot = fixrange(h_data_tot);
-	h_data_b_tot = fixrange(h_data_b_tot);
-
-	h_mc1 = fixrange(h_mc1);
-	h_mc1b_b = fixrange(h_mc1b_b);
-	h_mcg = fixrange(h_mcg);
-	h_mcg_b = fixrange(h_mcg_b);
-	h_mcg1 = fixrange(h_mcg1);
-	h_mcg1_b = fixrange(h_mcg1_b);
-	h_mcg2 = fixrange(h_mcg2);
-	h_mcg3 = fixrange(h_mcg3);
-	h_mcg2_b = fixrange(h_mcg2_b);
-	h_mcg3_b = fixrange(h_mcg3_b);
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();

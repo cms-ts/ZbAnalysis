@@ -152,12 +152,6 @@ if (numB==2) {
 	for (int i=0; i<2; i++) {
 	  w_data[i] = read(subdir, title, i+1, 0, dirbSel);
 	  w_data_b[i] = read(subdir, title_b, i+1, 0, dirbSel);
-	  w_data[i]->Scale(1./Lumi2012, "width");
-	  w_data_b[i]->Scale(1./Lumi2012, "width");
-	  if (isratio==1) {
-	    w_data_b[i]->Divide(w_data[i]);
-	    w_data_b[i]->Scale(100.);
-	  }
 	}
 
 	TH1F* w_mcg[2];
@@ -250,6 +244,20 @@ if (numB==2) {
 	  }
 	}
 
+	for (int i=0; i<2; i++) {
+	  w_data[i] = fixrange(w_data[i]);
+	  w_data_b[i] = fixrange(w_data_b[i]);
+	}
+
+	h_mcg = fixrange(h_mcg);
+	h_mcg_b = fixrange(h_mcg_b);
+	h_mcg1 = fixrange(h_mcg1);
+	h_mcg1_b = fixrange(h_mcg1_b);
+	h_mcg2 = fixrange(h_mcg2);
+	h_mcg3 = fixrange(h_mcg3);
+	h_mcg2_b = fixrange(h_mcg2_b);
+	h_mcg3_b = fixrange(h_mcg3_b);
+
 	h_mcg->Scale(norm1);
 	h_mcg1->Scale(norm1_1);
 	h_mcg2->Scale(norm1_2);
@@ -259,6 +267,15 @@ if (numB==2) {
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
 	h_mcg3_b->Scale(norm1_3);
+
+	for (int i=0; i<2; i++) {
+	  w_data[i]->Scale(1./Lumi2012, "width");
+	  w_data_b[i]->Scale(1./Lumi2012, "width");
+	  if (isratio==1) {
+	    w_data_b[i]->Divide(w_data[i]);
+	    w_data_b[i]->Scale(100.);
+	  }
+	}
 
 	h_mcg->Scale(1./Lumi2012, "width");
 	h_mcg1->Scale(1./Lumi2012, "width");
@@ -1004,24 +1021,6 @@ if (numB==2) {
 	  val = TMath::Sqrt(TMath::Power(h_data_b_stat->GetBinError(i),2)+TMath::Power(h_data_b_syst->GetBinError(i),2));
 	  h_data_b_tot->SetBinError(i, val);
 	}
-
-	h_data = fixrange(h_data);
-	h_data_b = fixrange(h_data_b);
-	h_data_stat = fixrange(h_data_stat);
-	h_data_b_stat = fixrange(h_data_b_stat);
-	h_data_syst = fixrange(h_data_syst);
-	h_data_b_syst = fixrange(h_data_b_syst);
-	h_data_tot = fixrange(h_data_tot);
-	h_data_b_tot = fixrange(h_data_b_tot);
-
-	h_mcg = fixrange(h_mcg);
-	h_mcg_b = fixrange(h_mcg_b);
-	h_mcg1 = fixrange(h_mcg1);
-	h_mcg1_b = fixrange(h_mcg1_b);
-	h_mcg2 = fixrange(h_mcg2);
-	h_mcg3 = fixrange(h_mcg3);
-	h_mcg2_b = fixrange(h_mcg2_b);
-	h_mcg3_b = fixrange(h_mcg3_b);
 
 	TCanvas* c1 = new TCanvas("c", "c", 10, 10, 800, 600);
 	c1->cd();
