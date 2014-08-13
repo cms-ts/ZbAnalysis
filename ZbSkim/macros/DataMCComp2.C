@@ -583,7 +583,6 @@ if (numB==2) {
 	  h_mc1b_b->Scale(1./e_Zb);
 	}
 
-
 	if (useBinnedEfficiency==1) {
           if (ilepton==1) {
             TFile f((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + string(h_data->GetName()) + "_efficiency.root").c_str());
@@ -667,7 +666,7 @@ if (numB==2) {
  	h_mcg1_b = fixrange(h_mcg1_b);
 	h_mcg2 = fixrange(h_mcg2);
 	h_mcg2_b = fixrange(h_mcg2_b);
-  
+
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();
 

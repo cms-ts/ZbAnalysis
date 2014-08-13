@@ -208,7 +208,6 @@ if (numB==2) {
           in8 >> fScal >> efScal;
         }
 
-
 	double Lumi2012=0;
 
 	if (ilepton==1) Lumi2012 = Lumi2012_ele;
@@ -764,7 +763,6 @@ if (numB==2) {
 	if (h_mc1c) ht->Add(h_mc1c);
 	ht->Add(h_mc1);
 
- 
 	THStack *hs = new THStack("hs","");
 	if (h_mc1t) hs->Add(h_mc1t);
 	if (!doBkg) {
@@ -1050,7 +1048,7 @@ if (numB==2) {
             fitLabel->DrawLatex(0.68, 0.48, buff);
           }
 	}
-        
+
 	if (useDY==1) subdir = subdir + "_sherpa";
 	if (useDY==2) subdir = subdir + "_powheg";
 
@@ -1094,5 +1092,5 @@ if (numB==2) {
           }
 
 	}       
-
 }
+

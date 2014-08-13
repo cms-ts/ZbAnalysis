@@ -198,7 +198,6 @@ if (numB==2) {
 	h_mcg2_b->Sumw2();
 	h_mcg3_b->Sumw2();
 
-        
 	for (int i=0;i<=h_mcg->GetNbinsX()+1;i++) {
 	  double val = 0.0;
 	  if (w_mcg[0]->GetBinContent(i)*w_mcg[1]->GetBinContent(i) != 0) {
@@ -273,7 +272,7 @@ if (numB==2) {
 	  h_mcg_b->Divide(h_mcg);
 	  h_mcg1_b->Divide(h_mcg1);
 	  h_mcg2_b->Divide(h_mcg2);
-	  h_mcg3_b->Divide(h_mcg); /* !!! */
+	  h_mcg3_b->Divide(h_mcg);
 	  h_mcg_b->Scale(100.);
 	  h_mcg1_b->Scale(100.);
 	  h_mcg2_b->Scale(100.);
@@ -366,7 +365,6 @@ if (numB==2) {
 	  w_syst_tot[i] = (TH1F*)w_data[0]->Clone();
 	  w_syst_b_tot[i] = (TH1F*)w_data_b[0]->Clone();
 
-          
 	  ifstream in;
 	  string title_b_tmp = title_b;
 	  if (i==0) {
@@ -971,7 +969,7 @@ if (numB==2) {
 			w_stat_b_bkg[0]->GetBinError(i), w_stat_b_bkg[1]->GetBinError(i),
 			w_syst_b_eff[0]->GetBinError(i), w_syst_b_eff[1]->GetBinError(i),
 			w_syst_b_jer[0]->GetBinError(i), w_syst_b_jer[1]->GetBinError(i),
-		w_syst_b_jec[0]->GetBinError(i), w_syst_b_jec[1]->GetBinError(i),
+			w_syst_b_jec[0]->GetBinError(i), w_syst_b_jec[1]->GetBinError(i),
 			w_syst_b_pu[0]->GetBinError(i), w_syst_b_pu[1]->GetBinError(i),
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
