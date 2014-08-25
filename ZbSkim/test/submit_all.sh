@@ -35,4 +35,11 @@ fi
 ./submit.sh Wj $VERSION $CUT
 ./submit.sh ZZ $VERSION $CUT
 
+./submit.sh TBar_s $VERSION $CUT
+./submit.sh TBar_t $VERSION $CUT
+./submit.sh TBar_tW $VERSION $CUT
+./submit.sh T_s $VERSION $CUT
+./submit.sh T_t $VERSION $CUT
+./submit.sh T_tW $VERSION $CUT
+
 exit

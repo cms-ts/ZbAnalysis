@@ -32,4 +32,11 @@ fi
 ./merge.sh Wj $VERSION
 ./merge.sh WW $VERSION
 
+./merge.sh TBar_s $VERSION
+./merge.sh TBar_t $VERSION
+./merge.sh TBar_tW $VERSION
+./merge.sh T_s $VERSION
+./merge.sh T_t $VERSION
+./merge.sh T_tW $VERSION
+
 exit
