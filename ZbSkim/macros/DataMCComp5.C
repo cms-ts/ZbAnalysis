@@ -388,7 +388,7 @@ if (numB==2) {
         if (irun==5) {
           h_mc2->Scale(c1_t+0.1*ec1_t);
           h_mc2_fit->Scale(c1_t+0.1*ec1_t);
-        }
+        } else {
           h_mc2->Scale(c1_t);
           h_mc2_fit->Scale(c1_t);
         }
