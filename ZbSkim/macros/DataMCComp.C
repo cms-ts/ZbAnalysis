@@ -10,7 +10,6 @@ TH1F* h_mc_fit0 = 0;
 TH1F* h_mc_fit1 = 0;
 TH1F* h_mc_fit2 = 0;
 TH1F* h_mc1bb = 0;
-TH1F* h_mcO = 0;
 
 void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   double chisq = 0.0;
@@ -473,7 +472,7 @@ if (numB==2) {
 	h_mc12->Scale(norm12);
 	h_mc13->Scale(norm13);
 
-        h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
+        TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
 
   	h_mcO->Add(h_mc13); 
   	h_mcO->Add(h_mc12); 
