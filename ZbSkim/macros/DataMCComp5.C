@@ -7,7 +7,6 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 TH1F* h_data = 0;
 TH1F* h_data_fit = 0;
-TH1F* h_mcO = 0;
 
 void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   double chisq = 0.0;
@@ -358,7 +357,7 @@ if (numB==2) {
       h_mc12->Scale(norm12);
       h_mc13->Scale(norm13);
 
-      h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
+      TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
 
       h_mcO->Add(h_mc13);
       h_mcO->Add(h_mc12);
@@ -401,12 +400,12 @@ if (numB==2) {
           h_mc2_fit->Scale(c2_t);
         }
       }
-        h_mcO -> Sumw2();
-        h_mcO -> SetLineColor(kBlack);
-        h_mcO -> SetFillColor(kGreen);
-        //h_mcO -> SetFillStyle(3004); 
-     
-       if (irun==13) {
+      h_mcO -> Sumw2();
+      h_mcO -> SetLineColor(kBlack);
+      h_mcO -> SetFillColor(kGreen);
+      //h_mcO -> SetFillStyle(3004); 
+
+      if (irun==13) {
         for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
           h_mc1->SetBinError(i, 1.1*h_mc1->GetBinError(i));
           h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
