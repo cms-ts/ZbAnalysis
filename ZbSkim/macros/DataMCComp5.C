@@ -376,11 +376,19 @@ if (numB==2) {
 
       TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
 
+      h_mc13->Sumw2();
+      h_mc12->Sumw2();
+      h_mc11->Sumw2();
+      h_mc10->Sumw2();
+      h_mc9->Sumw2();
+      h_mc8->Sumw2();
+
       h_mcO->Add(h_mc13);
       h_mcO->Add(h_mc12);
       h_mcO->Add(h_mc11);
       h_mcO->Add(h_mc10);
       h_mcO->Add(h_mc9);
+      h_mcO->Add(h_mc8);
  
       if (irun==10) {
         norm1_fit = norm1_fit + 0.1*enorm1_fit;
@@ -405,7 +413,29 @@ if (numB==2) {
 //    h_mc5_fit->Scale(norm5_fit);
       h_mc6_fit->Scale(norm6_fit);
       h_mc7_fit->Scale(norm7_fit);
+      h_mc8_fit->Scale(norm8_fit);
+      h_mc9_fit->Scale(norm9_fit);
+      h_mc10_fit->Scale(norm10_fit);
+      h_mc11_fit->Scale(norm11_fit);
+      h_mc12_fit->Scale(norm12_fit);
+      h_mc13_fit->Scale(norm13_fit);
 
+      TH1F* h_mcO_fit = (TH1F*)h_mc8->Clone("h_mcO_fit");
+
+      h_mc13_fit->Sumw2();
+      h_mc12_fit->Sumw2();
+      h_mc11_fit->Sumw2();
+      h_mc10_fit->Sumw2();
+      h_mc9_fit->Sumw2();
+      h_mc8_fit->Sumw2();
+
+      h_mcO_fit->Add(h_mc13_fit);
+      h_mcO_fit->Add(h_mc12_fit);
+      h_mcO_fit->Add(h_mc11_fit);
+      h_mcO_fit->Add(h_mc10_fit);
+      h_mcO_fit->Add(h_mc9_fit);
+      h_mcO_fit->Add(h_mc8_fit);
+ 
       if (title.find("_b")==string::npos) {
         if (irun==5) {
           h_mc2->Scale(c1_t+0.1*ec1_t);
@@ -423,10 +453,6 @@ if (numB==2) {
           h_mc2_fit->Scale(c2_t);
         }
       }
-      h_mcO -> Sumw2();
-      h_mcO -> SetLineColor(kBlack);
-      h_mcO -> SetFillColor(kGreen);
-      //h_mcO -> SetFillStyle(3004); 
 
       if (irun==13) {
         for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {

@@ -480,6 +480,13 @@ if (numB==2) {
 
         TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
 
+	h_mc13->Sumw2();
+	h_mc12->Sumw2();
+	h_mc11->Sumw2();
+	h_mc10->Sumw2();
+	h_mc9->Sumw2();
+	h_mc8->Sumw2();
+
   	h_mcO->Add(h_mc13); 
   	h_mcO->Add(h_mc12); 
   	h_mcO->Add(h_mc11); 
@@ -487,7 +494,6 @@ if (numB==2) {
   	h_mcO->Add(h_mc9); 
   	h_mcO->Add(h_mc8); 
 
-	h_mcO -> Sumw2();
         h_mcO -> SetLineColor(kBlack);
         h_mcO -> SetFillColor(kOrange+1);
         //h_mcO -> SetFillStyle(3004); 
