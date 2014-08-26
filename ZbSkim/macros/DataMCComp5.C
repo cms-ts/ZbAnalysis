@@ -341,6 +341,12 @@ if (numB==2) {
         norm5 = norm5 + 0.1*enorm5;
         norm6 = norm6 + 0.1*enorm6;
         norm7 = norm7 + 0.1*enorm7;
+        norm8 = norm8 + 0.1*enorm8;
+        norm9 = norm9 + 0.1*enorm9;
+        norm10 = norm10 + 0.1*enorm10;
+        norm11 = norm11 + 0.1*enorm11;
+        norm12 = norm12 + 0.1*enorm12;
+        norm13 = norm13 + 0.1*enorm13;
       }
 
       h_mc1->Scale(norm1);
@@ -373,6 +379,12 @@ if (numB==2) {
         norm5_fit = norm5_fit + 0.1*enorm5_fit;
         norm6_fit = norm6_fit + 0.1*enorm6_fit;
         norm7_fit = norm7_fit + 0.1*enorm7_fit;
+        norm8_fit = norm8_fit + 0.1*enorm8_fit;
+        norm9_fit = norm9_fit + 0.1*enorm9_fit;
+        norm10_fit = norm10_fit + 0.1*enorm10_fit;
+        norm11_fit = norm11_fit + 0.1*enorm11_fit;
+        norm12_fit = norm12_fit + 0.1*enorm12_fit;
+        norm13_fit = norm13_fit + 0.1*enorm13_fit;
       }
 
       h_mc1_fit->Scale(norm1_fit);

@@ -450,6 +450,12 @@ if (numB==2) {
 	  norm5 = norm5 + 0.1*enorm5;
 	  norm6 = norm6 + 0.1*enorm6;
 	  norm7 = norm7 + 0.1*enorm7;
+	  norm8 = norm8 + 0.1*enorm8;
+	  norm9 = norm9 + 0.1*enorm9;
+	  norm10 = norm10 + 0.1*enorm10;
+	  norm11 = norm11 + 0.1*enorm11;
+	  norm12 = norm12 + 0.1*enorm12;
+	  norm13 = norm13 + 0.1*enorm13;
 	}
 
 	h_mc1->Scale(norm1);
