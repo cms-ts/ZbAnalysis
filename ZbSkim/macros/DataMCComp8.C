@@ -1638,6 +1638,24 @@ if (numB==2) {
 	    out.open((path + "/combined/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.dat").c_str());
 	    out1.open((path + "/combined/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.txt").c_str());
 	    out2.open((path + "/combined/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.tex").c_str());
+	    TFile f((path + "/combined/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.root").c_str(),"RECREATE");
+	    if (drawInclusive) {
+	      h_data_stat->Write((title+"_data_stat").c_str());
+	      h_data_tot->Write((title+"_data_tot").c_str());
+	    }
+	    h_data_b_stat->Write((title_b+"_data_stat").c_str());
+	    h_data_b_tot->Write((title_b+"_data_tot").c_str());
+	    if (drawInclusive) {
+	      h_mcg->Write((title+"_mcg").c_str());
+	      h_mcg1->Write((title+"_mcg1").c_str());
+	      h_mcg2->Write((title+"_mcg2").c_str());
+	      h_mcg3->Write((title+"_mcg3").c_str());
+	    }
+	    h_mcg_b->Write((title_b+"_mcg").c_str());
+	    h_mcg1_b->Write((title_b+"_mcg1").c_str());
+	    h_mcg2_b->Write((title_b+"_mcg2").c_str());
+	    h_mcg3_b->Write((title_b+"_mcg3").c_str());
+	    f.Close();
 	  }
 	  if (isratio==1) {
 	    gSystem->mkdir((path + "/combined/" + version + "/ratios_unfolding" + dirbSel + "/").c_str(), kTRUE);
