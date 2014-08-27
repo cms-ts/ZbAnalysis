@@ -335,6 +335,12 @@ if (numB==2) {
 //    h_mc5->Sumw2();
       h_mc6->Sumw2();
       h_mc7->Sumw2();
+      h_mc8->Sumw2();
+      h_mc9->Sumw2();
+      h_mc10->Sumw2();
+      h_mc11->Sumw2();
+      h_mc12->Sumw2();
+      h_mc13->Sumw2();
       
       h_mc1_fit->Sumw2();
       h_mc2_fit->Sumw2();
@@ -343,6 +349,12 @@ if (numB==2) {
 //    h_mc5_fit->Sumw2();
       h_mc6_fit->Sumw2();
       h_mc7_fit->Sumw2();
+      h_mc8_fit->Sumw2();
+      h_mc9_fit->Sumw2();
+      h_mc10_fit->Sumw2();
+      h_mc11_fit->Sumw2();
+      h_mc12_fit->Sumw2();
+      h_mc13_fit->Sumw2();
 
       if (irun==10) {
         norm1 = norm1 + 0.1*enorm1;
@@ -374,22 +386,6 @@ if (numB==2) {
       h_mc12->Scale(norm12);
       h_mc13->Scale(norm13);
 
-      TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
-
-      h_mc13->Sumw2();
-      h_mc12->Sumw2();
-      h_mc11->Sumw2();
-      h_mc10->Sumw2();
-      h_mc9->Sumw2();
-      h_mc8->Sumw2();
-
-      h_mcO->Add(h_mc13);
-      h_mcO->Add(h_mc12);
-      h_mcO->Add(h_mc11);
-      h_mcO->Add(h_mc10);
-      h_mcO->Add(h_mc9);
-      h_mcO->Add(h_mc8);
- 
       if (irun==10) {
         norm1_fit = norm1_fit + 0.1*enorm1_fit;
         norm2_fit = norm2_fit + 0.1*enorm2_fit;
@@ -420,22 +416,6 @@ if (numB==2) {
       h_mc12_fit->Scale(norm12_fit);
       h_mc13_fit->Scale(norm13_fit);
 
-      TH1F* h_mcO_fit = (TH1F*)h_mc8->Clone("h_mcO_fit");
-
-      h_mc13_fit->Sumw2();
-      h_mc12_fit->Sumw2();
-      h_mc11_fit->Sumw2();
-      h_mc10_fit->Sumw2();
-      h_mc9_fit->Sumw2();
-      h_mc8_fit->Sumw2();
-
-      h_mcO_fit->Add(h_mc13_fit);
-      h_mcO_fit->Add(h_mc12_fit);
-      h_mcO_fit->Add(h_mc11_fit);
-      h_mcO_fit->Add(h_mc10_fit);
-      h_mcO_fit->Add(h_mc9_fit);
-      h_mcO_fit->Add(h_mc8_fit);
- 
       if (title.find("_b")==string::npos) {
         if (irun==5) {
           h_mc2->Scale(c1_t+0.1*ec1_t);
@@ -463,9 +443,33 @@ if (numB==2) {
 //        h_mc5->SetBinError(i, 1.1*h_mc5->GetBinError(i));
           h_mc6->SetBinError(i, 1.1*h_mc6->GetBinError(i));
           h_mc7->SetBinError(i, 1.1*h_mc7->GetBinError(i));
+          h_mc8->SetBinError(i, 1.1*h_mc8->GetBinError(i));
+          h_mc9->SetBinError(i, 1.1*h_mc9->GetBinError(i));
+          h_mc10->SetBinError(i, 1.1*h_mc10->GetBinError(i));
+          h_mc11->SetBinError(i, 1.1*h_mc11->GetBinError(i));
+          h_mc12->SetBinError(i, 1.1*h_mc12->GetBinError(i));
+          h_mc13->SetBinError(i, 1.1*h_mc13->GetBinError(i));
         }
       }
-      
+
+      TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
+
+      h_mcO->Add(h_mc13);
+      h_mcO->Add(h_mc12);
+      h_mcO->Add(h_mc11);
+      h_mcO->Add(h_mc10);
+      h_mcO->Add(h_mc9);
+      h_mcO->Add(h_mc8);
+ 
+      TH1F* h_mcO_fit = (TH1F*)h_mc8->Clone("h_mcO_fit");
+
+      h_mcO_fit->Add(h_mc13_fit);
+      h_mcO_fit->Add(h_mc12_fit);
+      h_mcO_fit->Add(h_mc11_fit);
+      h_mcO_fit->Add(h_mc10_fit);
+      h_mcO_fit->Add(h_mc9_fit);
+      h_mcO_fit->Add(h_mc8_fit);
+ 
       h_data->Add(h_mcO, -1.);
       h_data->Add(h_mc7, -1.);
       h_data->Add(h_mc6, -1.);
@@ -474,6 +478,7 @@ if (numB==2) {
       h_data->Add(h_mc3, -1.);
       h_data->Add(h_mc1, -1.);
 
+      h_data_fit->Add(h_mcO_fit, -1.);
       h_data_fit->Add(h_mc7_fit, -1.);
       h_data_fit->Add(h_mc6_fit, -1.);
 //    h_data_fit->Add(h_mc5_fit, -1.);
