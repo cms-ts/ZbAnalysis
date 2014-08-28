@@ -325,8 +325,8 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
 
   //Mass. Inv
   w_bb_mass =     fs->make < TH1F > ("w_bb_mass",   "w_bb_mass;Mass [GeV]", 13, 30., 400);
-  w_eebb_mass =     fs->make < TH1F > ("w_eebb_mass",   "w_eebb_mass;Mass [GeV]", 13, 180., 500.);
-  w_mmbb_mass =     fs->make < TH1F > ("w_mmbb_mass",   "w_mmbb_mass;Mass [GeV]", 13, 180., 500.);
+  w_eebb_mass =     fs->make < TH1F > ("w_eebb_mass",   "w_eebb_mass;Mass [GeV]", 12, 200., 500.);
+  w_mmbb_mass =     fs->make < TH1F > ("w_mmbb_mass",   "w_mmbb_mass;Mass [GeV]", 12, 200., 500.);
 
   //Phi*
   w_Phi_star_ee =     fs->make < TH1F > ("w_Phi_star_ee",   "w_Phi_star_ee; Phi*", 10, 0, 1);
