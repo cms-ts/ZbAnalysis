@@ -225,8 +225,8 @@ ZbDumper::ZbDumper(const edm::ParameterSet& iConfig) {
 
    w_bb_mass         = fs->make < TH2F > ("w_bb_mass",         "w_bb_mass;Mass [GeV]", 13, 30., 400., 13, 30., 400.);   
    
-   w_eebb_mass       = fs->make < TH2F > ("w_eebb_mass",       "w_eebb_mass;Mass [GeV]", 13, 180., 500., 13, 180., 500.);
-   w_mmbb_mass       = fs->make < TH2F > ("w_mmbb_mass",       "w_mmbb_mass;Mass [GeV]", 13, 180., 500., 13, 180., 500.);
+   w_eebb_mass       = fs->make < TH2F > ("w_eebb_mass",       "w_eebb_mass;Mass [GeV]", 12, 200., 500., 12, 200., 500.);
+   w_mmbb_mass       = fs->make < TH2F > ("w_mmbb_mass",       "w_mmbb_mass;Mass [GeV]", 12, 200., 500., 12, 200., 500.);
 
    w_A_eeb           = fs->make < TH2F > ("w_A_eeb",           "w_A_eeb; A", 10, 0., 1., 10, 0., 1.);
    w_A_mmb           = fs->make < TH2F > ("w_A_mmb",           "w_A_mmb; A", 10, 0., 1., 10, 0., 1.);
