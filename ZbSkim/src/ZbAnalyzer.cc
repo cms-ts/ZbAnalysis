@@ -3649,7 +3649,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   
   // ++++++++ Zbb PLOTS
 
-  if (Nj > 0 && Nb > 1 && vtx_cut && met_cut && b_selection) {
+  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 1 && vtx_cut && met_cut && b_selection) {
     scalFac_b = btagSF(isMC, vect_bjets, 2);
     w_bb_mass->Fill (bb_mass, MyWeight*scalFac_b);
     if (ist) {
