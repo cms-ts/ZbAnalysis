@@ -2344,11 +2344,26 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   }
   //cout << "DR(e;j) ="<<DR_ej<<"   "<<"DR(m;j) ="<<DR_mj<< endl;
 
+/*
   if (Nb > 0 && pcut_) {
     double discrBJP = vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags");
     if (discrBJP <= 5.) {
       Nb = 0;
       vect_bjets.clear();
+    }
+  }
+*/
+
+  if (Nb > 0 && pcut_) {
+    reco::SecondaryVertexTagInfo const * svTagInfos = vect_bjets[0].tagInfoSecondaryVertex("secondaryVertex");
+    if (svTagInfos && svTagInfos->nVertices() > 0) {
+      const reco::Vertex &vertex = svTagInfos->secondaryVertex(0);
+      reco::TrackKinematics vertexKinematics(vertex);
+      math::XYZTLorentzVector vertexSum = vertexKinematics.weightedVectorSum();
+      if (vertexSum.M() <= 2.) {
+        Nb = 0;
+        vect_bjets.clear();
+      }
     }
   }
 
