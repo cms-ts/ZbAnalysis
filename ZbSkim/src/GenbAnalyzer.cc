@@ -1102,7 +1102,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     w_single_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight);
   }
   
-  if (Nj > 0 && Nb > 1 && b_selection) {
+  if ((ee_event || mm_event) && Nj > 0 && Nb > 1 && b_selection) {
     w_bb_mass->Fill (bb_mass, MyWeight);
     if (ee_event) {
       w_DR_eeb_min->Fill (DR_eeb_min, MyWeight);
