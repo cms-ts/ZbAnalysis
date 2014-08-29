@@ -812,39 +812,26 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   for(unsigned int k = 0; k < vect_jets.size() ; k++) {
     Bjet_found = false;
-    double B_eta = 9999;
-    double B_phi = 9999;
-    double deltaR_Bb = 9999;
-
+   
     vector<fastjet::PseudoJet> constituents = cseq.constituents(vect_jets[k]);
 
-    for (unsigned int c = 0; c < constituents.size() && !Bjet_found; c++) {
+    for (unsigned int c = 0; c < constituents.size(); c++) {
       int index = constituents.at(c).user_index();
       reco::GenParticle gp = part_jets_st1.at(index);
       const reco::GenParticle* bpart = getBAncestors(&gp);
-      if (bpart!=NULL) {
-        Bjet_found = true;
-        B_eta = bpart->eta();
-        B_phi = bpart->phi();
-     }
-    }
-
-    if (Bjet_found) {
-      double eta_bj = vect_jets[k].eta();
-      double phi_bj = vect_jets[k].phi_std();
-   
-      double deltaEta_Bb = eta_bj - B_eta; 
-      double deltaPhi_Bb = fabs(phi_bj - B_phi);
-      if (deltaPhi_Bb > acos(-1)) deltaPhi_Bb = 2*acos(-1) - deltaPhi_Bb;
-
-      deltaR_Bb = sqrt(pow(deltaEta_Bb,2) + pow(deltaPhi_Bb,2)); 
-
-      if (deltaR_Bb < 0.5) {
-        vect_bjets.push_back(vect_jets[k]);
-        Nb++;
+      if (bpart!=NULL) {     
+        double deltaEta_Bb = vect_jets[k].eta() - bpart->eta(); 
+        double deltaPhi_Bb = fabs(vect_jets[k].phi_std() - bpart->phi());
+        if (deltaPhi_Bb > acos(-1)) deltaPhi_Bb = 2*acos(-1) - deltaPhi_Bb;
+        double deltaR_Bb = sqrt(pow(deltaEta_Bb,2) + pow(deltaPhi_Bb,2)); 
+        if (deltaR_Bb < 0.5) Bjet_found = true;
       }
+    }
+    if (Bjet_found) {
+      vect_bjets.push_back(vect_jets[k]);
+      Nb++;
     }  
-  }  
+  }    
 
   if (Nb != 1 && numB_ == 1) {
     b_selection = false;
@@ -856,36 +843,24 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   for(unsigned int k = 0; k < vect_jets2.size() ; k++) {
     Bjet2_found = false;
-    double B_eta2 = 9999;
-    double B_phi2 = 9999;
-    double deltaR_Bb2 = 9999;
-
+   
     vector<fastjet::PseudoJet> constituents = cseq.constituents(vect_jets2[k]);
 
-    for (unsigned int c = 0; c < constituents.size() && !Bjet2_found; c++) {
+    for (unsigned int c = 0; c < constituents.size(); c++) {
       int index = constituents.at(c).user_index();
       reco::GenParticle gp = part_jets_st1.at(index);
       const reco::GenParticle * bpart2 = getBAncestors(&gp);
       if (bpart2!=NULL) {
-        Bjet2_found = true;
-        B_eta2 = bpart2->eta();
-        B_phi2 = bpart2->phi();
+        double deltaEta_Bb2 = vect_jets2[k].eta() - bpart2->eta();
+        double deltaPhi_Bb2 = fabs(vect_jets2[k].phi_std() - bpart2->phi());
+        if (deltaPhi_Bb2 > acos(-1)) deltaPhi_Bb2 = 2*acos(-1) - deltaPhi_Bb2;
+        double deltaR_Bb2 = sqrt(pow(deltaEta_Bb2,2) + pow(deltaPhi_Bb2,2));
+        if (deltaR_Bb2 < 0.5) Bjet2_found = true;
       }
     }
     if (Bjet2_found) {
-      double eta_bj = vect_jets2[k].eta();
-      double phi_bj = vect_jets2[k].phi_std();
-
-      double deltaEta_Bb = eta_bj - B_eta2;
-      double deltaPhi_Bb = fabs(phi_bj - B_phi2);
-      if (deltaPhi_Bb > acos(-1)) deltaPhi_Bb = 2*acos(-1) - deltaPhi_Bb;
-
-      deltaR_Bb2 = sqrt(pow(deltaEta_Bb,2) + pow(deltaPhi_Bb,2));
-
-      if (deltaR_Bb2 < 0.5) {
-        vect_bjets2.push_back(vect_jets2[k]);
-        Nb2++;
-      }
+      vect_bjets2.push_back(vect_jets2[k]);
+      Nb2++;
     }
   }
 
