@@ -20,6 +20,11 @@ root -l -q -b DataMCComp8.C+\(\"w_pt_Z\",1,0\)
 root -l -q -b DataMCComp8.C+\(\"w_delta_phi\",1,0\)
 root -l -q -b DataMCComp8.C+\(\"w_Ht\",1,0\)
 
+if [ $n -ne 0 ]; then
+  root -l -q -b DataMCComp8.C+\(\"w_pt_Z_b\",1,0,$n\)
+  root -l -q -b DataMCComp8.C+\(\"w_Ht_b\",1,0,$n\)
+fi
+
 root -l -q -b DataMCComp8.C+\(\"w_DR_bb\",1,0,2\)
 root -l -q -b DataMCComp8.C+\(\"w_DR_Zb_min\",1,0,2\)
 root -l -q -b DataMCComp8.C+\(\"w_DR_Zb_max\",1,0,2\)
