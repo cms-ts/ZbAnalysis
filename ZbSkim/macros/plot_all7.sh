@@ -29,6 +29,10 @@ while [ $i -le 2 ]; do
     root -l -q -b DataMCComp7.C+\(\"w_pt_Z_ee_b\",1,$i,0,$n\)
     root -l -q -b DataMCComp7.C+\(\"w_pt_Z_mm_b\",1,$i,0,$n\)
     root -l -q -b DataMCComp7.C+\(\"w_Ht_b\",1,$i,0,$n\)
+    root -l -q -b DataMCComp7.C+\(\"w_mass_Zj_ee_b\",1,$i,0,$n\)
+    root -l -q -b DataMCComp7.C+\(\"w_mass_Zj_mm_b\",1,$i,0,$n\)
+    root -l -q -b DataMCComp7.C+\(\"w_delta_phi_ee_b\",1,$i,0,$n\)
+    root -l -q -b DataMCComp7.C+\(\"w_delta_phi_mm_b\",1,$i,0,$n\)
   fi
 
   root -l -q -b DataMCComp7.C+\(\"w_DR_bb\",1,$i,0,2\)
