@@ -9,7 +9,6 @@ TH1F* h_data_fit = 0;
 TH1F* h_mc_fit0 = 0;
 TH1F* h_mc_fit1 = 0;
 TH1F* h_mc_fit2 = 0;
-TH1F* h_mc1bb = 0;
 
 void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
   double chisq = 0.0;
@@ -306,8 +305,9 @@ if (numB==2) {
 	TH1F* h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
 	TH1F* h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
 	TH1F* h_mc1t = (TH1F*)gDirectory->Get(("t"+title.substr(1)).c_str());
-        if (bbBkg)  h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
-        if (bbSig)  h_mc1bb = (TH1F*)gDirectory->Get(("bbSig"+title.substr(1)).c_str());       
+        TH1F* h_mc1bb = 0;
+        if (bbBkg) h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
+        if (bbSig) h_mc1bb = (TH1F*)gDirectory->Get(("bbSig"+title.substr(1)).c_str());       
 
 	if (ilepton==1) mc2->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) mc2->cd(("demoMuo"+postfix).c_str());
