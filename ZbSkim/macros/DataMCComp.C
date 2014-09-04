@@ -529,6 +529,7 @@ if (numB==2) {
 //	    h_mc5->SetBinError(i, 1.1*h_mc5->GetBinError(i));
 	    h_mc6->SetBinError(i, 1.1*h_mc6->GetBinError(i));
 	    h_mc7->SetBinError(i, 1.1*h_mc7->GetBinError(i));
+	    h_mcO->SetBinError(i, 1.1*h_mcO->GetBinError(i));
 	  }
 	}
 
@@ -561,6 +562,7 @@ if (numB==2) {
 	if (doFit==1) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
+	    h_data_fit->Add(h_mcO, -1.);
 	    h_data_fit->Add(h_mc7, -1.);
 	    h_data_fit->Add(h_mc6, -1.);
 //	    h_data_fit->Add(h_mc5, -1.);
@@ -641,6 +643,7 @@ if (numB==2) {
 	if (doFit==2) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
+	    h_data_fit->Add(h_mcO, -1.);
 	    h_data_fit->Add(h_mc7, -1.);
 	    h_data_fit->Add(h_mc6, -1.);
 //	    h_data_fit->Add(h_mc5, -1.);
@@ -669,6 +672,7 @@ if (numB==2) {
 	if (doFit==3) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
+	    h_data_fit->Add(h_mcO, -1.);
 	    h_data_fit->Add(h_mc7, -1.);
 	    h_data_fit->Add(h_mc6, -1.);
 //	    h_data_fit->Add(h_mc5, -1.);
@@ -712,6 +716,8 @@ if (numB==2) {
 	      h_mc6->SetBinError(i, 0);
 	      h_mc7->SetBinContent(i, 0);
 	      h_mc7->SetBinError(i, 0);
+	      h_mcO->SetBinContent(i, 0);
+	      h_mcO->SetBinError(i, 0);
 	    }
 	  }
 	  fitter = TVirtualFitter::Fitter(0, 3);
@@ -733,6 +739,7 @@ if (numB==2) {
         if (doFit==4) {
           h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
           if (!doBkg) {
+            h_data_fit->Add(h_mcO, -1.);
             h_data_fit->Add(h_mc7, -1.);
             h_data_fit->Add(h_mc6, -1.);
 //          h_data_fit->Add(h_mc5, -1.);
