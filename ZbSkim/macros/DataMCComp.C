@@ -626,6 +626,8 @@ if (numB==2) {
 	      h_mc6->SetBinError(i, 0);
 	      h_mc7->SetBinContent(i, 0);
 	      h_mc7->SetBinError(i, 0);
+	      h_mcO->SetBinContent(i, 0);
+	      h_mcO->SetBinError(i, 0);
 	    }
 	  }
 	  fitter = TVirtualFitter::Fitter(0, 1);
