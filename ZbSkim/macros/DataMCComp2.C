@@ -211,6 +211,12 @@ if (numB==2) {
 	double norm5 = ((Lumi2012 * Xsec_qcd) / Ngen_qcd);
 	double norm6 = ((Lumi2012 * Xsec_ww) / Ngen_ww);
 	double norm7 = ((Lumi2012 * Xsec_wj) / Ngen_wj);
+        double norm8 = ((Lumi2012 * Xsec_tS) / Ngen_tS);
+        double norm9 = ((Lumi2012 * Xsec_tT) / Ngen_tT);
+        double norm10 = ((Lumi2012 * Xsec_tW) / Ngen_tW);
+        double norm11 = ((Lumi2012 * Xsec_tSb) / Ngen_tSb);
+        double norm12 = ((Lumi2012 * Xsec_tTb) / Ngen_tTb);
+        double norm13 = ((Lumi2012 * Xsec_tWb) / Ngen_tWb);
 
 	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
 	double enorm1_1 = ((Lumi2012 * eXsec_dy_1) / Ngen_dy_1);
@@ -224,6 +230,13 @@ if (numB==2) {
 	double enorm5 = ((Lumi2012 * eXsec_qcd) / Ngen_qcd);
 	double enorm6 = ((Lumi2012 * eXsec_ww) / Ngen_ww);
 	double enorm7 = ((Lumi2012 * eXsec_wj) / Ngen_wj);
+        double enorm8 = ((Lumi2012 * eXsec_tS) / Ngen_tS);
+        double enorm9 = ((Lumi2012 * eXsec_tT) / Ngen_tT);
+        double enorm10 = ((Lumi2012 * eXsec_tW) / Ngen_tW);
+        double enorm11 = ((Lumi2012 * eXsec_tSb) / Ngen_tSb);
+        double enorm12 = ((Lumi2012 * eXsec_tTb) / Ngen_tTb);
+        double enorm13 = ((Lumi2012 * eXsec_tWb) / Ngen_tWb);
+
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -252,6 +265,12 @@ if (numB==2) {
 //	TFile *mc5 = TFile::Open((path + "/" + version + "/" + "QCD.root").c_str());
 	TFile *mc6 = TFile::Open((path + "/" + version + "/" + "WW.root").c_str());
 	TFile *mc7 = TFile::Open((path + "/" + version + "/" + "Wj.root").c_str());
+        TFile *mc8 = TFile::Open((path + "/" + version + "/" + "T_s.root").c_str());
+        TFile *mc9 = TFile::Open((path + "/" + version + "/" + "T_t.root").c_str());
+        TFile *mc10 = TFile::Open((path + "/" + version + "/" + "T_tW.root").c_str());
+        TFile *mc11 = TFile::Open((path + "/" + version + "/" + "TBar_s.root").c_str());
+        TFile *mc12 = TFile::Open((path + "/" + version + "/" + "TBar_t.root").c_str());
+        TFile *mc13 = TFile::Open((path + "/" + version + "/" + "TBar_tW.root").c_str());
 
 	string title_b = title;
 
@@ -387,6 +406,37 @@ if (numB==2) {
 	if (ilepton==2) mc7->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_mc7 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mc7_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
+        if (ilepton==1) mc8->cd(("demoEle"+postfix).c_str());
+        if (ilepton==2) mc8->cd(("demoMuo"+postfix).c_str());
+        TH1F* h_mc8 = (TH1F*)gDirectory->Get(title.c_str());
+        TH1F* h_mc8_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
+        if (ilepton==1) mc9->cd(("demoEle"+postfix).c_str());
+        if (ilepton==2) mc9->cd(("demoMuo"+postfix).c_str());
+        TH1F* h_mc9 = (TH1F*)gDirectory->Get(title.c_str());
+        TH1F* h_mc9_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
+        if (ilepton==1) mc10->cd(("demoEle"+postfix).c_str());
+        if (ilepton==2) mc10->cd(("demoMuo"+postfix).c_str());
+        TH1F* h_mc10 = (TH1F*)gDirectory->Get(title.c_str());
+        TH1F* h_mc10_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
+        if (ilepton==1) mc11->cd(("demoEle"+postfix).c_str());
+        if (ilepton==2) mc11->cd(("demoMuo"+postfix).c_str());
+        TH1F* h_mc11 = (TH1F*)gDirectory->Get(title.c_str());
+        TH1F* h_mc11_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
+        if (ilepton==1) mc12->cd(("demoEle"+postfix).c_str());
+        if (ilepton==2) mc12->cd(("demoMuo"+postfix).c_str());
+        TH1F* h_mc12 = (TH1F*)gDirectory->Get(title.c_str());
+        TH1F* h_mc12_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
+        if (ilepton==1) mc13->cd(("demoEle"+postfix).c_str());
+        if (ilepton==2) mc13->cd(("demoMuo"+postfix).c_str());
+        TH1F* h_mc13 = (TH1F*)gDirectory->Get(title.c_str());
+        TH1F* h_mc13_b = (TH1F*)gDirectory->Get(title_b.c_str());
+
         
         if (!drawInclusive) {
           h_data = (TH1F*)h_data->Clone();
@@ -401,6 +451,12 @@ if (numB==2) {
 //        h_mc5 = (TH1F*)h_mc5->Clone();
           h_mc6 = (TH1F*)h_mc6->Clone();
           h_mc7 = (TH1F*)h_mc7->Clone();
+          h_mc8 = (TH1F*)h_mc8->Clone();
+          h_mc9 = (TH1F*)h_mc9->Clone();
+          h_mc10 = (TH1F*)h_mc10->Clone();
+          h_mc11 = (TH1F*)h_mc11->Clone();
+          h_mc12 = (TH1F*)h_mc12->Clone();
+          h_mc13 = (TH1F*)h_mc13->Clone();
         }
 
 	if (unfold==0) {
@@ -419,6 +475,12 @@ if (numB==2) {
 //	h_mc5->Sumw2();
 	h_mc6->Sumw2();
 	h_mc7->Sumw2();
+	h_mc8->Sumw2();
+	h_mc9->Sumw2();
+	h_mc10->Sumw2();
+	h_mc11->Sumw2();
+	h_mc12->Sumw2();
+	h_mc13->Sumw2();
 
 	h_mc1_b->Sumw2();
 	if (h_mc1b_b) h_mc1b_b->Sumw2();
@@ -433,6 +495,12 @@ if (numB==2) {
 //	h_mc5_b->Sumw2();
 	h_mc6_b->Sumw2();
 	h_mc7_b->Sumw2();
+	h_mc8_b->Sumw2();
+	h_mc9_b->Sumw2();
+	h_mc10_b->Sumw2();
+	h_mc11_b->Sumw2();
+	h_mc12_b->Sumw2();
+	h_mc13_b->Sumw2();
 
 	if (irun==10) {
 	  norm1 = norm1 + 0.1*enorm1;
@@ -444,6 +512,12 @@ if (numB==2) {
 	  norm5 = norm5 + 0.1*enorm5;
 	  norm6 = norm6 + 0.1*enorm6;
 	  norm7 = norm7 + 0.1*enorm7;
+	  norm8 = norm8 + 0.1*enorm8;
+	  norm9 = norm9 + 0.1*enorm9;
+	  norm10 = norm10 + 0.1*enorm10;
+	  norm11 = norm11 + 0.1*enorm11;
+	  norm12 = norm12 + 0.1*enorm12;
+	  norm13 = norm13 + 0.1*enorm13;
 	}
 
 	h_mc1->Scale(norm1);
@@ -457,6 +531,12 @@ if (numB==2) {
 //	h_mc5->Scale(norm5);
 	h_mc6->Scale(norm6);
 	h_mc7->Scale(norm7);
+	h_mc8->Scale(norm8);
+	h_mc9->Scale(norm9);
+	h_mc10->Scale(norm10);
+	h_mc11->Scale(norm11);
+	h_mc12->Scale(norm12);
+	h_mc13->Scale(norm13);
 
 	h_mc1_b->Scale(norm1);
 	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
@@ -471,6 +551,29 @@ if (numB==2) {
 //	h_mc5_b->Scale(norm5);
 	h_mc6_b->Scale(norm6);
 	h_mc7_b->Scale(norm7);
+	h_mc8_b->Scale(norm8);
+	h_mc9_b->Scale(norm9);
+	h_mc10_b->Scale(norm10);
+	h_mc11_b->Scale(norm11);
+	h_mc12_b->Scale(norm12);
+	h_mc13_b->Scale(norm13);
+
+        TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
+        TH1F* h_mcO_b = (TH1F*)h_mc8_b->Clone("h_mcO_b");
+
+        h_mcO->Add(h_mc13);
+        h_mcO->Add(h_mc12);
+        h_mcO->Add(h_mc11);
+        h_mcO->Add(h_mc10);
+        h_mcO->Add(h_mc9);
+        h_mcO->Add(h_mc8);
+        
+        h_mcO_b->Add(h_mc13_b);
+        h_mcO_b->Add(h_mc12_b);
+        h_mcO_b->Add(h_mc11_b);
+        h_mcO_b->Add(h_mc10_b);
+        h_mcO_b->Add(h_mc9_b);
+        h_mcO_b->Add(h_mc8_b);
 
 	if (useFitResults) {
 	  if (irun==5) {
@@ -502,10 +605,13 @@ if (numB==2) {
 	    h_mc6_b->SetBinError(i, 1.1*h_mc6_b->GetBinError(i));
 	    h_mc7->SetBinError(i, 1.1*h_mc7->GetBinError(i));
 	    h_mc7_b->SetBinError(i, 1.1*h_mc7_b->GetBinError(i));
+            h_mcO->SetBinError(i, 1.1*h_mcO->GetBinError(i));
+            h_mcO_b->SetBinError(i, 1.1*h_mcO_b->GetBinError(i));
 	  }
 	}
 
 	if (unfold==0) {
+	  h_data->Add(h_mcO, -1.);
 	  h_data->Add(h_mc7, -1.);
 	  h_data->Add(h_mc6, -1.);
 //	  h_data->Add(h_mc5, -1.);
@@ -514,6 +620,7 @@ if (numB==2) {
 	  h_data->Add(h_mc2, -1.);
 	  h_data->Add(h_mc1t, -1.);
 
+          h_data_b->Add(h_mcO_b, -1.);
 	  h_data_b->Add(h_mc7_b, -1.);
 	  h_data_b->Add(h_mc6_b, -1.);
 //	  h_data_b->Add(h_mc5_b, -1.);
