@@ -4,8 +4,8 @@
 
 #include "fixrange.C"
 
-//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data;
-string path = "/gpfs/cms/users/lalicata/work/test/data/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data;
+//string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 TH1F* read(string subdir, string title, int ilepton, TFile* infile=0, string dirbSel="") {
   TH1F* hist;
@@ -1117,8 +1117,13 @@ if (numB==2) {
 
 	if (isratio==0) {
 	  pad1->SetLogy();
-
-	  h_mcg_b->SetMaximum(4*h_data_tot->GetMaximum());
+           
+          if (title=="w_delta_phi") {
+            h_mcg_b->SetMaximum(18*h_data_tot->GetMaximum());
+          } else { 
+	    h_mcg_b->SetMaximum(4*h_data_tot->GetMaximum());
+          }
+         
 	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b_tot->GetBinContent(h_data_b_tot->GetMinimumBin())));
 
 	  h_mcg_b->Draw("E5");
