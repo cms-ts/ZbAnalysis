@@ -4,8 +4,8 @@
 
 #include "fixrange.C"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-//string path = "/gpfs/cms/users/lalicata/work/test/data/";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 TH1F* read(string subdir, string title, int ilepton, TFile* infile=0, string dirbSel="") {
   TH1F* hist;
@@ -1212,8 +1212,8 @@ if (numB==2) {
 
 	c1->cd();
        
- 	TLatex *latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection" , 0, 0.135, 0.51);
- 	
+ 	TLatex *latexLabel;
+	
         if (isratio==1) {
           latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
         }
