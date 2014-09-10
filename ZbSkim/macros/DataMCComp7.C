@@ -769,22 +769,38 @@ if (numB==2) {
 	h_data_b_tot->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_tot->SetMarkerColor(kRed+1);
 	h_data_b_tot->SetLineColor(kRed+1);
-	h_data_b_tot->SetMarkerStyle(24);
 	h_data_b_tot->SetMarkerSize(0.7);
 	h_data_b_tot->SetStats(0);
+        if (isratio==0) {
+          h_data_b_tot->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_data_b_tot->SetMarkerStyle(22);
+        }
 	h_data_b_stat->GetYaxis()->SetTitleOffset(1.2);
 	h_data_b_stat->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_stat->SetMarkerColor(kBlack);
 	h_data_b_stat->SetLineColor(kBlack);
-	h_data_b_stat->SetMarkerStyle(24);
 	h_data_b_stat->SetMarkerSize(0.7);
 	h_data_b_stat->SetStats(0);
+        if (isratio==0) {
+          h_data_b_stat->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_data_b_stat->SetMarkerStyle(22);
+        }
 	if (isratio==1) {
 	  h_data_b_tot->Draw("E1PX0SAME");
 	  h_data_b_stat->Draw("E1PX0SAME");
 	}
 
-	TLegend *leg = new TLegend(0.62, 0.580, 0.88, 0.88);
+        TLegend *leg = NULL;
+        if (isratio==0) {
+          leg = new TLegend(0.64, 0.590, 0.88, 0.88);
+        }
+        if (isratio) {
+          leg = new TLegend(0.52, 0.510, 0.90, 0.88);
+        }
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
@@ -904,7 +920,7 @@ if (numB==2) {
 	  if (drawInclusive) h_data_stat->Draw("E1PX0SAME");
 
 	  if (ilepton==1) {
-	    if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow ee) DATA","p");
+	    if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow ee)+j DATA","p");
 	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow ee)+b DATA","p");
 	    if (useMC) leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph 5FS","l");
@@ -913,7 +929,7 @@ if (numB==2) {
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow ee) Powheg","l");
 	  }
 	  if (ilepton==2){
-	    if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow #mu#mu) DATA","p");
+	    if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow #mu#mu)+j DATA","p");
 	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow #mu#mu)+b DATA","p");
 	    if (useMC) leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph 5FS","l");
@@ -925,20 +941,20 @@ if (numB==2) {
 
 	if (isratio==1) {
 	  if (ilepton==1) {
-	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow ee) DATA","p");
-	    if (useMC) leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
-	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph 5FS","l");
-	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow ee) MadGraph 4FS","l");
-	    if (useSherpa) leg->AddEntry(h_mcg1_b,"Z(#rightarrow ee) Sherpa","l");
-	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow ee) Powheg","l");
+	    leg->AddEntry(h_data_b_stat,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] DATA","p");
+	    if (useMC) leg->AddEntry(h_mc1b_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] MC","l");
+	    leg->AddEntry(h_mcg_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] MadGraph 5FS","l");
+	    leg->AddEntry(h_mcg3_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] MadGraph 4FS","l");
+	    if (useSherpa) leg->AddEntry(h_mcg1_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] Sherpa","l");
+	    leg->AddEntry(h_mcg2_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] Powheg","l");
 	  }
 	  if (ilepton==2){
-	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow #mu#mu) DATA","p");
-	    if (useMC) leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
-	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph 5FS","l");
-	    leg->AddEntry(h_mcg3_b,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
-	    if (useSherpa) leg->AddEntry(h_mcg1_b,"Z(#rightarrow #mu#mu) Sherpa","l");
-	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow #mu#mu) Powheg","l");
+	    leg->AddEntry(h_data_b_stat,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] DATA","p");
+	    if (useMC) leg->AddEntry(h_mc1b_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] MC","l");
+	    leg->AddEntry(h_mcg_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] MadGraph 5FS","l");
+	    leg->AddEntry(h_mcg3_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] MadGraph 4FS","l");
+	    if (useSherpa) leg->AddEntry(h_mcg1_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] Sherpa","l");
+	    leg->AddEntry(h_mcg2_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] Powheg","l");
 	  }
 	}
 
@@ -987,9 +1003,20 @@ if (numB==2) {
 	h_M_stat->SetLineWidth(1);
 	h_M_stat->SetMarkerSize(0.7);
 
-	h_M_tot->SetMarkerStyle(24);
+        if (isratio==0) {
+          h_M_tot->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_M_tot->SetMarkerStyle(22);
+        }
 	h_M_tot->Draw("E1PX0");
-	h_M_stat->SetMarkerStyle(24);
+        if (isratio==0) {
+          h_M_stat->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_M_stat->SetMarkerStyle(22);
+        }
+
 	h_M_stat->Draw("E1PX0SAME");
 
 	if (isratio==0) {
@@ -1082,7 +1109,12 @@ if (numB==2) {
 	h_S_stat->SetLineWidth(1);
 	h_S_stat->SetMarkerSize(0.7);
 
-	h_S_tot->SetMarkerStyle(24);
+        if (isratio==0) {
+          h_S_tot->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_S_tot->SetMarkerStyle(22);
+        }
 	if (useSherpa) {
 	  h_S_tot->Draw("E1PX0");
 	} else {
@@ -1091,7 +1123,12 @@ if (numB==2) {
 	  }
 	  h_S_tot->Draw("E1PX0");
 	}
-	h_S_stat->SetMarkerStyle(24);
+        if (isratio==0) {
+          h_S_stat->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_S_stat->SetMarkerStyle(22);
+        }
 	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
 
 	if (isratio==0) {
@@ -1186,9 +1223,19 @@ if (numB==2) {
 	h_P_stat->SetLineWidth(1);
 	h_P_stat->SetMarkerSize(0.7);
 
-	h_P_tot->SetMarkerStyle(24);
+        if (isratio==0) {
+          h_P_tot->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_P_tot->SetMarkerStyle(22);
+        }
 	h_P_tot->Draw("E1PX0");
-	h_P_stat->SetMarkerStyle(24);
+        if (isratio==0) {
+          h_P_stat->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_P_stat->SetMarkerStyle(22);
+        }
 	h_P_stat->Draw("E1PX0SAME");
 
 	if (isratio==0) {
@@ -1274,15 +1321,30 @@ if (numB==2) {
 	  g_M3_stat->SetMarkerStyle(25);
 	  g_M3_tot->SetMarkerStyle(25);
 	} else {
-	  g_M3_stat->SetMarkerStyle(24);
+          if (isratio==0) {
+            g_M3_stat->SetMarkerStyle(24);
+          }
+          if (isratio==1) {
+            g_M3_stat->SetMarkerStyle(22);
+          }
 	  g_M3_stat->SetMarkerColor(kBlack);
-	  g_M3_tot->SetMarkerStyle(24);
+          if (isratio==0) {
+            g_M3_tot->SetMarkerStyle(24);
+          }
+          if (isratio==1) {
+            g_M3_tot->SetMarkerStyle(22);
+          }
 	  g_M3_tot->SetMarkerColor(kBlack);
 	}
 	if (useSherpa) {
 	  g_M3_tot->SetMarkerStyle(25);
 	} else {
-	  g_M3_tot->SetMarkerStyle(24);
+          if (isratio==0) {
+            g_M3_tot->SetMarkerStyle(24);
+          }
+          if (isratio==1) {
+            g_M3_tot->SetMarkerStyle(22);
+          }
 	}
 	g_M3_stat->Draw("E1P");
 	g_M3_tot->Draw("E1PSAME");
