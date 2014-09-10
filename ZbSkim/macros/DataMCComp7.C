@@ -4,8 +4,8 @@
 
 #include "fixrange.C"
 
-//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-string path = "/gpfs/cms/users/lalicata/work/test/data/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 TH1F* read(string subdir, string title, int ilepton, string dirbSel) {
   TH1F* hist;
