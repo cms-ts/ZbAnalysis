@@ -4,8 +4,8 @@
 
 #include "fixrange.C"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-//string path = "/gpfs/cms/users/lalicata/work/test/data/";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 TH1F* read(string subdir, string title, int ilepton, string dirbSel) {
   TH1F* hist;
@@ -769,25 +769,29 @@ if (numB==2) {
 	h_data_b_tot->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_tot->SetMarkerColor(kRed+1);
 	h_data_b_tot->SetLineColor(kRed+1);
-	h_data_b_tot->SetMarkerSize(0.7);
+	//h_data_b_tot->SetMarkerSize(0.7);
 	h_data_b_tot->SetStats(0);
         if (isratio==0) {
           h_data_b_tot->SetMarkerStyle(24);
+          h_data_b_tot->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_data_b_tot->SetMarkerStyle(22);
+          h_data_b_tot->SetMarkerSize(0.9);
         }
 	h_data_b_stat->GetYaxis()->SetTitleOffset(1.2);
 	h_data_b_stat->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_stat->SetMarkerColor(kBlack);
 	h_data_b_stat->SetLineColor(kBlack);
-	h_data_b_stat->SetMarkerSize(0.7);
+	//h_data_b_stat->SetMarkerSize(0.7);
 	h_data_b_stat->SetStats(0);
         if (isratio==0) {
           h_data_b_stat->SetMarkerStyle(24);
+          h_data_b_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_data_b_stat->SetMarkerStyle(22);
+          h_data_b_stat->SetMarkerSize(0.9);
         }
 	if (isratio==1) {
 	  h_data_b_tot->Draw("E1PX0SAME");
@@ -996,25 +1000,29 @@ if (numB==2) {
 	h_M_tot->SetMarkerColor(kRed+1);
 	h_M_tot->SetLineColor(kRed+1);
 	h_M_tot->SetLineWidth(1);
-	h_M_tot->SetMarkerSize(0.7);
+	//h_M_tot->SetMarkerSize(0.7);
 	h_M_stat->GetXaxis()->SetTitleOffset(0.7);
 	h_M_stat->SetMarkerColor(kBlack);
 	h_M_stat->SetLineColor(kBlack);
 	h_M_stat->SetLineWidth(1);
-	h_M_stat->SetMarkerSize(0.7);
+	//h_M_stat->SetMarkerSize(0.7);
 
         if (isratio==0) {
           h_M_tot->SetMarkerStyle(24);
+          h_M_tot->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_M_tot->SetMarkerStyle(22);
+          h_M_tot->SetMarkerSize(0.9);
         }
 	h_M_tot->Draw("E1PX0");
         if (isratio==0) {
           h_M_stat->SetMarkerStyle(24);
+          h_M_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_M_stat->SetMarkerStyle(22);
+          h_M_stat->SetMarkerSize(0.9);
         }
 
 	h_M_stat->Draw("E1PX0SAME");
@@ -1102,18 +1110,20 @@ if (numB==2) {
 	h_S_tot->SetMarkerColor(kRed+1);
 	h_S_tot->SetLineColor(kRed+1);
 	h_S_tot->SetLineWidth(1);
-	h_S_tot->SetMarkerSize(0.7);
+	//h_S_tot->SetMarkerSize(0.7);
 	h_S_stat->GetXaxis()->SetTitleOffset(0.7);
 	h_S_stat->SetMarkerColor(kBlack);
 	h_S_stat->SetLineColor(kBlack);
 	h_S_stat->SetLineWidth(1);
-	h_S_stat->SetMarkerSize(0.7);
+	//h_S_stat->SetMarkerSize(0.7);
 
         if (isratio==0) {
           h_S_tot->SetMarkerStyle(24);
+          h_S_tot->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_S_tot->SetMarkerStyle(22);
+          h_S_tot->SetMarkerSize(0.9);
         }
 	if (useSherpa) {
 	  h_S_tot->Draw("E1PX0");
@@ -1125,9 +1135,11 @@ if (numB==2) {
 	}
         if (isratio==0) {
           h_S_stat->SetMarkerStyle(24);
+          h_S_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_S_stat->SetMarkerStyle(22);
+          h_S_stat->SetMarkerSize(0.9);
         }
 	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
 
@@ -1216,25 +1228,29 @@ if (numB==2) {
 	h_P_tot->SetMarkerColor(kRed+1);
 	h_P_tot->SetLineColor(kRed+1);
 	h_P_tot->SetLineWidth(1);
-	h_P_tot->SetMarkerSize(0.7);
+	//h_P_tot->SetMarkerSize(0.7);
 	h_P_stat->GetXaxis()->SetTitleOffset(0.7);
 	h_P_stat->SetMarkerColor(kBlack);
 	h_P_stat->SetLineColor(kBlack);
 	h_P_stat->SetLineWidth(1);
-	h_P_stat->SetMarkerSize(0.7);
+	//h_P_stat->SetMarkerSize(0.7);
 
         if (isratio==0) {
           h_P_tot->SetMarkerStyle(24);
+          h_P_tot->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_P_tot->SetMarkerStyle(22);
+          h_P_tot->SetMarkerSize(0.9);
         }
 	h_P_tot->Draw("E1PX0");
         if (isratio==0) {
           h_P_stat->SetMarkerStyle(24);
+          h_P_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_P_stat->SetMarkerStyle(22);
+          h_P_stat->SetMarkerSize(0.9);
         }
 	h_P_stat->Draw("E1PX0SAME");
 
@@ -1310,12 +1326,12 @@ if (numB==2) {
 	g_M3_tot->SetMarkerColor(kRed+1);
 	g_M3_tot->SetLineColor(kRed+1);
 	g_M3_tot->SetLineWidth(1);
-	g_M3_tot->SetMarkerSize(0.7);
+	//g_M3_tot->SetMarkerSize(0.7);
 	g_M3_stat->GetXaxis()->SetTitleOffset(0.7);
 	g_M3_stat->SetMarkerColor(kBlack);
 	g_M3_stat->SetLineColor(kBlack);
 	g_M3_stat->SetLineWidth(1);
-	g_M3_stat->SetMarkerSize(0.7);
+	//g_M3_stat->SetMarkerSize(0.7);
 
 	if (useSherpa) {
 	  g_M3_stat->SetMarkerStyle(25);
@@ -1323,16 +1339,20 @@ if (numB==2) {
 	} else {
           if (isratio==0) {
             g_M3_stat->SetMarkerStyle(24);
+            g_M3_stat->SetMarkerSize(0.7);
           }
           if (isratio==1) {
             g_M3_stat->SetMarkerStyle(22);
+            g_M3_stat->SetMarkerSize(0.9);
           }
 	  g_M3_stat->SetMarkerColor(kBlack);
           if (isratio==0) {
             g_M3_tot->SetMarkerStyle(24);
+            g_M3_tot->SetMarkerSize(0.7);
           }
           if (isratio==1) {
             g_M3_tot->SetMarkerStyle(22);
+            g_M3_tot->SetMarkerSize(0.9);
           }
 	  g_M3_tot->SetMarkerColor(kBlack);
 	}
@@ -1341,9 +1361,11 @@ if (numB==2) {
 	} else {
           if (isratio==0) {
             g_M3_tot->SetMarkerStyle(24);
+            g_M3_tot->SetMarkerSize(0.7);
           }
           if (isratio==1) {
             g_M3_tot->SetMarkerStyle(22);
+            g_M3_tot->SetMarkerSize(0.9);
           }
 	}
 	g_M3_stat->Draw("E1P");
