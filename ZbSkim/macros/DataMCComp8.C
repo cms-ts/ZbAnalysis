@@ -1117,13 +1117,12 @@ if (numB==2) {
 
 	if (isratio==0) {
 	  pad1->SetLogy();
-           
-          if (title=="w_delta_phi") {
+
+	  if (title=="w_delta_phi" || title_b=="w_first_bjet_eta") {
             h_mcg_b->SetMaximum(18*h_data_tot->GetMaximum());
           } else { 
 	    h_mcg_b->SetMaximum(4*h_data_tot->GetMaximum());
           }
-         
 	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b_tot->GetBinContent(h_data_b_tot->GetMinimumBin())));
 
 	  h_mcg_b->Draw("E5");
