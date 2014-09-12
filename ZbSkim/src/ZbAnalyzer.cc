@@ -162,9 +162,9 @@ private:
 
     if (jetPt <= 0 || jetPtGen <= 0) return jetPt;
 
-    double correctionFactor[5]     = {1.052, 1.057, 1.096, 1.134, 1.288};
-    double correctionFactorUp[5]   = {1.115, 1.114, 1.161, 1.228, 1.488};
-    double correctionFactorDown[5] = {0.990, 1.001, 1.032, 1.042, 1.089};
+    double correctionFactor[5]     = {1.079, 1.099, 1.121, 1.208, 1.254};
+    double correctionFactorUp[5]   = {1.105, 1.127, 1.150, 1.254, 1.316};
+    double correctionFactorDown[5] = {1.053, 1.071, 1.092, 1.162, 1.192};
 
     int index = 0;
 
