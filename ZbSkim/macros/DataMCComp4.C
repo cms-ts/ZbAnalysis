@@ -183,18 +183,14 @@ if (numB==2) {
 	string file = title;
 
         if (numB==0) {
-	if (file.find("_b")==string::npos) {
-	  if (file.find("_jet_")!=string::npos) {
-	    file.insert(file.find("_jet_")+1, "b");
-	  } else {
-	    file = file + "_b";
+	  if (file.find("_b")==string::npos) {
+	    if (file.find("_jet_")!=string::npos) {
+	      file.insert(file.find("_jet_")+1, "b");
+	    } else {
+	      file = file + "_b";
+	    }
 	  }
-	}
         }
- 
-        //if (numB!=0) {
-	  //file = title;
-        //}
 
 	TFile* data=0;
 	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/xsecs" + dirbSel + "/" + file + "_xsecs.root").c_str());
