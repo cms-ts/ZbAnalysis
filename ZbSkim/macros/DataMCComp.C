@@ -808,18 +808,19 @@ if (numB==2) {
 	pad1->cd();
 	pad1->SetLogy();
 	if (title.find("MET")!=string::npos)   pad1->SetLogy(0);
-	//if (title.find("mass_")!=string::npos) pad1->SetLogy(0);
+//      if (title.find("mass_")!=string::npos) pad1->SetLogy(0);
         if (title.find("y_Z")!=string::npos) pad1->SetLogy(0);
         if (title.find("DR_bb")!=string::npos) pad1->SetLogy(0);
-//        if (title.find("DR_jj")!=string::npos) pad1->SetLogy(0);
-//        if (title.find("w_eebb_mass")!=string::npos || title.find("w_mmbb_mass")!=string::npos) pad1->SetLogy(0);
+//      if (title.find("DR_jj")!=string::npos) pad1->SetLogy(0);
+//      if (title.find("w_eebb_mass")!=string::npos || title.find("w_mmbb_mass")!=string::npos) pad1->SetLogy(0);
 
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
  	hs->GetXaxis()->SetLabelSize(0.08);
 	hs->GetXaxis()->SetTitleOffset(0.7);
 	hs->SetMinimum(8);
-
+  
+        if (title=="w_first_bjet_pt") h_data->GetXaxis()->SetRangeUser(30., 450.);
 	h_data->Draw("EPX0SAMES");
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
@@ -827,34 +828,36 @@ if (numB==2) {
 	if (title=="w_delta_phi_2b" || title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b" || numB==0) h_data->SetStats(0);
 
 	TLegend *leg;
-	if (doBkg) {
-	  if (h_mc1c && h_mc1b && (bbBkg || bbSig)) {
-	    leg = new TLegend(0.65, 0.714, 0.91, 0.88);       
-	  } else if (h_mc1c && h_mc1b) {
-	    leg = new TLegend(0.65, 0.747, 0.91, 0.88);
-	  } else if (h_mc1c || h_mc1b) {
-	    leg = new TLegend(0.65, 0.780, 0.91, 0.88);
-	  } else {
-	    leg = new TLegend(0.65, 0.813, 0.91, 0.88);
-	  }
-	} else {
+        if (doBkg) {
           if (h_mc1c && h_mc1b && (bbBkg || bbSig)) {
-            leg = new TLegend(0.65, 0.547, 0.91, 0.88);
-	  } else if (h_mc1c && h_mc1b) {
-	    leg = new TLegend(0.65, 0.580, 0.91, 0.88);
-	  } else if (h_mc1c || h_mc1b) {
-	    leg = new TLegend(0.65, 0.613, 0.91, 0.88);
-	  } else {
-	    leg = new TLegend(0.65, 0.647, 0.91, 0.88);
-	  }
-	}
+            leg = new TLegend(0.65, 0.62, 0.98, 0.88);
+          } else if (h_mc1c && h_mc1b) {
+            leg = new TLegend(0.65, 0.643, 0.98, 0.88);
+          } else if (h_mc1c || h_mc1b) {
+            leg = new TLegend(0.65, 0.676, 0.98, 0.88);
+          } else {
+            leg = new TLegend(0.65, 0.709, 0.98, 0.88);
+          }
+        } else {
+          if (h_mc1c && h_mc1b && (bbBkg || bbSig)) {
+            leg = new TLegend(0.65, 0.443, 0.98, 0.88);
+          } else if (h_mc1c && h_mc1b) {
+            leg = new TLegend(0.65, 0.476, 0.98, 0.88);
+          } else if (h_mc1c || h_mc1b) {
+            leg = new TLegend(0.65, 0.509, 0.98, 0.88);
+          } else {
+            leg = new TLegend(0.65, 0.543, 0.98, 0.88);
+          }
+        }
+        
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
 
-	if (ilepton==1) leg->AddEntry(h_data,"Z(#rightarrow ee)+jets","p");
-	if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
+	//if (ilepton==1) leg->AddEntry(h_data,"Z(#rightarrow ee)+jets","p");
+	//if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
+        if (ilepton==1 || ilepton==2) leg->AddEntry(h_data,"data","p");
 	if (ilepton==3) leg->AddEntry(h_data,"Z(#rightarrow e#mu)+jets","p");
 
 	if (h_mc1c && h_mc1b) {
@@ -980,44 +983,49 @@ if (numB==2) {
 	h_ratio->SetMarkerStyle(20);
 	h_ratio->Draw("EPX0");
 
-	TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
+        TLine *OLine = NULL;
+        if (title=="w_first_bjet_pt") {
+	  OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,450.,1.);
+        } else {
+          OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
+        }
 	OLine->SetLineColor(kRed);
 	OLine->SetLineWidth(2);
 	OLine->Draw();
 
 	c1->cd();
-        //if (title.find("_b")!=string::npos && numB==0) bSel="Z + (#geq 1) b-jet";
-        //if ((title=="w_BJP"||title=="w_JBP") && numB==0) bSel="Z + (#geq 1) b-jet";
+//      if (title.find("_b")!=string::npos && numB==0) bSel="Z + (#geq 1) b-jet";
+//      if ((title=="w_BJP"||title=="w_JBP") && numB==0) bSel="Z + (#geq 1) b-jet";
 
- 	TLatex *latexLabel = CMSFinal2 (Lumi2012/1000., "Z+(#geq 1)b-jet selection", 0, 0.6, 0.4);
+ 	TLatex *latexLabel = CMSPrel3 (Lumi2012/1000., "Z+(#geq 1)b-jet selection", 0, 0.6, 0.4);
         
 	  if (numB==0 && title.find("_b")==string::npos) {
             if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
-              if (ilepton ==1) latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 1, 0.44, 0.9);
-              if (ilepton ==2) latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 1, 0.44, 0.9);
+              if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 1, 0.44, 0.9);
+              if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 1, 0.44, 0.9);
               labelDone = true;
             }
             if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
-              if (ilepton ==1) latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 0, 0.135, 0.87);
-              if (ilepton ==2) latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 0, 0.135, 0.87);
+              if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 0, 0.135, 0.87);
+              if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 0, 0.135, 0.87);
               labelDone = true;
             }
           }
           if (numB==0 && title.find("_b")!=string::npos) {
             if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
-              if (ilepton ==1) latexLabel = CMSFinal (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
-              if (ilepton ==2) latexLabel = CMSFinal (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
+              if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
+              if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
               labelDone = true;
             }
             if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
-              if (ilepton ==1) latexLabel = CMSFinal (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
-              if (ilepton ==2) latexLabel = CMSFinal (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
+              if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
+              if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
               labelDone = true;
             }
           }
         
         if (!labelDone) {
-          latexLabel = CMSFinal2 (Lumi2012/1000., "Z+(#geq 1)b-jet selection", 0, 0.6, 0.4);
+          latexLabel = CMSPrel3 (Lumi2012/1000., "Z+(#geq 1)b-jet selection", 0, 0.6, 0.4);
         } 
 	latexLabel->Draw("same");
 
