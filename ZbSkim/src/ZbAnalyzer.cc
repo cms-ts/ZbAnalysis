@@ -162,9 +162,9 @@ private:
 
     if (jetPt <= 0 || jetPtGen <= 0) return jetPt;
 
-    double correctionFactor[5]     = {1.052, 1.057, 1.096, 1.134, 1.288};
-    double correctionFactorUp[5]   = {1.115, 1.114, 1.161, 1.228, 1.488};
-    double correctionFactorDown[5] = {0.990, 1.001, 1.032, 1.042, 1.089};
+    double correctionFactor[5]     = {1.079, 1.099, 1.121, 1.208, 1.254};
+    double correctionFactorUp[5]   = {1.105, 1.127, 1.150, 1.254, 1.316};
+    double correctionFactorDown[5] = {1.053, 1.071, 1.092, 1.162, 1.192};
 
     int index = 0;
 
@@ -797,6 +797,26 @@ private:
   TH1F*     c_SVTX_mass;
   TH1F*     t_SVTX_mass;
   TH1F*     bbBkg_SVTX_mass;
+
+  TH1F*     w_flightd;
+  TH1F*     b_flightd;
+  TH1F*     c_flightd;
+  TH1F*     t_flightd;
+
+  TH1F*     w_flightd_sig;
+  TH1F*     b_flightd_sig;
+  TH1F*     c_flightd_sig;
+  TH1F*     t_flightd_sig;
+
+  TH1F*     w_SV_NTracks;
+  TH1F*     b_SV_NTracks;
+  TH1F*     c_SV_NTracks;
+  TH1F*     t_SV_NTracks;
+
+  TH1F*     w_N_SV;
+  TH1F*     b_N_SV;
+  TH1F*     c_N_SV;
+  TH1F*     t_N_SV;
 
   TH1F*     w_SVTX_mass_sub;
   TH1F*     b_SVTX_mass_sub;
@@ -1589,6 +1609,31 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_JBP_nomass  =     fs->make < TH1F > ("c_JBP_nomass",   "c_JBP_nomass", 50, 0, 3);
   t_JBP_nomass  =     fs->make < TH1F > ("t_JBP_nomass",   "t_JBP_nomass", 50, 0, 3);
 
+  w_flightd  =     fs->make < TH1F > ("w_flightd",   "w_flightd", 10, 0, 1);
+  b_flightd  =     fs->make < TH1F > ("b_flightd",   "b_flightd", 10, 0, 1);
+  c_flightd  =     fs->make < TH1F > ("c_flightd",   "c_flightd", 10, 0, 1);
+  t_flightd  =     fs->make < TH1F > ("t_flightd",   "t_flightd", 10, 0, 1);
+
+  w_flightd_sig =     fs->make < TH1F > ("w_flightd_sig",   "w_flightd_sig", 50, 0, 80);
+  b_flightd_sig =     fs->make < TH1F > ("b_flightd_sig",   "b_flightd_sig", 50, 0, 80);
+  c_flightd_sig =     fs->make < TH1F > ("c_flightd_sig",   "c_flightd_sig", 50, 0, 80);
+  t_flightd_sig =     fs->make < TH1F > ("t_flightd_sig",   "t_flightd_sig", 50, 0, 80);
+  
+  w_N_SV =     fs->make < TH1F > ("w_N_SV",   "w_N_SV", 5, 0, 5);
+  b_N_SV =     fs->make < TH1F > ("b_N_SV",   "b_N_SV", 5, 0, 5);
+  c_N_SV =     fs->make < TH1F > ("c_N_SV",   "c_N_SV", 5, 0, 5);
+  t_N_SV =     fs->make < TH1F > ("t_N_SV",   "t_N_SV", 5, 0, 5);
+ 
+  w_SV_NTracks =     fs->make < TH1F > ("w_SV_NTracks",   "w_SV_NTracks", 20, 0, 20);
+  b_SV_NTracks =     fs->make < TH1F > ("b_SV_NTracks",   "b_SV_NTracks", 20, 0, 20);
+  c_SV_NTracks =     fs->make < TH1F > ("c_SV_NTracks",   "c_SV_NTracks", 20, 0, 20);
+  t_SV_NTracks =     fs->make < TH1F > ("t_SV_NTracks",   "t_SV_NTracks", 20, 0, 20);
+ 
+  w_flightd_sig =     fs->make < TH1F > ("w_flightd_sig",   "w_flightd_sig", 60, 0, 120);
+  b_flightd_sig =     fs->make < TH1F > ("b_flightd_sig",   "b_flightd_sig", 60, 0, 120);
+  c_flightd_sig =     fs->make < TH1F > ("c_flightd_sig",   "c_flightd_sig", 60, 0, 120);
+  t_flightd_sig =     fs->make < TH1F > ("t_flightd_sig",   "t_flightd_sig", 60, 0, 120);
+   
   w_Ht =                fs->make < TH1F > ("w_Ht",              "w_Ht [GeV]", 50, 30., 1000.);
   b_Ht =                fs->make < TH1F > ("b_Ht",              "b_Ht [GeV]", 50, 30., 1000.);
   c_Ht =                fs->make < TH1F > ("c_Ht",              "c_Ht [GeV]", 50, 30., 1000.);
@@ -3144,13 +3189,25 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   double sumVertexMassTrk = 0.0;
   double sumVertexMass = 0.0;
   double sumVertexMass_sub = 0.0;
+  double flightd = 0.0;
+  double flightd_sig = 0.0;
+  double N_SV = 0.0;
+  double SV_NTracks = 0.0;
 
   if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection) {
 
     reco::SecondaryVertexTagInfo const * svTagInfos = vect_bjets[0].tagInfoSecondaryVertex("secondaryVertex");
     reco::SecondaryVertexTagInfo const * svTagInfos_sub;
+
     if (Nb > 1) {
       svTagInfos_sub = vect_bjets[1].tagInfoSecondaryVertex("secondaryVertex");
+    }
+    
+    if (svTagInfos && svTagInfos->nVertices() > 0) {
+      flightd = svTagInfos->flightDistance(0, true).value();
+      flightd_sig = svTagInfos->flightDistance(0, true).value() / svTagInfos->flightDistance(0, true).error();
+      N_SV = svTagInfos->nVertices();
+      SV_NTracks = svTagInfos->secondaryVertex(0).nTracks();
     }
 
     if (svTagInfos && svTagInfos->nVertices() > 0) {
@@ -3197,13 +3254,17 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         sumVertexMass_sub = vertexSum_sub.M();
       }
     }
-
+    
     scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
     w_SVTX_mass_jet->Fill (sumVertexMassJet, MyWeight*scalFac_b);
     w_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
     w_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
+    w_flightd->Fill (flightd, MyWeight*scalFac_b);
+    w_flightd_sig->Fill (flightd_sig, MyWeight*scalFac_b);
+    w_N_SV->Fill (N_SV, MyWeight*scalFac_b);
+    w_SV_NTracks->Fill (SV_NTracks, MyWeight*scalFac_b);
     if (Nb > 1) { 
       w_SVTX_mass_sub->Fill (sumVertexMass_sub, MyWeight*scalFac_b);
       w_SVTX_mass_2D->Fill (sumVertexMass, sumVertexMass_sub, MyWeight*scalFac_b);
@@ -3212,6 +3273,10 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       t_SVTX_mass_jet->Fill (sumVertexMassJet, MyWeight*scalFac_b);
       t_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
       t_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
+      t_flightd->Fill (flightd, MyWeight*scalFac_b);
+      t_flightd_sig->Fill (flightd_sig, MyWeight*scalFac_b);
+      t_N_SV->Fill (N_SV, MyWeight*scalFac_b);
+      t_SV_NTracks->Fill (SV_NTracks, MyWeight*scalFac_b);
       if (Nb > 1) {
         t_SVTX_mass_sub->Fill (sumVertexMass_sub, MyWeight*scalFac_b);
         t_SVTX_mass_2D->Fill (sumVertexMass, sumVertexMass_sub, MyWeight*scalFac_b);
@@ -3221,6 +3286,10 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       b_SVTX_mass_jet->Fill (sumVertexMassJet, MyWeight*scalFac_b);
       b_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
       b_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
+      b_flightd->Fill (flightd, MyWeight*scalFac_b);
+      b_flightd_sig->Fill (flightd_sig, MyWeight*scalFac_b);
+      b_N_SV->Fill (N_SV, MyWeight*scalFac_b);
+      b_SV_NTracks->Fill (SV_NTracks, MyWeight*scalFac_b);
       if (Nb == 1 && numB_ == 1 && findBjet(vect_jets, vect_bjets)) {
         bbBkg_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
       }
@@ -3233,6 +3302,10 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_SVTX_mass_jet->Fill (sumVertexMassJet, MyWeight*scalFac_b);
       c_SVTX_mass_trk->Fill (sumVertexMassTrk, MyWeight*scalFac_b);
       c_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
+      c_flightd->Fill (flightd, MyWeight*scalFac_b);
+      c_flightd_sig->Fill (flightd_sig, MyWeight*scalFac_b);
+      c_N_SV->Fill (N_SV, MyWeight*scalFac_b);
+      c_SV_NTracks->Fill (SV_NTracks, MyWeight*scalFac_b);
       if (Nb > 1) {      
         c_SVTX_mass_sub->Fill (sumVertexMass_sub, MyWeight*scalFac_b);
         c_SVTX_mass_2D->Fill (sumVertexMass, sumVertexMass_sub, MyWeight*scalFac_b);
