@@ -1078,25 +1078,29 @@ if (numB==2) {
 	h_data_b_tot->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_tot->SetMarkerColor(kRed+1);
 	h_data_b_tot->SetLineColor(kRed+1);
-	h_data_b_tot->SetMarkerSize(0.7);
+	//h_data_b_tot->SetMarkerSize(0.7);
 	h_data_b_tot->SetStats(0);
         if (isratio==0) {
           h_data_b_tot->SetMarkerStyle(24);
+          h_data_b_tot->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_data_b_tot->SetMarkerStyle(22);
+          h_data_b_tot->SetMarkerSize(0.9);
         }
 	h_data_b_stat->GetYaxis()->SetTitleOffset(1.2);
 	h_data_b_stat->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_stat->SetMarkerColor(kBlack);
 	h_data_b_stat->SetLineColor(kBlack);
-	h_data_b_stat->SetMarkerSize(0.7);
+	//h_data_b_stat->SetMarkerSize(0.7);
 	h_data_b_stat->SetStats(0);
         if (isratio==0) {
           h_data_b_stat->SetMarkerStyle(24);
+          h_data_b_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_data_b_stat->SetMarkerStyle(22);
+          h_data_b_stat->SetMarkerSize(0.9);
         }
 	if (isratio==1) {
 	  h_data_b_tot->Draw("E1PX0SAME");
@@ -1118,7 +1122,7 @@ if (numB==2) {
 	if (isratio==0) {
 	  pad1->SetLogy();
 
-	  if (title=="w_delta_phi" || title_b=="w_first_bjet_eta") {
+	  if (title=="w_delta_phi" || title_b=="w_first_bjet_eta" || title_b=="w_first_bjet_eta_abs") {
             h_mcg_b->SetMaximum(18*h_data_tot->GetMaximum());
           } else { 
 	    h_mcg_b->SetMaximum(4*h_data_tot->GetMaximum());
@@ -1235,17 +1239,17 @@ if (numB==2) {
  	TLatex *latexLabel = NULL;
 	
         if (isratio==1) {
-          latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
+          latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
         }
         if (isratio==0) {
           if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb") {
-            latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
+            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
           }
           if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b") {
-            latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
           }
-          if (title_b=="w_first_bjet_eta") {
-            latexLabel = CMSFinal (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+          if (title_b=="w_first_bjet_eta" || title_b=="w_first_bjet_eta_abs") {
+            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
           }
         }
 	latexLabel->Draw("same");
@@ -1281,25 +1285,29 @@ if (numB==2) {
 	h_M_tot->SetMarkerColor(kRed+1);
 	h_M_tot->SetLineColor(kRed+1);
 	h_M_tot->SetLineWidth(1);
-	h_M_tot->SetMarkerSize(0.7);
+	//h_M_tot->SetMarkerSize(0.7);
 	h_M_stat->GetXaxis()->SetTitleOffset(0.7);
 	h_M_stat->SetMarkerColor(kBlack);
 	h_M_stat->SetLineColor(kBlack);
 	h_M_stat->SetLineWidth(1);
-	h_M_stat->SetMarkerSize(0.7);
+	//h_M_stat->SetMarkerSize(0.7);
 
         if (isratio==0) {
           h_M_tot->SetMarkerStyle(24);
+          h_M_tot->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_M_tot->SetMarkerStyle(22);
+          h_M_tot->SetMarkerSize(0.9);
         }
 	h_M_tot->Draw("E1PX0");
         if (isratio==0) {
           h_M_stat->SetMarkerStyle(24);
+          h_M_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_M_stat->SetMarkerStyle(22);
+          h_M_stat->SetMarkerSize(0.9);
         }
 	h_M_stat->Draw("E1PX0SAME");
 
@@ -1345,7 +1353,7 @@ if (numB==2) {
 	if (useSherpa) {
 	  t2->DrawLatex(0.15,0.7,"MadGraph 5FS / MadGraph 4FS");
 	} else {
-	  t2->DrawLatex(0.15,0.7,"MadGraph 5FS");
+	  t2->DrawLatex(0.15,0.13,"MadGraph 5FS, normalized to  #sigma_{NNLO}");
 	}
 
 	TLine *OLine2 = new TLine(h_M_tot->GetXaxis()->GetXmin(),1.,h_M_tot->GetXaxis()->GetXmax(),1.);
@@ -1386,18 +1394,20 @@ if (numB==2) {
 	h_S_tot->SetMarkerColor(kRed+1);
 	h_S_tot->SetLineColor(kRed+1);
 	h_S_tot->SetLineWidth(1);
-	h_S_tot->SetMarkerSize(0.7);
+	//h_S_tot->SetMarkerSize(0.7);
 	h_S_stat->GetXaxis()->SetTitleOffset(0.7);
 	h_S_stat->SetMarkerColor(kBlack);
 	h_S_stat->SetLineColor(kBlack);
 	h_S_stat->SetLineWidth(1);
-	h_S_stat->SetMarkerSize(0.7);
+	//h_S_stat->SetMarkerSize(0.7);
 
         if (isratio==0) {
           h_S_tot->SetMarkerStyle(24);
+          h_S_tot->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_S_tot->SetMarkerStyle(22);
+          h_S_tot->SetMarkerSize(0.9);
         }
 	if (useSherpa) {
 	  h_S_tot->Draw("E1PX0");
@@ -1409,9 +1419,11 @@ if (numB==2) {
 	}
         if (isratio==0) {
           h_S_stat->SetMarkerStyle(24);
+          h_S_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_S_stat->SetMarkerStyle(22);
+          h_S_stat->SetMarkerSize(0.9);
         }
 	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
 
@@ -1457,7 +1469,7 @@ if (numB==2) {
 	if (useSherpa) {
 	  t3->DrawLatex(0.15,0.7,"Sherpa");
 	} else {
-	  t3->DrawLatex(0.15,0.7,"MadGraph 4FS");
+	  t3->DrawLatex(0.15,0.13,"MadGraph 4FS, normalized to  #sigma_{LO}");
 	}
 
 	if (useSherpa) {
@@ -1500,25 +1512,29 @@ if (numB==2) {
 	h_P_tot->SetMarkerColor(kRed+1);
 	h_P_tot->SetLineColor(kRed+1);
 	h_P_tot->SetLineWidth(1);
-	h_P_tot->SetMarkerSize(0.7);
+	//h_P_tot->SetMarkerSize(0.7);
 	h_P_stat->GetXaxis()->SetTitleOffset(0.7);
 	h_P_stat->SetMarkerColor(kBlack);
 	h_P_stat->SetLineColor(kBlack);
 	h_P_stat->SetLineWidth(1);
-	h_P_stat->SetMarkerSize(0.7);
+	//h_P_stat->SetMarkerSize(0.7);
 
         if (isratio==0) {
           h_P_tot->SetMarkerStyle(24);
+          h_P_tot->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_P_tot->SetMarkerStyle(22);
+          h_P_tot->SetMarkerSize(0.9);
         }
 	h_P_tot->Draw("E1PX0");
         if (isratio==0) {
           h_P_stat->SetMarkerStyle(24);
+          h_P_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_P_stat->SetMarkerStyle(22);
+          h_P_stat->SetMarkerSize(0.9);
         }
 	h_P_stat->Draw("E1PX0SAME");
 
@@ -1561,7 +1577,7 @@ if (numB==2) {
 	t4->SetTextFont(42);
 	t4->SetLineWidth(2);
 	t4->SetNDC();
-	t4->DrawLatex(0.15,0.8,"Powheg");
+	t4->DrawLatex(0.15,0.40,"Powheg, normalized to  #sigma_{NLO}");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	OLine4->SetLineColor(kBlue-4);
@@ -1594,12 +1610,12 @@ if (numB==2) {
 	g_M3_tot->SetMarkerColor(kRed+1);
 	g_M3_tot->SetLineColor(kRed+1);
 	g_M3_tot->SetLineWidth(1);
-	g_M3_tot->SetMarkerSize(0.7);
+	//g_M3_tot->SetMarkerSize(0.7);
 	g_M3_stat->GetXaxis()->SetTitleOffset(0.7);
 	g_M3_stat->SetMarkerColor(kBlack);
 	g_M3_stat->SetLineColor(kBlack);
 	g_M3_stat->SetLineWidth(1);
-	g_M3_stat->SetMarkerSize(0.7);
+	//g_M3_stat->SetMarkerSize(0.7);
 
 	if (useSherpa) {
 	  g_M3_stat->SetMarkerStyle(25);
@@ -1607,16 +1623,20 @@ if (numB==2) {
 	} else {
           if (isratio==0) {
             g_M3_stat->SetMarkerStyle(24);
+            g_M3_stat->SetMarkerSize(0.7);
           }
           if (isratio==1) {
             g_M3_stat->SetMarkerStyle(22);
+            g_M3_stat->SetMarkerSize(0.9);
           }
 	  g_M3_stat->SetMarkerColor(kBlack);
           if (isratio==0) {
             g_M3_tot->SetMarkerStyle(24);
+            g_M3_tot->SetMarkerSize(0.7);
           }
           if (isratio==1) {
             g_M3_tot->SetMarkerStyle(22);
+            g_M3_tot->SetMarkerSize(0.9);
           }
 	  g_M3_tot->SetMarkerColor(kBlack);
 	}
@@ -1625,9 +1645,11 @@ if (numB==2) {
 	} else {
           if (isratio==0) {
             g_M3_tot->SetMarkerStyle(24);
+            g_M3_tot->SetMarkerSize(0.7);
           }
           if (isratio==1) {
             g_M3_tot->SetMarkerStyle(22);
+            g_M3_tot->SetMarkerSize(0.9);
           }
 	}
 	g_M3_tot->Draw("E1P");
@@ -1645,7 +1667,7 @@ if (numB==2) {
 	}
 
 	if (title_b=="w_first_jet_pt_b") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp_{T} [pb]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp_{T} [pb/GeV]");
 	  h_P_tot->GetXaxis()->SetTitle("leading jet p_{T} [GeV/c]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / dp_{T} [%]");
@@ -1659,7 +1681,7 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 10);
 	  }
 	} else if (title_b=="w_first_bjet_pt") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp^{b}_{T} [pb]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp^{b}_{T} [pb/GeV]");
 	  h_P_tot->GetXaxis()->SetTitle("leading b-jet p_{T} [GeV/c]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / dp^{b}_{T} [%]");
@@ -1672,15 +1694,22 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#eta^{b} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 10);
 	  }
-	} else if (title_b=="w_pt_Z_b") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp^{Z}_{T} [pb]");
+	} else if (title_b=="w_first_bjet_eta_abs") {
+          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d|#eta^{b}| [pb]");
+          h_P_tot->GetXaxis()->SetTitle("leading b-jet |#eta|");
+          if (isratio==1) {
+            h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d|#eta^{b}| [%]");
+            h_mcg_b->GetYaxis()->SetRangeUser(0, 10);
+          }
+        } else if (title_b=="w_pt_Z_b") {
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp^{Z}_{T} [pb/GeV]");
 	  h_P_tot->GetXaxis()->SetTitle("Z boson p_{T} [GeV/c]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / dp^{Z}_{T} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
 	  }
 	} else if (title_b=="w_Ht_b") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dH_{T} [pb]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dH_{T} [pb/GeV]");
 	  h_P_tot->GetXaxis()->SetTitle("H_{T} [GeV/c]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / dH_{T} [%]");
@@ -1693,7 +1722,7 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta#phi_{Zb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
-	}
+	} 
 
 	if (plot) {
 	  ofstream out, out1, out2;

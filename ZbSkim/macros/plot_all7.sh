@@ -19,6 +19,7 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp7.C+\(\"w_first_bjet_pt\",1,$i,0,$n\)
   root -l -q -b DataMCComp7.C+\(\"w_first_bjet_eta\",1,$i,0,$n\)
+  root -l -q -b DataMCComp7.C+\(\"w_first_bjet_eta_abs\",1,$i,0,$n\)
   root -l -q -b DataMCComp7.C+\(\"w_pt_Z_ee\",1,$i,0\)
   root -l -q -b DataMCComp7.C+\(\"w_pt_Z_mm\",1,$i,0\)
   root -l -q -b DataMCComp7.C+\(\"w_Ht\",1,$i,0\)
@@ -57,6 +58,7 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp7.C+\(\"w_first_bjet_pt\",1,$i,1\)
   root -l -q -b DataMCComp7.C+\(\"w_first_bjet_eta\",1,$i,1\)
+  root -l -q -b DataMCComp7.C+\(\"w_first_bjet_eta_abs\",1,$i,1\)
   root -l -q -b DataMCComp7.C+\(\"w_pt_Z_ee\",1,$i,1\)
   root -l -q -b DataMCComp7.C+\(\"w_pt_Z_mm\",1,$i,1\)
   root -l -q -b DataMCComp7.C+\(\"w_Ht\",1,$i,1\)

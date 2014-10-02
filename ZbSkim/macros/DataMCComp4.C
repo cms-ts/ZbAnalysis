@@ -183,18 +183,14 @@ if (numB==2) {
 	string file = title;
 
         if (numB==0) {
-	if (file.find("_b")==string::npos) {
-	  if (file.find("_jet_")!=string::npos) {
-	    file.insert(file.find("_jet_")+1, "b");
-	  } else {
-	    file = file + "_b";
+	  if (file.find("_b")==string::npos) {
+	    if (file.find("_jet_")!=string::npos) {
+	      file.insert(file.find("_jet_")+1, "b");
+	    } else {
+	      file = file + "_b";
+	    }
 	  }
-	}
         }
- 
-        //if (numB!=0) {
-	  //file = title;
-        //}
 
 	TFile* data=0;
 	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/xsecs" + dirbSel + "/" + file + "_xsecs.root").c_str());
@@ -362,12 +358,12 @@ if (numB==2) {
 	if (title=="w_pt_Z_ee_b" || title=="w_pt_Z_mm_b") kreg = 10; // ~OK
 	if (title=="w_pt_Z_ee" || title=="w_pt_Z_mm") kreg = 9;
         if (title=="w_DR_eeb_min" || title=="w_DR_mmb_min") kreg = 8;
-        if (title=="w_DR_eeb_max" || title=="w_DR_mmb_max") kreg = 9;
+        if (title=="w_DR_eeb_max" || title=="w_DR_mmb_max") kreg = 10;
         if (title=="w_Phi_star_ee_b" || title=="w_Phi_star_mm_b") kreg = 4;
         if (title=="w_bb_mass") kreg = 6;
         if (title=="w_delta_phi_2b") kreg = 4;
         if (title=="w_eebb_mass" || title=="w_mmbb_mass") kreg = 6;
-        if (title=="w_A_eeb" || title=="w_A_mmb") kreg = 6;
+        if (title=="w_A_eeb" || title=="w_A_mmb") kreg = 3;
 
 	if (method==0) {
 	  unfold_mc = new RooUnfoldSvd(&response, h_mc2_reco, kreg);

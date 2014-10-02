@@ -829,14 +829,25 @@ if (numB==2) {
 	h_data_b->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b->SetMarkerColor(kBlack);
 	h_data_b->SetLineColor(kBlack);
-	h_data_b->SetMarkerStyle(24);
+        if (isratio==0) {
+	  h_data_b->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_data_b->SetMarkerStyle(22);
+        }
 	h_data_b->SetMarkerSize(0.7);
 	h_data_b->SetStats(0);
 	if (isratio==1) {
 	  h_data_b->Draw("EPX0SAME");
 	}
 
-	TLegend *leg = new TLegend(0.62, 0.580, 0.88, 0.88);
+        TLegend *leg = NULL;
+        if (isratio==0) {
+          leg = new TLegend(0.64, 0.590, 0.88, 0.88);
+        }
+        if (isratio) {
+          leg = new TLegend(0.52, 0.510, 0.90, 0.88);
+        }
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
@@ -937,7 +948,7 @@ if (numB==2) {
 	  if (drawInclusive) h_data->Draw("EPX0SAME");
 
 	  if (ilepton==1) {
-	    if (drawInclusive) leg->AddEntry(h_data,"Z(#rightarrow ee) DATA","p");
+	    if (drawInclusive) leg->AddEntry(h_data,"Z(#rightarrow ee)+j DATA","p");
 	    leg->AddEntry(h_data_b,"Z(#rightarrow ee)+b DATA","p");
 	    //leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph","l");
@@ -945,7 +956,7 @@ if (numB==2) {
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow ee) Powheg","l");
 	  }
 	  if (ilepton==2){
-	    if (drawInclusive) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu) DATA","p");
+	    if (drawInclusive) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+j DATA","p");
 	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu)+b DATA","p");
 	    //leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph","l");
@@ -956,18 +967,18 @@ if (numB==2) {
 
 	if (isratio==1) {
 	  if (ilepton==1) {
-	    leg->AddEntry(h_data_b,"Z(#rightarrow ee) DATA","p");
+	    leg->AddEntry(h_data_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] DATA","p");
 	    //leg->AddEntry(h_mc1b_b,"Z(#rightarrow ee) MC","l");
-	    leg->AddEntry(h_mcg_b,"Z(#rightarrow ee) MadGraph","l");
-	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow ee) Sherpa","l");
-	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow ee) Powheg","l");
+	    leg->AddEntry(h_mcg_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j]","l");
+	    leg->AddEntry(h_mcg1_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j]","l");
+	    leg->AddEntry(h_mcg2_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j]","l");
 	  }
 	  if (ilepton==2){
-	    leg->AddEntry(h_data_b,"Z(#rightarrow #mu#mu) DATA","p");
+	    leg->AddEntry(h_data_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] DATA","p");
 	    //leg->AddEntry(h_mc1b_b,"Z(#rightarrow #mu#mu) MC","l");
-	    leg->AddEntry(h_mcg_b,"Z(#rightarrow #mu#mu) MadGraph","l");
-	    leg->AddEntry(h_mcg1_b,"Z(#rightarrow #mu#mu) Sherpa","l");
-	    leg->AddEntry(h_mcg2_b,"Z(#rightarrow #mu#mu) Powheg","l");
+	    leg->AddEntry(h_mcg_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] MadGraph","l");
+	    leg->AddEntry(h_mcg1_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] Sherpa","l");
+	    leg->AddEntry(h_mcg2_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] Powheg","l");
 	  }
 	}
 
@@ -1002,7 +1013,12 @@ if (numB==2) {
 	h_M->GetYaxis()->SetTitleOffset(0.21);
 	h_M->GetYaxis()->SetTickLength(0.02);
 
-	h_M->SetMarkerStyle(24);
+        if (isratio==0) {
+          h_M->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_M->SetMarkerStyle(22);
+        }
 	h_M->Draw("EPX0");
 
 	if (isratio==0) {
@@ -1059,7 +1075,12 @@ if (numB==2) {
 	h_S->GetYaxis()->SetTitleOffset(0.21);
 	h_S->GetYaxis()->SetTickLength(0.02);
 
-	h_S->SetMarkerStyle(24);
+        if (isratio==0) {
+          h_S->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_S->SetMarkerStyle(22);
+        }
 	h_S->Draw("EPX0");
 
 	if (isratio==0) {
@@ -1117,7 +1138,12 @@ if (numB==2) {
 	h_P->GetYaxis()->SetTitleOffset(0.32);
 	h_P->GetYaxis()->SetTickLength(0.02);
 
-	h_P->SetMarkerStyle(24);
+        if (isratio==0) {
+          h_P->SetMarkerStyle(24);
+        }
+        if (isratio==1) {
+          h_P->SetMarkerStyle(22);
+        }
 	h_P->Draw("EPX0");
 
 	if (isratio==0) {
