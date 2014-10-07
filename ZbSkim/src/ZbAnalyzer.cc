@@ -50,6 +50,13 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "DataFormats/Common/interface/View.h"
+#include "DataFormats/BTauReco/interface/TrackIPData.h"
+#include "DataFormats/Common/interface/RefToBase.h"
+#include "DataFormats/JetReco/interface/Jet.h"
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/TrackReco/interface/TrackFwd.h"
+#include "DataFormats/BTauReco/interface/TrackIPTagInfo.h"
+
 #include "TH1F.h"
 #include "TH2F.h"
 #include "TProfile2D.h"
@@ -237,6 +244,14 @@ private:
   TH1F*     w_tracks;
   TH1F*     h_recoVTX;
   TH1F*     w_recoVTX;
+  TH1F*     w_dxy;   
+  TH1F*     b_dxy;   
+  TH1F*     c_dxy;   
+  TH1F*     t_dxy;   
+  TH1F*     w_dxy_sig;   
+  TH1F*     b_dxy_sig;   
+  TH1F*     c_dxy_sig;   
+  TH1F*     t_dxy_sig;   
 
   TH1F*     w_bjetmultiplicity_exc;
   TH1F*     b_bjetmultiplicity_exc;
@@ -984,6 +999,15 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   w_tracks = 	        fs->make < TH1F > ("w_tracks",          "w_tracks;N_tracks", 100, 0, 2500);
   h_recoVTX =           fs->make < TH1F > ("h_recoVTX",         "h_recoVTX;N_vtx", 40, 0., 40.);
   w_recoVTX =           fs->make < TH1F > ("w_recoVTX",         "w_recoVTX;N_vtx", 40, 0., 40.);
+  w_dxy =               fs->make < TH1F > ("w_dxy",             "w_dxy;w_dxy", 50, -0.1, 0.1);
+  b_dxy =               fs->make < TH1F > ("b_dxy",             "b_dxy;b_dxy", 50, -0.1, 0.1);
+  c_dxy =               fs->make < TH1F > ("c_dxy",             "c_dxy;c_dxy", 50, -0.1, 0.1);
+  t_dxy =               fs->make < TH1F > ("t_dxy",             "t_dxy;t_dxy", 50, -0.1, 0.1);
+  w_dxy_sig =           fs->make < TH1F > ("w_dxy_sig",         "w_dxy_sig;w_dxy_sig", 50, -20, 80.);
+  b_dxy_sig =           fs->make < TH1F > ("b_dxy_sig",         "b_dxy_sig;b_dxy_sig", 50, -20, 80.);
+  c_dxy_sig =           fs->make < TH1F > ("c_dxy_sig",         "c_dxy_sig;c_dxy_sig", 50, -20, 80.);
+  t_dxy_sig =           fs->make < TH1F > ("t_dxy_sig",         "t_dxy_sig;t_dxy_sig", 50, -20, 80.);
+  
 
   w_bjetmultiplicity_exc =   fs->make < TH1F > ("w_bjetmultiplicity_exc", "w_bjetmultiplicity_exc;N_bjets", 8, 0.5, 8.5);
   b_bjetmultiplicity_exc =   fs->make < TH1F > ("b_bjetmultiplicity_exc", "b_bjetmultiplicity_exc;N_bjets", 8, 0.5, 8.5);
@@ -1766,6 +1790,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   // Get tracks
   edm::Handle < vector < reco::Track > > tracks;
   iEvent.getByLabel ("generalTracks", tracks);
+          
+  //edm::Handle<reco::TrackIPTagInfoCollection> ipTagInfos;
+  //iEvent.getByLabel("impactParameterTagInfos",ipTagInfos);
 
   // Get METs
   edm::Handle < vector < pat::MET > > mets;
@@ -3193,23 +3220,37 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   double flightd_sig = 0.0;
   double N_SV = 0.0;
   double SV_NTracks = 0.0;
+  double dxy = 0.0;
+  double dxy_sig = 0.0;
 
   if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection) {
 
     reco::SecondaryVertexTagInfo const * svTagInfos = vect_bjets[0].tagInfoSecondaryVertex("secondaryVertex");
-    reco::SecondaryVertexTagInfo const * svTagInfos_sub;
+    reco::TrackIPTagInfo const * ipTagInfos = vect_bjets[0].tagInfoTrackIP("impactParameter");
+    reco::SecondaryVertexTagInfo const * svTagInfos_sub = 0;
 
     if (Nb > 1) {
       svTagInfos_sub = vect_bjets[1].tagInfoSecondaryVertex("secondaryVertex");
     }
-    
+   
+    // bTagging Observables//
+
     if (svTagInfos && svTagInfos->nVertices() > 0) {
       flightd = svTagInfos->flightDistance(0, true).value();
       flightd_sig = svTagInfos->flightDistance(0, true).value() / svTagInfos->flightDistance(0, true).error();
       N_SV = svTagInfos->nVertices();
       SV_NTracks = svTagInfos->secondaryVertex(0).nTracks();
     }
-
+    
+    std::vector<reco::TrackIPTagInfo::TrackIPData> const & trackIPData =  ipTagInfos->impactParameterData();
+    std::vector<size_t> trackIndexes ( ipTagInfos->sortedIndexes(reco::TrackIPTagInfo::IP2DSig) );
+    std::vector<size_t> trackIndexes2( ipTagInfos->sortedIndexes(reco::TrackIPTagInfo::IP2DValue) );
+    
+    for (std::vector<size_t>::const_iterator it = trackIndexes.begin(); it != trackIndexes.end(); ++it) {     
+       dxy = trackIPData[trackIndexes2[*it]].ip2d.value();
+       dxy_sig = trackIPData[trackIndexes[*it]].ip2d.significance();
+    }
+    
     if (svTagInfos && svTagInfos->nVertices() > 0) {
       ROOT::Math::LorentzVector< ROOT::Math::PxPyPzM4D<double> > sumVecJet;
       for (reco::Vertex::trackRef_iterator track = svTagInfos->secondaryVertex(0).tracks_begin(); track != svTagInfos->secondaryVertex(0).tracks_end(); ++track) {
@@ -3263,6 +3304,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     w_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
     w_flightd->Fill (flightd, MyWeight*scalFac_b);
     w_flightd_sig->Fill (flightd_sig, MyWeight*scalFac_b);
+    w_dxy->Fill (dxy, MyWeight*scalFac_b);
+    w_dxy_sig->Fill (dxy_sig, MyWeight*scalFac_b);
     w_N_SV->Fill (N_SV, MyWeight*scalFac_b);
     w_SV_NTracks->Fill (SV_NTracks, MyWeight*scalFac_b);
     if (Nb > 1) { 
@@ -3275,6 +3318,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       t_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
       t_flightd->Fill (flightd, MyWeight*scalFac_b);
       t_flightd_sig->Fill (flightd_sig, MyWeight*scalFac_b);
+      t_dxy->Fill (dxy, MyWeight*scalFac_b);
+      t_dxy_sig->Fill (dxy_sig, MyWeight*scalFac_b);
       t_N_SV->Fill (N_SV, MyWeight*scalFac_b);
       t_SV_NTracks->Fill (SV_NTracks, MyWeight*scalFac_b);
       if (Nb > 1) {
@@ -3288,6 +3333,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       b_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
       b_flightd->Fill (flightd, MyWeight*scalFac_b);
       b_flightd_sig->Fill (flightd_sig, MyWeight*scalFac_b);
+      b_dxy->Fill (dxy, MyWeight*scalFac_b);
+      b_dxy_sig->Fill (dxy_sig, MyWeight*scalFac_b);
       b_N_SV->Fill (N_SV, MyWeight*scalFac_b);
       b_SV_NTracks->Fill (SV_NTracks, MyWeight*scalFac_b);
       if (Nb == 1 && numB_ == 1 && findBjet(vect_jets, vect_bjets)) {
@@ -3304,6 +3351,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_SVTX_mass->Fill (sumVertexMass, MyWeight*scalFac_b);
       c_flightd->Fill (flightd, MyWeight*scalFac_b);
       c_flightd_sig->Fill (flightd_sig, MyWeight*scalFac_b);
+      c_dxy->Fill (dxy, MyWeight*scalFac_b);
+      c_dxy_sig->Fill (dxy_sig, MyWeight*scalFac_b);
       c_N_SV->Fill (N_SV, MyWeight*scalFac_b);
       c_SV_NTracks->Fill (SV_NTracks, MyWeight*scalFac_b);
       if (Nb > 1) {      
