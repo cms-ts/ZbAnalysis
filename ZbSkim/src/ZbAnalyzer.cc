@@ -782,6 +782,11 @@ private:
   TH1F*     c_secondvtx_N;
   TH1F*     t_secondvtx_N;
 
+  TH1F*     w_CSV_NOVTX;
+  TH1F*     b_CSV_NOVTX;
+  TH1F*     c_CSV_NOVTX;
+  TH1F*     t_CSV_NOVTX;
+
   TH1F*     w_secondvtx_N_zoom;
   TH1F*     b_secondvtx_N_zoom;
   TH1F*     c_secondvtx_N_zoom;
@@ -1525,6 +1530,11 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   w_secondvtx_N_mass =    fs->make < TH1F > ("w_secondvtx_N_mass",   "w_secondvtx_N_mass", 20, 0.898, 1);
   w_secondvtx_N_nomass =  fs->make < TH1F > ("w_secondvtx_N_nomass", "w_secondvtx_N_nomass", 20, 0.898, 1);
 
+  w_CSV_NOVTX =         fs->make < TH1F > ("w_CSV_NOVTX",        "w_CSV_NOVTX", 50, 0, 1);
+  b_CSV_NOVTX =         fs->make < TH1F > ("b_CSV_NOVTX",        "b_CSV_NOVTX", 50, 0, 1);
+  c_CSV_NOVTX =         fs->make < TH1F > ("c_CSV_NOVTX",        "c_CSV_NOVTX", 50, 0, 1);
+  t_CSV_NOVTX =         fs->make < TH1F > ("t_CSV_NOVTX",        "t_CSV_NOVTX", 50, 0, 1);
+
   b_secondvtx_N =         fs->make < TH1F > ("b_secondvtx_N",        "b_secondvtx_N", 50, 0, 1);
   b_secondvtx_N_zoom =    fs->make < TH1F > ("b_secondvtx_N_zoom",   "b_secondvtx_N_zoom", 20, 0.898, 1);
   b_secondvtx_N_mass =    fs->make < TH1F > ("b_secondvtx_N_mass",   "b_secondvtx_N_mass", 20, 0.898, 1);
@@ -1879,6 +1889,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   double Ht = 0;
 
   double MyWeight = 1;
+  double mcWeight2 = 1;
 
   double scalFac_first_e = 1;
   double scalFac_second_e = 1;
@@ -1923,6 +1934,17 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     double mcWeight = genEventInfoHandle->weight();
 
     MyWeight = MyWeight*mcWeight;
+
+  }
+
+  edm::Handle <std::vector<double>>  genEventInfoHandle2;
+   
+  if (iEvent.getByLabel (edm::InputTag("genBDW", "GenBDWeight"), genEventInfoHandle2)) {
+
+     //cout<<"quisono"<<endl;
+     mcWeight2 = genEventInfoHandle2->empty() ? 1 : (*genEventInfoHandle2)[0];
+     //cout<<mcWeight2<<endl;
+     MyWeight = MyWeight*mcWeight2;
 
   }
 
@@ -2157,6 +2179,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   // ++++++++ VERTICES
 
   bool vtx_cut = true;
+  bool nosvtx  = false;
 
   edm::Handle < vector < reco::Vertex > > vertices;
   iEvent.getByLabel (edm::InputTag ("goodOfflinePrimaryVertices"), vertices);
@@ -2292,16 +2315,28 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 	  c_secondvtx_N->Fill (discrCSV, MyWeight);
 	}
       }
-
+      
+      if ((ee_event || mm_event || em_event) && vtx_cut && met_cut && nosvtx) {
+        w_CSV_NOVTX->Fill (discrCSV, MyWeight);
+	if (ist) {
+	  t_CSV_NOVTX->Fill (discrCSV, MyWeight);
+	}
+	if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 5) {
+	  b_CSV_NOVTX->Fill (discrCSV, MyWeight);
+	}
+	if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
+	  c_CSV_NOVTX->Fill (discrCSV, MyWeight);
+	}
+      }
+      
       if (discrCSV > 0.898 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5)) {
-
 	++Nb;
 	//cout << Nb << endl;
         vect_bjets.push_back (jetNew);
       }
     }
   }
- 
+  
   if (Nb != 1 && numB_ == 1) {
      b_selection = false;
   }
@@ -3234,6 +3269,11 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
    
     // bTagging Observables//
+
+    if ((svTagInfos->nVertices())<=0) {
+      nosvtx=true;
+      //cout<<"novtx found"<<endl;
+    } 
 
     if (svTagInfos && svTagInfos->nVertices() > 0) {
       flightd = svTagInfos->flightDistance(0, true).value();
