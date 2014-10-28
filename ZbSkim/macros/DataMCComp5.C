@@ -590,7 +590,7 @@ if (numB==2) {
 	h_ratio->Divide(h_data_fit);
 
 	h_ratio->SetTitle("");
-        h_ratio->SetStats(0);
+        //h_ratio->SetStats(0);
 
 	h_ratio->GetXaxis()->SetTitleOffset(0.9);
 	h_ratio->GetXaxis()->SetTitleSize(0.1);
