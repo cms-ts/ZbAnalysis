@@ -6,6 +6,7 @@
 #include "RooUnfoldSvd.h"
 #include "RooUnfoldBayes.h"
 #include "RooUnfoldBinByBin.h"
+#include "RooUnfoldInvert.h"
 #include "RooUnfoldResponse.h"
 #include "RooUnfoldParms.h"
 #include "TSVDUnfold_local.h"
@@ -15,7 +16,7 @@
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
-void DataMCComp4(int irun=0, string title="", int plot=0, int ilepton=1, int imode=4, int method=0, int numB=0) {
+void DataMCComp4(int irun=0, string title="", int plot=0, int ilepton=1, int imode=4, int method=3, int numB=0) {
 
 bool verbose = false;
 // bool verbose = true;
@@ -183,14 +184,18 @@ if (numB==2) {
 	string file = title;
 
         if (numB==0) {
-	  if (file.find("_b")==string::npos) {
-	    if (file.find("_jet_")!=string::npos) {
-	      file.insert(file.find("_jet_")+1, "b");
-	    } else {
-	      file = file + "_b";
-	    }
+	if (file.find("_b")==string::npos) {
+	  if (file.find("_jet_")!=string::npos) {
+	    file.insert(file.find("_jet_")+1, "b");
+	  } else {
+	    file = file + "_b";
 	  }
+	}
         }
+ 
+        //if (numB!=0) {
+	  //file = title;
+        //}
 
 	TFile* data=0;
 	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/xsecs" + dirbSel + "/" + file + "_xsecs.root").c_str());
@@ -358,12 +363,12 @@ if (numB==2) {
 	if (title=="w_pt_Z_ee_b" || title=="w_pt_Z_mm_b") kreg = 10; // ~OK
 	if (title=="w_pt_Z_ee" || title=="w_pt_Z_mm") kreg = 9;
         if (title=="w_DR_eeb_min" || title=="w_DR_mmb_min") kreg = 8;
-        if (title=="w_DR_eeb_max" || title=="w_DR_mmb_max") kreg = 10;
+        if (title=="w_DR_eeb_max" || title=="w_DR_mmb_max") kreg = 9;
         if (title=="w_Phi_star_ee_b" || title=="w_Phi_star_mm_b") kreg = 4;
         if (title=="w_bb_mass") kreg = 6;
         if (title=="w_delta_phi_2b") kreg = 4;
         if (title=="w_eebb_mass" || title=="w_mmbb_mass") kreg = 6;
-        if (title=="w_A_eeb" || title=="w_A_mmb") kreg = 3;
+        if (title=="w_A_eeb" || title=="w_A_mmb") kreg = 6;
 
 	if (method==0) {
 	  unfold_mc = new RooUnfoldSvd(&response, h_mc2_reco, kreg);
@@ -380,6 +385,11 @@ if (numB==2) {
 	if (method==2) {
 	  unfold_mc = new RooUnfoldBinByBin(&response, h_mc2_reco);
 	  unfold_data = new RooUnfoldBinByBin(&response, h_data_reco);
+	}
+	
+	if (method==3) {
+	  unfold_mc = new RooUnfoldInvert(&response, h_mc2_reco);
+	  unfold_data = new RooUnfoldInvert(&response, h_data_reco);
 	}
 
 	if (!verbose) {
@@ -587,6 +597,7 @@ if (numB==2) {
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+        if (method==3) t->DrawLatex(0.13,0.85,"MatrixInversion");
 
         pad1->Update();
         c1->Update();
@@ -661,6 +672,7 @@ if (numB==2) {
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+        if (method==3) t->DrawLatex(0.13,0.85,"MatrixInversion");
 
 	int nv = response.GetNbinsMeasured();
 	if (response.UseOverflowStatus()) nv = nv + 2;
@@ -727,6 +739,7 @@ if (numB==2) {
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+        if (method==3) t->DrawLatex(0.13,0.85,"MatrixInversion");
 
 	TH2F* h_err_cov;
 	err = RooUnfold::kCovariance;
@@ -750,6 +763,7 @@ if (numB==2) {
         if (method==0) t->DrawLatex(0.01,0.95,"SVD");
         if (method==1) t->DrawLatex(0.01,0.95,"Bayes");
         if (method==2) t->DrawLatex(0.01,0.95,"BinByBin");
+        if (method==3) t->DrawLatex(0.13,0.85,"MatrixInversion");
 
 	RooUnfoldParms* parms;
 	err = RooUnfold::kErrors;
@@ -785,6 +799,8 @@ if (numB==2) {
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+        if (method==3) t->DrawLatex(0.13,0.85,"MatrixInversion");
+
 	if (method==0) {
 	  TMarker *marker = new TMarker(kreg,hParmChi2->GetYaxis()->GetXmin(),20);
 	  marker->SetMarkerColor(kRed);
@@ -796,6 +812,7 @@ if (numB==2) {
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+        if (method==3) t->DrawLatex(0.13,0.85,"MatrixInversion");
 	if (method==0) {
 	  TMarker *marker = new TMarker(kreg,hParmErr->GetYaxis()->GetXmin(),20);
 	  marker->SetMarkerColor(kRed);
@@ -807,6 +824,7 @@ if (numB==2) {
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+        if (method==3) t->DrawLatex(0.13,0.85,"MatrixInversion");
 	if (method==0) {
 	  TMarker *marker = new TMarker(kreg,hParmRes->GetYaxis()->GetXmin(),20);
 	  marker->SetMarkerColor(kRed);
@@ -818,6 +836,7 @@ if (numB==2) {
         if (method==0) t->DrawLatex(0.13,0.85,"SVD");
         if (method==1) t->DrawLatex(0.13,0.85,"Bayes");
         if (method==2) t->DrawLatex(0.13,0.85,"BinByBin");
+        if (method==3) t->DrawLatex(0.13,0.85,"MatrixInversion");
 	if (method==0) {
 	  TMarker *marker = new TMarker(kreg,hParmRms->GetYaxis()->GetXmin(),20);
 	  marker->SetMarkerColor(kRed);
