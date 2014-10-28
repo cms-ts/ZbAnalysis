@@ -1943,8 +1943,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
      //cout<<"quisono"<<endl;
      mcWeight2 = genEventInfoHandle2->empty() ? 1 : (*genEventInfoHandle2)[0];
-     //cout<<mcWeight2<<endl;
+     mcWeight2 = 1;
      MyWeight = MyWeight*mcWeight2;
+     //cout<<mcWeight2<<endl;
 
   }
 
