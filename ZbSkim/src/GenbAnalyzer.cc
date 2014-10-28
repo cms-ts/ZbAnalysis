@@ -74,6 +74,7 @@
 #include "RecoBTag/SecondaryVertex/interface/TrackKinematics.h"
 #include "Rivet/Projections/FastJets.hh"
 
+
 //
 // class declaration
 //
@@ -150,6 +151,7 @@ private:
   edm::LumiReWeighting LumiWeights_;
 
   TH1F*     h_gen_weights;
+  TH1F*     h_gen2_weights;
 
   TH1F*     h_jetmultiplicity;
   TH1F*     h_jet_pt;
@@ -260,6 +262,7 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   edm::Service < TFileService > fs;
 
   h_gen_weights     =   fs->make < TH1F > ("h_gen_weights",      "h_gen_weights", 2, 0, 2);
+  h_gen2_weights    =   fs->make < TH1F > ("h_gen2_weights",     "h_gen2_weights", 2, 0, 2);
 
   w_jetmultiplicity =   fs->make < TH1F > ("w_jetmultiplicity",  "w_jetmultiplicity;", 8, 0.5, 8.5);
   w_first_ele_pt =      fs->make < TH1F > ("w_first_ele_pt",     "w_first_ele_pt; [GeV]", 50, 0., 450.);
@@ -517,6 +520,17 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     MyWeight = MyWeight*mcWeight;
 
   }
+
+  edm::Handle <std::vector<double>>  genEventInfoHandle2;
+
+  if (iEvent.getByLabel ("GenBDWeight", genEventInfoHandle2)) {
+
+    double mcWeight2 = genEventInfoHandle2->empty() ? 1 : (*genEventInfoHandle2)[0];
+
+    MyWeight = MyWeight*mcWeight2;
+
+  }
+
 
   // +++++++++ ELECTRONS
 
