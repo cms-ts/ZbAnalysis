@@ -153,6 +153,14 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass\",1,$i,0,0,$n,1\)
   root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass_sub\",1,$i,0,0,$n\)
 
+  root -l -q -b DataMCComp.C+\($d,\"w_flightd\",1,$i,0,0,$n,1\)
+  root -l -q -b DataMCComp.C+\($d,\"w_flightd_sig\",1,$i,0,0,$n,1\)
+  root -l -q -b DataMCComp.C+\($d,\"w_dxy\",1,$i,0,0,$n,1\)
+  root -l -q -b DataMCComp.C+\($d,\"w_dxy_sig\",1,$i,0,0,$n,1\)
+  root -l -q -b DataMCComp.C+\($d,\"w_SV_NTracks\",1,$i,0,0,$n,1\)
+  root -l -q -b DataMCComp.C+\($d,\"w_N_SV\",1,$i,0,0,$n,1\)
+
+
   root -l -q -b DataMCComp.C+\($d,\"w_secondvtx_N_zoom\",1,$i,0,0,$n\)
 
   root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,0,0,$n,1\)
@@ -271,6 +279,13 @@ root -l -q -b DataMCComp.C+\($d,\"w_third_bjet_pt\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_third_bjet_eta\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_third_bjet_eta_abs\",1,3,0,0,$n\)
 
+root -l -q -b DataMCComp.C+\($d,\"w_flightd\",1,3,0,0,$n\)
+root -l -q -b DataMCComp.C+\($d,\"w_flightd_sig\",1,3,0,0,$n\)
+root -l -q -b DataMCComp.C+\($d,\"w_dxy\",1,3,0,0,$n\)
+root -l -q -b DataMCComp.C+\($d,\"w_dxy_sig\",1,3,0,0,$n\)
+root -l -q -b DataMCComp.C+\($d,\"w_SV_NTracks\",1,3,0,0,$n\)
+root -l -q -b DataMCComp.C+\($d,\"w_N_SV\",1,3,0,0,$n\)
+
 root -l -q -b DataMCComp.C+\($d,\"w_DR_emb_min\",1,3,0,0,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_DR_emb_max\",1,3,0,0,$n\)
 
@@ -379,5 +394,9 @@ root -l -q -b DataMCComp.C+\($d,\"w_MET_sign_b\",1,3,0,1,$n\)
 
 root -l -q -b DataMCComp.C+\($d,\"w_mass_em_wide\",1,3,0,1,$n\)
 root -l -q -b DataMCComp.C+\($d,\"w_mass_em_b_wide\",1,3,0,1,$n\)
+
+root -l -q -b DataMCComp.C+\($d,\"w_JBP\",1,3,0,1,$n\)
+root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,3,0,1,$n\)
+root -l -q -b DataMCComp.C+\($d,\"w_SVTX_mass\",1,3,0,1,$n\)
 
 exit
