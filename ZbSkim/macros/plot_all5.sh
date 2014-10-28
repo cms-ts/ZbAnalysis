@@ -156,6 +156,13 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp5.C+\($d,\"w_third_bjet_eta\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_third_bjet_eta_abs\",1,$i,0,$n\)
 
+  root -l -q -b DataMCComp5.C+\($d,\"w_flightd\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_flightd_sig\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_dxy\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_dxy_sig\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_SV_NTracks\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_N_SV\",1,$i,0,$n\)
+
   root -l -q -b DataMCComp5.C+\($d,\"w_DR_eeb_min\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_DR_eeb_max\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_DR_mmb_min\",1,$i,0,$n\)
