@@ -11,8 +11,20 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source = cms.Source("PoolSource",
 	# replace 'myfile.root' with the source file you want to use
         fileNames = cms.untracked.vstring(
-		'file:patTuple_318_1_zF3.root'
+		'file:patTuple_1_1_IPe.root'
         )
+)
+
+process.genBDW = cms.EDProducer('GenBWeightProducer',
+	pprop = cms.FileInPath("ZbAnalysis/ZbSkim/data/bHProp.txt"),
+	p411 = cms.FileInPath("ZbAnalysis/ZbSkim/data/fHadron_411_decaytable.txt"),
+	p421 = cms.FileInPath("ZbAnalysis/ZbSkim/data/fHadron_421_decaytable.txt"),
+	p431 = cms.FileInPath("ZbAnalysis/ZbSkim/data/fHadron_431_decaytable.txt"),
+	p441 = cms.FileInPath("ZbAnalysis/ZbSkim/data/fHadron_441_decaytable.txt"),
+	p511 = cms.FileInPath("ZbAnalysis/ZbSkim/data/fHadron_511_decaytable.txt"),
+	p521 = cms.FileInPath("ZbAnalysis/ZbSkim/data/fHadron_521_decaytable.txt"),
+	p531 = cms.FileInPath("ZbAnalysis/ZbSkim/data/fHadron_531_decaytable.txt"),
+	p541 = cms.FileInPath("ZbAnalysis/ZbSkim/data/fHadron_541_decaytable.txt")
 )
 
 process.demoEle = cms.EDProducer('ZbAnalyzer',
@@ -666,8 +678,9 @@ process.demoEleMuoJerDown2b = cms.EDProducer('ZbAnalyzer',
         JER     = cms.untracked.double(-1),
 	numB = cms.untracked.double(2)
 )
+#process.dump = cms.EDAnalyzer("EventContentAnalyzer")
 
 process.TFileService = cms.Service("TFileService",
 	fileName = cms.string('ZbTree.root')
 )
-process.p = cms.Path(process.demoEle*process.demoEle1b*process.demoEle2b*process.demoElePum*process.demoElePum1b*process.demoElePum2b*process.demoElePup*process.demoElePup1b*process.demoElePup2b*process.demoEleUp*process.demoEleUp1b*process.demoEleUp2b*process.demoEleDown*process.demoEleDown1b*process.demoEleDown2b*process.demoMuo*process.demoMuo1b*process.demoMuo2b*process.demoMuoPum*process.demoMuoPum1b*process.demoMuoPum2b*process.demoMuoPup*process.demoMuoPup1b*process.demoMuoPup2b*process.demoMuoUp*process.demoMuoUp1b*process.demoMuoUp2b*process.demoMuoDown*process.demoMuoDown1b*process.demoMuoDown2b*process.demoEleBtag*process.demoEleBtag1b*process.demoEleBtag2b*process.demoMuoBtag*process.demoMuoBtag1b*process.demoMuoBtag2b*process.demoEle2*process.demoMuo2*process.demoEleMuo*process.demoEleMuo1b*process.demoEleMuo2b*process.demoEleMuoUp*process.demoEleMuoUp1b*process.demoEleMuoUp2b*process.demoEleMuoDown*process.demoEleMuoDown1b*process.demoEleMuoDown2b*process.demoEleMuoPum*process.demoEleMuoPum1b*process.demoEleMuoPum2b*process.demoEleMuoPup*process.demoEleMuoPup1b*process.demoEleMuoPup2b*process.demoElePur*process.demoElePur1b*process.demoElePur2b*process.demoMuoPur*process.demoMuoPur1b*process.demoMuoPur2b*process.demoEleMuoPur*process.demoEleMuoPur1b*process.demoEleMuoPur2b*process.demoEleDR*process.demoEleDR1b*process.demoEleDR2b*process.demoMuoDR*process.demoMuoDR1b*process.demoMuoDR2b*process.demoEleMuoDR*process.demoEleMuoDR1b*process.demoEleMuoDR2b*process.demoEleJerUp*process.demoEleJerUp1b*process.demoEleJerUp2b*process.demoEleJerDown*process.demoEleJerDown1b*process.demoEleJerDown2b*process.demoMuoJerUp*process.demoMuoJerUp1b*process.demoMuoJerUp2b*process.demoMuoJerDown*process.demoMuoJerDown1b*process.demoMuoJerDown2b*process.demoEleMuoJerUp*process.demoEleMuoJerUp1b*process.demoEleMuoJerUp2b*process.demoEleMuoJerDown*process.demoEleMuoJerDown1b*process.demoEleMuoJerDown2b)
+process.p = cms.Path(process.genBDW*process.demoEle*process.demoEle1b*process.demoEle2b*process.demoElePum*process.demoElePum1b*process.demoElePum2b*process.demoElePup*process.demoElePup1b*process.demoElePup2b*process.demoEleUp*process.demoEleUp1b*process.demoEleUp2b*process.demoEleDown*process.demoEleDown1b*process.demoEleDown2b*process.demoMuo*process.demoMuo1b*process.demoMuo2b*process.demoMuoPum*process.demoMuoPum1b*process.demoMuoPum2b*process.demoMuoPup*process.demoMuoPup1b*process.demoMuoPup2b*process.demoMuoUp*process.demoMuoUp1b*process.demoMuoUp2b*process.demoMuoDown*process.demoMuoDown1b*process.demoMuoDown2b*process.demoEleBtag*process.demoEleBtag1b*process.demoEleBtag2b*process.demoMuoBtag*process.demoMuoBtag1b*process.demoMuoBtag2b*process.demoEle2*process.demoMuo2*process.demoEleMuo*process.demoEleMuo1b*process.demoEleMuo2b*process.demoEleMuoUp*process.demoEleMuoUp1b*process.demoEleMuoUp2b*process.demoEleMuoDown*process.demoEleMuoDown1b*process.demoEleMuoDown2b*process.demoEleMuoPum*process.demoEleMuoPum1b*process.demoEleMuoPum2b*process.demoEleMuoPup*process.demoEleMuoPup1b*process.demoEleMuoPup2b*process.demoElePur*process.demoElePur1b*process.demoElePur2b*process.demoMuoPur*process.demoMuoPur1b*process.demoMuoPur2b*process.demoEleMuoPur*process.demoEleMuoPur1b*process.demoEleMuoPur2b*process.demoEleDR*process.demoEleDR1b*process.demoEleDR2b*process.demoMuoDR*process.demoMuoDR1b*process.demoMuoDR2b*process.demoEleMuoDR*process.demoEleMuoDR1b*process.demoEleMuoDR2b*process.demoEleJerUp*process.demoEleJerUp1b*process.demoEleJerUp2b*process.demoEleJerDown*process.demoEleJerDown1b*process.demoEleJerDown2b*process.demoMuoJerUp*process.demoMuoJerUp1b*process.demoMuoJerUp2b*process.demoMuoJerDown*process.demoMuoJerDown1b*process.demoMuoJerDown2b*process.demoEleMuoJerUp*process.demoEleMuoJerUp1b*process.demoEleMuoJerUp2b*process.demoEleMuoJerDown*process.demoEleMuoJerDown1b*process.demoEleMuoJerDown2b)
