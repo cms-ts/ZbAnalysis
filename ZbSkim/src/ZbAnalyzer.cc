@@ -493,6 +493,16 @@ private:
   TH1F*     c_third_bjet_eta_abs;
   TH1F*     t_third_bjet_eta_abs;
 
+  TH1F*     w_delta_j;
+  TH1F*     b_delta_j;
+  TH1F*     c_delta_j;
+  TH1F*     t_delta_j;
+
+  TH1F*     w_delta_j_n;
+  TH1F*     b_delta_j_n;
+  TH1F*     c_delta_j_n;
+  TH1F*     t_delta_j_n;
+
   TH1F*     w_first_ele_pt;
   TH1F*     w_first_ele_pt_b;
   TH1F*     b_first_ele_pt;
@@ -869,6 +879,8 @@ private:
   TH1F*     b_JBP;
   TH1F*     c_JBP;
   TH1F*     t_JBP;
+  TH1F*     bbBkg_JBP;
+  TH1F*     bbSig_JBP;
 
   TH1F*     w_JBP_sub;
   TH1F*     b_JBP_sub;
@@ -1251,6 +1263,16 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_third_bjet_eta_abs =    fs->make < TH1F > ("c_third_bjet_eta_abs",   "c_third_bjet_eta_abs;abs(Eta)", 8, 0, 2.5);
   t_third_bjet_eta_abs =    fs->make < TH1F > ("t_third_bjet_eta_abs",   "t_third_bjet_eta_abs;abs(Eta)", 8, 0, 2.5);
 
+  w_delta_j =     fs->make < TH1F > ("w_delta_j",    "w_delta_j", 100, 0., 1.);
+  b_delta_j =     fs->make < TH1F > ("b_delta_j",    "b_delta_j", 100, 0., 1.);
+  c_delta_j =     fs->make < TH1F > ("c_delta_j",    "c_delta_j", 100, 0., 1.);
+  t_delta_j =     fs->make < TH1F > ("t_delta_j",    "t_delta_j", 100, 0., 1.);
+
+  w_delta_j_n =     fs->make < TH1F > ("w_delta_j_n",    "w_delta_j_n;[GeV]", 100, 0., 200.);
+  b_delta_j_n =     fs->make < TH1F > ("b_delta_j_n",    "b_delta_j_n;[GeV]", 100, 0., 200.);
+  c_delta_j_n =     fs->make < TH1F > ("c_delta_j_n",    "c_delta_j_n;[GeV]", 100, 0., 200.);
+  t_delta_j_n =     fs->make < TH1F > ("t_delta_j_n",    "t_delta_j_n;[GeV]", 100, 0., 200.);
+
   w_first_ele_pt =      fs->make < TH1F > ("w_first_ele_pt",    "w_first_ele_pt;P_t [GeV]", 50, 0., 450.);
   w_first_ele_pt_b =    fs->make < TH1F > ("w_first_ele_pt_b",  "w_first_ele_pt_b;P_t [GeV]", 50, 0., 450.);
   b_first_ele_pt =      fs->make < TH1F > ("b_first_ele_pt",    "b_first_ele_pt;P_t [GeV]", 50, 0., 450.);
@@ -1597,6 +1619,8 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_JBP       =     fs->make < TH1F > ("b_JBP",   "b_JBP", 50, 0, 3);
   c_JBP       =     fs->make < TH1F > ("c_JBP",   "c_JBP", 50, 0, 3);
   t_JBP       =     fs->make < TH1F > ("t_JBP",   "t_JBP", 50, 0, 3);
+  bbBkg_JBP   =     fs->make < TH1F > ("bbBkg_JBP",  "bbBkg_JBP", 50, 0, 3);
+  bbSig_JBP   =     fs->make < TH1F > ("bbSig_JBP",  "bbSig_JBP", 50, 0, 3);
 
   w_JBP_sub       =     fs->make < TH1F > ("w_JBP_sub",   "w_JBP_sub", 50, 0, 3);
   b_JBP_sub       =     fs->make < TH1F > ("b_JBP_sub",   "b_JBP_sub", 50, 0, 3);
@@ -2350,6 +2374,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   double delta_eta_2b = 999;
   double Deta_bb = 999;
   double DR_bb = 999;
+  double delta_j = 9999;
+  double delta_j_n = 9999;
 
   if (Nb > 1) {
       delta_phi_2b = fabs(vect_bjets[0].phi() - vect_bjets[1].phi());
@@ -2357,6 +2383,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       if (delta_phi_2b > acos(-1)) delta_phi_2b = 2 * acos(-1) - delta_phi_2b;
       DR_bb = TMath::Sqrt(delta_phi_2b*delta_phi_2b + delta_eta_2b*delta_eta_2b);
       Deta_bb = vect_bjets[0].eta() - vect_bjets[1].eta();
+      delta_j_n = fabs(vect_bjets[0].pt() + vect_bjets[1].pt());
+      delta_j = delta_j_n / (fabs(vect_bjets[0].pt()) + fabs(vect_bjets[1].pt()));
   }    
 
   double DR_jj = 999;
@@ -3500,9 +3528,11 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       b_JBP->Fill (discrJBP, MyWeight*scalFac_b);
       if (Nb == 1 && numB_ == 1 && findBjet(vect_jets, vect_bjets)) {
         bbBkg_BJP->Fill (discrBJP, MyWeight*scalFac_b);
+        bbBkg_JBP->Fill (discrJBP, MyWeight*scalFac_b);
       }
       if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
         bbSig_BJP->Fill (discrBJP, MyWeight*scalFac_b);
+        bbSig_JBP->Fill (discrJBP, MyWeight*scalFac_b);
       }            
       if (sumVertexMass > 0.0) {
         b_BJP_mass->Fill (discrBJP, MyWeight*scalFac_b);
@@ -3750,12 +3780,16 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     w_second_bjet_pt->Fill (vect_bjets[1].pt(), MyWeight*scalFac_b);
     w_second_bjet_eta->Fill (vect_bjets[1].eta(), MyWeight*scalFac_b);
     w_second_bjet_eta_abs->Fill (fabs(vect_bjets[1].eta()), MyWeight*scalFac_b);
+    w_delta_j->Fill (delta_j, MyWeight*scalFac_b);
+    w_delta_j_n->Fill (delta_j_n, MyWeight*scalFac_b);
     if (ist) {
       t_second_jet_pt_b->Fill (vect_jets[1].pt(), MyWeight*scalFac_b);
       t_second_jet_eta_b->Fill (vect_jets[1].eta(), MyWeight*scalFac_b);
       t_second_bjet_pt->Fill (vect_bjets[1].pt(), MyWeight*scalFac_b);
       t_second_bjet_eta->Fill (vect_bjets[1].eta(), MyWeight*scalFac_b);
       t_second_bjet_eta_abs->Fill (fabs(vect_bjets[1].eta()), MyWeight*scalFac_b);
+      t_delta_j->Fill (delta_j, MyWeight*scalFac_b);
+      t_delta_j_n->Fill (delta_j_n, MyWeight*scalFac_b);
     }
     if (!ist && isMC && fabs(vect_bjets[1].partonFlavour()) == 5) {
       b_second_jet_pt_b->Fill (vect_jets[1].pt(), MyWeight*scalFac_b);
@@ -3763,6 +3797,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       b_second_bjet_pt->Fill (vect_bjets[1].pt(), MyWeight*scalFac_b);
       b_second_bjet_eta->Fill (vect_bjets[1].eta(), MyWeight*scalFac_b);
       b_second_bjet_eta_abs->Fill (fabs(vect_bjets[1].eta()), MyWeight*scalFac_b);
+      b_delta_j->Fill (delta_j, MyWeight*scalFac_b);
+      b_delta_j_n->Fill (delta_j_n, MyWeight*scalFac_b);
     }
     if (!ist && isMC && fabs(vect_bjets[1].partonFlavour()) == 4) {
       c_second_jet_pt_b->Fill (vect_jets[1].pt(), MyWeight*scalFac_b);
@@ -3770,6 +3806,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_second_bjet_pt->Fill (vect_bjets[1].pt(), MyWeight*scalFac_b);
       c_second_bjet_eta->Fill (vect_bjets[1].eta(), MyWeight*scalFac_b);
       c_second_bjet_eta_abs->Fill (fabs(vect_bjets[1].eta()), MyWeight*scalFac_b);
+      c_delta_j->Fill (delta_j, MyWeight*scalFac_b);
+      c_delta_j_n->Fill (delta_j_n, MyWeight*scalFac_b);
     }
   }
 
