@@ -111,7 +111,7 @@ private:
 
     double w0n=1.0;
     double w1n=0.0;
-    
+     
     for (unsigned int i=0;i<jets.size();i++) {
       if ((fabs(jets[i].partonFlavour()) == 5 || fabs(jets[i].partonFlavour()) == 4)) {
         w0n = w0n * (1.0 - BtSF_->Val(jets[i].pt(), jets[i].eta()));
@@ -135,6 +135,36 @@ private:
       }
       w1n = w1n + w;
     }
+    
+    /*for (unsigned int i=0;i<jets.size();i++) {
+      if ((fabs(jets[i].partonFlavour()) == 5 || fabs(jets[i].partonFlavour()) == 4)) {
+        w0n = w0n * (1.0 - BtSFM_->Val(jets[i].pt(), jets[i].eta()));
+      } else {
+        if (fabs(jets[i].eta()<0.8))  w0n = w0n * (1.0 - LtSFe1_->Val(jets[i].pt(), jets[i].eta()));
+        if ((jets[i].eta()>=-1.6 && jets[i].eta()<=-0.8) || (jets[i].eta()>=0.8 && jets[i].eta()<=1.6)) w0n = w0n * (1.0 - LtSFe2_->Val(jets[i].pt(), jets[i].eta()));
+        if ((jets[i].eta()>=-2.4 && jets[i].eta()<-1.6) || (jets[i].eta()>1.6 && jets[i].eta()<=2.4)) w0n = w0n * (1.0 - LtSFe3_->Val(jets[i].pt(), jets[i].eta()));
+      }
+      double w=1.0;
+      for (unsigned int j=0;j<jets.size();j++) {
+        if (i!=j) {
+          if ((fabs(jets[j].partonFlavour()) == 5 || fabs(jets[j].partonFlavour()) == 4)) {
+            w = w * (1.0 - BtSFM_->Val(jets[j].pt(), jets[j].eta()));
+          } else {
+            if (fabs(jets[j].eta()<0.8)) w = w * (1.0 - LtSFe1_->Val(jets[j].pt(), jets[j].eta()));
+            if ((jets[j].eta()>=-1.6 && jets[j].eta()<=-0.8) || (jets[j].eta()>=0.8 && jets[j].eta()<=1.6)) w = w * (1.0 - LtSFe2_->Val(jets[j].pt(), jets[j].eta()));
+            if ((jets[j].eta()>=-2.4 && jets[j].eta()<-1.6) || (jets[j].eta()>1.6 && jets[j].eta()<=2.4)) w = w * (1.0 - LtSFe3_->Val(jets[j].pt(), jets[j].eta()));
+          }
+        }
+      }
+      if ((fabs(jets[i].partonFlavour()) == 5 || fabs(jets[i].partonFlavour()) == 4)) {
+        w = w * BtSFM_->Val(jets[i].pt(), jets[i].eta());
+      } else {
+        if (fabs(jets[i].eta()<0.8))     w = w *   (LtSFe1_->Val(jets[i].pt(), jets[i].eta()));
+        if ((jets[i].eta()>=-1.6 && jets[i].eta()<=-0.8) || (jets[i].eta()>=0.8 && jets[i].eta()<=1.6))     w = w *   (LtSFe2_->Val(jets[i].pt(), jets[i].eta()));
+        if ((jets[i].eta()>=-2.4 && jets[i].eta()<-1.6) || (jets[i].eta()>1.6 && jets[i].eta()<=2.4))     w = w *   (LtSFe3_->Val(jets[i].pt(), jets[i].eta()));
+      }
+      w1n = w1n + w;
+    }*/
 
     if (k==1) return (1.0-w0n);     // >= 1 b tagged jet
     if (k==2) return (1.0-w0n-w1n); // >= 2 b tagged jets
@@ -225,7 +255,11 @@ private:
   table* MuSF_;
   table* MuSF2_;
   table* BtSF_;
+  table* BtSFM_;
   table* LtSF_;
+  table* LtSFe1_;
+  table* LtSFe2_;
+  table* LtSFe3_;
 
   /****************** LEGEND *************************
 
@@ -447,6 +481,12 @@ private:
   TH1F*     b_first_bjet_pt;
   TH1F*     c_first_bjet_pt;
   TH1F*     t_first_bjet_pt;
+  
+  TH1F*     w_first_bjet_pt_SVTX;	// leading b jet
+  TH1F*     b_first_bjet_pt_SVTX;
+  TH1F*     c_first_bjet_pt_SVTX;
+  TH1F*     t_first_bjet_pt_SVTX;
+  
   TH1F*     bbBkg_first_bjet_pt;
   TH1F*     w_first_bjet_eta;
   TH1F*     b_first_bjet_eta;
@@ -1218,6 +1258,12 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_first_bjet_pt =     fs->make < TH1F > ("b_first_bjet_pt",    "b_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
   c_first_bjet_pt =     fs->make < TH1F > ("c_first_bjet_pt",    "c_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
   t_first_bjet_pt =     fs->make < TH1F > ("t_first_bjet_pt",    "t_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
+  
+  w_first_bjet_pt_SVTX =     fs->make < TH1F > ("w_first_bjet_pt_SVTX",    "w_first_bjet_pt_SVTX;P_t [GeV]", 50, 30., 700.);
+  b_first_bjet_pt_SVTX =     fs->make < TH1F > ("b_first_bjet_pt_SVTX",    "b_first_bjet_pt_SVTX;P_t [GeV]", 50, 30., 700.);
+  c_first_bjet_pt_SVTX =     fs->make < TH1F > ("c_first_bjet_pt_SVTX",    "c_first_bjet_pt_SVTX;P_t [GeV]", 50, 30., 700.);
+  t_first_bjet_pt_SVTX =     fs->make < TH1F > ("t_first_bjet_pt_SVTX",    "t_first_bjet_pt_SVTX;P_t [GeV]", 50, 30., 700.);
+  
   bbBkg_first_bjet_pt = fs->make < TH1F > ("bbBkg_first_bjet_pt","bbBkg_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
   w_first_bjet_eta =    fs->make < TH1F > ("w_first_bjet_eta",   "w_first_bjet_eta;Eta", 16, -2.5, 2.5);
   b_first_bjet_eta =    fs->make < TH1F > ("b_first_bjet_eta",   "b_first_bjet_eta;Eta", 16, -2.5, 2.5);
@@ -2326,7 +2372,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
       double discrCSV = jet->bDiscriminator("combinedSecondaryVertexBJetTags");
       //cout << discrCSV << endl;
-
+      
       if ((ee_event || mm_event || em_event) && vtx_cut && met_cut) {
         h_secondvtx_N->Fill (discrCSV);
         w_secondvtx_N->Fill (discrCSV, MyWeight);
@@ -2341,7 +2387,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 	}
       }
       
-      if ((ee_event || mm_event || em_event) && vtx_cut && met_cut && nosvtx) {
+      /*if ((ee_event || mm_event || em_event) && vtx_cut && met_cut && nosvtx) {
         w_CSV_NOVTX->Fill (discrCSV, MyWeight);
 	if (ist) {
 	  t_CSV_NOVTX->Fill (discrCSV, MyWeight);
@@ -2352,9 +2398,10 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 	if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
 	  c_CSV_NOVTX->Fill (discrCSV, MyWeight);
 	}
-      }
+      }*/
       
-      if (discrCSV > 0.898 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5)) {
+      if (discrCSV > 0.898 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5)) { /* tight ID */
+      //if (discrCSV > 0.679 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5)) { /* medium ID */
 	++Nb;
 	//cout << Nb << endl;
         vect_bjets.push_back (jetNew);
@@ -2480,16 +2527,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   }
   //cout << "DR(e;j) ="<<DR_ej<<"   "<<"DR(m;j) ="<<DR_mj<< endl;
 
-/*
-  if (Nb > 0 && pcut_) {
-    double discrBJP = vect_bjets[0].bDiscriminator("jetBProbabilityBJetTags");
-    if (discrBJP <= 5.) {
-      Nb = 0;
-      vect_bjets.clear();
-    }
-  }
-*/
-
   if (Nb > 0 && pcut_) {
     reco::SecondaryVertexTagInfo const * svTagInfos = vect_bjets[0].tagInfoSecondaryVertex("secondaryVertex");
     if (svTagInfos && svTagInfos->nVertices() > 0) {
@@ -2502,10 +2539,17 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       }
     }
   }
-
+  
   ee_event = ee_event && iflag_ee;
   mm_event = mm_event && iflag_mm;
   em_event = em_event && (iflag_ee || iflag_mm);
+
+  if (Nb > 0) {
+    reco::SecondaryVertexTagInfo const * svTagInfos = vect_bjets[0].tagInfoSecondaryVertex("secondaryVertex");
+    if (svTagInfos && svTagInfos->nVertices()>0) {
+      nosvtx=true;
+    }
+  }
 
   // Zbb Angular Variables and invariant mass		
   double delta_phi_eeb = 0;
@@ -2598,7 +2642,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_MET->Fill (mets->empty() ? 0 : (*mets)[0].et(), MyWeight);
       c_MET_sign->Fill (mets->empty() ? 0 : (*mets)[0].significance(), MyWeight);
     }
-    if (Nb > 0 && b_selection) {
+    if (Nb > 0 && b_selection && nosvtx) {
       scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -2633,7 +2677,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_Ht->Fill (Ht, MyWeight);
     }
-    if (Nb > 0 && met_cut && b_selection) {
+    if (Nb > 0 && met_cut && b_selection && nosvtx) {
       scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -2670,7 +2714,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_mass_ee_wide->Fill (diele_mass, MyWeight);
     }
-    if (Nb > 0 && b_selection) {
+    if (Nb > 0 && b_selection && nosvtx) {
       scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -2736,7 +2780,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_mass_Zj_ee->Fill (zj_ee_mass, MyWeight);
       c_delta_ee->Fill (delta_phi_ee, MyWeight);
     }
-    if (Nb > 0 && met_cut && b_selection) {
+    if (Nb > 0 && met_cut && b_selection && nosvtx) {
       scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -2811,7 +2855,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_mass_mm_wide->Fill (dimuon_mass, MyWeight);
     }
-    if (Nb > 0 && b_selection) {
+    if (Nb > 0 && b_selection && nosvtx) {
       scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -2877,7 +2921,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_mass_Zj_mm->Fill (zj_mm_mass, MyWeight);
       c_delta_mm->Fill (delta_phi_mm, MyWeight);
     }
-    if (Nb > 0 && met_cut && b_selection) {
+    if (Nb > 0 && met_cut && b_selection && nosvtx) {
       scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -2953,7 +2997,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_mass_em_wide->Fill (dielemuon_mass, MyWeight);
     }
-    if (Nb > 0 && b_selection) {
+    if (Nb > 0 && b_selection && nosvtx) {
       scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -3013,7 +3057,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_y_Z_em_abs->Fill (fabs(dielemuon_y), MyWeight);
       c_mass_Zj_em->Fill (zj_em_mass, MyWeight);
     }
-    if (Nb > 0 && met_cut && b_selection) {
+    if (Nb > 0 && met_cut && b_selection && nosvtx) {
       scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
       if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -3117,7 +3161,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
   }
 
-  if (ee_event && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection) {
+  if (ee_event && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection && nosvtx) {
     scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -3166,7 +3210,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
   }
 
-  if (mm_event && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection) {
+  if (mm_event && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection && nosvtx) {
     scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -3252,7 +3296,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }
   }
 
-  if (em_event && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection) {
+  if (em_event && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection && nosvtx) {
     scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -3287,7 +3331,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   double dxy = 0.0;
   double dxy_sig = 0.0;
 
-  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection) {
+  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection && nosvtx) {
 
     reco::SecondaryVertexTagInfo const * svTagInfos = vect_bjets[0].tagInfoSecondaryVertex("secondaryVertex");
     reco::TrackIPTagInfo const * ipTagInfos = vect_bjets[0].tagInfoTrackIP("impactParameter");
@@ -3299,10 +3343,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
    
     // bTagging Observables//
 
-    if ((svTagInfos->nVertices())<=0) {
-      nosvtx=true;
-      //cout<<"novtx found"<<endl;
-    } 
+
 
     if (svTagInfos && svTagInfos->nVertices() > 0) {
       flightd = svTagInfos->flightDistance(0, true).value();
@@ -3433,7 +3474,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // ++++++++ CSV PLOTS
 
-  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection) {
+  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection && nosvtx) {
     scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -3476,7 +3517,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // ++++++++ BJP/JBP PLOTS
 
-  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection) {
+  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection && nosvtx) {
     scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -3708,7 +3749,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // ++++++++ B JETS PLOTS
 
-  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection) {
+  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection && nosvtx) {
     scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -3716,6 +3757,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       w_delta_phi_2b->Fill (delta_phi_2b, MyWeight*scalFac_b);
       w_DR_bb->Fill (DR_bb, MyWeight*scalFac_b);
       w_Deta_bb->Fill(Deta_bb, MyWeight*scalFac_b);
+    }
+    if (nosvtx) {
+      w_first_bjet_pt_SVTX->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
     }
     w_bjetmultiplicity_exc->Fill (Nb, MyWeight*scalFac_b);
     w_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
@@ -3730,6 +3774,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         t_DR_bb->Fill (DR_bb, MyWeight*scalFac_b);
         t_Deta_bb->Fill(Deta_bb, MyWeight*scalFac_b);
       }
+      if (nosvtx) {
+        t_first_bjet_pt_SVTX->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
+      }
       t_bjetmultiplicity_exc->Fill (Nb, MyWeight*scalFac_b);
       t_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
       t_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight*scalFac_b);
@@ -3743,6 +3790,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         b_delta_phi_2b->Fill (delta_phi_2b, MyWeight*scalFac_b);
         b_DR_bb->Fill (DR_bb, MyWeight*scalFac_b);
         b_Deta_bb->Fill(Deta_bb, MyWeight*scalFac_b);
+      }
+      if (nosvtx) {
+        b_first_bjet_pt_SVTX->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
       }
       b_bjetmultiplicity_exc->Fill (Nb, MyWeight*scalFac_b);
       b_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
@@ -3762,6 +3812,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         c_delta_phi_2b->Fill (delta_phi_2b, MyWeight*scalFac_b);
         c_DR_bb->Fill (DR_bb, MyWeight*scalFac_b);
         c_Deta_bb->Fill(Deta_bb, MyWeight*scalFac_b);
+      }
+      if (nosvtx) {
+        c_first_bjet_pt_SVTX->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
       }
       c_bjetmultiplicity_exc->Fill (Nb, MyWeight*scalFac_b);
       c_bjetmultiplicity->Fill (Nj, MyWeight*scalFac_b);
@@ -3843,7 +3896,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // ++++++++ SINGLE BJET
 
-  if ((ee_event || mm_event || em_event) && Nj == 1 && Nb > 0 && vtx_cut && met_cut && b_selection) {
+  if ((ee_event || mm_event || em_event) && Nj == 1 && Nb > 0 && vtx_cut && met_cut && b_selection && nosvtx) {
     scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -3958,7 +4011,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   double Afb = 0;
 
-  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection) {
+  if ((ee_event || mm_event || em_event) && Nj > 0 && Nb > 0 && vtx_cut && met_cut && b_selection && nosvtx) {
     scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
     if (Nb > 1 && numB_ == 2)  scalFac_b = btagSF(isMC, vect_bjets, 2);
@@ -3981,7 +4034,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   if (mm_event && Nj > 0 && vtx_cut) {
     h_scaleFactor_first_muon->Fill (scalFac_first_m, MyWeight / (scalFac_first_m * scalFac_second_m));
     h_scaleFactor_second_muon->Fill (scalFac_second_m, MyWeight / (scalFac_first_m * scalFac_second_m));
-    if (Nb > 0 && b_selection) {
+    if (Nb > 0 && b_selection && nosvtx) {
       if (isMC && fabs(vect_bjets[0].partonFlavour()) == 5) {
         b_scaleFactor_first_muon->Fill (scalFac_first_m, MyWeight / (scalFac_first_m * scalFac_second_m));
         b_scaleFactor_second_muon->Fill (scalFac_second_m, MyWeight / (scalFac_first_m * scalFac_second_m));
@@ -4003,7 +4056,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     math::XYZTLorentzVector zj_ee_p = vect_jets[0].p4() + z_ee;
     double zj_ee_mass = zj_ee_p.mass();
     myMassZj->push_back(zj_ee_mass);
-    if (Nb > 0 && met_cut && b_selection) {
+    if (Nb > 0 && met_cut && b_selection && nosvtx) {
       myPtZb->push_back(diele_pt);
       myYZb->push_back(diele_y);
       math::XYZTLorentzVector zb_ee_p = vect_jets[0].p4() + z_ee;
@@ -4020,7 +4073,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     math::XYZTLorentzVector zj_mm_p = vect_jets[0].p4() + z_mm;
     double zj_mm_mass = zj_mm_p.mass();
     myMassZj->push_back(zj_mm_mass);
-    if (Nb > 0 && met_cut && b_selection) {
+    if (Nb > 0 && met_cut && b_selection && nosvtx) {
       myPtZb->push_back(dimuon_pt);
       myYZb->push_back(dimuon_y);
       math::XYZTLorentzVector zb_mm_p = vect_jets[0].p4() + z_mm;
@@ -4033,7 +4086,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     for (unsigned int i=0; i<vect_jets.size(); ++i) {
       myJets->push_back(math::XYZTLorentzVector(vect_jets[i].px(),vect_jets[i].py(),vect_jets[i].pz(),vect_jets[i].energy()));
     }
-    if (Nb > 0 && met_cut && b_selection) {
+    if (Nb > 0 && met_cut && b_selection && nosvtx) {
       for (unsigned int i=0; i<vect_bjets.size(); ++i) {
         scalFac_b = btagSF(isMC, vect_bjets, 1);
         if (Nb == 1 && numB_ == 1)  scalFac_b = btagSF(isMC, vect_bjets, 1);
@@ -4051,7 +4104,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   if ((ee_event || mm_event || em_event) && Nj > 0 && vtx_cut) {
     myHt->push_back(Ht);
-    if (Nb > 0 && met_cut && b_selection) {
+    if (Nb > 0 && met_cut && b_selection && nosvtx) {
       myHtb->push_back(Ht);
     }
   }
@@ -4061,7 +4114,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (delta_phi_ee > acos (-1)) delta_phi_ee = 2 * acos (-1) - delta_phi_ee;
     myDeltaPhi->push_back(delta_phi_ee);
     myPhiStar->push_back(Phi_star_ee);
-    if (Nb > 0 && met_cut && b_selection) {
+    if (Nb > 0 && met_cut && b_selection && nosvtx) {
       double delta_phi_ee_b = fabs(diele_phi - vect_bjets[0].phi());
       if (delta_phi_ee_b > acos (-1)) delta_phi_ee_b = 2 * acos (-1) - delta_phi_ee_b;
       myBDeltaPhi->push_back(delta_phi_ee_b);
@@ -4080,7 +4133,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     if (delta_phi_mm > acos (-1)) delta_phi_mm = 2 * acos (-1) - delta_phi_mm;
     myDeltaPhi->push_back(delta_phi_mm);
     myPhiStar->push_back(Phi_star_mm);
-    if (Nb > 0 && met_cut && b_selection) {
+    if (Nb > 0 && met_cut && b_selection && nosvtx) {
       double delta_phi_mm_b = fabs(dimuon_phi - vect_bjets[0].phi());
       if (delta_phi_mm_b > acos (-1)) delta_phi_mm_b = 2 * acos (-1) - delta_phi_mm_b;
       myBDeltaPhi->push_back(delta_phi_mm_b);
@@ -4143,8 +4196,12 @@ void ZbAnalyzer::beginJob () {
   ElSF2_ = new table(path_ + "/" + "ele_eff2.txt");
   MuSF_  = new table(path_ + "/" + "muon_eff.txt");
   MuSF2_ = new table(path_ + "/" + "muon_eff2.txt");
-  BtSF_  = new table(path_ + "/" + "btag_eff.txt");   //btagging scale factors SFb = SFc
-  LtSF_  = new table(path_ + "/" + "light_eff.txt");  //light flavour scale factors
+  BtSF_  = new table(path_ + "/" + "btag_eff.txt");   //btagging scale factors SFb = SFc CSVT
+  BtSFM_  = new table(path_ + "/" + "btag_eff_med.txt");   //btagging scale factors SFb = SFc CSVM
+  LtSF_  = new table(path_ + "/" + "light_eff.txt");  //light flavour scale factors CSVT
+  LtSFe1_  = new table(path_ + "/" + "light_eff_eta1.txt");  //light flavour scale factors CSVM
+  LtSFe2_  = new table(path_ + "/" + "light_eff_eta2.txt");  //light flavour scale factors CSVM
+  LtSFe3_  = new table(path_ + "/" + "light_eff_eta3.txt");  //light flavour scale factors CSVM
 
 }
 
@@ -4157,6 +4214,10 @@ void ZbAnalyzer::endJob () {
   delete MuSF_;
   delete MuSF2_;
   delete BtSF_;
+  delete BtSFM_;
+  delete LtSFe1_;
+  delete LtSFe2_;
+  delete LtSFe3_;
   delete LtSF_;
 
 }
