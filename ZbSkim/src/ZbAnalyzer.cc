@@ -111,8 +111,10 @@ private:
 
     double w0n=1.0;
     double w1n=0.0;
-     
-    for (unsigned int i=0;i<jets.size();i++) {
+    
+    /** TIGHT WP APPLICATION FORMULA **/
+ 
+/*    for (unsigned int i=0;i<jets.size();i++) {
       if ((fabs(jets[i].partonFlavour()) == 5 || fabs(jets[i].partonFlavour()) == 4)) {
         w0n = w0n * (1.0 - BtSF_->Val(jets[i].pt(), jets[i].eta()));
       } else {
@@ -134,9 +136,11 @@ private:
         w = w * LtSF_->Val(jets[i].pt(), jets[i].eta());
       }
       w1n = w1n + w;
-    }
+    } */
     
-    /*for (unsigned int i=0;i<jets.size();i++) {
+    /** MEDIUM WP APPLICATION FORMULA **/
+
+    for (unsigned int i=0;i<jets.size();i++) {
       if ((fabs(jets[i].partonFlavour()) == 5 || fabs(jets[i].partonFlavour()) == 4)) {
         w0n = w0n * (1.0 - BtSFM_->Val(jets[i].pt(), jets[i].eta()));
       } else {
@@ -164,7 +168,7 @@ private:
         if ((jets[i].eta()>=-2.4 && jets[i].eta()<-1.6) || (jets[i].eta()>1.6 && jets[i].eta()<=2.4))     w = w *   (LtSFe3_->Val(jets[i].pt(), jets[i].eta()));
       }
       w1n = w1n + w;
-    }*/
+    }
 
     if (k==1) return (1.0-w0n);     // >= 1 b tagged jet
     if (k==2) return (1.0-w0n-w1n); // >= 2 b tagged jets
@@ -370,6 +374,10 @@ private:
   TH1F*     b_bb_mass;
   TH1F*     c_bb_mass;
   TH1F*     t_bb_mass;
+  TH1F*     w_jj_mass;
+  TH1F*     b_jj_mass;
+  TH1F*     c_jj_mass;
+  TH1F*     t_jj_mass;
   TH1F*     w_eebb_mass;
   TH1F*     b_eebb_mass;
   TH1F*     c_eebb_mass;
@@ -382,6 +390,18 @@ private:
   TH1F*     b_embb_mass;
   TH1F*     c_embb_mass;
   TH1F*     t_embb_mass;
+  TH1F*     w_eejj_mass;
+  TH1F*     b_eejj_mass;
+  TH1F*     c_eejj_mass;
+  TH1F*     t_eejj_mass;
+  TH1F*     w_mmjj_mass;
+  TH1F*     b_mmjj_mass;
+  TH1F*     c_mmjj_mass;
+  TH1F*     t_mmjj_mass;
+  TH1F*     w_emjj_mass;
+  TH1F*     b_emjj_mass;
+  TH1F*     c_emjj_mass;
+  TH1F*     t_emjj_mass;
 
   //Ist. Phi*
   TH1F* w_Phi_star_ee;
@@ -1186,18 +1206,34 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_bb_mass =     fs->make < TH1F > ("b_bb_mass",   "b_bb_mass;Mass [GeV]", 13, 30., 400);
   c_bb_mass =     fs->make < TH1F > ("c_bb_mass",   "c_bb_mass;Mass [GeV]", 13, 30., 400);
   t_bb_mass =     fs->make < TH1F > ("t_bb_mass",   "t_bb_mass;Mass [GeV]", 13, 30., 400);
-  w_eebb_mass =     fs->make < TH1F > ("w_eebb_mass",   "w_eebb_mass;Mass [GeV]", 12, 200., 500.);
-  b_eebb_mass =     fs->make < TH1F > ("b_eebb_mass",   "b_eebb_mass;Mass [GeV]", 12, 200., 500.);
-  c_eebb_mass =     fs->make < TH1F > ("c_eebb_mass",   "c_eebb_mass;Mass [GeV]", 12, 200., 500.);
-  t_eebb_mass =     fs->make < TH1F > ("t_eebb_mass",   "t_eebb_mass;Mass [GeV]", 12, 200., 500.);
-  w_mmbb_mass =     fs->make < TH1F > ("w_mmbb_mass",   "w_mmbb_mass;Mass [GeV]", 12, 200., 500.);
-  b_mmbb_mass =     fs->make < TH1F > ("b_mmbb_mass",   "b_mmbb_mass;Mass [GeV]", 12, 200., 500.);
-  c_mmbb_mass =     fs->make < TH1F > ("c_mmbb_mass",   "c_mmbb_mass;Mass [GeV]", 12, 200., 500.);
-  t_mmbb_mass =     fs->make < TH1F > ("t_mmbb_mass",   "t_mmbb_mass;Mass [GeV]", 12, 200., 500.);
-  w_embb_mass =     fs->make < TH1F > ("w_embb_mass",   "w_embb_mass;Mass [GeV]", 12, 200., 500.);
-  b_embb_mass =     fs->make < TH1F > ("b_embb_mass",   "b_embb_mass;Mass [GeV]", 12, 200., 500.);
-  c_embb_mass =     fs->make < TH1F > ("c_embb_mass",   "c_embb_mass;Mass [GeV]", 12, 200., 500.);
-  t_embb_mass =     fs->make < TH1F > ("t_embb_mass",   "t_embb_mass;Mass [GeV]", 12, 200., 500.);
+  w_jj_mass =     fs->make < TH1F > ("w_jj_mass",   "w_jj_mass;Mass [GeV]", 20, 20., 1000);
+  b_jj_mass =     fs->make < TH1F > ("b_jj_mass",   "b_jj_mass;Mass [GeV]", 20, 20., 1000);
+  c_jj_mass =     fs->make < TH1F > ("c_jj_mass",   "c_jj_mass;Mass [GeV]", 20, 20., 1000);
+  t_jj_mass =     fs->make < TH1F > ("t_jj_mass",   "t_jj_mass;Mass [GeV]", 20, 20., 1000);
+  w_eebb_mass =     fs->make < TH1F > ("w_eebb_mass",   "w_eebb_mass;Mass [GeV]", 20, 100., 1000.);
+  b_eebb_mass =     fs->make < TH1F > ("b_eebb_mass",   "b_eebb_mass;Mass [GeV]", 20, 100., 1000.);
+  c_eebb_mass =     fs->make < TH1F > ("c_eebb_mass",   "c_eebb_mass;Mass [GeV]", 20, 100., 1000.);
+  t_eebb_mass =     fs->make < TH1F > ("t_eebb_mass",   "t_eebb_mass;Mass [GeV]", 20, 100., 1000.);
+  w_mmbb_mass =     fs->make < TH1F > ("w_mmbb_mass",   "w_mmbb_mass;Mass [GeV]", 20, 100., 1000.);
+  b_mmbb_mass =     fs->make < TH1F > ("b_mmbb_mass",   "b_mmbb_mass;Mass [GeV]", 20, 100., 1000.);
+  c_mmbb_mass =     fs->make < TH1F > ("c_mmbb_mass",   "c_mmbb_mass;Mass [GeV]", 20, 100., 1000.);
+  t_mmbb_mass =     fs->make < TH1F > ("t_mmbb_mass",   "t_mmbb_mass;Mass [GeV]", 20, 100., 1000.);
+  w_embb_mass =     fs->make < TH1F > ("w_embb_mass",   "w_embb_mass;Mass [GeV]", 20, 100., 1000.);
+  b_embb_mass =     fs->make < TH1F > ("b_embb_mass",   "b_embb_mass;Mass [GeV]", 20, 100., 1000.);
+  c_embb_mass =     fs->make < TH1F > ("c_embb_mass",   "c_embb_mass;Mass [GeV]", 20, 100., 1000.);
+  t_embb_mass =     fs->make < TH1F > ("t_embb_mass",   "t_embb_mass;Mass [GeV]", 20, 100., 1000.);
+  w_eejj_mass =     fs->make < TH1F > ("w_eejj_mass",   "w_eejj_mass;Mass [GeV]", 20, 100., 1000.);
+  b_eejj_mass =     fs->make < TH1F > ("b_eejj_mass",   "b_eejj_mass;Mass [GeV]", 20, 100., 1000.);
+  c_eejj_mass =     fs->make < TH1F > ("c_eejj_mass",   "c_eejj_mass;Mass [GeV]", 20, 100., 1000.);
+  t_eejj_mass =     fs->make < TH1F > ("t_eejj_mass",   "t_eejj_mass;Mass [GeV]", 20, 100., 1000.);
+  w_mmjj_mass =     fs->make < TH1F > ("w_mmjj_mass",   "w_mmjj_mass;Mass [GeV]", 20, 100., 1000.);
+  b_mmjj_mass =     fs->make < TH1F > ("b_mmjj_mass",   "b_mmjj_mass;Mass [GeV]", 20, 100., 1000.);
+  c_mmjj_mass =     fs->make < TH1F > ("c_mmjj_mass",   "c_mmjj_mass;Mass [GeV]", 20, 100., 1000.);
+  t_mmjj_mass =     fs->make < TH1F > ("t_mmjj_mass",   "t_mmjj_mass;Mass [GeV]", 20, 100., 1000.);
+  w_emjj_mass =     fs->make < TH1F > ("w_emjj_mass",   "w_emjj_mass;Mass [GeV]", 20, 100., 1000.);
+  b_emjj_mass =     fs->make < TH1F > ("b_emjj_mass",   "b_emjj_mass;Mass [GeV]", 20, 100., 1000.);
+  c_emjj_mass =     fs->make < TH1F > ("c_emjj_mass",   "c_emjj_mass;Mass [GeV]", 20, 100., 1000.);
+  t_emjj_mass =     fs->make < TH1F > ("t_emjj_mass",   "t_emjj_mass;Mass [GeV]", 20, 100., 1000.);
  
   //Phi*
   w_Phi_star_ee =     fs->make < TH1F > ("w_Phi_star_ee",   "w_Phi_star_ee; Phi*", 10, 0, 1);
@@ -1314,10 +1350,10 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_delta_j =     fs->make < TH1F > ("c_delta_j",    "c_delta_j", 100, 0., 1.);
   t_delta_j =     fs->make < TH1F > ("t_delta_j",    "t_delta_j", 100, 0., 1.);
 
-  w_delta_j_n =     fs->make < TH1F > ("w_delta_j_n",    "w_delta_j_n;[GeV]", 100, 0., 200.);
-  b_delta_j_n =     fs->make < TH1F > ("b_delta_j_n",    "b_delta_j_n;[GeV]", 100, 0., 200.);
-  c_delta_j_n =     fs->make < TH1F > ("c_delta_j_n",    "c_delta_j_n;[GeV]", 100, 0., 200.);
-  t_delta_j_n =     fs->make < TH1F > ("t_delta_j_n",    "t_delta_j_n;[GeV]", 100, 0., 200.);
+  w_delta_j_n =     fs->make < TH1F > ("w_delta_j_n",    "w_delta_j_n;[GeV]", 60, 60., 200.);
+  b_delta_j_n =     fs->make < TH1F > ("b_delta_j_n",    "b_delta_j_n;[GeV]", 60, 60., 200.);
+  c_delta_j_n =     fs->make < TH1F > ("c_delta_j_n",    "c_delta_j_n;[GeV]", 60, 60., 200.);
+  t_delta_j_n =     fs->make < TH1F > ("t_delta_j_n",    "t_delta_j_n;[GeV]", 60, 60., 200.);
 
   w_first_ele_pt =      fs->make < TH1F > ("w_first_ele_pt",    "w_first_ele_pt;P_t [GeV]", 50, 0., 450.);
   w_first_ele_pt_b =    fs->make < TH1F > ("w_first_ele_pt_b",  "w_first_ele_pt_b;P_t [GeV]", 50, 0., 450.);
@@ -2400,8 +2436,8 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 	}
       }*/
       
-      if (discrCSV > 0.898 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5)) { /* tight ID */
-      //if (discrCSV > 0.679 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5)) { /* medium ID */
+      //if (discrCSV > 0.898 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5)) { /* tight ID */
+      if (discrCSV > 0.679 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5)) { /* medium ID */
 	++Nb;
 	//cout << Nb << endl;
         vect_bjets.push_back (jetNew);
@@ -2573,11 +2609,31 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   double DR_emb_max = -1;
   double A_emb = 0;
 
+  double jj_mass = 0;
   double bb_mass = 0;
   double eebb_mass = 0;
   double mmbb_mass = 0;
   double embb_mass = 0;
-
+  double eejj_mass = 0;
+  double mmjj_mass = 0;
+  double emjj_mass = 0;
+  
+  if (Nj > 1) {
+    math::XYZTLorentzVector jj = vect_jets[0].p4() + vect_jets[1].p4();
+    jj_mass = jj.mass();
+    if (ee_event) {
+      math::XYZTLorentzVector eejj = jj + z_ee;
+      eejj_mass = eejj.mass();
+    }
+    if (mm_event) {
+      math::XYZTLorentzVector mmjj = jj + z_mm;
+      mmjj_mass = mmjj.mass();
+    }
+    if (em_event) {
+      math::XYZTLorentzVector emjj = jj + z_em;
+      emjj_mass = emjj.mass();
+    } 
+  }
   if (Nb > 1) {
     math::XYZTLorentzVector bb = vect_bjets[0].p4() + vect_bjets[1].p4();
     bb_mass = bb.mass();
@@ -2753,6 +2809,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     w_y_Z_ee->Fill (diele_y, MyWeight);
     w_y_Z_ee_abs->Fill (fabs(diele_y), MyWeight);
     w_delta_ee->Fill (delta_phi_ee, MyWeight);
+    w_eejj_mass->Fill (eejj_mass, MyWeight);
     math::XYZTLorentzVector zj_ee_p = vect_jets[0].p4() + z_ee;
     double zj_ee_mass = zj_ee_p.mass();
     w_mass_Zj_ee->Fill (zj_ee_mass, MyWeight);
@@ -2763,6 +2820,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       t_y_Z_ee_abs->Fill (fabs(diele_y), MyWeight);
       t_mass_Zj_ee->Fill (zj_ee_mass, MyWeight);
       t_delta_ee->Fill (delta_phi_ee, MyWeight);
+      t_eejj_mass->Fill (eejj_mass, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 5) {
       b_mass_ee->Fill (diele_mass, MyWeight);
@@ -2771,6 +2829,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       b_y_Z_ee_abs->Fill (fabs(diele_y), MyWeight);
       b_mass_Zj_ee->Fill (zj_ee_mass, MyWeight);
       b_delta_ee->Fill (delta_phi_ee, MyWeight);
+      b_eejj_mass->Fill (eejj_mass, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_mass_ee->Fill (diele_mass, MyWeight);
@@ -2779,6 +2838,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_y_Z_ee_abs->Fill (fabs(diele_y), MyWeight);
       c_mass_Zj_ee->Fill (zj_ee_mass, MyWeight);
       c_delta_ee->Fill (delta_phi_ee, MyWeight);
+      c_eejj_mass->Fill (eejj_mass, MyWeight);
     }
     if (Nb > 0 && met_cut && b_selection && nosvtx) {
       scalFac_b = btagSF(isMC, vect_bjets, 1);
@@ -2894,6 +2954,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     w_y_Z_mm->Fill (dimuon_y, MyWeight);
     w_y_Z_mm_abs->Fill (fabs(dimuon_y), MyWeight);
     w_delta_mm->Fill (delta_phi_mm, MyWeight);
+    w_mmjj_mass->Fill (mmjj_mass, MyWeight);
     math::XYZTLorentzVector zj_mm_p = vect_jets[0].p4() + z_mm;
     double zj_mm_mass = zj_mm_p.mass();
     w_mass_Zj_mm->Fill (zj_mm_mass, MyWeight);
@@ -2904,6 +2965,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       t_y_Z_mm_abs->Fill (fabs(dimuon_y), MyWeight);
       t_mass_Zj_mm->Fill (zj_mm_mass, MyWeight);
       t_delta_mm->Fill (delta_phi_mm, MyWeight);
+      t_mmjj_mass->Fill (mmjj_mass, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 5) {
       b_mass_mm->Fill (dimuon_mass, MyWeight);
@@ -2912,6 +2974,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       b_y_Z_mm_abs->Fill (fabs(dimuon_y), MyWeight);
       b_mass_Zj_mm->Fill (zj_mm_mass, MyWeight);
       b_delta_mm->Fill (delta_phi_mm, MyWeight);
+      b_mmjj_mass->Fill (mmjj_mass, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_mass_mm->Fill (dimuon_mass, MyWeight);
@@ -2920,6 +2983,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_y_Z_mm_abs->Fill (fabs(dimuon_y), MyWeight);
       c_mass_Zj_mm->Fill (zj_mm_mass, MyWeight);
       c_delta_mm->Fill (delta_phi_mm, MyWeight);
+      c_mmjj_mass->Fill (mmjj_mass, MyWeight);
     }
     if (Nb > 0 && met_cut && b_selection && nosvtx) {
       scalFac_b = btagSF(isMC, vect_bjets, 1);
@@ -3033,6 +3097,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     w_y_Z_em->Fill (dielemuon_y, MyWeight);
     w_y_Z_em_abs->Fill (fabs(dielemuon_y), MyWeight);
     w_delta_em->Fill (delta_phi_em, MyWeight);
+    w_emjj_mass->Fill (emjj_mass, MyWeight);
     math::XYZTLorentzVector zj_em_p = vect_jets[0].p4() + z_em;
     double zj_em_mass = zj_em_p.mass();
     w_mass_Zj_em->Fill (zj_em_mass, MyWeight);
@@ -3042,6 +3107,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       t_y_Z_em->Fill (dielemuon_y, MyWeight);
       t_y_Z_em_abs->Fill (fabs(dielemuon_y), MyWeight);
       t_mass_Zj_em->Fill (zj_em_mass, MyWeight);
+      t_emjj_mass->Fill (emjj_mass, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 5) {
       b_mass_em->Fill (dielemuon_mass, MyWeight);
@@ -3049,6 +3115,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       b_y_Z_em->Fill (dielemuon_y, MyWeight);
       b_y_Z_em_abs->Fill (fabs(dielemuon_y), MyWeight);
       b_mass_Zj_em->Fill (zj_em_mass, MyWeight);
+      b_emjj_mass->Fill (emjj_mass, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_mass_em->Fill (dielemuon_mass, MyWeight);
@@ -3056,6 +3123,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       c_y_Z_em->Fill (dielemuon_y, MyWeight);
       c_y_Z_em_abs->Fill (fabs(dielemuon_y), MyWeight);
       c_mass_Zj_em->Fill (zj_em_mass, MyWeight);
+      c_emjj_mass->Fill (emjj_mass, MyWeight);
     }
     if (Nb > 0 && met_cut && b_selection && nosvtx) {
       scalFac_b = btagSF(isMC, vect_bjets, 1);
@@ -3676,23 +3744,27 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     w_first_jet_pt->Fill (vect_jets[0].pt(), MyWeight);
     w_first_jet_eta->Fill (vect_jets[0].eta(), MyWeight);
     w_first_jet_eta_abs->Fill (fabs(vect_jets[0].eta()), MyWeight);
+    w_jj_mass->Fill (jj_mass, MyWeight);
     if (ist) {
       t_jetmultiplicity->Fill (Nj, MyWeight);
       t_first_jet_pt->Fill (vect_jets[0].pt(), MyWeight);
       t_first_jet_eta->Fill (vect_jets[0].eta(), MyWeight);
       t_first_jet_eta_abs->Fill (fabs(vect_jets[0].eta()), MyWeight);
+      t_jj_mass->Fill (jj_mass, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 5) {
       b_jetmultiplicity->Fill (Nj, MyWeight);
       b_first_jet_pt->Fill (vect_jets[0].pt(), MyWeight);
       b_first_jet_eta->Fill (vect_jets[0].eta(), MyWeight);
       b_first_jet_eta_abs->Fill (fabs(vect_jets[0].eta()), MyWeight);
+      b_jj_mass->Fill (jj_mass, MyWeight);
     }
     if (!ist && isMC && fabs(vect_jets[0].partonFlavour()) == 4) {
       c_jetmultiplicity->Fill (Nj, MyWeight);
       c_first_jet_pt->Fill (vect_jets[0].pt(), MyWeight);
       c_first_jet_eta->Fill (vect_jets[0].eta(), MyWeight);
       c_first_jet_eta_abs->Fill (fabs(vect_jets[0].eta()), MyWeight);
+      c_jj_mass->Fill (jj_mass, MyWeight);
     }
   }
 
