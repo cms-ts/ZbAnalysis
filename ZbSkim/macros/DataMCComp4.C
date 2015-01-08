@@ -107,7 +107,7 @@ if (irun==88) {            // irun==88 => deltaR
 }
 if (irun==99) {            // irun==99 => pur
   subdir="99";
-  postfix="Pur";
+  postfix="";
 }
 if (numB==1) {
   postfix = postfix + "1b";
@@ -851,6 +851,7 @@ if (numB==2) {
 
 	if (plot) {
 	  ofstream out;
+          ofstream out1;
 	  if (ilepton==1) {
 	    gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/").c_str(), kTRUE);
 	    c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.pdf").c_str());
@@ -864,6 +865,7 @@ if (numB==2) {
 	      h_data_unfold->Write(title.c_str());
 	      f.Close();
 	      out.open((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.dat").c_str());
+	      out1.open((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.txt").c_str());
 	    }
 	  }
 	  if (ilepton==2) {
@@ -879,6 +881,7 @@ if (numB==2) {
 	      h_data_unfold->Write(title.c_str());
 	      f.Close();
 	      out.open((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.dat").c_str());
+	      out1.open((path + "/muons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title + "_unfolding.txt").c_str());
 	    }
 	  }
 	  if (imode>=4) {
@@ -889,7 +892,20 @@ if (numB==2) {
 	    out << std::fixed << std::setw( 11 ) << std::setprecision( 2 );
 	    out << h_mc1_truth->Integral(0,h_mc1_truth->GetNbinsX()+1) << endl;
 	    out.close();
-	  }
-	}
+            double norm,w = 1;
+            for (int i=2;i<=h_err_cov->GetNbinsX()-1;i++) {
+               for (int j=2;j<=h_err_cov->GetNbinsY()-1;j++) {
+	          w = TMath::Sqrt(TMath::Abs(h_err_cov->GetBinContent(i,i)))*TMath::Sqrt(TMath::Abs(h_err_cov->GetBinContent(j,j)));
+		  norm = (h_err_cov->GetBinContent(i,j) / w);
+	          //cout<<"i="<<"  "<<i<<"  "<<"j="<<"  "<<j<<"        "<<"cov(ij)="<<h_err_cov->GetBinContent(i,j)<<"        "<<"corr(ij)="<<norm<<endl;
+		  out1 << std::fixed;
+		  if (norm<0) out1 << std::setw(10) << norm << "  "; else out1 << std::setw(10) << norm << "  ";
+		  out1 << std::setprecision(6); 
+              }
+		  out1 << endl;
+	   }
+     	 }
+         out1.close();
+       }
 
 }
