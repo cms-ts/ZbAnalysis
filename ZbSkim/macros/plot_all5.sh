@@ -147,7 +147,6 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp5.C+\($d,\"w_bjetmultiplicity_exc\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_bjetmultiplicity\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_first_bjet_pt\",1,$i,0,$n\)
-  root -l -q -b DataMCComp5.C+\($d,\"w_first_bjet_pt_SVTX\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_first_bjet_eta\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_first_bjet_eta_abs\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_second_bjet_pt\",1,$i,0,$n\)
@@ -163,8 +162,6 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp5.C+\($d,\"w_dxy_sig\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_SV_NTracks\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_N_SV\",1,$i,0,$n\)
-  root -l -q -b DataMCComp5.C+\($d,\"w_delta_j\",1,$i,0,$n\)
-  root -l -q -b DataMCComp5.C+\($d,\"w_delta_j_n\",1,$i,0,$n\)
 
   root -l -q -b DataMCComp5.C+\($d,\"w_DR_eeb_min\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_DR_eeb_max\",1,$i,0,$n\)
