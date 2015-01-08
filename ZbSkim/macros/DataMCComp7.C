@@ -24,8 +24,8 @@ TH1F* read(string subdir, string title, int ilepton, string dirbSel) {
 
 void DataMCComp7(string title="", int plot=0, int ilepton=1, int isratio=1, int numB=0) {
 
-//int useSysBfit2=0;
-int useSysBfit2=1; // include Bfit2 systematics
+int useSysBfit2=0;
+//int useSysBfit2=1; // include Bfit2 systematics
 
 int useSysDR=0;
 //int useSysDR=1; // include deltaR systematics
@@ -503,7 +503,7 @@ if (numB==2) {
 	  double val = 0.0;
 	  if (useSysBfit2) {
 	    val = TMath::Abs(h_data_scan[99]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i));
-	    //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_scan[0]->GetBinError(i),2)-TMath::Power(h_data_scan[99]->GetBinError(i),2))));
+	    val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_scan[0]->GetBinError(i),2)-TMath::Power(h_data_scan[99]->GetBinError(i),2))));
 	  }
 	  syst_bfit2->SetBinError(i, val);
 	}
@@ -511,7 +511,7 @@ if (numB==2) {
 	  double val = 0.0;
 	  if (useSysBfit2) {
 	    val = TMath::Abs(h_data_b_scan[99]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i));
-	    //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_b_scan[0]->GetBinError(i),2)-TMath::Power(h_data_b_scan[99]->GetBinError(i),2))));
+	    val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_b_scan[0]->GetBinError(i),2)-TMath::Power(h_data_b_scan[99]->GetBinError(i),2))));
 	  }
 	  syst_b_bfit2->SetBinError(i, val);
 	}
@@ -1480,7 +1480,7 @@ if (numB==2) {
 	    out << std::setw(12) << "bkg";
 	    out << std::setw(12) << "ttbar";
 	    out << std::setw(12) << "bfit";
-	    if (useSysBfit2) out << std::setw(12) << "btemp";
+	    if (useSysBfit2) out << std::setw(12) << "bfit2";
 	    out << std::setw(12) << "btag";
 	    out << std::setw(12) << "unfold";
 	    out << std::setw(12) << "unfold";
@@ -1583,7 +1583,7 @@ if (numB==2) {
 	  out << std::setw(12) << "bkg";
 	  out << std::setw(12) << "ttbar";
 	  out << std::setw(12) << "bfit";
-	  if (useSysBfit2) out << std::setw(12) << "btemp";
+	  if (useSysBfit2) out << std::setw(12) << "bfit2";
 	  out << std::setw(12) << "btag";
 	  out << std::setw(12) << "unfold";
 	  out << std::setw(12) << "unfold";
@@ -1683,7 +1683,7 @@ if (numB==2) {
 	    out1 << std::setw(8) << "bkg";
 	    out1 << std::setw(8) << "ttbar";
 	    out1 << std::setw(8) << "bfit";
-	    if (useSysBfit2) out1 << std::setw(8) << "btemp";
+	    if (useSysBfit2) out1 << std::setw(8) << "bfit2";
 	    out1 << std::setw(8) << "btag";
 	    out1 << std::setw(8) << "unfold";
 	    out1 << std::setw(8) << "unfold";
@@ -1777,7 +1777,7 @@ if (numB==2) {
 	  out1 << std::setw(8) << "bkg";
 	  out1 << std::setw(8) << "ttbar";
 	  out1 << std::setw(8) << "bfit";
-	  if (useSysBfit2) out1 << std::setw(8) << "btemp";
+	  if (useSysBfit2) out1 << std::setw(8) << "bfit2";
 	  out1 << std::setw(8) << "btag";
 	  out1 << std::setw(8) << "unfold";
 	  out1 << std::setw(8) << "unfold";

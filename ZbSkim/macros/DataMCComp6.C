@@ -77,7 +77,7 @@ if (irun==88) {            // irun==88 => deltaR
 }
 if (irun==99) {            // irun==99 => pur
   subdir="99";
-  postfix="";
+  postfix="Pur";
 }
 if (numB==1) {
   postfix = postfix + "1b";

@@ -82,7 +82,7 @@ if (irun==88) {            // irun==88 => deltaR
 }
 if (irun==99) {            // irun==99 => pur
   subdir="99";
-  postfix="";
+  postfix="Pur";
 }
 if (numB==1) {
   postfix = postfix + "1b";
@@ -108,10 +108,8 @@ if (numB==2) {
           if (title.find("ee")!=string::npos) return;
         }
 
-	//TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	//TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
-	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
+	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (useDY==1) {
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
