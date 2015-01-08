@@ -48,6 +48,9 @@ int useDY = 0; // use MadGraph DY
 //int useDY = 1; // use Sherpa DY
 //int useDY = 2; // use Powheg DY
 
+//int useSherpa=0;
+//int useSherpa=1;
+
 int bbBkg = 0;
 int bbSig = 0;
 
@@ -124,7 +127,7 @@ if (irun==88) {            // irun==88 => deltaR
 }
 if (irun==99) {            // irun==99 => pur
   subdir="99";
-  postfix="Pur";
+  postfix="";
 }
 if (numB==1) {
   postfix = postfix + "1b";
@@ -312,26 +315,43 @@ if (numB==2) {
         if (bbBkg) h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
         if (bbSig) h_mc1bb = (TH1F*)gDirectory->Get(("bbSig"+title.substr(1)).c_str());       
 
-        /* test MCs b extraction */
-	/*if (title=="w_BJP") {
-  	  if (h_mc1b) {
-	    float xval = h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
-	    for (int i=0; i<=h_mc1b->GetNbinsX()+1; i++) {
-	      h_mc1b->SetBinError(i, 0.0);
-	    }
-	    h_mc1->Add(h_mc1b, -1.);
-	    mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2.root").c_str());
-	    if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
-	    if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
-	    if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
-	    h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
-	    h_mc1b->Sumw2();
-	    xval = xval / h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
-	    h_mc1b->Scale(xval);
-	    h_mc1->Add(h_mc1b, +1.);
-	  }
-        } */
-        /* test ends */
+        if (irun==99) {
+	  float xval=0;
+	  float xvalb=0;
+	  float xvalc=0;
+	  float xvalt=0;
+
+	  if (h_mc1)  xval = h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
+	  if (h_mc1b) xvalb = h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
+          if (h_mc1c) xvalc = h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
+          if (h_mc1t) xvalt = h_mc1t->Integral(0,h_mc1t->GetNbinsX()+1);
+	  
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+          if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
+          if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
+          //if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
+	   
+	  h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc1->Sumw2();
+	  xval = xval / h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
+	  h_mc1->Scale(xval);
+
+	  h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
+          h_mc1b->Sumw2(); 
+	  xvalb = xvalb / h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
+          h_mc1b->Scale(xvalb);
+
+	  h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
+          h_mc1c->Sumw2(); 
+	  xvalc = xvalc / h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
+	  h_mc1c->Scale(xvalc);
+
+	  h_mc1t = (TH1F*)gDirectory->Get(("t"+title.substr(1)).c_str());
+	  h_mc1t->Sumw2(); 
+	  xvalt = xvalt / h_mc1t->Integral(0,h_mc1t->GetNbinsX()+1);
+          //cout<<h_mc1t->Integral(0,h_mc1t->GetNbinsX()+1)<<endl;
+	  //h_mc1t->Scale(xvalt);
+	}
 
 	if (ilepton==1) mc2->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) mc2->cd(("demoMuo"+postfix).c_str());
@@ -663,7 +683,7 @@ if (numB==2) {
 	  fitter->SetParameter(0, "c(t)", 1.00, 0.01, 0.00, 100.00);
 	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
 	  h_mc_fit0->Scale(fitter->GetParameter(0));
-	}/*
+	}
 	if (doFit==2) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
@@ -692,10 +712,10 @@ if (numB==2) {
 	  if (h_mc1b) h_mc1b->Scale(fitter->GetParameter(0));
 	  if (h_mc1c) h_mc1c->Scale(fitter->GetParameter(0));
 	  h_mc_fit1->Scale(fitter->GetParameter(1));
-	}*/
+	}
 	
 	/* fit the top and "others" with doFit==2 instead of top+Zjets */
-	if (doFit==2) {
+	/*if (doFit==2) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
 	    //h_data_fit->Add(h_mcO, -1.);
@@ -720,7 +740,7 @@ if (numB==2) {
 	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
 	  h_mc_fit0->Scale(fitter->GetParameter(0));
 	  h_mc_fit1->Scale(fitter->GetParameter(1));
-	}
+	} */
         
 	if (doFit==3) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
@@ -780,10 +800,10 @@ if (numB==2) {
 	  fitter->SetParameter(0, "c(uds)", 1.00, 0.01, 0.00, 100.00);
 	  fitter->SetParameter(1, "c(b)",   1.00, 0.01, 0.00, 100.00);
 	  fitter->SetParameter(2, "c(c)",   1.00, 0.01, 0.00, 100.00);
-	  if (irun==99) {
+	  /*if (irun==99) {
 	    fitter->FixParameter(0);
 	    fitter->FixParameter(2);
-	  }
+	  }*/
 	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
 	  h_mc_fit0->Scale(fitter->GetParameter(0));
 	  h_mc_fit1->Scale(fitter->GetParameter(1));
@@ -899,6 +919,8 @@ if (numB==2) {
 	//if (title.find("mass_")!=string::npos) pad1->SetLogy(0);
         if (title.find("y_Z")!=string::npos) pad1->SetLogy(0);
         if (title.find("DR_bb")!=string::npos) pad1->SetLogy(0);
+        if (title.find("delta_j")!=string::npos) pad1->SetLogy(0);
+        if (title.find("delta_j_n")!=string::npos) pad1->SetLogy(0);
 //        if (title.find("DR_jj")!=string::npos) pad1->SetLogy(0);
 //        if (title.find("w_eebb_mass")!=string::npos || title.find("w_mmbb_mass")!=string::npos) pad1->SetLogy(0);
 
@@ -1082,6 +1104,13 @@ if (numB==2) {
 	h_ratio->SetMarkerStyle(20);
 	h_ratio->Draw("EPX0");
 
+	TFile *dumphistos_file = new TFile("dump.root","RECREATE");
+        dumphistos_file->cd();
+        if (title=="w_first_bjet_pt") h_ratio->Write("A");
+        if (title=="w_first_bjet_pt_SVTX") h_ratio->Write("B");
+	dumphistos_file->Close();
+	
+
 	TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
 	OLine->SetLineColor(kRed);
 	OLine->SetLineWidth(2);
@@ -1176,7 +1205,7 @@ if (numB==2) {
           }
 	}
 
-	if (useDY==1) subdir = subdir + "_sherpa";
+	//if (useDY==1 || useSherpa) subdir = subdir + "_sherpa";
 	if (useDY==2) subdir = subdir + "_powheg";
 
 	if (plot) {
