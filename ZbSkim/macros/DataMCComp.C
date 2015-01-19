@@ -2,8 +2,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-//string path = "/gpfs/cms/users/lalicata/work/test/data/";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 TH1F* h_data_fit = 0;
 TH1F* h_mc_fit0 = 0;
@@ -204,10 +204,10 @@ if (numB==2) {
         if (bbBkg) {
           ifstream in8;
           if (ilepton==1) {
-            in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_BJP_doFit" + ".dat").c_str());
+            in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
           }
           if (ilepton==2) {
-            in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_BJP_doFit" + ".dat").c_str());
+            in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
           }         
           in8 >> fScal >> efScal;
         }
@@ -586,6 +586,7 @@ if (numB==2) {
 	  h_data->Add(h_mc3, -1.);
 	  h_data->Add(h_mc2, -1.);
 	  h_data->Add(h_mc1t, -1.);
+          if (bbBkg) h_data->Add(h_mc1bb, -1.);
 	}
 
 	if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
@@ -885,9 +886,10 @@ if (numB==2) {
 	  ht->Add(h_mc4);
 	  ht->Add(h_mc3);
 	  ht->Add(h_mc2);
+          if (bbBkg) ht->Add(h_mc1bb);
 	}
 	if (h_mc1b) ht->Add(h_mc1b);
-        if (bbBkg || bbSig) ht->Add(h_mc1bb);
+        if (bbSig) ht->Add(h_mc1bb);
 	if (h_mc1c) ht->Add(h_mc1c);
 	ht->Add(h_mc1);
 
@@ -901,8 +903,9 @@ if (numB==2) {
 	  hs->Add(h_mc4);
 	  hs->Add(h_mc3);
 	  hs->Add(h_mc2);
+          if (bbBkg) hs->Add(h_mc1bb);
 	}
-        if (bbBkg || bbSig) hs->Add(h_mc1bb);
+        if (bbSig) hs->Add(h_mc1bb);
 	if (h_mc1b) hs->Add(h_mc1b);
 	if (h_mc1c) hs->Add(h_mc1c);
 	hs->Add(h_mc1);
