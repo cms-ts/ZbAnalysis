@@ -191,13 +191,8 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp5.C+\($d,\"w_secondvtx_N_mass\",1,$i,0,$n\)
 
-  root -l -q -b DataMCComp5.C+\($d,\"w_secondvtx_N_nomass\",1,$i,0,$n\)
-
   root -l -q -b DataMCComp5.C+\($d,\"w_BJP_mass\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_JBP_mass\",1,$i,0,$n\)
-
-  root -l -q -b DataMCComp5.C+\($d,\"w_BJP_nomass\",1,$i,0,$n\)
-  root -l -q -b DataMCComp5.C+\($d,\"w_JBP_nomass\",1,$i,0,$n\)
 
   root -l -q -b DataMCComp5.C+\($d,\"w_BJP0\",1,$i,0,$n\)
   root -l -q -b DataMCComp5.C+\($d,\"w_BJP1\",1,$i,0,$n\)
