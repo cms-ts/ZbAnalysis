@@ -25,14 +25,12 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp2.C+\($d,\"w_first_jet_pt\",1,$i,0\)
   root -l -q -b DataMCComp2.C+\($d,\"w_first_jet_eta\",1,$i,0\)
-  root -l -q -b DataMCComp2.C+\($d,\"w_first_bjet_pt\",1,$i,0,0,$n\)
-  root -l -q -b DataMCComp2.C+\($d,\"w_first_bjet_eta\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp2.C+\($d,\"w_first_bjet_pt\",1,$i,0,0,$n,1\)
+  root -l -q -b DataMCComp2.C+\($d,\"w_first_bjet_eta\",1,$i,0,0,$n,1\)
   root -l -q -b DataMCComp2.C+\($d,\"w_pt_Z_ee\",1,$i,0\)
   root -l -q -b DataMCComp2.C+\($d,\"w_pt_Z_mm\",1,$i,0\)
   root -l -q -b DataMCComp2.C+\($d,\"w_y_Z_ee\",1,$i,0\)
   root -l -q -b DataMCComp2.C+\($d,\"w_y_Z_mm\",1,$i,0\)
-  root -l -q -b DataMCComp2.C+\($d,\"w_y_Z_ee_abs\",1,$i,0\)
-  root -l -q -b DataMCComp2.C+\($d,\"w_y_Z_mm_abs\",1,$i,0\)
   root -l -q -b DataMCComp2.C+\($d,\"w_Phi_star_ee\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp2.C+\($d,\"w_Phi_star_mm\",1,$i,0,0,$n\)
 
@@ -67,9 +65,9 @@ while [ $i -le 2 ]; do
   if [ $n -ne 0 ]; then
     root -l -q -b DataMCComp2.C+\($d,\"w_Phi_star_ee_b\",1,$i,0,0,$n\)
     root -l -q -b DataMCComp2.C+\($d,\"w_Phi_star_mm_b\",1,$i,0,0,$n\)
-    root -l -q -b DataMCComp2.C+\($d,\"w_pt_Z_ee_b\",1,$i,0,0,$n\)
-    root -l -q -b DataMCComp2.C+\($d,\"w_pt_Z_mm_b\",1,$i,0,0,$n\)
-    root -l -q -b DataMCComp2.C+\($d,\"w_Ht_b\",1,$i,0,0,$n\)
+    root -l -q -b DataMCComp2.C+\($d,\"w_pt_Z_ee_b\",1,$i,0,0,$n,1\)
+    root -l -q -b DataMCComp2.C+\($d,\"w_pt_Z_mm_b\",1,$i,0,0,$n,1\)
+    root -l -q -b DataMCComp2.C+\($d,\"w_Ht_b\",1,$i,0,0,$n,1\)
     root -l -q -b DataMCComp2.C+\($d,\"w_mass_Zj_ee_b\",1,$i,0,0,$n\)
     root -l -q -b DataMCComp2.C+\($d,\"w_mass_Zj_mm_b\",1,$i,0,0,$n\)
   fi
