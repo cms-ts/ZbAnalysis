@@ -4,10 +4,10 @@
 
 #include "fixrange.C"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-//string path = "/gpfs/cms/users/lalicata/work/test/data/";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
-void DataMCComp2(int irun=0, string title="", int plot=0, int ilepton=1, int isratio=1, int unfold=0, int numB=0) {
+void DataMCComp2(int irun=0, string title="", int plot=0, int ilepton=1, int isratio=1, int unfold=0, int numB=0, int bb=0) {
 
 //int useBinnedEfficiency=0; // use average efficiencies
 int useBinnedEfficiency=1; // use bin-by-bin efficiencies
@@ -25,6 +25,8 @@ string postfix="";
 string dirbSel="";
 string bSel="";
 string genPostfix="";
+
+bool bbBkg = false;
 
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
@@ -109,6 +111,7 @@ if (numB==2) {
   genPostfix = "2b";
 }
 
+if (bb==1 && numB==1) bbBkg = true;
 
 	if (gROOT->GetVersionInt() >= 53401) {
 	  //gROOT->GetColor(kRed)->SetAlpha(0.5);
@@ -133,6 +136,8 @@ if (numB==2) {
 	double ec_c=0.0;
 	double c_uds=1.0;
 	double ec_uds=0.0;
+        double fScal=1.0;
+        double efScal=0.0;
 
 	/* top background */
 
@@ -141,7 +146,7 @@ if (numB==2) {
 	double c2_t=1.0;
 	double ec2_t=0.0;
 
-	ifstream in1, in2, in3, in4, in5, in6, in7;
+	ifstream in1, in2, in3, in4, in5, in6, in7, in8;
 	if (ilepton==1) {
 	  in1.open((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + "w_first_jet_eta" + "_efficiency.dat").c_str());
 	  in2.open((path + "/electrons/" + version + "/" + subdir + "/efficiency" + dirbSel + "/" + "w_first_bjet_eta" + "_efficiency.dat").c_str());
@@ -149,6 +154,7 @@ if (numB==2) {
 	    in3.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    in4.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
 	    in5.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
+            in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
 	      in6.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_ee_wide_doFit" + ".dat").c_str());
 	      in7.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_ee_b_wide_doFit" + ".dat").c_str());
@@ -162,6 +168,7 @@ if (numB==2) {
 	    in3.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    in4.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
 	    in5.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
+            in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
 	      in6.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_mm_wide_doFit" + ".dat").c_str());
 	      in7.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_mm_b_wide_doFit" + ".dat").c_str());
@@ -186,6 +193,8 @@ if (numB==2) {
 	  in5 >> c2_t >> ec2_t;
 	  in4.close();
 	  in5.close();
+          in8 >> fScal >> efScal;
+          in8.close();
 	  if (useEleMuo) {
 	    in6 >> c1_t >> ec1_t;
 	    in7 >> c2_t >> ec2_t;
@@ -338,6 +347,8 @@ if (numB==2) {
 	TH1F* h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
 	TH1F* h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
 	TH1F* h_mc1t_b = (TH1F*)gDirectory->Get(("t"+title_b.substr(1)).c_str());
+        TH1F* h_mc1bb = 0;
+        if (bbBkg) h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
 
 	if (ilepton==1) mcg->cd(("demoEleGen"+genPostfix).c_str());
 	if (ilepton==2) mcg->cd(("demoMuoGen"+genPostfix).c_str());
@@ -486,6 +497,7 @@ if (numB==2) {
 	if (h_mc1b_b) h_mc1b_b->Sumw2();
 	if (h_mc1c_b) h_mc1c_b->Sumw2();
 	if (h_mc1t_b) h_mc1t_b->Sumw2();
+        if (bbBkg)  h_mc1bb->Sumw2();
 	h_mcg_b->Sumw2();
 	h_mcg1_b->Sumw2();
 	h_mcg2_b->Sumw2();
@@ -542,6 +554,7 @@ if (numB==2) {
 	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
 	if (h_mc1c_b) h_mc1c_b->Scale(norm1);
 	if (h_mc1t_b) h_mc1t_b->Scale(norm1);
+        if (bbBkg)  h_mc1bb->Scale(norm1);
 	h_mcg_b->Scale(norm1);
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
@@ -593,6 +606,7 @@ if (numB==2) {
 	    if (h_mc1b_b) h_mc1b_b->SetBinError(i, 1.1*h_mc1b_b->GetBinError(i));
 	    if (h_mc1c_b) h_mc1c_b->SetBinError(i, 1.1*h_mc1c_b->GetBinError(i));
 	    if (h_mc1t_b) h_mc1t_b->SetBinError(i, 1.1*h_mc1t_b->GetBinError(i));
+            if (bbBkg)  h_mc1bb->SetBinError(i, 1.1*h_mc1bb->GetBinError(i));
 	    h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
 	    h_mc2_b->SetBinError(i, 1.1*h_mc2_b->GetBinError(i));
 	    h_mc3->SetBinError(i, 1.1*h_mc3->GetBinError(i));
@@ -634,11 +648,13 @@ if (numB==2) {
 	if (h_mc1b_b) h_mc1uds_b->Add(h_mc1b_b, -1);
 	if (h_mc1c_b) h_mc1uds_b->Add(h_mc1c_b, -1);
 	if (h_mc1t_b) h_mc1uds_b->Add(h_mc1t_b, -1);
+        if (bbBkg)  h_mc1uds_b->Add(h_mc1bb, -1);
 	for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
 	  float e = TMath::Power(h_mc1uds_b->GetBinError(i),2);
 	  if (h_mc1b_b) e = e - TMath::Power(h_mc1b_b->GetBinError(i),2);
 	  if (h_mc1c_b) e = e - TMath::Power(h_mc1c_b->GetBinError(i),2);
 	  if (h_mc1t_b) e = e - TMath::Power(h_mc1t_b->GetBinError(i),2);
+          if (bbBkg) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
 	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
@@ -663,10 +679,14 @@ if (numB==2) {
 	    h_mc1c_b->Scale(c_c);
 	  }
         }
+        if (bbBkg) {
+          h_mc1bb->Scale(fScal);
+        }
 
 	if (unfold==0) {
 	  h_data_b->Add(h_mc1c_b, -1.);
 	  h_data_b->Add(h_mc1uds_b, -1.);
+          if (bbBkg) h_data_b->Add(h_mc1bb, -1.);
 	}
 
 	TH1F *h_data_raw=0;
