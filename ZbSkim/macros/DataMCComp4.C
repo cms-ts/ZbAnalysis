@@ -142,10 +142,10 @@ if (numB==2) {
 	ifstream in;
 	if (imode>=4) {
 	  if (ilepton==1) {
-	    in.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_BJP_doFit" + ".dat").c_str());
+	    in.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	  }
 	  if (ilepton==2) {
-	    in.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_BJP_doFit" + ".dat").c_str());
+	    in.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	  }
           if (numB!=2) {
 	    in >> c_uds >> ec_uds;
