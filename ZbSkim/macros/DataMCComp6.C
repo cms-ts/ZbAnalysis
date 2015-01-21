@@ -113,6 +113,22 @@ if (numB==2) {
           }
         }
 
+        if (numB==1 || numB==2) {
+          if (title=="w_pt_Z" || title=="w_delta_phi") {
+            title_ee = title_ee + "_ee_b";
+            title_ee_b = title_ee_b + "_ee_b";
+            title_mm = title_mm + "_mm_b";
+            title_mm_b = title_mm_b + "_mm_b";
+          }
+          if (title=="w_Ht") {
+            title_ee = title_ee + "_b";
+            title_ee_b = title_ee_b + "_b";
+            title_mm = title_mm + "_b";
+            title_mm_b = title_mm_b + "_b";
+          }
+        }
+
+
         TFile f_ee((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title_ee + "_unfolding.root").c_str());
         TFile f_ee_b((path + "/electrons/" + version + "/" + subdir + "/unfolding" + dirbSel + "/" + title_ee_b + "_unfolding.root").c_str());
         TH1F* h_data_ee = (TH1F*)f_ee.Get(title_ee.c_str())->Clone();
