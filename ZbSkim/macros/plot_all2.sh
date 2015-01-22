@@ -65,9 +65,9 @@ while [ $i -le 2 ]; do
   if [ $n -ne 0 ]; then
     root -l -q -b DataMCComp2.C+\($d,\"w_Phi_star_ee_b\",1,$i,0,0,$n\)
     root -l -q -b DataMCComp2.C+\($d,\"w_Phi_star_mm_b\",1,$i,0,0,$n\)
-    root -l -q -b DataMCComp2.C+\($d,\"w_pt_Z_ee_b\",1,$i,0,0,$n,1\)
-    root -l -q -b DataMCComp2.C+\($d,\"w_pt_Z_mm_b\",1,$i,0,0,$n,1\)
-    root -l -q -b DataMCComp2.C+\($d,\"w_Ht_b\",1,$i,0,0,$n,1\)
+    root -l -q -b DataMCComp2.C+\($d,\"w_pt_Z_ee_b\",1,$i,0,0,$n\)
+    root -l -q -b DataMCComp2.C+\($d,\"w_pt_Z_mm_b\",1,$i,0,0,$n\)
+    root -l -q -b DataMCComp2.C+\($d,\"w_Ht_b\",1,$i,0,0,$n\)
     root -l -q -b DataMCComp2.C+\($d,\"w_mass_Zj_ee_b\",1,$i,0,0,$n\)
     root -l -q -b DataMCComp2.C+\($d,\"w_mass_Zj_mm_b\",1,$i,0,0,$n\)
   fi
