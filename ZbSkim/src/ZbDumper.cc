@@ -491,101 +491,188 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
        w_first_jet_pt->Fill(jets->empty() ? -1 : (*jets)[0].pt(), k<0 ? -1 : (*gen_jets2)[k].pt(), my_weight);
        w_first_jet_eta->Fill(jets->empty() ? -3 : (*jets)[0].eta(), k<0 ? -3 : (*gen_jets2)[k].eta(), my_weight);
        w_first_jet_eta_abs->Fill(jets->empty() ? -3 : fabs((*jets)[0].eta()), k<0 ? -3 : fabs((*gen_jets2)[k].eta()), my_weight);
-       w_first_bjet_pt->Fill(bjets->empty() ? -1 : (*bjets)[0].pt(), k_b<0 ? -1 : (*gen_bjets2)[k_b].pt(), my_bweight);
-       w_first_bjet_eta->Fill(bjets->empty() ? -3 : (*bjets)[0].eta(), k_b<0 ? -3 : (*gen_bjets2)[k_b].eta(), my_bweight);
-       w_first_bjet_eta_abs->Fill(bjets->empty() ? -3 : fabs((*bjets)[0].eta()), k_b<0 ? -3 : fabs((*gen_bjets2)[k_b].eta()), my_bweight);
+       if (numB_==0) {
+         w_first_bjet_pt->Fill(bjets->empty() ? -1 : (*bjets)[0].pt(), k_b<0 ? -1 : (*gen_bjets2)[k_b].pt(), my_bweight);
+         w_first_bjet_eta->Fill(bjets->empty() ? -3 : (*bjets)[0].eta(), k_b<0 ? -3 : (*gen_bjets2)[k_b].eta(), my_bweight);
+         w_first_bjet_eta_abs->Fill(bjets->empty() ? -3 : fabs((*bjets)[0].eta()), k_b<0 ? -3 : fabs((*gen_bjets2)[k_b].eta()), my_bweight);
+       }
+       if (numB_==1) {
+         w_first_bjet_pt->Fill((bjets->empty() || (*gen_bjets2).size() != 1) ? -1 : (*bjets)[0].pt(), k_b<0 ? -1 : (*gen_bjets2)[k_b].pt(), my_bweight);
+         w_first_bjet_eta->Fill((bjets->empty() || (*gen_bjets2).size() != 1) ? -3 : (*bjets)[0].eta(), k_b<0 ? -3 : (*gen_bjets2)[k_b].eta(), my_bweight);
+         w_first_bjet_eta_abs->Fill((bjets->empty() || (*gen_bjets2).size() != 1) ? -3 : fabs((*bjets)[0].eta()), k_b<0 ? -3 : fabs((*gen_bjets2)[k_b].eta()), my_bweight);
+       }
        if (numB_==2) {
-         w_second_bjet_pt->Fill(bjets->empty() ? -1 : (*bjets)[1].pt(), k_b2<0 ? -1 : (*gen_bjets2)[k_b2].pt(), my_bweight);
-         w_second_bjet_eta->Fill(bjets->empty() ? -3 : (*bjets)[1].eta(), k_b2<0 ? -3 : (*gen_bjets2)[k_b2].eta(), my_bweight);
-         w_second_bjet_eta_abs->Fill(bjets->empty() ? -3 : fabs((*bjets)[1].eta()), k_b2<0 ? -3 : fabs((*gen_bjets2)[k_b2].eta()), my_bweight);
+         w_first_bjet_pt->Fill((bjets->empty() || (*gen_bjets2).size() < 2) ? -1 : (*bjets)[0].pt(), k_b<0 ? -1 : (*gen_bjets2)[k_b].pt(), my_bweight);
+         w_first_bjet_eta->Fill((bjets->empty() || (*gen_bjets2).size() < 2) ? -3 : (*bjets)[0].eta(), k_b<0 ? -3 : (*gen_bjets2)[k_b].eta(), my_bweight);
+         w_first_bjet_eta_abs->Fill((bjets->empty() || (*gen_bjets2).size() < 2) ? -3 : fabs((*bjets)[0].eta()), k_b<0 ? -3 : fabs((*gen_bjets2)[k_b].eta()), my_bweight);
+         w_second_bjet_pt->Fill((bjets->empty() || (*gen_bjets2).size() < 2) ? -1 : (*bjets)[1].pt(), k_b2<0 ? -1 : (*gen_bjets2)[k_b2].pt(), my_bweight);
+         w_second_bjet_eta->Fill((bjets->empty() || (*gen_bjets2).size() < 2) ? -3 : (*bjets)[1].eta(), k_b2<0 ? -3 : (*gen_bjets2)[k_b2].eta(), my_bweight);
+         w_second_bjet_eta_abs->Fill((bjets->empty() || (*gen_bjets2).size() < 2) ? -3 : fabs((*bjets)[1].eta()), k_b2<0 ? -3 : fabs((*gen_bjets2)[k_b2].eta()), my_bweight);
        }
      }
 
      if (ee_event) {
        w_pt_Z_ee->Fill(ptZ->empty() ? -1 : (*ptZ)[0], gen_ptZ->empty() ? -1 : (*gen_ptZ)[0], my_weight);
-       w_pt_Z_ee_b->Fill(ptZ_b->empty() ? -1 : (*ptZ_b)[0], gen_ptZ_b->empty() ? -1 : (*gen_ptZ_b)[0], my_bweight);
+       if (numB_==0) {
+         w_pt_Z_ee_b->Fill(ptZ_b->empty() ? -1 : (*ptZ_b)[0], gen_ptZ_b->empty() ? -1 : (*gen_ptZ_b)[0], my_bweight);
+       }
+       if (numB_==1) {
+         w_pt_Z_ee_b->Fill((ptZ_b->empty() || (*gen_bjets2).size() != 1) ? -1 : (*ptZ_b)[0], gen_ptZ_b->empty() ? -1 : (*gen_ptZ_b)[0], my_bweight);
+       }
+       if (numB_==2) {
+         w_pt_Z_ee_b->Fill((ptZ_b->empty() || (*gen_bjets2).size() < 2) ? -1 : (*ptZ_b)[0], gen_ptZ_b->empty() ? -1 : (*gen_ptZ_b)[0], my_bweight);
+       }
      }
 
      if (mm_event) {
        w_pt_Z_mm->Fill(ptZ->empty() ? -1 : (*ptZ)[0], gen_ptZ->empty() ? -1 : (*gen_ptZ)[0], my_weight);
-       w_pt_Z_mm_b->Fill(ptZ_b->empty() ? -1 : (*ptZ_b)[0], gen_ptZ_b->empty() ? -1 : (*gen_ptZ_b)[0], my_bweight);
+       if (numB_==0) {
+         w_pt_Z_mm_b->Fill(ptZ_b->empty() ? -1 : (*ptZ_b)[0], gen_ptZ_b->empty() ? -1 : (*gen_ptZ_b)[0], my_bweight);
+       }
+       if (numB_==1) {
+         w_pt_Z_mm_b->Fill((ptZ_b->empty() || (*gen_bjets2).size() != 1) ? -1 : (*ptZ_b)[0], gen_ptZ_b->empty() ? -1 : (*gen_ptZ_b)[0], my_bweight);
+       }
+       if (numB_==2) {
+         w_pt_Z_mm_b->Fill((ptZ_b->empty() || (*gen_bjets2).size() < 2) ? -1 : (*ptZ_b)[0], gen_ptZ_b->empty() ? -1 : (*gen_ptZ_b)[0], my_bweight);
+       }
      }
      
      if (ee_event) {
        w_y_Z_ee->Fill(yZ->empty() ? -3 : (*yZ)[0], gen_yZ->empty() ? -3 : (*gen_yZ)[0], my_weight);
-       w_y_Z_ee_b->Fill(yZ_b->empty() ? -3 : (*yZ_b)[0], gen_yZ_b->empty() ? -3 : (*gen_yZ_b)[0], my_bweight);
        w_y_Z_ee_abs->Fill(yZ->empty() ? -3 : fabs((*yZ)[0]), gen_yZ->empty() ? -3 : fabs((*gen_yZ)[0]), my_weight);
-       w_y_Z_ee_b_abs->Fill(yZ_b->empty() ? -3 : fabs((*yZ_b)[0]), gen_yZ_b->empty() ? -3 : fabs((*gen_yZ_b)[0]), my_bweight);
+       if (numB_==0) {
+         w_y_Z_ee_b->Fill(yZ_b->empty() ? -3 : (*yZ_b)[0], gen_yZ_b->empty() ? -3 : (*gen_yZ_b)[0], my_bweight);
+         w_y_Z_ee_b_abs->Fill(yZ_b->empty() ? -3 : fabs((*yZ_b)[0]), gen_yZ_b->empty() ? -3 : fabs((*gen_yZ_b)[0]), my_bweight);
+       }
+       if (numB_==1) {
+         w_y_Z_ee_b->Fill((yZ_b->empty() || (*gen_bjets2).size() != 1) ? -3 : (*yZ_b)[0], gen_yZ_b->empty() ? -3 : (*gen_yZ_b)[0], my_bweight);
+         w_y_Z_ee_b_abs->Fill((yZ_b->empty() || (*gen_bjets2).size() != 1) ? -3 : fabs((*yZ_b)[0]), gen_yZ_b->empty() ? -3 : fabs((*gen_yZ_b)[0]), my_bweight);
+       }
+       if (numB_==2) {
+         w_y_Z_ee_b->Fill((yZ_b->empty() || (*gen_bjets2).size() < 2) ? -3 : (*yZ_b)[0], gen_yZ_b->empty() ? -3 : (*gen_yZ_b)[0], my_bweight);
+         w_y_Z_ee_b_abs->Fill((yZ_b->empty() || (*gen_bjets2).size() < 2) ? -3 : fabs((*yZ_b)[0]), gen_yZ_b->empty() ? -3 : fabs((*gen_yZ_b)[0]), my_bweight);
+       }
      }
 
      if (mm_event) {
        w_y_Z_mm->Fill(yZ->empty() ? -3 : (*yZ)[0], gen_yZ->empty() ? -3 : (*gen_yZ)[0], my_weight);
-       w_y_Z_mm_b->Fill(yZ_b->empty() ? -3 : (*yZ_b)[0], gen_yZ_b->empty() ? -3 : (*gen_yZ_b)[0], my_bweight);
        w_y_Z_mm_abs->Fill(yZ->empty() ? -3 : fabs((*yZ)[0]), gen_yZ->empty() ? -3 : fabs((*gen_yZ)[0]), my_weight);
-       w_y_Z_mm_b_abs->Fill(yZ_b->empty() ? -3 : fabs((*yZ_b)[0]), gen_yZ_b->empty() ? -3 : fabs((*gen_yZ_b)[0]), my_bweight);
+       if (numB_==0) {
+         w_y_Z_mm_b->Fill(yZ_b->empty() ? -3 : (*yZ_b)[0], gen_yZ_b->empty() ? -3 : (*gen_yZ_b)[0], my_bweight); 
+         w_y_Z_mm_b_abs->Fill(yZ_b->empty() ? -3 : fabs((*yZ_b)[0]), gen_yZ_b->empty() ? -3 : fabs((*gen_yZ_b)[0]), my_bweight);
+       }
+       if (numB_==1) {
+         w_y_Z_mm_b->Fill((yZ_b->empty() || (*gen_bjets2).size() != 1) ? -3 : (*yZ_b)[0], gen_yZ_b->empty() ? -3 : (*gen_yZ_b)[0], my_bweight);
+         w_y_Z_mm_b_abs->Fill((yZ_b->empty() || (*gen_bjets2).size() != 1) ? -3 : fabs((*yZ_b)[0]), gen_yZ_b->empty() ? -3 : fabs((*gen_yZ_b)[0]), my_bweight);
+       }
+       if (numB_==2) {
+         w_y_Z_mm_b->Fill((yZ_b->empty() || (*gen_bjets2).size() < 2) ? -3 : (*yZ_b)[0], gen_yZ_b->empty() ? -3 : (*gen_yZ_b)[0], my_bweight);
+         w_y_Z_mm_b_abs->Fill((yZ_b->empty() || (*gen_bjets2).size() < 2) ? -3 : fabs((*yZ_b)[0]), gen_yZ_b->empty() ? -3 : fabs((*gen_yZ_b)[0]), my_bweight);
+       }
      }
 
      if ((ee_event || mm_event) && numB_!=1) {
-       w_delta_phi_2b->Fill(delta_phi_bb->empty() ? -1 : (*delta_phi_bb)[0], gen_delta_phi_bb->empty() ? -1 : (*gen_delta_phi_bb)[0], my_bweight);       
+       w_delta_phi_2b->Fill((delta_phi_bb->empty() || (*gen_bjets2).size() < 2) ? -1 : (*delta_phi_bb)[0], gen_delta_phi_bb->empty() ? -1 : (*gen_delta_phi_bb)[0], my_bweight);       
      }
      
      if ((ee_event || mm_event) && numB_==2) {
-       w_DR_bb->Fill(DR_bb->empty() ? -1 : (*DR_bb)[0], gen_DR_bb->empty() ? -1 : (*gen_DR_bb)[0], my_bweight);
+       w_DR_bb->Fill((DR_bb->empty() || (*gen_bjets2).size() < 2) ? -1 : (*DR_bb)[0], gen_DR_bb->empty() ? -1 : (*gen_DR_bb)[0], my_bweight);
      }
  
      if (ee_event && numB_!=1) {
-       w_DR_eeb_min->Fill(DR_Zb_min->empty() ? -1 : (*DR_Zb_min)[0], gen_DR_Zb_min->empty() ? -1 : (*gen_DR_Zb_min)[0], my_bweight);
-       w_DR_eeb_max->Fill(DR_Zb_max->empty() ? -1 : (*DR_Zb_max)[0], gen_DR_Zb_max->empty() ? -1 : (*gen_DR_Zb_max)[0], my_bweight);
+       w_DR_eeb_min->Fill((DR_Zb_min->empty() || (*gen_bjets2).size() < 2) ? -1 : (*DR_Zb_min)[0], gen_DR_Zb_min->empty() ? -1 : (*gen_DR_Zb_min)[0], my_bweight);
+       w_DR_eeb_max->Fill((DR_Zb_max->empty() || (*gen_bjets2).size() < 2) ? -1 : (*DR_Zb_max)[0], gen_DR_Zb_max->empty() ? -1 : (*gen_DR_Zb_max)[0], my_bweight);
      }
 
      if (mm_event && numB_!=1) {
-       w_DR_mmb_min->Fill(DR_Zb_min->empty() ? -1 : (*DR_Zb_min)[0], gen_DR_Zb_min->empty() ? -1 : (*gen_DR_Zb_min)[0], my_bweight);
-       w_DR_mmb_max->Fill(DR_Zb_max->empty() ? -1 : (*DR_Zb_max)[0], gen_DR_Zb_max->empty() ? -1 : (*gen_DR_Zb_max)[0], my_bweight);
+       w_DR_mmb_min->Fill((DR_Zb_min->empty() || (*gen_bjets2).size() < 2) ? -1 : (*DR_Zb_min)[0], gen_DR_Zb_min->empty() ? -1 : (*gen_DR_Zb_min)[0], my_bweight);
+       w_DR_mmb_max->Fill((DR_Zb_max->empty() || (*gen_bjets2).size() < 2) ? -1 : (*DR_Zb_max)[0], gen_DR_Zb_max->empty() ? -1 : (*gen_DR_Zb_max)[0], my_bweight);
      }
 
      if (ee_event && numB_!=1) {
-       w_A_eeb->Fill(A_Zb->empty() ? -1 : (*A_Zb)[0], gen_A_Zb->empty() ? -1 : (*gen_A_Zb)[0], my_bweight);
+       w_A_eeb->Fill((A_Zb->empty() || (*gen_bjets2).size() < 2) ? -1 : (*A_Zb)[0], gen_A_Zb->empty() ? -1 : (*gen_A_Zb)[0], my_bweight);
      }
 
      if (mm_event && numB_!=1) {
-       w_A_mmb->Fill(A_Zb->empty() ? -1 : (*A_Zb)[0], gen_A_Zb->empty() ? -1 : (*gen_A_Zb)[0], my_bweight);
+       w_A_mmb->Fill((A_Zb->empty() || (*gen_bjets2).size() < 2) ? -1 : (*A_Zb)[0], gen_A_Zb->empty() ? -1 : (*gen_A_Zb)[0], my_bweight);
      }
 
      if (ee_event) {
        w_Phi_star_ee->Fill(phi_star->empty() ? -1 : (*phi_star)[0], gen_phi_star->empty() ? -1 : (*gen_phi_star)[0], my_weight);
-       w_Phi_star_ee_b->Fill(phi_star_b->empty() ? -1 : (*phi_star_b)[0], gen_phi_star_b->empty() ? -1 : (*gen_phi_star_b)[0], my_weight);
+       if (numB_==0) {
+         w_Phi_star_ee_b->Fill(phi_star_b->empty() ? -1 : (*phi_star_b)[0], gen_phi_star_b->empty() ? -1 : (*gen_phi_star_b)[0], my_weight);
+       }
+       if (numB_==1) {
+         w_Phi_star_ee_b->Fill((phi_star_b->empty() || (*gen_bjets2).size() != 1) ? -1 : (*phi_star_b)[0], gen_phi_star_b->empty() ? -1 : (*gen_phi_star_b)[0], my_weight);
+       }
+       if (numB_==2) {
+         w_Phi_star_ee_b->Fill((phi_star_b->empty() || (*gen_bjets2).size() < 2) ? -1 : (*phi_star_b)[0], gen_phi_star_b->empty() ? -1 : (*gen_phi_star_b)[0], my_weight);
+       }
      }
 
      if (mm_event) {
        w_Phi_star_mm->Fill(phi_star->empty() ? -1 : (*phi_star)[0], gen_phi_star->empty() ? -1 : (*gen_phi_star)[0], my_weight);
-       w_Phi_star_mm_b->Fill(phi_star_b->empty() ? -1 : (*phi_star_b)[0], gen_phi_star_b->empty() ? -1 : (*gen_phi_star_b)[0], my_weight);
+       if (numB_==0) {
+         w_Phi_star_mm_b->Fill(phi_star_b->empty() ? -1 : (*phi_star_b)[0], gen_phi_star_b->empty() ? -1 : (*gen_phi_star_b)[0], my_weight);
+       }
+       if (numB_==1) {
+         w_Phi_star_mm_b->Fill((phi_star_b->empty() || (*gen_bjets2).size() != 1) ? -1 : (*phi_star_b)[0], gen_phi_star_b->empty() ? -1 : (*gen_phi_star_b)[0], my_weight);
+       }
+       if (numB_==2) {
+         w_Phi_star_mm_b->Fill((phi_star_b->empty() || (*gen_bjets2).size() < 2) ? -1 : (*phi_star_b)[0], gen_phi_star_b->empty() ? -1 : (*gen_phi_star_b)[0], my_weight);
+       }
      }
 
      if (ee_event) {
        w_mass_Zj_ee->Fill(zj_mass->empty() ? -1 : (*zj_mass)[0], gen_zj_mass->empty() ? -1 : (*gen_zj_mass)[0], my_weight);
-       w_mass_Zj_ee_b->Fill(zb_mass->empty() ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
+       if (numB_==0) {
+         w_mass_Zj_ee_b->Fill(zb_mass->empty() ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
+       }
+       if (numB_==1) {
+         w_mass_Zj_ee_b->Fill((zb_mass->empty() || (*gen_bjets2).size() != 1) ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
+       }
+       if (numB_==2) {
+         w_mass_Zj_ee_b->Fill((zb_mass->empty() || (*gen_bjets2).size() < 2) ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
+       }
      }
 
      if (mm_event) {
        w_mass_Zj_mm->Fill(zj_mass->empty() ? -1 : (*zj_mass)[0], gen_zj_mass->empty() ? -1 : (*gen_zj_mass)[0], my_weight);
-       w_mass_Zj_mm_b->Fill(zb_mass->empty() ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
+       if (numB_==0) {
+         w_mass_Zj_mm_b->Fill(zb_mass->empty() ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
+       }
+       if (numB_==1) {
+         w_mass_Zj_mm_b->Fill((zb_mass->empty() || (*gen_bjets2).size() != 1) ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
+       }
+       if (numB_==2) {
+         w_mass_Zj_mm_b->Fill((zb_mass->empty() || (*gen_bjets2).size() < 2) ? -1 : (*zb_mass)[0], gen_zb_mass->empty() ? -1 : (*gen_zb_mass)[0], my_bweight);
+       }
      }
 
      if ((ee_event || mm_event) && numB_!=1) {
-       w_bb_mass->Fill(bb_Mass->empty() ? -1 : (*bb_Mass)[0], gen_bb_Mass->empty() ? -1 : (*gen_bb_Mass)[0], my_bweight);
+       w_bb_mass->Fill((bb_Mass->empty() || (*gen_bjets2).size() < 2) ? -1 : (*bb_Mass)[0], gen_bb_Mass->empty() ? -1 : (*gen_bb_Mass)[0], my_bweight);
      }
 
      if (ee_event && numB_!=1) {
-       w_eebb_mass->Fill(bbZ_Mass->empty() ? -1 : (*bbZ_Mass)[0], gen_bbZ_Mass->empty() ? -1 : (*gen_bbZ_Mass)[0], my_bweight);
+       w_eebb_mass->Fill((bbZ_Mass->empty() || (*gen_bjets2).size() < 2) ? -1 : (*bbZ_Mass)[0], gen_bbZ_Mass->empty() ? -1 : (*gen_bbZ_Mass)[0], my_bweight);
      }
 
      if (mm_event && numB_!=1) {
-       w_mmbb_mass->Fill(bbZ_Mass->empty() ? -1 : (*bbZ_Mass)[0], gen_bbZ_Mass->empty() ? -1 : (*gen_bbZ_Mass)[0], my_bweight);
+       w_mmbb_mass->Fill((bbZ_Mass->empty() || (*gen_bjets2).size() < 2) ? -1 : (*bbZ_Mass)[0], gen_bbZ_Mass->empty() ? -1 : (*gen_bbZ_Mass)[0], my_bweight);
      }
 
      if (ee_event || mm_event) {
        w_Ht->Fill(Ht->empty() ? -1 : (*Ht)[0], gen_Ht->empty() ? -1 : (*gen_Ht)[0], my_weight);
-       w_Ht_b->Fill(Ht_b->empty() ? -1 : (*Ht_b)[0], gen_Ht_b->empty() ? -1 : (*gen_Ht_b)[0], my_bweight);
+       if (numB_==0) {
+         w_Ht_b->Fill(Ht_b->empty() ? -1 : (*Ht_b)[0], gen_Ht_b->empty() ? -1 : (*gen_Ht_b)[0], my_bweight);
+       }
+       if (numB_==1) {
+         w_Ht_b->Fill((Ht_b->empty() || (*gen_bjets2).size() < 2) ? -1 : (*Ht_b)[0], gen_Ht_b->empty() ? -1 : (*gen_Ht_b)[0], my_bweight);
+       }
+       if (numB_==2) {
+         w_Ht_b->Fill((Ht_b->empty() || (*gen_bjets2).size() < 2) ? -1 : (*Ht_b)[0], gen_Ht_b->empty() ? -1 : (*gen_Ht_b)[0], my_bweight);
+       }
+
      }
 
 //     if (ee_event) {
@@ -601,7 +688,15 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
        if (gen_delta_phi > acos (-1)) gen_delta_phi = 2 * acos (-1) - gen_delta_phi;
        if (gen_bdelta_phi > acos (-1)) gen_bdelta_phi = 2 * acos (-1) - gen_bdelta_phi;
        w_delta_ee->Fill(delta_phi->empty() ? -1 : (*delta_phi)[0], gen_delta_phi, my_weight);
-       w_delta_ee_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi, my_bweight);
+       if (numB_==0) {
+         w_delta_ee_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi, my_bweight);
+       }
+       if (numB_==1) {
+         w_delta_ee_b->Fill((bdelta_phi->empty() || (*gen_bjets2).size() != 1) ? -1 : (*bdelta_phi)[0], gen_bdelta_phi, my_bweight);
+       }
+       if (numB_==2) {
+         w_delta_ee_b->Fill((bdelta_phi->empty() || (*gen_bjets2).size() < 2) ? -1 : (*bdelta_phi)[0], gen_bdelta_phi, my_bweight);
+       }
      }
 
 //     if (mm_event) {
@@ -617,7 +712,15 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
        if (gen_delta_phi > acos (-1)) gen_delta_phi = 2 * acos (-1) - gen_delta_phi;
        if (gen_bdelta_phi > acos (-1)) gen_bdelta_phi = 2 * acos (-1) - gen_bdelta_phi;
        w_delta_mm->Fill(delta_phi->empty() ? -1 : (*delta_phi)[0], gen_delta_phi, my_weight);
-       w_delta_mm_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi, my_bweight);
+       if (numB_==0) {
+         w_delta_mm_b->Fill(bdelta_phi->empty() ? -1 : (*bdelta_phi)[0], gen_bdelta_phi, my_bweight);
+       }
+       if (numB_==1) {
+         w_delta_mm_b->Fill((bdelta_phi->empty() || (*gen_bjets2).size() != 1) ? -1 : (*bdelta_phi)[0], gen_bdelta_phi, my_bweight);
+       }
+       if (numB_==2) {
+         w_delta_mm_b->Fill((bdelta_phi->empty() || (*gen_bjets2).size() < 2) ? -1 : (*bdelta_phi)[0], gen_bdelta_phi, my_bweight);
+       }
      }
 
    }
