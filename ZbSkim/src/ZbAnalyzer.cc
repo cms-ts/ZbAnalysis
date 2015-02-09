@@ -2509,11 +2509,15 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     Deta_jj = vect_jets[0].eta() - vect_jets[1].eta();
   }
 
+  //icut_ = 4;
+
   bool iflag_ee=false;
   bool iflag_mm=false;
+  bool iflag_em=false;
   if (icut_==0 || Nb==0) {
     iflag_ee=true;
     iflag_mm=true;
+    iflag_em=true;
   }
   if (icut_==1 && Nb>0 && diele_pt>0   && diele_pt<30)   iflag_ee=true;
   if (icut_==2 && Nb>0 && diele_pt>30  && diele_pt<50)   iflag_ee=true;
@@ -2526,6 +2530,12 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   if (icut_==3 && Nb>0 && dimuon_pt>50  && dimuon_pt<80)   iflag_mm=true;
   if (icut_==4 && Nb>0 && dimuon_pt>80  && dimuon_pt<120)  iflag_mm=true;
   if (icut_==5 && Nb>0 && dimuon_pt>120 && dimuon_pt<400)  iflag_mm=true;
+
+  if (icut_==1 && Nb>0 && dielemuon_pt>0   && dielemuon_pt<30)   iflag_em=true;
+  if (icut_==2 && Nb>0 && dielemuon_pt>30  && dielemuon_pt<50)   iflag_em=true;
+  if (icut_==3 && Nb>0 && dielemuon_pt>50  && dielemuon_pt<80)   iflag_em=true;
+  if (icut_==4 && Nb>0 && dielemuon_pt>80  && dielemuon_pt<120)  iflag_em=true;
+  if (icut_==5 && Nb>0 && dielemuon_pt>120 && dielemuon_pt<400)  iflag_em=true;
 
   if (icut_==6 && Nb>0 && vect_bjets[0].eta()> -2.5   && vect_bjets[0].eta()< -1.5)  iflag_ee=true;
   if (icut_==7 && Nb>0 && vect_bjets[0].eta()> -1.5   && vect_bjets[0].eta()< -1.0)  iflag_ee=true;
@@ -2604,7 +2614,11 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   
   ee_event = ee_event && iflag_ee;
   mm_event = mm_event && iflag_mm;
-  em_event = em_event && (iflag_ee || iflag_mm);
+  if (icut_>0 && icut_<6) {
+    em_event = em_event && iflag_em;
+  } else {
+    em_event = em_event && (iflag_ee || iflag_mm);
+  }
 
   if (Nb > 0) {
     reco::SecondaryVertexTagInfo const * svTagInfos = vect_bjets[0].tagInfoSecondaryVertex("secondaryVertex");
