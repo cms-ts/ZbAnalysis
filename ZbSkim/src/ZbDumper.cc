@@ -667,7 +667,7 @@ void ZbDumper::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
          w_Ht_b->Fill(Ht_b->empty() ? -1 : (*Ht_b)[0], gen_Ht_b->empty() ? -1 : (*gen_Ht_b)[0], my_bweight);
        }
        if (numB_==1) {
-         w_Ht_b->Fill((Ht_b->empty() || (*gen_bjets2).size() < 2) ? -1 : (*Ht_b)[0], gen_Ht_b->empty() ? -1 : (*gen_Ht_b)[0], my_bweight);
+         w_Ht_b->Fill((Ht_b->empty() || (*gen_bjets2).size() != 1) ? -1 : (*Ht_b)[0], gen_Ht_b->empty() ? -1 : (*gen_Ht_b)[0], my_bweight);
        }
        if (numB_==2) {
          w_Ht_b->Fill((Ht_b->empty() || (*gen_bjets2).size() < 2) ? -1 : (*Ht_b)[0], gen_Ht_b->empty() ? -1 : (*gen_Ht_b)[0], my_bweight);
