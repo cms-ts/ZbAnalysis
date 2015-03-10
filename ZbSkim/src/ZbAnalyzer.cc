@@ -136,7 +136,7 @@ private:
         w = w * LtSF_->Val(jets[i].pt(), jets[i].eta());
       }
       w1n = w1n + w;
-    } 
+    }
     
     /** MEDIUM WP APPLICATION FORMULA **/
 /*
@@ -250,6 +250,7 @@ private:
   std::string path_;
   unsigned int icut_;
   double numB_;
+  double antibtag_;
 
   JetCorrectionUncertainty *jetCorrectionUncertainty_;
   edm::LumiReWeighting LumiWeights_;
@@ -1077,6 +1078,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   pcut_             = iConfig.getUntrackedParameter <bool> ("pcut", false);
   useDeltaR_        = iConfig.getUntrackedParameter <bool> ("useDeltaR", false);
   numB_             = iConfig.getUntrackedParameter <double> ("numB", 0);
+  antibtag_         = iConfig.getUntrackedParameter <double> ("antibtag", 0);
 
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
@@ -2462,10 +2464,16 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 	}
       }*/
       
-      if (discrCSV > 0.898 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5)) { /* tight ID */
       //if (discrCSV > 0.679 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5)) { /* medium ID */
+      
+      if (antibtag_==0 && (discrCSV > 0.898 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5))) { /* tight ID */
 	++Nb;
-	//cout << Nb << endl;
+	cout << "Nb" << Nb << endl;
+        vect_bjets.push_back (jetNew);
+      }
+      if (antibtag_==1 && (discrCSV < 0.679 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5))) { /* anti-medium ID */
+	++Nb;
+	cout << "Nlight" << Nb << endl;
         vect_bjets.push_back (jetNew);
       }
     }
