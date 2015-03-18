@@ -32,6 +32,7 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
     if (xd!=0) chisq = chisq + (xn*xn)/xd;
   }
   fun = chisq;
+
 }
 
 void DataMCComp(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0, int numB=0, int bb=0) {
@@ -47,6 +48,8 @@ int useEleMuo = 1; // use e-mu fit results for c_t
 int useDY = 0; // use MadGraph DY
 //int useDY = 1; // use Sherpa DY
 //int useDY = 2; // use Powheg DY
+//int useDY = 3; // use MG+P8 MLM
+//int useDY = 4; // use MG_aMC@NLO+P8
 
 //int useSherpa=0;
 //int useSherpa=1;
@@ -111,6 +114,10 @@ if (irun==12) {            // irun==12 => JER Down
 }
 if (irun==13) {            // irun==13 => bkg statistics
   subdir="13";
+  postfix="";
+}
+if (irun==55) {            // irun==55 => take the shape of Z+light and Z+c from data
+  subdir="55";
   postfix="";
 }
 if (irun==66) {            // irun==66 => unfolding with data weight
@@ -204,10 +211,10 @@ if (numB==2) {
         if (bbBkg) {
           ifstream in8;
           if (ilepton==1) {
-            in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
+            in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_BJP_doFit" + ".dat").c_str());
           }
           if (ilepton==2) {
-            in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
+            in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_BJP_doFit" + ".dat").c_str());
           }         
           in8 >> fScal >> efScal;
         }
@@ -219,6 +226,8 @@ if (numB==2) {
 	if (ilepton==3) Lumi2012 = Lumi2012_ele_muon;
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
+	double norm1_p8 = ((Lumi2012 * Xsec_dy_p8) / Ngen_dy_p8);
+	double norm1_amc = ((Lumi2012 * Xsec_dy_amc) / 2.59225272210000000e+11);
 	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
 	double norm1_2;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
@@ -238,6 +247,8 @@ if (numB==2) {
 	double norm13 = ((Lumi2012 * Xsec_tWb) / Ngen_tWb);
 
 	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
+	double enorm1_p8 = ((Lumi2012 * eXsec_dy) / Ngen_dy_p8);
+	double enorm1_amc = ((Lumi2012 * eXsec_dy_amc) / 2.59225272210000000e+11);
 	double enorm1_1 = ((Lumi2012 * eXsec_dy_1) / Ngen_dy_1);
 	double enorm1_2;
 	if (ilepton==1) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_ee);
@@ -286,6 +297,17 @@ if (numB==2) {
 	  if (ilepton==1) mc1 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
+	if (useDY==3) {
+	  norm1 = norm1_p8;
+          enorm1 = enorm1_p8;	  
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_P8.root").c_str());
+	}
+	if (useDY==4) {
+	  norm1 = norm1_amc;
+          enorm1 = enorm1_amc;	  
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
+	}
+	
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
 	TFile *mc3 = TFile::Open((path + "/" + version + "/" + "ZZ.root").c_str());
 	TFile *mc4 = TFile::Open((path + "/" + version + "/" + "WZ.root").c_str());
@@ -314,44 +336,6 @@ if (numB==2) {
         TH1F* h_mc1bb = 0;
         if (bbBkg) h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
         if (bbSig) h_mc1bb = (TH1F*)gDirectory->Get(("bbSig"+title.substr(1)).c_str());       
-
-        if (irun==99) {
-	  float xval=0;
-	  float xvalb=0;
-	  float xvalc=0;
-	  float xvalt=0;
-
-	  if (h_mc1)  xval = h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
-	  if (h_mc1b) xvalb = h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
-          if (h_mc1c) xvalc = h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
-          if (h_mc1t) xvalt = h_mc1t->Integral(0,h_mc1t->GetNbinsX()+1);
-	  
-	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
-          if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
-          if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
-          //if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
-	   
-	  h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
-	  h_mc1->Sumw2();
-	  xval = xval / h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
-	  h_mc1->Scale(xval);
-
-	  h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
-          h_mc1b->Sumw2(); 
-	  xvalb = xvalb / h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
-          h_mc1b->Scale(xvalb);
-
-	  h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
-          h_mc1c->Sumw2(); 
-	  xvalc = xvalc / h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
-	  h_mc1c->Scale(xvalc);
-
-	  h_mc1t = (TH1F*)gDirectory->Get(("t"+title.substr(1)).c_str());
-	  h_mc1t->Sumw2(); 
-	  xvalt = xvalt / h_mc1t->Integral(0,h_mc1t->GetNbinsX()+1);
-          //cout<<h_mc1t->Integral(0,h_mc1t->GetNbinsX()+1)<<endl;
-	  //h_mc1t->Scale(xvalt);
-	}
 
 	if (ilepton==1) mc2->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) mc2->cd(("demoMuo"+postfix).c_str());
@@ -586,7 +570,6 @@ if (numB==2) {
 	  h_data->Add(h_mc3, -1.);
 	  h_data->Add(h_mc2, -1.);
 	  h_data->Add(h_mc1t, -1.);
-          if (bbBkg) h_data->Add(h_mc1bb, -1.);
 	}
 
 	if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
@@ -601,6 +584,110 @@ if (numB==2) {
 	  if (h_mc1t) e = e - TMath::Power(h_mc1t->GetBinError(i),2);
 	  h_mc1->SetBinError(i, TMath::Sqrt(e));
 	}
+
+	if (doFit==0 && irun==99) {
+	  float xval=0;
+	  float xvalb=0;
+	  float xvalc=0;
+
+	  if (h_mc1)  xval = h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
+	  if (h_mc1b) xvalb = h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
+          if (h_mc1c) xvalc = h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
+	  
+	  //mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
+          if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
+          if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
+          //if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
+	   
+	  h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
+	  h_mc1->Sumw2();
+
+	  TH1F* h_mc1b_tmp = h_mc1b;
+
+	  h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
+	  h_mc1b->Sumw2(); 
+
+	  h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
+          h_mc1c->Sumw2(); 
+
+	  if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
+	  if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
+	  if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
+          if (bbBkg || bbSig) h_mc1->Add(h_mc1bb, -1.);
+	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+	    float e = TMath::Power(h_mc1->GetBinError(i),2);
+	    if (h_mc1b) e = e - TMath::Power(h_mc1b->GetBinError(i),2);
+            if (bbBkg || bbSig) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
+	    if (h_mc1c) e = e - TMath::Power(h_mc1c->GetBinError(i),2);
+	    if (h_mc1t) e = e - TMath::Power(h_mc1t->GetBinError(i),2);
+	    h_mc1->SetBinError(i, TMath::Sqrt(e));
+	  }
+
+	  xval = xval / h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
+	  h_mc1->Scale(xval);
+
+	  //xvalb = xvalb / h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
+	  //h_mc1b->Scale(xvalb);
+
+	  h_mc1b = h_mc1b_tmp;
+
+	  xvalc = xvalc / h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
+	  h_mc1c->Scale(xvalc);
+
+	  h_mc1 -> SetLineColor(kBlack);
+	  h_mc1 -> SetFillColor(kYellow-4);
+	  //h_mc1 -> SetFillStyle(3004);
+
+	  if (h_mc1b) {
+	    h_mc1b->SetLineColor(kBlack);
+	    h_mc1b->SetFillColor(kYellow-4);
+	    h_mc1b->SetFillStyle(3254);
+	  }
+	  if (h_mc1c) {
+	    h_mc1c->SetLineColor(kBlack);
+	    h_mc1c->SetFillColor(kOrange);
+	    h_mc1c->SetFillStyle(3245);
+	  }
+	}
+
+	/*if (doFit==0 && irun==55) {
+
+	  float xval=0;
+	  float xvalc=0;
+
+          string tmp = title;
+	  
+	  if (title.find("_bjet_")!=string::npos) {
+	    tmp.erase(tmp.find("_bjet_")+1, 1);
+	  } else if (title.find("_b\0")!=string::npos) {
+	    tmp.erase(tmp.find("_b\0"), 2);
+	  } 
+	  
+	  if (h_mc1)  xval = h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
+          if (h_mc1c) xvalc = h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
+	  
+	  TFile *data1=0; 
+          if (ilepton==1) data1 = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
+          if (ilepton==2) data1 = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
+          if (ilepton==3) data1 = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
+          
+	  if (ilepton==1) data1->cd(("demoEleAntib"+postfix).c_str());
+          if (ilepton==2) data1->cd(("demoMuoAntib"+postfix).c_str());
+          if (ilepton==3) data1->cd(("demoEleMuoAntib"+postfix).c_str());
+
+	  h_mc1 = (TH1F*)gDirectory->Get(tmp.c_str());
+          h_mc1->SetLineColor(kBlack);
+          h_mc1->SetFillColor(kYellow-4);
+	  
+	  xval = xval / h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
+	  h_mc1->Sumw2();
+	  h_mc1->Scale(xval);
+	  
+	  xvalc = xvalc / h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
+	  h_mc1c->Sumw2();
+	  h_mc1c->Scale(xvalc);
+   	}*/
 
 	TVirtualFitter::SetDefaultFitter("Minuit2");
 	TVirtualFitter* fitter=0;
@@ -797,7 +884,7 @@ if (numB==2) {
 	  fitter = TVirtualFitter::Fitter(0, 3);
 	  fitter->SetFCN(fcn);
 	  double arglist[1] = {-1.0};
-	  fitter->ExecuteCommand("SET PRINT", arglist, 1);
+	  //fitter->ExecuteCommand("SET PRINT", arglist, 1);
 	  fitter->SetParameter(0, "c(uds)", 1.00, 0.01, 0.00, 100.00);
 	  fitter->SetParameter(1, "c(b)",   1.00, 0.01, 0.00, 100.00);
 	  fitter->SetParameter(2, "c(c)",   1.00, 0.01, 0.00, 100.00);
@@ -805,8 +892,8 @@ if (numB==2) {
 	    fitter->FixParameter(0);
 	    fitter->FixParameter(2);
 	  }*/
-	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
-	  h_mc_fit0->Scale(fitter->GetParameter(0));
+          fitter->ExecuteCommand("MIGRAD", arglist, 0);
+          h_mc_fit0->Scale(fitter->GetParameter(0));
 	  h_mc_fit1->Scale(fitter->GetParameter(1));
 	  h_mc_fit2->Scale(fitter->GetParameter(2));
 	}
@@ -869,7 +956,7 @@ if (numB==2) {
           fitter = TVirtualFitter::Fitter(0, 1);
           fitter->SetFCN(fcn);
           double arglist[1] = {-1.0};
-          fitter->ExecuteCommand("SET PRINT", arglist, 1);
+          //fitter->ExecuteCommand("SET PRINT", arglist, 1);
           fitter->SetParameter(0, "c(b)", 1.00, 0.01, 0.00, 100.00);
           fitter->ExecuteCommand("MIGRAD", arglist, 0);
           h_mc_fit0->Scale(fitter->GetParameter(0));
@@ -886,10 +973,9 @@ if (numB==2) {
 	  ht->Add(h_mc4);
 	  ht->Add(h_mc3);
 	  ht->Add(h_mc2);
-          if (bbBkg) ht->Add(h_mc1bb);
 	}
 	if (h_mc1b) ht->Add(h_mc1b);
-        if (bbSig) ht->Add(h_mc1bb);
+        if (bbBkg || bbSig) ht->Add(h_mc1bb);
 	if (h_mc1c) ht->Add(h_mc1c);
 	ht->Add(h_mc1);
 
@@ -903,9 +989,8 @@ if (numB==2) {
 	  hs->Add(h_mc4);
 	  hs->Add(h_mc3);
 	  hs->Add(h_mc2);
-          if (bbBkg) hs->Add(h_mc1bb);
 	}
-        if (bbSig) hs->Add(h_mc1bb);
+        if (bbBkg || bbSig) hs->Add(h_mc1bb);
 	if (h_mc1b) hs->Add(h_mc1b);
 	if (h_mc1c) hs->Add(h_mc1c);
 	hs->Add(h_mc1);
@@ -1107,10 +1192,33 @@ if (numB==2) {
 	h_ratio->SetMarkerStyle(20);
 	h_ratio->Draw("EPX0");
 
+        TH1F *h_ratio_pull =  new TH1F ("h_pull", "h_pull", 50, 0, 6);
+        TH1F *h_ratio_pull2 = new TH1F ("h_pull2", "h_pull2", 50, 0, 6);
+        TH1F *h_ratio_pull3 = new TH1F ("h_pull3", "h_pull3", 50, 0, 6);
+        
+        for (int j=1; j<=h_ratio->GetNbinsX(); j++) {
+           h_ratio_pull2->Fill(h_ratio->GetBinContent(j));
+        }
+        if (doFit==3) {
+          for (int i=1; i<=h_ratio->GetNbinsX(); i++) {
+               h_ratio_pull->Fill(h_ratio->GetBinContent(i));
+          }
+	}
+
+        for (int l=1; l<=h_ratio_pull->GetNbinsX(); l++) {
+           for (int m=1; m<=h_ratio_pull2->GetNbinsX(); m++) {
+       	      double pull = h_ratio_pull2->GetBinContent(m)-h_ratio_pull->GetBinContent(l);
+	      h_ratio_pull3->Fill(pull);
+	  }
+	}
+
 	TFile *dumphistos_file = new TFile("dump.root","RECREATE");
         dumphistos_file->cd();
-        if (title=="w_first_bjet_pt") h_ratio->Write("A");
-        if (title=="w_first_bjet_pt_SVTX") h_ratio->Write("B");
+        //if (title=="w_first_bjet_pt") h_ratio->Write("A");
+        if (title=="w_SVTX_mass") h_ratio_pull->Write("A");
+        if (title=="w_SVTX_mass") h_ratio_pull2->Write("B");
+        if (title=="w_SVTX_mass") h_ratio_pull3->Write("C");
+        //if (title=="w_first_bjet_pt_SVTX") h_ratio->Write("B");
 	dumphistos_file->Close();
 	
 
@@ -1131,19 +1239,19 @@ if (numB==2) {
               if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 1, 0.44, 0.9);
               labelDone = true;
             }
-            if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
+            if (title=="w_mass_ee"||title=="w_mPrel2m" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
               if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 0, 0.135, 0.87);
               if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 0, 0.135, 0.87);
               labelDone = true;
             }
           }
-          if (numB==0 && title.find("_b")!=string::npos) {
-            if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
+          if (numB==0 && title.find("_b")!=striPrel2pos) {
+            if (title=="w_bjetmultiplicity" || Prel2=="w_jetmultiplicity") {
               if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
               if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
               labelDone = true;
             }
-            if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
+            if (title=="w_mass_ee"||title=="w_mPrel2m" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
               if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
               if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
               labelDone = true;
@@ -1209,7 +1317,9 @@ if (numB==2) {
 	}
 
 	//if (useDY==1 || useSherpa) subdir = subdir + "_sherpa";
-	if (useDY==2) subdir = subdir + "_powheg";
+	if (useDY==2) version = version + "_powheg";
+	if (useDY==3) version = version + "_Pythia8";
+	if (useDY==4) version = version + "_aMC@NLO";
 
 	if (plot) {
 	  if (doBkg) title = title + "_doBkg";
