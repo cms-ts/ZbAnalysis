@@ -80,6 +80,10 @@ if (irun==13) {            // irun==13 => bkg statistics
   subdir="13";
   postfix="";
 }
+if (irun==55) {            // irun==55 => template syst
+  subdir="55";
+  postfix="";
+}
 if (irun==66) {            // irun==66 => unfolding with data weight
   subdir="66";
   postfix="";
@@ -154,7 +158,7 @@ if (bb==1 && numB==1) bbBkg = true;
 	    in3.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    in4.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
 	    in5.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
-            in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
+	    in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
 	      in6.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_ee_wide_doFit" + ".dat").c_str());
 	      in7.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_ee_b_wide_doFit" + ".dat").c_str());
@@ -168,7 +172,7 @@ if (bb==1 && numB==1) bbBkg = true;
 	    in3.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    in4.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
 	    in5.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
-            in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
+	    in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
 	      in6.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_mm_wide_doFit" + ".dat").c_str());
 	      in7.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_mm_b_wide_doFit" + ".dat").c_str());
@@ -193,7 +197,7 @@ if (bb==1 && numB==1) bbBkg = true;
 	  in5 >> c2_t >> ec2_t;
 	  in4.close();
 	  in5.close();
-          in8 >> fScal >> efScal;
+	  in8 >> fScal >> efScal;
           in8.close();
 	  if (useEleMuo) {
 	    in6 >> c1_t >> ec1_t;
@@ -606,7 +610,7 @@ if (bb==1 && numB==1) bbBkg = true;
 	    if (h_mc1b_b) h_mc1b_b->SetBinError(i, 1.1*h_mc1b_b->GetBinError(i));
 	    if (h_mc1c_b) h_mc1c_b->SetBinError(i, 1.1*h_mc1c_b->GetBinError(i));
 	    if (h_mc1t_b) h_mc1t_b->SetBinError(i, 1.1*h_mc1t_b->GetBinError(i));
-            if (bbBkg)  h_mc1bb->SetBinError(i, 1.1*h_mc1bb->GetBinError(i));
+	    if (bbBkg)  h_mc1bb->SetBinError(i, 1.1*h_mc1bb->GetBinError(i));
 	    h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
 	    h_mc2_b->SetBinError(i, 1.1*h_mc2_b->GetBinError(i));
 	    h_mc3->SetBinError(i, 1.1*h_mc3->GetBinError(i));
@@ -648,14 +652,68 @@ if (bb==1 && numB==1) bbBkg = true;
 	if (h_mc1b_b) h_mc1uds_b->Add(h_mc1b_b, -1);
 	if (h_mc1c_b) h_mc1uds_b->Add(h_mc1c_b, -1);
 	if (h_mc1t_b) h_mc1uds_b->Add(h_mc1t_b, -1);
-        if (bbBkg)  h_mc1uds_b->Add(h_mc1bb, -1);
-	for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
+	if (bbBkg)  h_mc1uds_b->Add(h_mc1bb, -1);
+        for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
 	  float e = TMath::Power(h_mc1uds_b->GetBinError(i),2);
 	  if (h_mc1b_b) e = e - TMath::Power(h_mc1b_b->GetBinError(i),2);
 	  if (h_mc1c_b) e = e - TMath::Power(h_mc1c_b->GetBinError(i),2);
 	  if (h_mc1t_b) e = e - TMath::Power(h_mc1t_b->GetBinError(i),2);
-          if (bbBkg) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
+	  if (bbBkg) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
 	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
+	}
+
+	if (irun==99) {
+	  float xval=0;
+	  float xvalb=0;
+	  float xvalc=0;
+
+	  if (h_mc1_b)  xval = h_mc1_b->Integral(0,h_mc1_b->GetNbinsX()+1);
+	  if (h_mc1b_b) xvalb = h_mc1b_b->Integral(0,h_mc1b_b->GetNbinsX()+1);
+          if (h_mc1c_b) xvalc = h_mc1c_b->Integral(0,h_mc1c_b->GetNbinsX()+1);
+	  
+	  //mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
+          if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
+          if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
+          //if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
+	   
+	  h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
+	  h_mc1_b->Sumw2();
+
+	  TH1F* h_mc1b_b_tmp = h_mc1b_b;
+
+	  h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
+	  h_mc1b_b->Sumw2(); 
+
+	  h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
+          h_mc1c_b->Sumw2(); 
+
+	  if (h_mc1b_b) h_mc1_b->Add(h_mc1b_b, -1.);
+	  if (h_mc1c_b) h_mc1_b->Add(h_mc1c_b, -1.);
+	  if (h_mc1t_b) h_mc1_b->Add(h_mc1t_b, -1.);
+//        if (bbBkg || bbSig) h_mc1->Add(h_mc1bb, -1.);
+	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+	    float e = TMath::Power(h_mc1->GetBinError(i),2);
+	    if (h_mc1b_b) e = e - TMath::Power(h_mc1b_b->GetBinError(i),2);
+//          if (bbBkg || bbSig) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
+	    if (h_mc1c_b) e = e - TMath::Power(h_mc1c_b->GetBinError(i),2);
+	    if (h_mc1t_b) e = e - TMath::Power(h_mc1t_b->GetBinError(i),2);
+	    h_mc1_b->SetBinError(i, TMath::Sqrt(e));
+	  }
+
+	  xval = xval / h_mc1_b->Integral(0,h_mc1_b->GetNbinsX()+1);
+	  h_mc1_b->Scale(xval);
+
+	  //xvalb = xvalb / h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
+	  //h_mc1b->Scale(xvalb);
+
+	  h_mc1b_b = h_mc1b_b_tmp;
+
+	  xvalc = xvalc / h_mc1c_b->Integral(0,h_mc1c_b->GetNbinsX()+1);
+	  h_mc1c_b->Scale(xvalc);
+
+	  h_mc1_b -> SetLineColor(kBlack);
+
 	}
 
 	if (h_mc1uds_b) {
@@ -679,14 +737,14 @@ if (bb==1 && numB==1) bbBkg = true;
 	    h_mc1c_b->Scale(c_c);
 	  }
         }
-        if (bbBkg) {
+	if (bbBkg) {
           h_mc1bb->Scale(fScal);
         }
 
 	if (unfold==0) {
 	  h_data_b->Add(h_mc1c_b, -1.);
 	  h_data_b->Add(h_mc1uds_b, -1.);
-          if (bbBkg) h_data_b->Add(h_mc1bb, -1.);
+	  if (bbBkg) h_data_b->Add(h_mc1bb, -1.);
 	}
 
 	TH1F *h_data_raw=0;
