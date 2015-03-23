@@ -27,6 +27,7 @@ string bSel="";
 string genPostfix="";
 
 bool bbBkg = false;
+bool bbSig = false;
 
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
@@ -349,10 +350,12 @@ if (bb==1 && numB==1) bbBkg = true;
 	TH1F* h_mc1t = (TH1F*)gDirectory->Get(("t"+title.substr(1)).c_str());
 	TH1F* h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 	TH1F* h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
+        TH1F* h_mc1bb_Sig = 0;
+        if (bbSig) h_mc1bb_Sig = (TH1F*)gDirectory->Get(("bbSig"+title_b.substr(1)).c_str());
 	TH1F* h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
 	TH1F* h_mc1t_b = (TH1F*)gDirectory->Get(("t"+title_b.substr(1)).c_str());
         TH1F* h_mc1bb = 0;
-        if (bbBkg) h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
+        if (bbBkg) h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title_b.substr(1)).c_str());
 
 	if (ilepton==1) mcg->cd(("demoEleGen"+genPostfix).c_str());
 	if (ilepton==2) mcg->cd(("demoMuoGen"+genPostfix).c_str());
@@ -502,6 +505,7 @@ if (bb==1 && numB==1) bbBkg = true;
 	if (h_mc1c_b) h_mc1c_b->Sumw2();
 	if (h_mc1t_b) h_mc1t_b->Sumw2();
         if (bbBkg)  h_mc1bb->Sumw2();
+        if (bbSig)  h_mc1bb_Sig->Sumw2();
 	h_mcg_b->Sumw2();
 	h_mcg1_b->Sumw2();
 	h_mcg2_b->Sumw2();
@@ -558,6 +562,7 @@ if (bb==1 && numB==1) bbBkg = true;
 	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
 	if (h_mc1c_b) h_mc1c_b->Scale(norm1);
 	if (h_mc1t_b) h_mc1t_b->Scale(norm1);
+        if (bbSig)  h_mc1bb_Sig->Scale(norm1);
         if (bbBkg)  h_mc1bb->Scale(norm1);
 	h_mcg_b->Scale(norm1);
 	h_mcg1_b->Scale(norm1_1);
@@ -610,6 +615,7 @@ if (bb==1 && numB==1) bbBkg = true;
 	    if (h_mc1b_b) h_mc1b_b->SetBinError(i, 1.1*h_mc1b_b->GetBinError(i));
 	    if (h_mc1c_b) h_mc1c_b->SetBinError(i, 1.1*h_mc1c_b->GetBinError(i));
 	    if (h_mc1t_b) h_mc1t_b->SetBinError(i, 1.1*h_mc1t_b->GetBinError(i));
+            if (bbSig)  h_mc1bb_Sig->SetBinError(i, 1.1*h_mc1bb_Sig->GetBinError(i));
 	    if (bbBkg)  h_mc1bb->SetBinError(i, 1.1*h_mc1bb->GetBinError(i));
 	    h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
 	    h_mc2_b->SetBinError(i, 1.1*h_mc2_b->GetBinError(i));
@@ -652,13 +658,12 @@ if (bb==1 && numB==1) bbBkg = true;
 	if (h_mc1b_b) h_mc1uds_b->Add(h_mc1b_b, -1);
 	if (h_mc1c_b) h_mc1uds_b->Add(h_mc1c_b, -1);
 	if (h_mc1t_b) h_mc1uds_b->Add(h_mc1t_b, -1);
-	if (bbBkg)  h_mc1uds_b->Add(h_mc1bb, -1);
+	//if (bbBkg)  h_mc1uds_b->Add(h_mc1bb, -1);
         for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
 	  float e = TMath::Power(h_mc1uds_b->GetBinError(i),2);
 	  if (h_mc1b_b) e = e - TMath::Power(h_mc1b_b->GetBinError(i),2);
 	  if (h_mc1c_b) e = e - TMath::Power(h_mc1c_b->GetBinError(i),2);
 	  if (h_mc1t_b) e = e - TMath::Power(h_mc1t_b->GetBinError(i),2);
-	  if (bbBkg) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
 	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
@@ -716,6 +721,15 @@ if (bb==1 && numB==1) bbBkg = true;
 
 	}
 
+        if (bbBkg) {
+          h_mc1bb->Scale(fScal);
+          h_mc1b_b->Add(h_mc1bb, -1);
+        }
+
+        if (bbSig) {
+          h_mc1bb_Sig->Scale(fScal);
+        }
+
 	if (h_mc1uds_b) {
 	  if (irun==6) {
 	    h_mc1uds_b->Scale(c_uds+0.1*ec_uds);
@@ -737,14 +751,15 @@ if (bb==1 && numB==1) bbBkg = true;
 	    h_mc1c_b->Scale(c_c);
 	  }
         }
-	if (bbBkg) {
-          h_mc1bb->Scale(fScal);
-        }
 
 	if (unfold==0) {
 	  h_data_b->Add(h_mc1c_b, -1.);
 	  h_data_b->Add(h_mc1uds_b, -1.);
-	  if (bbBkg) h_data_b->Add(h_mc1bb, -1.);
+          if (bbBkg) h_data_b->Add(h_mc1bb, -1.);
+          if (bbSig) {
+            h_data_b->Add(h_mc1b_b, -1.);
+            h_data_b->Add(h_mc1bb_Sig, 1.);
+          }
 	}
 
 	TH1F *h_data_raw=0;
