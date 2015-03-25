@@ -117,6 +117,7 @@ if (numB==2) {
 }
 
 if (bb==1 && numB==1) bbBkg = true;
+if (bb==1 && numB==2) bbSig = true;
 
 	if (gROOT->GetVersionInt() >= 53401) {
 	  //gROOT->GetColor(kRed)->SetAlpha(0.5);
