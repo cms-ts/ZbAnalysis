@@ -1242,14 +1242,14 @@ if (numB==2) {
               if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 1, 0.44, 0.9);
               labelDone = true;
             }
-            if (title=="w_mass_ee"||title=="w_mPrel2m" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
+            if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
               if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 0, 0.135, 0.87);
               if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 0, 0.135, 0.87);
               labelDone = true;
             }
           }
-          if (numB==0 && title.find("_b")!=striPrel2pos) {
-            if (title=="w_bjetmultiplicity" || Prel2=="w_jetmultiplicity") {
+          if (numB==0 && title.find("_b")!=string::npos) {
+            if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
               if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
               if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
               labelDone = true;
