@@ -2,10 +2,10 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-//string path = "/gpfs/cms/users/lalicata/work/test/data/";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
-void DataMCComp3(int irun=0, string title="", int plot=0, int ilepton=1, int numB=0) {
+void DataMCComp3(int irun=0, string title="", int plot=0, int ilepton=1, int numB=0, int bb=0) {
 
 int useDY = 0; // use MadGraph DY
 //int useDY = 1; // use Sherpa DY
@@ -16,6 +16,9 @@ string postfix="";
 string dirbSel="";
 string bSel="";
 string genPostfix="";
+
+bool bbBkg = false;
+
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
   postfix="Up";
@@ -101,6 +104,8 @@ if (numB==2) {
   genPostfix= "2b";
 }
 
+if (bb==1 && numB==1) bbBkg = true;
+
 	if (title.empty()) title = "w_jetmultiplicity";
 
         if (ilepton==1) {
@@ -110,6 +115,20 @@ if (numB==2) {
         if (ilepton==2) {
           if (title.find("ele")!=string::npos) return;
           if (title.find("ee")!=string::npos) return;
+        }
+
+        double fScal=1.0;
+        double efScal=0.0;
+
+        if (bbBkg) {
+          ifstream in8;
+          if (ilepton==1) {
+            in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
+          }
+          if (ilepton==2) {
+            in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
+          }
+          in8 >> fScal >> efScal;
         }
 
 	//TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
@@ -138,13 +157,17 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 //int itype = 2; // e_Z_b
 
 	string title_b = title;
+        string title_bbBkg = title;
 
         //if (title.find("_b")!=string::npos) {
 	if (title.find("_b")!=string::npos || numB==1 || numB==2) {
 	  if (itype==0) title_b = "b"+title.substr(1);
 	  if (itype==2) title_b = "b"+title.substr(1);
+          title_bbBkg = "bbBkg"+title.substr(1);
 	}
  
+        TH1F* h_reco_bbBkg = 0;
+
 	if (ilepton==1&&itype==0) mc1->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2&&itype==0) mc1->cd(("demoMuo"+postfix).c_str());
 	if (ilepton==1&&itype==1) mc1->cd(("demoEleBtag"+genPostfix).c_str());
@@ -152,6 +175,7 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	if (ilepton==1&&itype==2) mc1->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2&&itype==2) mc1->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_reco = (TH1F*)gDirectory->Get(title_b.c_str());
+        if (bbBkg) h_reco_bbBkg = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
 	if (ilepton==1&&itype==0) mc2->cd(("demoEleGen"+genPostfix).c_str());
 	if (ilepton==2&&itype==0) mc2->cd(("demoMuoGen"+genPostfix).c_str());
 	if (ilepton==1&&itype==1) mc2->cd(("demoEleGen"+genPostfix).c_str());
@@ -159,6 +183,11 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	if (ilepton==1&&itype==2) mc2->cd(("demoEleBtag"+genPostfix).c_str());
 	if (ilepton==2&&itype==2) mc2->cd(("demoMuoBtag"+genPostfix).c_str());
 	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
+        
+         if (bbBkg) {
+          h_reco_bbBkg->Scale(fScal);
+          h_reco->Add(h_reco_bbBkg,-1);
+        }
 
 	h_reco->Sumw2();
 	h_gen->Sumw2();
