@@ -1368,11 +1368,23 @@ if (bb==1 && numB==2) bbSig = true;
 	        gSystem->mkdir((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding" + dirbSel + "/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.pdf").c_str());
 	        out.open((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding" + dirbSel + "/" + title + "_xsecs_unfolding.dat").c_str());
+                TFile f((path + "/electrons/" + version + "/" + subdir + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.root").c_str(),"RECREATE");
+                h_data->Write(title.c_str());
+                h_data_b->Write(title_b.c_str());
+                h_mc1->Write((title+"_MC").c_str());
+                h_mc1b_b->Write((title_b+"_MC").c_str());
+                f.Close();
 	      }
 	      if (ilepton==2) {
 	        gSystem->mkdir((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding" + dirbSel + "/").c_str(), kTRUE);
 	        c1->SaveAs((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.pdf").c_str());
 	        out.open((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding" + dirbSel + "/" + title + "_xsecs_unfolding.dat").c_str());
+                TFile f((path + "/muons/" + version + "/" + subdir + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.root").c_str(),"RECREATE");
+                h_data->Write(title.c_str());
+                h_data_b->Write(title_b.c_str());
+                h_mc1->Write((title+"_MC").c_str());
+                h_mc1b_b->Write((title_b+"_MC").c_str());
+                f.Close();
 	      }
 	      out << std::fixed << std::setw( 11 ) << std::setprecision( 4 );
 	      out << h_data->Integral(0, h_data->GetNbinsX()+1, "width") << endl;
