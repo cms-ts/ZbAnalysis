@@ -723,8 +723,8 @@ if (bb==1 && numB==2) bbSig = true;
 	}
 
         if (bbBkg) {
-          h_mc1bb->Scale(fScal);
           h_mc1b_b->Add(h_mc1bb, -1);
+          h_mc1bb->Scale(fScal);
         }
 
         if (bbSig) {
