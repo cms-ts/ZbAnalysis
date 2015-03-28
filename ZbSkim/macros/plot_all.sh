@@ -101,7 +101,7 @@ while [ $i -le 2 ]; do
  
   fi
 
-   root -l -q -b DataMCComp.C+\($d,\"w_mass_ee_b_wide\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_mass_ee_b_wide\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_mass_mm_b_wide\",1,$i,0,0,$n\)
 
   root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_ee\",1,$i,0,0,$n\)
@@ -363,6 +363,7 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C+\($d,\"w_secondvtx_N_mass\",1,$i,1,3,$n\)
 
   root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,1,0,$n,1\)
+
   if [ $n -ne 2 ]; then
     root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,0,3,$n,1\)
     root -l -q -b DataMCComp.C+\($d,\"w_BJP\",1,$i,1,3,$n,1\)
