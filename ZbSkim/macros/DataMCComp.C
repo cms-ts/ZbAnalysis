@@ -588,11 +588,11 @@ if (numB==2) {
 
 	if (doFit==0 && irun==99) {
 	  float xval=0;
-	  float xvalb=0;
+	  //float xvalb=0;
 	  float xvalc=0;
 
 	  if (h_mc1)  xval = h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
-	  if (h_mc1b) xvalb = h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
+	  //if (h_mc1b) xvalb = h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
           if (h_mc1c) xvalc = h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
 	  
 	  //mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
