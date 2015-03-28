@@ -19,6 +19,18 @@ double Ngen_dy = 30459503;
 double Xsec_dy = 3503.71; // NNLO
 double eXsec_dy = 0;
 
+//////////////////////// DY MadGraph + Pythia 8
+
+double Ngen_dy_p8 = 29882528;
+double Xsec_dy_p8 = 3531.8; // NNLO
+double eXsec_dy_p8 = 0;
+
+//////////////////////// DY MadGraph_aMC@NLO + Pythia 8
+
+double Ngen_dy_amc = 28944033;
+double Xsec_dy_amc = 3531.8; // NNLO
+double eXsec_dy_amc = 0;
+
 //////////////////////// DY Sherpa
 
 double Ngen_dy_1 = 126444144 * 43915740.0 / 127014144.0;
