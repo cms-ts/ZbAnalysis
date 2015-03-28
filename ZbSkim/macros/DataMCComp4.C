@@ -138,10 +138,8 @@ if (numB==2) {
 	double ec_c=0.0;
 	double c_uds=1.0;
 	double ec_uds=0.0;
-        double fScal=1.0;
-        double efScal=0.0;
-       
-	ifstream in, in2;
+
+	ifstream in;
 	if (imode>=4) {
 	  if (ilepton==1) {
 	    in.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
@@ -160,15 +158,6 @@ if (numB==2) {
             in.close();
           }
 	}
-
-        if (ilepton==1) {
-            in2.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b/w_SVTX_mass_doFit" + ".dat").c_str());
-        }
-        if (ilepton==2) {
-            in2.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b/w_SVTX_mass_doFit" + ".dat").c_str());
-      }
-
-        in2 >> fScal >> efScal;
 
 	double Lumi2012=0;
 
@@ -302,8 +291,6 @@ if (numB==2) {
         if (numB==1) h_mc2_bbBkg_reco->Sumw2();
 
         if (numB==1) {
-          h_mc1_bbBkg_reco->Scale(fScal);
-          h_mc2_bbBkg_reco->Scale(fScal);
           h_mc1_reco->Add(h_mc1_bbBkg_reco, -1.);
           h_mc2_reco->Add(h_mc2_bbBkg_reco, -1.);
         }

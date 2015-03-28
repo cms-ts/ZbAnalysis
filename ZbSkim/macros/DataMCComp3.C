@@ -2,8 +2,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
-//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-string path = "/gpfs/cms/users/lalicata/work/test/data/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 void DataMCComp3(int irun=0, string title="", int plot=0, int ilepton=1, int numB=0, int bb=0) {
 
@@ -117,24 +117,8 @@ if (bb==1 && numB==1) bbBkg = true;
           if (title.find("ee")!=string::npos) return;
         }
 
-        double fScal=1.0;
-        double efScal=0.0;
-
-        if (bbBkg) {
-          ifstream in8;
-          if (ilepton==1) {
-            in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
-          }
-          if (ilepton==2) {
-            in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
-          }
-          in8 >> fScal >> efScal;
-        }
-
-	//TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
-	//TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
+	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (useDY==1) {
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
@@ -183,11 +167,8 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	if (ilepton==1&&itype==2) mc2->cd(("demoEleBtag"+genPostfix).c_str());
 	if (ilepton==2&&itype==2) mc2->cd(("demoMuoBtag"+genPostfix).c_str());
 	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
-        
-        if (bbBkg) {
-          h_reco_bbBkg->Scale(fScal);
-          h_reco->Add(h_reco_bbBkg,-1);
-        }
+
+	if (bbBkg) h_reco->Add(h_reco_bbBkg,-1);
 
 	h_reco->Sumw2();
 	h_gen->Sumw2();
@@ -196,7 +177,7 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	double errN = 0.0;
 	N = h_reco->IntegralAndError(0,h_reco->GetNbinsX()+1,errN) / h_gen->Integral(0,h_gen->GetNbinsX()+1);
 	errN = errN / h_gen->Integral(0,h_gen->GetNbinsX()+1);
- 
+
 //	TCanvas* c1 = new TCanvas("c1", "c1", 800, 600);
 //	c1->cd();
 
