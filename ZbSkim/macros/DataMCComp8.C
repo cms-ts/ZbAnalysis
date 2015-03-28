@@ -1797,7 +1797,11 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta#phi_{Zb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
-	} 
+	} else if (title_b=="w_DR_bb") {
+          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d #Delta R(bb) [pb]");
+          h_P_tot->GetXaxis()->SetTitle("#Delta R(bb)");
+          h_mcg_b->GetYaxis()->SetRangeUser(0.001,1);
+        }
 
 	if (plot) {
 	  ofstream out, out1, out2;
