@@ -407,7 +407,7 @@ if (numB==2) {
 	if (title=="w_Ht") kreg = 10;
 	if (title=="w_delta_phi_ee_b" || title=="w_delta_phi_mm_b") kreg = 8; // ~OK
 	if (title=="w_delta_phi_ee" || title=="w_delta_phi_mm") kreg = 3;
-	if (title=="w_first_bjet_eta") kreg = 2; // ~OK
+	if (title=="w_first_bjet_eta") kreg = 3; // ~OK
 	if (title=="w_first_bjet_pt") kreg = 6; // ~OK
 	if (title=="w_first_jet_eta") kreg = 3;
 	if (title=="w_first_jet_pt") kreg = 5;
