@@ -305,6 +305,7 @@ private:
   TH1F*     b_delta_phi_2b;
   TH1F*     c_delta_phi_2b;
   TH1F*     t_delta_phi_2b;
+  TH1F*     bbSig_delta_phi_2b;
 
   TH1F*     w_delta_phi_jj;
   TH1F*     b_delta_phi_jj;
@@ -315,7 +316,7 @@ private:
   TH1F*     b_DR_bb;
   TH1F*     c_DR_bb;
   TH1F*     t_DR_bb;
-  TH1F*     bbBkg_DR_bb;
+  TH1F*     bbSig_DR_bb;
 
   TH1F*     w_DR_jj;
   TH1F*     b_DR_jj;
@@ -337,44 +338,54 @@ private:
   TH1F*     b_DR_eeb_min;
   TH1F*     c_DR_eeb_min;
   TH1F*     t_DR_eeb_min;
+  TH1F*     bbSig_DR_eeb_min;
   TH1F*     w_DR_mmb_min;
   TH1F*     b_DR_mmb_min;
   TH1F*     c_DR_mmb_min;
   TH1F*     t_DR_mmb_min;
+  TH1F*     bbSig_DR_mmb_min;
   TH1F*     w_DR_emb_min;
   TH1F*     b_DR_emb_min;
   TH1F*     c_DR_emb_min;
   TH1F*     t_DR_emb_min;
+  TH1F*     bbSig_DR_emb_min;
   TH1F*     w_DR_eeb_max;
   TH1F*     b_DR_eeb_max;
   TH1F*     c_DR_eeb_max;
   TH1F*     t_DR_eeb_max;
+  TH1F*     bbSig_DR_eeb_max;
   TH1F*     w_DR_mmb_max;
   TH1F*     b_DR_mmb_max;
   TH1F*     c_DR_mmb_max;
   TH1F*     t_DR_mmb_max;
+  TH1F*     bbSig_DR_mmb_max;
   TH1F*     w_DR_emb_max;
   TH1F*     b_DR_emb_max;
   TH1F*     c_DR_emb_max;
   TH1F*     t_DR_emb_max;
+  TH1F*     bbSig_DR_emb_max;
   TH1F*     w_A_eeb;  
   TH1F*     b_A_eeb;  
   TH1F*     c_A_eeb;  
   TH1F*     t_A_eeb;  
+  TH1F*     bbSig_A_eeb;
   TH1F*     w_A_mmb;  
   TH1F*     b_A_mmb;  
   TH1F*     c_A_mmb;  
   TH1F*     t_A_mmb;  
+  TH1F*     bbSig_A_mmb;
   TH1F*     w_A_emb;  
   TH1F*     b_A_emb;  
   TH1F*     c_A_emb;  
   TH1F*     t_A_emb;  
+   TH1F*     bbSig_A_emb;
 
   //Ist. mass. inv bb e Zbb
   TH1F*     w_bb_mass;
   TH1F*     b_bb_mass;
   TH1F*     c_bb_mass;
   TH1F*     t_bb_mass;
+  TH1F*     bbSig_bb_mass;
   TH1F*     w_jj_mass;
   TH1F*     b_jj_mass;
   TH1F*     c_jj_mass;
@@ -383,6 +394,7 @@ private:
   TH1F*     b_eebb_mass;
   TH1F*     c_eebb_mass;
   TH1F*     t_eebb_mass;
+  TH1F*     bbSig_eebb_mass;
   TH1F*     w_eebb_mass_wide;
   TH1F*     b_eebb_mass_wide;
   TH1F*     c_eebb_mass_wide;
@@ -391,6 +403,7 @@ private:
   TH1F*     b_mmbb_mass;
   TH1F*     c_mmbb_mass;
   TH1F*     t_mmbb_mass;
+  TH1F*     bbSig_mmbb_mass;
   TH1F*     w_mmbb_mass_wide;
   TH1F*     b_mmbb_mass_wide;
   TH1F*     c_mmbb_mass_wide;
@@ -399,6 +412,7 @@ private:
   TH1F*     b_embb_mass;
   TH1F*     c_embb_mass;
   TH1F*     t_embb_mass;
+  TH1F*     bbSig_embb_mass;
   TH1F*     w_embb_mass_wide;
   TH1F*     b_embb_mass_wide;
   TH1F*     c_embb_mass_wide;
@@ -514,18 +528,20 @@ private:
   TH1F*     b_first_bjet_pt;
   TH1F*     c_first_bjet_pt;
   TH1F*     t_first_bjet_pt;
+  TH1F*     bbBkg_first_bjet_pt;
+  TH1F*     bbSig_first_bjet_pt;
   
   TH1F*     w_first_bjet_pt_SVTX;	// leading b jet
   TH1F*     b_first_bjet_pt_SVTX;
   TH1F*     c_first_bjet_pt_SVTX;
   TH1F*     t_first_bjet_pt_SVTX;
   
-  TH1F*     bbBkg_first_bjet_pt;
   TH1F*     w_first_bjet_eta;
   TH1F*     b_first_bjet_eta;
   TH1F*     c_first_bjet_eta;
   TH1F*     t_first_bjet_eta;
   TH1F*     bbBkg_first_bjet_eta;
+  TH1F*     bbSig_first_bjet_eta;
   TH1F*     w_first_bjet_eta_abs;
   TH1F*     b_first_bjet_eta_abs;
   TH1F*     c_first_bjet_eta_abs;
@@ -771,6 +787,7 @@ private:
   TH1F*     c_pt_Z_ee_b;
   TH1F*     t_pt_Z_ee_b;
   TH1F*     bbBkg_pt_Z_ee_b;
+  TH1F*     bbSig_pt_Z_ee_b;
 
   TH1F*     w_y_Z_ee_b;
   TH1F*     b_y_Z_ee_b;
@@ -788,6 +805,7 @@ private:
   TH1F*     c_pt_Z_mm_b;
   TH1F*     t_pt_Z_mm_b;
   TH1F*     bbBkg_pt_Z_mm_b;
+  TH1F*     bbSig_pt_Z_mm_b;
 
   TH1F*     w_y_Z_mm_b;
   TH1F*     b_y_Z_mm_b;
@@ -805,6 +823,7 @@ private:
   TH1F*     c_pt_Z_em_b;
   TH1F*     t_pt_Z_em_b;
   TH1F*     bbBkg_pt_Z_em_b;
+  TH1F*     bbSig_pt_Z_em_b;
 
   TH1F*     w_y_Z_em_b;
   TH1F*     b_y_Z_em_b;
@@ -1016,6 +1035,7 @@ private:
   TH1F*     c_Ht_b;
   TH1F*     t_Ht_b;
   TH1F*     bbBkg_Ht_b;
+  TH1F*     bbSig_Ht_b;
 
   TH1F*     w_MET;
   TH1F*     b_MET;
@@ -1150,6 +1170,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_delta_phi_2b =      fs->make < TH1F > ("b_delta_phi_2b",    "b_delta_phi_2b",   12, 0, TMath::Pi ());
   c_delta_phi_2b =      fs->make < TH1F > ("c_delta_phi_2b",    "c_delta_phi_2b",   12, 0, TMath::Pi ());
   t_delta_phi_2b =      fs->make < TH1F > ("t_delta_phi_2b",    "t_delta_phi_2b",   12, 0, TMath::Pi ());
+  bbSig_delta_phi_2b =      fs->make < TH1F > ("bbSig_delta_phi_2b",    "bbSig_delta_phi_2b",   12, 0, TMath::Pi ());
 
   w_delta_phi_jj =      fs->make < TH1F > ("w_delta_phi_jj",    "w_delta_phi_jj",   12, 0, TMath::Pi ());
   b_delta_phi_jj =      fs->make < TH1F > ("b_delta_phi_jj",    "b_delta_phi_jj",   12, 0, TMath::Pi ());
@@ -1161,7 +1182,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_DR_bb =      fs->make < TH1F > ("b_DR_bb",    "b_DR_bb",   10, 0, 5);
   c_DR_bb =      fs->make < TH1F > ("c_DR_bb",    "c_DR_bb",   10, 0, 5);
   t_DR_bb =      fs->make < TH1F > ("t_DR_bb",    "t_DR_bb",   10, 0, 5);
-  bbBkg_DR_bb =  fs->make < TH1F > ("bbBkg_DR_bb","bbBkg_DR_bb",  10, 0, 5);
+  bbSig_DR_bb =  fs->make < TH1F > ("bbSig_DR_bb","bbSig_DR_bb",  10, 0, 5);
 
   w_DR_jj =      fs->make < TH1F > ("w_DR_jj",    "w_DR_jj",   50, 0, 8);
   b_DR_jj =      fs->make < TH1F > ("b_DR_jj",    "b_DR_jj",   50, 0, 8);
@@ -1183,44 +1204,54 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_DR_eeb_min =     fs->make < TH1F > ("b_DR_eeb_min",   "b_DR_eeb_min; Delta_R",  15, 0., 4.);  
   c_DR_eeb_min =     fs->make < TH1F > ("c_DR_eeb_min",   "c_DR_eeb_min; Delta_R",  15, 0., 4.);  
   t_DR_eeb_min =     fs->make < TH1F > ("t_DR_eeb_min",   "t_DR_eeb_min; Delta_R",  15, 0., 4.);  
+  bbSig_DR_eeb_min =     fs->make < TH1F > ("bbSig_DR_eeb_min",   "bbSig_DR_eeb_min; Delta_R",  15, 0., 4.);
   w_DR_mmb_min =     fs->make < TH1F > ("w_DR_mmb_min",   "w_DR_mmb_min; Delta_R",  15, 0., 4.);  
   b_DR_mmb_min =     fs->make < TH1F > ("b_DR_mmb_min",   "b_DR_mmb_min; Delta_R",  15, 0., 4.);  
   c_DR_mmb_min =     fs->make < TH1F > ("c_DR_mmb_min",   "c_DR_mmb_min; Delta_R",  15, 0., 4.);  
   t_DR_mmb_min =     fs->make < TH1F > ("t_DR_mmb_min",   "t_DR_mmb_min; Delta_R",  15, 0., 4.);  
+  bbSig_DR_mmb_min =     fs->make < TH1F > ("bbSig_DR_mmb_min",   "bbSig_DR_mmb_min; Delta_R",  15, 0., 4.);
   w_DR_emb_min =     fs->make < TH1F > ("w_DR_emb_min",   "w_DR_emb_min; Delta_R",  15, 0., 4.);  
   b_DR_emb_min =     fs->make < TH1F > ("b_DR_emb_min",   "b_DR_emb_min; Delta_R",  15, 0., 4.);  
   c_DR_emb_min =     fs->make < TH1F > ("c_DR_emb_min",   "c_DR_emb_min; Delta_R",  15, 0., 4.);  
   t_DR_emb_min =     fs->make < TH1F > ("t_DR_emb_min",   "t_DR_emb_min; Delta_R",  15, 0., 4.);  
+  bbSig_DR_emb_min =     fs->make < TH1F > ("bbSig_DR_emb_min",   "bbSig_DR_emb_min; Delta_R",  15, 0., 4.);
   w_DR_eeb_max =     fs->make < TH1F > ("w_DR_eeb_max",   "w_DR_eeb_max; Delta_R",  15, 1.5, 5.);  
   b_DR_eeb_max =     fs->make < TH1F > ("b_DR_eeb_max",   "b_DR_eeb_max; Delta_R",  15, 1.5, 5.);  
   c_DR_eeb_max =     fs->make < TH1F > ("c_DR_eeb_max",   "c_DR_eeb_max; Delta_R",  15, 1.5, 5.);  
   t_DR_eeb_max =     fs->make < TH1F > ("t_DR_eeb_max",   "t_DR_eeb_max; Delta_R",  15, 1.5, 5.);  
+  bbSig_DR_eeb_max =     fs->make < TH1F > ("bbSig_DR_eeb_max",   "bbSig_DR_eeb_max; Delta_R",  15, 1.5, 5.);
   w_DR_mmb_max =     fs->make < TH1F > ("w_DR_mmb_max",   "w_DR_mmb_max; Delta_R",  15, 1.5, 5.);  
   b_DR_mmb_max =     fs->make < TH1F > ("b_DR_mmb_max",   "b_DR_mmb_max; Delta_R",  15, 1.5, 5.);  
   c_DR_mmb_max =     fs->make < TH1F > ("c_DR_mmb_max",   "c_DR_mmb_max; Delta_R",  15, 1.5, 5.);  
   t_DR_mmb_max =     fs->make < TH1F > ("t_DR_mmb_max",   "t_DR_mmb_max; Delta_R",  15, 1.5, 5.);  
+  bbSig_DR_mmb_max =     fs->make < TH1F > ("bbSig_DR_mmb_max",   "bbSig_DR_mmb_max; Delta_R",  15, 1.5, 5.);
   w_DR_emb_max =     fs->make < TH1F > ("w_DR_emb_max",   "w_DR_emb_max; Delta_R",  15, 1.5, 5.);  
   b_DR_emb_max =     fs->make < TH1F > ("b_DR_emb_max",   "b_DR_emb_max; Delta_R",  15, 1.5, 5.);  
   c_DR_emb_max =     fs->make < TH1F > ("c_DR_emb_max",   "c_DR_emb_max; Delta_R",  15, 1.5, 5.);  
   t_DR_emb_max =     fs->make < TH1F > ("t_DR_emb_max",   "t_DR_emb_max; Delta_R",  15, 1.5, 5.);  
+  bbSig_DR_emb_max =     fs->make < TH1F > ("bbSig_DR_emb_max",   "bbSig_DR_emb_max; Delta_R",  15, 1.5, 5.);
   w_A_eeb =     fs->make < TH1F > ("w_A_eeb",   "w_A_eeb; A", 10, 0., 1.); 
   b_A_eeb =     fs->make < TH1F > ("b_A_eeb",   "b_A_eeb; A", 10, 0., 1.); 
   c_A_eeb =     fs->make < TH1F > ("c_A_eeb",   "c_A_eeb; A", 10, 0., 1.); 
   t_A_eeb =     fs->make < TH1F > ("t_A_eeb",   "t_A_eeb; A", 10, 0., 1.); 
+  bbSig_A_eeb =     fs->make < TH1F > ("bbSig_A_eeb",   "bbSig_A_eeb; A", 10, 0., 1.);
   w_A_mmb =     fs->make < TH1F > ("w_A_mmb",   "w_A_mmb; A", 10, 0., 1.); 
   b_A_mmb =     fs->make < TH1F > ("b_A_mmb",   "b_A_mmb; A", 10, 0., 1.); 
   c_A_mmb =     fs->make < TH1F > ("c_A_mmb",   "c_A_mmb; A", 10, 0., 1.); 
   t_A_mmb =     fs->make < TH1F > ("t_A_mmb",   "t_A_mmb; A", 10, 0., 1.); 
+  bbSig_A_mmb =     fs->make < TH1F > ("bbSig_A_mmb",   "bbSig_A_mmb; A", 10, 0., 1.);
   w_A_emb =     fs->make < TH1F > ("w_A_emb",   "w_A_emb; A", 10, 0., 1.); 
   b_A_emb =     fs->make < TH1F > ("b_A_emb",   "b_A_emb; A", 10, 0., 1.); 
   c_A_emb =     fs->make < TH1F > ("c_A_emb",   "c_A_emb; A", 10, 0., 1.); 
   t_A_emb =     fs->make < TH1F > ("t_A_emb",   "t_A_emb; A", 10, 0., 1.); 
+  bbSig_A_emb =     fs->make < TH1F > ("bbSig_A_emb",   "bbSig_A_emb; A", 10, 0., 1.);
 
   //Mass. Inv
   w_bb_mass =     fs->make < TH1F > ("w_bb_mass",   "w_bb_mass;Mass [GeV]", 13, 30., 400);
   b_bb_mass =     fs->make < TH1F > ("b_bb_mass",   "b_bb_mass;Mass [GeV]", 13, 30., 400);
   c_bb_mass =     fs->make < TH1F > ("c_bb_mass",   "c_bb_mass;Mass [GeV]", 13, 30., 400);
   t_bb_mass =     fs->make < TH1F > ("t_bb_mass",   "t_bb_mass;Mass [GeV]", 13, 30., 400);
+  bbSig_bb_mass =     fs->make < TH1F > ("bbSig_bb_mass",   "bbSig_bb_mass;Mass [GeV]", 13, 30., 400);
   w_jj_mass =     fs->make < TH1F > ("w_jj_mass",   "w_jj_mass;Mass [GeV]", 20, 20., 1000);
   b_jj_mass =     fs->make < TH1F > ("b_jj_mass",   "b_jj_mass;Mass [GeV]", 20, 20., 1000);
   c_jj_mass =     fs->make < TH1F > ("c_jj_mass",   "c_jj_mass;Mass [GeV]", 20, 20., 1000);
@@ -1229,14 +1260,17 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_eebb_mass =     fs->make < TH1F > ("b_eebb_mass",   "b_eebb_mass;Mass [GeV]", 12, 200., 500.);
   c_eebb_mass =     fs->make < TH1F > ("c_eebb_mass",   "c_eebb_mass;Mass [GeV]", 12, 200., 500.);
   t_eebb_mass =     fs->make < TH1F > ("t_eebb_mass",   "t_eebb_mass;Mass [GeV]", 12, 200., 500.);
+  bbSig_eebb_mass =     fs->make < TH1F > ("bbSig_eebb_mass",   "bbSig_eebb_mass;Mass [GeV]", 12, 200., 500.);
   w_mmbb_mass =     fs->make < TH1F > ("w_mmbb_mass",   "w_mmbb_mass;Mass [GeV]", 12, 200., 500.);
   b_mmbb_mass =     fs->make < TH1F > ("b_mmbb_mass",   "b_mmbb_mass;Mass [GeV]", 12, 200., 500.);
   c_mmbb_mass =     fs->make < TH1F > ("c_mmbb_mass",   "c_mmbb_mass;Mass [GeV]", 12, 200., 500.);
   t_mmbb_mass =     fs->make < TH1F > ("t_mmbb_mass",   "t_mmbb_mass;Mass [GeV]", 12, 200., 500.);
+  bbSig_mmbb_mass =     fs->make < TH1F > ("bbSig_mmbb_mass",   "bbSig_mmbb_mass;Mass [GeV]", 12, 200., 500.);
   w_embb_mass =     fs->make < TH1F > ("w_embb_mass",   "w_embb_mass;Mass [GeV]", 12, 200., 500.);
   b_embb_mass =     fs->make < TH1F > ("b_embb_mass",   "b_embb_mass;Mass [GeV]", 12, 200., 500.);
   c_embb_mass =     fs->make < TH1F > ("c_embb_mass",   "c_embb_mass;Mass [GeV]", 12, 200., 500.);
   t_embb_mass =     fs->make < TH1F > ("t_embb_mass",   "t_embb_mass;Mass [GeV]", 12, 200., 500.);
+  bbSig_embb_mass =     fs->make < TH1F > ("bbSig_embb_mass",   "bbSig_embb_mass;Mass [GeV]", 12, 200., 500.);
   w_eebb_mass_wide =     fs->make < TH1F > ("w_eebb_mass_wide",   "w_eebb_mass_wide;Mass [GeV]", 20, 100., 1000.);
   b_eebb_mass_wide =     fs->make < TH1F > ("b_eebb_mass_wide",   "b_eebb_mass_wide;Mass [GeV]", 20, 100., 1000.);
   c_eebb_mass_wide =     fs->make < TH1F > ("c_eebb_mass_wide",   "c_eebb_mass_wide;Mass [GeV]", 20, 100., 1000.);
@@ -1321,18 +1355,20 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   b_first_bjet_pt =     fs->make < TH1F > ("b_first_bjet_pt",    "b_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
   c_first_bjet_pt =     fs->make < TH1F > ("c_first_bjet_pt",    "c_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
   t_first_bjet_pt =     fs->make < TH1F > ("t_first_bjet_pt",    "t_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
-  
+  bbSig_first_bjet_pt =     fs->make < TH1F > ("bbSig_first_bjet_pt",    "bbSig_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
+  bbBkg_first_bjet_pt = fs->make < TH1F > ("bbBkg_first_bjet_pt","bbBkg_first_bjet_pt;P_t [GeV]", 50, 30., 700.); 
+
   w_first_bjet_pt_SVTX =     fs->make < TH1F > ("w_first_bjet_pt_SVTX",    "w_first_bjet_pt_SVTX;P_t [GeV]", 50, 30., 700.);
   b_first_bjet_pt_SVTX =     fs->make < TH1F > ("b_first_bjet_pt_SVTX",    "b_first_bjet_pt_SVTX;P_t [GeV]", 50, 30., 700.);
   c_first_bjet_pt_SVTX =     fs->make < TH1F > ("c_first_bjet_pt_SVTX",    "c_first_bjet_pt_SVTX;P_t [GeV]", 50, 30., 700.);
   t_first_bjet_pt_SVTX =     fs->make < TH1F > ("t_first_bjet_pt_SVTX",    "t_first_bjet_pt_SVTX;P_t [GeV]", 50, 30., 700.);
-  
-  bbBkg_first_bjet_pt = fs->make < TH1F > ("bbBkg_first_bjet_pt","bbBkg_first_bjet_pt;P_t [GeV]", 50, 30., 700.);
+   
   w_first_bjet_eta =    fs->make < TH1F > ("w_first_bjet_eta",   "w_first_bjet_eta;Eta", 16, -2.5, 2.5);
   b_first_bjet_eta =    fs->make < TH1F > ("b_first_bjet_eta",   "b_first_bjet_eta;Eta", 16, -2.5, 2.5);
   c_first_bjet_eta =    fs->make < TH1F > ("c_first_bjet_eta",   "c_first_bjet_eta;Eta", 16, -2.5, 2.5);
   t_first_bjet_eta =    fs->make < TH1F > ("t_first_bjet_eta",   "t_first_bjet_eta;Eta", 16, -2.5, 2.5);
   bbBkg_first_bjet_eta =fs->make < TH1F > ("bbBkg_first_bjet_eta","bbBkg_first_bjet_eta;Eta", 16, -2.5, 2.5);
+  bbSig_first_bjet_eta =fs->make < TH1F > ("bbSig_first_bjet_eta","bbSig_first_bjet_eta;Eta", 16, -2.5, 2.5);
   w_first_bjet_eta_abs =    fs->make < TH1F > ("w_first_bjet_eta_abs",   "w_first_bjet_eta_abs;abs(Eta)", 8, 0, 2.5);
   b_first_bjet_eta_abs =    fs->make < TH1F > ("b_first_bjet_eta_abs",   "b_first_bjet_eta_abs;abs(Eta)", 8, 0, 2.5);
   c_first_bjet_eta_abs =    fs->make < TH1F > ("c_first_bjet_eta_abs",   "c_first_bjet_eta_abs;abs(Eta)", 8, 0, 2.5);
@@ -1557,11 +1593,13 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_pt_Z_ee_b =         fs->make < TH1F > ("c_pt_Z_ee_b",       "c_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
   t_pt_Z_ee_b =         fs->make < TH1F > ("t_pt_Z_ee_b",       "t_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
   bbBkg_pt_Z_ee_b =     fs->make < TH1F > ("bbBkg_pt_Z_ee_b",   "bbBkg_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
+  bbSig_pt_Z_ee_b =     fs->make < TH1F > ("bbSig_pt_Z_ee_b",   "bbSig_pt_Z_ee_b;P_t [GeV]", 40, 0., 400.);
   w_pt_Z_mm_b =         fs->make < TH1F > ("w_pt_Z_mm_b",       "w_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
   b_pt_Z_mm_b =         fs->make < TH1F > ("b_pt_Z_mm_b",       "b_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
   c_pt_Z_mm_b =         fs->make < TH1F > ("c_pt_Z_mm_b",       "c_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
   t_pt_Z_mm_b =         fs->make < TH1F > ("t_pt_Z_mm_b",       "t_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
   bbBkg_pt_Z_mm_b =     fs->make < TH1F > ("bbBkg_pt_Z_mm_b",    "bbBkg_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
+  bbSig_pt_Z_mm_b =     fs->make < TH1F > ("bbSig_pt_Z_mm_b",    "bbSig_pt_Z_mm_b;P_t [GeV]", 40, 0., 400.);
 
   w_y_Z_ee_b=           fs->make < TH1F > ("w_y_Z_ee_b",         "w_y_Z_ee_b;(y_Z)", 20, -2.0, 2.0);
   b_y_Z_ee_b=           fs->make < TH1F > ("b_y_Z_ee_b",         "b_y_Z_ee_b;(y_Z)", 20, -2.0, 2.0);
@@ -1589,6 +1627,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_pt_Z_em_b =         fs->make < TH1F > ("c_pt_Z_em_b",       "c_pt_Z_em_b;P_t [GeV]", 40, 0., 400.);
   t_pt_Z_em_b =         fs->make < TH1F > ("t_pt_Z_em_b",       "t_pt_Z_em_b;P_t [GeV]", 40, 0., 400.);
   bbBkg_pt_Z_em_b =     fs->make < TH1F > ("bbBkg_pt_Z_em_b",   "bbBkg_pt_Z_em_b;P_t [GeV]", 40, 0., 400.);
+  bbSig_pt_Z_em_b =     fs->make < TH1F > ("bbSig_pt_Z_em_b",   "bbSig_pt_Z_em_b;P_t [GeV]", 40, 0., 400.);
 
   w_y_Z_em_b=           fs->make < TH1F > ("w_y_Z_em_b",         "w_y_Z_em_b;(y_Z)", 20, -2.0, 2.0);
   b_y_Z_em_b=           fs->make < TH1F > ("b_y_Z_em_b",         "b_y_Z_em_b;(y_Z)", 20, -2.0, 2.0);
@@ -1811,6 +1850,7 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   c_Ht_b =              fs->make < TH1F > ("c_Ht_b",            "c_Ht_b [GeV]", 50, 30., 1000.);
   t_Ht_b =              fs->make < TH1F > ("t_Ht_b",            "t_Ht_b [GeV]", 50, 30., 1000.);
   bbBkg_Ht_b =          fs->make < TH1F > ("bbBkg_Ht_b",        "bbBkg_Ht_b [GeV]", 50, 30., 1000.);
+  bbSig_Ht_b =          fs->make < TH1F > ("bbSig_Ht_b",        "bbSig_Ht_b [GeV]", 50, 30., 1000.);
 
   w_single_Ht_b =       fs->make < TH1F > ("w_single_Ht_b",            "w_single_Ht_b [GeV]", 50, 30., 1000.);
   b_single_Ht_b =       fs->make < TH1F > ("b_single_Ht_b",            "b_single_Ht_b [GeV]", 50, 30., 1000.);
@@ -2796,6 +2836,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         if (Nb == 1 && numB_ == 1 && findBjet(vect_jets, vect_bjets)) {
           bbBkg_Ht_b->Fill (Ht, MyWeight*scalFac_b);
         }
+        if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
+          bbSig_Ht_b->Fill (Ht, MyWeight*scalFac_b);
+        }
         if (Nj == 1) b_single_Ht_b->Fill (Ht, MyWeight*scalFac_b);
       }
       if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 4) {
@@ -2929,6 +2972,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 	  bbBkg_y_Z_ee_b->Fill (diele_y, MyWeight*scalFac_b);
 	  bbBkg_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
           bbBkg_delta_ee_b->Fill (delta_phi_ee_b, MyWeight*scalFac_b);
+        }
+        if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
+          bbSig_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
         }
 	if (Nj == 1) {
           b_single_pt_Z_ee_b->Fill (diele_pt, MyWeight*scalFac_b);
@@ -3076,6 +3122,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
           bbBkg_y_Z_mm_b_abs->Fill (fabs(dimuon_y), MyWeight*scalFac_b);
           bbBkg_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
         }
+        if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
+          bbSig_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
+        }
         if (Nj == 1) {
           b_single_pt_Z_mm_b->Fill (dimuon_pt, MyWeight*scalFac_b);
           b_single_delta_mm_b->Fill (delta_phi_mm_b, MyWeight*scalFac_b);
@@ -3215,6 +3264,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 	  bbBkg_y_Z_em_b->Fill (dielemuon_y, MyWeight*scalFac_b);
           bbBkg_y_Z_em_b_abs->Fill (fabs(dielemuon_y), MyWeight*scalFac_b);
           bbBkg_delta_em_b->Fill (delta_phi_em_b, MyWeight*scalFac_b);
+        }
+        if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
+          bbSig_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
         }
 	if (Nj == 1) {
           b_single_pt_Z_em_b->Fill (dielemuon_pt, MyWeight*scalFac_b);
@@ -3912,6 +3964,10 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       if (Nb > 1) {
         b_delta_phi_2b->Fill (delta_phi_2b, MyWeight*scalFac_b);
         b_DR_bb->Fill (DR_bb, MyWeight*scalFac_b);
+        if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
+          bbSig_delta_phi_2b->Fill (delta_phi_2b, MyWeight*scalFac_b);
+          bbSig_DR_bb->Fill (DR_bb, MyWeight*scalFac_b);
+        }
         b_Deta_bb->Fill(Deta_bb, MyWeight*scalFac_b);
       }
       if (nosvtx) {
@@ -3922,7 +3978,13 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       b_first_jet_pt_b->Fill (vect_jets[0].pt(), MyWeight*scalFac_b);
       b_first_jet_eta_b->Fill (vect_jets[0].eta(), MyWeight*scalFac_b);
       b_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
+      if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
+        bbSig_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
+      }
       b_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight*scalFac_b);
+      if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
+        bbSig_first_bjet_eta->Fill (vect_bjets[0].eta(), MyWeight*scalFac_b);
+      }
       b_first_bjet_eta_abs->Fill (fabs(vect_bjets[0].eta()), MyWeight*scalFac_b);
       if ( Nb == 1 && numB_ == 1 && findBjet(vect_jets, vect_bjets) ) {
         bbBkg_first_bjet_pt->Fill (vect_bjets[0].pt(), MyWeight*scalFac_b);
@@ -4049,6 +4111,9 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     }	
     if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 5) {
       b_bb_mass->Fill (bb_mass, MyWeight*scalFac_b);
+      if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
+      bbSig_bb_mass->Fill (bb_mass, MyWeight*scalFac_b);
+      }
     }
     if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 4) {
       c_bb_mass->Fill (bb_mass, MyWeight*scalFac_b);
@@ -4072,6 +4137,12 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         b_A_eeb->Fill (A_eeb, MyWeight*scalFac_b);
         b_eebb_mass->Fill (eebb_mass, MyWeight*scalFac_b);
         b_eebb_mass_wide->Fill (eebb_mass, MyWeight*scalFac_b);
+        if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
+          bbSig_DR_eeb_min->Fill (DR_eeb_min, MyWeight*scalFac_b);
+          bbSig_DR_eeb_max->Fill (DR_eeb_max, MyWeight*scalFac_b);
+          bbSig_A_eeb->Fill (A_eeb, MyWeight*scalFac_b);
+          bbSig_eebb_mass->Fill (eebb_mass, MyWeight*scalFac_b);
+        }
       }
       if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 4) {
         c_DR_eeb_min->Fill (DR_eeb_min, MyWeight*scalFac_b);
@@ -4100,6 +4171,12 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         b_A_mmb->Fill (A_mmb, MyWeight*scalFac_b);
         b_mmbb_mass->Fill (mmbb_mass, MyWeight*scalFac_b);
         b_mmbb_mass_wide->Fill (mmbb_mass, MyWeight*scalFac_b);
+        if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
+          bbSig_DR_mmb_min->Fill (DR_mmb_min, MyWeight*scalFac_b);
+          bbSig_DR_mmb_max->Fill (DR_mmb_max, MyWeight*scalFac_b);
+          bbSig_A_mmb->Fill (A_mmb, MyWeight*scalFac_b);
+          bbSig_mmbb_mass->Fill (mmbb_mass, MyWeight*scalFac_b);
+        }
       }
       if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 4) {
         c_DR_mmb_min->Fill (DR_mmb_min, MyWeight*scalFac_b);
@@ -4128,6 +4205,12 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         b_A_emb->Fill (A_emb, MyWeight*scalFac_b);
         b_embb_mass->Fill (embb_mass, MyWeight*scalFac_b);
         b_embb_mass_wide->Fill (embb_mass, MyWeight*scalFac_b);
+        if (Nb > 1 && numB_ == 2 && fabs(vect_bjets[1].partonFlavour()) == 5) {
+          bbSig_DR_emb_min->Fill (DR_emb_min, MyWeight*scalFac_b);
+          bbSig_DR_emb_max->Fill (DR_emb_max, MyWeight*scalFac_b);
+          bbSig_A_emb->Fill (A_emb, MyWeight*scalFac_b);
+          bbSig_embb_mass->Fill (embb_mass, MyWeight*scalFac_b);
+        }
       }
       if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 4) {
         c_DR_emb_min->Fill (DR_emb_min, MyWeight*scalFac_b);
