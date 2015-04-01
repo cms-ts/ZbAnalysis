@@ -345,6 +345,7 @@ if (bb==1 && numB==2) bbSig = true;
 	  h_data->SetStats(0);
 	  h_data_b->SetStats(0);
 	}
+
 	if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
@@ -724,11 +725,19 @@ if (bb==1 && numB==2) bbSig = true;
 
         if (bbBkg) {
           h_mc1b_b->Add(h_mc1bb, -1);
-          h_mc1bb->Scale(fScal);
+	  if (irun==6) {
+	    h_mc1bb->Scale(fScal+0.1*efScal);
+          } else {
+	    h_mc1bb->Scale(fScal);
+          }
         }
 
         if (bbSig) {
-          h_mc1bb_Sig->Scale(fScal);
+	  if (irun==6) {
+            h_mc1bb_Sig->Scale(fScal+0.1*efScal);
+          } else {
+	    h_mc1bb_Sig->Scale(fScal);
+	  }
         }
 
 	if (h_mc1uds_b) {
@@ -759,7 +768,11 @@ if (bb==1 && numB==2) bbSig = true;
           if (bbBkg) h_data_b->Add(h_mc1bb, -1.);
           if (bbSig) {
             h_data_b->Add(h_mc1b_b, -1.);
-            h_data_b->Add(h_mc1bb_Sig, 1.);
+	    if (irun==6) {
+              h_data_b->Add(h_mc1bb_Sig, 1./(fScal+0.1*efScal));
+            } else {
+              h_data_b->Add(h_mc1bb_Sig, 1./fScal);
+            }
           }
 	}
 
