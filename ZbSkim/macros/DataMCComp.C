@@ -2,8 +2,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-//string path = "/gpfs/cms/users/lalicata/work/test/data/";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 TH1F* h_data_fit = 0;
 TH1F* h_mc_fit0 = 0;
@@ -586,6 +586,15 @@ if (numB==2) {
 	  h_mc1->SetBinError(i, TMath::Sqrt(e));
 	}
 
+	if (doBkg) {
+	  if (bbSig) {
+	    h_data->Add(h_mc1, -1.);
+	    if (h_mc1b) h_data->Add(h_mc1b, -1.);
+	    if (h_mc1c) h_data->Add(h_mc1c, -1.);
+	    if (h_mc1t) h_data->Add(h_mc1t, -1.);
+	  }
+	}
+
 	if (doFit==0 && irun==99) {
 	  float xval=0;
 	  //float xvalb=0;
@@ -595,8 +604,8 @@ if (numB==2) {
 	  //if (h_mc1b) xvalb = h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
           if (h_mc1c) xvalc = h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
 	  
-	  //mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
-	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+	  //mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
           if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
           if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
           //if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
@@ -947,11 +956,11 @@ if (numB==2) {
             h_data_fit->Add(h_mc4, -1.);
             h_data_fit->Add(h_mc3, -1.);
             h_data_fit->Add(h_mc2, -1.);
+            h_data_fit->Add(h_mc1, -1.);
+            if (h_mc1b) h_data_fit->Add(h_mc1b, -1.);
+            if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
             h_data_fit->Add(h_mc1t, -1.);
           }
-          h_data_fit->Add(h_mc1, -1.);
-          if (h_mc1b) h_data_fit->Add(h_mc1b, -1.);
-          if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
           h_mc_fit0 = h_mc1bb;
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
             float e = TMath::Power(h_data_fit->GetBinError(i),2);
@@ -961,7 +970,7 @@ if (numB==2) {
           fitter->SetFCN(fcn);
           double arglist[1] = {-1.0};
           //fitter->ExecuteCommand("SET PRINT", arglist, 1);
-          fitter->SetParameter(0, "c(b)", 1.00, 0.01, 0.00, 100.00);
+          fitter->SetParameter(0, "c(bb)", 1.00, 0.01, 0.00, 100.00);
           fitter->ExecuteCommand("MIGRAD", arglist, 0);
           h_mc_fit0->Scale(fitter->GetParameter(0));
         }
@@ -978,11 +987,19 @@ if (numB==2) {
 	  ht->Add(h_mc3);
 	  ht->Add(h_mc2);
           if (bbBkg) ht->Add(h_mc1bb);
+	  if (bbSig) {
+	    if (h_mc1b) ht->Add(h_mc1b);
+	    if (h_mc1c) ht->Add(h_mc1c);
+	    ht->Add(h_mc1);
+	  }
 	}
-	if (h_mc1b) ht->Add(h_mc1b);
-        if (bbSig) ht->Add(h_mc1bb);
-	if (h_mc1c) ht->Add(h_mc1c);
-	ht->Add(h_mc1);
+	if (bbSig) {
+	  ht->Add(h_mc1bb);
+        } else {
+	  if (h_mc1b) ht->Add(h_mc1b);
+	  if (h_mc1c) ht->Add(h_mc1c);
+	  ht->Add(h_mc1);
+	}
 
 	THStack *hs = new THStack("hs","");
 	if (h_mc1t) hs->Add(h_mc1t);
@@ -995,11 +1012,19 @@ if (numB==2) {
 	  hs->Add(h_mc3);
 	  hs->Add(h_mc2);
           if (bbBkg) hs->Add(h_mc1bb);
+	  if (bbSig) {
+	    if (h_mc1b) hs->Add(h_mc1b);
+	    if (h_mc1c) hs->Add(h_mc1c);
+	    hs->Add(h_mc1);
+	  }
 	}
-        if (bbSig) hs->Add(h_mc1bb);
-	if (h_mc1b) hs->Add(h_mc1b);
-	if (h_mc1c) hs->Add(h_mc1c);
-	hs->Add(h_mc1);
+        if (bbSig) {
+	  hs->Add(h_mc1bb);
+	} else {
+	  if (h_mc1b) hs->Add(h_mc1b);
+	  if (h_mc1c) hs->Add(h_mc1c);
+	  hs->Add(h_mc1);
+	}
 
         TCanvas* c1 = new TCanvas("c","c",10,10,800,600);
 	c1->cd();
@@ -1313,7 +1338,7 @@ if (numB==2) {
 	    fitLabel->DrawLatex(0.68, 0.38, buff);
 	  }
           if (doFit==4) {
-            sprintf(buff, "c_{b} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
+            sprintf(buff, "c_{bb} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
             fitLabel->DrawLatex(0.68, 0.48, buff);
           }
           if (doFit==5) {
