@@ -306,10 +306,14 @@ if (bb==1 && numB==2) bbSig = true;
 	  }
         }        
 
-        if (title.find("_abs")!=string::npos && !drawInclusive) {
-          title_b = title;
-          title_b = title_b.replace(title_b.find("_abs"), 4, "_b_abs");
-        }
+	if (!drawInclusive) {
+	  if (title.find("_abs")!=string::npos) {
+	    if (title.find("_bjet_")==string::npos) {
+              title_b = title;
+              title_b = title_b.replace(title_b.find("_abs"), 4, "_b_abs");
+	    }
+	  }
+	}
 
 	if (ilepton==1) data->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) data->cd(("demoMuo"+postfix).c_str());
