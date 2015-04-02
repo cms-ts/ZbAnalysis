@@ -877,6 +877,8 @@ if (bb==1 && numB==2) bbSig = true;
 	h_data_b = fixrange(h_data_b);
 	h_mc1 = fixrange(h_mc1);
  	h_mc1b_b = fixrange(h_mc1b_b);
+	if (bbBkg) h_mc1bb = fixrange(h_mc1bb);
+	if (bbSig) h_mc1bb_Sig = fixrange(h_mc1bb_Sig);
 	h_mcg = fixrange(h_mcg);
 	h_mcg_b = fixrange(h_mcg_b);
 	h_mcg1 = fixrange(h_mcg1);
