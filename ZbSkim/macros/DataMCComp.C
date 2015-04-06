@@ -2,8 +2,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
-//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
-string path = "/gpfs/cms/users/lalicata/work/test/data/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
+//string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
 TH1F* h_data_fit = 0;
 TH1F* h_mc_fit0 = 0;
@@ -588,7 +588,7 @@ if (numB==2) {
 
 	if (doBkg) {
 	  if (bbSig) {
-	    h_data->Add(h_mc1, -1.);
+            h_data->Add(h_mc1, -1.);
 	    if (h_mc1b) h_data->Add(h_mc1b, -1.);
 	    if (h_mc1c) h_data->Add(h_mc1c, -1.);
 	    if (h_mc1t) h_data->Add(h_mc1t, -1.);
@@ -620,11 +620,22 @@ if (numB==2) {
 
 	  h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
           h_mc1c->Sumw2(); 
+          
+          if (bbBkg) {
+            h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
+            h_mc1bb->Sumw2();
+            h_mc1b->Add(h_mc1bb, -1.);
+          }
+
+          if (bbSig) {
+            h_mc1bb = (TH1F*)gDirectory->Get(("bbSig"+title.substr(1)).c_str());
+            h_mc1bb->Sumw2();
+          }
 
 	  if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
 	  if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
 	  if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
-          if (bbBkg || bbSig) h_mc1->Add(h_mc1bb, -1.);
+          if (bbBkg) h_mc1->Add(h_mc1bb, -1.);
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
 	    float e = TMath::Power(h_mc1->GetBinError(i),2);
 	    if (h_mc1b) e = e - TMath::Power(h_mc1b->GetBinError(i),2);
@@ -993,7 +1004,7 @@ if (numB==2) {
 	    ht->Add(h_mc1);
 	  }
 	}
-	if (bbSig) {
+        if (bbSig) {
 	  ht->Add(h_mc1bb);
         } else {
 	  if (h_mc1b) ht->Add(h_mc1b);
