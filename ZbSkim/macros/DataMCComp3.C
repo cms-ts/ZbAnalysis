@@ -18,6 +18,7 @@ string bSel="";
 string genPostfix="";
 
 bool bbBkg = false;
+bool bbSig = false;
 
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
@@ -105,6 +106,7 @@ if (numB==2) {
 }
 
 if (bb==1 && numB==1) bbBkg = true;
+if (bb==1 && numB==2) bbSig = true;
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -141,16 +143,15 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 //int itype = 2; // e_Z_b
 
 	string title_b = title;
-        string title_bbBkg = title;
 
         //if (title.find("_b")!=string::npos) {
 	if (title.find("_b")!=string::npos || numB==1 || numB==2) {
 	  if (itype==0) title_b = "b"+title.substr(1);
 	  if (itype==2) title_b = "b"+title.substr(1);
-          title_bbBkg = "bbBkg"+title.substr(1);
 	}
  
         TH1F* h_reco_bbBkg = 0;
+        TH1F* h_reco_bbSig = 0;
 
 	if (ilepton==1&&itype==0) mc1->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2&&itype==0) mc1->cd(("demoMuo"+postfix).c_str());
@@ -160,6 +161,7 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	if (ilepton==2&&itype==2) mc1->cd(("demoMuo"+postfix).c_str());
 	TH1F* h_reco = (TH1F*)gDirectory->Get(title_b.c_str());
         if (bbBkg) h_reco_bbBkg = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
+	if (bbSig) h_reco_bbSig = (TH1F*)gDirectory->Get(("bbSig"+title.substr(1)).c_str());
 	if (ilepton==1&&itype==0) mc2->cd(("demoEleGen"+genPostfix).c_str());
 	if (ilepton==2&&itype==0) mc2->cd(("demoMuoGen"+genPostfix).c_str());
 	if (ilepton==1&&itype==1) mc2->cd(("demoEleGen"+genPostfix).c_str());
@@ -169,6 +171,7 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
 
 	if (bbBkg) h_reco->Add(h_reco_bbBkg,-1);
+	if (bbSig) h_reco = h_reco_bbSig;
 
 	h_reco->Sumw2();
 	h_gen->Sumw2();

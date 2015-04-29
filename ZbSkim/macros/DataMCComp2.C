@@ -744,14 +744,6 @@ if (bb==1 && numB==2) bbSig = true;
 	  }
         }
 
-        if (bbSig) {
-	  if (irun==6) {
-            h_mc1bb_Sig->Scale(fScal+0.1*efScal);
-	  } else {
-            h_mc1bb_Sig->Scale(fScal);
-	  }
-        }
-
 	if (h_mc1uds_b) {
 	  if (irun==6) {
 	    h_mc1uds_b->Scale(c_uds+0.1*ec_uds);
@@ -781,9 +773,9 @@ if (bb==1 && numB==2) bbSig = true;
           if (bbSig) {
             h_data_b->Add(h_mc1b_b, -1.);
             if (irun==6) {
-              h_data_b->Add(h_mc1bb_Sig, 1./(fScal+0.1*efScal));
+              h_data_b->Add(h_mc1bb_Sig, 1.);
             } else {
-              h_data_b->Add(h_mc1bb_Sig, 1./fScal);
+              h_data_b->Add(h_mc1bb_Sig, 1.);
             }
           }
 	}
@@ -885,8 +877,8 @@ if (bb==1 && numB==2) bbSig = true;
 	h_data_b = fixrange(h_data_b);
 	h_mc1 = fixrange(h_mc1);
  	h_mc1b_b = fixrange(h_mc1b_b);
-	if (bbBkg) h_mc1bb = fixrange(h_mc1bb);
-	if (bbSig) h_mc1bb_Sig = fixrange(h_mc1bb_Sig);
+        if (bbBkg) h_mc1bb = fixrange(h_mc1bb);
+        if (bbSig) h_mc1bb_Sig = fixrange(h_mc1bb_Sig);
 	h_mcg = fixrange(h_mcg);
 	h_mcg_b = fixrange(h_mcg_b);
 	h_mcg1 = fixrange(h_mcg1);
