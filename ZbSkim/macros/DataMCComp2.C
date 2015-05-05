@@ -191,9 +191,6 @@ if (bb==1 && numB==2) bbSig = true;
             in3 >> c_b >> ec_b;
             in3 >> c_c >> ec_c;
           }
-          if (numB==2) {
-            in3 >> c_b >> ec_b;
-          }
 	  in3.close();
 	  in4 >> c1_t >> ec1_t;
 	  in5 >> c2_t >> ec2_t;
@@ -734,7 +731,7 @@ if (bb==1 && numB==2) bbSig = true;
 
 	}
 
-        if (bbBkg) {
+        if (bbBkg || bbSig) {
           h_mc1b_b->Add(h_mc1bb, -1);
 	  if (irun==6) {
             h_mc1bb->Scale(fScal+0.1*efScal);
@@ -769,14 +766,7 @@ if (bb==1 && numB==2) bbSig = true;
 	  h_data_b->Add(h_mc1c_b, -1.);
 	  h_data_b->Add(h_mc1uds_b, -1.);
           if (bbBkg) h_data_b->Add(h_mc1bb, -1.);
-          if (bbSig) {
-            h_data_b->Add(h_mc1b_b, -1.);
-            if (irun==6) {
-              h_data_b->Add(h_mc1bb, 1.);
-            } else {
-              h_data_b->Add(h_mc1bb, 1.);
-            }
-          }
+          if (bbSig) h_data_b->Add(h_mc1b_b, -1.);
 	}
 
 	TH1F *h_data_raw=0;
