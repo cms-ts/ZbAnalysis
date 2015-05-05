@@ -160,11 +160,11 @@ if (bb==1 && numB==2) bbSig = true;
 	    in3.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    in4.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
 	    in5.open((path + "/electrons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
-	    in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
 	      in6.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_ee_wide_doFit" + ".dat").c_str());
 	      in7.open((path + "/electrons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_ee_b_wide_doFit" + ".dat").c_str());
 	    }
+	    in8.open((path + "/electrons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	  }
 	}
 	if (ilepton==2) {
@@ -174,11 +174,11 @@ if (bb==1 && numB==2) bbSig = true;
 	    in3.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    in4.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_doFit" + ".dat").c_str());
 	    in5.open((path + "/muons/" + version + "/" + subdir + "/distributions" + dirbSel + "/" + "w_MET_b_doFit" + ".dat").c_str());
-	    in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	    if (useEleMuo) {
 	      in6.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_mm_wide_doFit" + ".dat").c_str());
 	      in7.open((path + "/muons/" + version + "/" + subdir + "/ttbar_sub" + dirbSel + "/" + "w_mass_mm_b_wide_doFit" + ".dat").c_str());
 	    }
+	    in8.open((path + "/muons/" + version + "/" + subdir + "/distributions_2b" + "/" + "w_SVTX_mass_doFit" + ".dat").c_str());
 	  }
 	}
 	in1 >> e_Z >> ee_Z;
@@ -199,14 +199,14 @@ if (bb==1 && numB==2) bbSig = true;
 	  in5 >> c2_t >> ec2_t;
 	  in4.close();
 	  in5.close();
-	  in8 >> fScal >> efScal;
-          in8.close();
 	  if (useEleMuo) {
 	    in6 >> c1_t >> ec1_t;
 	    in7 >> c2_t >> ec2_t;
 	    in6.close();
 	    in7.close();
 	  }
+	  in8 >> fScal >> efScal;
+          in8.close();
 	}
 
 	double Lumi2012=0;
