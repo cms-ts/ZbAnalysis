@@ -356,11 +356,10 @@ if (bb==1 && numB==2) bbSig = true;
 	TH1F* h_mc1t = (TH1F*)gDirectory->Get(("t"+title.substr(1)).c_str());
 	TH1F* h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 	TH1F* h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
-        TH1F* h_mc1bb_Sig = 0;
-        if (bbSig) h_mc1bb_Sig = (TH1F*)gDirectory->Get(("bbSig"+title_b.substr(1)).c_str());
 	TH1F* h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
 	TH1F* h_mc1t_b = (TH1F*)gDirectory->Get(("t"+title_b.substr(1)).c_str());
         TH1F* h_mc1bb = 0;
+        if (bbSig) h_mc1bb = (TH1F*)gDirectory->Get(("bbSig"+title_b.substr(1)).c_str());
         if (bbBkg) h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title_b.substr(1)).c_str());
 
 	if (ilepton==1) mcg->cd(("demoEleGen"+genPostfix).c_str());
@@ -511,7 +510,7 @@ if (bb==1 && numB==2) bbSig = true;
 	if (h_mc1c_b) h_mc1c_b->Sumw2();
 	if (h_mc1t_b) h_mc1t_b->Sumw2();
         if (bbBkg)  h_mc1bb->Sumw2();
-        if (bbSig)  h_mc1bb_Sig->Sumw2();
+        if (bbSig)  h_mc1bb->Sumw2();
 	h_mcg_b->Sumw2();
 	h_mcg1_b->Sumw2();
 	h_mcg2_b->Sumw2();
@@ -568,7 +567,7 @@ if (bb==1 && numB==2) bbSig = true;
 	if (h_mc1b_b) h_mc1b_b->Scale(norm1);
 	if (h_mc1c_b) h_mc1c_b->Scale(norm1);
 	if (h_mc1t_b) h_mc1t_b->Scale(norm1);
-        if (bbSig)  h_mc1bb_Sig->Scale(norm1);
+        if (bbSig)  h_mc1bb->Scale(norm1);
         if (bbBkg)  h_mc1bb->Scale(norm1);
 	h_mcg_b->Scale(norm1);
 	h_mcg1_b->Scale(norm1_1);
@@ -621,7 +620,7 @@ if (bb==1 && numB==2) bbSig = true;
 	    if (h_mc1b_b) h_mc1b_b->SetBinError(i, 1.1*h_mc1b_b->GetBinError(i));
 	    if (h_mc1c_b) h_mc1c_b->SetBinError(i, 1.1*h_mc1c_b->GetBinError(i));
 	    if (h_mc1t_b) h_mc1t_b->SetBinError(i, 1.1*h_mc1t_b->GetBinError(i));
-            if (bbSig)  h_mc1bb_Sig->SetBinError(i, 1.1*h_mc1bb_Sig->GetBinError(i));
+            if (bbSig)  h_mc1bb->SetBinError(i, 1.1*h_mc1bb->GetBinError(i));
 	    if (bbBkg)  h_mc1bb->SetBinError(i, 1.1*h_mc1bb->GetBinError(i));
 	    h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
 	    h_mc2_b->SetBinError(i, 1.1*h_mc2_b->GetBinError(i));
@@ -773,9 +772,9 @@ if (bb==1 && numB==2) bbSig = true;
           if (bbSig) {
             h_data_b->Add(h_mc1b_b, -1.);
             if (irun==6) {
-              h_data_b->Add(h_mc1bb_Sig, 1.);
+              h_data_b->Add(h_mc1bb, 1.);
             } else {
-              h_data_b->Add(h_mc1bb_Sig, 1.);
+              h_data_b->Add(h_mc1bb, 1.);
             }
           }
 	}
@@ -878,7 +877,7 @@ if (bb==1 && numB==2) bbSig = true;
 	h_mc1 = fixrange(h_mc1);
  	h_mc1b_b = fixrange(h_mc1b_b);
         if (bbBkg) h_mc1bb = fixrange(h_mc1bb);
-        if (bbSig) h_mc1bb_Sig = fixrange(h_mc1bb_Sig);
+        if (bbSig) h_mc1bb = fixrange(h_mc1bb);
 	h_mcg = fixrange(h_mcg);
 	h_mcg_b = fixrange(h_mcg_b);
 	h_mcg1 = fixrange(h_mcg1);
