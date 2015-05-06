@@ -530,7 +530,31 @@ if (numB==2) {
         if (bbBkg)  h_mc1bb->Scale(fScal); 
 
 	if (useFitResults) {
-	  if (title.find("_b")==string::npos) {
+	  int use_c1_t=1;
+	  if (title.find("JBP")==string::npos) use_c1_t=0;
+	  if (title.find("BJP")==string::npos) use_c1_t=0;
+	  if (title.find("SVTX")==string::npos) use_c1_t=0;
+	  if (title.find("secondvtx")==string::npos) use_c1_t=0;
+	  if (title.find("dxy")==string::npos) use_c1_t=0;
+	  if (title.find("flightd")==string::npos) use_c1_t=0;
+	  if (title.find("SV")==string::npos) use_c1_t=0;
+	  if (title.find("_b")!=string::npos) use_c1_t=0;
+	  if (title.find("_2b")!=string::npos) use_c1_t=0;
+	  if (title.find("_bb")!=string::npos) use_c1_t=0;
+	  if (title.find("eeb_min")==string::npos) use_c1_t=0;
+	  if (title.find("mmb_min")==string::npos) use_c1_t=0;
+	  if (title.find("emb_min")==string::npos) use_c1_t=0;
+	  if (title.find("eeb_max")==string::npos) use_c1_t=0;
+	  if (title.find("mmb_max")==string::npos) use_c1_t=0;
+	  if (title.find("emb_max")==string::npos) use_c1_t=0;
+	  if (title.find("eebb_mass")==string::npos) use_c1_t=0;
+	  if (title.find("mmbb_mass")==string::npos) use_c1_t=0;
+	  if (title.find("embb_mass")==string::npos) use_c1_t=0;
+	  if (title.find("_eeb")==string::npos) use_c1_t=0;
+	  if (title.find("_mmb")==string::npos) use_c1_t=0;
+	  if (title.find("_emb")==string::npos) use_c1_t=0;
+	  if (title.find("_delta_j")==string::npos) use_c1_t=0;
+	  if (use_c1_t) {
 	    if (irun==5) {
 	      h_mc2->Scale(c1_t+0.1*ec1_t);
 	    } else {
