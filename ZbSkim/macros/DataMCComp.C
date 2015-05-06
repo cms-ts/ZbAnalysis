@@ -793,6 +793,7 @@ if (numB==2) {
 	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
 	  h_mc_fit0->Scale(fitter->GetParameter(0));
 	}
+
 	if (doFit==2) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
@@ -825,7 +826,8 @@ if (numB==2) {
 	}
 	
 	/* fit the top and "others" with doFit==2 instead of top+Zjets */
-	/*if (doFit==2) {
+	/*
+	if (doFit==2) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
 	    //h_data_fit->Add(h_mcO, -1.);
@@ -851,7 +853,8 @@ if (numB==2) {
 	  fitter->ExecuteCommand("MIGRAD", arglist, 0);
 	  h_mc_fit0->Scale(fitter->GetParameter(0));
 	  h_mc_fit1->Scale(fitter->GetParameter(1));
-	} */
+	}
+	*/
         
 	if (doFit==3) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
@@ -921,7 +924,36 @@ if (numB==2) {
 	  h_mc_fit1->Scale(fitter->GetParameter(1));
 	  h_mc_fit2->Scale(fitter->GetParameter(2));
 	}
-	
+
+        if (doFit==4) {
+          h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
+          if (!doBkg) {
+            h_data_fit->Add(h_mcO, -1.);
+            h_data_fit->Add(h_mc7, -1.);
+            h_data_fit->Add(h_mc6, -1.);
+//          h_data_fit->Add(h_mc5, -1.);
+            h_data_fit->Add(h_mc4, -1.);
+            h_data_fit->Add(h_mc3, -1.);
+            h_data_fit->Add(h_mc2, -1.);
+            h_data_fit->Add(h_mc1, -1.);
+            if (h_mc1b) h_data_fit->Add(h_mc1b, -1.);
+            if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
+            h_data_fit->Add(h_mc1t, -1.);
+          }
+          h_mc_fit0 = h_mc1bb;
+          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+            float e = TMath::Power(h_data_fit->GetBinError(i),2);
+            h_data_fit->SetBinError(i, TMath::Sqrt(e));
+          }
+          fitter = TVirtualFitter::Fitter(0, 1);
+          fitter->SetFCN(fcn);
+          double arglist[1] = {-1.0};
+          fitter->ExecuteCommand("SET PRINT", arglist, 1);
+          fitter->SetParameter(0, "c(bb)", 1.00, 0.01, 0.00, 100.00);
+          fitter->ExecuteCommand("MIGRAD", arglist, 0);
+          h_mc_fit0->Scale(fitter->GetParameter(0));
+        }
+
 	/** test ***/
         if (doFit==5) {
           h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
@@ -956,35 +988,6 @@ if (numB==2) {
           h_mc_fit0->Scale(fitter->GetParameter(0));
         }
         /*****/
-
-        if (doFit==4) {
-          h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
-          if (!doBkg) {
-            h_data_fit->Add(h_mcO, -1.);
-            h_data_fit->Add(h_mc7, -1.);
-            h_data_fit->Add(h_mc6, -1.);
-//          h_data_fit->Add(h_mc5, -1.);
-            h_data_fit->Add(h_mc4, -1.);
-            h_data_fit->Add(h_mc3, -1.);
-            h_data_fit->Add(h_mc2, -1.);
-            h_data_fit->Add(h_mc1, -1.);
-            if (h_mc1b) h_data_fit->Add(h_mc1b, -1.);
-            if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
-            h_data_fit->Add(h_mc1t, -1.);
-          }
-          h_mc_fit0 = h_mc1bb;
-          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            float e = TMath::Power(h_data_fit->GetBinError(i),2);
-            h_data_fit->SetBinError(i, TMath::Sqrt(e));
-          }
-          fitter = TVirtualFitter::Fitter(0, 1);
-          fitter->SetFCN(fcn);
-          double arglist[1] = {-1.0};
-          //fitter->ExecuteCommand("SET PRINT", arglist, 1);
-          fitter->SetParameter(0, "c(bb)", 1.00, 0.01, 0.00, 100.00);
-          fitter->ExecuteCommand("MIGRAD", arglist, 0);
-          h_mc_fit0->Scale(fitter->GetParameter(0));
-        }
 
 	TH1F *ht = (TH1F*)h_mc1->Clone("ht");
 	ht->Reset();
