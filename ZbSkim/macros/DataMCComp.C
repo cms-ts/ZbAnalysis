@@ -892,6 +892,8 @@ if (numB==2) {
 	      if (h_mc1c) h_mc1c->SetBinError(i, 0);
 	      if (h_mc1t) h_mc1t->SetBinContent(i, 0);
 	      if (h_mc1t) h_mc1t->SetBinError(i, 0);
+	      if (bbBkg || bbSig) h_mc1bb->SetBinContent(i, 0);
+	      if (bbBkg || bbSig) h_mc1bb->SetBinError(i, 0);
 	      h_mc2->SetBinContent(i, 0);
 	      h_mc2->SetBinError(i, 0);
 	      h_mc3->SetBinContent(i, 0);
@@ -908,6 +910,10 @@ if (numB==2) {
 	      h_mcO->SetBinError(i, 0);
 	    }
 	  }
+          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+            float e = TMath::Power(h_data_fit->GetBinError(i),2);
+            h_data_fit->SetBinError(i, TMath::Sqrt(e));
+          }
 	  fitter = TVirtualFitter::Fitter(0, 3);
 	  fitter->SetFCN(fcn);
 	  double arglist[1] = {-1.0};
@@ -915,10 +921,12 @@ if (numB==2) {
 	  fitter->SetParameter(0, "c(uds)", 1.00, 0.01, 0.00, 100.00);
 	  fitter->SetParameter(1, "c(b)",   1.00, 0.01, 0.00, 100.00);
 	  fitter->SetParameter(2, "c(c)",   1.00, 0.01, 0.00, 100.00);
-	  /*if (irun==99) {
+	  /*
+	  if (irun==99) {
 	    fitter->FixParameter(0);
 	    fitter->FixParameter(2);
-	  }*/
+	  }
+	  */
           fitter->ExecuteCommand("MIGRAD", arglist, 0);
           h_mc_fit0->Scale(fitter->GetParameter(0));
 	  h_mc_fit1->Scale(fitter->GetParameter(1));
@@ -941,6 +949,44 @@ if (numB==2) {
             h_data_fit->Add(h_mc1t, -1.);
           }
           h_mc_fit0 = h_mc1bb;
+	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
+	    bool skip = false;
+	    if (title=="w_SVTX_mass") {
+	      if (h_data_fit->GetXaxis()->GetBinCenter(i) < 0.2) {
+	        skip = true;
+	      }
+	    }
+	    if (skip) {
+	      h_data->SetBinContent(i, 0);
+	      h_data->SetBinError(i, 0);
+	      h_data_fit->SetBinContent(i, 0);
+	      h_data_fit->SetBinError(i, 0);
+	      h_mc1->SetBinContent(i, 0);
+	      h_mc1->SetBinError(i, 0);
+	      if (h_mc1b) h_mc1b->SetBinContent(i, 0);
+	      if (h_mc1b) h_mc1b->SetBinError(i, 0);
+	      if (h_mc1c) h_mc1c->SetBinContent(i, 0);
+	      if (h_mc1c) h_mc1c->SetBinError(i, 0);
+	      if (h_mc1t) h_mc1t->SetBinContent(i, 0);
+	      if (h_mc1t) h_mc1t->SetBinError(i, 0);
+	      if (bbBkg || bbSig) h_mc1bb->SetBinContent(i, 0);
+	      if (bbBkg || bbSig) h_mc1bb->SetBinError(i, 0);
+	      h_mc2->SetBinContent(i, 0);
+	      h_mc2->SetBinError(i, 0);
+	      h_mc3->SetBinContent(i, 0);
+	      h_mc3->SetBinError(i, 0);
+	      h_mc4->SetBinContent(i, 0);
+	      h_mc4->SetBinError(i, 0);
+//	      h_mc5->SetBinContent(i, 0);
+//	      h_mc5->SetBinError(i, 0);
+	      h_mc6->SetBinContent(i, 0);
+	      h_mc6->SetBinError(i, 0);
+	      h_mc7->SetBinContent(i, 0);
+	      h_mc7->SetBinError(i, 0);
+	      h_mcO->SetBinContent(i, 0);
+	      h_mcO->SetBinError(i, 0);
+	    }
+	  }
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
             float e = TMath::Power(h_data_fit->GetBinError(i),2);
             h_data_fit->SetBinError(i, TMath::Sqrt(e));
