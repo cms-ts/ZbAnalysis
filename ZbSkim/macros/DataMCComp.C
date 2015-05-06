@@ -491,7 +491,6 @@ if (numB==2) {
 	if (h_mc1c) h_mc1c->Scale(norm1);
 	if (h_mc1t) h_mc1t->Scale(norm1);
 	if (bbBkg || bbSig) h_mc1bb->Scale(norm1);
-        if (bbBkg)  h_mc1bb->Scale(fScal); 
 
 	h_mc2->Scale(norm2);
 	h_mc3->Scale(norm3);
@@ -527,6 +526,8 @@ if (numB==2) {
         //h_mcO -> SetFillStyle(3004); 
 
         if (bbBkg || bbSig) h_mc1b->Add(h_mc1bb, -1.); 
+
+        if (bbBkg)  h_mc1bb->Scale(fScal); 
 
 	if (useFitResults) {
 	  if (title.find("_b")==string::npos) {
