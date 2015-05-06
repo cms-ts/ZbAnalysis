@@ -289,7 +289,7 @@ if (numB==2) {
 	if (useDY==1) {
 	  norm1 = norm1_1;
 	  enorm1 = enorm1_1;
-	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa.root").c_str());
 	}
 	if (useDY==2) {
 	  norm1 = norm1_2;
@@ -604,7 +604,7 @@ if (numB==2) {
 	  //if (h_mc1b) xvalb = h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
           if (h_mc1c) xvalc = h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
 	  
-	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa.root").c_str());
 	  //mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
           if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
           if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
