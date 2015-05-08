@@ -583,7 +583,9 @@ if (bb==1 && numB==2) bbSig = true;
 	h_mc13_b->Scale(norm13);
 
         TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
+	h_mcO->Reset();
         TH1F* h_mcO_b = (TH1F*)h_mc8_b->Clone("h_mcO_b");
+	h_mcO_b->Reset();
 
         h_mcO->Add(h_mc13);
         h_mcO->Add(h_mc12);

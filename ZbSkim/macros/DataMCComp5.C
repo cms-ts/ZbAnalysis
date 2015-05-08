@@ -453,6 +453,7 @@ if (numB==2) {
       }
 
       TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
+      h_mcO->Reset();
 
       h_mcO->Add(h_mc13);
       h_mcO->Add(h_mc12);
@@ -462,6 +463,7 @@ if (numB==2) {
       h_mcO->Add(h_mc8);
  
       TH1F* h_mcO_fit = (TH1F*)h_mc8->Clone("h_mcO_fit");
+      h_mcO_fit->Reset();
 
       h_mcO_fit->Add(h_mc13_fit);
       h_mcO_fit->Add(h_mc12_fit);

@@ -506,6 +506,7 @@ if (numB==2) {
 	h_mc13->Scale(norm13);
 
         TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
+	h_mcO->Reset();
 
 	h_mc13->Sumw2();
 	h_mc12->Sumw2();
