@@ -508,6 +508,22 @@ if (numB==2) {
         TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
 	h_mcO->Reset();
 
+	TH1F* h_mcD = (TH1F*)h_mc3->Clone("h_mcD");
+        h_mcD->Reset();
+
+        h_mcO->Add(h_mc13);
+        h_mcO->Add(h_mc12);
+        h_mcO->Add(h_mc11);
+        h_mcO->Add(h_mc10);
+        h_mcO->Add(h_mc9);
+        h_mcO->Add(h_mc8);
+        h_mcO->Add(h_mc7);
+        if (h_mc1t) h_mcO->Add(h_mc1t);
+
+        h_mcD->Add(h_mc6);
+        h_mcD->Add(h_mc4);
+        h_mcD->Add(h_mc3);
+
 	h_mc13->Sumw2();
 	h_mc12->Sumw2();
 	h_mc11->Sumw2();
@@ -515,16 +531,13 @@ if (numB==2) {
 	h_mc9->Sumw2();
 	h_mc8->Sumw2();
 
-  	h_mcO->Add(h_mc13); 
-  	h_mcO->Add(h_mc12); 
-  	h_mcO->Add(h_mc11); 
-  	h_mcO->Add(h_mc10); 
-  	h_mcO->Add(h_mc9); 
-  	h_mcO->Add(h_mc8); 
-
         h_mcO -> SetLineColor(kBlack);
         h_mcO -> SetFillColor(kOrange+1);
         //h_mcO -> SetFillStyle(3004); 
+
+	h_mcD -> SetLineColor(kBlack);
+        h_mcD -> SetFillColor(kBlue-2);
+        //h_mcD -> SetFillStyle(3004);
 
         if (bbBkg || bbSig) h_mc1b->Add(h_mc1bb, -1.); 
 
@@ -576,26 +589,16 @@ if (numB==2) {
 	    if (h_mc1b) h_mc1b->SetBinError(i, 1.1*h_mc1b->GetBinError(i));
             if (bbBkg || bbSig) h_mc1bb->SetBinError(i, 1.1*h_mc1bb->GetBinError(i));
 	    if (h_mc1c) h_mc1c->SetBinError(i, 1.1*h_mc1c->GetBinError(i));
-	    if (h_mc1t) h_mc1t->SetBinError(i, 1.1*h_mc1t->GetBinError(i));
 	    h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
-	    h_mc3->SetBinError(i, 1.1*h_mc3->GetBinError(i));
-	    h_mc4->SetBinError(i, 1.1*h_mc4->GetBinError(i));
-//	    h_mc5->SetBinError(i, 1.1*h_mc5->GetBinError(i));
-	    h_mc6->SetBinError(i, 1.1*h_mc6->GetBinError(i));
-	    h_mc7->SetBinError(i, 1.1*h_mc7->GetBinError(i));
+	    h_mcD->SetBinError(i, 1.1*h_mcD->GetBinError(i));
 	    h_mcO->SetBinError(i, 1.1*h_mcO->GetBinError(i));
 	  }
 	}
 
 	if (doBkg) {
 	  h_data->Add(h_mcO, -1.);
-	  h_data->Add(h_mc7, -1.);
-	  h_data->Add(h_mc6, -1.);
-//	  h_data->Add(h_mc5, -1.);
-	  h_data->Add(h_mc4, -1.);
-	  h_data->Add(h_mc3, -1.);
+	  h_data->Add(h_mcD, -1.);
 	  h_data->Add(h_mc2, -1.);
-	  h_data->Add(h_mc1t, -1.);
           if (bbBkg) h_data->Add(h_mc1bb, -1.);
 	}
 
@@ -742,12 +745,7 @@ if (numB==2) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
 	    h_data_fit->Add(h_mcO, -1.);
-	    h_data_fit->Add(h_mc7, -1.);
-	    h_data_fit->Add(h_mc6, -1.);
-//	    h_data_fit->Add(h_mc5, -1.);
-	    h_data_fit->Add(h_mc4, -1.);
-	    h_data_fit->Add(h_mc3, -1.);
-	    h_data_fit->Add(h_mc1t, -1.);
+	    h_data_fit->Add(h_mcD, -1.);
             if (bbBkg) h_data_fit->Add(h_mc1bb, -1.);
 	  }
 	  h_data_fit->Add(h_mc1, -1.);
@@ -797,16 +795,8 @@ if (numB==2) {
 	      if (h_mc1t) h_mc1t->SetBinError(i, 0);
 	      h_mc2->SetBinContent(i, 0);
 	      h_mc2->SetBinError(i, 0);
-	      h_mc3->SetBinContent(i, 0);
-	      h_mc3->SetBinError(i, 0);
-	      h_mc4->SetBinContent(i, 0);
-	      h_mc4->SetBinError(i, 0);
-//	      h_mc5->SetBinContent(i, 0);
-//	      h_mc5->SetBinError(i, 0);
-	      h_mc6->SetBinContent(i, 0);
-	      h_mc6->SetBinError(i, 0);
-	      h_mc7->SetBinContent(i, 0);
-	      h_mc7->SetBinError(i, 0);
+	      h_mcD->SetBinContent(i, 0);
+	      h_mcD->SetBinError(i, 0);
 	      h_mcO->SetBinContent(i, 0);
 	      h_mcO->SetBinError(i, 0);
 	    }
@@ -823,13 +813,8 @@ if (numB==2) {
 	if (doFit==2) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
+	    h_data_fit->Add(h_mcD, -1.);
 	    h_data_fit->Add(h_mcO, -1.);
-	    h_data_fit->Add(h_mc7, -1.);
-	    h_data_fit->Add(h_mc6, -1.);
-//	    h_data_fit->Add(h_mc5, -1.);
-	    h_data_fit->Add(h_mc4, -1.);
-	    h_data_fit->Add(h_mc3, -1.);
-	    h_data_fit->Add(h_mc1t, -1.);
 	    if (bbBkg) h_data_fit->Add(h_mc1bb, -1.);
 	  }
 	  h_mc_fit0 = h_mc1;
@@ -885,14 +870,9 @@ if (numB==2) {
 	if (doFit==3) {
 	  h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
 	  if (!doBkg) {
+	    h_data_fit->Add(h_mcD, -1.);
 	    h_data_fit->Add(h_mcO, -1.);
-	    h_data_fit->Add(h_mc7, -1.);
-	    h_data_fit->Add(h_mc6, -1.);
-//	    h_data_fit->Add(h_mc5, -1.);
-	    h_data_fit->Add(h_mc4, -1.);
-	    h_data_fit->Add(h_mc3, -1.);
 	    h_data_fit->Add(h_mc2, -1.);
-	    h_data_fit->Add(h_mc1t, -1.);
 	    if (bbBkg) h_data_fit->Add(h_mc1bb, -1.);
 	  }
 	  h_mc_fit0 = h_mc1;
@@ -922,16 +902,8 @@ if (numB==2) {
 	      if (bbBkg || bbSig) h_mc1bb->SetBinError(i, 0);
 	      h_mc2->SetBinContent(i, 0);
 	      h_mc2->SetBinError(i, 0);
-	      h_mc3->SetBinContent(i, 0);
-	      h_mc3->SetBinError(i, 0);
-	      h_mc4->SetBinContent(i, 0);
-	      h_mc4->SetBinError(i, 0);
-//	      h_mc5->SetBinContent(i, 0);
-//	      h_mc5->SetBinError(i, 0);
-	      h_mc6->SetBinContent(i, 0);
-	      h_mc6->SetBinError(i, 0);
-	      h_mc7->SetBinContent(i, 0);
-	      h_mc7->SetBinError(i, 0);
+	      h_mcD->SetBinContent(i, 0);
+	      h_mcD->SetBinError(i, 0);
 	      h_mcO->SetBinContent(i, 0);
 	      h_mcO->SetBinError(i, 0);
 	    }
@@ -963,16 +935,11 @@ if (numB==2) {
           h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
           if (!doBkg) {
             h_data_fit->Add(h_mcO, -1.);
-            h_data_fit->Add(h_mc7, -1.);
-            h_data_fit->Add(h_mc6, -1.);
-//          h_data_fit->Add(h_mc5, -1.);
-            h_data_fit->Add(h_mc4, -1.);
-            h_data_fit->Add(h_mc3, -1.);
+            h_data_fit->Add(h_mcD, -1.);
             h_data_fit->Add(h_mc2, -1.);
             h_data_fit->Add(h_mc1, -1.);
             if (h_mc1b) h_data_fit->Add(h_mc1b, -1.);
             if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
-            h_data_fit->Add(h_mc1t, -1.);
           }
           h_mc_fit0 = h_mc1bb;
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
@@ -999,16 +966,8 @@ if (numB==2) {
 	      if (bbBkg || bbSig) h_mc1bb->SetBinError(i, 0);
 	      h_mc2->SetBinContent(i, 0);
 	      h_mc2->SetBinError(i, 0);
-	      h_mc3->SetBinContent(i, 0);
-	      h_mc3->SetBinError(i, 0);
-	      h_mc4->SetBinContent(i, 0);
-	      h_mc4->SetBinError(i, 0);
-//	      h_mc5->SetBinContent(i, 0);
-//	      h_mc5->SetBinError(i, 0);
-	      h_mc6->SetBinContent(i, 0);
-	      h_mc6->SetBinError(i, 0);
-	      h_mc7->SetBinContent(i, 0);
-	      h_mc7->SetBinError(i, 0);
+	      h_mcD->SetBinContent(i, 0);
+	      h_mcD->SetBinError(i, 0);
 	      h_mcO->SetBinContent(i, 0);
 	      h_mcO->SetBinError(i, 0);
 	    }
@@ -1030,14 +989,9 @@ if (numB==2) {
         if (doFit==5) {
           h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
           if (!doBkg) {
+            h_data_fit->Add(h_mcD, -1.);
             h_data_fit->Add(h_mcO, -1.);
-            h_data_fit->Add(h_mc7, -1.);
-            h_data_fit->Add(h_mc6, -1.);
-//          h_data_fit->Add(h_mc5, -1.);
-            h_data_fit->Add(h_mc4, -1.);
-            h_data_fit->Add(h_mc3, -1.);
             h_data_fit->Add(h_mc2, -1.);
-            h_data_fit->Add(h_mc1t, -1.);
           }
           h_mc_fit0 = h_mc1b;
 
@@ -1063,14 +1017,9 @@ if (numB==2) {
 
 	TH1F *ht = (TH1F*)h_mc1->Clone("ht");
 	ht->Reset();
-	if (h_mc1t) ht->Add(h_mc1t);
 	if (!doBkg) {
 	  ht->Add(h_mcO);
-	  ht->Add(h_mc7);
-	  ht->Add(h_mc6);
-//	  ht->Add(h_mc5);
-	  ht->Add(h_mc4);
-	  ht->Add(h_mc3);
+	  ht->Add(h_mcD);
 	  ht->Add(h_mc2);
           if (bbBkg) ht->Add(h_mc1bb);
 	  if (bbSig) {
@@ -1088,14 +1037,9 @@ if (numB==2) {
 	}
 
 	THStack *hs = new THStack("hs","");
-	if (h_mc1t) hs->Add(h_mc1t);
 	if (!doBkg) {
 	  hs->Add(h_mcO);
-//	  hs->Add(h_mc5);
-	  hs->Add(h_mc6);
-	  hs->Add(h_mc7);
-	  hs->Add(h_mc4);
-	  hs->Add(h_mc3);
+	  hs->Add(h_mcD);
 	  hs->Add(h_mc2);
           if (bbBkg) hs->Add(h_mc1bb);
 	  if (bbSig) {
@@ -1168,9 +1112,9 @@ if (numB==2) {
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
 
-	if (ilepton==1) leg->AddEntry(h_data,"Z(#rightarrow ee)+jets","p");
-	if (ilepton==2) leg->AddEntry(h_data,"Z(#rightarrow #mu#mu)+jets","p");
-	if (ilepton==3) leg->AddEntry(h_data,"Z(#rightarrow e#mu)+jets","p");
+	if (ilepton==1) leg->AddEntry(h_data,"Data","p");
+	if (ilepton==2) leg->AddEntry(h_data,"Data","p");
+	if (ilepton==3) leg->AddEntry(h_data,"Data","p");
 
 	if (h_mc1c && h_mc1b) {
 	  leg->AddEntry(h_mc1,"Z+udsg-jets","f");
@@ -1181,12 +1125,8 @@ if (numB==2) {
 	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
         if (bbBkg || bbSig) leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
 	if (!doBkg) {
-	  if (h_mc1t) leg->AddEntry(h_mc1t,"#tau^{+}#tau^{-}+jets","f");
 	  leg->AddEntry(h_mc2,"t#bar{t}","f");
-	  leg->AddEntry(h_mc3,"ZZ","f");
-	  leg->AddEntry(h_mc4,"WZ","f");
-	  leg->AddEntry(h_mc7,"W+jets", "f");
-	  leg->AddEntry(h_mc6,"WW","f");
+	  leg->AddEntry(h_mcD,"Dibosons","f");
 	  leg->AddEntry(h_mcO,"Others","f");
 //	  leg->AddEntry(h_mc5,"QCD","f");
 	}

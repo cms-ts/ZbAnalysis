@@ -455,15 +455,26 @@ if (numB==2) {
       TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
       h_mcO->Reset();
 
+      TH1F* h_mcD = (TH1F*)h_mc3->Clone("h_mcD");
+      h_mcD->Reset();
+
       h_mcO->Add(h_mc13);
       h_mcO->Add(h_mc12);
       h_mcO->Add(h_mc11);
       h_mcO->Add(h_mc10);
       h_mcO->Add(h_mc9);
       h_mcO->Add(h_mc8);
+      h_mcO->Add(h_mc7);
+
+      h_mcD->Add(h_mc6);
+      h_mcD->Add(h_mc4);
+      h_mcD->Add(h_mc3);
  
       TH1F* h_mcO_fit = (TH1F*)h_mc8->Clone("h_mcO_fit");
       h_mcO_fit->Reset();
+
+      TH1F* h_mcD_fit = (TH1F*)h_mc3->Clone("h_mcD_fit");
+      h_mcD_fit->Reset();
 
       h_mcO_fit->Add(h_mc13_fit);
       h_mcO_fit->Add(h_mc12_fit);
@@ -471,21 +482,18 @@ if (numB==2) {
       h_mcO_fit->Add(h_mc10_fit);
       h_mcO_fit->Add(h_mc9_fit);
       h_mcO_fit->Add(h_mc8_fit);
- 
+      h_mcO_fit->Add(h_mc7_fit);
+
+      h_mcD_fit->Add(h_mc6_fit);
+      h_mcD_fit->Add(h_mc4_fit);
+      h_mcD_fit->Add(h_mc3_fit);
+
       h_data->Add(h_mcO, -1.);
-      h_data->Add(h_mc7, -1.);
-      h_data->Add(h_mc6, -1.);
-//    h_data->Add(h_mc5, -1.);
-      h_data->Add(h_mc4, -1.);
-      h_data->Add(h_mc3, -1.);
+      h_data->Add(h_mcD, -1.);
       h_data->Add(h_mc1, -1.);
 
       h_data_fit->Add(h_mcO_fit, -1.);
-      h_data_fit->Add(h_mc7_fit, -1.);
-      h_data_fit->Add(h_mc6_fit, -1.);
-//    h_data_fit->Add(h_mc5_fit, -1.);
-      h_data_fit->Add(h_mc4_fit, -1.);
-      h_data_fit->Add(h_mc3_fit, -1.);
+      h_data_fit->Add(h_mcD_fit, -1.);
       h_data_fit->Add(h_mc1_fit, -1.);
 
       for (int i=0; i<=h_data->GetNbinsX()+1; i++) {

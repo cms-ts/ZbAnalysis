@@ -587,19 +587,36 @@ if (bb==1 && numB==2) bbSig = true;
         TH1F* h_mcO_b = (TH1F*)h_mc8_b->Clone("h_mcO_b");
 	h_mcO_b->Reset();
 
+        TH1F* h_mcD = (TH1F*)h_mc3->Clone("h_mcD");
+	h_mcD->Reset();
+        TH1F* h_mcD_b = (TH1F*)h_mc3_b->Clone("h_mcD_b");
+	h_mcD_b->Reset();
+
         h_mcO->Add(h_mc13);
         h_mcO->Add(h_mc12);
         h_mcO->Add(h_mc11);
         h_mcO->Add(h_mc10);
         h_mcO->Add(h_mc9);
         h_mcO->Add(h_mc8);
-        
+        h_mcO->Add(h_mc7);
+        h_mcO->Add(h_mc1t);
+       
+        h_mcD->Add(h_mc6);
+        h_mcD->Add(h_mc4);
+        h_mcD->Add(h_mc3);
+ 
         h_mcO_b->Add(h_mc13_b);
         h_mcO_b->Add(h_mc12_b);
         h_mcO_b->Add(h_mc11_b);
         h_mcO_b->Add(h_mc10_b);
         h_mcO_b->Add(h_mc9_b);
         h_mcO_b->Add(h_mc8_b);
+        h_mcO_b->Add(h_mc7_b);
+        h_mcO_b->Add(h_mc1t_b);
+
+        h_mcD_b->Add(h_mc6_b);
+        h_mcD_b->Add(h_mc4_b);
+        h_mcD_b->Add(h_mc3_b);
 
 	if (useFitResults) {
 	  if (irun==5) {
@@ -623,16 +640,8 @@ if (bb==1 && numB==2) bbSig = true;
 	    if (bbBkg)  h_mc1bb->SetBinError(i, 1.1*h_mc1bb->GetBinError(i));
 	    h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
 	    h_mc2_b->SetBinError(i, 1.1*h_mc2_b->GetBinError(i));
-	    h_mc3->SetBinError(i, 1.1*h_mc3->GetBinError(i));
-	    h_mc3_b->SetBinError(i, 1.1*h_mc3_b->GetBinError(i));
-	    h_mc4->SetBinError(i, 1.1*h_mc4->GetBinError(i));
-	    h_mc4_b->SetBinError(i, 1.1*h_mc4_b->GetBinError(i));
-//	    h_mc5->SetBinError(i, 1.1*h_mc5->GetBinError(i));
-//	    h_mc5_b->SetBinError(i, 1.1*h_mc5_b->GetBinError(i));
-	    h_mc6->SetBinError(i, 1.1*h_mc6->GetBinError(i));
-	    h_mc6_b->SetBinError(i, 1.1*h_mc6_b->GetBinError(i));
-	    h_mc7->SetBinError(i, 1.1*h_mc7->GetBinError(i));
-	    h_mc7_b->SetBinError(i, 1.1*h_mc7_b->GetBinError(i));
+            h_mcD->SetBinError(i, 1.1*h_mcD->GetBinError(i));
+            h_mcD_b->SetBinError(i, 1.1*h_mcD_b->GetBinError(i));
             h_mcO->SetBinError(i, 1.1*h_mcO->GetBinError(i));
             h_mcO_b->SetBinError(i, 1.1*h_mcO_b->GetBinError(i));
 	  }
@@ -640,22 +649,12 @@ if (bb==1 && numB==2) bbSig = true;
 
 	if (unfold==0) {
 	  h_data->Add(h_mcO, -1.);
-	  h_data->Add(h_mc7, -1.);
-	  h_data->Add(h_mc6, -1.);
-//	  h_data->Add(h_mc5, -1.);
-	  h_data->Add(h_mc4, -1.);
-	  h_data->Add(h_mc3, -1.);
+	  h_data->Add(h_mcD, -1.);
 	  h_data->Add(h_mc2, -1.);
-	  h_data->Add(h_mc1t, -1.);
 
           h_data_b->Add(h_mcO_b, -1.);
-	  h_data_b->Add(h_mc7_b, -1.);
-	  h_data_b->Add(h_mc6_b, -1.);
-//	  h_data_b->Add(h_mc5_b, -1.);
-	  h_data_b->Add(h_mc4_b, -1.);
-	  h_data_b->Add(h_mc3_b, -1.);
+          h_data_b->Add(h_mcD_b, -1.);
 	  h_data_b->Add(h_mc2_b, -1.);
-	  h_data_b->Add(h_mc1t_b, -1.);
 	}
 
 	TH1F *h_mc1uds_b = (TH1F*)h_mc1_b->Clone("h_mc1uds_b");
