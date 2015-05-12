@@ -7,9 +7,10 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp3(int irun=0, string title="", int plot=0, int ilepton=1, int numB=0, int bb=0) {
 
-int useDY = 0; // use MadGraph DY
-//int useDY = 1; // use Sherpa DY
-//int useDY = 2; // use Powheg DY
+//int useDY = 0; // use MadGraph DY for numB=0
+int useDY = 1; // use weighted MadGraph DY for numB=0
+//int useDY = 2; // use Sherpa DY
+//int useDY = 3; // use Powheg DY
 
 string subdir="0";
 string postfix="";
@@ -121,11 +122,15 @@ if (bb==1 && numB==2) bbSig = true;
 
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	if (useDY==1) {
+	if (useDY==1 && numB==0) {
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.c3.root").c_str());
+	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.c3.root").c_str());
+	}
+	if (useDY==2) {
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	}
-	if (useDY==2) {
+	if (useDY==3) {
 	  if (ilepton==1) {
 	    mc1 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	    mc2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
@@ -258,8 +263,8 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 
 	c2->Update();
 
-	if (useDY==1) subdir = subdir + "_sherpa";
-	if (useDY==2) subdir = subdir + "_powheg";
+	if (useDY==2) subdir = subdir + "_sherpa";
+	if (useDY==3) subdir = subdir + "_powheg";
 
 	if (plot) {
 	  ofstream out;
