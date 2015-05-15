@@ -896,6 +896,29 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     }
   }
 
+  if (!ist) {
+    if (lepton_ == "electron") {
+      float N1b = 31313.60;
+      float N2b = 2561.60;
+      if (Nb == 1) {
+        MyWeight = MyWeight * 0.9309 * (N1b+N2b)/(0.9309*N1b+1.1561*N2b);
+      }
+      if (Nb > 1) {
+        MyWeight = MyWeight * 1.1561 * (N1b+N2b)/(0.9309*N1b+1.1561*N2b);
+      }
+    }
+    if (lepton_ == "muon") {
+      float N1b = 31260.50;
+      float N2b = 2485.13;
+      if (Nb == 1) {
+        MyWeight = MyWeight * 0.9074 * (N1b+N2b)/(0.9074*N1b+1.1628*N2b);
+      }
+      if (Nb > 1) {
+        MyWeight = MyWeight * 1.1628 * (N1b+N2b)/(0.9074*N1b+1.1628*N2b);
+      }
+    }
+  }
+
   ee_event = ee_event && (lepton_ == "electron") && !ist;
   mm_event = mm_event && (lepton_ == "muon") && !ist;
 

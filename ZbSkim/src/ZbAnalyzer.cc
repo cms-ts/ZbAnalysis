@@ -2526,7 +2526,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
   if (Nb < 2 && numB_ == 2) {
      b_selection = false;
   }
- 
+
   double delta_phi_2b = 999;
   double delta_eta_2b = 999;
   double Deta_bb = 999;
@@ -2768,6 +2768,48 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
     A_emb = (DR_emb_max - DR_emb_min)/(DR_emb_min + DR_emb_max);
   }    
 
+  // ++++++++ SPECIAL WEIGHTS
+
+  if (Nb > 0) {
+    if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 5) {
+      if (lepton_ == "electron") {
+	float N1b = 31313.60;
+	float N2b = 2561.60;
+	if (Nb == 1) {
+	  if (findBjet(vect_jets, vect_bjets)) {
+	    MyWeight = MyWeight * 1.1561 * (N1b+N2b)/(0.9309*N1b+1.1561*N2b);
+	  } else {
+	    MyWeight = MyWeight * 0.9309 * (N1b+N2b)/(0.9309*N1b+1.1561*N2b);
+	  }
+	}
+	if (Nb > 1) {
+	  if (fabs(vect_bjets[1].partonFlavour()) == 5) {
+	    MyWeight = MyWeight * 1.1561 * (N1b+N2b)/(0.9309*N1b+1.1561*N2b);
+	  } else {
+	    MyWeight = MyWeight * 0.9309 * (N1b+N2b)/(0.9309*N1b+1.1561*N2b);
+	  }
+	}
+      }
+      if (lepton_ == "muon") {
+	float N1b = 31260.50;
+	float N2b = 2485.13;
+	if (Nb == 1) {
+	  if (findBjet(vect_jets, vect_bjets)) {
+	    MyWeight = MyWeight * 1.1628 * (N1b+N2b)/(0.9074*N1b+1.1628*N2b);
+	  } else {
+	    MyWeight = MyWeight * 0.9074 * (N1b+N2b)/(0.9074*N1b+1.1628*N2b);
+	  }
+	}
+	if (Nb > 1) {
+	  if (fabs(vect_bjets[1].partonFlavour()) == 5) {
+	    MyWeight = MyWeight * 1.1628 * (N1b+N2b)/(0.9074*N1b+1.1628*N2b);
+	  } else {
+	    MyWeight = MyWeight * 0.9074 * (N1b+N2b)/(0.9074*N1b+1.1628*N2b);
+	  }
+	}
+      }
+    }
+  }
 
   // ++++++++ MET PLOTS
 
