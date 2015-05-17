@@ -2508,12 +2508,12 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       
       if (antibtag_==0 && (discrCSV > 0.898 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5))) { /* tight ID */
 	++Nb;
-	cout << "Nb" << Nb << endl;
+	//cout << "Nb" << Nb << endl;
         vect_bjets.push_back (jetNew);
       }
       if (antibtag_==1 && (discrCSV < 0.679 || (usePartonFlavour_ && isMC && fabs(vect_jets[0].partonFlavour()) == 5))) { /* anti-medium ID */
 	++Nb;
-	cout << "Nlight" << Nb << endl;
+	//cout << "Nlight" << Nb << endl;
         vect_bjets.push_back (jetNew);
       }
     }
@@ -2770,6 +2770,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 
   // ++++++++ SPECIAL WEIGHTS
 
+#if 0
   if (Nb > 0) {
     if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 5) {
       if (lepton_ == "electron") {
@@ -2810,6 +2811,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       }
     }
   }
+#endif
 
   // ++++++++ MET PLOTS
 
