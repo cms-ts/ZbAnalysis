@@ -1016,6 +1016,7 @@ if (numB==2) {
           h_M_tot->SetMarkerSize(0.9);
         }
 	h_M_tot->Draw("E1PX0");
+	h_M_tot->Draw("E0PX0SAME");
         if (isratio==0) {
           h_M_stat->SetMarkerStyle(24);
           h_M_stat->SetMarkerSize(0.7);
@@ -1026,6 +1027,7 @@ if (numB==2) {
         }
 
 	h_M_stat->Draw("E1PX0SAME");
+	h_M_stat->Draw("E0PX0SAME");
 
 	if (isratio==0) {
 	  TH1F *h_M2_tot= (TH1F*)h_mcg->Clone();
@@ -1057,8 +1059,10 @@ if (numB==2) {
 
 	  g_M2_tot->SetMarkerStyle(20);
 	  g_M2_tot->Draw("E1PX0SAME");
+	  g_M2_tot->Draw("E0PX0SAME");
 	  g_M2_stat->SetMarkerStyle(20);
 	  g_M2_stat->Draw("E1PX0SAME");
+	  g_M2_stat->Draw("E0PX0SAME");
 	}
 
 	TLatex *t2 = new TLatex();
@@ -1127,11 +1131,13 @@ if (numB==2) {
         }
 	if (useSherpa) {
 	  h_S_tot->Draw("E1PX0");
+	  h_S_tot->Draw("E0PX0SAME");
 	} else {
 	  for (int i=0;i<=h_S_tot->GetNbinsX()+1;i++) {
 	    h_S_tot->SetBinContent(i, -999.);
 	  }
 	  h_S_tot->Draw("E1PX0");
+	  h_S_tot->Draw("E0PX0SAME");
 	}
         if (isratio==0) {
           h_S_stat->SetMarkerStyle(24);
@@ -1142,6 +1148,7 @@ if (numB==2) {
           h_S_stat->SetMarkerSize(0.9);
         }
 	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
+	if (useSherpa) h_S_stat->Draw("E0PX0SAME");
 
 	if (isratio==0) {
 	  TH1F *h_S2_tot= (TH1F*)h_mcg1->Clone();
@@ -1173,8 +1180,10 @@ if (numB==2) {
 
 	  g_S2_tot->SetMarkerStyle(20);
 	  if (useSherpa) g_S2_tot->Draw("E1PX0SAME");
+	  if (useSherpa) g_S2_tot->Draw("E0PX0SAME");
 	  g_S2_stat->SetMarkerStyle(20);
 	  if (useSherpa) g_S2_stat->Draw("E1PX0SAME");
+	  if (useSherpa) g_S2_stat->Draw("E0PX0SAME");
 	}
 
 	TLatex *t3 = new TLatex();
@@ -1244,6 +1253,7 @@ if (numB==2) {
           h_P_tot->SetMarkerSize(0.9);
         }
 	h_P_tot->Draw("E1PX0");
+	h_P_tot->Draw("E0PX0SAME");
         if (isratio==0) {
           h_P_stat->SetMarkerStyle(24);
           h_P_stat->SetMarkerSize(0.7);
@@ -1253,6 +1263,7 @@ if (numB==2) {
           h_P_stat->SetMarkerSize(0.9);
         }
 	h_P_stat->Draw("E1PX0SAME");
+	h_P_stat->Draw("E0PX0SAME");
 
 	if (isratio==0) {
 	  TH1F *h_P2_tot= (TH1F*)h_mcg2->Clone();
@@ -1284,8 +1295,10 @@ if (numB==2) {
 
 	  g_P2_tot->SetMarkerStyle(20);
 	  g_P2_tot->Draw("E1PX0SAME");
+	  g_P2_tot->Draw("E0PX0SAME");
 	  g_P2_stat->SetMarkerStyle(20);
 	  g_P2_stat->Draw("E1PX0SAME");
+	  g_P2_stat->Draw("E0PX0SAME");
 	}
 
 	TLatex *t4 = new TLatex();
@@ -1369,7 +1382,9 @@ if (numB==2) {
           }
 	}
 	g_M3_stat->Draw("E1P");
+	g_M3_stat->Draw("E0PSAME");
 	g_M3_tot->Draw("E1PSAME");
+	g_M3_tot->Draw("E0PSAME");
 
 	TLine *OLine5 = new TLine(h_P_tot->GetXaxis()->GetXmin(),0.93,h_P_tot->GetXaxis()->GetXmax(),0.93);
 	OLine5->SetLineColor(kOrange+7);
