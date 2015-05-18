@@ -1049,7 +1049,8 @@ if (numB==2) {
 	  TGraphErrors *g_M2_tot = new TGraphErrors(h_M2_tot);
 	  TGraphErrors *g_M2_stat = new TGraphErrors(h_M2_stat);
 
-	  float dx = 0.1*(g_M2_tot->GetXaxis()->GetXmax()-g_M2_tot->GetXaxis()->GetXmin())/g_M2_tot->GetN();
+	  float dx = 0.0;
+	  if (drawInclusive) dx = 0.1*(g_M2_tot->GetXaxis()->GetXmax()-g_M2_tot->GetXaxis()->GetXmin())/g_M2_tot->GetN();
 	  for (int i=0; i<g_M2_tot->GetN(); i++) {
 	    g_M2_stat->SetPoint(i, g_M2_stat->GetX()[i]-dx, g_M2_stat->GetY()[i]);
 	    g_M2_stat->SetPointError(i, 0, g_M2_stat->GetEY()[i]);
@@ -1181,7 +1182,8 @@ if (numB==2) {
 	  TGraphErrors *g_S2_tot = new TGraphErrors(h_S2_tot);
 	  TGraphErrors *g_S2_stat = new TGraphErrors(h_S2_stat);
 
-	  float dx = 0.1*(g_S2_tot->GetXaxis()->GetXmax()-g_S2_tot->GetXaxis()->GetXmin())/g_S2_tot->GetN();
+	  float dx = 0.0;
+	  if (drawInclusive) dx = 0.1*(g_S2_tot->GetXaxis()->GetXmax()-g_S2_tot->GetXaxis()->GetXmin())/g_S2_tot->GetN();
 	  for (int i=0; i<g_S2_tot->GetN(); i++) {
 	    g_S2_stat->SetPoint(i, g_S2_stat->GetX()[i]-dx, g_S2_stat->GetY()[i]);
 	    g_S2_stat->SetPointError(i, 0, g_S2_stat->GetEY()[i]);
@@ -1306,7 +1308,8 @@ if (numB==2) {
 	  TGraphErrors *g_P2_tot = new TGraphErrors(h_P2_tot);
 	  TGraphErrors *g_P2_stat = new TGraphErrors(h_P2_stat);
 
-	  float dx = 0.1*(g_P2_tot->GetXaxis()->GetXmax()-g_P2_tot->GetXaxis()->GetXmin())/g_P2_tot->GetN();
+	  float dx = 0.0;
+	  if (drawInclusive) dx = 0.1*(g_P2_tot->GetXaxis()->GetXmax()-g_P2_tot->GetXaxis()->GetXmin())/g_P2_tot->GetN();
 	  for (int i=0; i<g_P2_tot->GetN(); i++) {
 	    g_P2_stat->SetPoint(i, g_P2_stat->GetX()[i]-dx, g_P2_stat->GetY()[i]);
 	    g_P2_stat->SetPointError(i, 0, g_P2_stat->GetEY()[i]);
@@ -1364,7 +1367,8 @@ if (numB==2) {
 	TGraphErrors *g_M3_tot = new TGraphErrors(h_M3_tot);
 	TGraphErrors *g_M3_stat = new TGraphErrors(h_M3_stat);
 
-	float dx = 0.1*(g_M3_tot->GetXaxis()->GetXmax()-g_M3_tot->GetXaxis()->GetXmin())/g_M3_tot->GetN();
+	float dx = 0.0;
+	if (drawInclusive) dx = 0.1*(g_M3_tot->GetXaxis()->GetXmax()-g_M3_tot->GetXaxis()->GetXmin())/g_M3_tot->GetN();
 	for (int i=0; i<g_M3_tot->GetN(); i++) {
 	  g_M3_stat->SetPoint(i, g_M3_stat->GetX()[i]+dx, g_M3_stat->GetY()[i]);
 	  g_M3_stat->SetPointError(i, 0, g_M3_stat->GetEY()[i]);
