@@ -1368,7 +1368,6 @@ if (numB==2) {
 	TGraphErrors *g_M3_stat = new TGraphErrors(h_M3_stat);
 
 	float dx = 0.0;
-	if (drawInclusive) dx = 0.1*(g_M3_tot->GetXaxis()->GetXmax()-g_M3_tot->GetXaxis()->GetXmin())/g_M3_tot->GetN();
 	for (int i=0; i<g_M3_tot->GetN(); i++) {
 	  g_M3_stat->SetPoint(i, g_M3_stat->GetX()[i]+dx, g_M3_stat->GetY()[i]);
 	  g_M3_stat->SetPointError(i, 0, g_M3_stat->GetEY()[i]);
