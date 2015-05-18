@@ -1058,11 +1058,11 @@ if (numB==2) {
 	  g_M2_stat->SetMarkerSize(0.7);
 
 	  g_M2_tot->SetMarkerStyle(20);
-	  g_M2_tot->Draw("E1PX0SAME");
-	  g_M2_tot->Draw("E0PX0SAME");
+	  if (drawInclusive) g_M2_tot->Draw("E1PX0SAME");
+	  if (drawInclusive) g_M2_tot->Draw("E0PX0SAME");
 	  g_M2_stat->SetMarkerStyle(20);
-	  g_M2_stat->Draw("E1PX0SAME");
-	  g_M2_stat->Draw("E0PX0SAME");
+	  if (drawInclusive) g_M2_stat->Draw("E1PX0SAME");
+	  if (drawInclusive) g_M2_stat->Draw("E0PX0SAME");
 	}
 
 	TLatex *t2 = new TLatex();
@@ -1294,11 +1294,11 @@ if (numB==2) {
 	  g_P2_stat->SetMarkerSize(0.7);
 
 	  g_P2_tot->SetMarkerStyle(20);
-	  g_P2_tot->Draw("E1PX0SAME");
-	  g_P2_tot->Draw("E0PX0SAME");
+	  if (drawInclusive) g_P2_tot->Draw("E1PX0SAME");
+	  if (drawInclusive) g_P2_tot->Draw("E0PX0SAME");
 	  g_P2_stat->SetMarkerStyle(20);
-	  g_P2_stat->Draw("E1PX0SAME");
-	  g_P2_stat->Draw("E0PX0SAME");
+	  if (drawInclusive) g_P2_stat->Draw("E1PX0SAME");
+	  if (drawInclusive) g_P2_stat->Draw("E0PX0SAME");
 	}
 
 	TLatex *t4 = new TLatex();
