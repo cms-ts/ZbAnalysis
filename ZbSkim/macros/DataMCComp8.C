@@ -1538,11 +1538,11 @@ if (numB==2) {
 	  g_S2_stat->SetMarkerSize(0.7);
 
 	  g_S2_tot->SetMarkerStyle(20);
-	  if (useSherpa) g_S2_tot->Draw("E1PX0SAME");
-	  if (useSherpa) g_S2_tot->Draw("E0PX0SAME");
+	  if (useSherpa && drawInclusive) g_S2_tot->Draw("E1PX0SAME");
+	  if (useSherpa && drawInclusive) g_S2_tot->Draw("E0PX0SAME");
 	  g_S2_stat->SetMarkerStyle(20);
-	  if (useSherpa) g_S2_stat->Draw("E1PX0SAME");
-	  if (useSherpa) g_S2_stat->Draw("E0PX0SAME");
+	  if (useSherpa && drawInclusive) g_S2_stat->Draw("E1PX0SAME");
+	  if (useSherpa && drawInclusive) g_S2_stat->Draw("E0PX0SAME");
 	}
 
 	TLatex *t3 = new TLatex();
