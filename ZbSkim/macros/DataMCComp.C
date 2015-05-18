@@ -1268,7 +1268,7 @@ if (numB==2) {
 	h_ratio->GetYaxis()->SetTitleOffset(0.4);
 	h_ratio->Divide(ht);
 	h_ratio->SetMarkerStyle(20);
-	h_ratio->Draw("EPX0");
+	h_ratio->Draw("E0PX0");
 
         TH1F *h_ratio_pull =  new TH1F ("h_pull", "h_pull", 50, 0, 6);
         TH1F *h_ratio_pull2 = new TH1F ("h_pull2", "h_pull2", 50, 0, 6);
