@@ -1150,6 +1150,7 @@ if (numB==2) {
 	} else {
 	  for (int i=0;i<=h_S_tot->GetNbinsX()+1;i++) {
 	    h_S_tot->SetBinContent(i, -999.);
+	    h_S_tot->SetBinError(i, 0.);
 	  }
 	  h_S_tot->Draw("E1PX0");
 	  h_S_tot->Draw("E0PX0SAME");
