@@ -1341,6 +1341,11 @@ if (numB==2) {
 	h_M_tot->Divide(h_data_b_tot);
 	h_M_stat->Divide(h_data_b_stat);
 
+	for (int i=0;i<=h_M_tot->GetNbinsX()+1;i++) {
+	  if (h_M_tot->GetBinContent(i)<=0) h_M_tot->SetBinContent(i,999.);
+	  if (h_M_stat->GetBinContent(i)<=0) h_M_stat->SetBinContent(i,999.);
+	}
+
 	h_M_tot->SetTitle("");
 	h_M_tot->SetStats(0);
 	h_M_tot->GetXaxis()->SetTitleOffset(0.9);
@@ -1394,6 +1399,11 @@ if (numB==2) {
 
 	  h_M2_tot->Divide(h_data_tot);
 	  h_M2_stat->Divide(h_data_stat);
+
+	  for (int i=0;i<=h_M2_tot->GetNbinsX()+1;i++) {
+	    if (h_M2_tot->GetBinContent(i)<=0) h_M2_tot->SetBinContent(i,999.);
+	    if (h_M2_stat->GetBinContent(i)<=0) h_M2_stat->SetBinContent(i,999.);
+	  }
 
 	  TGraphErrors *g_M2_tot = new TGraphErrors(h_M2_tot);
 	  TGraphErrors *g_M2_stat = new TGraphErrors(h_M2_stat);
@@ -1453,6 +1463,11 @@ if (numB==2) {
 
 	h_S_tot->Divide(h_data_b_tot);
 	h_S_stat->Divide(h_data_b_stat);
+
+	for (int i=0;i<=h_S_tot->GetNbinsX()+1;i++) {
+	  if (h_S_tot->GetBinContent(i)<=0) h_S_tot->SetBinContent(i,999.);
+	  if (h_S_stat->GetBinContent(i)<=0) h_S_stat->SetBinContent(i,999.);
+	}
 
 	h_S_tot->SetTitle("");
 	h_S_tot->SetStats(0);
@@ -1516,6 +1531,11 @@ if (numB==2) {
 	  h_S2_tot->Divide(h_data_tot);
 	  h_S2_stat->Divide(h_data_stat);
 
+	  for (int i=0;i<=h_S2_tot->GetNbinsX()+1;i++) {
+	    if (h_S2_tot->GetBinContent(i)<=0) h_S2_tot->SetBinContent(i,999.);
+	    if (h_S2_stat->GetBinContent(i)<=0) h_S2_stat->SetBinContent(i,999.);
+	  }
+
 	  TGraphErrors *g_S2_tot = new TGraphErrors(h_S2_tot);
 	  TGraphErrors *g_S2_stat = new TGraphErrors(h_S2_stat);
 
@@ -1577,6 +1597,11 @@ if (numB==2) {
 	h_P_tot->Divide(h_data_b_tot);
 	h_P_stat->Divide(h_data_b_stat);
 
+	for (int i=0;i<=h_P_tot->GetNbinsX()+1;i++) {
+	  if (h_P_tot->GetBinContent(i)<=0) h_P_tot->SetBinContent(i,999.);
+	  if (h_P_stat->GetBinContent(i)<=0) h_P_stat->SetBinContent(i,999.);
+	}
+
 	h_P_tot->SetTitle("");
 	h_P_tot->SetStats(0);
 	h_P_tot->GetXaxis()->SetTitleOffset(0.9);
@@ -1631,6 +1656,11 @@ if (numB==2) {
 	  h_P2_tot->Divide(h_data_tot);
 	  h_P2_stat->Divide(h_data_stat);
 
+	  for (int i=0;i<=h_P2_tot->GetNbinsX()+1;i++) {
+	    if (h_P2_tot->GetBinContent(i)<=0) h_P2_tot->SetBinContent(i,999.);
+	    if (h_P2_stat->GetBinContent(i)<=0) h_P2_stat->SetBinContent(i,999.);
+	  }
+
 	  TGraphErrors *g_P2_tot = new TGraphErrors(h_P2_tot);
 	  TGraphErrors *g_P2_stat = new TGraphErrors(h_P2_stat);
 
@@ -1683,6 +1713,11 @@ if (numB==2) {
 
 	h_M3_tot->Divide(h_data_b_tot);
 	h_M3_stat->Divide(h_data_b_stat);
+
+	for (int i=0;i<=h_M3_tot->GetNbinsX()+1;i++) {
+	  if (h_M3_tot->GetBinContent(i)<=0) h_M3_tot->SetBinContent(i,999.);
+	  if (h_M3_stat->GetBinContent(i)<=0) h_M3_stat->SetBinContent(i,999.);
+	}
 
 	TGraphErrors *g_M3_tot = new TGraphErrors(h_M3_tot);
 	TGraphErrors *g_M3_stat = new TGraphErrors(h_M3_stat);
