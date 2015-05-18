@@ -617,7 +617,7 @@ if (numB==2) {
         h_ratio->SetMarkerStyle(20);
         h_ratio->SetMarkerColor(kBlack);
 
-        h_ratio->Draw("EPX");
+        h_ratio->Draw("E0PX");
 
         TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
         OLine->SetLineColor(kGreen);
