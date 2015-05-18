@@ -1107,6 +1107,7 @@ if (bb==1 && numB==2) bbSig = true;
 
 	h_M->SetMarkerStyle(24);
 	h_M->Draw("EPX0");
+	h_M->Draw("E0PX0SAME");
 
 	if (isratio==0) {
 	  TH1F *h_M2= (TH1F*)h_data->Clone();
@@ -1121,6 +1122,7 @@ if (bb==1 && numB==2) bbSig = true;
 
 	  g_M2->SetMarkerStyle(20);
 	  if (drawInclusive) g_M2->Draw("EP0SAME");
+	  if (drawInclusive) g_M2->Draw("E0P0SAME");
 	}
 
 	TLatex *t2 = new TLatex();
@@ -1164,6 +1166,7 @@ if (bb==1 && numB==2) bbSig = true;
 
 	h_S->SetMarkerStyle(24);
 	h_S->Draw("EPX0");
+	h_S->Draw("E0PX0SAME");
 
 	if (isratio==0) {
 	  TH1F *h_S2= (TH1F*)h_data->Clone();
@@ -1179,6 +1182,7 @@ if (bb==1 && numB==2) bbSig = true;
 
 	  g_S2->SetMarkerStyle(20);
 	  if (drawInclusive) g_S2->Draw("EP0SAME");
+	  if (drawInclusive) g_S2->Draw("E0P0SAME");
 	}
 
 	TLatex *t3 = new TLatex();
@@ -1222,6 +1226,7 @@ if (bb==1 && numB==2) bbSig = true;
 
 	h_P->SetMarkerStyle(24);
 	h_P->Draw("EPX0");
+	h_P->Draw("E0PX0SAME");
 
 	if (isratio==0) {
 	  TH1F *h_P2= (TH1F*)h_data->Clone();
@@ -1237,6 +1242,7 @@ if (bb==1 && numB==2) bbSig = true;
 
 	  g_P2->SetMarkerStyle(20);
 	  if (drawInclusive) g_P2->Draw("EP0SAME");
+	  if (drawInclusive) g_P2->Draw("E0P0SAME");
 	}
 
 	TLatex *t4 = new TLatex();
