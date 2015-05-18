@@ -410,26 +410,24 @@ if (numB==2) {
 	if (ilepton==3) mc13->cd(("demoEleMuo"+postfix).c_str());
 	TH1F* h_mc13 = (TH1F*)gDirectory->Get(title.c_str());
 
-	if (numB!=0) {
-	  h_data = fixrange(h_data);
-	  h_mc1 = fixrange(h_mc1);
-	  if (h_mc1b) h_mc1b = fixrange(h_mc1b);
-	  if (h_mc1c) h_mc1c = fixrange(h_mc1c);
-	  if (h_mc1t) h_mc1t = fixrange(h_mc1t);
-	  if (bbBkg || bbSig) h_mc1bb = fixrange(h_mc1bb);
-	  h_mc2 = fixrange(h_mc2);
-	  h_mc3 = fixrange(h_mc3);
-	  h_mc4 = fixrange(h_mc4);
-//	  h_mc5 = fixrange(h_mc5);
-	  h_mc6 = fixrange(h_mc6);
-	  h_mc7 = fixrange(h_mc7);
-	  h_mc8 = fixrange(h_mc8);
-	  h_mc9 = fixrange(h_mc9);
-	  h_mc10 = fixrange(h_mc10);
-	  h_mc11 = fixrange(h_mc11);
-	  h_mc12 = fixrange(h_mc12);
-	  h_mc13 = fixrange(h_mc13);
-	}
+	h_data = fixrange(h_data);
+	h_mc1 = fixrange(h_mc1);
+	if (h_mc1b) h_mc1b = fixrange(h_mc1b);
+	if (h_mc1c) h_mc1c = fixrange(h_mc1c);
+	if (h_mc1t) h_mc1t = fixrange(h_mc1t);
+	if (bbBkg || bbSig) h_mc1bb = fixrange(h_mc1bb);
+	h_mc2 = fixrange(h_mc2);
+	h_mc3 = fixrange(h_mc3);
+	h_mc4 = fixrange(h_mc4);
+//	h_mc5 = fixrange(h_mc5);
+	h_mc6 = fixrange(h_mc6);
+	h_mc7 = fixrange(h_mc7);
+	h_mc8 = fixrange(h_mc8);
+	h_mc9 = fixrange(h_mc9);
+	h_mc10 = fixrange(h_mc10);
+	h_mc11 = fixrange(h_mc11);
+	h_mc12 = fixrange(h_mc12);
+	h_mc13 = fixrange(h_mc13);
 
 	h_data -> Sumw2();
 
