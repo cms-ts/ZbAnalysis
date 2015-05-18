@@ -1376,7 +1376,7 @@ if (numB==2) {
           h_M_tot->SetMarkerSize(0.9);
         }
 	h_M_tot->Draw("E1PX0");
-	h_M_tot->Draw("E0PX0");
+	h_M_tot->Draw("E0PX0SAME");
         if (isratio==0) {
           h_M_stat->SetMarkerStyle(24);
           h_M_stat->SetMarkerSize(0.7);
