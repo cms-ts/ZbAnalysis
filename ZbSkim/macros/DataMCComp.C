@@ -470,6 +470,13 @@ if (numB==2) {
 	h_mc7 -> SetFillColor(kGray);
 	//h_mc7 -> SetFillStyle(3004);
 
+	h_mc8->Sumw2();
+	h_mc9->Sumw2();
+	h_mc10->Sumw2();
+	h_mc11->Sumw2();
+	h_mc12->Sumw2();
+	h_mc13->Sumw2();
+
 	if (irun==10) {
 	  norm1 = norm1 + 0.1*enorm1;
 	  norm2 = norm2 + 0.1*enorm2;
@@ -523,13 +530,6 @@ if (numB==2) {
         h_mcD->Add(h_mc6);
         h_mcD->Add(h_mc4);
         h_mcD->Add(h_mc3);
-
-	h_mc13->Sumw2();
-	h_mc12->Sumw2();
-	h_mc11->Sumw2();
-	h_mc10->Sumw2();
-	h_mc9->Sumw2();
-	h_mc8->Sumw2();
 
         h_mcO -> SetLineColor(kBlack);
         h_mcO -> SetFillColor(kOrange+1);
