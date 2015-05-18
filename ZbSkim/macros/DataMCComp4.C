@@ -695,7 +695,7 @@ if (numB==2) {
           h_ratio->SetMarkerStyle(20);
         }
         h_ratio->SetMarkerSize(0.7);
-        h_ratio->Draw("EPX0");
+        h_ratio->Draw("E0PX0");
         if (imode<=3) h_ratio->Draw("EP0SAME");
 
         TLine* OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
