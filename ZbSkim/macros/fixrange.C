@@ -9,13 +9,13 @@ TH1F* fixrange(TH1F* old) {
 
   if (name.find("Ht")!=string::npos) {
     x1 = 30.;
-    x2 = 250.;
+    x2 = 500.;
   } else if (name.find("jet_pt")!=string::npos) {
     x1 = 30.;
-    x2 = 200.;
+    x2 = 300.;
   } else if (name.find("pt_Z")!=string::npos) {
     x1 = 0.;
-    x2 = 200.;
+    x2 = 300.;
   } else {
     x1 = old->GetXaxis()->GetBinCenter(1);
     x2 = old->GetXaxis()->GetBinCenter(old->GetNbinsX());
@@ -58,13 +58,13 @@ TH2F* fixrange(TH2F* old) {
 
   if (name.find("Ht")!=string::npos) {
     x1 = 30.;
-    x2 = 250.;
+    x2 = 500.;
   } else if (name.find("jet_pt")!=string::npos) {
     x1 = 30.;
-    x2 = 200.;
+    x2 = 300.;
   } else if (name.find("pt_Z")!=string::npos) {
     x1 = 0.;
-    x2 = 200.;
+    x2 = 300.;
   } else {
     x1 = old->GetXaxis()->GetBinCenter(1);
     x2 = old->GetXaxis()->GetBinCenter(old->GetNbinsX());
