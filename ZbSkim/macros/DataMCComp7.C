@@ -1416,10 +1416,10 @@ if (numB==2) {
             g_M3_tot->SetMarkerSize(0.9);
           }
 	}
-	g_M3_stat->Draw("E1P");
-	g_M3_stat->Draw("E0PSAME");
-	g_M3_tot->Draw("E1PSAME");
+	g_M3_tot->Draw("E1P");
 	g_M3_tot->Draw("E0PSAME");
+	g_M3_stat->Draw("E1PSAME");
+	g_M3_stat->Draw("E0PSAME");
 
 	TLine *OLine5 = new TLine(h_P_tot->GetXaxis()->GetXmin(),0.93,h_P_tot->GetXaxis()->GetXmax(),0.93);
 	OLine5->SetLineColor(kOrange+7);
