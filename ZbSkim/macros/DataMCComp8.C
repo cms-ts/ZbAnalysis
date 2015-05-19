@@ -1311,11 +1311,8 @@ if (numB==2) {
 
 	c1->cd();
        
- 	TLatex *latexLabel = NULL;
+ 	TLatex *latexLabel = 0;
 	
-        if (isratio==1) {
-          latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
-        }
         if (isratio==0) {
           if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb") {
             latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
@@ -1327,7 +1324,11 @@ if (numB==2) {
             latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
           }
         }
-	latexLabel->Draw("same");
+        if (isratio==1) {
+          latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
+        }
+
+	if (latexLabel) latexLabel->Draw("same");
 
 	TPad *pad2 = new TPad("pad2","pad2",0,0.29,1,0.4);
 	pad2->SetTopMargin(0);
