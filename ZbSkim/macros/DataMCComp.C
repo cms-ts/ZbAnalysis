@@ -1291,6 +1291,7 @@ if (numB==1) bbBkg=1;
 	  }
 	}
 
+/*
 	TFile *dumphistos_file = new TFile("dump.root","RECREATE");
         dumphistos_file->cd();
         //if (title=="w_first_bjet_pt") h_ratio->Write("A");
@@ -1299,7 +1300,7 @@ if (numB==1) bbBkg=1;
         if (title=="w_SVTX_mass") h_ratio_pull3->Write("C");
         //if (title=="w_first_bjet_pt_SVTX") h_ratio->Write("B");
 	dumphistos_file->Close();
-	
+*/	
 
 	TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
 	OLine->SetLineColor(kRed);
