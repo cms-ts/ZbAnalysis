@@ -1852,10 +1852,48 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta#phi_{Zb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
+	} else if (title_b=="w_DR_Zb_min") {
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{min}_{bZ} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{min}(bZ) [rad]");
+	  if (isratio==1) {
+	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta R^{min}_{Zb} [%]");
+	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
+	  }
+	} else if (title_b=="w_DR_Zb_max") {
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{max}_{bZ} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{max}(bZ) [rad]");
+	  if (isratio==1) {
+	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta R^{max}_{Zb} [%]");
+	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
+	  }
+	} else if (title_b=="w_delta_phi_2b") {
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{bb} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi(bb) [rad]");
+	  if (isratio==1) {
+	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta#phi_{bb} [%]");
+	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
+	  }
 	} else if (title_b=="w_DR_bb") {
-          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d #Delta R(bb) [pb]");
+          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d #Delta R_{bb} [pb]");
           h_P_tot->GetXaxis()->SetTitle("#Delta R(bb)");
-          h_mcg_b->GetYaxis()->SetRangeUser(0.001,1);
+	  if (isratio==1) {
+	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta R_{bb} [%]");
+	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
+	  }
+	} else if (title_b=="w_Zbb_mass") {
+          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{Zbb} [pb]");
+          h_P_tot->GetXaxis()->SetTitle("M(Zbb)");
+	  if (isratio==1) {
+	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{Zbb} [%]");
+	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
+	  }
+	} else if (title_b=="w_bb_mass") {
+          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{bb} [pb]");
+          h_P_tot->GetXaxis()->SetTitle("M(bb)");
+	  if (isratio==1) {
+	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{bb} [%]");
+	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
+	  }
         }
 
 	if (plot) {
