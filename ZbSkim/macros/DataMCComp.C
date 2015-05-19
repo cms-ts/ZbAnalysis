@@ -664,7 +664,7 @@ if (!h_mc1bb) bbBkg = 0;
           //if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
 	   
 	  h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
-	  h_mc1->Sumw2();
+	  if (h_mc1) h_mc1->Sumw2();
 
 	  TH1F* h_mc1b_tmp = h_mc1b;
 
@@ -685,21 +685,25 @@ if (!h_mc1bb) bbBkg = 0;
             h_mc1bb->Sumw2();
           }
 
-	  if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
-	  if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
-	  if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
-          if (bbBkg) h_mc1->Add(h_mc1bb, -1.);
-	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	    float e = TMath::Power(h_mc1->GetBinError(i),2);
-	    if (h_mc1b) e = e - TMath::Power(h_mc1b->GetBinError(i),2);
-            if (bbBkg || bbSig) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
-	    if (h_mc1c) e = e - TMath::Power(h_mc1c->GetBinError(i),2);
-	    if (h_mc1t) e = e - TMath::Power(h_mc1t->GetBinError(i),2);
-	    h_mc1->SetBinError(i, TMath::Sqrt(e));
+	  if (h_mc1) {
+	    if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
+	    if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
+	    if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
+            if (bbBkg) h_mc1->Add(h_mc1bb, -1.);
+	    for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+	      float e = TMath::Power(h_mc1->GetBinError(i),2);
+	      if (h_mc1b) e = e - TMath::Power(h_mc1b->GetBinError(i),2);
+              if (bbBkg || bbSig) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
+	      if (h_mc1c) e = e - TMath::Power(h_mc1c->GetBinError(i),2);
+	      if (h_mc1t) e = e - TMath::Power(h_mc1t->GetBinError(i),2);
+	      h_mc1->SetBinError(i, TMath::Sqrt(e));
+	    }
 	  }
 
-	  xval = xval / h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
-	  h_mc1->Scale(xval);
+	  if (h_mc1) {
+	    xval = xval / h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
+	    h_mc1->Scale(xval);
+	  }
 
 	  //xvalb = xvalb / h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
 	  //h_mc1b->Scale(xvalb);
@@ -711,9 +715,11 @@ if (!h_mc1bb) bbBkg = 0;
 	    h_mc1c->Scale(xvalc);
 	  }
 
-	  h_mc1 -> SetLineColor(kBlack);
-	  h_mc1 -> SetFillColor(kYellow-4);
-	  //h_mc1 -> SetFillStyle(3004);
+	  if (h_mc1) {
+	    h_mc1 -> SetLineColor(kBlack);
+	    h_mc1 -> SetFillColor(kYellow-4);
+	    //h_mc1 -> SetFillStyle(3004);
+	  }
 
 	  if (h_mc1b) {
 	    h_mc1b->SetLineColor(kBlack);
