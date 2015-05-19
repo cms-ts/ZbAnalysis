@@ -17,15 +17,17 @@ cd -
 root -l -q -b DataMCComp8.C+\(\"w_first_bjet_pt\",1,0,$n\)
 root -l -q -b DataMCComp8.C+\(\"w_first_bjet_eta\",1,0,$n\)
 root -l -q -b DataMCComp8.C+\(\"w_first_bjet_eta_abs\",1,0,$n\)
-root -l -q -b DataMCComp8.C+\(\"w_pt_Z\",1,0\)
-root -l -q -b DataMCComp8.C+\(\"w_delta_phi\",1,0\)
-root -l -q -b DataMCComp8.C+\(\"w_Ht\",1,0\)
+
+if [ $n -eq 0 ]; then
+  root -l -q -b DataMCComp8.C+\(\"w_pt_Z\",1,0\)
+  root -l -q -b DataMCComp8.C+\(\"w_Ht\",1,0\)
+  root -l -q -b DataMCComp8.C+\(\"w_delta_phi\",1,0\)
+  root -l -q -b DataMCComp8.C+\(\"w_mass_Zj\",1,0\)
+fi
 
 if [ $n -ne 0 ]; then
   root -l -q -b DataMCComp8.C+\(\"w_pt_Z_b\",1,0,$n\)
   root -l -q -b DataMCComp8.C+\(\"w_Ht_b\",1,0,$n\)
-  root -l -q -b DataMCComp8.C+\(\"w_delta_phi_b\",1,0,$n\)
-  root -l -q -b DataMCComp8.C+\(\"w_mass_Zj_b\",1,0,$n\)
 fi
 
 if [ $n -eq 2 ]; then
@@ -33,18 +35,21 @@ if [ $n -eq 2 ]; then
   root -l -q -b DataMCComp8.C+\(\"w_DR_Zb_min\",1,0,2\)
   root -l -q -b DataMCComp8.C+\(\"w_DR_Zb_max\",1,0,2\)
   root -l -q -b DataMCComp8.C+\(\"w_A_Zb\",1,0,2\)
-  root -l -q -b DataMCComp8.C+\(\"w_bb_mass\",1,0,2\)
-  root -l -q -b DataMCComp8.C+\(\"w_first_bjet_pt\",1,0,2\)
-  root -l -q -b DataMCComp8.C+\(\"w_delta_phi_2b\",1,0,2\)
-  root -l -q -b DataMCComp8.C+\(\"w_first_bjet_eta\",1,0,2\)
   root -l -q -b DataMCComp8.C+\(\"w_Zbb_mass\",1,0,2\)
+  root -l -q -b DataMCComp8.C+\(\"w_bb_mass\",1,0,2\)
+  root -l -q -b DataMCComp8.C+\(\"w_delta_phi_2b\",1,0,2\)
 fi
 
-root -l -q -b DataMCComp8.C+\(\"w_first_bjet_pt\",1,1\)
-root -l -q -b DataMCComp8.C+\(\"w_first_bjet_eta\",1,1\)
-root -l -q -b DataMCComp8.C+\(\"w_first_bjet_eta_abs\",1,1\)
-root -l -q -b DataMCComp8.C+\(\"w_pt_Z\",1,1\)
-root -l -q -b DataMCComp8.C+\(\"w_delta_phi\",1,1\)
-root -l -q -b DataMCComp8.C+\(\"w_Ht\",1,1\)
+if [ $n -eq 0 ]; then
+  root -l -q -b DataMCComp8.C+\(\"w_first_bjet_pt\",1,1\)
+  root -l -q -b DataMCComp8.C+\(\"w_first_bjet_eta\",1,1\)
+  root -l -q -b DataMCComp8.C+\(\"w_first_bjet_eta_abs\",1,1\)
+fi
+
+if [ $n -eq 0 ]; then
+  root -l -q -b DataMCComp8.C+\(\"w_pt_Z\",1,1\)
+  root -l -q -b DataMCComp8.C+\(\"w_Ht\",1,1\)
+  root -l -q -b DataMCComp8.C+\(\"w_delta_phi\",1,1\)
+fi
 
 exit

@@ -74,15 +74,20 @@ while [ $i -le 2 ]; do
     root -l -q -b DataMCComp5.C+\($d,\"w_Phi_star_mm\",1,$i,0,$n\)
 
     root -l -q -b DataMCComp5.C+\($d,\"w_jetmultiplicity\",1,$i,0,$n\)
-    root -l -q -b DataMCComp5.C+\($d,\"w_first_jet_pt\",1,$i,0,$n\)
-    root -l -q -b DataMCComp5.C+\($d,\"w_first_jet_eta\",1,$i,0,$n\)
-    root -l -q -b DataMCComp5.C+\($d,\"w_first_jet_eta_abs\",1,$i,0,$n\)
 
-    root -l -q -b DataMCComp5.C+\($d,\"w_second_jet_pt\",1,$i,0,$n\)
-    root -l -q -b DataMCComp5.C+\($d,\"w_second_jet_eta\",1,$i,0,$n\)
-    root -l -q -b DataMCComp5.C+\($d,\"w_second_jet_eta_abs\",1,$i,0,$n\)
-    root -l -q -b DataMCComp5.C+\($d,\"w_third_jet_pt\",1,$i,0,$n\)
-    root -l -q -b DataMCComp5.C+\($d,\"w_third_jet_eta\",1,$i,0,$n\)
+  fi
+
+  root -l -q -b DataMCComp5.C+\($d,\"w_first_jet_pt\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_first_jet_eta\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_first_jet_eta_abs\",1,$i,0,$n\)
+
+  root -l -q -b DataMCComp5.C+\($d,\"w_second_jet_pt\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_second_jet_eta\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_second_jet_eta_abs\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_third_jet_pt\",1,$i,0,$n\)
+  root -l -q -b DataMCComp5.C+\($d,\"w_third_jet_eta\",1,$i,0,$n\)
+
+  if [ $n -eq 0 ]; then
 
     root -l -q -b DataMCComp5.C+\($d,\"w_secondvtx_N\",1,$i,0,$n\)
 
