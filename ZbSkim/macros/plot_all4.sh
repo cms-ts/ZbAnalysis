@@ -335,6 +335,9 @@ while [ $i -le 2 ]; do
   i=$((i+1))
 done
 
+unset PYTHIA8175DATA
+unset G4NEUTRONXS
+
 cd $CMS_PATH/slc6_amd64_gcc472/cms/cmssw/CMSSW_6_2_7
 eval `scramv1 runtime -sh`
 cd -
