@@ -683,10 +683,10 @@ if (numB==2) bbSig = true;
 	  //mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
           if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
           if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
-          //if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
+          if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
 	   
 	  h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
-	  if (h_mc1_b) h_mc1_b->Sumw2();
+	  h_mc1_b->Sumw2();
 
 	  TH1F* h_mc1b_b_tmp = h_mc1b_b;
 
@@ -702,25 +702,21 @@ if (numB==2) bbSig = true;
             if (h_mc1b_b) h_mc1b_b->Add(h_mc1bb, -1.);
           }
 
-	  if (h_mc1_b) {
-	    if (h_mc1b_b) h_mc1_b->Add(h_mc1b_b, -1.);
-	    if (h_mc1c_b) h_mc1_b->Add(h_mc1c_b, -1.);
-	    if (h_mc1t_b) h_mc1_b->Add(h_mc1t_b, -1.);
-            if (bbBkg) h_mc1->Add(h_mc1bb, -1.);
-	    for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	      float e = TMath::Power(h_mc1->GetBinError(i),2);
-	      if (h_mc1b_b) e = e - TMath::Power(h_mc1b_b->GetBinError(i),2);
-              if (bbBkg) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
-	      if (h_mc1c_b) e = e - TMath::Power(h_mc1c_b->GetBinError(i),2);
-	      if (h_mc1t_b) e = e - TMath::Power(h_mc1t_b->GetBinError(i),2);
-	      h_mc1_b->SetBinError(i, TMath::Sqrt(e));
-	    }
+	  if (h_mc1b_b) h_mc1_b->Add(h_mc1b_b, -1.);
+	  if (h_mc1c_b) h_mc1_b->Add(h_mc1c_b, -1.);
+	  if (h_mc1t_b) h_mc1_b->Add(h_mc1t_b, -1.);
+          if (bbBkg) h_mc1->Add(h_mc1bb, -1.);
+	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+	    float e = TMath::Power(h_mc1->GetBinError(i),2);
+	    if (h_mc1b_b) e = e - TMath::Power(h_mc1b_b->GetBinError(i),2);
+            if (bbBkg) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
+	    if (h_mc1c_b) e = e - TMath::Power(h_mc1c_b->GetBinError(i),2);
+	    if (h_mc1t_b) e = e - TMath::Power(h_mc1t_b->GetBinError(i),2);
+	    h_mc1_b->SetBinError(i, TMath::Sqrt(e));
 	  }
 
-	  if (h_mc1_b) {
-	    xval = xval / h_mc1_b->Integral(0,h_mc1_b->GetNbinsX()+1);
-	    h_mc1_b->Scale(xval);
-	  }
+	  xval = xval / h_mc1_b->Integral(0,h_mc1_b->GetNbinsX()+1);
+	  h_mc1_b->Scale(xval);
 
 	  //xvalb = xvalb / h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
 	  //h_mc1b->Scale(xvalb);
