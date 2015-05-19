@@ -669,15 +669,15 @@ if (!h_mc1bb) bbBkg = 0;
 	  TH1F* h_mc1b_tmp = h_mc1b;
 
 	  h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
-	  h_mc1b->Sumw2(); 
+	  if (h_mc1b) h_mc1b->Sumw2(); 
 
 	  h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
-          h_mc1c->Sumw2(); 
+          if (h_mc1c) h_mc1c->Sumw2(); 
           
           if (bbBkg) {
             h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
             h_mc1bb->Sumw2();
-            h_mc1b->Add(h_mc1bb, -1.);
+            if (h_mc1b) h_mc1b->Add(h_mc1bb, -1.);
           }
 
           if (bbSig) {
@@ -706,8 +706,10 @@ if (!h_mc1bb) bbBkg = 0;
 
 	  h_mc1b = h_mc1b_tmp;
 
-	  xvalc = xvalc / h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
-	  h_mc1c->Scale(xvalc);
+	  if (h_mc1c) {
+	    xvalc = xvalc / h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
+	    h_mc1c->Scale(xvalc);
+	  }
 
 	  h_mc1 -> SetLineColor(kBlack);
 	  h_mc1 -> SetFillColor(kYellow-4);
