@@ -49,9 +49,9 @@ while [ $i -le 2 ]; do
     root -l -q -b DataMCComp4.C+\($d,\"w_Phi_star_mm\",1,$i,0\)
   fi
 
-  root -l -q -b DataMCComp4.C+\($d,\"w_pt_Z_ee_b\",1,$i,0\)
-  root -l -q -b DataMCComp4.C+\($d,\"w_pt_Z_mm_b\",1,$i,0\)
-  root -l -q -b DataMCComp4.C+\($d,\"w_Ht_b\",1,$i,0\)
+  root -l -q -b DataMCComp4.C+\($d,\"w_pt_Z_ee_b\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp4.C+\($d,\"w_pt_Z_mm_b\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp4.C+\($d,\"w_Ht_b\",1,$i,0,0,$n\)
 
   if [ $n -eq 0 ]; then
     root -l -q -b DataMCComp4.C+\($d,\"w_delta_phi_ee_b\",1,$i,0,0,$n\)
