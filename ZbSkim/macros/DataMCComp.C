@@ -340,6 +340,8 @@ if (numB==1) bbBkg=1;
         if (bbBkg) h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
         if (bbSig) h_mc1bb = (TH1F*)gDirectory->Get(("bbSig"+title.substr(1)).c_str());       
 
+if (!h_mc1bb) bbBkg = 0;
+
 	if (ilepton==1) mc2->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) mc2->cd(("demoMuo"+postfix).c_str());
 	if (ilepton==3) mc2->cd(("demoEleMuo"+postfix).c_str());
