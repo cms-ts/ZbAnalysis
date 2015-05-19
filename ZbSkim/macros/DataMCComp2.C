@@ -718,8 +718,10 @@ if (numB==2) bbSig = true;
 	  xval = xval / h_mc1_b->Integral(0,h_mc1_b->GetNbinsX()+1);
 	  h_mc1_b->Scale(xval);
 
-	  //xvalb = xvalb / h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
-	  //h_mc1b->Scale(xvalb);
+	  //if (h_mc1b_b) {
+	  //  xvalb = xvalb / h_mc1b_b->Integral(0,h_mc1b_b->GetNbinsX()+1);
+	  //  h_mc1b_b->Scale(xvalb);
+	  //}
 
 	  h_mc1b_b = h_mc1b_b_tmp;
 

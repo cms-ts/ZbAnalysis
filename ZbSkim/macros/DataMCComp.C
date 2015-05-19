@@ -701,8 +701,10 @@ if (!h_mc1bb) bbBkg = 0;
 	  xval = xval / h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
 	  h_mc1->Scale(xval);
 
-	  //xvalb = xvalb / h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
-	  //h_mc1b->Scale(xvalb);
+	  //if (h_mc1b) {
+	  //  xvalb = xvalb / h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
+	  //  h_mc1b->Scale(xvalb);
+	  //}
 
 	  h_mc1b = h_mc1b_tmp;
 
