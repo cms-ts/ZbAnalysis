@@ -353,7 +353,7 @@ if (numB==2) {
 	  h_mcg_b->Divide(h_mcg);
 	  h_mcg1_b->Divide(h_mcg1);
 	  h_mcg2_b->Divide(h_mcg2);
-	  h_mcg3_b->Divide(h_mcg);  
+	  h_mcg3_b->Divide(h_mcg);
 	  h_mcg_b->Scale(100.);
 	  h_mcg1_b->Scale(100.);
 	  h_mcg2_b->Scale(100.);
@@ -1541,7 +1541,7 @@ if (numB==2) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{bb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
-	} 
+	}
 
 	if (plot) {
 	  ofstream out, out1;

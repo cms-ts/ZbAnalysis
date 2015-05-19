@@ -138,7 +138,7 @@ if (numB==2) {
 	TFile *mcg3 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
 
 	string title_b = title;
-        
+
         if (numB==0) {
 	  if (title.find("_bjet_")!=string::npos) {
 	    title.erase(title.find("_bjet_")+1, 1);
@@ -319,7 +319,7 @@ if (numB==2) {
 
 	TH1F* w_stat_bfit[2];
 	TH1F* w_stat_b_bfit[2];
-	
+
 	TH1F* w_syst_btemp[2];
 	TH1F* w_syst_b_btemp[2];
 
@@ -366,7 +366,7 @@ if (numB==2) {
 
 	  w_stat_bfit[i] = (TH1F*)w_data[0]->Clone();
 	  w_stat_b_bfit[i] = (TH1F*)w_data_b[0]->Clone();
-	  
+
 	  w_syst_btemp[i] = (TH1F*)w_data[0]->Clone();
 	  w_syst_b_btemp[i] = (TH1F*)w_data_b[0]->Clone();
 
@@ -513,7 +513,7 @@ if (numB==2) {
 
 	TH1F* stat_bfit = (TH1F*)w_data[0]->Clone();
 	TH1F* stat_b_bfit = (TH1F*)w_data_b[0]->Clone();
-	
+
 	TH1F* syst_btemp = (TH1F*)w_data[0]->Clone();
 	TH1F* syst_b_btemp = (TH1F*)w_data_b[0]->Clone();
 
@@ -1148,7 +1148,7 @@ if (numB==2) {
 
 	if (isratio==1) {
 	  h_data_b_tot->GetYaxis()->SetTitle("#sigma_{Z+b-jets}/#sigma_{Z+jets} [%]");
-        }       
+        }
 	h_data_b_tot->GetYaxis()->SetTitleOffset(1.2);
 	h_data_b_tot->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_tot->SetMarkerColor(kRed+1);
@@ -1199,7 +1199,7 @@ if (numB==2) {
 
 	  if (title=="w_delta_phi" || title_b=="w_first_bjet_eta" || title_b=="w_first_bjet_eta_abs") {
             h_mcg_b->SetMaximum(18*h_data_tot->GetMaximum());
-          } else { 
+          } else {
 	    h_mcg_b->SetMaximum(4*h_data_tot->GetMaximum());
           }
 	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b_tot->GetBinContent(h_data_b_tot->GetMinimumBin())));
@@ -1310,9 +1310,9 @@ if (numB==2) {
 	leg->Draw();
 
 	c1->cd();
-       
+
  	TLatex *latexLabel = 0;
-	
+
         if (isratio==0) {
           if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb") {
             latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
@@ -2424,7 +2424,7 @@ if (numB==2) {
 	    out2 << std::setw(4) << "\\tabularnewline" << "   " << "\\hline";
 	    out2 << endl;
 	  }
-           
+
 	}
 }
 

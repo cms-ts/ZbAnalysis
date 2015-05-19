@@ -35,27 +35,27 @@ if (irun==1) {             // irun==1 => JEC Up
 }
 if (irun==2) {             // irun==2 => JEC Down
   subdir="2";
-  postfix="Down";   
+  postfix="Down";
 }
 if (irun==3) {             // irun==3 => PU Up
   subdir="3";
-  postfix="Pup"; 
+  postfix="Pup";
 }
 if (irun==4) {             // irun==4 => PU Down
   subdir="4";
-  postfix="Pum"; 
+  postfix="Pum";
 }
 if (irun==5) {             // irun==5 => top bkg
   subdir="5";
-  postfix="";  
+  postfix="";
 }
 if (irun==6) {             // irun==6 => b purity
   subdir="6";
-  postfix="";   
+  postfix="";
 }
 if (irun==7) {             // irun==7 => unfolding
   subdir="7";
-  postfix="";   
+  postfix="";
 }
 if (irun==8) {             // irun==8 => unfolding with Sherpa
   subdir="8";
@@ -301,7 +301,7 @@ if (numB==2) bbSig = true;
 	      title.erase(title.find("_single_")+1, 7);
 	    }
 	  }
-        }        
+        }
 
         if (!drawInclusive) {
           if (title.find("_abs")!=string::npos) {
@@ -365,12 +365,12 @@ if (numB==2) bbSig = true;
 	TH1F* h_mcg_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
         bool cdmcg1 = false;
-      
+
 	if (ilepton==1) cdmcg1 = mcg1->cd(("demoEleGen"+genPostfix).c_str());
 	if (ilepton==2) cdmcg1 = mcg1->cd(("demoMuoGen"+genPostfix).c_str());
 	TH1F* h_mcg1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg1_b = (TH1F*)gDirectory->Get(title_b.c_str());
-        
+
         if (!h_mcg1 || !cdmcg1) h_mcg1 = (TH1F*)h_mcg->Clone();
 	if (!h_mcg1_b || !cdmcg1) h_mcg1_b = (TH1F*)h_mcg_b->Clone();
 
@@ -378,7 +378,7 @@ if (numB==2) bbSig = true;
 	if (ilepton==2) mcg2->cd(("demoMuoGen"+genPostfix).c_str());
 	TH1F* h_mcg2 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg2_b = (TH1F*)gDirectory->Get(title_b.c_str());
- 
+
 	if (!h_mcg2) h_mcg2 = (TH1F*)h_mcg->Clone();
 	if (!h_mcg2_b) h_mcg2_b = (TH1F*)h_mcg_b->Clone();
 
@@ -457,7 +457,7 @@ if (numB==2) bbSig = true;
         TH1F* h_mc13 = (TH1F*)gDirectory->Get(title.c_str());
         TH1F* h_mc13_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-        
+
         if (!drawInclusive) {
           h_data = (TH1F*)h_data->Clone();
           h_mc1 = (TH1F*)h_mc1->Clone();
@@ -600,11 +600,11 @@ if (numB==2) bbSig = true;
         h_mcO->Add(h_mc8);
         h_mcO->Add(h_mc7);
         h_mcO->Add(h_mc1t);
-       
+
         h_mcD->Add(h_mc6);
         h_mcD->Add(h_mc4);
         h_mcD->Add(h_mc3);
- 
+
         h_mcO_b->Add(h_mc13_b);
         h_mcO_b->Add(h_mc12_b);
         h_mcO_b->Add(h_mc11_b);
@@ -678,23 +678,23 @@ if (numB==2) bbSig = true;
 	  if (h_mc1_b)  xval = h_mc1_b->Integral(0,h_mc1_b->GetNbinsX()+1);
 	  //if (h_mc1b_b) xvalb = h_mc1b_b->Integral(0,h_mc1b_b->GetNbinsX()+1);
           if (h_mc1c_b) xvalc = h_mc1c_b->Integral(0,h_mc1c_b->GetNbinsX()+1);
-	  
+
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	  //mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
           if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
           if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
           if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
-	   
+
 	  h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 	  h_mc1_b->Sumw2();
 
 	  TH1F* h_mc1b_b_tmp = h_mc1b_b;
 
 	  h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
-	  if (h_mc1b_b) h_mc1b_b->Sumw2(); 
+	  if (h_mc1b_b) h_mc1b_b->Sumw2();
 
 	  h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
-          if (h_mc1c_b) h_mc1c_b->Sumw2(); 
+          if (h_mc1c_b) h_mc1c_b->Sumw2();
 
           if (bbBkg) {
             h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title_b.substr(1)).c_str());
@@ -857,7 +857,7 @@ if (numB==2) bbSig = true;
 	  h_mcg2_b->Scale(100.);
 	}
 
-        if (unfold==0) { 
+        if (unfold==0) {
           h_data_raw2 = fixrange(h_data_raw2, numB);
           h_data_b_raw2 = fixrange(h_data_b_raw2, numB);
         }

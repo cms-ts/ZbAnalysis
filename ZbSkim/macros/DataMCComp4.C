@@ -62,23 +62,23 @@ if (irun==4) {             // irun==4 => PU Down
 }
 if (irun==5) {             // irun==5 => top bkg
   subdir="5";
-  postfix="";  
+  postfix="";
 }
 if (irun==6) {             // irun==6 => b purity
   subdir="6";
-  postfix="";   
+  postfix="";
 }
 if (irun==7) {             // irun==7 => unfolding
   subdir="7";
-  postfix="";   
+  postfix="";
 }
 if (irun==8) {             // irun==8 => unfolding with Sherpa
   subdir="8";
-  postfix="";   
+  postfix="";
 }
 if (irun==9) {             // irun==9 => unfolding with Powheg
   subdir="9";
-  postfix="";   
+  postfix="";
 }
 if (irun==10) {            // irun==10 => bkg systematics
   subdir="10";
@@ -196,7 +196,7 @@ if (numB==2) {
 	  }
 	}
         }
- 
+
         //if (numB!=0) {
 	  //file = title;
         //}
@@ -306,14 +306,14 @@ if (numB==2) {
 	h_mc1_matrix = fixrange(h_mc1_matrix, numB);
 	h_mc2_truth = fixrange(h_mc2_truth, numB);
 	h_mc2_reco = fixrange(h_mc2_reco, numB);
-        
+
         if (irun==66) {
 	  TFile* data1=0;
 	  if (ilepton==1) data1 = TFile::Open((path + "/electrons/" + version + "/" + "0" + "/unfolding" + dirbSel + "/" + title + "_unfolding.root").c_str());
 	  if (ilepton==2) data1 = TFile::Open((path + "/muons/" + version + "/" + "0" + "/unfolding" + dirbSel + "/" + title + "_unfolding.root").c_str());
 	  data1->cd();
 	  TH1F* h_data_unfold_ref = (TH1F*)gDirectory->Get((title).c_str());
- 
+
 	  TH2F* h_mc1_matrix_ref = (TH2F*) h_mc1_matrix->Clone("h_mc1_matrix_ref");
 
 	  for (int j=0;j<=h_mc1_matrix->GetNbinsY()+1;j++) {
@@ -446,7 +446,7 @@ if (numB==2) {
 	  unfold_mc = new RooUnfoldBinByBin(&response, h_mc2_reco);
 	  unfold_data = new RooUnfoldBinByBin(&response, h_data_reco);
 	}
-	
+
 	if (method==3) {
 	  unfold_mc = new RooUnfoldInvert(&response, h_mc2_reco);
 	  unfold_data = new RooUnfoldInvert(&response, h_data_reco);
@@ -952,7 +952,7 @@ if (numB==2) {
 	    out << h_mc1_truth->Integral(0,h_mc1_truth->GetNbinsX()+1) << endl;
 	    out.close();
             double w,norm;
-	    
+
 	    for (int i=2;i<=h_err_cov->GetNbinsX()-1;i++) {
                for (int j=2;j<=h_err_cov->GetNbinsY()-1;j++) {
 	          w = TMath::Sqrt(TMath::Abs(h_err_cov->GetBinContent(i,i)))*TMath::Sqrt(TMath::Abs(h_err_cov->GetBinContent(j,j)));
@@ -960,7 +960,7 @@ if (numB==2) {
 	          //cout<<"i="<<"  "<<i<<"  "<<"j="<<"  "<<j<<"        "<<"cov(ij)="<<h_err_cov->GetBinContent(i,j)<<"        "<<"corr(ij)="<<norm<<endl;
 		  out1 << std::fixed;
 		  if (norm<0) out1 << std::setw(10) << norm << "  "; else out1 << std::setw(10) << norm << "  ";
-		  out1 << std::setprecision(6); 
+		  out1 << std::setprecision(6);
                }
  	       out1 << endl;
 	    }

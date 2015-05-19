@@ -51,15 +51,15 @@ if (irun==4) {             // irun==4 => PU Down
 }
 if (irun==5) {             // irun==5 => top bkg
   subdir="5";
-  postfix="";  
+  postfix="";
 }
 if (irun==6) {             // irun==6 => b purity
   subdir="6";
-  postfix="";   
+  postfix="";
 }
 if (irun==7) {             // irun==7 => unfolding
   subdir="7";
-  postfix="";   
+  postfix="";
 }
 if (irun==8) {             // irun==8 => unfolding with Sherpa
   subdir="8";
@@ -140,7 +140,7 @@ if (numB==2) {
       }
 
       double Lumi2012=0;
-      
+
       if (ilepton==1) Lumi2012 = Lumi2012_ele;
       if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
@@ -171,7 +171,7 @@ if (numB==2) {
       double enorm11 = ((Lumi2012 * eXsec_tSb) / Ngen_tSb);
       double enorm12 = ((Lumi2012 * eXsec_tTb) / Ngen_tTb);
       double enorm13 = ((Lumi2012 * eXsec_tWb) / Ngen_tWb);
-      
+
       double norm1_fit = ((Lumi2012_ele_muon * Xsec_dy) / Ngen_dy);
       double norm2_fit = ((Lumi2012_ele_muon * Xsec_tt) / Ngen_tt);
       double norm3_fit = ((Lumi2012_ele_muon * Xsec_zz) / Ngen_zz);
@@ -240,7 +240,7 @@ if (numB==2) {
       if (title_fit.find("mm")!=string::npos) {
         title_fit.replace(title_fit.find("mm"), 1, "e");
       }
- 
+
       if (ilepton==1) data->cd(("demoEle"+postfix).c_str());
       if (ilepton==2) data->cd(("demoMuo"+postfix).c_str());
       h_data = (TH1F*)gDirectory->Get(title.c_str());
@@ -258,7 +258,7 @@ if (numB==2) {
       TH1F* h_mc2 = (TH1F*)gDirectory->Get(title.c_str());
       mc2->cd(("demoEleMuo"+postfix).c_str());
       TH1F* h_mc2_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
-      
+
       if (ilepton==1) mc3->cd(("demoEle"+postfix).c_str());
       if (ilepton==2) mc3->cd(("demoMuo"+postfix).c_str());
       TH1F* h_mc3 = (TH1F*)gDirectory->Get(title.c_str());
@@ -341,7 +341,7 @@ if (numB==2) {
       h_mc11->Sumw2();
       h_mc12->Sumw2();
       h_mc13->Sumw2();
-      
+
       h_mc1_fit->Sumw2();
       h_mc2_fit->Sumw2();
       h_mc3_fit->Sumw2();
@@ -469,7 +469,7 @@ if (numB==2) {
       h_mcD->Add(h_mc6);
       h_mcD->Add(h_mc4);
       h_mcD->Add(h_mc3);
- 
+
       TH1F* h_mcO_fit = (TH1F*)h_mc8->Clone("h_mcO_fit");
       h_mcO_fit->Reset();
 
