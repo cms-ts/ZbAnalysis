@@ -245,18 +245,18 @@ if (numB==2) {
 	}
 
 	for (int i=0; i<2; i++) {
-	  w_data[i] = fixrange(w_data[i]);
-	  w_data_b[i] = fixrange(w_data_b[i]);
+	  w_data[i] = fixrange(w_data[i], numB);
+	  w_data_b[i] = fixrange(w_data_b[i], numB);
 	}
 
-	h_mcg = fixrange(h_mcg);
-	h_mcg_b = fixrange(h_mcg_b);
-	h_mcg1 = fixrange(h_mcg1);
-	h_mcg1_b = fixrange(h_mcg1_b);
-	h_mcg2 = fixrange(h_mcg2);
-	h_mcg3 = fixrange(h_mcg3);
-	h_mcg2_b = fixrange(h_mcg2_b);
-	h_mcg3_b = fixrange(h_mcg3_b);
+	h_mcg = fixrange(h_mcg, numB);
+	h_mcg_b = fixrange(h_mcg_b, numB);
+	h_mcg1 = fixrange(h_mcg1, numB);
+	h_mcg1_b = fixrange(h_mcg1_b, numB);
+	h_mcg2 = fixrange(h_mcg2, numB);
+	h_mcg3 = fixrange(h_mcg3, numB);
+	h_mcg2_b = fixrange(h_mcg2_b, numB);
+	h_mcg3_b = fixrange(h_mcg3_b, numB);
 
 	h_mcg->Scale(norm1);
 	h_mcg1->Scale(norm1_1);

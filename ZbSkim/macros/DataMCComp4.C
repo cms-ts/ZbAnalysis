@@ -300,12 +300,12 @@ if (numB==2) {
           h_mc2_reco->Add(h_mc2_bbBkg_reco, -1.);
         }
 
-	h_data_reco = fixrange(h_data_reco);
-	h_mc1_truth = fixrange(h_mc1_truth);
-	h_mc1_reco = fixrange(h_mc1_reco);
-	h_mc1_matrix = fixrange(h_mc1_matrix);
-	h_mc2_truth = fixrange(h_mc2_truth);
-	h_mc2_reco = fixrange(h_mc2_reco);
+	h_data_reco = fixrange(h_data_reco, numB);
+	h_mc1_truth = fixrange(h_mc1_truth, numB);
+	h_mc1_reco = fixrange(h_mc1_reco, numB);
+	h_mc1_matrix = fixrange(h_mc1_matrix, numB);
+	h_mc2_truth = fixrange(h_mc2_truth, numB);
+	h_mc2_reco = fixrange(h_mc2_reco, numB);
         
         if (irun==66) {
 	  TFile* data1=0;

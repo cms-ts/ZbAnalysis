@@ -2,7 +2,7 @@
 #include "TH2F.h"
 #include "TMath.h"
 
-TH1F* fixrange(TH1F* old) {
+TH1F* fixrange(TH1F* old, int numB) {
 
   float x1, x2;
   string name = old->GetName();
@@ -10,9 +10,11 @@ TH1F* fixrange(TH1F* old) {
   if (name.find("Ht")!=string::npos) {
     x1 = 30.;
     x2 = 500.;
+    if (numB==2) x2 = 400.;
   } else if (name.find("jet_pt")!=string::npos) {
     x1 = 30.;
     x2 = 300.;
+    if (numB==2) x2 = 250.;
   } else if (name.find("pt_Z")!=string::npos) {
     x1 = 0.;
     x2 = 300.;
@@ -51,7 +53,7 @@ TH1F* fixrange(TH1F* old) {
   return tmp;
 }
 
-TH2F* fixrange(TH2F* old) {
+TH2F* fixrange(TH2F* old, int numB) {
 
   float x1, x2;
   string name = old->GetName();
@@ -59,9 +61,11 @@ TH2F* fixrange(TH2F* old) {
   if (name.find("Ht")!=string::npos) {
     x1 = 30.;
     x2 = 500.;
+    if (numB==2) x2 = 400.;
   } else if (name.find("jet_pt")!=string::npos) {
     x1 = 30.;
     x2 = 300.;
+    if (numB==2) x2 = 250.;
   } else if (name.find("pt_Z")!=string::npos) {
     x1 = 0.;
     x2 = 300.;
