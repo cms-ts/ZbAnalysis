@@ -114,7 +114,7 @@ if (numB==2) {
         }
 
         if (numB==1 || numB==2) {
-          if (title=="w_pt_Z" || title=="w_delta_phi") {
+          if (title=="w_pt_Z"||title=="w_delta_phi") {
             title_ee = title_ee + "_ee_b";
             title_ee_b = title_ee_b + "_ee_b";
             title_mm = title_mm + "_mm_b";
@@ -126,6 +126,12 @@ if (numB==2) {
             title_mm = title_mm + "_b";
             title_mm_b = title_mm_b + "_b";
           }
+          if (title=="w_pt_Z_b"||title=="w_delta_phi_b") {
+            title_ee.replace(title_ee.find("_b"), 5, "_ee_b");
+            title_ee_b.replace(title_ee_b.find("_b"), 5, "_ee_b");
+            title_mm.replace(title_mm.find("_b"), 5, "_mm_b");
+            title_mm_b.replace(title_mm_b.find("_b"), 5, "_mm_b");
+	  }
         }
 
 
