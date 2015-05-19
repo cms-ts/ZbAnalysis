@@ -202,16 +202,16 @@ if (numB==2) {
 
         if (isratio==0) {
           h_data_ee->SetMinimum(TMath::Max(0.000002,0.25*h_data_ee_b->GetBinContent(h_data_ee_b->GetMinimumBin())));
-          h_data_ee->Draw("EPX");
-          h_data_ee_b->Draw("EPXSAME");
-          h_data_mm->Draw("EPXSAME");
-          h_data_mm_b->Draw("EPXSAME");
+          h_data_ee->Draw("EPX0");
+          h_data_ee_b->Draw("EPX0SAME");
+          h_data_mm->Draw("EPX0SAME");
+          h_data_mm_b->Draw("EPX0SAME");
         }
         if (isratio==1) {
           h_data_ee_b->Divide(h_data_ee);
           h_data_mm_b->Divide(h_data_mm);
-          h_data_ee_b->Draw("EPX");
-          h_data_mm_b->Draw("EPXSAME");
+          h_data_ee_b->Draw("EPX0");
+          h_data_mm_b->Draw("EPX0SAME");
         }
 
         TLegend *leg = new TLegend(0.62, 0.580, 0.88, 0.88);
@@ -274,9 +274,9 @@ if (numB==2) {
         h_ratio_b->SetMarkerStyle(24);
         h_ratio_b->SetMarkerColor(kBlack);
 
-        h_ratio_b->Draw("EPX");
+        h_ratio_b->Draw("E0PX0");
         if (isratio==0) {
-          h_ratio->Draw("EPXSAME");
+          h_ratio->Draw("E0PX0SAME");
         }
 
         TLine *OLine = new TLine(h_ratio->GetXaxis()->GetXmin(),1.,h_ratio->GetXaxis()->GetXmax(),1.);
