@@ -37,7 +37,7 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
 
 }
 
-void DataMCComp(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0, int numB=0, int bb=0) {
+void DataMCComp(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0, int numB=0) {
 
 // bb parameter -> 2 b-jet found with partonFlavour   
 
@@ -149,7 +149,8 @@ if (numB==2) {
   bSel="Z + (#geq 2) b-jet";
 }
 
-	if (numB==1 && bb==1) bbBkg=1;     
+if (numB==1) bbBkg=1;     
+
         if (doFit==4) bbSig=1;
 
 	/* top background */

@@ -5,7 +5,7 @@
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
-void DataMCComp3(int irun=0, string title="", int plot=0, int ilepton=1, int numB=0, int bb=0) {
+void DataMCComp3(int irun=0, string title="", int plot=0, int ilepton=1, int numB=0) {
 
 //int useDY = 0; // use MadGraph DY for numB=0
 int useDY = 1; // use weighted MadGraph DY for numB=0
@@ -106,8 +106,8 @@ if (numB==2) {
   genPostfix= "2b";
 }
 
-if (bb==1 && numB==1) bbBkg = true;
-if (bb==1 && numB==2) bbSig = true;
+if (numB==1) bbBkg = true;
+if (numB==2) bbSig = true;
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
