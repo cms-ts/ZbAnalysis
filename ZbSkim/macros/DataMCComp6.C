@@ -200,6 +200,13 @@ if (numB==2) {
         h_data_mm_b->SetMarkerSize(0.7);
         h_data_mm_b->SetMarkerColor(kBlue);
 
+        for (int i=0;i<=h_data_ee->GetNbinsX()+1;i++) {
+          if (TMath::IsNaN(h_data_ee->GetBinError(i))) h_data_ee->SetBinError(i,0.0);
+          if (TMath::IsNaN(h_data_ee_b->GetBinError(i))) h_data_ee_b->SetBinError(i,0.0);
+          if (TMath::IsNaN(h_data_mm->GetBinError(i))) h_data_mm->SetBinError(i,0.0);
+          if (TMath::IsNaN(h_data_mm_b->GetBinError(i))) h_data_mm_b->SetBinError(i,0.0);
+        }
+
         if (isratio==0) {
           h_data_ee->SetMinimum(TMath::Max(0.000002,0.25*h_data_ee_b->GetBinContent(h_data_ee_b->GetMinimumBin())));
           h_data_ee->Draw("EPX0");
