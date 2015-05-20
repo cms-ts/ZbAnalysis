@@ -1929,6 +1929,14 @@ if (numB==2) {
 	    out.open((path + "/combined/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b + "_ratio_unfolding.dat").c_str());
 	    out1.open((path + "/combined/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b + "_ratio_unfolding.txt").c_str());
 	    out2.open((path + "/combined/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b + "_ratio_unfolding.tex").c_str());
+	    TFile f((path + "/combined/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b + "_ratio_unfolding.root").c_str(),"RECREATE");
+	    h_data_b_stat->Write((title_b+"_data_stat").c_str());
+	    h_data_b_tot->Write((title_b+"_data_tot").c_str());
+	    h_mcg_b->Write((title_b+"_mcg").c_str());
+	    h_mcg1_b->Write((title_b+"_mcg1").c_str());
+	    h_mcg2_b->Write((title_b+"_mcg2").c_str());
+	    h_mcg3_b->Write((title_b+"_mcg3").c_str());
+	    f.Close();
 	  }
 	  if (isratio==0) {
 	    out << h_data->GetName();
