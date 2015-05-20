@@ -2,8 +2,6 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
-#include "fixrange.C"
-
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
@@ -139,13 +137,13 @@ if (numB==2) {
 	file->Close();
 
 	if (!drawInclusive) {
-	  h_data_tot = h_data_b_tot;
-	  h_data_stat = h_data_b_stat;
-	  h_data_syst = h_data_b_syst;
-	  h_mcg = h_mcg_b;
-	  h_mcg1 = h_mcg1_b;
-	  h_mcg2 = h_mcg2_b;
-	  h_mcg3 = h_mcg3_b;
+	  h_data_tot = (TH1F*)h_data_b_tot->Clone();
+	  h_data_stat = (TH1F*)h_data_b_stat->Clone();
+	  h_data_syst = (TH1F*)h_data_b_syst->Clone();
+	  h_mcg = (TH1F*)h_mcg_b->Clone();
+	  h_mcg1 = (TH1F*)h_mcg1_b->Clone();
+	  h_mcg2 = (TH1F*)h_mcg2_b->Clone();
+	  h_mcg3 = (TH1F*)h_mcg3_b->Clone();
 	}
 
 	TCanvas* c1 = new TCanvas("c", "c", 10, 10, 800, 600);
