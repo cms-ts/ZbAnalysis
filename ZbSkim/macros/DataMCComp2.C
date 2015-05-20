@@ -687,22 +687,18 @@ if (numB==2) bbSig = true;
 
 	  h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 	  h_mc1_b->Sumw2();
-	  h_mc1_b = fixrange(h_mc1_b, numB);
 
 	  TH1F* h_mc1b_b_tmp = h_mc1b_b;
 
 	  h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
 	  if (h_mc1b_b) h_mc1b_b->Sumw2();
-	  if (h_mc1b_b) h_mc1b_b = fixrange(h_mc1b_b, numB);
 
 	  h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
           if (h_mc1c_b) h_mc1c_b->Sumw2();
-	  if (h_mc1c_b) h_mc1c_b = fixrange(h_mc1c_b, numB);
 
           if (bbBkg) {
             h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title_b.substr(1)).c_str());
             if (h_mc1bb) h_mc1bb->Sumw2();
-	    if (h_mc1bb) h_mc1bb = fixrange(h_mc1bb, numB);
             if (h_mc1bb && h_mc1b_b) h_mc1b_b->Add(h_mc1bb, -1.);
           }
 
