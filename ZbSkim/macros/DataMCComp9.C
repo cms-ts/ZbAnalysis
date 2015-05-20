@@ -53,7 +53,7 @@ if (numB==2) {
 	  }
 	}
 
-	TFile* file;
+	TFile* file = 0;
 
 	if (isratio==0) file = TFile::Open((path + "/combined/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b + "_xsecs_unfolding.root").c_str());
 	if (isratio==1) file = TFile::Open((path + "/combined/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b + "_ratio_unfolding.root").c_str());
