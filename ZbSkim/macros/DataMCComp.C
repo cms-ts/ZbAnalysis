@@ -665,6 +665,7 @@ if (!h_mc1bb) bbBkg = 0;
 
 	  h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
 	  h_mc1->Sumw2();
+	  h_mc1 = fixrange(h_mc1, numB);
 
 	  TH1F* h_mc1b_tmp = h_mc1b;
 

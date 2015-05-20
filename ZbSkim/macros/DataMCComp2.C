@@ -687,6 +687,7 @@ if (numB==2) bbSig = true;
 
 	  h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 	  h_mc1_b->Sumw2();
+	  h_mc1_b = fixrange(h_mc1_b, numB);
 
 	  TH1F* h_mc1b_b_tmp = h_mc1b_b;
 
