@@ -670,14 +670,17 @@ if (!h_mc1bb) bbBkg = 0;
 
 	  h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
 	  if (h_mc1b) h_mc1b->Sumw2();
+	  if (h_mc1b) h_mc1b = fixrange(h_mc1b, numB);
 
 	  h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
           if (h_mc1c) h_mc1c->Sumw2();
+	  if (h_mc1c) h_mc1c = fixrange(h_mc1c, numB);
 
           if (bbBkg) {
             h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
-            h_mc1bb->Sumw2();
-            if (h_mc1b) h_mc1b->Add(h_mc1bb, -1.);
+            if (h_mc1bb) h_mc1bb->Sumw2();
+	    if (h_mc1bb) h_mc1bb = fixrange(h_mc1bb, numB);
+            if (h_mc1bb && h_mc1b) h_mc1b->Add(h_mc1bb, -1.);
           }
 
           if (bbSig) {
