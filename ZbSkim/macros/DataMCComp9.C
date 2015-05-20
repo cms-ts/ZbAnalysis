@@ -967,11 +967,11 @@ if (numB==2) {
 	  if (isratio==0) {
 	    out << h_data_tot->GetName();
 	    out << endl;
-	    out << std::setw(12) << "total";
+	    out << std::setw(25) << "total";
 	    out << std::setw(12) << "total";
 	    out << std::setw(12) << "total";
 	    out << endl;
-	    out << std::setw(12) << "stat";
+	    out << std::setw(25) << "stat";
 	    out << std::setw(12) << "syst";
 	    out << std::setw(12) << "error";
 	    out << std::setw(8) << "%";
@@ -996,11 +996,11 @@ if (numB==2) {
 	  }
 	  out << h_data_b_tot->GetName();
 	  out << endl;
-	  out << std::setw(12) << "total";
+	  out << std::setw(25) << "total";
 	  out << std::setw(12) << "total";
 	  out << std::setw(12) << "total";
 	  out << endl;
-	  out << std::setw(12) << "stat";
+	  out << std::setw(25) << "stat";
 	  out << std::setw(12) << "syst";
 	  out << std::setw(12) << "error";
 	  out << std::setw(8) << "%";
@@ -1026,11 +1026,11 @@ if (numB==2) {
 	  if (isratio==0) {
 	    out1 << h_data_tot->GetName() << " - RELATIVE ERRORS";
 	    out1 << endl;
-	    out1 << std::setw(8) << "total";
+	    out1 << std::setw(7) << "total";
 	    out1 << std::setw(8) << "total";
 	    out1 << std::setw(8) << "total";
 	    out1 << endl;
-	    out1 << std::setw(8) << "stat";
+	    out1 << std::setw(7) << "stat";
 	    out1 << std::setw(8) << "syst";
 	    out1 << std::setw(8) << "error";
 	    out1 << endl;
@@ -1040,8 +1040,6 @@ if (numB==2) {
 	      out1 << std::setw(2) << i;
 	      out1 << " ";
 	      out1 << std::setprecision(1);
-	      out1 << std::setw(4) << h_data_tot->GetBinError(i)*val;
-	      out1 << " +- ";
 	      out1 << std::setw(4) << h_data_stat->GetBinError(i)*val;
 	      out1 << " +- ";
 	      out1 << std::setw(4) << h_data_syst->GetBinError(i)*val;
@@ -1052,11 +1050,11 @@ if (numB==2) {
 	  }
 	  out1 << h_data_b_tot->GetName() << " - RELATIVE ERRORS";
 	  out1 << endl;
-	  out1 << std::setw(8) << "total";
+	  out1 << std::setw(7) << "total";
 	  out1 << std::setw(8) << "total";
 	  out1 << std::setw(8) << "total";
 	  out1 << endl;
-	  out1 << std::setw(8) << "stat";
+	  out1 << std::setw(7) << "stat";
 	  out1 << std::setw(8) << "syst";
 	  out1 << std::setw(8) << "error";
 	  out1 << endl;
@@ -1066,8 +1064,6 @@ if (numB==2) {
 	    out1 << std::setw(2) << i;
 	    out1 << " ";
 	    out1 << std::setprecision(1);
-	    out1 << std::setw(4) << h_data_b_tot->GetBinError(i)*val;
-	    out1 << " +- ";
 	    out1 << std::setw(4) << h_data_b_stat->GetBinError(i)*val;
 	    out1 << " +- ";
 	    out1 << std::setw(4) << h_data_b_syst->GetBinError(i)*val;
