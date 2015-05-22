@@ -33,8 +33,12 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp3.C+\($d,\"w_first_bjet_pt\",1,$i,$n\)
   root -l -q -b DataMCComp3.C+\($d,\"w_first_bjet_eta\",1,$i,$n\)
-  if [ $n -eq 0 ]; then
-    root -l -q -b DataMCComp3.C+\($d,\"w_first_bjet_eta_abs\",1,$i,$n\)
+  root -l -q -b DataMCComp3.C+\($d,\"w_first_bjet_eta_abs\",1,$i,$n\)
+
+  if [ $n -eq 2 ]; then
+    root -l -q -b DataMCComp3.C+\($d,\"w_second_bjet_pt\",1,$i,$n\)
+    root -l -q -b DataMCComp3.C+\($d,\"w_second_bjet_eta\",1,$i,$n\)
+    root -l -q -b DataMCComp3.C+\($d,\"w_second_bjet_eta_abs\",1,$i,$n\)
   fi
 
   if [ $n -eq 0 ]; then

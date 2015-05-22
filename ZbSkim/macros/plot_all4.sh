@@ -30,8 +30,12 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_pt\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta\",1,$i,0,0,$n\)
-  if [ $n -eq 0 ]; then
-    root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta_abs\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta_abs\",1,$i,0,0,$n\)
+
+  if [ $n -eq 2 ]; then
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_pt\",1,$i,0,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_eta\",1,$i,0,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_eta_abs\",1,$i,0,0,$n\)
   fi
 
   if [ $n -eq 0 ]; then
@@ -93,8 +97,12 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_pt\",1,$i,1,0,$n\)
   root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta\",1,$i,1,0,$n\)
-  if [ $n -eq 0 ]; then
-    root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta_abs\",1,$i,1,0,$n\)
+  root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta_abs\",1,$i,1,0,$n\)
+
+  if [ $n -eq 2 ]; then
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_pt\",1,$i,1,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_eta\",1,$i,1,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_eta_abs\",1,$i,1,0,$n\)
   fi
 
   if [ $n -eq 0 ]; then
@@ -156,8 +164,12 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_pt\",1,$i,2,0,$n\)
   root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta\",1,$i,2,0,$n\)
-  if [ $n -eq 0 ]; then
-    root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta_abs\",1,$i,2,0,$n\)
+  root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta_abs\",1,$i,2,0,$n\)
+
+  if [ $n -eq 2 ]; then
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_pt\",1,$i,2,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_eta\",1,$i,2,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_eta_abs\",1,$i,2,0,$n\)
   fi
 
   if [ $n -eq 0 ]; then
@@ -219,8 +231,12 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_pt\",1,$i,3,0,$n\)
   root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta\",1,$i,3,0,$n\)
-  if [ $n -eq 0 ]; then
-    root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta_abs\",1,$i,3,0,$n\)
+  root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta_abs\",1,$i,3,0,$n\)
+
+  if [ $n -eq 2 ]; then
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_pt\",1,$i,3,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_eta\",1,$i,3,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_eta_abs\",1,$i,3,0,$n\)
   fi
 
   if [ $n -eq 0 ]; then
@@ -283,8 +299,12 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_pt\",1,$i,4,0,$n\)
   root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta\",1,$i,4,0,$n\)
-  if [ $n -eq 0 ]; then
-    root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta_abs\",1,$i,4,0,$n\)
+  root -l -q -b DataMCComp4.C+\($d,\"w_first_bjet_eta_abs\",1,$i,4,0,$n\)
+
+  if [ $n -eq 2 ]; then
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_pt\",1,$i,4,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_eta\",1,$i,4,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_second_bjet_eta_abs\",1,$i,4,0,$n\)
   fi
 
   if [ $n -eq 0 ]; then
@@ -347,8 +367,12 @@ while [ $i -le 2 ]; do
 
   root -l -q -b DataMCComp2.C+\($d,\"w_first_bjet_pt\",1,$i,0,1,$n\)
   root -l -q -b DataMCComp2.C+\($d,\"w_first_bjet_eta\",1,$i,0,1,$n\)
-  if [ $n -eq 0 ]; then
-    root -l -q -b DataMCComp2.C+\($d,\"w_first_bjet_eta_abs\",1,$i,0,1,$n\)
+  root -l -q -b DataMCComp2.C+\($d,\"w_first_bjet_eta_abs\",1,$i,0,1,$n\)
+
+  if [ $n -eq 2 ]; then
+    root -l -q -b DataMCComp2.C+\($d,\"w_second_bjet_pt\",1,$i,0,1,$n\)
+    root -l -q -b DataMCComp2.C+\($d,\"w_second_bjet_eta\",1,$i,0,1,$n\)
+    root -l -q -b DataMCComp2.C+\($d,\"w_second_bjet_eta_abs\",1,$i,0,1,$n\)
   fi
 
   if [ $n -eq 0 ]; then
