@@ -44,6 +44,9 @@ string postfix="";
 string dirbSel="";
 string bSel="";
 string genPostfix="";
+
+bool bbBkg = false;
+
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
   postfix="Up";
@@ -125,6 +128,8 @@ if (numB==2) {
   genPostfix = "2b";
 }
 
+if (numB==1) bbBkg = true;
+
         if (irun==8) imode = 5;
         if (irun==9) imode = 6;
         if (irun==77) imode = 7;
@@ -188,18 +193,14 @@ if (numB==2) {
 	string file = title;
 
         if (numB==0) {
-	if (file.find("_b")==string::npos) {
-	  if (file.find("_jet_")!=string::npos) {
-	    file.insert(file.find("_jet_")+1, "b");
-	  } else {
-	    file = file + "_b";
+	  if (file.find("_b")==string::npos) {
+	    if (file.find("_jet_")!=string::npos) {
+	      file.insert(file.find("_jet_")+1, "b");
+	    } else {
+	      file = file + "_b";
+	    }
 	  }
-	}
         }
-
-        //if (numB!=0) {
-	  //file = title;
-        //}
 
 	TFile* data=0;
 	if (ilepton==1) data = TFile::Open((path + "/electrons/" + version + "/" + subdir + "/xsecs" + dirbSel + "/" + file + "_xsecs.root").c_str());
@@ -240,14 +241,10 @@ if (numB==2) {
 	h_data_reco = (TH1F*)gDirectory->Get((title+"_raw").c_str());
 
 	string title_b = title;
-        string title_bbBkg = title;
 
 	if (title.find("_b")!=string::npos || numB==1 || numB==2) {
 	  title_b = "b"+title.substr(1);
 	}
-        if (numB==1) {
-          title_bbBkg = "bbBkg"+title.substr(1);
-        }
 
 	TH1F* h_mc1_truth=0;
 	TH1F* h_mc1_reco=0;
@@ -262,40 +259,40 @@ if (numB==2) {
 	  h_mc1_truth  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd(("demoEle"+postfix).c_str());
 	  h_mc1_reco   = (TH1F*)gDirectory->Get(title_b.c_str());
-          if (numB==1) h_mc1_bbBkg_reco   = (TH1F*)gDirectory->Get(title_bbBkg.c_str());
+          if (bbBkg) h_mc1_bbBkg_reco   = (TH1F*)gDirectory->Get(("bbBkg"+title_b.substr(1)).c_str());
 	  mc1->cd(("demoEleDump"+postfix).c_str());
 	  h_mc1_matrix = (TH2F*)gDirectory->Get(title.c_str());
 	  mc2->cd(("demoEleGen"+genPostfix).c_str());
 	  h_mc2_truth  = (TH1F*)gDirectory->Get(title.c_str());
 	  mc2->cd(("demoEle"+postfix).c_str());
 	  h_mc2_reco   = (TH1F*)gDirectory->Get(title_b.c_str());
-          if (numB==1) h_mc2_bbBkg_reco   = (TH1F*)gDirectory->Get(title_bbBkg.c_str());
+          if (bbBkg) h_mc2_bbBkg_reco   = (TH1F*)gDirectory->Get(("bbBkg"+title_b.substr(1)).c_str());
 	}
 	if (ilepton==2) {
 	  mc1->cd(("demoMuoGen"+genPostfix).c_str());
 	  h_mc1_truth   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc1->cd(("demoMuo"+postfix).c_str());
 	  h_mc1_reco    = (TH1F*)gDirectory->Get(title_b.c_str());
-          if (numB==1) h_mc1_bbBkg_reco   = (TH1F*)gDirectory->Get(title_bbBkg.c_str());
+          if (bbBkg) h_mc1_bbBkg_reco   = (TH1F*)gDirectory->Get(("bbBkg"+title_b.substr(1)).c_str());
 	  mc1->cd(("demoMuoDump"+postfix).c_str());
 	  h_mc1_matrix  = (TH2F*)gDirectory->Get(title.c_str());
 	  mc2->cd(("demoMuoGen"+genPostfix).c_str());
 	  h_mc2_truth   = (TH1F*)gDirectory->Get(title.c_str());
 	  mc2->cd(("demoMuo"+postfix).c_str());
 	  h_mc2_reco    = (TH1F*)gDirectory->Get(title_b.c_str());
-          if (numB==1) h_mc2_bbBkg_reco   = (TH1F*)gDirectory->Get(title_bbBkg.c_str());
+          if (bbBkg) h_mc2_bbBkg_reco   = (TH1F*)gDirectory->Get(("bbBkg"+title_b.substr(1)).c_str());
 	}
 
 	h_data_reco->Sumw2();
 	h_mc1_truth->Sumw2();
 	h_mc1_reco->Sumw2();
-        if (numB==1) h_mc1_bbBkg_reco->Sumw2();
+        if (bbBkg) h_mc1_bbBkg_reco->Sumw2();
 	h_mc1_matrix->Sumw2();
 	h_mc2_truth->Sumw2();
 	h_mc2_reco->Sumw2();
-        if (numB==1) h_mc2_bbBkg_reco->Sumw2();
+        if (bbBkg) h_mc2_bbBkg_reco->Sumw2();
 
-        if (numB==1) {
+        if (bbBkg) {
           h_mc1_reco->Add(h_mc1_bbBkg_reco, -1.);
           h_mc2_reco->Add(h_mc2_bbBkg_reco, -1.);
         }
@@ -394,7 +391,6 @@ if (numB==2) {
 	  h_mc2_reco->Scale(norm1_3/norm1);
 	}
 
-        //if (title.find("_b")!=string::npos) {
 	if (title.find("_b")!=string::npos || numB==1 || numB==2) {
 	  h_mc1_truth->Scale(c_b);
 	  h_mc1_reco->Scale(c_b);
