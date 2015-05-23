@@ -16,9 +16,7 @@ cd -
 
 root -l -q -b DataMCComp9.C+\(\"w_first_bjet_pt\",1,0,$n\)
 root -l -q -b DataMCComp9.C+\(\"w_first_bjet_eta\",1,0,$n\)
-if [ $n -eq 0 ]; then
-  root -l -q -b DataMCComp9.C+\(\"w_first_bjet_eta_abs\",1,0,$n\)
-fi
+root -l -q -b DataMCComp9.C+\(\"w_first_bjet_eta_abs\",1,0,$n\)
 
 if [ $n -eq 2 ]; then
   root -l -q -b DataMCComp9.C+\(\"w_second_bjet_pt\",1,0,$n\)
