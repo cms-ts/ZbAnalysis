@@ -1253,6 +1253,14 @@ if (!h_mc1bb) bbBkg = 0;
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet p_{T}");
 	} else if (title=="w_first_bjet_eta") {
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet #eta");
+	} else if (title=="w_first_bjet_eta_abs") {
+	  h_ratio->GetXaxis ()->SetTitle("leading b-jet |#eta|");
+	} else if (title=="w_second_bjet_pt") {
+	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet p_{T}");
+	} else if (title=="w_second_bjet_eta") {
+	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet #eta");
+	} else if (title=="w_second_bjet_eta_abs") {
+	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet |#eta|");
 	} else if (title=="w_flightd") {
 	  h_ratio->GetXaxis ()->SetTitle("L_{xy} [cm]");
 	} else if (title=="w_flightd_sig") {

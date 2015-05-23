@@ -1457,11 +1457,39 @@ if (numB==2) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / dp^{b}_{T} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(-0.5, 10);
 	  }
+	} else if (title_b=="w_second_bjet_pt") {
+	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / dp^{b}_{T} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("subleading b-jet p_{T} [GeV/c]");
+	  if (isratio==1) {
+	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / dp^{b}_{T} [%]");
+	    h_mc1b_b->GetYaxis()->SetRangeUser(-0.5, 10);
+	  }
 	} else if (title_b=="w_first_bjet_eta") {
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d#eta^{b} [pb]");
 	  h_P_tot->GetXaxis()->SetTitle("leading b-jet #eta");
 	  if (isratio==1) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#eta^{b} [%]");
+	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
+	  }
+	} else if (title_b=="w_second_bjet_eta") {
+	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d#eta^{b} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("subleading b-jet #eta");
+	  if (isratio==1) {
+	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#eta^{b} [%]");
+	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
+	  }
+	} else if (title_b=="w_first_bjet_eta_abs") {
+	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d|#eta^{b}| [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("leading b-jet |#eta|");
+	  if (isratio==1) {
+	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d|#eta^{b}| [%]");
+	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
+	  }
+	} else if (title_b=="w_second_bjet_eta_abs") {
+	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d|#eta^{b}| [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("subleading b-jet |#eta|");
+	  if (isratio==1) {
+	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d|#eta^{b}| [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 10);
 	  }
 	} else if (title_b=="w_pt_Z_ee_b"||title_b =="w_pt_Z_mm_b") {
