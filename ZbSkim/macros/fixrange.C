@@ -14,7 +14,10 @@ TH1F* fixrange(TH1F* old, int numB) {
   } else if (name.find("jet_pt")!=string::npos) {
     x1 = 30.;
     x2 = 300.;
-    if (numB==2) x2 = 250.;
+    if (numB==2) {
+      if (name.find("first")!=string::npos) x2 = 250.;
+      if (name.find("second")!=string::npos) x2 = 150.;
+    }
   } else if (name.find("pt_Z")!=string::npos) {
     x1 = 0.;
     x2 = 300.;
@@ -65,7 +68,10 @@ TH2F* fixrange(TH2F* old, int numB) {
   } else if (name.find("jet_pt")!=string::npos) {
     x1 = 30.;
     x2 = 300.;
-    if (numB==2) x2 = 250.;
+    if (numB==2) {
+      if (name.find("first")!=string::npos) x2 = 250.;
+      if (name.find("second")!=string::npos) x2 = 150.;
+    }
   } else if (name.find("pt_Z")!=string::npos) {
     x1 = 0.;
     x2 = 300.;
