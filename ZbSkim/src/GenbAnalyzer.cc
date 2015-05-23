@@ -896,6 +896,9 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     }
   }
 
+  // ++++++++ SPECIAL WEIGHTS
+
+#if 0
   if (!ist) {
     if (lepton_ == "electron") {
       float N1b = 31313.60;
@@ -918,6 +921,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
       }
     }
   }
+#endif
 
   ee_event = ee_event && (lepton_ == "electron") && !ist;
   mm_event = mm_event && (lepton_ == "muon") && !ist;
