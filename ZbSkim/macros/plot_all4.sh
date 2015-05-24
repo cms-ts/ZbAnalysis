@@ -308,16 +308,16 @@ while [ $i -le 2 ]; do
   fi
 
   if [ $n -eq 0 ]; then
-    root -l -q -b DataMCComp4.C+\($d,\"w_pt_Z_ee\",1,$i,0,$n\)
-    root -l -q -b DataMCComp4.C+\($d,\"w_pt_Z_mm\",1,$i,0,$n\)
-    root -l -q -b DataMCComp4.C+\($d,\"w_Ht\",1,$i,0,$n\)
-    root -l -q -b DataMCComp4.C+\($d,\"w_delta_phi_ee\",1,$i,0,$n\)
-    root -l -q -b DataMCComp4.C+\($d,\"w_delta_phi_mm\",1,$i,0,$n\)
-    root -l -q -b DataMCComp4.C+\($d,\"w_mass_Zj_ee\",1,$i,0,$n\)
-    root -l -q -b DataMCComp4.C+\($d,\"w_mass_Zj_mm\",1,$i,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_pt_Z_ee\",1,$i,4,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_pt_Z_mm\",1,$i,4,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_Ht\",1,$i,4,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_delta_phi_ee\",1,$i,4,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_delta_phi_mm\",1,$i,4,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_mass_Zj_ee\",1,$i,4,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_mass_Zj_mm\",1,$i,4,0,$n\)
 
-    root -l -q -b DataMCComp4.C+\($d,\"w_y_Z_ee\",1,$i,0,$n\)
-    root -l -q -b DataMCComp4.C+\($d,\"w_y_Z_mm\",1,$i,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_y_Z_ee\",1,$i,4,0,$n\)
+    root -l -q -b DataMCComp4.C+\($d,\"w_y_Z_mm\",1,$i,4,0,$n\)
     root -l -q -b DataMCComp4.C+\($d,\"w_Phi_star_ee\",1,$i,4,0,$n\)
     root -l -q -b DataMCComp4.C+\($d,\"w_Phi_star_mm\",1,$i,4,0,$n\)
   fi
