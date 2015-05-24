@@ -177,26 +177,22 @@ private:
 
   };
 
-  bool compareDouble(double a, double b) {
-    double epsilon = 0.0001;
-    double diff = fabs(a - b);
-    
-    return ((diff < epsilon) && (diff > -epsilon)); 
-  };
-
-  bool findBjet(std::vector < pat::Jet > vect_jets, std::vector < pat::Jet > vect_bjets) {
-    bool find =  false;
+  bool findBjet(std::vector < pat::Jet >& vect_jets, std::vector < pat::Jet >& vect_bjets) {
     double pt_bj = vect_bjets[0].pt();
     double eta_bj = vect_bjets[0].eta();
 
-    for (unsigned int i = 0; i < vect_jets.size() && !find; i++) {
+    for (unsigned int i = 0; i < vect_jets.size(); i++) {
       double pt_j = vect_jets[i].pt();
       double eta_j = vect_jets[i].eta();
-      if (!compareDouble(pt_bj, pt_j) && !compareDouble(eta_bj, eta_j) && fabs(vect_bjets[i].partonFlavour()) == 5) {
-        find = true;
+
+      if (fabs(pt_j - pt_bj) > 0.0001 && fabs(eta_j - eta_bj) > 0.0001) {
+        if (fabs(vect_jets[i].partonFlavour()) == 5) {
+          return true;
+        }
       }
+
     }
-    return find;  
+    return false;  
   };
 
   double jetResolutionCorrection(double jetEta, double jetPt, double jetPtGen, int syst) {
