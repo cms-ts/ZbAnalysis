@@ -2782,16 +2782,16 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 	float N2b = 2561.60;
 	if (Nb == 1) {
 	  if (findBjet(vect_jets, vect_bjets)) {
-	    MyWeight = MyWeight * 1.1561 * (N1b+N2b)/(0.9309*N1b+1.1561*N2b);
+	    MyWeight = MyWeight * 1.15608 * (N1b+N2b)/(0.921469*N1b+1.15608*N2b);
 	  } else {
-	    MyWeight = MyWeight * 0.9309 * (N1b+N2b)/(0.9309*N1b+1.1561*N2b);
+	    MyWeight = MyWeight * 0.921469 * (N1b+N2b)/(0.921469*N1b+1.15608*N2b);
 	  }
 	}
 	if (Nb > 1) {
 	  if (fabs(vect_bjets[1].partonFlavour()) == 5) {
-	    MyWeight = MyWeight * 1.1561 * (N1b+N2b)/(0.9309*N1b+1.1561*N2b);
+	    MyWeight = MyWeight * 1.15608 * (N1b+N2b)/(0.921469*N1b+1.15608*N2b);
 	  } else {
-	    MyWeight = MyWeight * 0.9309 * (N1b+N2b)/(0.9309*N1b+1.1561*N2b);
+	    MyWeight = MyWeight * 0.921469 * (N1b+N2b)/(0.921469*N1b+1.15608*N2b);
 	  }
 	}
       }
@@ -2800,16 +2800,16 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 	float N2b = 2485.13;
 	if (Nb == 1) {
 	  if (findBjet(vect_jets, vect_bjets)) {
-	    MyWeight = MyWeight * 1.1628 * (N1b+N2b)/(0.9074*N1b+1.1628*N2b);
+	    MyWeight = MyWeight * 1.16292 * (N1b+N2b)/(0.907324*N1b+1.16292*N2b);
 	  } else {
-	    MyWeight = MyWeight * 0.9074 * (N1b+N2b)/(0.9074*N1b+1.1628*N2b);
+	    MyWeight = MyWeight * 0.907324 * (N1b+N2b)/(0.907324*N1b+1.16292*N2b);
 	  }
 	}
 	if (Nb > 1) {
 	  if (fabs(vect_bjets[1].partonFlavour()) == 5) {
-	    MyWeight = MyWeight * 1.1628 * (N1b+N2b)/(0.9074*N1b+1.1628*N2b);
+	    MyWeight = MyWeight * 1.16292 * (N1b+N2b)/(0.907324*N1b+1.16292*N2b);
 	  } else {
-	    MyWeight = MyWeight * 0.9074 * (N1b+N2b)/(0.9074*N1b+1.1628*N2b);
+	    MyWeight = MyWeight * 0.907324 * (N1b+N2b)/(0.907324*N1b+1.16292*N2b);
 	  }
 	}
       }
