@@ -123,8 +123,8 @@ if (numB==2) bbSig = true;
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (useDY==1 && numB==0) {
-	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.c3.root").c_str());
-	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.c3.root").c_str());
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_weights.root").c_str());
+	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
 	}
 	if (useDY==2) {
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
