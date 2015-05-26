@@ -139,6 +139,13 @@ if (numB==2) {
 
 	file->Close();
 
+	if (title=="w_DR_bb") {
+	  h_mcg_b->SetBinContent(1, h_mcg_b->GetBinContent(2));
+	  h_mcg1_b->SetBinContent(1, h_mcg1_b->GetBinContent(2));
+	  h_mcg2_b->SetBinContent(1, h_mcg2_b->GetBinContent(2));
+	  h_mcg3_b->SetBinContent(1, h_mcg3_b->GetBinContent(2));
+	}
+
 	if (!drawInclusive) {
 	  h_data_tot = (TH1F*)h_data_b_tot->Clone();
 	  h_data_stat = (TH1F*)h_data_b_stat->Clone();
@@ -255,6 +262,7 @@ if (numB==2) {
 	    h_mcg_b->SetMaximum(4*h_data_tot->GetMaximum());
           }
 	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b_tot->GetBinContent(h_data_b_tot->GetMinimumBin())));
+	  if (title=="w_DR_bb") h_mcg_b->SetMinimum(0.001);
 
 	  h_mcg_b->Draw("E5");
 	  TH1F* tmp2 = (TH1F*)h_mcg_b->Clone();
@@ -287,6 +295,12 @@ if (numB==2) {
 	  }
 	  tmp2_3->SetFillColor(0);
 	  tmp2_3->DrawClone("HISTLSAME");
+
+	  if (title=="w_DR_bb") {
+	    TBox* box = new TBox(0.2,0.01,0.75,0.2);
+	    box->SetFillColor(0);
+	    box->Draw();
+	  }
 
 	  h_data_b_tot->Draw("E1PX0SAME");
 	  h_data_b_stat->Draw("E1PX0SAME");
