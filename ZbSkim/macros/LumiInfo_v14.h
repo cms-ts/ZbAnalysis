@@ -33,7 +33,7 @@ double eXsec_dy_amc = 0;
 
 //////////////////////// DY Sherpa
 
-double Ngen_dy_1 = 126444144 * 43915740.0 / 127014144.0;
+double Ngen_dy_1 = 126489984 * 43915740.0 / 127014144.0;
 double Xsec_dy_1 = 3503.71; // NNLO
 double eXsec_dy_1 = 0;
 
