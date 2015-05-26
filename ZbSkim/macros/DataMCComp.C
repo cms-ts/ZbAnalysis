@@ -658,7 +658,6 @@ if (!h_mc1bb) bbBkg = 0;
           if (h_mc1c) xvalc = h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
 
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa.root").c_str());
-	  //mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
           if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
           if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
           if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());

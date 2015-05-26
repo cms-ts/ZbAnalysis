@@ -680,7 +680,6 @@ if (numB==2) bbSig = true;
           if (h_mc1c_b) xvalc = h_mc1c_b->Integral(0,h_mc1c_b->GetNbinsX()+1);
 
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
-	  //mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
           if (ilepton==1) mc1->cd(("demoEle"+postfix).c_str());
           if (ilepton==2) mc1->cd(("demoMuo"+postfix).c_str());
           if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
