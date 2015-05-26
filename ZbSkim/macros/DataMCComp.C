@@ -702,8 +702,10 @@ if (!h_mc1bb) bbBkg = 0;
 	    h_mc1->SetBinError(i, TMath::Sqrt(e));
 	  }
 
-	  xval = xval / h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
-	  h_mc1->Scale(xval);
+	  if (h_mc1->Integral(0,h_mc1->GetNbinsX()+1)!=0) {
+	    xval = xval / h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
+	    h_mc1->Scale(xval);
+	  }
 
 	  //if (h_mc1b) {
 	  //  xvalb = xvalb / h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
@@ -713,8 +715,10 @@ if (!h_mc1bb) bbBkg = 0;
 	  h_mc1b = h_mc1b_tmp;
 
 	  if (h_mc1c) {
-	    xvalc = xvalc / h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
-	    h_mc1c->Scale(xvalc);
+	    if (h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1)!=0) {
+	      xvalc = xvalc / h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
+	      h_mc1c->Scale(xvalc);
+	    }
 	  }
 
 	  h_mc1 -> SetLineColor(kBlack);
