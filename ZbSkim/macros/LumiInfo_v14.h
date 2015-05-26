@@ -40,7 +40,7 @@ double eXsec_dy_1 = 0;
 //////////////////////// DY Powheg
 
 double Ngen_dy_2_ee = 3297045; // EE
-double Ngen_dy_2_mm = 3283740; // MM
+double Ngen_dy_2_mm = 3283850; // MM
 double Xsec_dy_2 = 5745.25/3.0; // NNLO
 double eXsec_dy_2 = 0;
 
