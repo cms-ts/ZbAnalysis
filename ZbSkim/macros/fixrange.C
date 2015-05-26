@@ -15,12 +15,13 @@ TH1F* fixrange(TH1F* old, int numB) {
     x1 = 30.;
     x2 = 300.;
     if (numB==2) {
-      if (name.find("first")!=string::npos) x2 = 250.;
-      if (name.find("second")!=string::npos) x2 = 150.;
+      if (name.find("first")!=string::npos) x2 = 200.;
+      if (name.find("second")!=string::npos) x2 = 120.;
     }
   } else if (name.find("pt_Z")!=string::npos) {
     x1 = 0.;
     x2 = 300.;
+    if (numB==2) x2 = 230.;
   } else {
     x1 = old->GetXaxis()->GetBinCenter(1);
     x2 = old->GetXaxis()->GetBinCenter(old->GetNbinsX());
@@ -69,12 +70,13 @@ TH2F* fixrange(TH2F* old, int numB) {
     x1 = 30.;
     x2 = 300.;
     if (numB==2) {
-      if (name.find("first")!=string::npos) x2 = 250.;
-      if (name.find("second")!=string::npos) x2 = 150.;
+      if (name.find("first")!=string::npos) x2 = 200.;
+      if (name.find("second")!=string::npos) x2 = 120.;
     }
   } else if (name.find("pt_Z")!=string::npos) {
     x1 = 0.;
     x2 = 300.;
+    if (numB==2) x2 = 230.;
   } else {
     x1 = old->GetXaxis()->GetBinCenter(1);
     x2 = old->GetXaxis()->GetBinCenter(old->GetNbinsX());
