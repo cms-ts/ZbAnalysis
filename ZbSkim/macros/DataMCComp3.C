@@ -120,10 +120,10 @@ if (numB==2) bbSig = true;
           if (title.find("ee")!=string::npos) return;
         }
 
-	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
+	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (useDY==1 && numB==0) {
-	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_weights.root").c_str());
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
 	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
 	}
 	if (useDY==2) {
