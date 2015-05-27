@@ -1118,7 +1118,7 @@ if (!h_mc1bb) bbBkg = 0;
 	h_data->SetMarkerColor(kBlack);
 	h_data->SetMarkerStyle(20);
 	h_data->SetMarkerSize (1.0);
-	if (title=="w_delta_phi_2b" || title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b" || numB==0) h_data->SetStats(0);
+	h_data->SetStats(0);
 
 	TLegend *leg;
 	if (doBkg) {
