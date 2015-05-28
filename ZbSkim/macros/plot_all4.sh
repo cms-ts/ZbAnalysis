@@ -284,7 +284,6 @@ while [ $i -le 2 ]; do
     root -l -q -b DataMCComp4.C+\($d,\"w_delta_phi_2b\",1,$i,3,0,$n\)
   fi
 
-
   i=$((i+1))
 done
 
