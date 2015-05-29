@@ -1651,7 +1651,7 @@ if (numB==2) {
 	      out << std::fixed;
 	      out << std::setw(2) << i;
 	      out << " ";
-	      out << std::setprecision(6);
+	      out << std::setprecision(7);
 	      out << std::setw(11) << h_data->GetBinContent(i);
 	      out << " +- ";
 	      out << std::setw(9) << h_data->GetBinError(i);
@@ -1754,7 +1754,7 @@ if (numB==2) {
 	    out << std::fixed;
 	    out << std::setw(2) << i;
 	    out << " ";
-	    out << std::setprecision(6);
+	    out << std::setprecision(7);
 	    out << std::setw(11) << h_data_b->GetBinContent(i);
 	    out << " +- ";
 	    out << std::setw(9) << h_data_b->GetBinError(i);
