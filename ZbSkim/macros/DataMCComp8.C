@@ -2041,7 +2041,7 @@ if (numB==2) {
 	      out << std::setw(10) << h_data_tot->GetBinError(i);
 	      out << " => ";
 	      out << std::setprecision(1);
-	      out << std::setw(4) << 100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i));
+	      out << std::setw(4) << TMath::Abs(100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i)));
 	      out << endl;
 	    }
 	  }
@@ -2126,7 +2126,7 @@ if (numB==2) {
 	    out << std::setw(10) << h_data_b_tot->GetBinError(i);
 	    out << " => ";
 	    out << std::setprecision(1);
-	    out << std::setw(4) << 100.*(h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_stat->GetBinContent(i));
+	    out << std::setw(4) << TMath::Abs(100.*(h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_stat->GetBinContent(i)));
 	    out << endl;
 	  }
 	  out.close();
@@ -2170,7 +2170,7 @@ if (numB==2) {
 	    out1 << std::setw(9) << "error";
 	    out1 << endl;
 	    for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	      double val = 100.*(h_data->GetBinContent(i)==0 ? 0 : 1./h_data->GetBinContent(i));
+	      double val = TMath::Abs(100.*(h_data->GetBinContent(i)==0 ? 0 : 1./h_data->GetBinContent(i)));
 	      out1 << std::fixed;
 	      out1 << std::setw(2) << i;
 	      out1 << " ";
@@ -2250,7 +2250,7 @@ if (numB==2) {
 	  out1 << std::setw(9) << "error";
 	  out1 << endl;
 	  for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
-	    double val = 100.*(h_data_b->GetBinContent(i)==0 ? 0 : 1./h_data_b->GetBinContent(i));
+	    double val = TMath::Abs(100.*(h_data_b->GetBinContent(i)==0 ? 0 : 1./h_data_b->GetBinContent(i)));
 	    out1 << std::fixed;
 	    out1 << std::setw(2) << i;
 	    out1 << " ";
@@ -2331,7 +2331,7 @@ if (numB==2) {
 	    out2 << std::setw(8) << "\\textbf{error & ";
 	    out2 << endl;
 	    /*for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
-	      double val = 100.*(h_data->GetBinContent(i)==0 ? 0 : 1./h_data->GetBinContent(i));
+	      double val = TMath::Abs(100.*(h_data->GetBinContent(i)==0 ? 0 : 1./h_data->GetBinContent(i)));
 	      out2 << std::fixed;
 	      out2 << std::setw(2) << i;
 	      out2 << " ";
@@ -2412,7 +2412,7 @@ if (numB==2) {
 	  out2 << std::setw(8) << "\\textbf{error} &";
 	  out2 << endl;*/
 	  for (int i=1;i<=h_data_b->GetNbinsX()+1;i++) {
-	    double val = 100.*(h_data_b->GetBinContent(i)==0 ? 0 : 1./h_data_b->GetBinContent(i));
+	    double val = TMath::Abs(100.*(h_data_b->GetBinContent(i)==0 ? 0 : 1./h_data_b->GetBinContent(i)));
 	    out2 << std::fixed;
 	    out2 << std::setw(2) << i;
 	    out2 << " & ";
