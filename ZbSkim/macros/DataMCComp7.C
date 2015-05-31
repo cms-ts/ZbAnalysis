@@ -109,10 +109,10 @@ if (numB==2) {
 	  in >> c_uds >> ec_uds;
 	  in >> c_b >> ec_b;
 	  in >> c_c >> ec_c;
-        }
-        else {
-          in >> c_b >> ec_b;
-        }
+	}
+	else {
+	  in >> c_b >> ec_b;
+	}
 	in.close();
 
 	double Lumi2012=0;
@@ -145,33 +145,33 @@ if (numB==2) {
 	if (ilepton==1) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	if (ilepton==2) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	if (useNewPowheg) {
-          Ngen_dy_2_ee = 100*10000;
-          Ngen_dy_2_mm = 100*10000;
-          Xsec_dy_2 = 333.866;
-          norm1_2 = ((Lumi2012 * Xsec_dy_2) / ((Ngen_dy_2_ee+Ngen_dy_2_mm)/2.));
-          if (ilepton==1) mcg2 = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_ele.root").c_str());
-          if (ilepton==2) mcg2 = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_muo.root").c_str());
-        }
+	  Ngen_dy_2_ee = 100*10000;
+	  Ngen_dy_2_mm = 100*10000;
+	  Xsec_dy_2 = 333.866;
+	  norm1_2 = ((Lumi2012 * Xsec_dy_2) / ((Ngen_dy_2_ee+Ngen_dy_2_mm)/2.));
+	  if (ilepton==1) mcg2 = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_ele.root").c_str());
+	  if (ilepton==2) mcg2 = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_muo.root").c_str());
+	}
 
-        TFile *mcg3 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
+	TFile *mcg3 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
 
 	string title_b = title;
 
-        if (drawInclusive) {
+	if (drawInclusive) {
 	  if (title.find("_bjet_")!=string::npos) {
 	    title.erase(title.find("_bjet_")+1, 1);
 	  } else {
 	    title_b = title + "_b";
-          }
-        }
+	  }
+	}
 
 	TH1F* h_data;
 	TH1F* h_data_b;
-        h_data = read(subdir, title, ilepton, dirbSel);
-        h_data_b = read(subdir, title_b, ilepton, dirbSel);
-        if (drawInclusive) {
-          h_data = (TH1F*)h_data->Clone();
-        }
+	h_data = read(subdir, title, ilepton, dirbSel);
+	h_data_b = read(subdir, title_b, ilepton, dirbSel);
+	if (drawInclusive) {
+	  h_data = (TH1F*)h_data->Clone();
+	}
 	h_data->SetStats(0);
 	h_data_b->SetStats(0);
 
@@ -240,12 +240,12 @@ if (numB==2) {
 	if (!h_mcg3) h_mcg3 = (TH1F*)h_mcg->Clone();
 	if (!h_mcg3_b) h_mcg3_b = (TH1F*)h_mcg_b->Clone();
 
-        if (!drawInclusive) {
-          h_mc1 = (TH1F*)h_mc1->Clone();
-          h_mcg = (TH1F*)h_mcg->Clone();
-          h_mcg1 = (TH1F*)h_mcg1->Clone();
-          h_mcg2 = (TH1F*)h_mcg2->Clone();
-          h_mcg3 = (TH1F*)h_mcg3->Clone();
+	if (!drawInclusive) {
+	  h_mc1 = (TH1F*)h_mc1->Clone();
+	  h_mcg = (TH1F*)h_mcg->Clone();
+	  h_mcg1 = (TH1F*)h_mcg1->Clone();
+	  h_mcg2 = (TH1F*)h_mcg2->Clone();
+	  h_mcg3 = (TH1F*)h_mcg3->Clone();
 	}
 
 	h_mc1->Sumw2();
@@ -267,7 +267,7 @@ if (numB==2) {
 	  h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
-        if (ilepton==1) {
+	if (ilepton==1) {
 	  TFile f((path + "/electrons/" + version + "/" + subdir +"/efficiency" + dirbSel + "/" + string(h_data->GetName()) + "_efficiency.root").c_str());
 	  TFile f_b((path + "/electrons/" + version + "/" + subdir +"/efficiency" + dirbSel + "/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
 	  TH1F* h = (TH1F*)f.Get(h_data->GetName())->Clone();
@@ -278,7 +278,7 @@ if (numB==2) {
 	  f_b.Close();
 	  h_mc1->Divide(h);
 	  h_mc1b_b->Divide(h_b);
-        }
+	}
 	if (ilepton==2) {
 	  TFile f((path + "/muons/" + version + "/" + subdir +"/efficiency" + dirbSel + "/" + string(h_data->GetName()) + "_efficiency.root").c_str());
 	  TFile f_b((path + "/muons/" + version + "/" + subdir +"/efficiency" + dirbSel + "/" + string(h_data_b->GetName()) + "_efficiency.root").c_str());
@@ -290,7 +290,7 @@ if (numB==2) {
 	  f_b.Close();
 	  h_mc1->Divide(h);
 	  h_mc1b_b->Divide(h_b);
-        }
+	}
 
 	h_data = fixrange(h_data, numB);
 	h_data_b = fixrange(h_data_b, numB);
@@ -525,12 +525,12 @@ if (numB==2) {
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  double val = 0.0;
-          if (numB!=2) {
+	  if (numB!=2) {
 	    val = btag_sys * h_data_b_scan[0]->GetBinContent(i);
-          }
-          if (numB==2) {
-            val = 2* btag_sys * h_data_b_scan[0]->GetBinContent(i);
-          }
+	  }
+	  if (numB==2) {
+	    val = 2* btag_sys * h_data_b_scan[0]->GetBinContent(i);
+	  }
 	  syst_b_btag->SetBinError(i, val);
 	}
 
@@ -771,40 +771,40 @@ if (numB==2) {
 	h_data_b_tot->SetLineColor(kRed+1);
 	//h_data_b_tot->SetMarkerSize(0.7);
 	h_data_b_tot->SetStats(0);
-        if (isratio==0) {
-          h_data_b_tot->SetMarkerStyle(24);
-          h_data_b_tot->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_data_b_tot->SetMarkerStyle(22);
-          h_data_b_tot->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_data_b_tot->SetMarkerStyle(24);
+	  h_data_b_tot->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_data_b_tot->SetMarkerStyle(22);
+	  h_data_b_tot->SetMarkerSize(0.9);
+	}
 	h_data_b_stat->GetYaxis()->SetTitleOffset(1.2);
 	h_data_b_stat->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_stat->SetMarkerColor(kBlack);
 	h_data_b_stat->SetLineColor(kBlack);
 	//h_data_b_stat->SetMarkerSize(0.7);
 	h_data_b_stat->SetStats(0);
-        if (isratio==0) {
-          h_data_b_stat->SetMarkerStyle(24);
-          h_data_b_stat->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_data_b_stat->SetMarkerStyle(22);
-          h_data_b_stat->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_data_b_stat->SetMarkerStyle(24);
+	  h_data_b_stat->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_data_b_stat->SetMarkerStyle(22);
+	  h_data_b_stat->SetMarkerSize(0.9);
+	}
 	if (isratio==1) {
 	  h_data_b_tot->Draw("E1PX0SAME");
 	  h_data_b_stat->Draw("E1PX0SAME");
 	}
 
-        TLegend *leg = NULL;
-        if (isratio==0) {
-          leg = new TLegend(0.64, 0.590, 0.88, 0.88);
-        }
-        if (isratio) {
-          leg = new TLegend(0.52, 0.510, 0.90, 0.88);
-        }
+	TLegend *leg = NULL;
+	if (isratio==0) {
+	  leg = new TLegend(0.64, 0.590, 0.88, 0.88);
+	}
+	if (isratio) {
+	  leg = new TLegend(0.52, 0.510, 0.90, 0.88);
+	}
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
@@ -1012,24 +1012,24 @@ if (numB==2) {
 	h_M_stat->SetLineWidth(1);
 	//h_M_stat->SetMarkerSize(0.7);
 
-        if (isratio==0) {
-          h_M_tot->SetMarkerStyle(24);
-          h_M_tot->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_M_tot->SetMarkerStyle(22);
-          h_M_tot->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_M_tot->SetMarkerStyle(24);
+	  h_M_tot->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_M_tot->SetMarkerStyle(22);
+	  h_M_tot->SetMarkerSize(0.9);
+	}
 	h_M_tot->Draw("E1PX0");
 	h_M_tot->Draw("E0PX0SAME");
-        if (isratio==0) {
-          h_M_stat->SetMarkerStyle(24);
-          h_M_stat->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_M_stat->SetMarkerStyle(22);
-          h_M_stat->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_M_stat->SetMarkerStyle(24);
+	  h_M_stat->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_M_stat->SetMarkerStyle(22);
+	  h_M_stat->SetMarkerSize(0.9);
+	}
 
 	h_M_stat->Draw("E1PX0SAME");
 	h_M_stat->Draw("E0PX0SAME");
@@ -1137,14 +1137,14 @@ if (numB==2) {
 	h_S_stat->SetLineWidth(1);
 	//h_S_stat->SetMarkerSize(0.7);
 
-        if (isratio==0) {
-          h_S_tot->SetMarkerStyle(24);
-          h_S_tot->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_S_tot->SetMarkerStyle(22);
-          h_S_tot->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_S_tot->SetMarkerStyle(24);
+	  h_S_tot->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_S_tot->SetMarkerStyle(22);
+	  h_S_tot->SetMarkerSize(0.9);
+	}
 	if (useSherpa) {
 	  h_S_tot->Draw("E1PX0");
 	  h_S_tot->Draw("E0PX0SAME");
@@ -1156,14 +1156,14 @@ if (numB==2) {
 	  h_S_tot->Draw("E1PX0");
 	  h_S_tot->Draw("E0PX0SAME");
 	}
-        if (isratio==0) {
-          h_S_stat->SetMarkerStyle(24);
-          h_S_stat->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_S_stat->SetMarkerStyle(22);
-          h_S_stat->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_S_stat->SetMarkerStyle(24);
+	  h_S_stat->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_S_stat->SetMarkerStyle(22);
+	  h_S_stat->SetMarkerSize(0.9);
+	}
 	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
 	if (useSherpa) h_S_stat->Draw("E0PX0SAME");
 
@@ -1272,24 +1272,24 @@ if (numB==2) {
 	h_P_stat->SetLineWidth(1);
 	//h_P_stat->SetMarkerSize(0.7);
 
-        if (isratio==0) {
-          h_P_tot->SetMarkerStyle(24);
-          h_P_tot->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_P_tot->SetMarkerStyle(22);
-          h_P_tot->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_P_tot->SetMarkerStyle(24);
+	  h_P_tot->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_P_tot->SetMarkerStyle(22);
+	  h_P_tot->SetMarkerSize(0.9);
+	}
 	h_P_tot->Draw("E1PX0");
 	h_P_tot->Draw("E0PX0SAME");
-        if (isratio==0) {
-          h_P_stat->SetMarkerStyle(24);
-          h_P_stat->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_P_stat->SetMarkerStyle(22);
-          h_P_stat->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_P_stat->SetMarkerStyle(24);
+	  h_P_stat->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_P_stat->SetMarkerStyle(22);
+	  h_P_stat->SetMarkerSize(0.9);
+	}
 	h_P_stat->Draw("E1PX0SAME");
 	h_P_stat->Draw("E0PX0SAME");
 
@@ -1389,36 +1389,36 @@ if (numB==2) {
 	  g_M3_stat->SetMarkerStyle(25);
 	  g_M3_tot->SetMarkerStyle(25);
 	} else {
-          if (isratio==0) {
-            g_M3_stat->SetMarkerStyle(24);
-            g_M3_stat->SetMarkerSize(0.7);
-          }
-          if (isratio==1) {
-            g_M3_stat->SetMarkerStyle(22);
-            g_M3_stat->SetMarkerSize(0.9);
-          }
+	  if (isratio==0) {
+	    g_M3_stat->SetMarkerStyle(24);
+	    g_M3_stat->SetMarkerSize(0.7);
+	  }
+	  if (isratio==1) {
+	    g_M3_stat->SetMarkerStyle(22);
+	    g_M3_stat->SetMarkerSize(0.9);
+	  }
 	  g_M3_stat->SetMarkerColor(kBlack);
-          if (isratio==0) {
-            g_M3_tot->SetMarkerStyle(24);
-            g_M3_tot->SetMarkerSize(0.7);
-          }
-          if (isratio==1) {
-            g_M3_tot->SetMarkerStyle(22);
-            g_M3_tot->SetMarkerSize(0.9);
-          }
+	  if (isratio==0) {
+	    g_M3_tot->SetMarkerStyle(24);
+	    g_M3_tot->SetMarkerSize(0.7);
+	  }
+	  if (isratio==1) {
+	    g_M3_tot->SetMarkerStyle(22);
+	    g_M3_tot->SetMarkerSize(0.9);
+	  }
 	  g_M3_tot->SetMarkerColor(kBlack);
 	}
 	if (useSherpa) {
 	  g_M3_tot->SetMarkerStyle(25);
 	} else {
-          if (isratio==0) {
-            g_M3_tot->SetMarkerStyle(24);
-            g_M3_tot->SetMarkerSize(0.7);
-          }
-          if (isratio==1) {
-            g_M3_tot->SetMarkerStyle(22);
-            g_M3_tot->SetMarkerSize(0.9);
-          }
+	  if (isratio==0) {
+	    g_M3_tot->SetMarkerStyle(24);
+	    g_M3_tot->SetMarkerSize(0.7);
+	  }
+	  if (isratio==1) {
+	    g_M3_tot->SetMarkerStyle(22);
+	    g_M3_tot->SetMarkerSize(0.9);
+	  }
 	}
 	g_M3_tot->Draw("E1P");
 	g_M3_tot->Draw("E0PSAME");
@@ -1666,8 +1666,8 @@ if (numB==2) {
 	      out << " +- ";
 	      out << std::setw(10) << syst_pu->GetBinError(i);
 	      if (useSysDR) {
-	        out << " +- ";
-	        out << std::setw(10) << syst_dr->GetBinError(i);
+		out << " +- ";
+		out << std::setw(10) << syst_dr->GetBinError(i);
 	      }
 	      out << " +- ";
 	      out << std::setw(10) << syst_bkg->GetBinError(i);
@@ -1676,8 +1676,8 @@ if (numB==2) {
 	      out << " +- ";
 	      out << std::setw(10) << stat_bfit->GetBinError(i);
 	      if (useSysBfit2) {
-	        out << " +- ";
-	        out << std::setw(10) << syst_bfit2->GetBinError(i);
+		out << " +- ";
+		out << std::setw(10) << syst_bfit2->GetBinError(i);
 	      }
 	      out << " +- ";
 	      out << std::setw(10) << syst_btag->GetBinError(i);
@@ -1688,8 +1688,8 @@ if (numB==2) {
 	      out << " +- ";
 	      out << std::setw(10) << syst_lumi->GetBinError(i);
 	      if (useSysRMS) {
-	        out << " +- ";
-	        out << std::setw(10) << h_data->GetBinContent(i)*(rms/tot);
+		out << " +- ";
+		out << std::setw(10) << h_data->GetBinContent(i)*(rms/tot);
 	      }
 	      out << " => ";
 	      out << std::setw(10) << h_data_stat->GetBinError(i);
@@ -1867,8 +1867,8 @@ if (numB==2) {
 	      out1 << " +- ";
 	      out1 << std::setw(5) << syst_pu->GetBinError(i)*val;
 	      if (useSysDR) {
-	        out1 << " +- ";
-	        out1 << std::setw(5) << syst_dr->GetBinError(i)*val;
+		out1 << " +- ";
+		out1 << std::setw(5) << syst_dr->GetBinError(i)*val;
 	      }
 	      out1 << " +- ";
 	      out1 << std::setw(5) << syst_bkg->GetBinError(i)*val;
@@ -1877,8 +1877,8 @@ if (numB==2) {
 	      out1 << " +- ";
 	      out1 << std::setw(5) << stat_bfit->GetBinError(i)*val;
 	      if (useSysBfit2) {
-	        out1 << " +- ";
-	        out1 << std::setw(5) << syst_bfit2->GetBinError(i)*val;
+		out1 << " +- ";
+		out1 << std::setw(5) << syst_bfit2->GetBinError(i)*val;
 	      }
 	      out1 << " +- ";
 	      out1 << std::setw(5) << syst_btag->GetBinError(i)*val;
@@ -1889,8 +1889,8 @@ if (numB==2) {
 	      out1 << " +- ";
 	      out1 << std::setw(5) << syst_lumi->GetBinError(i)*val;
 	      if (useSysRMS) {
-	        out1 << " +- ";
-	        out1 << std::setw(5) << h_data->GetBinContent(i)*(rms/tot)*val;
+		out1 << " +- ";
+		out1 << std::setw(5) << h_data->GetBinContent(i)*(rms/tot)*val;
 	      }
 	      out1 << " => ";
 	      out1 << std::setw(5) << h_data_stat->GetBinError(i)*val;

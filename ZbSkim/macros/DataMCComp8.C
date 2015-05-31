@@ -146,10 +146,10 @@ if (numB==2) {
 	mcg2[0] = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	mcg2[1] = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	if (useNewPowheg) {
-          Ngen_dy_2_ee = 100*10000;
-          Ngen_dy_2_mm = 100*10000;
+	  Ngen_dy_2_ee = 100*10000;
+	  Ngen_dy_2_mm = 100*10000;
 	  Xsec_dy_2 = 333.866;
-          norm1_2 = ((Lumi2012 * Xsec_dy_2) / ((Ngen_dy_2_ee+Ngen_dy_2_mm)/2.));
+	  norm1_2 = ((Lumi2012 * Xsec_dy_2) / ((Ngen_dy_2_ee+Ngen_dy_2_mm)/2.));
 	  mcg2[0] = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_ele.root").c_str());
 	  mcg2[1] = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_muo.root").c_str());
 	}
@@ -157,13 +157,13 @@ if (numB==2) {
 
 	string title_b = title;
 
-        if (numB==0) {
+	if (numB==0) {
 	  if (title.find("_bjet_")!=string::npos) {
 	    title.erase(title.find("_bjet_")+1, 1);
 	  } else {
 	    title_b = title + "_b";
 	  }
-        }
+	}
 
 	TH1F* w_data[2];
 	TH1F* w_data_b[2];
@@ -415,10 +415,10 @@ if (numB==2) {
 	    if (title_b=="w_delta_phi_b") title_b_tmp="w_delta_phi_ee_b";
 	    if (title_b=="w_mass_Zj") title_b_tmp="w_mass_Zj_ee";
 	    if (title_b=="w_mass_Zj_b") title_b_tmp="w_mass_Zj_ee_b";
-            if (title_b=="w_Zbb_mass") title_b_tmp="w_eebb_mass";
-            if (title_b=="w_DR_Zb_min") title_b_tmp="w_DR_eeb_min";
-            if (title_b=="w_DR_Zb_max") title_b_tmp="w_DR_eeb_max";
-            if (title_b=="w_A_Zb") title_b_tmp="w_A_eeb";
+	    if (title_b=="w_Zbb_mass") title_b_tmp="w_eebb_mass";
+	    if (title_b=="w_DR_Zb_min") title_b_tmp="w_DR_eeb_min";
+	    if (title_b=="w_DR_Zb_max") title_b_tmp="w_DR_eeb_max";
+	    if (title_b=="w_A_Zb") title_b_tmp="w_A_eeb";
 	    if (isratio==0) in.open((path + "/electrons/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
 	    if (isratio==1) in.open((path + "/electrons/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b_tmp + "_ratio_unfolding.dat").c_str());
 	  }
@@ -429,11 +429,11 @@ if (numB==2) {
 	    if (title_b=="w_delta_phi_b") title_b_tmp="w_delta_phi_mm_b";
 	    if (title_b=="w_mass_Zj") title_b_tmp="w_mass_Zj_mm";
 	    if (title_b=="w_mass_Zj_b") title_b_tmp="w_mass_Zj_mm_b";
-            if (title_b=="w_Zbb_mass") title_b_tmp="w_mmbb_mass";
-            if (title_b=="w_DR_Zb_min") title_b_tmp="w_DR_mmb_min";
-            if (title_b=="w_DR_Zb_max") title_b_tmp="w_DR_mmb_max";
-            if (title_b=="w_A_Zb") title_b_tmp="w_A_mmb";
-            if (isratio==0) in.open((path + "/muons/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
+	    if (title_b=="w_Zbb_mass") title_b_tmp="w_mmbb_mass";
+	    if (title_b=="w_DR_Zb_min") title_b_tmp="w_DR_mmb_min";
+	    if (title_b=="w_DR_Zb_max") title_b_tmp="w_DR_mmb_max";
+	    if (title_b=="w_A_Zb") title_b_tmp="w_A_mmb";
+	    if (isratio==0) in.open((path + "/muons/" + version + "/" + "/xsecs_unfolding" + dirbSel + "/" + title_b_tmp + "_xsecs_unfolding.dat").c_str());
 	    if (isratio==1) in.open((path + "/muons/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b_tmp + "_ratio_unfolding.dat").c_str());
 	  }
 
@@ -755,22 +755,22 @@ if (numB==2) {
 	  val = TMath::Sqrt((TMath::Power(val,2)-TMath::Power(ref,2))/(TMath::Power(1.1,2)-1));
 	  syst_bfit2->SetBinError(i, val);
 	  val = calc(1, w_data[0]->GetBinContent(i), w_data[1]->GetBinContent(i),
-                        w_data[0]->GetBinError(i), w_data[1]->GetBinError(i),
-                        w_stat_bkg[0]->GetBinError(i), w_stat_bkg[1]->GetBinError(i),
-                        w_syst_eff[0]->GetBinError(i), w_syst_eff[1]->GetBinError(i),
-                        w_syst_jer[0]->GetBinError(i), w_syst_jer[1]->GetBinError(i),
-                        w_syst_jec[0]->GetBinError(i), w_syst_jec[1]->GetBinError(i),
-                        w_syst_pu[0]->GetBinError(i), w_syst_pu[1]->GetBinError(i),
-                        w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
-                        w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
-                        w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-                        w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
+	                w_data[0]->GetBinError(i), w_data[1]->GetBinError(i),
+	                w_stat_bkg[0]->GetBinError(i), w_stat_bkg[1]->GetBinError(i),
+	                w_syst_eff[0]->GetBinError(i), w_syst_eff[1]->GetBinError(i),
+	                w_syst_jer[0]->GetBinError(i), w_syst_jer[1]->GetBinError(i),
+	                w_syst_jec[0]->GetBinError(i), w_syst_jec[1]->GetBinError(i),
+	                w_syst_pu[0]->GetBinError(i), w_syst_pu[1]->GetBinError(i),
+	                w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
+	                w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
+	                w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
+	                w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			1.1*w_syst_btag[0]->GetBinError(i), 1.1*w_syst_btag[1]->GetBinError(i),
-                        w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
-                        w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
-                        w_syst_lumi[0]->GetBinError(i), w_syst_lumi[1]->GetBinError(i));
-          val = TMath::Sqrt((TMath::Power(val,2)-TMath::Power(ref,2))/(TMath::Power(1.1,2)-1));
-          syst_btag->SetBinError(i, val);
+	                w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
+	                w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
+	                w_syst_lumi[0]->GetBinError(i), w_syst_lumi[1]->GetBinError(i));
+	  val = TMath::Sqrt((TMath::Power(val,2)-TMath::Power(ref,2))/(TMath::Power(1.1,2)-1));
+	  syst_btag->SetBinError(i, val);
 	  val = calc(1, w_data[0]->GetBinContent(i), w_data[1]->GetBinContent(i),
 			w_data[0]->GetBinError(i), w_data[1]->GetBinError(i),
 			w_stat_bkg[0]->GetBinError(i), w_stat_bkg[1]->GetBinError(i),
@@ -1038,23 +1038,23 @@ if (numB==2) {
 			w_syst_b_lumi[0]->GetBinError(i), w_syst_b_lumi[1]->GetBinError(i));
 	  val = TMath::Sqrt((TMath::Power(val,2)-TMath::Power(ref,2))/(TMath::Power(1.1,2)-1));
 	  syst_b_bfit2->SetBinError(i, val);
-          val = calc(1, w_data_b[0]->GetBinContent(i), w_data_b[1]->GetBinContent(i),
-                        w_data_b[0]->GetBinError(i), w_data_b[1]->GetBinError(i),
-                        w_stat_b_bkg[0]->GetBinError(i), w_stat_b_bkg[1]->GetBinError(i),
-                        w_syst_b_eff[0]->GetBinError(i), w_syst_b_eff[1]->GetBinError(i),
-                        w_syst_b_jer[0]->GetBinError(i), w_syst_b_jer[1]->GetBinError(i),
-                        w_syst_b_jec[0]->GetBinError(i), w_syst_b_jec[1]->GetBinError(i),
-                        w_syst_b_pu[0]->GetBinError(i), w_syst_b_pu[1]->GetBinError(i),
-                        w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
-                        w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
-                        w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-                        w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
-                        1.1*w_syst_b_btag[0]->GetBinError(i), 1.1*w_syst_b_btag[1]->GetBinError(i),
-                        w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
-                        w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
-                        w_syst_b_lumi[0]->GetBinError(i), w_syst_b_lumi[1]->GetBinError(i));
-          val = TMath::Sqrt((TMath::Power(val,2)-TMath::Power(ref,2))/(TMath::Power(1.1,2)-1));
-          syst_b_btag->SetBinError(i, val);
+	  val = calc(1, w_data_b[0]->GetBinContent(i), w_data_b[1]->GetBinContent(i),
+	                w_data_b[0]->GetBinError(i), w_data_b[1]->GetBinError(i),
+	                w_stat_b_bkg[0]->GetBinError(i), w_stat_b_bkg[1]->GetBinError(i),
+	                w_syst_b_eff[0]->GetBinError(i), w_syst_b_eff[1]->GetBinError(i),
+	                w_syst_b_jer[0]->GetBinError(i), w_syst_b_jer[1]->GetBinError(i),
+	                w_syst_b_jec[0]->GetBinError(i), w_syst_b_jec[1]->GetBinError(i),
+	                w_syst_b_pu[0]->GetBinError(i), w_syst_b_pu[1]->GetBinError(i),
+	                w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
+	                w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
+	                w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
+	                w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
+	                1.1*w_syst_b_btag[0]->GetBinError(i), 1.1*w_syst_b_btag[1]->GetBinError(i),
+	                w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
+	                w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
+	                w_syst_b_lumi[0]->GetBinError(i), w_syst_b_lumi[1]->GetBinError(i));
+	  val = TMath::Sqrt((TMath::Power(val,2)-TMath::Power(ref,2))/(TMath::Power(1.1,2)-1));
+	  syst_b_btag->SetBinError(i, val);
 	  val = calc(1, w_data_b[0]->GetBinContent(i), w_data_b[1]->GetBinContent(i),
 			w_data_b[0]->GetBinError(i), w_data_b[1]->GetBinError(i),
 			w_stat_b_bkg[0]->GetBinError(i), w_stat_b_bkg[1]->GetBinError(i),
@@ -1166,47 +1166,47 @@ if (numB==2) {
 
 	if (isratio==1) {
 	  h_data_b_tot->GetYaxis()->SetTitle("#sigma_{Z+b-jets}/#sigma_{Z+jets} [%]");
-        }
+	}
 	h_data_b_tot->GetYaxis()->SetTitleOffset(1.2);
 	h_data_b_tot->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_tot->SetMarkerColor(kRed+1);
 	h_data_b_tot->SetLineColor(kRed+1);
 	//h_data_b_tot->SetMarkerSize(0.7);
 	h_data_b_tot->SetStats(0);
-        if (isratio==0) {
-          h_data_b_tot->SetMarkerStyle(24);
-          h_data_b_tot->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_data_b_tot->SetMarkerStyle(22);
-          h_data_b_tot->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_data_b_tot->SetMarkerStyle(24);
+	  h_data_b_tot->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_data_b_tot->SetMarkerStyle(22);
+	  h_data_b_tot->SetMarkerSize(0.9);
+	}
 	h_data_b_stat->GetYaxis()->SetTitleOffset(1.2);
 	h_data_b_stat->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_stat->SetMarkerColor(kBlack);
 	h_data_b_stat->SetLineColor(kBlack);
 	//h_data_b_stat->SetMarkerSize(0.7);
 	h_data_b_stat->SetStats(0);
-        if (isratio==0) {
-          h_data_b_stat->SetMarkerStyle(24);
-          h_data_b_stat->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_data_b_stat->SetMarkerStyle(22);
-          h_data_b_stat->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_data_b_stat->SetMarkerStyle(24);
+	  h_data_b_stat->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_data_b_stat->SetMarkerStyle(22);
+	  h_data_b_stat->SetMarkerSize(0.9);
+	}
 	if (isratio==1) {
 	  h_data_b_tot->Draw("E1PX0SAME");
 	  h_data_b_stat->Draw("E1PX0SAME");
 	}
 
-        TLegend *leg = NULL;
-        if (isratio==0) {
+	TLegend *leg = NULL;
+	if (isratio==0) {
 	  leg = new TLegend(0.64, 0.590, 0.88, 0.88);
-        }
-        if (isratio) {
-          leg = new TLegend(0.52, 0.510, 0.90, 0.88);
-        }
+	}
+	if (isratio) {
+	  leg = new TLegend(0.52, 0.510, 0.90, 0.88);
+	}
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
@@ -1216,10 +1216,10 @@ if (numB==2) {
 	  pad1->SetLogy();
 
 	  if (title=="w_delta_phi" || title_b=="w_first_bjet_eta" || title_b=="w_first_bjet_eta_abs") {
-            h_mcg_b->SetMaximum(18*h_data_tot->GetMaximum());
-          } else {
+	    h_mcg_b->SetMaximum(18*h_data_tot->GetMaximum());
+	  } else {
 	    h_mcg_b->SetMaximum(4*h_data_tot->GetMaximum());
-          }
+	  }
 	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b_tot->GetBinContent(h_data_b_tot->GetMinimumBin())));
 
 	  h_mcg_b->Draw("E5");
@@ -1331,20 +1331,20 @@ if (numB==2) {
 
  	TLatex *latexLabel = 0;
 
-        if (isratio==0) {
-          if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb") {
-            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
-          }
-          if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b") {
-            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
-          }
-          if (title_b=="w_first_bjet_eta" || title_b=="w_first_bjet_eta_abs") {
-            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
-          }
-        }
-        if (isratio==1) {
-          latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
-        }
+	if (isratio==0) {
+	  if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb") {
+	    latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
+	  }
+	  if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b") {
+	    latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+	  }
+	  if (title_b=="w_first_bjet_eta" || title_b=="w_first_bjet_eta_abs") {
+	    latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+	  }
+	}
+	if (isratio==1) {
+	  latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
+	}
 
 	if (latexLabel) latexLabel->Draw("same");
 
@@ -1391,24 +1391,24 @@ if (numB==2) {
 	h_M_stat->SetLineWidth(1);
 	//h_M_stat->SetMarkerSize(0.7);
 
-        if (isratio==0) {
-          h_M_tot->SetMarkerStyle(24);
-          h_M_tot->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_M_tot->SetMarkerStyle(22);
-          h_M_tot->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_M_tot->SetMarkerStyle(24);
+	  h_M_tot->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_M_tot->SetMarkerStyle(22);
+	  h_M_tot->SetMarkerSize(0.9);
+	}
 	h_M_tot->Draw("E1PX0");
 	h_M_tot->Draw("E0PX0SAME");
-        if (isratio==0) {
-          h_M_stat->SetMarkerStyle(24);
-          h_M_stat->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_M_stat->SetMarkerStyle(22);
-          h_M_stat->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_M_stat->SetMarkerStyle(24);
+	  h_M_stat->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_M_stat->SetMarkerStyle(22);
+	  h_M_stat->SetMarkerSize(0.9);
+	}
 	h_M_stat->Draw("E1PX0SAME");
 	h_M_stat->Draw("E0PX0SAME");
 
@@ -1515,14 +1515,14 @@ if (numB==2) {
 	h_S_stat->SetLineWidth(1);
 	//h_S_stat->SetMarkerSize(0.7);
 
-        if (isratio==0) {
-          h_S_tot->SetMarkerStyle(24);
-          h_S_tot->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_S_tot->SetMarkerStyle(22);
-          h_S_tot->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_S_tot->SetMarkerStyle(24);
+	  h_S_tot->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_S_tot->SetMarkerStyle(22);
+	  h_S_tot->SetMarkerSize(0.9);
+	}
 	if (useSherpa) {
 	  h_S_tot->Draw("E1PX0");
 	  h_S_tot->Draw("E0PX0SAME");
@@ -1534,14 +1534,14 @@ if (numB==2) {
 	  h_S_tot->Draw("E1PX0");
 	  h_S_tot->Draw("E0PX0SAME");
 	}
-        if (isratio==0) {
-          h_S_stat->SetMarkerStyle(24);
-          h_S_stat->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_S_stat->SetMarkerStyle(22);
-          h_S_stat->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_S_stat->SetMarkerStyle(24);
+	  h_S_stat->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_S_stat->SetMarkerStyle(22);
+	  h_S_stat->SetMarkerSize(0.9);
+	}
 	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
 	if (useSherpa) h_S_stat->Draw("E0PX0SAME");
 
@@ -1650,24 +1650,24 @@ if (numB==2) {
 	h_P_stat->SetLineWidth(1);
 	//h_P_stat->SetMarkerSize(0.7);
 
-        if (isratio==0) {
-          h_P_tot->SetMarkerStyle(24);
-          h_P_tot->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_P_tot->SetMarkerStyle(22);
-          h_P_tot->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_P_tot->SetMarkerStyle(24);
+	  h_P_tot->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_P_tot->SetMarkerStyle(22);
+	  h_P_tot->SetMarkerSize(0.9);
+	}
 	h_P_tot->Draw("E1PX0");
 	h_P_tot->Draw("E0PX0SAME");
-        if (isratio==0) {
-          h_P_stat->SetMarkerStyle(24);
-          h_P_stat->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_P_stat->SetMarkerStyle(22);
-          h_P_stat->SetMarkerSize(0.9);
-        }
+	if (isratio==0) {
+	  h_P_stat->SetMarkerStyle(24);
+	  h_P_stat->SetMarkerSize(0.7);
+	}
+	if (isratio==1) {
+	  h_P_stat->SetMarkerStyle(22);
+	  h_P_stat->SetMarkerSize(0.9);
+	}
 	h_P_stat->Draw("E1PX0SAME");
 	h_P_stat->Draw("E0PX0SAME");
 
@@ -1767,36 +1767,36 @@ if (numB==2) {
 	  g_M3_stat->SetMarkerStyle(25);
 	  g_M3_tot->SetMarkerStyle(25);
 	} else {
-          if (isratio==0) {
-            g_M3_stat->SetMarkerStyle(24);
-            g_M3_stat->SetMarkerSize(0.7);
-          }
-          if (isratio==1) {
-            g_M3_stat->SetMarkerStyle(22);
-            g_M3_stat->SetMarkerSize(0.9);
-          }
+	  if (isratio==0) {
+	    g_M3_stat->SetMarkerStyle(24);
+	    g_M3_stat->SetMarkerSize(0.7);
+	  }
+	  if (isratio==1) {
+	    g_M3_stat->SetMarkerStyle(22);
+	    g_M3_stat->SetMarkerSize(0.9);
+	  }
 	  g_M3_stat->SetMarkerColor(kBlack);
-          if (isratio==0) {
-            g_M3_tot->SetMarkerStyle(24);
-            g_M3_tot->SetMarkerSize(0.7);
-          }
-          if (isratio==1) {
-            g_M3_tot->SetMarkerStyle(22);
-            g_M3_tot->SetMarkerSize(0.9);
-          }
+	  if (isratio==0) {
+	    g_M3_tot->SetMarkerStyle(24);
+	    g_M3_tot->SetMarkerSize(0.7);
+	  }
+	  if (isratio==1) {
+	    g_M3_tot->SetMarkerStyle(22);
+	    g_M3_tot->SetMarkerSize(0.9);
+	  }
 	  g_M3_tot->SetMarkerColor(kBlack);
 	}
 	if (useSherpa) {
 	  g_M3_tot->SetMarkerStyle(25);
 	} else {
-          if (isratio==0) {
-            g_M3_tot->SetMarkerStyle(24);
-            g_M3_tot->SetMarkerSize(0.7);
-          }
-          if (isratio==1) {
-            g_M3_tot->SetMarkerStyle(22);
-            g_M3_tot->SetMarkerSize(0.9);
-          }
+	  if (isratio==0) {
+	    g_M3_tot->SetMarkerStyle(24);
+	    g_M3_tot->SetMarkerSize(0.7);
+	  }
+	  if (isratio==1) {
+	    g_M3_tot->SetMarkerStyle(22);
+	    g_M3_tot->SetMarkerSize(0.9);
+	  }
 	}
 	g_M3_tot->Draw("E1P");
 	g_M3_tot->Draw("E0PSAME");
@@ -1857,20 +1857,20 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 10);
 	  }
 	} else if (title_b=="w_first_bjet_eta_abs") {
-          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d|#eta^{b}| [pb]");
-          h_P_tot->GetXaxis()->SetTitle("leading jet |#eta|");
-          if (isratio==1) {
-            h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d|#eta^{b}| [%]");
-            h_mcg_b->GetYaxis()->SetRangeUser(0, 10);
-          }
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d|#eta^{b}| [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("leading jet |#eta|");
+	  if (isratio==1) {
+	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d|#eta^{b}| [%]");
+	    h_mcg_b->GetYaxis()->SetRangeUser(0, 10);
+	  }
 	} else if (title_b=="w_second_bjet_eta_abs") {
-          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d|#eta^{b}| [pb]");
-          h_P_tot->GetXaxis()->SetTitle("subleading jet |#eta|");
-          if (isratio==1) {
-            h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d|#eta^{b}| [%]");
-            h_mcg_b->GetYaxis()->SetRangeUser(0, 10);
-          }
-        } else if (title_b=="w_pt_Z_b") {
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d|#eta^{b}| [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("subleading jet |#eta|");
+	  if (isratio==1) {
+	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d|#eta^{b}| [%]");
+	    h_mcg_b->GetYaxis()->SetRangeUser(0, 10);
+	  }
+	} else if (title_b=="w_pt_Z_b") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp^{Z}_{T} [pb/GeV]");
 	  h_P_tot->GetXaxis()->SetTitle("Z boson p_{T} [GeV/c]");
 	  if (isratio==1) {
@@ -1913,27 +1913,27 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_DR_bb") {
-          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d #Delta R_{bb} [pb]");
-          h_P_tot->GetXaxis()->SetTitle("#Delta R(bb) [rad]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d #Delta R_{bb} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta R(bb) [rad]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta R_{bb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_Zbb_mass") {
-          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{Zbb} [pb]");
-          h_P_tot->GetXaxis()->SetTitle("M(Zbb) [GeV]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{Zbb} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("M(Zbb) [GeV]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{Zbb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_bb_mass") {
-          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{bb} [pb]");
-          h_P_tot->GetXaxis()->SetTitle("M(bb) [GeV]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{bb} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("M(bb) [GeV]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{bb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
-        }
+	}
 
 	if (plot) {
 	  ofstream out, out1, out2;
