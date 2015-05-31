@@ -4,8 +4,9 @@
 
 #include "fixrange.C"
 
-string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data";
+//string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
+string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/GDR/data/";
 
 TH1F* read(string subdir, string title, int ilepton, TFile* infile=0, string dirbSel="") {
   TH1F* hist;
@@ -359,6 +360,57 @@ if (numB==2) {
 	TH1F* w_syst_tot[2];
 	TH1F* w_syst_b_tot[2];
 
+        double xsec_data[2];
+        double xsec_data_b[2];
+
+        double xsec_stat_data[2];
+        double xsec_stat_data_b[2];
+
+        double xsec_stat_bkg[2];
+        double xsec_stat_b_bkg[2];
+
+        double xsec_syst_eff[2];
+        double xsec_syst_b_eff[2];
+
+        double xsec_syst_jec[2];
+        double xsec_syst_b_jec[2];
+
+        double xsec_syst_jer[2];
+        double xsec_syst_b_jer[2];
+
+        double xsec_syst_pu[2];
+        double xsec_syst_b_pu[2];
+
+        double xsec_syst_bkg[2];
+        double xsec_syst_b_bkg[2];
+
+        double xsec_stat_top[2];
+        double xsec_stat_b_top[2];
+
+        double xsec_stat_bfit[2];
+        double xsec_stat_b_bfit[2];
+
+        double xsec_syst_bfit2[2];
+        double xsec_syst_b_bfit2[2];
+
+        double xsec_syst_btag[2];
+        double xsec_syst_b_btag[2];
+
+        double xsec_stat_unfold[2];
+        double xsec_stat_b_unfold[2];
+
+        double xsec_syst_unfold[2];
+        double xsec_syst_b_unfold[2];
+
+        double xsec_syst_lumi[2];
+        double xsec_syst_b_lumi[2];
+
+        double xsec_stat_tot[2];
+        double xsec_stat_b_tot[2];
+
+        double xsec_syst_tot[2];
+        double xsec_syst_b_tot[2];
+
 	for (int i=0; i<2; i++) {
 
 	  w_stat_bkg[i] = (TH1F*)w_data[i]->Clone();
@@ -443,7 +495,7 @@ if (numB==2) {
 	    getline(in, tmp);
 	    getline(in, tmp);
 	    getline(in, tmp);
-	    for (int j=0; j<w_data[0]->GetNbinsX()+2; j++) {
+	    for (int j=0; j<=w_data[0]->GetNbinsX()+1; j++) {
 	      in >> tmp;
 	      double val = 0.0;
 	      in >> val; w_data[i]->SetBinContent(j, val); in >> tmp;
@@ -466,12 +518,32 @@ if (numB==2) {
 	      in >> val; in >> tmp; in >> val;
 	      in.ignore();
 	    }
+            in >> tmp;
+            in >> xsec_data[i]; in >> tmp;
+            in >> xsec_stat_data[i]; in >> tmp;
+            in >> xsec_stat_bkg[i]; in >> tmp;
+            in >> xsec_syst_eff[i]; in >> tmp;
+            in >> xsec_syst_jec[i]; in >> tmp;
+            in >> xsec_syst_jer[i]; in >> tmp;
+            in >> xsec_syst_pu[i]; in >> tmp;
+            in >> xsec_syst_bkg[i]; in >> tmp;
+            in >> xsec_stat_top[i]; in >> tmp;
+            in >> xsec_stat_bfit[i]; in >> tmp;
+            in >> xsec_syst_bfit2[i]; in >> tmp;
+            in >> xsec_syst_btag[i]; in >> tmp;
+            in >> xsec_stat_unfold[i]; in >> tmp;
+            in >> xsec_syst_unfold[i]; in >> tmp;
+            in >> xsec_syst_lumi[i]; in >> tmp;
+            in >> xsec_stat_tot[i]; in >> tmp;
+            in >> xsec_syst_tot[i]; in >> tmp;
+            in >> tmp; in >> tmp; in >> tmp;
+            in.ignore();
 	  }
 
 	  getline(in, tmp);
 	  getline(in, tmp);
 	  getline(in, tmp);
-	  for (int j=0; j<w_data_b[0]->GetNbinsX()+2; j++) {
+	  for (int j=0; j<=w_data_b[0]->GetNbinsX()+1; j++) {
 	    in >> tmp;
 	    double val = 0.0;
 	    in >> val; w_data_b[i]->SetBinContent(j, val); in >> tmp;
@@ -494,6 +566,26 @@ if (numB==2) {
 	    in >> val; in >> tmp; in >> val;
 	    in.ignore();
 	  }
+          in >> tmp;
+          in >> xsec_data_b[i]; in >> tmp;
+          in >> xsec_stat_data_b[i]; in >> tmp;
+          in >> xsec_stat_b_bkg[i]; in >> tmp;
+          in >> xsec_syst_b_eff[i]; in >> tmp;
+          in >> xsec_syst_b_jec[i]; in >> tmp;
+          in >> xsec_syst_b_jer[i]; in >> tmp;
+          in >> xsec_syst_b_pu[i]; in >> tmp;
+          in >> xsec_syst_b_bkg[i]; in >> tmp;
+          in >> xsec_stat_b_top[i]; in >> tmp;
+          in >> xsec_stat_b_bfit[i]; in >> tmp;
+          in >> xsec_syst_b_bfit2[i]; in >> tmp;
+          in >> xsec_syst_b_btag[i]; in >> tmp;
+          in >> xsec_stat_b_unfold[i]; in >> tmp;
+          in >> xsec_syst_b_unfold[i]; in >> tmp;
+          in >> xsec_syst_b_lumi[i]; in >> tmp;
+          in >> xsec_stat_b_tot[i]; in >> tmp;
+          in >> xsec_syst_b_tot[i]; in >> tmp;
+          in >> tmp; in >> tmp; in >> tmp;
+          in.ignore();
 
 	  in.close();
 
@@ -825,7 +917,7 @@ if (numB==2) {
 
 	  val = TMath::Sqrt(TMath::Power(h_data->GetBinError(i),2)+TMath::Power(stat_top->GetBinError(i),2)+TMath::Power(stat_bfit->GetBinError(i),2));
 	  h_data_stat->SetBinError(i, val);
-	  val = TMath::Sqrt(TMath::Power(stat_bkg->GetBinError(i),2)+TMath::Power(syst_eff->GetBinError(i),2)+TMath::Power(syst_jec->GetBinError(i),2)+TMath::Power(syst_jer->GetBinError(i),2)+TMath::Power(syst_pu->GetBinError(i),2)+TMath::Power(syst_bkg->GetBinError(i),2)+TMath::Power(syst_btag->GetBinError(i),2)+TMath::Power(stat_unfold->GetBinError(i),2)+TMath::Power(syst_unfold->GetBinError(i),2)+TMath::Power(syst_lumi->GetBinError(i),2)+TMath::Power(syst_bfit2->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(stat_bkg->GetBinError(i),2)+TMath::Power(syst_eff->GetBinError(i),2)+TMath::Power(syst_jec->GetBinError(i),2)+TMath::Power(syst_jer->GetBinError(i),2)+TMath::Power(syst_pu->GetBinError(i),2)+TMath::Power(syst_bkg->GetBinError(i),2)+TMath::Power(syst_bfit2->GetBinError(i),2)+TMath::Power(syst_btag->GetBinError(i),2)+TMath::Power(stat_unfold->GetBinError(i),2)+TMath::Power(syst_unfold->GetBinError(i),2)+TMath::Power(syst_lumi->GetBinError(i),2));
 	  h_data_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(TMath::Power(h_data_stat->GetBinError(i),2)+TMath::Power(h_data_syst->GetBinError(i),2));
 	  h_data_tot->SetBinError(i, val);
@@ -1109,11 +1201,623 @@ if (numB==2) {
 
 	  val = TMath::Sqrt(TMath::Power(h_data_b->GetBinError(i),2)+TMath::Power(stat_b_top->GetBinError(i),2)+TMath::Power(stat_b_bfit->GetBinError(i),2));
 	  h_data_b_stat->SetBinError(i, val);
-	  val = TMath::Sqrt(TMath::Power(stat_b_bkg->GetBinError(i),2)+TMath::Power(syst_b_eff->GetBinError(i),2)+TMath::Power(syst_b_jec->GetBinError(i),2)+TMath::Power(syst_b_jer->GetBinError(i),2)+TMath::Power(syst_b_pu->GetBinError(i),2)+TMath::Power(syst_b_bkg->GetBinError(i),2)+TMath::Power(syst_b_btag->GetBinError(i),2)+TMath::Power(syst_b_bfit2->GetBinError(i),2)+TMath::Power(stat_b_unfold->GetBinError(i),2)+TMath::Power(syst_b_unfold->GetBinError(i),2)+TMath::Power(syst_b_lumi->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(stat_b_bkg->GetBinError(i),2)+TMath::Power(syst_b_eff->GetBinError(i),2)+TMath::Power(syst_b_jec->GetBinError(i),2)+TMath::Power(syst_b_jer->GetBinError(i),2)+TMath::Power(syst_b_pu->GetBinError(i),2)+TMath::Power(syst_b_bkg->GetBinError(i),2)+TMath::Power(syst_b_bfit2->GetBinError(i),2)+TMath::Power(syst_b_btag->GetBinError(i),2)+TMath::Power(stat_b_unfold->GetBinError(i),2)+TMath::Power(syst_b_unfold->GetBinError(i),2)+TMath::Power(syst_b_lumi->GetBinError(i),2));
 	  h_data_b_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(TMath::Power(h_data_b_stat->GetBinError(i),2)+TMath::Power(h_data_b_syst->GetBinError(i),2));
 	  h_data_b_tot->SetBinError(i, val);
 	}
+
+        double xsec_tot_data;
+        double xsec_tot_data_b;
+
+        double xsec_tot_stat_data;
+        double xsec_tot_stat_data_b;
+
+        double xsec_tot_stat_bkg;
+        double xsec_tot_stat_b_bkg;
+
+        double xsec_tot_syst_eff;
+        double xsec_tot_syst_b_eff;
+
+        double xsec_tot_syst_jec;
+        double xsec_tot_syst_b_jec;
+
+        double xsec_tot_syst_jer;
+        double xsec_tot_syst_b_jer;
+
+        double xsec_tot_syst_pu;
+        double xsec_tot_syst_b_pu;
+
+        double xsec_tot_syst_bkg;
+        double xsec_tot_syst_b_bkg;
+
+        double xsec_tot_stat_top;
+        double xsec_tot_stat_b_top;
+
+        double xsec_tot_stat_bfit;
+        double xsec_tot_stat_b_bfit;
+
+        double xsec_tot_syst_bfit2;
+        double xsec_tot_syst_b_bfit2;
+
+        double xsec_tot_syst_btag;
+        double xsec_tot_syst_b_btag;
+
+        double xsec_tot_stat_unfold;
+        double xsec_tot_stat_b_unfold;
+
+        double xsec_tot_syst_unfold;
+        double xsec_tot_syst_b_unfold;
+
+        double xsec_tot_syst_lumi;
+        double xsec_tot_syst_b_lumi;
+
+        double xsec_tot_stat_tot;
+        double xsec_tot_stat_b_tot;
+
+        double xsec_tot_syst_tot;
+        double xsec_tot_syst_b_tot;
+
+        double xsec_tot_data_tot;
+        double xsec_tot_data_b_tot;
+
+        double xval = 0.0;
+        xval = calc(0, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xsec_tot_data = xval;
+
+        double xref = 0.0;
+        xref = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       1.1*xsec_stat_data[0], 1.1*xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_stat_data = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       1.1*xsec_stat_bkg[0], 1.1*xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_stat_bkg = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       1.1*xsec_syst_eff[0], 1.1*xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_eff = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       1.1*xsec_syst_jer[0], 1.1*xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_jer = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       1.1*xsec_syst_jec[0], 1.1*xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_jec = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       1.1*xsec_syst_pu[0], 1.1*xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_pu = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       1.1*xsec_syst_bkg[0], 1.1*xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_bkg = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       1.1*xsec_stat_top[0], 1.1*xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_stat_top = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       1.1*xsec_stat_bfit[0], 1.1*xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_stat_bfit = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       1.1*xsec_syst_bfit2[0], 1.1*xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_bfit2 = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       1.1*xsec_syst_btag[0], 1.1*xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_btag = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       1.1*xsec_stat_unfold[0], 1.1*xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_stat_unfold = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       1.1*xsec_syst_unfold[0], 1.1*xsec_syst_unfold[1],
+                       xsec_syst_lumi[0], xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_unfold = xval;
+        xval = calc(1, xsec_data[0], xsec_data[1],
+                       xsec_stat_data[0], xsec_stat_data[1],
+                       xsec_stat_bkg[0], xsec_stat_bkg[1],
+                       xsec_syst_eff[0], xsec_syst_eff[1],
+                       xsec_syst_jer[0], xsec_syst_jer[1],
+                       xsec_syst_jec[0], xsec_syst_jec[1],
+                       xsec_syst_pu[0], xsec_syst_pu[1],
+                       xsec_syst_bkg[0], xsec_syst_bkg[1],
+                       xsec_stat_top[0], xsec_stat_top[1],
+                       xsec_stat_bfit[0], xsec_stat_bfit[1],
+                       xsec_syst_bfit2[0], xsec_syst_bfit2[1],
+                       xsec_syst_btag[0], xsec_syst_btag[1],
+                       xsec_stat_unfold[0], xsec_stat_unfold[1],
+                       xsec_syst_unfold[0], xsec_syst_unfold[1],
+                       1.1*xsec_syst_lumi[0], 1.1*xsec_syst_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_lumi = xval;
+        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_data,2)+TMath::Power(xsec_tot_stat_top,2)+TMath::Power(xsec_tot_stat_bfit,2));
+        xsec_tot_stat_tot = xval;
+        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_bkg,2)+TMath::Power(xsec_tot_syst_eff,2)+TMath::Power(xsec_tot_syst_jec,2)+TMath::Power(xsec_tot_syst_jer,2)+TMath::Power(xsec_tot_syst_pu,2)+TMath::Power(xsec_tot_syst_bkg,2)+TMath::Power(xsec_tot_syst_bfit2,2)+TMath::Power(xsec_tot_syst_btag,2)+TMath::Power(xsec_tot_stat_unfold,2)+TMath::Power(xsec_tot_syst_unfold,2)+TMath::Power(xsec_tot_syst_lumi,2));
+        xsec_tot_syst_tot = xval;
+        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_tot,2)+TMath::Power(xsec_tot_syst_tot,2));
+        xsec_tot_data_tot = xval;
+
+        xval = 0.0;
+        xval = calc(0, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xsec_tot_data_b = xval;
+
+        xref = 0.0;
+        xref = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       1.1*xsec_stat_data_b[0], 1.1*xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_stat_data_b = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       1.1*xsec_stat_b_bkg[0], 1.1*xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_stat_b_bkg = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       1.1*xsec_syst_b_eff[0], 1.1*xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_b_eff = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       1.1*xsec_syst_b_jer[0], 1.1*xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_b_jer = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       1.1*xsec_syst_b_jec[0], 1.1*xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_b_jec = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       1.1*xsec_syst_b_pu[0], 1.1*xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_b_pu = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       1.1*xsec_syst_b_bkg[0], 1.1*xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_b_bkg = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       1.1*xsec_stat_b_top[0], 1.1*xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_stat_b_top = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       1.1*xsec_stat_b_bfit[0], 1.1*xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_stat_b_bfit = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       1.1*xsec_syst_b_bfit2[0], 1.1*xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_b_bfit2 = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       1.1*xsec_syst_b_btag[0], 1.1*xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_b_btag = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       1.1*xsec_stat_b_unfold[0], 1.1*xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_stat_b_unfold = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       1.1*xsec_syst_b_unfold[0], 1.1*xsec_syst_b_unfold[1],
+                       xsec_syst_b_lumi[0], xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_b_unfold = xval;
+        xval = calc(1, xsec_data_b[0], xsec_data_b[1],
+                       xsec_stat_data_b[0], xsec_stat_data_b[1],
+                       xsec_stat_b_bkg[0], xsec_stat_b_bkg[1],
+                       xsec_syst_b_eff[0], xsec_syst_b_eff[1],
+                       xsec_syst_b_jer[0], xsec_syst_b_jer[1],
+                       xsec_syst_b_jec[0], xsec_syst_b_jec[1],
+                       xsec_syst_b_pu[0], xsec_syst_b_pu[1],
+                       xsec_syst_b_bkg[0], xsec_syst_b_bkg[1],
+                       xsec_stat_b_top[0], xsec_stat_b_top[1],
+                       xsec_stat_b_bfit[0], xsec_stat_b_bfit[1],
+                       xsec_syst_b_bfit2[0], xsec_syst_b_bfit2[1],
+                       xsec_syst_b_btag[0], xsec_syst_b_btag[1],
+                       xsec_stat_b_unfold[0], xsec_stat_b_unfold[1],
+                       xsec_syst_b_unfold[0], xsec_syst_b_unfold[1],
+                       1.1*xsec_syst_b_lumi[0], 1.1*xsec_syst_b_lumi[1]);
+        xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
+        xsec_tot_syst_b_lumi = xval;
+        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_data_b,2)+TMath::Power(xsec_tot_stat_b_top,2)+TMath::Power(xsec_tot_stat_b_bfit,2));
+        xsec_tot_stat_b_tot = xval;
+        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_b_bkg,2)+TMath::Power(xsec_tot_syst_b_eff,2)+TMath::Power(xsec_tot_syst_b_jec,2)+TMath::Power(xsec_tot_syst_b_jer,2)+TMath::Power(xsec_tot_syst_b_pu,2)+TMath::Power(xsec_tot_syst_b_bkg,2)+TMath::Power(xsec_tot_syst_b_bfit2,2)+TMath::Power(xsec_tot_syst_b_btag,2)+TMath::Power(xsec_tot_stat_b_unfold,2)+TMath::Power(xsec_tot_syst_b_unfold,2)+TMath::Power(xsec_tot_syst_b_lumi,2));
+        xsec_tot_syst_b_tot = xval;
+        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_b_tot,2)+TMath::Power(xsec_tot_syst_b_tot,2));
+        xsec_tot_data_b_tot = xval;
 
 	TCanvas* c1 = new TCanvas("c", "c", 10, 10, 800, 600);
 	c1->cd();
@@ -2063,6 +2767,47 @@ if (numB==2) {
 	      out << endl;
 	    }
 	  }
+	  out << "tot";
+	  out << std::setprecision(8);
+	  out << std::setw(12) << xsec_tot_data;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_stat_data;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_stat_bkg;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_eff;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_jec;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_jer;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_pu;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_bkg;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_stat_top;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_stat_bfit;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_bfit2;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_btag;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_stat_unfold;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_unfold;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_lumi;
+	  out << " => ";
+	  out << std::setw(10) << xsec_tot_stat_tot;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_tot;
+	  out << " => ";
+	  out << std::setw(10) << xsec_tot_data_tot;
+	  out << " => ";
+	  out << std::setprecision(1);
+	  out << std::setw(4) << TMath::Abs(100.*(xsec_tot_data_tot==0 ? 0 : xsec_tot_data_tot/xsec_tot_data));
+	  out << endl;
 	  out << h_data_b->GetName();
 	  out << endl;
 	  out << std::setw(29) << "data";
@@ -2147,6 +2892,47 @@ if (numB==2) {
 	    out << std::setw(4) << TMath::Abs(100.*(h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_stat->GetBinContent(i)));
 	    out << endl;
 	  }
+	  out << "tot";
+	  out << std::setprecision(8);
+	  out << std::setw(12) << xsec_tot_data_b;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_stat_data_b;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_stat_b_bkg;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_b_eff;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_b_jec;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_b_jer;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_b_pu;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_b_bkg;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_stat_b_top;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_stat_b_bfit;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_b_bfit2;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_b_btag;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_stat_b_unfold;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_b_unfold;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_b_lumi;
+	  out << " => ";
+	  out << std::setw(10) << xsec_tot_stat_b_tot;
+	  out << " +- ";
+	  out << std::setw(10) << xsec_tot_syst_b_tot;
+	  out << " => ";
+	  out << std::setw(10) << xsec_tot_data_b_tot;
+	  out << " => ";
+	  out << std::setprecision(1);
+	  out << std::setw(4) << TMath::Abs(100.*(xsec_tot_data_b==0 ? 0 : xsec_tot_data_b_tot/xsec_tot_data_b));
+	  out << endl;
 	  out.close();
 	  if (isratio==0) {
 	    out1 << h_data->GetName() << " - RELATIVE ERRORS";
@@ -2228,6 +3014,43 @@ if (numB==2) {
 	      out1 << std::setw(5) << h_data_tot->GetBinError(i)*val;
 	      out1 << endl;
 	    }
+	    xval = TMath::Abs(100.*(xsec_tot_data==0 ? 0 : 1./xsec_tot_data));
+	    out1 << "tot";
+	    out1 << std::setprecision(1);
+	    out1 << std::setw(5) << xsec_tot_stat_data*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_stat_bkg*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_syst_eff*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_syst_jec*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_syst_jer*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_syst_pu*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_syst_bkg*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_stat_top*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_stat_bfit*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_syst_bfit2*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_syst_btag*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_stat_unfold*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_syst_unfold*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_syst_lumi*xval;
+	    out1 << " => ";
+	    out1 << std::setw(5) << xsec_tot_stat_tot*xval;
+	    out1 << " +- ";
+	    out1 << std::setw(5) << xsec_tot_syst_tot*xval;
+	    out1 << " => ";
+	    out1 << std::setw(5) << xsec_tot_data_tot*xval;
+	    out1 << endl;
 	  }
 	  out1 << h_data_b->GetName() << " - RELATIVE ERRORS";
 	  out1 << endl;
@@ -2308,6 +3131,43 @@ if (numB==2) {
 	    out1 << std::setw(5) << h_data_b_tot->GetBinError(i)*val;
 	    out1 << endl;
 	  }
+	  xval = TMath::Abs(100.*(xsec_tot_data_b==0 ? 0 : 1./xsec_tot_data_b));
+	  out1 << "tot";
+	  out1 << std::setprecision(1);
+	  out1 << std::setw(5) << xsec_tot_stat_data_b*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_stat_b_bkg*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_syst_b_eff*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_syst_b_jec*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_syst_b_jer*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_syst_b_pu*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_syst_b_bkg*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_stat_b_top*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_stat_b_bfit*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_syst_b_bfit2*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_syst_b_btag*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_stat_b_unfold*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_syst_b_unfold*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_syst_b_lumi*xval;
+	  out1 << " => ";
+	  out1 << std::setw(5) << xsec_tot_stat_b_tot*xval;
+	  out1 << " +- ";
+	  out1 << std::setw(5) << xsec_tot_syst_b_tot*xval;
+	  out1 << " => ";
+	  out1 << std::setw(5) << xsec_tot_data_b_tot*xval;
+	  out1 << endl;
 	  out1.close();
 	  if (isratio==0) {
 	    //out2 << h_data->GetName() << " - RELATIVE ERRORS";
