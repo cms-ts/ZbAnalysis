@@ -2348,7 +2348,7 @@ if (numB==2) {
 	    out2 << std::setw(8) << "\\textbf{syst} & ";
 	    out2 << std::setw(8) << "\\textbf{error & ";
 	    out2 << endl;
-	    /*for (int i=0;i<=h_data->GetNbinsX()+1;i++) {
+	    /*for (int i=1;i<=h_data->GetNbinsX();i++) {
 	      double val = TMath::Abs(100.*(h_data->GetBinContent(i)==0 ? 0 : 1./h_data->GetBinContent(i)));
 	      out2 << std::fixed;
 	      out2 << std::setw(2) << i;
@@ -2429,7 +2429,7 @@ if (numB==2) {
 	  out2 << std::setw(8) << "\\textbf{syst} &";
 	  out2 << std::setw(8) << "\\textbf{error} &";
 	  out2 << endl;*/
-	  for (int i=1;i<=h_data_b->GetNbinsX()+1;i++) {
+	  for (int i=1;i<=h_data_b->GetNbinsX();i++) {
 	    double val = TMath::Abs(100.*(h_data_b->GetBinContent(i)==0 ? 0 : 1./h_data_b->GetBinContent(i)));
 	    out2 << std::fixed;
 	    out2 << std::setw(2) << i;
