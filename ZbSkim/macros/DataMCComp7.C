@@ -625,8 +625,14 @@ if (numB==2) {
 	}
 	double xsec_stat_unfold = 0.0;
 	double xsec_stat_b_unfold = 0.0;
-	xsec_stat_unfold = TMath::Abs(h_data_scan[7]->Integral(0,h_data_scan[7]->GetNbinsX()+1,"width")-h_data_scan[0]->Integral(0,h_data_scan[0]->GetNbinsX()+1,"width"));
-	xsec_stat_b_unfold = TMath::Abs(h_data_b_scan[7]->Integral(0,h_data_b_scan[7]->GetNbinsX()+1,"width")-h_data_b_scan[0]->Integral(0,h_data_b_scan[0]->GetNbinsX()+1,"width"));
+	double val7 = 0.0;
+	double val0 = 0.0;
+	h_data_scan[7]->IntegralAndError(0,h_data_scan[7]->GetNbinsX()+1,val7,"width");
+	h_data_scan[0]->IntegralAndError(0,h_data_scan[0]->GetNbinsX()+1,val0,"width");
+	xsec_stat_unfold = TMath::Sqrt(TMath::Max(0.,TMath::Power(val7,2)-TMath::Power(val0,2)));
+	h_data_b_scan[7]->IntegralAndError(0,h_data_b_scan[7]->GetNbinsX()+1,val7,"width");
+	h_data_b_scan[0]->IntegralAndError(0,h_data_b_scan[0]->GetNbinsX()+1,val0,"width");
+	xsec_stat_b_unfold = TMath::Sqrt(TMath::Max(0.,TMath::Power(val7,2)-TMath::Power(val0,2)));
 
 	TH1F* syst_unfold = (TH1F*)h_data->Clone();
 	TH1F* syst_b_unfold = (TH1F*)h_data_b->Clone();
