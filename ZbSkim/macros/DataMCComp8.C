@@ -55,7 +55,7 @@ TH1F* read(string subdir, string title, int ilepton, TFile* infile=0, string dir
   return hist;
 }
 
-double calc(int iflag, double cont1, double cont2, double stat1, double stat2, double stat_bkg1, double stat_bkg2, double syst_eff1, double syst_eff2, double syst_jec1, double syst_jec2, double syst_jer1, double syst_jer2, double syst_pu1, double syst_pu2, double syst_bkg1, double syst_bkg2, double stat_top1, double stat_top2, double stat_bfit1, double stat_bfit2, double syst_btemp1, double syst_btemp2, double syst_btag1, double syst_btag2, double stat_unfold1, double stat_unfold2, double syst_unfold1, double syst_unfold2, double syst_lumi1, double syst_lumi2) {
+double calc(int iflag, double cont1, double cont2, double stat1, double stat2, double stat_bkg1, double stat_bkg2, double syst_eff1, double syst_eff2, double syst_jec1, double syst_jec2, double syst_jer1, double syst_jer2, double syst_pu1, double syst_pu2, double syst_bkg1, double syst_bkg2, double stat_top1, double stat_top2, double stat_bfit1, double stat_bfit2, double syst_bfit1, double syst_bfit2, double syst_btag1, double syst_btag2, double stat_unfold1, double stat_unfold2, double syst_unfold1, double syst_unfold2, double syst_lumi1, double syst_lumi2) {
 
   if (cont1*cont2==0) return 0.0;
 
@@ -80,7 +80,7 @@ double calc(int iflag, double cont1, double cont2, double stat1, double stat2, d
   val1 = TMath::Sqrt(TMath::Power(val1,2)+TMath::Power((syst_jer1+syst_jer2)/2.,2));
   val1 = TMath::Sqrt(TMath::Power(val1,2)+TMath::Power((syst_pu1+syst_pu2)/2.,2));
   val1 = TMath::Sqrt(TMath::Power(val1,2)+TMath::Power((syst_bkg1+syst_bkg2)/2.,2));
-  val1 = TMath::Sqrt(TMath::Power(val1,2)+TMath::Power((syst_btemp1+syst_btemp2)/2.,2));
+  val1 = TMath::Sqrt(TMath::Power(val1,2)+TMath::Power((syst_bfit1+syst_bfit2)/2.,2));
   val1 = TMath::Sqrt(TMath::Power(val1,2)+TMath::Power((syst_unfold1+syst_unfold2)/2.,2));
   val1 = TMath::Sqrt(TMath::Power(val1,2)+TMath::Power(val0*(TMath::Abs(syst_btag1/cont1)+TMath::Abs(syst_btag2/cont2))/2.0,2));
   val1 = TMath::Sqrt(TMath::Power(val1,2)+TMath::Power(val0*(TMath::Abs(syst_lumi1/cont1)+TMath::Abs(syst_lumi2/cont2))/2.0,2));
@@ -338,8 +338,8 @@ if (numB==2) {
 	TH1F* w_stat_bfit[2];
 	TH1F* w_stat_b_bfit[2];
 
-	TH1F* w_syst_btemp[2];
-	TH1F* w_syst_b_btemp[2];
+	TH1F* w_syst_bfit2[2];
+	TH1F* w_syst_b_bfit2[2];
 
 	TH1F* w_syst_btag[2];
 	TH1F* w_syst_b_btag[2];
@@ -385,8 +385,8 @@ if (numB==2) {
 	  w_stat_bfit[i] = (TH1F*)w_data[i]->Clone();
 	  w_stat_b_bfit[i] = (TH1F*)w_data_b[i]->Clone();
 
-	  w_syst_btemp[i] = (TH1F*)w_data[i]->Clone();
-	  w_syst_b_btemp[i] = (TH1F*)w_data_b[i]->Clone();
+	  w_syst_bfit2[i] = (TH1F*)w_data[i]->Clone();
+	  w_syst_b_bfit2[i] = (TH1F*)w_data_b[i]->Clone();
 
 	  w_syst_btag[i] = (TH1F*)w_data[i]->Clone();
 	  w_syst_b_btag[i] = (TH1F*)w_data_b[i]->Clone();
@@ -456,7 +456,7 @@ if (numB==2) {
 	      in >> val; w_syst_bkg[i]->SetBinError(j, val); in >> tmp;
 	      in >> val; w_stat_top[i]->SetBinError(j, val); in >> tmp;
 	      in >> val; w_stat_bfit[i]->SetBinError(j, val); in >> tmp;
-	      in >> val; w_syst_btemp[i]->SetBinError(j, val); in >> tmp;
+	      in >> val; w_syst_bfit2[i]->SetBinError(j, val); in >> tmp;
 	      in >> val; w_syst_btag[i]->SetBinError(j, val); in >> tmp;
 	      in >> val; w_stat_unfold[i]->SetBinError(j, val); in >> tmp;
 	      in >> val; w_syst_unfold[i]->SetBinError(j, val); in >> tmp;
@@ -484,7 +484,7 @@ if (numB==2) {
 	    in >> val; w_syst_b_bkg[i]->SetBinError(j, val); in >> tmp;
 	    in >> val; w_stat_b_top[i]->SetBinError(j, val); in >> tmp;
 	    in >> val; w_stat_b_bfit[i]->SetBinError(j, val); in >> tmp;
-	    in >> val; w_syst_b_btemp[i]->SetBinError(j, val); in >> tmp;
+	    in >> val; w_syst_b_bfit2[i]->SetBinError(j, val); in >> tmp;
 	    in >> val; w_syst_b_btag[i]->SetBinError(j, val); in >> tmp;
 	    in >> val; w_stat_b_unfold[i]->SetBinError(j, val); in >> tmp;
 	    in >> val; w_syst_b_unfold[i]->SetBinError(j, val); in >> tmp;
@@ -532,8 +532,8 @@ if (numB==2) {
 	TH1F* stat_bfit = (TH1F*)w_data[0]->Clone();
 	TH1F* stat_b_bfit = (TH1F*)w_data_b[0]->Clone();
 
-	TH1F* syst_btemp = (TH1F*)w_data[0]->Clone();
-	TH1F* syst_b_btemp = (TH1F*)w_data_b[0]->Clone();
+	TH1F* syst_bfit2 = (TH1F*)w_data[0]->Clone();
+	TH1F* syst_b_bfit2 = (TH1F*)w_data_b[0]->Clone();
 
 	TH1F* syst_btag = (TH1F*)w_data[0]->Clone();
 	TH1F* syst_b_btag = (TH1F*)w_data_b[0]->Clone();
@@ -559,7 +559,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -579,7 +579,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -594,7 +594,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -611,7 +611,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -628,7 +628,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -645,7 +645,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -662,7 +662,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -679,7 +679,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -696,7 +696,7 @@ if (numB==2) {
 			1.1*w_syst_bkg[0]->GetBinError(i), 1.1*w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -713,7 +713,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			1.1*w_stat_top[0]->GetBinError(i), 1.1*w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -730,7 +730,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			1.1*w_stat_bfit[0]->GetBinError(i), 1.1*w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -747,13 +747,13 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			1.1*w_syst_btemp[0]->GetBinError(i), 1.1*w_syst_btemp[1]->GetBinError(i),
+			1.1*w_syst_bfit2[0]->GetBinError(i), 1.1*w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
 			w_syst_lumi[0]->GetBinError(i), w_syst_lumi[1]->GetBinError(i));
 	  val = TMath::Sqrt((TMath::Power(val,2)-TMath::Power(ref,2))/(TMath::Power(1.1,2)-1));
-	  syst_btemp->SetBinError(i, val);
+	  syst_bfit2->SetBinError(i, val);
 	  val = calc(1, w_data[0]->GetBinContent(i), w_data[1]->GetBinContent(i),
                         w_data[0]->GetBinError(i), w_data[1]->GetBinError(i),
                         w_stat_bkg[0]->GetBinError(i), w_stat_bkg[1]->GetBinError(i),
@@ -764,7 +764,7 @@ if (numB==2) {
                         w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
                         w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
                         w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-                        w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+                        w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			1.1*w_syst_btag[0]->GetBinError(i), 1.1*w_syst_btag[1]->GetBinError(i),
                         w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
                         w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -781,7 +781,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			1.1*w_stat_unfold[0]->GetBinError(i), 1.1*w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -798,7 +798,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			1.1*w_syst_unfold[0]->GetBinError(i), 1.1*w_syst_unfold[1]->GetBinError(i),
@@ -815,7 +815,7 @@ if (numB==2) {
 			w_syst_bkg[0]->GetBinError(i), w_syst_bkg[1]->GetBinError(i),
 			w_stat_top[0]->GetBinError(i), w_stat_top[1]->GetBinError(i),
 			w_stat_bfit[0]->GetBinError(i), w_stat_bfit[1]->GetBinError(i),
-			w_syst_btemp[0]->GetBinError(i), w_syst_btemp[1]->GetBinError(i),
+			w_syst_bfit2[0]->GetBinError(i), w_syst_bfit2[1]->GetBinError(i),
 			w_syst_btag[0]->GetBinError(i), w_syst_btag[1]->GetBinError(i),
 			w_stat_unfold[0]->GetBinError(i), w_stat_unfold[1]->GetBinError(i),
 			w_syst_unfold[0]->GetBinError(i), w_syst_unfold[1]->GetBinError(i),
@@ -825,7 +825,7 @@ if (numB==2) {
 
 	  val = TMath::Sqrt(TMath::Power(h_data->GetBinError(i),2)+TMath::Power(stat_top->GetBinError(i),2)+TMath::Power(stat_bfit->GetBinError(i),2));
 	  h_data_stat->SetBinError(i, val);
-	  val = TMath::Sqrt(TMath::Power(stat_bkg->GetBinError(i),2)+TMath::Power(syst_eff->GetBinError(i),2)+TMath::Power(syst_jec->GetBinError(i),2)+TMath::Power(syst_jer->GetBinError(i),2)+TMath::Power(syst_pu->GetBinError(i),2)+TMath::Power(syst_bkg->GetBinError(i),2)+TMath::Power(syst_btag->GetBinError(i),2)+TMath::Power(stat_unfold->GetBinError(i),2)+TMath::Power(syst_unfold->GetBinError(i),2)+TMath::Power(syst_lumi->GetBinError(i),2)+TMath::Power(syst_btemp->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(stat_bkg->GetBinError(i),2)+TMath::Power(syst_eff->GetBinError(i),2)+TMath::Power(syst_jec->GetBinError(i),2)+TMath::Power(syst_jer->GetBinError(i),2)+TMath::Power(syst_pu->GetBinError(i),2)+TMath::Power(syst_bkg->GetBinError(i),2)+TMath::Power(syst_btag->GetBinError(i),2)+TMath::Power(stat_unfold->GetBinError(i),2)+TMath::Power(syst_unfold->GetBinError(i),2)+TMath::Power(syst_lumi->GetBinError(i),2)+TMath::Power(syst_bfit2->GetBinError(i),2));
 	  h_data_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(TMath::Power(h_data_stat->GetBinError(i),2)+TMath::Power(h_data_syst->GetBinError(i),2));
 	  h_data_tot->SetBinError(i, val);
@@ -843,7 +843,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -863,7 +863,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -878,7 +878,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -895,7 +895,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -912,7 +912,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -929,7 +929,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -946,7 +946,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -963,7 +963,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -980,7 +980,7 @@ if (numB==2) {
 			1.1*w_syst_b_bkg[0]->GetBinError(i), 1.1*w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -997,7 +997,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			1.1*w_stat_b_top[0]->GetBinError(i), 1.1*w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -1014,7 +1014,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			1.1*w_stat_b_bfit[0]->GetBinError(i), 1.1*w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -1031,13 +1031,13 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			1.1*w_syst_b_btemp[0]->GetBinError(i), 1.1*w_syst_b_btemp[1]->GetBinError(i),
+			1.1*w_syst_b_bfit2[0]->GetBinError(i), 1.1*w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
 			w_syst_b_lumi[0]->GetBinError(i), w_syst_b_lumi[1]->GetBinError(i));
 	  val = TMath::Sqrt((TMath::Power(val,2)-TMath::Power(ref,2))/(TMath::Power(1.1,2)-1));
-	  syst_b_btemp->SetBinError(i, val);
+	  syst_b_bfit2->SetBinError(i, val);
           val = calc(1, w_data_b[0]->GetBinContent(i), w_data_b[1]->GetBinContent(i),
                         w_data_b[0]->GetBinError(i), w_data_b[1]->GetBinError(i),
                         w_stat_b_bkg[0]->GetBinError(i), w_stat_b_bkg[1]->GetBinError(i),
@@ -1048,7 +1048,7 @@ if (numB==2) {
                         w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
                         w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
                         w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-                        w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+                        w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
                         1.1*w_syst_b_btag[0]->GetBinError(i), 1.1*w_syst_b_btag[1]->GetBinError(i),
                         w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
                         w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -1065,7 +1065,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			1.1*w_stat_b_unfold[0]->GetBinError(i), 1.1*w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -1082,7 +1082,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			1.1*w_syst_b_unfold[0]->GetBinError(i), 1.1*w_syst_b_unfold[1]->GetBinError(i),
@@ -1099,7 +1099,7 @@ if (numB==2) {
 			w_syst_b_bkg[0]->GetBinError(i), w_syst_b_bkg[1]->GetBinError(i),
 			w_stat_b_top[0]->GetBinError(i), w_stat_b_top[1]->GetBinError(i),
 			w_stat_b_bfit[0]->GetBinError(i), w_stat_b_bfit[1]->GetBinError(i),
-			w_syst_b_btemp[0]->GetBinError(i), w_syst_b_btemp[1]->GetBinError(i),
+			w_syst_b_bfit2[0]->GetBinError(i), w_syst_b_bfit2[1]->GetBinError(i),
 			w_syst_b_btag[0]->GetBinError(i), w_syst_b_btag[1]->GetBinError(i),
 			w_stat_b_unfold[0]->GetBinError(i), w_stat_b_unfold[1]->GetBinError(i),
 			w_syst_b_unfold[0]->GetBinError(i), w_syst_b_unfold[1]->GetBinError(i),
@@ -1109,7 +1109,7 @@ if (numB==2) {
 
 	  val = TMath::Sqrt(TMath::Power(h_data_b->GetBinError(i),2)+TMath::Power(stat_b_top->GetBinError(i),2)+TMath::Power(stat_b_bfit->GetBinError(i),2));
 	  h_data_b_stat->SetBinError(i, val);
-	  val = TMath::Sqrt(TMath::Power(stat_b_bkg->GetBinError(i),2)+TMath::Power(syst_b_eff->GetBinError(i),2)+TMath::Power(syst_b_jec->GetBinError(i),2)+TMath::Power(syst_b_jer->GetBinError(i),2)+TMath::Power(syst_b_pu->GetBinError(i),2)+TMath::Power(syst_b_bkg->GetBinError(i),2)+TMath::Power(syst_b_btag->GetBinError(i),2)+TMath::Power(syst_b_btemp->GetBinError(i),2)+TMath::Power(stat_b_unfold->GetBinError(i),2)+TMath::Power(syst_b_unfold->GetBinError(i),2)+TMath::Power(syst_b_lumi->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(stat_b_bkg->GetBinError(i),2)+TMath::Power(syst_b_eff->GetBinError(i),2)+TMath::Power(syst_b_jec->GetBinError(i),2)+TMath::Power(syst_b_jer->GetBinError(i),2)+TMath::Power(syst_b_pu->GetBinError(i),2)+TMath::Power(syst_b_bkg->GetBinError(i),2)+TMath::Power(syst_b_btag->GetBinError(i),2)+TMath::Power(syst_b_bfit2->GetBinError(i),2)+TMath::Power(stat_b_unfold->GetBinError(i),2)+TMath::Power(syst_b_unfold->GetBinError(i),2)+TMath::Power(syst_b_lumi->GetBinError(i),2));
 	  h_data_b_syst->SetBinError(i, val);
 	  val = TMath::Sqrt(TMath::Power(h_data_b_stat->GetBinError(i),2)+TMath::Power(h_data_b_syst->GetBinError(i),2));
 	  h_data_b_tot->SetBinError(i, val);
@@ -2042,7 +2042,7 @@ if (numB==2) {
 	      out << " +- ";
 	      out << std::setw(10) << stat_bfit->GetBinError(i);
 	      out << " +- ";
-	      out << std::setw(10) << syst_btemp->GetBinError(i);
+	      out << std::setw(10) << syst_bfit2->GetBinError(i);
 	      out << " +- ";
 	      out << std::setw(10) << syst_btag->GetBinError(i);
 	      out << " +- ";
@@ -2127,7 +2127,7 @@ if (numB==2) {
 	    out << " +- ";
 	    out << std::setw(10) << stat_b_bfit->GetBinError(i);
 	    out << " +- ";
-	    out << std::setw(10) << syst_b_btemp->GetBinError(i);
+	    out << std::setw(10) << syst_b_bfit2->GetBinError(i);
 	    out << " +- ";
 	    out << std::setw(10) << syst_b_btag->GetBinError(i);
 	    out << " +- ";
@@ -2211,7 +2211,7 @@ if (numB==2) {
 	      out1 << " +- ";
 	      out1 << std::setw(5) << stat_bfit->GetBinError(i)*val;
 	      out1 << " +- ";
-	      out1 << std::setw(5) << syst_btemp->GetBinError(i)*val;
+	      out1 << std::setw(5) << syst_bfit2->GetBinError(i)*val;
 	      out1 << " +- ";
 	      out1 << std::setw(5) << syst_btag->GetBinError(i)*val;
 	      out1 << " +- ";
@@ -2291,7 +2291,7 @@ if (numB==2) {
 	    out1 << " +- ";
 	    out1 << std::setw(5) << stat_b_bfit->GetBinError(i)*val;
 	    out1 << " +- ";
-	    out1 << std::setw(5) << syst_b_btemp->GetBinError(i)*val;
+	    out1 << std::setw(5) << syst_b_bfit2->GetBinError(i)*val;
 	    out1 << " +- ";
 	    out1 << std::setw(5) << syst_b_btag->GetBinError(i)*val;
 	    out1 << " +- ";
@@ -2372,7 +2372,7 @@ if (numB==2) {
 	      out2 << " & ";
 	      out2 << std::setw(4) << stat_bfit->GetBinError(i)*val;
 	      out2 << " & ";
-	      out2 << std::setw(4) << syst_btemp->GetBinError(i)*val;
+	      out2 << std::setw(4) << syst_bfit2->GetBinError(i)*val;
 	      out2 << " & ";
 	      out2 << std::setw(4) << syst_btag->GetBinError(i)*val;
 	      out2 << " & ";
@@ -2453,7 +2453,7 @@ if (numB==2) {
 	    out2 << " & ";
 	    out2 << std::setw(4) << stat_b_bfit->GetBinError(i)*val;
 	    out2 << " & ";
-	    out2 << std::setw(4) << syst_b_btemp->GetBinError(i)*val;
+	    out2 << std::setw(4) << syst_b_bfit2->GetBinError(i)*val;
 	    out2 << " & ";
 	    out2 << std::setw(4) << syst_b_btag->GetBinError(i)*val;
 	    out2 << " & ";
