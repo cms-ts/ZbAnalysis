@@ -914,11 +914,27 @@ if (numB==2) {
 	  val = TMath::Sqrt((TMath::Power(val,2)-TMath::Power(ref,2))/(TMath::Power(1.1,2)-1));
 	  syst_lumi->SetBinError(i, val);
 
-	  val = TMath::Sqrt(TMath::Power(h_data->GetBinError(i),2)+TMath::Power(stat_top->GetBinError(i),2)+TMath::Power(stat_bfit->GetBinError(i),2));
+	  val = 0.0;
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(h_data->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_top->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_bfit->GetBinError(i),2));
 	  h_data_stat->SetBinError(i, val);
-	  val = TMath::Sqrt(TMath::Power(stat_bkg->GetBinError(i),2)+TMath::Power(syst_eff->GetBinError(i),2)+TMath::Power(syst_jec->GetBinError(i),2)+TMath::Power(syst_jer->GetBinError(i),2)+TMath::Power(syst_pu->GetBinError(i),2)+TMath::Power(syst_bkg->GetBinError(i),2)+TMath::Power(syst_bfit2->GetBinError(i),2)+TMath::Power(syst_btag->GetBinError(i),2)+TMath::Power(stat_unfold->GetBinError(i),2)+TMath::Power(syst_unfold->GetBinError(i),2)+TMath::Power(syst_lumi->GetBinError(i),2));
+	  val = 0.0;
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_bkg->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_eff->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_jec->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_jer->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_pu->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_bkg->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_bfit2->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_btag->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_unfold->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_unfold->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_lumi->GetBinError(i),2));
 	  h_data_syst->SetBinError(i, val);
-	  val = TMath::Sqrt(TMath::Power(h_data_stat->GetBinError(i),2)+TMath::Power(h_data_syst->GetBinError(i),2));
+	  val = 0.0;
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(h_data_stat->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(h_data_syst->GetBinError(i),2));
 	  h_data_tot->SetBinError(i, val);
 	}
 
@@ -1198,11 +1214,27 @@ if (numB==2) {
 	  val = TMath::Sqrt((TMath::Power(val,2)-TMath::Power(ref,2))/(TMath::Power(1.1,2)-1));
 	  syst_b_lumi->SetBinError(i, val);
 
-	  val = TMath::Sqrt(TMath::Power(h_data_b->GetBinError(i),2)+TMath::Power(stat_b_top->GetBinError(i),2)+TMath::Power(stat_b_bfit->GetBinError(i),2));
+	  val = 0.0;
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(h_data_b->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_b_top->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_b_bfit->GetBinError(i),2));
 	  h_data_b_stat->SetBinError(i, val);
-	  val = TMath::Sqrt(TMath::Power(stat_b_bkg->GetBinError(i),2)+TMath::Power(syst_b_eff->GetBinError(i),2)+TMath::Power(syst_b_jec->GetBinError(i),2)+TMath::Power(syst_b_jer->GetBinError(i),2)+TMath::Power(syst_b_pu->GetBinError(i),2)+TMath::Power(syst_b_bkg->GetBinError(i),2)+TMath::Power(syst_b_bfit2->GetBinError(i),2)+TMath::Power(syst_b_btag->GetBinError(i),2)+TMath::Power(stat_b_unfold->GetBinError(i),2)+TMath::Power(syst_b_unfold->GetBinError(i),2)+TMath::Power(syst_b_lumi->GetBinError(i),2));
+	  val = 0.0;
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_b_bkg->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_eff->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_jec->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_jer->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_pu->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_bkg->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_bfit2->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_btag->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(stat_b_unfold->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_unfold->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(syst_b_lumi->GetBinError(i),2));
 	  h_data_b_syst->SetBinError(i, val);
-	  val = TMath::Sqrt(TMath::Power(h_data_b_stat->GetBinError(i),2)+TMath::Power(h_data_b_syst->GetBinError(i),2));
+	  val = 0.0;
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(h_data_b_stat->GetBinError(i),2));
+	  val = TMath::Sqrt(TMath::Power(val,2)+TMath::Power(h_data_b_syst->GetBinError(i),2));
 	  h_data_b_tot->SetBinError(i, val);
 	}
 
@@ -1532,11 +1564,28 @@ if (numB==2) {
                        1.1*xsec_syst_lumi[0], 1.1*xsec_syst_lumi[1]);
         xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
         xsec_tot_syst_lumi = xval;
-        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_data,2)+TMath::Power(xsec_tot_stat_top,2)+TMath::Power(xsec_tot_stat_bfit,2));
+
+	xval = 0.0;
+        xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_data,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_top,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_bfit,2));
         xsec_tot_stat_tot = xval;
-        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_bkg,2)+TMath::Power(xsec_tot_syst_eff,2)+TMath::Power(xsec_tot_syst_jec,2)+TMath::Power(xsec_tot_syst_jer,2)+TMath::Power(xsec_tot_syst_pu,2)+TMath::Power(xsec_tot_syst_bkg,2)+TMath::Power(xsec_tot_syst_bfit2,2)+TMath::Power(xsec_tot_syst_btag,2)+TMath::Power(xsec_tot_stat_unfold,2)+TMath::Power(xsec_tot_syst_unfold,2)+TMath::Power(xsec_tot_syst_lumi,2));
+	xval = 0.0;
+        xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_bkg,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_eff,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_jec,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_jer,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_pu,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_bkg,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_bfit2,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_btag,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_unfold,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_unfold,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_lumi,2));
         xsec_tot_syst_tot = xval;
-        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_tot,2)+TMath::Power(xsec_tot_syst_tot,2));
+	xval = 0.0;
+        xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_tot,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_tot,2));
         xsec_tot_data_tot = xval;
 
         xval = 0.0;
@@ -1811,11 +1860,28 @@ if (numB==2) {
                        1.1*xsec_syst_b_lumi[0], 1.1*xsec_syst_b_lumi[1]);
         xval = TMath::Sqrt((TMath::Power(xval,2)-TMath::Power(xref,2))/(TMath::Power(1.1,2)-1));
         xsec_tot_syst_b_lumi = xval;
-        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_data_b,2)+TMath::Power(xsec_tot_stat_b_top,2)+TMath::Power(xsec_tot_stat_b_bfit,2));
+
+	xval = 0.0;
+        xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_data_b,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_b_top,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_b_bfit,2));
         xsec_tot_stat_b_tot = xval;
-        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_b_bkg,2)+TMath::Power(xsec_tot_syst_b_eff,2)+TMath::Power(xsec_tot_syst_b_jec,2)+TMath::Power(xsec_tot_syst_b_jer,2)+TMath::Power(xsec_tot_syst_b_pu,2)+TMath::Power(xsec_tot_syst_b_bkg,2)+TMath::Power(xsec_tot_syst_b_bfit2,2)+TMath::Power(xsec_tot_syst_b_btag,2)+TMath::Power(xsec_tot_stat_b_unfold,2)+TMath::Power(xsec_tot_syst_b_unfold,2)+TMath::Power(xsec_tot_syst_b_lumi,2));
+	xval = 0.0;
+        xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_b_bkg,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_b_eff,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_b_jec,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_b_jer,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_b_pu,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_b_bkg,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_b_bfit2,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_b_btag,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_b_unfold,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_b_unfold,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_b_lumi,2));
         xsec_tot_syst_b_tot = xval;
-        xval = TMath::Sqrt(TMath::Power(xsec_tot_stat_b_tot,2)+TMath::Power(xsec_tot_syst_b_tot,2));
+	xval = 0.0;
+        xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_stat_b_tot,2));
+	xval = TMath::Sqrt(TMath::Power(xval,2)+TMath::Power(xsec_tot_syst_b_tot,2));
         xsec_tot_data_b_tot = xval;
 
 	TCanvas* c1 = new TCanvas("c", "c", 10, 10, 800, 600);
