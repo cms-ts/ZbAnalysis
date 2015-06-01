@@ -491,7 +491,7 @@ if (numB==2) {
 
 	  string tmp;
 
-	  if (isratio==0) {
+	  if (isratio==0 && drawInclusive) {
 	    getline(in, tmp);
 	    getline(in, tmp);
 	    getline(in, tmp);
@@ -2747,7 +2747,7 @@ if (numB==2) {
 	    h_mcg3_b->Write((title_b+"_mcg3").c_str());
 	    f.Close();
 	  }
-	  if (isratio==0) {
+	  if (isratio==0 && drawInclusive) {
 	    out << h_data->GetName();
 	    out << endl;
 	    out << std::setw(29) << "data";
@@ -2832,48 +2832,48 @@ if (numB==2) {
 	      out << std::setw(4) << TMath::Abs(100.*(h_data_stat->GetBinContent(i)==0 ? 0 : h_data_tot->GetBinError(i)/h_data_stat->GetBinContent(i)));
 	      out << endl;
 	    }
+	    out << "tot";
+	    out << std::setprecision(8);
+	    out << std::setw(12) << xsec_tot_data;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_stat_data;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_stat_bkg;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_syst_eff;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_syst_jec;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_syst_jer;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_syst_pu;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_syst_bkg;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_stat_top;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_stat_bfit;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_syst_bfit2;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_syst_btag;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_stat_unfold;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_syst_unfold;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_syst_lumi;
+	    out << " => ";
+	    out << std::setw(10) << xsec_tot_stat_tot;
+	    out << " +- ";
+	    out << std::setw(10) << xsec_tot_syst_tot;
+	    out << " => ";
+	    out << std::setw(10) << xsec_tot_data_tot;
+	    out << " => ";
+	    out << std::setprecision(1);
+	    out << std::setw(4) << TMath::Abs(100.*(xsec_tot_data_tot==0 ? 0 : xsec_tot_data_tot/xsec_tot_data));
+	    out << endl;
 	  }
-	  out << "tot";
-	  out << std::setprecision(8);
-	  out << std::setw(12) << xsec_tot_data;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_stat_data;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_stat_bkg;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_syst_eff;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_syst_jec;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_syst_jer;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_syst_pu;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_syst_bkg;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_stat_top;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_stat_bfit;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_syst_bfit2;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_syst_btag;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_stat_unfold;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_syst_unfold;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_syst_lumi;
-	  out << " => ";
-	  out << std::setw(10) << xsec_tot_stat_tot;
-	  out << " +- ";
-	  out << std::setw(10) << xsec_tot_syst_tot;
-	  out << " => ";
-	  out << std::setw(10) << xsec_tot_data_tot;
-	  out << " => ";
-	  out << std::setprecision(1);
-	  out << std::setw(4) << TMath::Abs(100.*(xsec_tot_data_tot==0 ? 0 : xsec_tot_data_tot/xsec_tot_data));
-	  out << endl;
 	  out << h_data_b->GetName();
 	  out << endl;
 	  out << std::setw(29) << "data";
@@ -3000,7 +3000,7 @@ if (numB==2) {
 	  out << std::setw(4) << TMath::Abs(100.*(xsec_tot_data_b==0 ? 0 : xsec_tot_data_b_tot/xsec_tot_data_b));
 	  out << endl;
 	  out.close();
-	  if (isratio==0) {
+	  if (isratio==0 && drawInclusive) {
 	    out1 << h_data->GetName() << " - RELATIVE ERRORS";
 	    out1 << endl;
 	    out1 << std::setw(8) << "data";

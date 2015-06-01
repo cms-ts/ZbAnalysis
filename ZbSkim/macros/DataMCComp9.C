@@ -1000,7 +1000,7 @@ if (numB==2) {
 	    out1.open((path + "/paper/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b + "_ratio_unfolding.txt").c_str());
 	    out2.open((path + "/paper/" + version + "/" + "/ratios_unfolding" + dirbSel + "/" + title_b + "_ratio_unfolding.tex").c_str());
 	  }
-	  if (isratio==0) {
+	  if (isratio==0 && drawInclusive) {
 	    out << h_data_tot->GetName();
 	    out << endl;
 	    out << std::setw(25) << "total";
@@ -1059,7 +1059,7 @@ if (numB==2) {
 	    out << endl;
 	  }
 	  out.close();
-	  if (isratio==0) {
+	  if (isratio==0 && drawInclusive) {
 	    out1 << h_data_tot->GetName() << " - RELATIVE ERRORS";
 	    out1 << endl;
 	    out1 << std::setw(7) << "total";
