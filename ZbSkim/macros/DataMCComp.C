@@ -56,15 +56,15 @@ int useDY = 0; // use MadGraph DY
 //int useSherpa=0;
 //int useSherpa=1;
 
-int bbBkg = 0;
-int bbSig = 0;
-
 bool labelDone = false;
 
 string bSel=" ";
 string subdir="0";
 string postfix="";
 string dirbSel="";
+
+bool bbBkg = false;
+bool bbSig = false;
 
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
@@ -140,18 +140,18 @@ if (irun==99) {            // irun==99 => pur
 }
 if (numB==1) {
   postfix = postfix + "1b";
-  dirbSel="_1b";
-  bSel="Z + (= 1) b-jet";
+  dirbSel = "_1b";
+  bSel = "Z + (= 1) b-jet";
 }
 if (numB==2) {
   postfix = postfix + "2b";
-  dirbSel="_2b";
-  bSel="Z + (#geq 2) b-jet";
+  dirbSel = "_2b";
+  bSel = "Z + (#geq 2) b-jet";
 }
 
-if (numB==1) bbBkg=1;
+if (numB==1) bbBkg = true;
 
-        if (doFit==4) bbSig=1;
+        if (doFit==4) bbSig = true;
 
 	/* top background */
 
@@ -340,7 +340,7 @@ if (numB==1) bbBkg=1;
         if (bbBkg) h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
         if (bbSig) h_mc1bb = (TH1F*)gDirectory->Get(("bbSig"+title.substr(1)).c_str());
 
-if (!h_mc1bb) bbBkg = 0;
+	if (!h_mc1bb) bbBkg = 0;
 
 	if (ilepton==1) mc2->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) mc2->cd(("demoMuo"+postfix).c_str());

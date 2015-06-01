@@ -57,8 +57,8 @@ int useSherpa=0;
 //int useNewPowheg=0;
 int useNewPowheg=1; // use new Powheg MC prediction
 
-//int drawInclusive = 0;
-int drawInclusive = 1; // do plot the "inclusive" histogram
+//int drawInclusive=0;
+int drawInclusive=1; // do plot the "inclusive" histogram
 
 double ele_eff_sys=0.015;
 double muo_eff_sys=0.020;
@@ -69,17 +69,18 @@ string bSel=" ";
 string dirbSel="";
 string subdir="0";
 string postfix="";
+
 if (numB==1) {
   postfix = postfix + "1b";
-  dirbSel="_1b";
-  bSel="Z + (= 1) b-jet";
+  dirbSel = "_1b";
+  bSel = "Z + (= 1) b-jet";
   drawInclusive = 0;
 }
 if (numB==2) {
   postfix = postfix + "2b";
-  dirbSel="_2b";
-  bSel="Z + (#geq 2) b-jet";
-  drawInclusive =0;
+  dirbSel = "_2b";
+  bSel = "Z + (#geq 2) b-jet";
+  drawInclusive = 0;
 }
 
 	if (gROOT->GetVersionInt() >= 53401) {

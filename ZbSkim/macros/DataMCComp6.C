@@ -11,6 +11,7 @@ string bSel="";
 string dirbSel="";
 string subdir="0";
 string postfix="";
+
 if (irun==1) {             // irun==1 => JEC Up
   subdir="1";
   postfix="Up";
@@ -81,13 +82,13 @@ if (irun==99) {            // irun==99 => pur
 }
 if (numB==1) {
   postfix = postfix + "1b";
-  dirbSel="_1b";
-  bSel="Z + (= 1) b-jet";
+  dirbSel = "_1b";
+  bSel = "Z + (= 1) b-jet";
 }
 if (numB==2) {
   postfix = postfix + "2b";
-  dirbSel="_2b";
-  bSel="Z + (#geq 2) b-jet";
+  dirbSel = "_2b";
+  bSel = "Z + (#geq 2) b-jet";
 }
 
         string title_ee = title;

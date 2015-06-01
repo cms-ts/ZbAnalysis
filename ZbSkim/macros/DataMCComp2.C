@@ -103,15 +103,15 @@ if (irun==99) {            // irun==99 => pur
 }
 if (numB==1) {
   postfix = postfix + "1b";
-  dirbSel="_1b";
-  bSel="Z + (= 1) b-jet";
+  dirbSel = "_1b";
+  bSel = "Z + (= 1) b-jet";
   drawInclusive = 0;
   genPostfix = "1b";
 }
 if (numB==2) {
   postfix = postfix + "2b";
-  dirbSel="_2b";
-  bSel="Z + (#geq 2) b-jet";
+  dirbSel = "_2b";
+  bSel = "Z + (#geq 2) b-jet";
   drawInclusive = 0;
   genPostfix = "2b";
 }

@@ -10,7 +10,8 @@ void DataMCComp9(string title="", int plot=0, int isratio=1, int numB=0) {
 int useSherpa=0;
 //int useSherpa=1; // use Sherpa MC prediction
 
-int drawInclusive = 0; // do plot the "inclusive" histogram
+//int drawInclusive=0;
+int drawInclusive=0; // do plot the "inclusive" histogram
 
 string subdir="0";
 string postfix="";
