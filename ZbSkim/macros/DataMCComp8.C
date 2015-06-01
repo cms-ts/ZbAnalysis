@@ -3235,26 +3235,25 @@ if (numB==2) {
 	  out1 << std::setw(5) << xsec_tot_data_b_tot*xval;
 	  out1 << endl;
 	  out1.close();
-	  if (isratio==0) {
-	    //out2 << h_data->GetName() << " - RELATIVE ERRORS";
-	    //out2 << endl;
-	    out2 << std::setw(7) << "\\textbf{data} &"  ;
-	    out2 << std::setw(8) << "\\textbf{bkg} &"   ;
-	    out2 << std::setw(8) << "\\textbf{eff} &"   ;
-	    out2 << std::setw(8) << "\\textbf{jec} &"   ;
-	    out2 << std::setw(8) << "\\textbf{jer} &"   ;
-	    out2 << std::setw(8) << "\\textbf{pu} &"    ;
-	    out2 << std::setw(8) << "\\textbf{bkg} &"   ;
-	    out2 << std::setw(8) << "\\textbf{ttbar} &" ;
-	    out2 << std::setw(8) << "\\textbf{bfit} &"  ;
-	    out2 << std::setw(8) << "\\textbf{btemp} &"  ;
-	    out2 << std::setw(8) << "\\textbf{btag} &"  ;
+	  /*
+	  if (isratio==0 && drawInclusive) {
+	    out2 << std::setw(7) << "\\textbf{data} & ";
+	    out2 << std::setw(8) << "\\textbf{bkg} & ";
+	    out2 << std::setw(8) << "\\textbf{eff} & ";
+	    out2 << std::setw(8) << "\\textbf{jec} & ";
+	    out2 << std::setw(8) << "\\textbf{jer} & ";
+	    out2 << std::setw(8) << "\\textbf{pu} & ";
+	    out2 << std::setw(8) << "\\textbf{bkg} & ";
+	    out2 << std::setw(8) << "\\textbf{ttbar} & ";
+	    out2 << std::setw(8) << "\\textbf{bfit} & ";
+	    out2 << std::setw(8) << "\\textbf{btemp} & ";
+	    out2 << std::setw(8) << "\\textbf{btag} & ";
 	    out2 << std::setw(8) << "\\textbf{unfold} &";
 	    out2 << std::setw(8) << "\\textbf{unfold} &";
-	    out2 << std::setw(8) << "\\textbf{lumi} &"  ;
-	    out2 << std::setw(8) << "\\textbf{total} &" ;
-	    out2 << std::setw(8) << "\\textbf{total} &" ;
-	    out2 << std::setw(8) << "\\textbf{total} &" ;
+	    out2 << std::setw(8) << "\\textbf{lumi} & ";
+	    out2 << std::setw(8) << "\\textbf{total} & ";
+	    out2 << std::setw(8) << "\\textbf{total} & ";
+	    out2 << std::setw(8) << "\\textbf{total} ";
 	    out2 << endl;
 	    out2 << std::setw(7) << "\\textbf{stat} & ";
 	    out2 << std::setw(8) << "\\textbf{stat} & ";
@@ -3272,9 +3271,9 @@ if (numB==2) {
 	    out2 << std::setw(8) << "\\textbf{syst} & ";
 	    out2 << std::setw(8) << "\\textbf{stat} & ";
 	    out2 << std::setw(8) << "\\textbf{syst} & ";
-	    out2 << std::setw(8) << "\\textbf{error & ";
+	    out2 << std::setw(8) << "\\textbf{error} ";
 	    out2 << endl;
-	    /*for (int i=1;i<=h_data->GetNbinsX();i++) {
+	    for (int i=1;i<=h_data->GetNbinsX();i++) {
 	      double val = TMath::Abs(100.*(h_data->GetBinContent(i)==0 ? 0 : 1./h_data->GetBinContent(i)));
 	      out2 << std::fixed;
 	      out2 << std::setw(2) << i;
@@ -3313,48 +3312,47 @@ if (numB==2) {
 	      out2 << std::setw(4) << h_data_syst->GetBinError(i)*val;
 	      out2 << " & ";
 	      out2 << std::setw(4) << h_data_tot->GetBinError(i)*val;
-	      out2 << std::setw(4) << "\\tabularnewline" << "   " << "\\hline";
+	      out2 << " \\tabularnewline" << " " << "\\hline";
 	      out2 << endl;
-	    }*/
-	  }/*
-	  //out2 << h_data_b->GetName() << " - RELATIVE ERRORS";
-	  //out2 << endl;
-	  out2 << std::setw(7) << "\\textbf{data} &";
-	  out2 << std::setw(8) << "\\textbf{bkg} &";
-	  out2 << std::setw(8) << "\\textbf{eff} &";
-	  out2 << std::setw(8) << "\\textbf{jec} &";
-	  out2 << std::setw(8) << "\\textbf{jer} &";
-	  out2 << std::setw(8) << "\\textbf{pu} &";
-	  out2 << std::setw(8) << "\\textbf{bkg} &";
-	  out2 << std::setw(8) << "\\textbf{ttbar} &";
-	  out2 << std::setw(8) << "\\textbf{bfit} &";
-	  out2 << std::setw(8) << "\\textbf{btemp} &";
-	  out2 << std::setw(8) << "\\textbf{btag} &";
-	  out2 << std::setw(8) << "\\textbf{unfold} &";
-	  out2 << std::setw(8) << "\\textbf{unfold} &";
-	  out2 << std::setw(8) << "\\textbf{lumi} &";
-	  out2 << std::setw(8) << "\\textbf{total} &";
-	  out2 << std::setw(8) << "\\textbf{total} &";
-	  out2 << std::setw(8) << "\\textbf{total} &";
+	    }
+	  }
+	  */
+	  out2 << std::setw(7) << "\\textbf{data} & ";
+	  out2 << std::setw(8) << "\\textbf{bkg} & ";
+	  out2 << std::setw(8) << "\\textbf{eff} & ";
+	  out2 << std::setw(8) << "\\textbf{jec} & ";
+	  out2 << std::setw(8) << "\\textbf{jer} & ";
+	  out2 << std::setw(8) << "\\textbf{pu} & ";
+	  out2 << std::setw(8) << "\\textbf{bkg} & ";
+	  out2 << std::setw(8) << "\\textbf{ttbar} & ";
+	  out2 << std::setw(8) << "\\textbf{bfit} & ";
+	  out2 << std::setw(8) << "\\textbf{btemp} & ";
+	  out2 << std::setw(8) << "\\textbf{btag} & ";
+	  out2 << std::setw(8) << "\\textbf{unfold} & ";
+	  out2 << std::setw(8) << "\\textbf{unfold} & ";
+	  out2 << std::setw(8) << "\\textbf{lumi} & ";
+	  out2 << std::setw(8) << "\\textbf{total} & ";
+	  out2 << std::setw(8) << "\\textbf{total} & ";
+	  out2 << std::setw(8) << "\\textbf{total} ";
 	  out2 << endl;
-	  out2 << std::setw(7) << "\\textbf{stat} &";
-	  out2 << std::setw(8) << "\\textbf{stat} &";
-	  out2 << std::setw(8) << "\\textbf{syst} &";
-	  out2 << std::setw(8) << "\\textbf{syst} &";
-	  out2 << std::setw(8) << "\\textbf{syst} &";
-	  out2 << std::setw(8) << "\\textbf{syst} &";
-	  out2 << std::setw(8) << "\\textbf{syst} &";
-	  out2 << std::setw(8) << "\\textbf{stat} &";
-	  out2 << std::setw(8) << "\\textbf{stat} &";
-	  out2 << std::setw(8) << "\\textbf{syst} &";
-	  out2 << std::setw(8) << "\\textbf{syst} &";
-	  out2 << std::setw(8) << "\\textbf{stat} &";
-	  out2 << std::setw(8) << "\\textbf{syst} &";
-	  out2 << std::setw(8) << "\\textbf{syst} &";
-	  out2 << std::setw(8) << "\\textbf{stat} &";
-	  out2 << std::setw(8) << "\\textbf{syst} &";
-	  out2 << std::setw(8) << "\\textbf{error} &";
-	  out2 << endl;*/
+	  out2 << std::setw(7) << "\\textbf{stat} & ";
+	  out2 << std::setw(8) << "\\textbf{stat} & ";
+	  out2 << std::setw(8) << "\\textbf{syst} & ";
+	  out2 << std::setw(8) << "\\textbf{syst} & ";
+	  out2 << std::setw(8) << "\\textbf{syst} & ";
+	  out2 << std::setw(8) << "\\textbf{syst} & ";
+	  out2 << std::setw(8) << "\\textbf{syst} & ";
+	  out2 << std::setw(8) << "\\textbf{stat} & ";
+	  out2 << std::setw(8) << "\\textbf{stat} & ";
+	  out2 << std::setw(8) << "\\textbf{syst} & ";
+	  out2 << std::setw(8) << "\\textbf{syst} & ";
+	  out2 << std::setw(8) << "\\textbf{stat} & ";
+	  out2 << std::setw(8) << "\\textbf{syst} & ";
+	  out2 << std::setw(8) << "\\textbf{syst} & ";
+	  out2 << std::setw(8) << "\\textbf{stat} & ";
+	  out2 << std::setw(8) << "\\textbf{syst} & ";
+	  out2 << std::setw(8) << "\\textbf{error} ";
+	  out2 << endl;
 	  for (int i=1;i<=h_data_b->GetNbinsX();i++) {
 	    double val = TMath::Abs(100.*(h_data_b->GetBinContent(i)==0 ? 0 : 1./h_data_b->GetBinContent(i)));
 	    out2 << std::fixed;
@@ -3394,7 +3392,7 @@ if (numB==2) {
 	    out2 << std::setw(4) << h_data_b_syst->GetBinError(i)*val;
 	    out2 << " & ";
 	    out2 << std::setw(4) << h_data_b_tot->GetBinError(i)*val;
-	    out2 << std::setw(4) << "\\tabularnewline" << "   " << "\\hline";
+	    out2 << " \\tabularnewline" << " " << "\\hline";
 	    out2 << endl;
 	  }
 
