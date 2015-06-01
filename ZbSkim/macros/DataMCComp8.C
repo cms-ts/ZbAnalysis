@@ -3271,7 +3271,9 @@ if (numB==2) {
 	    out2 << std::setw(8) << "\\textbf{syst} & ";
 	    out2 << std::setw(8) << "\\textbf{stat} & ";
 	    out2 << std::setw(8) << "\\textbf{syst} & ";
-	    out2 << std::setw(8) << "\\textbf{error} ";
+	    out2 << std::setw(8) << "\\textbf{error} \\\\";
+	    out2 << endl;
+	    out2 << "\\tabularnewline" << " " << "\\hline";
 	    out2 << endl;
 	    for (int i=1;i<=h_data->GetNbinsX();i++) {
 	      double val = TMath::Abs(100.*(h_data->GetBinContent(i)==0 ? 0 : 1./h_data->GetBinContent(i)));
@@ -3351,7 +3353,9 @@ if (numB==2) {
 	  out2 << std::setw(8) << "\\textbf{syst} & ";
 	  out2 << std::setw(8) << "\\textbf{stat} & ";
 	  out2 << std::setw(8) << "\\textbf{syst} & ";
-	  out2 << std::setw(8) << "\\textbf{error} ";
+	  out2 << std::setw(8) << "\\textbf{error} \\\\";
+	  out2 << endl;
+	  out2 << "\\tabularnewline" << " " << "\\hline";
 	  out2 << endl;
 	  for (int i=1;i<=h_data_b->GetNbinsX();i++) {
 	    double val = TMath::Abs(100.*(h_data_b->GetBinContent(i)==0 ? 0 : 1./h_data_b->GetBinContent(i)));
