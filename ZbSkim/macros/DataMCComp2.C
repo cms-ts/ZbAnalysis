@@ -81,10 +81,6 @@ if (irun==13) {            // irun==13 => bkg statistics
   subdir="13";
   postfix="";
 }
-if (irun==55) {            // irun==55 => template syst
-  subdir="55";
-  postfix="";
-}
 if (irun==66) {            // irun==66 => unfolding with data weight
   subdir="66";
   postfix="";
