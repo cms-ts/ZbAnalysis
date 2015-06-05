@@ -736,7 +736,8 @@ if (numB==1) bbBkg = true;
 	  }
 	}
 
-	/*if (doFit==0 && irun==55) {
+	/*
+	if (doFit==0 && irun==55) {
 
 	  float xval=0;
 	  float xvalc=0;
@@ -772,7 +773,8 @@ if (numB==1) bbBkg = true;
 	  xvalc = xvalc / h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
 	  h_mc1c->Sumw2();
 	  h_mc1c->Scale(xvalc);
-   	}*/
+   	}
+	*/
 
 	TVirtualFitter::SetDefaultFitter("Minuit2");
 	TVirtualFitter* fitter=0;
