@@ -1389,23 +1389,23 @@ if (numB==1) bbBkg = true;
 	  }
 	  if (doFit==3) {
 	    sprintf(buff, "c_{uds} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
-	    fitLabel->DrawLatex(0.38, 0.48, buff);
+	    fitLabel->DrawLatex(0.19, 0.48, buff);
 	    sprintf(buff, "c_{b}   = %5.3f #pm %5.3f", fitter->GetParameter(1), fitter->GetParError(1));
-	    fitLabel->DrawLatex(0.38, 0.43, buff);
+	    fitLabel->DrawLatex(0.19, 0.43, buff);
 	    sprintf(buff, "c_{c}   = %5.3f #pm %5.3f", fitter->GetParameter(2), fitter->GetParError(2));
-	    fitLabel->DrawLatex(0.38, 0.38, buff);
+	    fitLabel->DrawLatex(0.19, 0.38, buff);
 	    float f_uds = 100*h_mc_fit0->Integral(0,h_mc_fit0->GetNbinsX()+1)/(h_mc_fit0->Integral(0,h_mc_fit0->GetNbinsX()+1)+h_mc_fit1->Integral(0,h_mc_fit1->GetNbinsX()+1)+h_mc_fit2->Integral(0,h_mc_fit2->GetNbinsX()+1));
 	    float ef_uds = f_uds*(fitter->GetParError(0)/fitter->GetParameter(0));
 	    sprintf(buff, "f_{uds} = %4.1f #pm %3.1f %%", f_uds, ef_uds);
-	    fitLabel->DrawLatex(0.68, 0.48, buff);
+	    fitLabel->DrawLatex(0.49, 0.48, buff);
 	    float f_b = 100*h_mc_fit1->Integral(0,h_mc_fit1->GetNbinsX()+1)/(h_mc_fit0->Integral(0,h_mc_fit0->GetNbinsX()+1)+h_mc_fit1->Integral(0,h_mc_fit1->GetNbinsX()+1)+h_mc_fit2->Integral(0,h_mc_fit2->GetNbinsX()+1));
 	    float ef_b = f_b*(fitter->GetParError(1)/fitter->GetParameter(1));
 	    sprintf(buff, "f_{b}   = %4.1f #pm %3.1f %%", f_b, ef_b);
-	    fitLabel->DrawLatex(0.68, 0.43, buff);
+	    fitLabel->DrawLatex(0.49, 0.43, buff);
 	    float f_c = 100*h_mc_fit2->Integral(0,h_mc_fit2->GetNbinsX()+1)/(h_mc_fit0->Integral(0,h_mc_fit0->GetNbinsX()+1)+h_mc_fit1->Integral(0,h_mc_fit1->GetNbinsX()+1)+h_mc_fit2->Integral(0,h_mc_fit2->GetNbinsX()+1));
 	    float ef_c = f_c*(fitter->GetParError(2)/fitter->GetParameter(2));
 	    sprintf(buff, "f_{c}   = %4.1f #pm %3.1f %%", f_c, ef_c);
-	    fitLabel->DrawLatex(0.68, 0.38, buff);
+	    fitLabel->DrawLatex(0.49, 0.38, buff);
 	  }
           if (doFit==4) {
             sprintf(buff, "c_{bb} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
