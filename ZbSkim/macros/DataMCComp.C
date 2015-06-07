@@ -1166,8 +1166,8 @@ if (numB==1) bbBkg = true;
 	}
 	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
 	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
-        if (bbBkg || bbSig) leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
 	if (!doBkg) {
+          if (bbBkg || bbSig) leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
 	  leg->AddEntry(h_mc2,"t#bar{t}","f");
 	  leg->AddEntry(h_mcD,"Dibosons","f");
 	  leg->AddEntry(h_mcO,"Others","f");
