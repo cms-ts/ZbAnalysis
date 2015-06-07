@@ -686,6 +686,7 @@ if (numB==1) bbBkg = true;
           if (bbSig) {
             h_mc1bb = (TH1F*)gDirectory->Get(("bbSig"+title.substr(1)).c_str());
             h_mc1bb->Sumw2();
+	    h_mc1bb = fixrange(h_mc1bb, numB);
           }
 
 	  if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
