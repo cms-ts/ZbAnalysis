@@ -53,9 +53,6 @@ int useDY = 0; // use MadGraph DY
 //int useDY = 3; // use MG+P8 MLM
 //int useDY = 4; // use MG_aMC@NLO+P8
 
-//int useSherpa=0;
-//int useSherpa=1;
-
 bool labelDone = false;
 
 string bSel=" ";
@@ -1425,7 +1422,7 @@ if (numB==1) bbBkg = true;
           }
 	}
 
-	//if (useDY==1 || useSherpa) subdir = subdir + "_sherpa";
+	//if (useDY==1) subdir = subdir + "_sherpa";
 	if (useDY==2) version = version + "_powheg";
 	if (useDY==3) version = version + "_Pythia8";
 	if (useDY==4) version = version + "_aMC@NLO";
