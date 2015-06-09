@@ -1422,7 +1422,7 @@ if (numB==1) bbBkg = true;
           }
 	}
 
-	//if (useDY==1) subdir = subdir + "_sherpa";
+	if (useDY==1) subdir = subdir + "_sherpa";
 	if (useDY==2) version = version + "_powheg";
 	if (useDY==3) version = version + "_Pythia8";
 	if (useDY==4) version = version + "_aMC@NLO";
