@@ -624,8 +624,8 @@ if (numB==1) bbBkg = true;
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
 	    h_mc1->SetBinError(i, 1.1*h_mc1->GetBinError(i));
 	    if (h_mc1b) h_mc1b->SetBinError(i, 1.1*h_mc1b->GetBinError(i));
-            if (bbBkg || bbSig) h_mc1bb->SetBinError(i, 1.1*h_mc1bb->GetBinError(i));
 	    if (h_mc1c) h_mc1c->SetBinError(i, 1.1*h_mc1c->GetBinError(i));
+            if (bbBkg || bbSig) h_mc1bb->SetBinError(i, 1.1*h_mc1bb->GetBinError(i));
 	    h_mc2->SetBinError(i, 1.1*h_mc2->GetBinError(i));
 	    h_mcD->SetBinError(i, 1.1*h_mcD->GetBinError(i));
 	    h_mcO->SetBinError(i, 1.1*h_mcO->GetBinError(i));
