@@ -186,7 +186,7 @@ if (numB==2) {
 	for (int i=0;i<NMAX;i++) {
 	  h_data_scan[i] = 0;
 	  h_data_b_scan[i] = 0;
-	  if (i==8 || i==9) continue
+	  if (i==8 || i==9) continue;
 	  if (i<=13) {
 	    stringstream ss;
 	    ss << i;
