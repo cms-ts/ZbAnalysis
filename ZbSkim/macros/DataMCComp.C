@@ -732,10 +732,10 @@ if (numB==1) bbBkg = true;
 	    h_mc1c->SetFillColor(kOrange);
 	    h_mc1c->SetFillStyle(3245);
 	  }
-	  if (h_mc1bb)
-            h_mc1bb->SetLineColor(kBlack);
-            h_mc1bb->SetFillColor(kYellow+2);
-            h_mc1bb->SetFillStyle(3254);
+	  if (h_mc1bb) {
+	    h_mc1bb->SetLineColor(kBlack);
+	    h_mc1bb->SetFillColor(kYellow+2);
+	    h_mc1bb->SetFillStyle(3254);
 	  }
 	}
 
