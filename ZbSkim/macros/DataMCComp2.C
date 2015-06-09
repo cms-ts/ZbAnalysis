@@ -18,6 +18,13 @@ int useFitResults=1;  // use fit results for c_b, c_c, c_uds, c_t
 //int useEleMuo = 0; // use MC or fit results for c_t
 int useEleMuo = 1; // use e-mu fit results for c_t
 
+int useDY = 0; // use MadGraph DY for numB=0
+//int useDY = 1; // use weighted MadGraph DY for numB=0
+//int useDY = 2; // use Sherpa DY
+//int useDY = 3; // use Powheg DY
+//int useDY = 4; // use MG+P8 MLM
+//int useDY = 5; // use MG_aMC@NLO+P8
+
 int drawInclusive = 1; // do plot the "inclusive" histogram
 
 string subdir="0";
@@ -115,6 +122,8 @@ if (numB==2) {
 if (numB==1) bbBkg = true;
 if (numB==2) bbSig = true;
 
+	if (irun==99) useDY = 5;
+
 	if (gROOT->GetVersionInt() >= 53401) {
 	  //gROOT->GetColor(kRed)->SetAlpha(0.5);
 	  gROOT->GetColor(kRed)->SetAlpha(0.0);
@@ -208,6 +217,9 @@ if (numB==2) bbSig = true;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
+	double norm1_0 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
+	double norm1_p8 = ((Lumi2012 * Xsec_dy_p8) / Ngen_dy_p8);
+	double norm1_amc = ((Lumi2012 * Xsec_dy_amc) / 2.59225272210000000e+11);
 	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
 	double norm1_2=0;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
@@ -227,6 +239,8 @@ if (numB==2) bbSig = true;
         double norm13 = ((Lumi2012 * Xsec_tWb) / Ngen_tWb);
 
 	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
+	double enorm1_p8 = ((Lumi2012 * eXsec_dy) / Ngen_dy_p8);
+	double enorm1_amc = ((Lumi2012 * eXsec_dy_amc) / 2.59225272210000000e+11);
 	double enorm1_1 = ((Lumi2012 * eXsec_dy_1) / Ngen_dy_1);
 	double enorm1_2=0;
 	if (ilepton==1) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_ee);
@@ -245,7 +259,6 @@ if (numB==2) bbSig = true;
         double enorm12 = ((Lumi2012 * eXsec_tTb) / Ngen_tTb);
         double enorm13 = ((Lumi2012 * eXsec_tWb) / Ngen_tWb);
 
-
 	if (title.empty()) title = "w_jetmultiplicity";
 
 	if (ilepton==1) {
@@ -262,11 +275,36 @@ if (numB==2) bbSig = true;
 	if (ilepton==2) data = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
 
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
+	if (useDY==1 && numB==0) {
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_weights.root").c_str());
+	}
+	if (useDY==2) {
+	  norm1 = norm1_1;
+	  enorm1 = enorm1_1;
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa.root").c_str());
+	}
+	if (useDY==3) {
+	  norm1 = norm1_2;
+	  enorm1 = enorm1_2;
+	  if (ilepton==1) mc1 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
+	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
+	}
+	if (useDY==4) {
+	  norm1 = norm1_p8;
+	  enorm1 = enorm1_p8;
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_P8.root").c_str());
+	}
+	if (useDY==5) {
+	  norm1 = norm1_amc;
+	  enorm1 = enorm1_amc;
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
+	}
 	TFile *mcg = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	TFile *mcg1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	TFile *mcg2=0;
 	if (ilepton==1) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	if (ilepton==2) mcg2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
+
 	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
 	TFile *mc3 = TFile::Open((path + "/" + version + "/" + "ZZ.root").c_str());
 	TFile *mc4 = TFile::Open((path + "/" + version + "/" + "WZ.root").c_str());
@@ -540,7 +578,7 @@ if (numB==2) bbSig = true;
 
 	h_mc1->Scale(norm1);
 	if (h_mc1t) h_mc1t->Scale(norm1);
-	h_mcg->Scale(norm1);
+	h_mcg->Scale(norm1_0);
 	h_mcg1->Scale(norm1_1);
 	h_mcg2->Scale(norm1_2);
 	h_mc2->Scale(norm2);
@@ -562,7 +600,7 @@ if (numB==2) bbSig = true;
 	if (h_mc1t_b) h_mc1t_b->Scale(norm1);
         if (bbSig)  h_mc1bb->Scale(norm1);
         if (bbBkg)  h_mc1bb->Scale(norm1);
-	h_mcg_b->Scale(norm1);
+	h_mcg_b->Scale(norm1_0);
 	h_mcg1_b->Scale(norm1_1);
 	h_mcg2_b->Scale(norm1_2);
 	h_mc2_b->Scale(norm2);
@@ -577,6 +615,12 @@ if (numB==2) bbSig = true;
 	h_mc11_b->Scale(norm11);
 	h_mc12_b->Scale(norm12);
 	h_mc13_b->Scale(norm13);
+
+	if (useDY==5) {
+	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+	    h_mc1->SetBinError(i, h_mc1->GetBinError(i)*100.);
+	  }
+	}
 
         TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
 	h_mcO->Reset();
@@ -666,6 +710,7 @@ if (numB==2) bbSig = true;
 	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
+	/*
 	if (irun==99) {
 	  float xval=0;
 	  //float xvalb=0;
@@ -724,8 +769,8 @@ if (numB==2) bbSig = true;
 	    xvalc = xvalc / h_mc1c_b->Integral(0,h_mc1c_b->GetNbinsX()+1);
 	    h_mc1c_b->Scale(xvalc);
 	  }
-
 	}
+	*/
 
         if (bbBkg || bbSig) {
           h_mc1b_b->Add(h_mc1bb, -1);

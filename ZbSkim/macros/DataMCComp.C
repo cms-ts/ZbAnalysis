@@ -47,11 +47,12 @@ int useFitResults=1;  // use fit results for c_t
 //int useEleMuo = 0; // use MC or fit results for c_t
 int useEleMuo = 1; // use e-mu fit results for c_t
 
-int useDY = 0; // use MadGraph DY
-//int useDY = 1; // use Sherpa DY
-//int useDY = 2; // use Powheg DY
-//int useDY = 3; // use MG+P8 MLM
-//int useDY = 4; // use MG_aMC@NLO+P8
+int useDY = 0; // use MadGraph DY for numB=0
+//int useDY = 1; // use weighted MadGraph DY for numB=0
+//int useDY = 2; // use Sherpa DY
+//int useDY = 3; // use Powheg DY
+//int useDY = 4; // use MG+P8 MLM
+//int useDY = 5; // use MG_aMC@NLO+P8
 
 bool labelDone = false;
 
@@ -147,6 +148,8 @@ if (numB==2) {
 }
 
 if (numB==1) bbBkg = true;
+
+	if (irun==99) useDY = 5;
 
         if (doFit==4) bbSig = true;
 
@@ -286,23 +289,26 @@ if (numB==1) bbBkg = true;
 	if (ilepton==3) data = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
 
 	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
-	if (useDY==1) {
+	if (useDY==1 && numB==0) {
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_weights.root").c_str());
+	}
+	if (useDY==2) {
 	  norm1 = norm1_1;
 	  enorm1 = enorm1_1;
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa.root").c_str());
 	}
-	if (useDY==2) {
+	if (useDY==3) {
 	  norm1 = norm1_2;
 	  enorm1 = enorm1_2;
 	  if (ilepton==1) mc1 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
-	if (useDY==3) {
+	if (useDY==4) {
 	  norm1 = norm1_p8;
           enorm1 = enorm1_p8;
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_P8.root").c_str());
 	}
-	if (useDY==4) {
+	if (useDY==5) {
 	  norm1 = norm1_amc;
           enorm1 = enorm1_amc;
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
@@ -520,6 +526,16 @@ if (numB==1) bbBkg = true;
 	if (h_mc1t) h_mc1t->Scale(norm1);
 	if (bbBkg || bbSig) h_mc1bb->Scale(norm1);
 
+	if (useDY==5) {
+	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+	    h_mc1->SetBinError(i, h_mc1->GetBinError(i)*100.);
+	    if (h_mc1b) h_mc1b->SetBinError(i, h_mc1b->GetBinError(i)*100.);
+	    if (h_mc1c) h_mc1c->SetBinError(i, h_mc1c->GetBinError(i)*100.);
+	    if (h_mc1t) h_mc1t->SetBinError(i, h_mc1t->GetBinError(i)*100.);
+	    if (bbBkg || bbSig) h_mc1bb->SetBinError(i, h_mc1bb->GetBinError(i)*100.);
+	  }
+	}
+
 	h_mc2->Scale(norm2);
 	h_mc3->Scale(norm3);
 	h_mc4->Scale(norm4);
@@ -645,6 +661,7 @@ if (numB==1) bbBkg = true;
 	  }
 	}
 
+	/*
 	if (doFit==0 && irun==99) {
 	  float xval=0;
 	  //float xvalb=0;
@@ -738,6 +755,7 @@ if (numB==1) bbBkg = true;
 	    h_mc1bb->SetFillStyle(3254);
 	  }
 	}
+	*/
 
 	/*
 	if (doFit==0 && irun==55) {
@@ -1422,10 +1440,11 @@ if (numB==1) bbBkg = true;
           }
 	}
 
-	if (useDY==1) subdir = subdir + "_sherpa";
-	if (useDY==2) version = version + "_powheg";
-	if (useDY==3) version = version + "_Pythia8";
-	if (useDY==4) version = version + "_aMC@NLO";
+//	if (useDY==1) subdir = subdir + "_weight";
+//	if (useDY==2) subdir = subdir + "_sherpa";
+//	if (useDY==3) version = version + "_powheg";
+//	if (useDY==4) version = version + "_Pythia8";
+//	if (useDY==5) version = version + "_aMC@NLO";
 
 	if (plot) {
 	  if (doBkg) title = title + "_doBkg";
