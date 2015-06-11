@@ -158,7 +158,6 @@ if (numB==2) {
 	  if (ilepton==1) mcg2 = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_ele.root").c_str());
 	  if (ilepton==2) mcg2 = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_muo.root").c_str());
 	}
-
 	TFile *mcg3 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
 
 	string title_b = title;
