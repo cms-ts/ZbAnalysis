@@ -39,8 +39,6 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
 
 void DataMCComp(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0, int numB=0) {
 
-// bb parameter -> 2 b-jet found with partonFlavour
-
 //int useFitResults=0; // use MC predictions for c_t
 int useFitResults=1;  // use fit results for c_t
 
