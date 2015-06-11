@@ -48,7 +48,7 @@ int useSysUnfoldMadGraph4FS=0;
 int useSysUnfoldWeight=1; // use data weighted MC for unfolding systematics
 
 int useSysUnfoldMadGraphAMC=0;
-//int useSysUnfoldMadGraph_aMC=1; // use MadGraph aMC@NLO for unfolding systematics
+//int useSysUnfoldMadGraphAMC=1; // use MadGraph aMC@NLO for unfolding systematics
 
 int useMC=0;
 //int useMC=1; // use MC prediction
