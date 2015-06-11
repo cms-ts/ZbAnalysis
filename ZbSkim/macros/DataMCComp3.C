@@ -11,6 +11,7 @@ void DataMCComp3(int irun=0, string title="", int plot=0, int ilepton=1, int num
 int useDY = 1; // use weighted MadGraph DY for numB=0
 //int useDY = 2; // use Sherpa DY
 //int useDY = 3; // use Powheg DY
+//int useDY = 4; // use MG_aMC@NLO+P8
 
 string subdir="0";
 string postfix="";
@@ -113,6 +114,8 @@ if (numB==2) {
 if (numB==1) bbBkg = true;
 if (numB==2) bbSig = true;
 
+	if (irun==19) useDY = 4;
+
 	if (title.empty()) title = "w_jetmultiplicity";
 
         if (ilepton==1) {
@@ -143,6 +146,10 @@ if (numB==2) bbSig = true;
 	    mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	    mc2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	  }
+	}
+	if (useDY==4) {
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
+	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
 	}
 
 /* efficiency:  e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b */
