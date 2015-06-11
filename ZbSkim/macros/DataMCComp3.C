@@ -148,8 +148,8 @@ if (numB==2) bbSig = true;
 	  }
 	}
 	if (useDY==4) {
-	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
-	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen.root").c_str());
+	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen.root").c_str());
 	}
 
 /* efficiency:  e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b */
