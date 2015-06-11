@@ -86,20 +86,28 @@ if (irun==13) {            // irun==13 => bkg statistics
   subdir="13";
   postfix="";
 }
-if (irun==66) {            // irun==66 => unfolding with data weight
-  subdir="66";
+if (irun==14) {            // irun==14 => unfolding with MadGraph 4FS
+  subdir="14";
   postfix="";
 }
-if (irun==77) {            // irun==77 => unfolding with MadGraph 4FS
-  subdir="77";
+if (irun==15) {            // irun==15 => unfolding with data weight
+  subdir="15";
   postfix="";
 }
-if (irun==88) {            // irun==88 => deltaR
-  subdir="88";
-  postfix="DR";
+if (irun==16) {            // irun==16 => unfolding with MadGraph aMC@NLO
+  subdir="16";
+  postfix="";
 }
-if (irun==99) {            // irun==99 => pur
-  subdir="99";
+if (irun==17) {            // irun==17 => templates from data
+  subdir="17";
+  postfix="";
+}
+if (irun==18) {            // irun==18 => templates from Sherpa
+  subdir="18";
+  postfix="";
+}
+if (irun==19) {            // irun==19 => templates from MadGraph aMC@NLO
+  subdir="19";
   postfix="";
 }
 if (numB==1) {

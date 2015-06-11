@@ -51,8 +51,7 @@ int useDY = 0; // use MadGraph DY for numB=0
 //int useDY = 1; // use weighted MadGraph DY for numB=0
 //int useDY = 2; // use Sherpa DY
 //int useDY = 3; // use Powheg DY
-//int useDY = 4; // use MG+P8 MLM
-//int useDY = 5; // use MG_aMC@NLO+P8
+//int useDY = 4; // use MG_aMC@NLO+P8
 
 bool labelDone = false;
 
@@ -116,24 +115,28 @@ if (irun==13) {            // irun==13 => bkg statistics
   subdir="13";
   postfix="";
 }
-if (irun==55) {            // irun==55 => take the shape of Z+light and Z+c from data
-  subdir="55";
+if (irun==14) {            // irun==14 => unfolding with MadGraph 4FS
+  subdir="14";
   postfix="";
 }
-if (irun==66) {            // irun==66 => unfolding with data weight
-  subdir="66";
+if (irun==15) {            // irun==15 => unfolding with data weight
+  subdir="15";
   postfix="";
 }
-if (irun==77) {            // irun==77 => unfolding with MadGraph 4FS
-  subdir="77";
+if (irun==16) {            // irun==16 => unfolding with MadGraph aMC@NLO
+  subdir="16";
   postfix="";
 }
-if (irun==88) {            // irun==88 => deltaR
-  subdir="88";
-  postfix="DR";
+if (irun==17) {            // irun==17 => templates from data
+  subdir="17";
+  postfix="";
 }
-if (irun==99) {            // irun==99 => pur
-  subdir="99";
+if (irun==18) {            // irun==18 => templates from Sherpa
+  subdir="18";
+  postfix="";
+}
+if (irun==19) {            // irun==19 => templates from MadGraph aMC@NLO
+  subdir="19";
   postfix="";
 }
 if (numB==1) {
@@ -149,7 +152,7 @@ if (numB==2) {
 
 if (numB==1) bbBkg = true;
 
-	if (irun==99) useDY = 5;
+	if (irun==19) useDY = 4;
 
         if (doFit==4) bbSig = true;
 
@@ -229,10 +232,9 @@ if (numB==1) bbBkg = true;
 	if (ilepton==3) Lumi2012 = Lumi2012_ele_muon;
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
-	double norm1_p8 = ((Lumi2012 * Xsec_dy_p8) / Ngen_dy_p8);
 	double norm1_amc = ((Lumi2012 * Xsec_dy_amc) / 2.59225272210000000e+11);
 	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
-	double norm1_2;
+	double norm1_2=0;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
 	if (ilepton==2) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_mm);
 	double norm2 = ((Lumi2012 * Xsec_tt) / Ngen_tt);
@@ -250,7 +252,6 @@ if (numB==1) bbBkg = true;
 	double norm13 = ((Lumi2012 * Xsec_tWb) / Ngen_tWb);
 
 	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
-	double enorm1_p8 = ((Lumi2012 * eXsec_dy) / Ngen_dy_p8);
 	double enorm1_amc = ((Lumi2012 * eXsec_dy_amc) / 2.59225272210000000e+11);
 	double enorm1_1 = ((Lumi2012 * eXsec_dy_1) / Ngen_dy_1);
 	double enorm1_2;
@@ -304,11 +305,6 @@ if (numB==1) bbBkg = true;
 	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
 	if (useDY==4) {
-	  norm1 = norm1_p8;
-          enorm1 = enorm1_p8;
-	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_P8.root").c_str());
-	}
-	if (useDY==5) {
 	  norm1 = norm1_amc;
           enorm1 = enorm1_amc;
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
@@ -526,7 +522,7 @@ if (numB==1) bbBkg = true;
 	if (h_mc1t) h_mc1t->Scale(norm1);
 	if (bbBkg || bbSig) h_mc1bb->Scale(norm1);
 
-	if (useDY==5) {
+	if (useDY==4) {
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
 	    h_mc1->SetBinError(i, h_mc1->GetBinError(i)*100.);
 	    if (h_mc1b) h_mc1b->SetBinError(i, h_mc1b->GetBinError(i)*100.);
@@ -661,8 +657,7 @@ if (numB==1) bbBkg = true;
 	  }
 	}
 
-	/*
-	if (doFit==0 && irun==99) {
+	if (doFit==0 && irun==18) {
 	  float xval=0;
 	  //float xvalb=0;
 	  float xvalc=0;
@@ -755,10 +750,8 @@ if (numB==1) bbBkg = true;
 	    h_mc1bb->SetFillStyle(3254);
 	  }
 	}
-	*/
 
-	/*
-	if (doFit==0 && irun==55) {
+	if (doFit==0 && irun==17) {
 
 	  float xval=0;
 	  float xvalc=0;
@@ -795,7 +788,6 @@ if (numB==1) bbBkg = true;
 	  h_mc1c->Sumw2();
 	  h_mc1c->Scale(xvalc);
    	}
-	*/
 
 	TVirtualFitter::SetDefaultFitter("Minuit2");
 	TVirtualFitter* fitter=0;

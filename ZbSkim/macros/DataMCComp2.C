@@ -22,8 +22,7 @@ int useDY = 0; // use MadGraph DY for numB=0
 //int useDY = 1; // use weighted MadGraph DY for numB=0
 //int useDY = 2; // use Sherpa DY
 //int useDY = 3; // use Powheg DY
-//int useDY = 4; // use MG+P8 MLM
-//int useDY = 5; // use MG_aMC@NLO+P8
+//int useDY = 4; // use MG_aMC@NLO+P8
 
 int drawInclusive = 1; // do plot the "inclusive" histogram
 
@@ -88,20 +87,28 @@ if (irun==13) {            // irun==13 => bkg statistics
   subdir="13";
   postfix="";
 }
-if (irun==66) {            // irun==66 => unfolding with data weight
-  subdir="66";
+if (irun==14) {            // irun==14 => unfolding with MadGraph 4FS
+  subdir="14";
   postfix="";
 }
-if (irun==77) {            // irun==77 => unfolding with MadGraph 4FS
-  subdir="77";
+if (irun==15) {            // irun==15 => unfolding with data weight
+  subdir="15";
   postfix="";
 }
-if (irun==88) {            // irun==88 => deltaR
-  subdir="88";
-  postfix="DR";
+if (irun==16) {            // irun==16 => unfolding with MadGraph aMC@NLO
+  subdir="16";
+  postfix="";
 }
-if (irun==99) {            // irun==99 => pur
-  subdir="99";
+if (irun==17) {            // irun==17 => templates from data
+  subdir="17";
+  postfix="";
+}
+if (irun==18) {            // irun==18 => templates from Sherpa
+  subdir="18";
+  postfix="";
+}
+if (irun==19) {            // irun==19 => templates from MadGraph aMC@NLO
+  subdir="19";
   postfix="";
 }
 if (numB==1) {
@@ -122,7 +129,7 @@ if (numB==2) {
 if (numB==1) bbBkg = true;
 if (numB==2) bbSig = true;
 
-	if (irun==99) useDY = 5;
+	if (irun==19) useDY = 4;
 
 	if (gROOT->GetVersionInt() >= 53401) {
 	  //gROOT->GetColor(kRed)->SetAlpha(0.5);
@@ -218,7 +225,6 @@ if (numB==2) bbSig = true;
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
 	double norm1_0 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
-	double norm1_p8 = ((Lumi2012 * Xsec_dy_p8) / Ngen_dy_p8);
 	double norm1_amc = ((Lumi2012 * Xsec_dy_amc) / 2.59225272210000000e+11);
 	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
 	double norm1_2=0;
@@ -239,7 +245,6 @@ if (numB==2) bbSig = true;
         double norm13 = ((Lumi2012 * Xsec_tWb) / Ngen_tWb);
 
 	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
-	double enorm1_p8 = ((Lumi2012 * eXsec_dy) / Ngen_dy_p8);
 	double enorm1_amc = ((Lumi2012 * eXsec_dy_amc) / 2.59225272210000000e+11);
 	double enorm1_1 = ((Lumi2012 * eXsec_dy_1) / Ngen_dy_1);
 	double enorm1_2=0;
@@ -290,11 +295,6 @@ if (numB==2) bbSig = true;
 	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
 	if (useDY==4) {
-	  norm1 = norm1_p8;
-	  enorm1 = enorm1_p8;
-	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_P8.root").c_str());
-	}
-	if (useDY==5) {
 	  norm1 = norm1_amc;
 	  enorm1 = enorm1_amc;
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
@@ -613,13 +613,13 @@ if (numB==2) bbSig = true;
 	h_mc12_b->Scale(norm12);
 	h_mc13_b->Scale(norm13);
 
-	if (useDY==5) {
+	if (useDY==4) {
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
 	    h_mc1->SetBinError(i, h_mc1->GetBinError(i)*100.);
 	    if (h_mc1b_b) h_mc1b_b->SetBinError(i, h_mc1b_b->GetBinError(i)*100.);
 	    if (h_mc1c_b) h_mc1c_b->SetBinError(i, h_mc1c_b->GetBinError(i)*100.);
 	    if (h_mc1t_b) h_mc1t_b->SetBinError(i, h_mc1t_b->GetBinError(i)*100.);
-            if (bbBkg || bbSig) h_mc1bb->SetBinError(i, h_mc1bb->GetBinError(i)*100.);
+	    if (bbBkg || bbSig) h_mc1bb->SetBinError(i, h_mc1bb->GetBinError(i)*100.);
 	  }
 	}
 
@@ -710,8 +710,7 @@ if (numB==2) bbSig = true;
 	  h_mc1uds_b->SetBinError(i, TMath::Sqrt(e));
 	}
 
-	/*
-	if (irun==99) {
+	if (irun==18) {
 	  float xval=0;
 	  //float xvalb=0;
 	  float xvalc=0;
@@ -770,7 +769,6 @@ if (numB==2) bbSig = true;
 	    h_mc1c_b->Scale(xvalc);
 	  }
 	}
-	*/
 
         if (bbBkg || bbSig) {
           h_mc1b_b->Add(h_mc1bb, -1);

@@ -30,6 +30,7 @@ bool verbose = false;
 // imode =  5; // unfolding data with Sherpa
 // imode =  6; // unfolding data with Powheg
 // imode =  7; // unfolding data with MadGraph 4FS
+// imode =  8; // unfolding data with MadGraph aMC@NLO
 
 // method = 0; // use SVD
 // method = 1; // use Bayes
@@ -100,20 +101,28 @@ if (irun==13) {            // irun==13 => bkg statistics
   subdir="13";
   postfix="";
 }
-if (irun==66) {            // irun==66 => unfolding with data weight
-  subdir="66";
+if (irun==14) {            // irun==14 => unfolding with MadGraph 4FS
+  subdir="14";
   postfix="";
 }
-if (irun==77) {            // irun==77 => unfolding with MadGraph 4FS
-  subdir="77";
+if (irun==15) {            // irun==15 => unfolding with data weight
+  subdir="15";
   postfix="";
 }
-if (irun==88) {            // irun==88 => deltaR
-  subdir="88";
-  postfix="DR";
+if (irun==16) {            // irun==16 => unfolding with MadGraph aMC@NLO
+  subdir="16";
+  postfix="";
 }
-if (irun==99) {            // irun==99 => pur
-  subdir="99";
+if (irun==17) {            // irun==17 => templates from data
+  subdir="17";
+  postfix="";
+}
+if (irun==18) {            // irun==18 => templates from Sherpa
+  subdir="18";
+  postfix="";
+}
+if (irun==19) {            // irun==19 => templates from MadGraph aMC@NLO
+  subdir="19";
   postfix="";
 }
 if (numB==1) {
@@ -134,7 +143,8 @@ if (numB==2) bbSig = true;
 
         if (irun==8) imode = 5;
         if (irun==9) imode = 6;
-        if (irun==77) imode = 7;
+        if (irun==14) imode = 7;
+        if (irun==16) imode = 8;
 
 	if (imode<=3 && subdir!="0") return;
 
@@ -175,6 +185,7 @@ if (numB==2) bbSig = true;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
+	double norm1_amc = ((Lumi2012 * Xsec_dy_amc) / 2.59225272210000000e+11);
 	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
 	double norm1_2=0;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
@@ -222,6 +233,7 @@ if (numB==2) bbSig = true;
 	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
 	if (imode== 7) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
+	if (imode== 8) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen.root").c_str());
 
 	TFile* mc2=0;
 	if (imode==-1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
@@ -237,6 +249,7 @@ if (numB==2) bbSig = true;
 	if (imode== 5) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 6) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 7) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	if (imode== 8) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen.root").c_str());
 
 	TH1F* h_data_reco;
 	data->cd();
@@ -318,7 +331,7 @@ if (numB==2) bbSig = true;
 	h_mc2_truth = fixrange(h_mc2_truth, numB);
 	h_mc2_reco = fixrange(h_mc2_reco, numB);
 
-        if (irun==66) {
+        if (irun==15) {
 	  TFile* data1=0;
 	  if (ilepton==1) data1 = TFile::Open((path + "/electrons/" + version + "/" + "0" + "/unfolding" + dirbSel + "/" + title + "_unfolding.root").c_str());
 	  if (ilepton==2) data1 = TFile::Open((path + "/muons/" + version + "/" + "0" + "/unfolding" + dirbSel + "/" + title + "_unfolding.root").c_str());
@@ -389,6 +402,10 @@ if (numB==2) bbSig = true;
 	if (imode==7) {
 	  h_mc1_truth->Scale(norm1_3/norm1);
 	  h_mc1_reco->Scale(norm1_3/norm1);
+	}
+	if (imode==8) {
+	  h_mc1_truth->Scale(norm1_amc/norm1);
+	  h_mc1_reco->Scale(norm1_amc/norm1);
 	}
 	h_mc2_truth->Scale(norm1);
 	h_mc2_reco->Scale(norm1);
@@ -469,17 +486,19 @@ if (numB==2) bbSig = true;
 
 	int ntoys = 50; // default 50
 	if (irun==7) ntoys = 100;
-	if (irun==8) ntoys = 100;
-	if (irun==9) ntoys = 100;
-	if (irun==77) ntoys = 100;
+	if (imode==5) ntoys = 100;
+	if (imode==6) ntoys = 100;
+	if (imode==7) ntoys = 100;
+	if (imode==8) ntoys = 100;
 	unfold_mc->SetNToys(ntoys);
 	unfold_data->SetNToys(ntoys);
 
 	int dosys = 0; // default 0 -> 0=stat, 1=stat+sys, 2=sys only
 	if (irun==7) dosys = 1;
-	if (irun==8) dosys = 1;
-	if (irun==9) dosys = 1;
-	if (irun==77) dosys = 1;
+	if (imode==5) dosys = 1;
+	if (imode==6) dosys = 1;
+	if (imode==7) dosys = 1;
+	if (imode==8) dosys = 1;
 	unfold_mc->IncludeSystematics(dosys);
 	unfold_data->IncludeSystematics(dosys);
 
