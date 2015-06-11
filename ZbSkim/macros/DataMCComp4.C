@@ -304,6 +304,14 @@ if (numB==2) bbSig = true;
           if (bbSig) h_mc2_bbSig_reco   = (TH1F*)gDirectory->Get(("bbSig"+title_b.substr(1)).c_str());
 	}
 
+	if (imode==8) {
+	  for (int i=0; i<=h_mc1_reco->GetNbinsX()+1; i++) {
+	    h_mc1_reco->SetBinError(i, h_mc1_reco->GetBinError(i)*100.);
+	    if (bbBkg) h_mc1_bbBkg_reco->SetBinError(i, h_mc1_bbBkg_reco->GetBinError(i)*100.);
+	    if (bbSig) h_mc1_bbSig_reco->SetBinError(i, h_mc1_bbSig_reco->GetBinError(i)*100.);
+	  }
+	}
+
 	h_data_reco->Sumw2();
 	h_mc1_truth->Sumw2();
 	h_mc1_reco->Sumw2();
@@ -379,6 +387,7 @@ if (numB==2) bbSig = true;
 	  }
 
           norm1 = 1.0;
+          norm1_amc = 1.0;
           norm1_1 = 1.0;
           norm1_2 = 1.0;
           norm1_3 = 1.0;
@@ -654,6 +663,10 @@ if (numB==2) bbSig = true;
         if (imode==7) {
           leg1->AddEntry(h_mc1_reco,"MADGRAPH 4FS reco","l");
           leg1->AddEntry(h_mc1_truth,"MADGRAPH 4FS truth","l");
+	}
+        if (imode==8) {
+          leg1->AddEntry(h_mc1_reco,"MADGRAPH aMC@NLO reco","l");
+          leg1->AddEntry(h_mc1_truth,"MADGRAPH aMC@NLO truth","l");
 	}
         if (imode<=0) leg1->AddEntry(h_mc2_unfold,"MADGRAPH unfold","l");
         if (imode==1) {
