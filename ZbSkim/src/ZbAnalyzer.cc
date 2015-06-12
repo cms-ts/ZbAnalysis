@@ -2790,7 +2790,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 //	float w2b = 0.757166;
 	if (Nb == 1) {
 	  if (findBjet(vect_jets, vect_bjets)) {
-	    MyWeight = MyWeight * w2b * (N1b+N2b)/(w1b*N1b+wb2*N2b);
+	    MyWeight = MyWeight * w2b * (N1b+N2b)/(w1b*N1b+w2b*N2b);
 	  } else {
 	    MyWeight = MyWeight * w1b * (N1b+N2b)/(w1b*N1b+w2b*N2b);
 	  }
