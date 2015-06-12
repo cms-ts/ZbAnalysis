@@ -901,23 +901,39 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 #if 0
   if (!ist) {
     if (lepton_ == "electron") {
+// MadGraph
       float N1b = 31313.60;
       float N2b = 2561.60;
+      float w1b = 0.921469;
+      float w2b = 1.156080;
+// MadGraph+aMC@NLO
+//      float N1b = 3.00208204000000000e+08;
+//      float N2b = 2.69884480625000000e+07;
+//      float w1b = 0.783613;
+//      float w2b = 0.757166;
       if (Nb == 1) {
-        MyWeight = MyWeight * 0.921469 * (N1b+N2b)/(0.921469*N1b+1.15608*N2b);
+        MyWeight = MyWeight * w1b * (N1b+N2b)/(w1b*N1b+w2*N2b);
       }
       if (Nb > 1) {
-        MyWeight = MyWeight * 1.15608 * (N1b+N2b)/(0.921469*N1b+1.15608*N2b);
+        MyWeight = MyWeight * w2b * (N1b+N2b)/(w1b*N1b+w2b*N2b);
       }
     }
     if (lepton_ == "muon") {
+// MadGraph
       float N1b = 31260.50;
       float N2b = 2485.13;
+      float w1b = 0.907324;
+      float wb2 = 1.162920;
+// MadGraph+aMC@NLO
+//      float N1b = 2.99039885500000000e+08;
+//      float N2b = 2.80502270625000000e+07;
+//      float w1b = 0.781105;
+//      float w2b = 0.803881;
       if (Nb == 1) {
-        MyWeight = MyWeight * 0.907324 * (N1b+N2b)/(0.907324*N1b+1.16292*N2b);
+        MyWeight = MyWeight * w1b * (N1b+N2b)/(w1b*N1b+w2b*N2b);
       }
       if (Nb > 1) {
-        MyWeight = MyWeight * 1.16292 * (N1b+N2b)/(0.907324*N1b+1.16292*N2b);
+        MyWeight = MyWeight * w2b * (N1b+N2b)/(w1b*N1b+w2b*N2b);
       }
     }
   }
