@@ -912,7 +912,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 //      float w1b = 0.783613;
 //      float w2b = 0.757166;
       if (Nb == 1) {
-        MyWeight = MyWeight * w1b * (N1b+N2b)/(w1b*N1b+w2*N2b);
+        MyWeight = MyWeight * w1b * (N1b+N2b)/(w1b*N1b+w2b*N2b);
       }
       if (Nb > 1) {
         MyWeight = MyWeight * w2b * (N1b+N2b)/(w1b*N1b+w2b*N2b);
