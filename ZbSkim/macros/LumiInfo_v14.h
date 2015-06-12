@@ -21,7 +21,8 @@ double eXsec_dy = 0;
 
 //////////////////////// DY MadGraph_aMC@NLO + Pythia 8
 
-double Ngen_dy_amc = 28944033;
+double Ngen_dy_amc = 28944033; // DYJetsToLL_aMC
+//double Ngen_dy_amc = 28924033; // DYJetsToLL_aMC_gen
 double Xsec_dy_amc = 3531.8; // NNLO
 double eXsec_dy_amc = 0;
 
