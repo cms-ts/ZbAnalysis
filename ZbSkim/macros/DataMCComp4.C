@@ -225,8 +225,12 @@ if (numB==2) bbSig = true;
 	if (imode== 1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 2) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 3) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	if (imode== 4) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	if (imode== 4 && numB==0 && useDY==1) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
+	if (imode== 4) {
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	  if (useDY==1 && numB==0) {
+	    mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
+	  }
+	}
 	if (imode== 5) mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	if (imode== 6) {
 	  if (ilepton==1) mc1 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
@@ -244,8 +248,12 @@ if (numB==2) bbSig = true;
 	  if (ilepton==2) mc2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
 	if (imode== 3) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
-	if (imode== 4) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	if (imode== 4 && numB==0 && useDY==1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
+	if (imode== 4 ) {
+	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	  if (useDY==1 && numB==0) {
+	    mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
+	  }
+	}
 	if (imode== 5) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 6) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 7) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
