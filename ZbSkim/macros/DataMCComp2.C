@@ -900,9 +900,9 @@ if (numB==2) bbSig = true;
         if (unfold==0) {
           h_data_raw2 = fixrange(h_data_raw2, numB);
           h_data_b_raw2 = fixrange(h_data_b_raw2, numB);
-        }
-	h_data = fixrange(h_data, numB);
-	h_data_b = fixrange(h_data_b, numB);
+	  h_data = fixrange(h_data, numB);
+	  h_data_b = fixrange(h_data_b, numB);
+	}
 	h_mc1 = fixrange(h_mc1, numB);
  	h_mc1b_b = fixrange(h_mc1b_b, numB);
         if (bbBkg || bbSig) h_mc1bb = fixrange(h_mc1bb, numB);
