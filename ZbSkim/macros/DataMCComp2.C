@@ -23,8 +23,8 @@ int useDY = 0; // use MadGraph DY for numB=0
 //int useDY = 2; // use Powheg DY
 //int useDY = 3; // use MG_aMC@NLO+P8
 
-//int useWeights = 0; // do not use weights for numB=0
-int useWeights = 1; // use weights for numB=0
+int useWeights = 0; // do not use weights for numB=0
+//int useWeights = 1; // use weights for numB=0
 
 int drawInclusive = 1; // do plot the "inclusive" histogram
 
