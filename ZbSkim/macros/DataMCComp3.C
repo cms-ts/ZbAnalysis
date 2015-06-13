@@ -7,11 +7,13 @@ string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 
 void DataMCComp3(int irun=0, string title="", int plot=0, int ilepton=1, int numB=0) {
 
-//int useDY = 0; // use MadGraph DY for numB=0
-int useDY = 1; // use weighted MadGraph DY for numB=0
-//int useDY = 2; // use Sherpa DY
-//int useDY = 3; // use Powheg DY
-//int useDY = 4; // use MG_aMC@NLO+P8
+int useDY = 0; // use MadGraph
+//int useDY = 1; // use Sherpa
+//int useDY = 2; // use Powheg
+//int useDY = 3; // use MG_aMC@NLO+P8
+
+//int useWeights = 0; // do not use weightsfor numB=0
+int useWeights = 1; // use weightsfor numB=0
 
 string subdir="0";
 string postfix="";
@@ -114,7 +116,7 @@ if (numB==2) {
 if (numB==1) bbBkg = true;
 if (numB==2) bbSig = true;
 
-	if (irun==16) useDY = 4;
+	if (irun==16) useDY = 3;
 
 	if (title.empty()) title = "w_jetmultiplicity";
 
@@ -127,17 +129,21 @@ if (numB==2) bbSig = true;
           if (title.find("ee")!=string::npos) return;
         }
 
-	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	if (useDY==1 && numB==0) {
-	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
-	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
+	TFile* mc1 = 0;
+	TFile* mc2 = 0;
+	if (useDY==0) {
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
+	  if (useWeights && numB==0) {
+	    mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
+	    mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
+	  }
 	}
-	if (useDY==2) {
+	if (useDY==1) {
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
 	}
-	if (useDY==3) {
+	if (useDY==2) {
 	  if (ilepton==1) {
 	    mc1 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	    mc2 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
@@ -147,9 +153,13 @@ if (numB==2) bbSig = true;
 	    mc2 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	  }
 	}
-	if (useDY==4) {
+	if (useDY==3) {
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen.root").c_str());
 	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen.root").c_str());
+	  if (useWeights && numB==0) {
+	    mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen_weights.root").c_str());
+	    mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen_weights.root").c_str());
+	  }
 	}
 
 /* efficiency:  e_Z / e_Zb = e_Z / e_Z_1 * e_Z_b */
@@ -274,8 +284,8 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 
 	c2->Update();
 
-	if (useDY==2) subdir = subdir + "_sherpa";
-	if (useDY==3) subdir = subdir + "_powheg";
+	if (useDY==1) subdir = subdir + "_sherpa";
+	if (useDY==2) subdir = subdir + "_powheg";
 
 	if (plot) {
 	  ofstream out;

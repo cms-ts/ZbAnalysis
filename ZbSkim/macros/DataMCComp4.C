@@ -37,8 +37,8 @@ bool verbose = false;
 // method = 2; // use BinByBin
 // method = 3: // use MatrixInversion
 
-//int useDY = 0; // use MadGraph DY for numB=0 and imode=4
-int useDY = 1; // use weighted MadGraph DY for numB=0 and imode=4
+//int useWeights = 0; // do not use weights for numB=0
+int useWeights = 1; // use weights for numB=0
 
 string subdir="0";
 string postfix="";
@@ -227,7 +227,7 @@ if (numB==2) bbSig = true;
 	if (imode== 3) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	if (imode== 4) {
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	  if (useDY==1 && numB==0) {
+	  if (useWeights && numB==0) {
 	    mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
 	  }
 	}
@@ -237,7 +237,12 @@ if (numB==2) bbSig = true;
 	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
 	if (imode== 7) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
-	if (imode== 8) mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen.root").c_str());
+	if (imode== 8) {
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen.root").c_str());
+	  if (useWeights && numB==0) {
+	    mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen_weights.root").c_str());
+	  }
+	}
 
 	TFile* mc2=0;
 	if (imode==-1) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_patgen.root").c_str());
@@ -250,7 +255,7 @@ if (numB==2) bbSig = true;
 	if (imode== 3) mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
 	if (imode== 4 ) {
 	  mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
-	  if (useDY==1 && numB==0) {
+	  if (useWeights && numB==0) {
 	    mc2 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen_weights.root").c_str());
 	  }
 	}
