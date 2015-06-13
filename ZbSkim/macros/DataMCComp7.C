@@ -634,15 +634,19 @@ if (numB==2) {
 	  if (useSysUnfold) {
 	    if (useSysUnfoldSherpa) {
 	      val = TMath::Abs(h_data_scan[8]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i));
+	      //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[8]->GetBinError(i),2))));
 	    }
 	    if (useSysUnfoldPowheg) {
 	      val = TMath::Abs(h_data_scan[9]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i));
+	      //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[9]->GetBinError(i),2))));
 	    }
 	    if (useSysUnfoldWeight) {
 	      val = TMath::Abs(h_data_scan[15]->GetBinContent(i)-h_data_scan[0]->GetBinContent(i));
+	      //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[15]->GetBinError(i),2))));
 	    }
 	    if (useSysUnfoldMadGraphAMC) {
 	      val = TMath::Abs(h_data_scan[16]->GetBinContent(i)-h_data_scan[7]->GetBinContent(i));
+	      //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_scan[7]->GetBinError(i),2)-TMath::Power(h_data_scan[16]->GetBinError(i),2))));
 	    }
 	  }
 	  syst_unfold->SetBinError(i, val);
@@ -652,18 +656,23 @@ if (numB==2) {
 	  if (useSysUnfold) {
 	    if (useSysUnfoldSherpa) {
 	      val = TMath::Abs(h_data_b_scan[8]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
+	      //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[8]->GetBinError(i),2))));
 	    }
 	    if (useSysUnfoldPowheg) {
 	      val = TMath::Abs(h_data_b_scan[9]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
+	      //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[9]->GetBinError(i),2))));
 	    }
 	    if (useSysUnfoldMadGraph4FS) {
 	      val = TMath::Abs(h_data_b_scan[14]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
+	      //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[14]->GetBinError(i),2))));
 	    }
 	    if (useSysUnfoldWeight) {
 	      val = TMath::Abs(h_data_b_scan[15]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i));
+	      //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[158]->GetBinError(i),2))));
 	    }
 	    if (useSysUnfoldMadGraphAMC) {
 	      val = TMath::Abs(h_data_b_scan[16]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
+	      //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[16]->GetBinError(i),2))));
 	    }
 	  }
 	  syst_b_unfold->SetBinError(i, val);
@@ -674,10 +683,6 @@ if (numB==2) {
 	  if (useSysUnfoldSherpa) {
 	    xsec_syst_unfold = TMath::Abs(h_data_scan[8]->Integral(0,h_data_scan[8]->GetNbinsX()+1,"width")-h_data_scan[7]->Integral(0,h_data_scan[7]->GetNbinsX()+1,"width"));
 	    xsec_syst_b_unfold = TMath::Abs(h_data_b_scan[8]->Integral(0,h_data_b_scan[8]->GetNbinsX()+1,"width")-h_data_b_scan[7]->Integral(0,h_data_b_scan[7]->GetNbinsX()+1,"width"));
-	    xsec_syst_unfold = TMath::Power(xsec_syst_unfold,2);
-	    xsec_syst_b_unfold = TMath::Power(xsec_syst_unfold,2);
-	    xsec_syst_unfold = TMath::Sqrt(TMath::Max(0.,xsec_syst_unfold));
-	    xsec_syst_b_unfold = TMath::Sqrt(TMath::Max(0.,xsec_syst_b_unfold));
 	  }
 	  if (useSysUnfoldPowheg) {
 	    xsec_syst_unfold = TMath::Abs(h_data_scan[9]->Integral(0,h_data_scan[9]->GetNbinsX()+1,"width")-h_data_scan[7]->Integral(0,h_data_scan[7]->GetNbinsX()+1,"width"));
@@ -686,10 +691,6 @@ if (numB==2) {
 	  if (useSysUnfoldMadGraph4FS) {
 	    xsec_syst_unfold = 0.0;
 	    xsec_syst_b_unfold = TMath::Abs(h_data_b_scan[14]->Integral(0,h_data_b_scan[14]->GetNbinsX()+1,"width")-h_data_b_scan[7]->Integral(0,h_data_b_scan[7]->GetNbinsX()+1,"width"));
-	    xsec_syst_unfold = TMath::Power(xsec_syst_unfold,2);
-	    xsec_syst_b_unfold = TMath::Power(xsec_syst_unfold,2);
-	    xsec_syst_unfold = TMath::Sqrt(TMath::Max(0.,xsec_syst_unfold));
-	    xsec_syst_b_unfold = TMath::Sqrt(TMath::Max(0.,xsec_syst_b_unfold));
 	  }
 	  if (useSysUnfoldWeight) {
 	    xsec_syst_unfold = TMath::Abs(h_data_scan[15]->Integral(0,h_data_scan[15]->GetNbinsX()+1,"width")-h_data_scan[0]->Integral(0,h_data_scan[0]->GetNbinsX()+1,"width"));
