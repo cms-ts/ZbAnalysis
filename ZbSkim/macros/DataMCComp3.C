@@ -12,8 +12,8 @@ int useDY = 0; // use MadGraph
 //int useDY = 2; // use Powheg
 //int useDY = 3; // use MG_aMC@NLO+P8
 
-//int useWeights = 0; // do not use weightsfor numB=0
-int useWeights = 1; // use weightsfor numB=0
+//int useWeights = 0; // do not use weights for numB=0
+int useWeights = 1; // use weights for numB=0
 
 string subdir="0";
 string postfix="";
