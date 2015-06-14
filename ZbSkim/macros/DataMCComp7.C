@@ -668,7 +668,7 @@ if (numB==2) {
 	    }
 	    if (useSysUnfoldWeight) {
 	      val = TMath::Abs(h_data_b_scan[15]->GetBinContent(i)-h_data_b_scan[0]->GetBinContent(i));
-	      //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[158]->GetBinError(i),2))));
+	      //val = TMath::Sqrt(TMath::Max(0.,TMath::Power(val,2)-TMath::Abs(TMath::Power(h_data_b_scan[7]->GetBinError(i),2)-TMath::Power(h_data_b_scan[15]->GetBinError(i),2))));
 	    }
 	    if (useSysUnfoldMadGraphAMC) {
 	      val = TMath::Abs(h_data_b_scan[16]->GetBinContent(i)-h_data_b_scan[7]->GetBinContent(i));
