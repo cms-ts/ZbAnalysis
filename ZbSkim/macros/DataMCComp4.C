@@ -318,10 +318,11 @@ if (numB==2) bbSig = true;
 	}
 
 	if (imode==8) {
+	  float w = TMath::Sqrt(12132.9);
 	  for (int i=0; i<=h_mc1_reco->GetNbinsX()+1; i++) {
-	    h_mc1_reco->SetBinError(i, h_mc1_reco->GetBinError(i)*100.);
-	    if (bbBkg) h_mc1_bbBkg_reco->SetBinError(i, h_mc1_bbBkg_reco->GetBinError(i)*100.);
-	    if (bbSig) h_mc1_bbSig_reco->SetBinError(i, h_mc1_bbSig_reco->GetBinError(i)*100.);
+	    h_mc1_reco->SetBinError(i, h_mc1_reco->GetBinError(i)*w);
+	    if (bbBkg) h_mc1_bbBkg_reco->SetBinError(i, h_mc1_bbBkg_reco->GetBinError(i)*w);
+	    if (bbSig) h_mc1_bbSig_reco->SetBinError(i, h_mc1_bbSig_reco->GetBinError(i)*w);
 	  }
 	}
 

@@ -529,12 +529,13 @@ if (numB==1) bbBkg = true;
 	if (bbBkg || bbSig) h_mc1bb->Scale(norm1);
 
 	if (useDY==3) {
+	  float w = TMath::Sqrt(12132.9);
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	    h_mc1->SetBinError(i, h_mc1->GetBinError(i)*100.);
-	    if (h_mc1b) h_mc1b->SetBinError(i, h_mc1b->GetBinError(i)*100.);
-	    if (h_mc1c) h_mc1c->SetBinError(i, h_mc1c->GetBinError(i)*100.);
-	    if (h_mc1t) h_mc1t->SetBinError(i, h_mc1t->GetBinError(i)*100.);
-	    if (bbBkg || bbSig) h_mc1bb->SetBinError(i, h_mc1bb->GetBinError(i)*100.);
+	    h_mc1->SetBinError(i, h_mc1->GetBinError(i)*w);
+	    if (h_mc1b) h_mc1b->SetBinError(i, h_mc1b->GetBinError(i)*w);
+	    if (h_mc1c) h_mc1c->SetBinError(i, h_mc1c->GetBinError(i)*w);
+	    if (h_mc1t) h_mc1t->SetBinError(i, h_mc1t->GetBinError(i)*w);
+	    if (bbBkg || bbSig) h_mc1bb->SetBinError(i, h_mc1bb->GetBinError(i)*w);
 	  }
 	}
 

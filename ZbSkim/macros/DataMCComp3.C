@@ -202,6 +202,14 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	h_reco->Sumw2();
 	h_gen->Sumw2();
 
+	if (useDY==3) {
+	  float w = TMath::Sqrt(12132.9);
+	  for (int i=0; i<=h_reco->GetNbinsX()+1; i++) {
+	    h_reco->SetBinError(i, h_reco->GetBinError(i)*w);
+	    h_gen->SetBinError(i, h_gen->GetBinError(i)*w);
+	  }
+	}
+
 	double N = 1.0;
 	double errN = 0.0;
 	N = h_reco->IntegralAndError(0,h_reco->GetNbinsX()+1,errN) / h_gen->Integral(0,h_gen->GetNbinsX()+1);
