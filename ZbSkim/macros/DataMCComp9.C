@@ -297,11 +297,11 @@ if (numB==2) {
 	  tmp2_3->SetFillColor(0);
 	  tmp2_3->DrawClone("HISTSAME");
 
-	  if (title=="w_DR_bb") {
-	    TBox* box = new TBox(0.2,0.01,0.75,0.2);
-	    box->SetFillColor(0);
-	    box->Draw();
-	  }
+//	  if (title=="w_DR_bb") {
+//	    TBox* box = new TBox(0.2,0.01,0.75,0.2);
+//	    box->SetFillColor(0);
+//	    box->Draw();
+//	  }
 
 	  h_data_b_tot->Draw("E1PX0SAME");
 	  h_data_b_stat->Draw("E1PX0SAME");
