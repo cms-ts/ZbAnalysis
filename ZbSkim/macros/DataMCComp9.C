@@ -179,7 +179,7 @@ if (numB==2) {
 	h_mcg_b->SetMarkerColor(kGreen+2);
 	h_mcg_b->SetStats(0);
 	if (isratio==1) {
-	  h_mcg_b->Draw("E5");
+	  h_mcg_b->Draw("E2");
 	}
 
 	h_mcg1_b->SetLineColor(kMagenta-6);
@@ -187,7 +187,7 @@ if (numB==2) {
 	h_mcg1_b->SetFillColor(kMagenta-6);
 	h_mcg1_b->SetMarkerColor(kMagenta-6);
 	if (isratio==1) {
-	  h_mcg1_b->Draw("E5SAME");
+	  h_mcg1_b->Draw("E2SAME");
 	}
 
 	h_mcg2_b->SetLineColor(kBlue-4);
@@ -195,7 +195,7 @@ if (numB==2) {
 	h_mcg2_b->SetFillColor(kBlue-4);
 	h_mcg2_b->SetMarkerColor(kBlue-4);
 	if (isratio==1) {
-	  h_mcg2_b->Draw("E5SAME");
+	  h_mcg2_b->Draw("E2SAME");
 	}
 
 	h_mcg3_b->SetLineColor(kOrange+7);
@@ -203,7 +203,7 @@ if (numB==2) {
 	h_mcg3_b->SetFillColor(kOrange+7);
 	h_mcg3_b->SetMarkerColor(kOrange+7);
 	if (isratio==1) {
-	  h_mcg3_b->Draw("E5SAME");
+	  h_mcg3_b->Draw("E2SAME");
 	}
 
 	if (isratio==1) {
@@ -265,37 +265,37 @@ if (numB==2) {
 	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b_tot->GetBinContent(h_data_b_tot->GetMinimumBin())));
 	  if (title=="w_DR_bb") h_mcg_b->SetMinimum(0.001);
 
-	  h_mcg_b->Draw("E5");
+	  h_mcg_b->Draw("E2");
 	  TH1F* tmp2 = (TH1F*)h_mcg_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2->GetMinimum()==0) tmp2->GetXaxis()->SetRangeUser(0, tmp2->GetBinCenter(tmp2->GetMinimumBin()-1));
 	  }
 	  tmp2->SetFillColor(0);
-	  tmp2->DrawClone("HISTLSAME");
+	  tmp2->DrawClone("HISTSAME");
 
-	  h_mcg1_b->Draw("E5SAME");
+	  h_mcg1_b->Draw("E2SAME");
 	  TH1F* tmp2_1 = (TH1F*)h_mcg1_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2_1->GetMinimum()==0) tmp2_1->GetXaxis()->SetRangeUser(0, tmp2_1->GetBinCenter(tmp2_1->GetMinimumBin()-1));
 	  }
 	  tmp2_1->SetFillColor(0);
-	  tmp2_1->DrawClone("HISTLSAME");
+	  tmp2_1->DrawClone("HISTSAME");
 
-	  h_mcg2_b->Draw("E5SAME");
+	  h_mcg2_b->Draw("E2SAME");
 	  TH1F* tmp2_2 = (TH1F*)h_mcg2_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2_2->GetMinimum()==0) tmp2_2->GetXaxis()->SetRangeUser(0, tmp2_2->GetBinCenter(tmp2_2->GetMinimumBin()-1));
 	  }
 	  tmp2_2->SetFillColor(0);
-	  tmp2_2->DrawClone("HISTLSAME");
+	  tmp2_2->DrawClone("HISTSAME");
 
-	  h_mcg3_b->Draw("E5SAME");
+	  h_mcg3_b->Draw("E2SAME");
 	  TH1F* tmp2_3 = (TH1F*)h_mcg3_b->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp2_3->GetMinimum()==0) tmp2_3->GetXaxis()->SetRangeUser(0, tmp2_3->GetBinCenter(tmp2_3->GetMinimumBin()-1));
 	  }
 	  tmp2_3->SetFillColor(0);
-	  tmp2_3->DrawClone("HISTLSAME");
+	  tmp2_3->DrawClone("HISTSAME");
 
 	  if (title=="w_DR_bb") {
 	    TBox* box = new TBox(0.2,0.01,0.75,0.2);
@@ -310,37 +310,37 @@ if (numB==2) {
 	  h_mcg->SetLineWidth(2);
 	  h_mcg->SetMarkerColor(kGreen+2);
 	  h_mcg->SetFillColor(kGreen+2);
-	  if (drawInclusive) h_mcg->Draw("E5SAME");
+	  if (drawInclusive) h_mcg->Draw("E2SAME");
 	  TH1F* tmp4 = (TH1F*)h_mcg->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4->GetMinimum()==0) tmp4->GetXaxis()->SetRangeUser(0, tmp4->GetBinCenter(tmp4->GetMinimumBin()-1));
 	  }
 	  tmp4->SetFillColor(0);
-	  if (drawInclusive) tmp4->DrawClone("HISTLSAME");
+	  if (drawInclusive) tmp4->DrawClone("HISTSAME");
 
 	  h_mcg1->SetLineColor(kMagenta-6);
 	  h_mcg1->SetLineWidth(2);
 	  h_mcg1->SetMarkerColor(kMagenta-6);
 	  h_mcg1->SetFillColor(kMagenta-6);
-	  if (drawInclusive) h_mcg1->Draw("E5SAME");
+	  if (drawInclusive) h_mcg1->Draw("E2SAME");
 	  TH1F* tmp4_1 = (TH1F*)h_mcg1->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4_1->GetMinimum()==0) tmp4_1->GetXaxis()->SetRangeUser(0, tmp4_1->GetBinCenter(tmp4_1->GetMinimumBin()-1));
 	  }
 	  tmp4_1->SetFillColor(0);
-	  if (drawInclusive) tmp4_1->DrawClone("HISTLSAME");
+	  if (drawInclusive) tmp4_1->DrawClone("HISTSAME");
 
 	  h_mcg2->SetLineColor(kBlue-4);
 	  h_mcg2->SetLineWidth(2);
 	  h_mcg2->SetMarkerColor(kBlue-4);
 	  h_mcg2->SetFillColor(kBlue-4);
-	  if (drawInclusive) h_mcg2->Draw("E5SAME");
+	  if (drawInclusive) h_mcg2->Draw("E2SAME");
 	  TH1F* tmp4_2 = (TH1F*)h_mcg2->Clone();
 	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
 	    if (tmp4_2->GetMinimum()==0) tmp4_2->GetXaxis()->SetRangeUser(0, tmp4_2->GetBinCenter(tmp4_2->GetMinimumBin()-1));
 	  }
 	  tmp4_2->SetFillColor(0);
-	  if (drawInclusive) tmp4_2->DrawClone("HISTLSAME");
+	  if (drawInclusive) tmp4_2->DrawClone("HISTSAME");
 
 	  h_mcg3->SetLineColor(kOrange+7);
 	  h_mcg3->SetLineWidth(2);
@@ -852,10 +852,10 @@ if (numB==2) {
 	g_M3_stat->Draw("E1PSAME");
 	g_M3_stat->Draw("E0PSAME");
 
-	TLine *OLine5 = new TLine(h_P_tot->GetXaxis()->GetXmin(),0.93,h_P_tot->GetXaxis()->GetXmax(),0.93);
-	OLine5->SetLineColor(kOrange+7);
-	OLine5->SetLineWidth(2);
-	OLine5->Draw();
+	TLine *OLinE2 = new TLine(h_P_tot->GetXaxis()->GetXmin(),0.93,h_P_tot->GetXaxis()->GetXmax(),0.93);
+	OLinE2->SetLineColor(kOrange+7);
+	OLinE2->SetLineWidth(2);
+	OLinE2->Draw();
 
 	c1->cd();
 
