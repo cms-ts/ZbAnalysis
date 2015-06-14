@@ -185,7 +185,7 @@ if (numB==2) bbSig = true;
 	if (ilepton==2) Lumi2012 = Lumi2012_muon;
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
-	double norm1_amc = ((Lumi2012 * Xsec_dy_amc) / 2.59225272210000000e+11);
+	double norm1_amc = ((Lumi2012 * Xsec_dy_amc) / Ngen_dy_amc);
 	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
 	double norm1_2=0;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);

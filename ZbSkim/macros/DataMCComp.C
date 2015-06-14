@@ -230,7 +230,7 @@ if (numB==1) bbBkg = true;
 	if (ilepton==3) Lumi2012 = Lumi2012_ele_muon;
 
 	double norm1 = ((Lumi2012 * Xsec_dy) / Ngen_dy);
-	double norm1_amc = ((Lumi2012 * Xsec_dy_amc) / 2.59225272210000000e+11);
+	double norm1_amc = ((Lumi2012 * Xsec_dy_amc) / Ngen_dy_amc);
 	double norm1_1 = ((Lumi2012 * Xsec_dy_1) / Ngen_dy_1);
 	double norm1_2=0;
 	if (ilepton==1) norm1_2 = ((Lumi2012 * Xsec_dy_2) / Ngen_dy_2_ee);
@@ -250,7 +250,7 @@ if (numB==1) bbBkg = true;
 	double norm13 = ((Lumi2012 * Xsec_tWb) / Ngen_tWb);
 
 	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
-	double enorm1_amc = ((Lumi2012 * eXsec_dy_amc) / 2.59225272210000000e+11);
+	double enorm1_amc = ((Lumi2012 * eXsec_dy_amc) / Ngen_dy_amc);
 	double enorm1_1 = ((Lumi2012 * eXsec_dy_1) / Ngen_dy_1);
 	double enorm1_2;
 	if (ilepton==1) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_ee);
