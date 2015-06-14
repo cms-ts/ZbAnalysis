@@ -140,12 +140,12 @@ if (numB==2) {
 
 	file->Close();
 
-	if (title=="w_DR_bb") {
-	  h_mcg_b->SetBinContent(1, h_mcg_b->GetBinContent(2));
-	  h_mcg1_b->SetBinContent(1, h_mcg1_b->GetBinContent(2));
-	  h_mcg2_b->SetBinContent(1, h_mcg2_b->GetBinContent(2));
-	  h_mcg3_b->SetBinContent(1, h_mcg3_b->GetBinContent(2));
-	}
+//	if (title=="w_DR_bb") {
+//	  h_mcg_b->SetBinContent(1, h_mcg_b->GetBinContent(2));
+//	  h_mcg1_b->SetBinContent(1, h_mcg1_b->GetBinContent(2));
+//	  h_mcg2_b->SetBinContent(1, h_mcg2_b->GetBinContent(2));
+//	  h_mcg3_b->SetBinContent(1, h_mcg3_b->GetBinContent(2));
+//	}
 
 	if (!drawInclusive) {
 	  h_data_tot = (TH1F*)h_data_b_tot->Clone();
