@@ -23,7 +23,6 @@ double eXsec_dy = 0;
 
 double Ngen_dy_amc = 28944033; // DYJetsToLL_aMC
 //double Ngen_dy_amc = 28924033; // DYJetsToLL_aMC_gen
-//double Ngen_dy_amc = 28794033; // DYJetsToLL_aMC_gen_weights
 double Xsec_dy_amc = 3531.8; // NNLO
 double eXsec_dy_amc = 0;
 
