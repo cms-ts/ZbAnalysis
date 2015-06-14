@@ -45,11 +45,13 @@ int useFitResults=1;  // use fit results for c_t
 //int useEleMuo = 0; // use MC or fit results for c_t
 int useEleMuo = 1; // use e-mu fit results for c_t
 
-int useDY = 0; // use MadGraph DY for numB=0
-//int useDY = 1; // use weighted MadGraph DY for numB=0
-//int useDY = 2; // use Sherpa DY
-//int useDY = 3; // use Powheg DY
-//int useDY = 4; // use MG_aMC@NLO+P8
+int useDY = 0; // use MadGraph DY
+//int useDY = 1; // use Sherpa DY
+//int useDY = 2; // use Powheg DY
+//int useDY = 3; // use MG_aMC@NLO+P8
+
+int useWeights = 0; // do not use weights for numB=0
+//int useWeights = 1; // use weights for numB=0
 
 bool labelDone = false;
 
@@ -150,7 +152,7 @@ if (numB==2) {
 
 if (numB==1) bbBkg = true;
 
-	if (irun==19) useDY = 4;
+	if (irun==19) useDY = 3;
 
         if (doFit==4) bbSig = true;
 
@@ -252,7 +254,7 @@ if (numB==1) bbBkg = true;
 	double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
 	double enorm1_amc = ((Lumi2012 * eXsec_dy_amc) / Ngen_dy_amc);
 	double enorm1_1 = ((Lumi2012 * eXsec_dy_1) / Ngen_dy_1);
-	double enorm1_2;
+	double enorm1_2=0;
 	if (ilepton==1) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_ee);
 	if (ilepton==2) enorm1_2 = ((Lumi2012 * eXsec_dy_2) / Ngen_dy_2_mm);
 	double enorm2 = ((Lumi2012 * eXsec_tt) / Ngen_tt);
@@ -282,44 +284,50 @@ if (numB==1) bbBkg = true;
 
 	if (useDY!=0 && ilepton==3) return;
 
-	TFile *data=0;
+	TFile* data=0;
 	if (ilepton==1) data = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
 	if (ilepton==2) data = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
 	if (ilepton==3) data = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
 
-	TFile *mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
-	if (useDY==1 && numB==0) {
-	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_weights.root").c_str());
+	TFile* mc1=0;
+	if (useDY==0) {
+	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL.root").c_str());
+	  if (useWeights && numB==0) {
+	    mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_weights.root").c_str());
+	  }
 	}
-	if (useDY==2) {
+	if (useDY==1) {
 	  norm1 = norm1_1;
 	  enorm1 = enorm1_1;
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa.root").c_str());
 	}
-	if (useDY==3) {
+	if (useDY==2) {
 	  norm1 = norm1_2;
 	  enorm1 = enorm1_2;
 	  if (ilepton==1) mc1 = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	  if (ilepton==2) mc1 = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	}
-	if (useDY==4) {
+	if (useDY==3) {
 	  norm1 = norm1_amc;
           enorm1 = enorm1_amc;
 	  mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC.root").c_str());
+	  if (useWeights && numB==0) {
+	    mc1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_weights.root").c_str());
+	  }
 	}
 
-	TFile *mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
-	TFile *mc3 = TFile::Open((path + "/" + version + "/" + "ZZ.root").c_str());
-	TFile *mc4 = TFile::Open((path + "/" + version + "/" + "WZ.root").c_str());
-//	TFile *mc5 = TFile::Open((path + "/" + version + "/" + "QCD.root").c_str());
-	TFile *mc6 = TFile::Open((path + "/" + version + "/" + "WW.root").c_str());
-	TFile *mc7 = TFile::Open((path + "/" + version + "/" + "Wj.root").c_str());
-	TFile *mc8 = TFile::Open((path + "/" + version + "/" + "T_s.root").c_str());
-	TFile *mc9 = TFile::Open((path + "/" + version + "/" + "T_t.root").c_str());
-	TFile *mc10 = TFile::Open((path + "/" + version + "/" + "T_tW.root").c_str());
-	TFile *mc11 = TFile::Open((path + "/" + version + "/" + "TBar_s.root").c_str());
-	TFile *mc12 = TFile::Open((path + "/" + version + "/" + "TBar_t.root").c_str());
-	TFile *mc13 = TFile::Open((path + "/" + version + "/" + "TBar_tW.root").c_str());
+	TFile* mc2 = TFile::Open((path + "/" + version + "/" + "TTbar.root").c_str());
+	TFile* mc3 = TFile::Open((path + "/" + version + "/" + "ZZ.root").c_str());
+	TFile* mc4 = TFile::Open((path + "/" + version + "/" + "WZ.root").c_str());
+//	TFile* mc5 = TFile::Open((path + "/" + version + "/" + "QCD.root").c_str());
+	TFile* mc6 = TFile::Open((path + "/" + version + "/" + "WW.root").c_str());
+	TFile* mc7 = TFile::Open((path + "/" + version + "/" + "Wj.root").c_str());
+	TFile* mc8 = TFile::Open((path + "/" + version + "/" + "T_s.root").c_str());
+	TFile* mc9 = TFile::Open((path + "/" + version + "/" + "T_t.root").c_str());
+	TFile* mc10 = TFile::Open((path + "/" + version + "/" + "T_tW.root").c_str());
+	TFile* mc11 = TFile::Open((path + "/" + version + "/" + "TBar_s.root").c_str());
+	TFile* mc12 = TFile::Open((path + "/" + version + "/" + "TBar_t.root").c_str());
+	TFile* mc13 = TFile::Open((path + "/" + version + "/" + "TBar_tW.root").c_str());
 
 	if (ilepton==1) data->cd(("demoEle"+postfix).c_str());
 	if (ilepton==2) data->cd(("demoMuo"+postfix).c_str());
@@ -520,7 +528,7 @@ if (numB==1) bbBkg = true;
 	if (h_mc1t) h_mc1t->Scale(norm1);
 	if (bbBkg || bbSig) h_mc1bb->Scale(norm1);
 
-	if (useDY==4) {
+	if (useDY==3) {
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
 	    h_mc1->SetBinError(i, h_mc1->GetBinError(i)*100.);
 	    if (h_mc1b) h_mc1b->SetBinError(i, h_mc1b->GetBinError(i)*100.);
@@ -765,7 +773,7 @@ if (numB==1) bbBkg = true;
 	  if (h_mc1)  xval = h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
           if (h_mc1c) xvalc = h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
 
-	  TFile *data1=0;
+	  TFile* data1=0;
           if (ilepton==1) data1 = TFile::Open((path + "/" + version + "/" + "DoubleElectron_2012_merge.root").c_str());
           if (ilepton==2) data1 = TFile::Open((path + "/" + version + "/" + "DoubleMu_2012_merge.root").c_str());
           if (ilepton==3) data1 = TFile::Open((path + "/" + version + "/" + "MuEG_2012_merge.root").c_str());
@@ -1326,7 +1334,7 @@ if (numB==1) bbBkg = true;
 	}
 
 /*
-	TFile *dumphistos_file = new TFile("dump.root","RECREATE");
+	TFile* dumphistos_file = new TFile("dump.root","RECREATE");
         dumphistos_file->cd();
         //if (title=="w_first_bjet_pt") h_ratio->Write("A");
         if (title=="w_SVTX_mass") h_ratio_pull->Write("A");
@@ -1430,11 +1438,10 @@ if (numB==1) bbBkg = true;
           }
 	}
 
-//	if (useDY==1) subdir = subdir + "_weight";
-//	if (useDY==2) subdir = subdir + "_sherpa";
-//	if (useDY==3) version = version + "_powheg";
-//	if (useDY==4) version = version + "_Pythia8";
-//	if (useDY==5) version = version + "_aMC@NLO";
+//	if (useWeights) subdir = subdir + "_weights";
+//	if (useDY==1) subdir = subdir + "_sherpa";
+//	if (useDY==2) version = version + "_powheg";
+//	if (useDY==3) version = version + "_aMC@NLO";
 
 	if (plot) {
 	  if (doBkg) title = title + "_doBkg";
