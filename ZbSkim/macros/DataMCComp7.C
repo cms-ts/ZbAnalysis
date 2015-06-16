@@ -873,6 +873,9 @@ if (numB==2) {
 	h_mcg_b->SetMarkerColor(kGreen+2);
 	if (isratio==1) {
 	  h_mcg_b->Draw("E5SAME");
+	  TH1F* tmp2 = (TH1F*)h_mcg_b->Clone();
+	  tmp2->SetFillColor(0);
+	  tmp2->Draw("HISTSAME");
 	}
 
 	h_mcg1_b->SetLineColor(kMagenta-6);
@@ -881,6 +884,9 @@ if (numB==2) {
 	h_mcg1_b->SetMarkerColor(kMagenta-6);
 	if (isratio==1) {
 	  h_mcg1_b->Draw("E5SAME");
+	  TH1F* tmp2_1 = (TH1F*)h_mcg1_b->Clone();
+	  tmp2_1->SetFillColor(0);
+	  tmp2_1->Draw("HISTSAME");
 	}
 
 	h_mcg2_b->SetLineColor(kBlue-4);
@@ -889,6 +895,9 @@ if (numB==2) {
 	h_mcg2_b->SetMarkerColor(kBlue-4);
 	if (isratio==1) {
 	  h_mcg2_b->Draw("E5SAME");
+	  TH1F* tmp2_2 = (TH1F*)h_mcg2_b->Clone();
+	  tmp2_2->SetFillColor(0);
+	  tmp2_2->Draw("HISTSAME");
 	}
 
 	h_mcg3_b->SetLineColor(kOrange+7);
@@ -897,6 +906,9 @@ if (numB==2) {
 	h_mcg3_b->SetMarkerColor(kOrange+7);
 	if (isratio==1) {
 	  h_mcg3_b->Draw("E5SAME");
+	  TH1F* tmp2_3 = (TH1F*)h_mcg3_b->Clone();
+	  tmp2_3->SetFillColor(0);
+	  tmp2_3->Draw("HISTSAME");
 	}
 
 	if (isratio==1) {
