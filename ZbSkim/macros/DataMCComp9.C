@@ -140,13 +140,6 @@ if (numB==2) {
 
 	file->Close();
 
-//	if (title=="w_DR_bb") {
-//	  h_mcg_b->SetBinContent(1, h_mcg_b->GetBinContent(2));
-//	  h_mcg1_b->SetBinContent(1, h_mcg1_b->GetBinContent(2));
-//	  h_mcg2_b->SetBinContent(1, h_mcg2_b->GetBinContent(2));
-//	  h_mcg3_b->SetBinContent(1, h_mcg3_b->GetBinContent(2));
-//	}
-
 	if (!drawInclusive) {
 	  h_data_tot = (TH1F*)h_data_b_tot->Clone();
 	  h_data_stat = (TH1F*)h_data_b_stat->Clone();
@@ -180,9 +173,6 @@ if (numB==2) {
 	h_mcg_b->SetStats(0);
 	if (isratio==1) {
 	  h_mcg_b->Draw("E2");
-	  TH1F* tmp2 = (TH1F*)h_mcg_b->Clone();
-	  tmp2->SetFillColor(0);
-	  tmp2->Draw("HISTSAME");
 	}
 
 	h_mcg1_b->SetLineColor(kMagenta-6);
@@ -191,9 +181,6 @@ if (numB==2) {
 	h_mcg1_b->SetMarkerColor(kMagenta-6);
 	if (isratio==1) {
 	  h_mcg1_b->Draw("E2SAME");
-	  TH1F* tmp2_1 = (TH1F*)h_mcg1_b->Clone();
-	  tmp2_1->SetFillColor(0);
-	  tmp2_1->Draw("HISTSAME");
 	}
 
 	h_mcg2_b->SetLineColor(kBlue-4);
@@ -202,9 +189,6 @@ if (numB==2) {
 	h_mcg2_b->SetMarkerColor(kBlue-4);
 	if (isratio==1) {
 	  h_mcg2_b->Draw("E2SAME");
-	  TH1F* tmp2_2 = (TH1F*)h_mcg2_b->Clone();
-	  tmp2_2->SetFillColor(0);
-	  tmp2_2->Draw("HISTSAME");
 	}
 
 	h_mcg3_b->SetLineColor(kOrange+7);
@@ -213,9 +197,6 @@ if (numB==2) {
 	h_mcg3_b->SetMarkerColor(kOrange+7);
 	if (isratio==1) {
 	  h_mcg3_b->Draw("E2SAME");
-	  TH1F* tmp2_3 = (TH1F*)h_mcg1_b->Clone();
-	  tmp2_3->SetFillColor(0);
-	  tmp2_3->Draw("HISTSAME");
 	}
 
 	if (isratio==1) {
@@ -278,42 +259,9 @@ if (numB==2) {
 	  if (title=="w_DR_bb") h_mcg_b->SetMinimum(0.001);
 
 	  h_mcg_b->Draw("E2");
-	  TH1F* tmp2 = (TH1F*)h_mcg_b->Clone();
-	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
-	    if (tmp2->GetMinimum()==0) tmp2->GetXaxis()->SetRangeUser(0, tmp2->GetBinCenter(tmp2->GetMinimumBin()-1));
-	  }
-	  tmp2->SetFillColor(0);
-	  tmp2->DrawClone("HISTSAME");
-
 	  h_mcg1_b->Draw("E2SAME");
-	  TH1F* tmp2_1 = (TH1F*)h_mcg1_b->Clone();
-	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
-	    if (tmp2_1->GetMinimum()==0) tmp2_1->GetXaxis()->SetRangeUser(0, tmp2_1->GetBinCenter(tmp2_1->GetMinimumBin()-1));
-	  }
-	  tmp2_1->SetFillColor(0);
-	  tmp2_1->DrawClone("HISTSAME");
-
 	  h_mcg2_b->Draw("E2SAME");
-	  TH1F* tmp2_2 = (TH1F*)h_mcg2_b->Clone();
-	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
-	    if (tmp2_2->GetMinimum()==0) tmp2_2->GetXaxis()->SetRangeUser(0, tmp2_2->GetBinCenter(tmp2_2->GetMinimumBin()-1));
-	  }
-	  tmp2_2->SetFillColor(0);
-	  tmp2_2->DrawClone("HISTSAME");
-
 	  h_mcg3_b->Draw("E2SAME");
-	  TH1F* tmp2_3 = (TH1F*)h_mcg3_b->Clone();
-	  if (title.find("_pt")!=string::npos || title.find("_Ht")!=string::npos) {
-	    if (tmp2_3->GetMinimum()==0) tmp2_3->GetXaxis()->SetRangeUser(0, tmp2_3->GetBinCenter(tmp2_3->GetMinimumBin()-1));
-	  }
-	  tmp2_3->SetFillColor(0);
-	  tmp2_3->DrawClone("HISTSAME");
-
-//	  if (title=="w_DR_bb") {
-//	    TBox* box = new TBox(0.2,0.01,0.75,0.2);
-//	    box->SetFillColor(0);
-//	    box->Draw();
-//	  }
 
 	  h_data_b_tot->Draw("E1PX0SAME");
 	  h_data_b_stat->Draw("E1PX0SAME");
