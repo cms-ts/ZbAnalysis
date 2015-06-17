@@ -201,7 +201,7 @@ if (numB==2) {
 
       double enorm1_fit = ((Lumi2012_ele_muon * eXsec_dy) / Ngen_dy);
       double enorm2_fit = ((Lumi2012_ele_muon * eXsec_tt) / Ngen_tt);
-      if (useEleMuo && ilepton!=3) enorm2 = 0;
+      if (useEleMuo && ilepton!=3) enorm2_fit = 0;
       double enorm3_fit = ((Lumi2012_ele_muon * eXsec_zz) / Ngen_zz);
       double enorm4_fit = ((Lumi2012_ele_muon * eXsec_wz) / Ngen_wz);
       double enorm5_fit = ((Lumi2012_ele_muon * eXsec_qcd) / Ngen_qcd);
