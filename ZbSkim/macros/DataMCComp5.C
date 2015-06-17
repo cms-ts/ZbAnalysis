@@ -172,6 +172,7 @@ if (numB==2) {
 
       double enorm1 = ((Lumi2012 * eXsec_dy) / Ngen_dy);
       double enorm2 = ((Lumi2012 * eXsec_tt) / Ngen_tt);
+      if (useEleMuo && ilepton!=3) enorm2 = 0;
       double enorm3 = ((Lumi2012 * eXsec_zz) / Ngen_zz);
       double enorm4 = ((Lumi2012 * eXsec_wz) / Ngen_wz);
       double enorm5 = ((Lumi2012 * eXsec_qcd) / Ngen_qcd);
@@ -200,6 +201,7 @@ if (numB==2) {
 
       double enorm1_fit = ((Lumi2012_ele_muon * eXsec_dy) / Ngen_dy);
       double enorm2_fit = ((Lumi2012_ele_muon * eXsec_tt) / Ngen_tt);
+      if (useEleMuo && ilepton!=3) enorm2 = 0;
       double enorm3_fit = ((Lumi2012_ele_muon * eXsec_zz) / Ngen_zz);
       double enorm4_fit = ((Lumi2012_ele_muon * eXsec_wz) / Ngen_wz);
       double enorm5_fit = ((Lumi2012_ele_muon * eXsec_qcd) / Ngen_qcd);
@@ -370,7 +372,7 @@ if (numB==2) {
 
       if (irun==10) {
         norm1 = norm1 + 0.1*enorm1;
-        if (!useEleMuo) norm2 = norm2 + 0.1*enorm2;
+        norm2 = norm2 + 0.1*enorm2;
         norm3 = norm3 + 0.1*enorm3;
         norm4 = norm4 + 0.1*enorm4;
         norm5 = norm5 + 0.1*enorm5;

@@ -568,7 +568,7 @@ if (numB==2) bbSig = true;
 	  norm1 = norm1 + 0.1*enorm1;
 	  norm1_1 = norm1_1 + 0.1*enorm1_1;
 	  norm1_2 = norm1_2 + 0.1*enorm1_2;
-	  if (!useEleMuo) norm2 = norm2 + 0.1*enorm2;
+	  norm2 = norm2 + 0.1*enorm2;
 	  norm3 = norm3 + 0.1*enorm3;
 	  norm4 = norm4 + 0.1*enorm4;
 	  norm5 = norm5 + 0.1*enorm5;
