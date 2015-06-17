@@ -29,6 +29,9 @@ void DataMCComp5(int irun=0, string title="", int plot=0, int ilepton=1, int doF
 //int useFitResults=0; // use MC predictions for c_t
 int useFitResults=1;  // use fit results for c_t
 
+//int useEleMuo = 0; // use MC or fit results for c_t
+int useEleMuo = 1; // use e-mu fit results for c_t
+
 string bSel="Z + (#geq 1) b-jet";
 string subdir="0";
 string postfix="";
@@ -367,7 +370,7 @@ if (numB==2) {
 
       if (irun==10) {
         norm1 = norm1 + 0.1*enorm1;
-        norm2 = norm2 + 0.1*enorm2;
+        if (!useEleMuo) norm2 = norm2 + 0.1*enorm2;
         norm3 = norm3 + 0.1*enorm3;
         norm4 = norm4 + 0.1*enorm4;
         norm5 = norm5 + 0.1*enorm5;
