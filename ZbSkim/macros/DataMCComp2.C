@@ -757,9 +757,9 @@ if (numB==2) bbSig = true;
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
 	    float e = TMath::Power(h_mc1->GetBinError(i),2);
 	    if (h_mc1b_b) e = e - TMath::Power(h_mc1b_b->GetBinError(i),2);
-            if (bbBkg) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
 	    if (h_mc1c_b) e = e - TMath::Power(h_mc1c_b->GetBinError(i),2);
 	    if (h_mc1t_b) e = e - TMath::Power(h_mc1t_b->GetBinError(i),2);
+            if (bbBkg) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
 	    h_mc1_b->SetBinError(i, TMath::Sqrt(e));
 	  }
 
