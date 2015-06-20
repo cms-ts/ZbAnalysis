@@ -88,7 +88,7 @@ if (numB==2) {
 	if (drawInclusive) {
 	  h_data_syst = (TH1F*)h_data_tot->Clone("h_data_syst");
 	  for (int i=0;i<=h_data_tot->GetNbinsX()+1;i++) {
-	    float xval = TMath::Sqrt(TMath::Power(h_data_tot->GetBinError(i),2)-TMath::Power(h_data_stat->GetBinError(i),2));
+	    double xval = TMath::Sqrt(TMath::Power(h_data_tot->GetBinError(i),2)-TMath::Power(h_data_stat->GetBinError(i),2));
 	    h_data_syst->SetBinError(i, xval);
 	  }
 	  h_data_syst->SetDirectory(0);
@@ -96,7 +96,7 @@ if (numB==2) {
 
 	TH1F* h_data_b_syst = (TH1F*)h_data_b_tot->Clone("h_data_b_syst");
 	for (int i=0;i<=h_data_b_tot->GetNbinsX()+1;i++) {
-	  float xval = TMath::Sqrt(TMath::Power(h_data_b_tot->GetBinError(i),2)-TMath::Power(h_data_b_stat->GetBinError(i),2));
+	  double xval = TMath::Sqrt(TMath::Power(h_data_b_tot->GetBinError(i),2)-TMath::Power(h_data_b_stat->GetBinError(i),2));
 	  h_data_b_syst->SetBinError(i, xval);
 	}
 	h_data_b_syst->SetDirectory(0);

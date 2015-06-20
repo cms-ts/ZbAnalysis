@@ -529,7 +529,7 @@ if (numB==1) bbBkg = true;
 	if (bbBkg || bbSig) h_mc1bb->Scale(norm1);
 
 	if (useDY==3) {
-	  float w = TMath::Sqrt(12132.9);
+	  double w = TMath::Sqrt(12132.9);
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
 	    h_mc1->SetBinError(i, h_mc1->GetBinError(i)*w);
 	    if (h_mc1b) h_mc1b->SetBinError(i, h_mc1b->GetBinError(i)*w);
@@ -672,9 +672,9 @@ if (numB==1) bbBkg = true;
 	}
 
 	if (doFit==0 && irun==18) {
-	  float xval=0;
-	  //float xvalb=0;
-	  float xvalc=0;
+	  double xval=0;
+	  //double xvalb=0;
+	  double xvalc=0;
 
 	  if (h_mc1)  xval = h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
 	  //if (h_mc1b) xvalb = h_mc1b->Integral(0,h_mc1b->GetNbinsX()+1);
@@ -774,8 +774,8 @@ if (numB==1) bbBkg = true;
 
 	if (doFit==0 && irun==17) {
 
-	  float xval=0;
-	  float xvalc=0;
+	  double xval=0;
+	  double xvalc=0;
 
           string tmp = title;
 

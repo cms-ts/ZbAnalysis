@@ -622,7 +622,7 @@ if (numB==2) bbSig = true;
 	h_mc13_b->Scale(norm13);
 
 	if (useDY==3) {
-	  float w = TMath::Sqrt(12132.9);
+	  double w = TMath::Sqrt(12132.9);
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
 	    h_mc1->SetBinError(i, h_mc1->GetBinError(i)*w);
 	    if (h_mc1b_b) h_mc1b_b->SetBinError(i, h_mc1b_b->GetBinError(i)*w);
@@ -719,9 +719,9 @@ if (numB==2) bbSig = true;
 	}
 
 	if (irun==18) {
-	  float xval=0;
-	  //float xvalb=0;
-	  float xvalc=0;
+	  double xval=0;
+	  //double xvalb=0;
+	  double xvalc=0;
 
 	  if (h_mc1_b)  xval = h_mc1_b->Integral(0,h_mc1_b->GetNbinsX()+1);
 	  //if (h_mc1b_b) xvalb = h_mc1b_b->Integral(0,h_mc1b_b->GetNbinsX()+1);

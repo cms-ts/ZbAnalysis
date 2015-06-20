@@ -318,7 +318,7 @@ if (numB==2) bbSig = true;
 	}
 
 	if (imode==8) {
-	  float w = TMath::Sqrt(12132.9);
+	  double w = TMath::Sqrt(12132.9);
 	  for (int i=0; i<=h_mc1_reco->GetNbinsX()+1; i++) {
 	    h_mc1_reco->SetBinError(i, h_mc1_reco->GetBinError(i)*w);
 	    if (bbBkg) h_mc1_bbBkg_reco->SetBinError(i, h_mc1_bbBkg_reco->GetBinError(i)*w);
@@ -364,9 +364,9 @@ if (numB==2) bbSig = true;
 
 	  for (int j=0;j<=h_mc1_matrix->GetNbinsY()+1;j++) {
 	    for (int i=0;i<=h_mc1_matrix->GetNbinsX()+1;i++) {
-	      float xval = h_mc1_truth->GetBinContent(j);
+	      double xval = h_mc1_truth->GetBinContent(j);
 	      if (xval!=0) {
-	        float val = h_data_unfold_ref->GetBinContent(j)/xval;
+	        double val = h_data_unfold_ref->GetBinContent(j)/xval;
 	        h_mc1_matrix->SetBinContent(i,j,h_mc1_matrix_ref->GetBinContent(i,j)*val);
 	        h_mc1_matrix->SetBinError(i,j,h_mc1_matrix_ref->GetBinError(i,j)*val);
 	      } else {
@@ -377,9 +377,9 @@ if (numB==2) bbSig = true;
 	  }
 
 	  for (int j=0;j<=h_mc1_truth->GetNbinsX()+1;j++) {
-	    float xval = h_mc1_truth->GetBinContent(j);
+	    double xval = h_mc1_truth->GetBinContent(j);
 	    if (xval!=0) {
-	      float val = h_data_unfold_ref->GetBinContent(j)/xval;
+	      double val = h_data_unfold_ref->GetBinContent(j)/xval;
 	      h_mc1_truth->SetBinContent(j,h_mc1_truth->GetBinContent(j)*val);
 	      h_mc1_truth->SetBinError(j,h_mc1_truth->GetBinError(j)*val);
 	    } else {
@@ -389,9 +389,9 @@ if (numB==2) bbSig = true;
 	  }
 
 	  for (int i=0;i<=h_mc1_reco->GetNbinsX()+1;i++) {
-	    float xval = h_mc1_matrix_ref->Integral(i,i,0,h_mc1_matrix_ref->GetNbinsY()+1);
+	    double xval = h_mc1_matrix_ref->Integral(i,i,0,h_mc1_matrix_ref->GetNbinsY()+1);
 	    if (xval!=0) {
-	      float val = h_mc1_matrix->Integral(i,i,0,h_mc1_matrix->GetNbinsY()+1)/xval;
+	      double val = h_mc1_matrix->Integral(i,i,0,h_mc1_matrix->GetNbinsY()+1)/xval;
 	      h_mc1_reco->SetBinContent(i,h_mc1_reco->GetBinContent(i)*val);
 	      h_mc1_reco->SetBinError(i,h_mc1_reco->GetBinError(i)*val);
 	    } else {

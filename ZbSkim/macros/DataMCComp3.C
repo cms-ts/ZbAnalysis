@@ -203,7 +203,7 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	h_gen->Sumw2();
 
 	if (useDY==3) {
-	  float w = TMath::Sqrt(12132.9);
+	  double w = TMath::Sqrt(12132.9);
 	  for (int i=0; i<=h_reco->GetNbinsX()+1; i++) {
 	    h_reco->SetBinError(i, h_reco->GetBinError(i)*w);
 	    h_gen->SetBinError(i, h_gen->GetBinError(i)*w);
