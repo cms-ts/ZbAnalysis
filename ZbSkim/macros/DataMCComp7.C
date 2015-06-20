@@ -352,14 +352,14 @@ if (numB==2) {
 	  double val = 0.0;
 	  val = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_scan[13]->GetBinError(i),2)-TMath::Power(h_data_scan[0]->GetBinError(i),2))/(TMath::Power(1.1,2)-1));
 	  stat_bkg->SetBinError(i, val);
-	  val = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data->GetBinError(i),2)-TMath::Power(stat_bkg->GetBinError(i),2)));
+	  val = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_scan[0]->GetBinError(i),2)-TMath::Power(val,2)));
 	  h_data->SetBinError(i, val);
 	}
 	for (int i=0;i<=h_data_b->GetNbinsX()+1;i++) {
 	  double val = 0.0;
 	  val = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[13]->GetBinError(i),2)-TMath::Power(h_data_b_scan[0]->GetBinError(i),2))/(TMath::Power(1.1,2)-1));
 	  stat_b_bkg->SetBinError(i, val);
-	  val = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b->GetBinError(i),2)-TMath::Power(stat_b_bkg->GetBinError(i),2)));
+	  val = TMath::Sqrt(TMath::Max(0.,TMath::Power(h_data_b_scan[0]->GetBinError(i),2)-TMath::Power(val,2)));
 	  h_data_b->SetBinError(i, val);
 	}
 
