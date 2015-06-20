@@ -22,10 +22,8 @@ double eXsec_dy = 0;
 //////////////////////// DY MadGraph_aMC@NLO + Pythia 8
 
 //double Ngen_dy_amc = 28944033; // DYJetsToLL_aMC
-//double Ngen_dy_amc = 28924033; // DYJetsToLL_aMC_gen
 // weights extracted from h_gen_weights->GetBinContent(2)
 double Ngen_dy_amc = 2.59225272210000000e+11; // DYJetsToLL_aMC
-//double Ngen_dy_amc = 2.59106324480000000e+11; // DYJetsToLL_aMC_gen
 double Xsec_dy_amc = 3531.8; // NNLO
 double eXsec_dy_amc = 0;
 
