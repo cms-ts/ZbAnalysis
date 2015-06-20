@@ -711,7 +711,7 @@ if (numB==2) bbSig = true;
 	if (h_mc1c_b) h_mc1uds_b->Add(h_mc1c_b, -1);
 	if (h_mc1t_b) h_mc1uds_b->Add(h_mc1t_b, -1);
         for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
-	  float e = TMath::Power(h_mc1uds_b->GetBinError(i),2);
+	  double e = TMath::Power(h_mc1uds_b->GetBinError(i),2);
 	  if (h_mc1b_b) e = e - TMath::Power(h_mc1b_b->GetBinError(i),2);
 	  if (h_mc1c_b) e = e - TMath::Power(h_mc1c_b->GetBinError(i),2);
 	  if (h_mc1t_b) e = e - TMath::Power(h_mc1t_b->GetBinError(i),2);
@@ -749,7 +749,7 @@ if (numB==2) bbSig = true;
             if (h_mc1bb && h_mc1b_b) {
 	      h_mc1b_b->Add(h_mc1bb, -1.);
               for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
-	        float e = TMath::Power(h_mc1b_b->GetBinError(i),2);
+	        double e = TMath::Power(h_mc1b_b->GetBinError(i),2);
 	        e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
 	        h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
 	      }
@@ -761,7 +761,7 @@ if (numB==2) bbSig = true;
 	  if (h_mc1t_b) h_mc1_b->Add(h_mc1t_b, -1.);
           if (bbBkg) h_mc1->Add(h_mc1bb, -1.);
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	    float e = TMath::Power(h_mc1->GetBinError(i),2);
+	    double e = TMath::Power(h_mc1->GetBinError(i),2);
 	    if (h_mc1b_b) e = e - TMath::Power(h_mc1b_b->GetBinError(i),2);
 	    if (h_mc1c_b) e = e - TMath::Power(h_mc1c_b->GetBinError(i),2);
 	    if (h_mc1t_b) e = e - TMath::Power(h_mc1t_b->GetBinError(i),2);
@@ -788,7 +788,7 @@ if (numB==2) bbSig = true;
         if (bbBkg || bbSig) {
           h_mc1b_b->Add(h_mc1bb, -1);
           for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
-	    float e = TMath::Power(h_mc1b_b->GetBinError(i),2);
+	    double e = TMath::Power(h_mc1b_b->GetBinError(i),2);
 	    e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
 	    h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
 	  }

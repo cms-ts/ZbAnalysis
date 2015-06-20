@@ -582,7 +582,7 @@ if (numB==1) bbBkg = true;
         if (bbBkg || bbSig) {
 	  h_mc1b->Add(h_mc1bb, -1.);
 	  for (int i=0; i<=h_mc1b->GetNbinsX()+1; i++) {
-	    float e = TMath::Power(h_mc1b->GetBinError(i),2);
+	    double e = TMath::Power(h_mc1b->GetBinError(i),2);
 	    e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
 	    h_mc1b->SetBinError(i, TMath::Sqrt(e));
 	  }
@@ -654,7 +654,7 @@ if (numB==1) bbBkg = true;
 	if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
         if (bbBkg || bbSig) h_mc1->Add(h_mc1bb, -1.);
 	for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	  float e = TMath::Power(h_mc1->GetBinError(i),2);
+	  double e = TMath::Power(h_mc1->GetBinError(i),2);
 	  if (h_mc1b) e = e - TMath::Power(h_mc1b->GetBinError(i),2);
 	  if (h_mc1c) e = e - TMath::Power(h_mc1c->GetBinError(i),2);
 	  if (h_mc1t) e = e - TMath::Power(h_mc1t->GetBinError(i),2);
@@ -706,7 +706,7 @@ if (numB==1) bbBkg = true;
             if (h_mc1bb && h_mc1b) {
 	      h_mc1b->Add(h_mc1bb, -1.);
 	      for (int i=0; i<=h_mc1b->GetNbinsX()+1; i++) {
-	        float e = TMath::Power(h_mc1b->GetBinError(i),2);
+	        double e = TMath::Power(h_mc1b->GetBinError(i),2);
 	        e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
 	        h_mc1b->SetBinError(i, TMath::Sqrt(e));
 	      }
@@ -724,7 +724,7 @@ if (numB==1) bbBkg = true;
 	  if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
           if (bbBkg) h_mc1->Add(h_mc1bb, -1.);
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	    float e = TMath::Power(h_mc1->GetBinError(i),2);
+	    double e = TMath::Power(h_mc1->GetBinError(i),2);
 	    if (h_mc1b) e = e - TMath::Power(h_mc1b->GetBinError(i),2);
 	    if (h_mc1c) e = e - TMath::Power(h_mc1c->GetBinError(i),2);
 	    if (h_mc1t) e = e - TMath::Power(h_mc1t->GetBinError(i),2);
@@ -824,7 +824,7 @@ if (numB==1) bbBkg = true;
 	  if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
 	  h_mc_fit0 = h_mc2;
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-	    float e = TMath::Power(h_data_fit->GetBinError(i),2);
+	    double e = TMath::Power(h_data_fit->GetBinError(i),2);
 	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
 	  }
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
@@ -980,7 +980,7 @@ if (numB==1) bbBkg = true;
 	    }
 	  }
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            float e = TMath::Power(h_data_fit->GetBinError(i),2);
+            double e = TMath::Power(h_data_fit->GetBinError(i),2);
             h_data_fit->SetBinError(i, TMath::Sqrt(e));
           }
 	  fitter = TVirtualFitter::Fitter(0, 3);
@@ -1044,7 +1044,7 @@ if (numB==1) bbBkg = true;
 	    }
 	  }
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            float e = TMath::Power(h_data_fit->GetBinError(i),2);
+            double e = TMath::Power(h_data_fit->GetBinError(i),2);
             h_data_fit->SetBinError(i, TMath::Sqrt(e));
           }
           fitter = TVirtualFitter::Fitter(0, 1);
@@ -1072,7 +1072,7 @@ if (numB==1) bbBkg = true;
           if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
 
           for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            float e = TMath::Power(h_data_fit->GetBinError(i),2);
+            double e = TMath::Power(h_data_fit->GetBinError(i),2);
             h_data_fit->SetBinError(i, TMath::Sqrt(e));
           }
           fitter = TVirtualFitter::Fitter(0, 1);

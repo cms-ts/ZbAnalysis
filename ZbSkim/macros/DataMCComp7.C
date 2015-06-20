@@ -248,7 +248,7 @@ if (numB==2) {
 
 	h_mc1b_b->Scale(c_b);
 	for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
-	  float e = TMath::Power(h_mc1b_b->GetBinError(i),2);
+	  double e = TMath::Power(h_mc1b_b->GetBinError(i),2);
 	  e = e + TMath::Power(h_mc1b_b->GetBinContent(i)*(ec_b/c_b),2);
 	  h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
 	}
