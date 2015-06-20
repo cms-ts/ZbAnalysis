@@ -710,7 +710,6 @@ if (numB==2) bbSig = true;
 	if (h_mc1b_b) h_mc1uds_b->Add(h_mc1b_b, -1);
 	if (h_mc1c_b) h_mc1uds_b->Add(h_mc1c_b, -1);
 	if (h_mc1t_b) h_mc1uds_b->Add(h_mc1t_b, -1);
-	//if (bbBkg)  h_mc1uds_b->Add(h_mc1bb, -1);
         for (int i=0; i<=h_mc1uds_b->GetNbinsX()+1; i++) {
 	  float e = TMath::Power(h_mc1uds_b->GetBinError(i),2);
 	  if (h_mc1b_b) e = e - TMath::Power(h_mc1b_b->GetBinError(i),2);
