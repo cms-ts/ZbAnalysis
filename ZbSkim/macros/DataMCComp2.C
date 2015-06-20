@@ -746,7 +746,14 @@ if (numB==2) bbSig = true;
           if (bbBkg) {
             h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title_b.substr(1)).c_str());
             if (h_mc1bb) h_mc1bb->Sumw2();
-            if (h_mc1bb && h_mc1b_b) h_mc1b_b->Add(h_mc1bb, -1.);
+            if (h_mc1bb && h_mc1b_b) {
+	      h_mc1b_b->Add(h_mc1bb, -1.);
+              for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
+	        float e = TMath::Power(h_mc1b_b->GetBinError(i),2);
+	        e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
+	        h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
+	      }
+	    }
           }
 
 	  if (h_mc1b_b) h_mc1_b->Add(h_mc1b_b, -1.);
@@ -780,6 +787,11 @@ if (numB==2) bbSig = true;
 
         if (bbBkg || bbSig) {
           h_mc1b_b->Add(h_mc1bb, -1);
+          for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
+	    float e = TMath::Power(h_mc1b_b->GetBinError(i),2);
+	    e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
+	    h_mc1b_b->SetBinError(i, TMath::Sqrt(e));
+	  }
 	  if (irun==6) {
             h_mc1bb->Scale(fScal+0.1*efScal);
 	  } else {
