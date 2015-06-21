@@ -3845,14 +3845,6 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
         c_JBP_nomass->Fill (discrJBP, MyWeight*scalFac_b);
       }
     }
-    if (Nb > 1) {
-      if (!ist && isMC && fabs(vect_bjets[1].partonFlavour()) == 4) {
-        c_BJP_sub->Fill (discrBJP_sub, MyWeight*scalFac_b);
-        c_JBP_sub->Fill (discrJBP_sub, MyWeight*scalFac_b);
-        c_BJP_2D->Fill (discrBJP, discrBJP_sub, MyWeight*scalFac_b);
-        c_JBP_2D->Fill (discrJBP, discrJBP_sub, MyWeight*scalFac_b);
-      }
-    }
   }
 
   if ((ee_event || mm_event || em_event) && Nj > 0 && Nb == 1 && vtx_cut && met_cut && b_selection && nosvtx) {
