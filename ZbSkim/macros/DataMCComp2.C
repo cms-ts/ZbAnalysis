@@ -1155,6 +1155,7 @@ if (numB==2) bbSig = true;
 	if (isratio==0) {
 	  TH1F *h_M2= (TH1F*)h_data->Clone();
 	  h_M2->Divide(h_mcg);
+
 	  TGraphErrors *g_M2 = new TGraphErrors(h_M2);
 
 	  float dx = 0.1*(g_M2->GetXaxis()->GetXmax()-g_M2->GetXaxis()->GetXmin())/g_M2->GetN();
