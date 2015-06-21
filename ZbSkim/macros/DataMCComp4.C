@@ -320,9 +320,9 @@ if (numB==2) bbSig = true;
 	if (imode==8) {
 	  double w = TMath::Sqrt(12132.9);
 	  for (int i=0; i<=h_mc1_reco->GetNbinsX()+1; i++) {
-	    h_mc1_reco->SetBinError(i, h_mc1_reco->GetBinError(i)*w);
-	    if (bbBkg) h_mc1_bbBkg_reco->SetBinError(i, h_mc1_bbBkg_reco->GetBinError(i)*w);
-	    if (bbSig) h_mc1_bbSig_reco->SetBinError(i, h_mc1_bbSig_reco->GetBinError(i)*w);
+	    h_mc1_reco->SetBinError(i, w*h_mc1_reco->GetBinError(i));
+	    if (bbBkg) h_mc1_bbBkg_reco->SetBinError(i, w*h_mc1_bbBkg_reco->GetBinError(i));
+	    if (bbSig) h_mc1_bbSig_reco->SetBinError(i, w*h_mc1_bbSig_reco->GetBinError(i));
 	  }
 	}
 
