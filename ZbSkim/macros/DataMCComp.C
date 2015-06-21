@@ -922,9 +922,6 @@ if (numB==1) bbBkg = true;
 	    if (bbBkg) h_data_fit->Add(h_mc1bb, -1.);
 	  }
 	  h_mc_fit0 = h_mcO;
-	  if (h_mc1)  h_mc_fit0->Add(h_mc1,  -1.);
-	  if (h_mc1b) h_mc_fit0->Add(h_mc1b, -1.);
-	  if (h_mc1c) h_mc_fit0->Add(h_mc1c, -1.);
 	  h_mc_fit1 = h_mc2;
 	  fitter = TVirtualFitter::Fitter(0, 2);
 	  fitter->SetFCN(fcn);
