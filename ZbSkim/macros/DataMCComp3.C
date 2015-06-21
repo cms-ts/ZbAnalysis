@@ -196,19 +196,21 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	if (ilepton==2&&itype==2) mc2->cd(("demoMuoBtag"+genPostfix).c_str());
 	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
 
+	if (useDY==3) {
+	  double w = TMath::Sqrt(12132.9);
+	  for (int i=0; i<=h_reco->GetNbinsX()+1; i++) {
+	    h_reco->SetBinError(i, w*h_reco->GetBinError(i));
+	    if (bbBkg) h_reco_bbBkg->SetBinError(i, w*h_reco_bbBkg->GetBinError(i));
+	    if (bbSig) h_reco_bbSig->SetBinError(i, w*h_reco_bbSig->GetBinError(i));
+	    h_gen->SetBinError(i, w*h_gen->GetBinError(i));
+	  }
+	}
+
 	if (bbBkg) h_reco->Add(h_reco_bbBkg,-1);
 	if (bbSig) h_reco = h_reco_bbSig;
 
 	h_reco->Sumw2();
 	h_gen->Sumw2();
-
-	if (useDY==3) {
-	  double w = TMath::Sqrt(12132.9);
-	  for (int i=0; i<=h_reco->GetNbinsX()+1; i++) {
-	    h_reco->SetBinError(i, w*h_reco->GetBinError(i));
-	    h_gen->SetBinError(i, w*h_gen->GetBinError(i));
-	  }
-	}
 
 	double N = 1.0;
 	double errN = 0.0;
