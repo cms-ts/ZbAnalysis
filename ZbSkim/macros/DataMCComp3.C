@@ -245,22 +245,30 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	}
 	if (title=="w_first_bjet_pt") {
 	  h_reco->GetXaxis()->SetTitle("leading b-jet p_{T} [GeV/c]");
-	  h_reco->GetXaxis()->SetRangeUser(0, 200);
+	  h_reco->GetXaxis()->SetRangeUser(30, 300);
+	  if (numB==2) h_reco->GetXaxis()->SetRangeUser(30, 200);
+	  h_reco->GetYaxis()->SetRangeUser(0, 1);
+	} else if (title=="w_second_bjet_pt") {
+	  h_reco->GetXaxis()->SetTitle("sub-leading b-jet p_{T} [GeV/c]");
+	  h_reco->GetXaxis()->SetRangeUser(30, 300);
+	  if (numB==2) h_reco->GetXaxis()->SetRangeUser(30, 120);
 	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	} else if (title=="w_first_bjet_eta") {
-	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	  h_reco->GetXaxis()->SetTitle("leading b-jet #eta");
+	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	} else if (title=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b") {
-	  h_reco->GetYaxis()->SetRangeUser(0, 1);
-	  h_reco->GetXaxis()->SetRangeUser(0, 200);
 	  h_reco->GetXaxis()->SetTitle("Z boson p_{T} [GeV/c]");
+	  h_reco->GetXaxis()->SetRangeUser(0, 300);
+	  if (numB==2) h_reco->GetXaxis()->SetRangeUser(0, 230);
+	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	} else if (title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b") {
-	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	  h_reco->GetXaxis()->SetTitle("#Delta #phi(Zb) [rad]");
-	} else if (title=="w_Ht_b") {
 	  h_reco->GetYaxis()->SetRangeUser(0, 1);
-	  h_reco->GetXaxis()->SetRangeUser(0, 200);
+	} else if (title=="w_Ht_b") {
           h_reco->GetXaxis()->SetTitle("H_{T} [GeV/c]");
+	  h_reco->GetXaxis()->SetRangeUser(30, 500);
+	  if (numB==2) h_reco->GetXaxis()->SetRangeUser(30, 400);
+	  h_reco->GetYaxis()->SetRangeUser(0, 1);
 	}
 
 	h_reco->GetXaxis()->SetTitleOffset(0.95);
