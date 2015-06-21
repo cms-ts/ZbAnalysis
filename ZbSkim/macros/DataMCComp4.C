@@ -317,15 +317,6 @@ if (numB==2) bbSig = true;
           if (bbSig) h_mc2_bbSig_reco   = (TH1F*)gDirectory->Get(("bbSig"+title_b.substr(1)).c_str());
 	}
 
-	if (imode==8) {
-	  double w = TMath::Sqrt(12132.9);
-	  for (int i=0; i<=h_mc1_reco->GetNbinsX()+1; i++) {
-	    h_mc1_reco->SetBinError(i, w*h_mc1_reco->GetBinError(i));
-	    if (bbBkg) h_mc1_bbBkg_reco->SetBinError(i, w*h_mc1_bbBkg_reco->GetBinError(i));
-	    if (bbSig) h_mc1_bbSig_reco->SetBinError(i, w*h_mc1_bbSig_reco->GetBinError(i));
-	  }
-	}
-
 	h_data_reco->Sumw2();
 	h_mc1_truth->Sumw2();
 	h_mc1_reco->Sumw2();
@@ -336,6 +327,21 @@ if (numB==2) bbSig = true;
 	h_mc2_reco->Sumw2();
         if (bbBkg) h_mc2_bbBkg_reco->Sumw2();
         if (bbSig) h_mc2_bbSig_reco->Sumw2();
+
+	if (imode==8) {
+	  double w = TMath::Sqrt(12132.9);
+	  for (int i=0; i<=h_mc1_reco->GetNbinsX()+1; i++) {
+	    h_mc1_truth->SetBinError(i, w*h_mc1_truth->GetBinError(i));
+	    h_mc1_reco->SetBinError(i, w*h_mc1_reco->GetBinError(i));
+	    if (bbBkg) h_mc1_bbBkg_reco->SetBinError(i, w*h_mc1_bbBkg_reco->GetBinError(i));
+	    if (bbSig) h_mc1_bbSig_reco->SetBinError(i, w*h_mc1_bbSig_reco->GetBinError(i));
+	  }
+	  for (int i=0; i<=h_mc1_matrix->GetNbinsX()+1; i++) {
+	    for (int j=0; j<=h_mc1_matrix->GetNbinsY()+1; j++) {
+	      h_mc1_matrix->SetBinError(i, j, w*h_mc1_matrix->GetBinError(i, j));
+	    }
+	  }
+	}
 
         if (bbBkg) {
           h_mc1_reco->Add(h_mc1_bbBkg_reco, -1.);
