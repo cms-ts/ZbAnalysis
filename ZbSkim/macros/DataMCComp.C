@@ -1056,7 +1056,6 @@ if (numB==1) bbBkg = true;
           h_mc_fit0->Scale(fitter->GetParameter(0));
         }
 
-	/** test ***/
         if (doFit==5) {
           h_data_fit = (TH1F*)h_data->Clone("h_data_fit");
           if (!doBkg) {
@@ -1084,7 +1083,6 @@ if (numB==1) bbBkg = true;
           fitter->ExecuteCommand("MIGRAD", arglist, 0);
           h_mc_fit0->Scale(fitter->GetParameter(0));
         }
-        /*****/
 
 	TH1F *ht = (TH1F*)h_mc1->Clone("ht");
 	ht->Reset();
