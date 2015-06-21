@@ -196,7 +196,20 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	if (ilepton==2&&itype==2) mc2->cd(("demoMuoBtag"+genPostfix).c_str());
 	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
 
+	h_reco->Sumw2();
+	if (bbBkg) h_reco_bbBkg->Sumw2();
+	if (bbSig) h_reco_bbSig->Sumw2();
+	h_gen->Sumw2();
+
 	if (useDY==3) {
+	  double Lumi2012=0;
+	  if (ilepton==1) Lumi2012 = Lumi2012_ele;
+	  if (ilepton==2) Lumi2012 = Lumi2012_muon;
+	  double norm1_amc = ((Lumi2012 * Xsec_dy_amc) / Ngen_dy_amc);
+	  h_reco->Scale(norm1_amc);
+	  if (bbBkg) h_reco_bbBkg->Scale(norm1_amc);
+	  if (bbSig) h_reco_bbSig->Scale(norm1_amc);
+	  h_gen->Scale(norm1_amc);
 	  double w = TMath::Sqrt(12132.9);
 	  for (int i=0; i<=h_reco->GetNbinsX()+1; i++) {
 	    h_reco->SetBinError(i, w*h_reco->GetBinError(i));
@@ -208,9 +221,6 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 
 	if (bbBkg) h_reco->Add(h_reco_bbBkg,-1);
 	if (bbSig) h_reco = h_reco_bbSig;
-
-	h_reco->Sumw2();
-	h_gen->Sumw2();
 
 	double N = 1.0;
 	double errN = 0.0;
