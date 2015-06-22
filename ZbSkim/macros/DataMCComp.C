@@ -549,11 +549,15 @@ if (numB==1) bbBkg = true;
         //h_mcD -> SetFillStyle(3004);
 
         if (bbBkg || bbSig) {
-	  h_mc1b->Add(h_mc1bb, -1.);
 	  for (int i=0; i<=h_mc1b->GetNbinsX()+1; i++) {
+	    double c = h_mc1b->GetBinContent(i);
+	    c = c - h_mc1bb->GetBinContent(i);
+	    if (c<0) c = 0.0;
+	    h_mc1b->SetBinContent(i,c);
 	    double e = TMath::Power(h_mc1b->GetBinError(i),2);
 	    e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
-	    h_mc1b->SetBinError(i, TMath::Sqrt(e));
+	    if (e<0) e = 0.0;
+	    h_mc1b->SetBinError(i,TMath::Sqrt(e));
 	  }
 	}
 
@@ -609,17 +613,21 @@ if (numB==1) bbBkg = true;
 	  }
 	}
 
-	if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
-	if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
-	if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
-        if (bbBkg || bbSig) h_mc1->Add(h_mc1bb, -1.);
 	for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+	  double c = h_mc1->GetBinContent(i);
+	  if (h_mc1b) c = c - h_mc1b->GetBinContent(i);
+	  if (h_mc1c) c = c - h_mc1c->GetBinContent(i);
+	  if (h_mc1t) c = c - h_mc1t->GetBinContent(i);
+	  if (bbBkg || bbSig) c = c - h_mc1bb->GetBinContent(i);
+	  if (c<0) c = 0.0;
+	  h_mc1->SetBinContent(i,c);
 	  double e = TMath::Power(h_mc1->GetBinError(i),2);
 	  if (h_mc1b) e = e - TMath::Power(h_mc1b->GetBinError(i),2);
 	  if (h_mc1c) e = e - TMath::Power(h_mc1c->GetBinError(i),2);
 	  if (h_mc1t) e = e - TMath::Power(h_mc1t->GetBinError(i),2);
           if (bbBkg || bbSig) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
-	  h_mc1->SetBinError(i, TMath::Sqrt(e));
+	  if (e<0) e = 0.0;
+	  h_mc1->SetBinError(i,TMath::Sqrt(e));
 	}
 
         if (bbBkg) h_mc1bb->Scale(fScal);
@@ -667,13 +675,17 @@ if (numB==1) bbBkg = true;
 
           if (bbBkg) {
             h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
-	    if (h_mc1bb) h_mc1bb = fixrange(h_mc1bb, numB);
-            if (h_mc1bb && h_mc1b) {
-	      h_mc1b->Add(h_mc1bb, -1.);
+	    h_mc1bb = fixrange(h_mc1bb, numB);
+            if (h_mc1b) {
 	      for (int i=0; i<=h_mc1b->GetNbinsX()+1; i++) {
+	        double c = h_mc1b->GetBinContent(i);
+	        c = c - h_mc1bb->GetBinContent(i);
+	        if (c<0) c = 0.0;
+	        h_mc1b->SetBinContent(i,c);
 	        double e = TMath::Power(h_mc1b->GetBinError(i),2);
 	        e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
-	        h_mc1b->SetBinError(i, TMath::Sqrt(e));
+	        if (e<0) e = 0.0;
+	        h_mc1b->SetBinError(i,TMath::Sqrt(e));
 	      }
 	    }
           }
@@ -683,17 +695,21 @@ if (numB==1) bbBkg = true;
 	    h_mc1bb = fixrange(h_mc1bb, numB);
           }
 
-	  if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
-	  if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
-	  if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
-          if (bbBkg) h_mc1->Add(h_mc1bb, -1.);
 	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
+	    double c = h_mc1->GetBinContent(i);
+	    if (h_mc1b) c = c - h_mc1b->GetBinContent(i);
+	    if (h_mc1c) c = c - h_mc1c->GetBinContent(i);
+	    if (h_mc1t) c = c - h_mc1t->GetBinContent(i);
+	    if (bbBkg || bbSig) c = c - h_mc1bb->GetBinContent(i);
+	    if (c<0) c = 0.0;
+	    h_mc1->SetBinContent(i,c);
 	    double e = TMath::Power(h_mc1->GetBinError(i),2);
 	    if (h_mc1b) e = e - TMath::Power(h_mc1b->GetBinError(i),2);
 	    if (h_mc1c) e = e - TMath::Power(h_mc1c->GetBinError(i),2);
 	    if (h_mc1t) e = e - TMath::Power(h_mc1t->GetBinError(i),2);
             if (bbBkg || bbSig) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
-	    h_mc1->SetBinError(i, TMath::Sqrt(e));
+	    if (e<0) e = 0.0;
+	    h_mc1->SetBinError(i,TMath::Sqrt(e));
 	  }
 
 	  if (h_mc1->Integral(0,h_mc1->GetNbinsX()+1)!=0) {
@@ -785,10 +801,6 @@ if (numB==1) bbBkg = true;
 	  if (h_mc1b) h_data_fit->Add(h_mc1b, -1.);
 	  if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
 	  h_mc_fit0 = h_mc2;
-	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-	    double e = TMath::Power(h_data_fit->GetBinError(i),2);
-	    h_data_fit->SetBinError(i, TMath::Sqrt(e));
-	  }
 	  for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
 	    bool skip = false;
 	    if (title=="w_MET") {
@@ -938,10 +950,6 @@ if (numB==1) bbBkg = true;
 	      h_mcO->SetBinError(i, 0);
 	    }
 	  }
-          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            double e = TMath::Power(h_data_fit->GetBinError(i),2);
-            h_data_fit->SetBinError(i, TMath::Sqrt(e));
-          }
 	  fitter = TVirtualFitter::Fitter(0, 3);
 	  fitter->SetFCN(fcn);
 	  double arglist[1] = {-1.0};
@@ -1002,10 +1010,6 @@ if (numB==1) bbBkg = true;
 	      h_mcO->SetBinError(i, 0);
 	    }
 	  }
-          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            double e = TMath::Power(h_data_fit->GetBinError(i),2);
-            h_data_fit->SetBinError(i, TMath::Sqrt(e));
-          }
           fitter = TVirtualFitter::Fitter(0, 1);
           fitter->SetFCN(fcn);
           double arglist[1] = {-1.0};
@@ -1028,11 +1032,6 @@ if (numB==1) bbBkg = true;
 	  h_mc1c->Scale(1.053);
 	  if (h_mc1) h_data_fit->Add(h_mc1, -1.);
           if (h_mc1c) h_data_fit->Add(h_mc1c, -1.);
-
-          for (int i=0; i<=h_data_fit->GetNbinsX()+1; i++) {
-            double e = TMath::Power(h_data_fit->GetBinError(i),2);
-            h_data_fit->SetBinError(i, TMath::Sqrt(e));
-          }
           fitter = TVirtualFitter::Fitter(0, 1);
           fitter->SetFCN(fcn);
           double arglist[1] = {-1.0};

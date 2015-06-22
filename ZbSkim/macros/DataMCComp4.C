@@ -317,25 +317,29 @@ if (numB==2) bbSig = true;
           if (bbSig) h_mc2_bbSig_reco   = (TH1F*)gDirectory->Get(("bbSig"+title_b.substr(1)).c_str());
 	}
 
-	if (imode==8) {
-	  double w = TMath::Sqrt(12132.9);
+	if (bbBkg) {
 	  for (int i=0; i<=h_mc1_reco->GetNbinsX()+1; i++) {
-	    h_mc1_truth->SetBinError(i, w*h_mc1_truth->GetBinError(i));
-	    h_mc1_reco->SetBinError(i, w*h_mc1_reco->GetBinError(i));
-	    if (bbBkg) h_mc1_bbBkg_reco->SetBinError(i, w*h_mc1_bbBkg_reco->GetBinError(i));
-	    if (bbSig) h_mc1_bbSig_reco->SetBinError(i, w*h_mc1_bbSig_reco->GetBinError(i));
+	    double c = h_mc1_reco->GetBinContent(i);
+	    c = c - h_mc1_bbBkg_reco->GetBinContent(i);
+	    if (c<0) c = 0.0;
+	    h_mc1_reco->SetBinContent(i,c);
+	    double e = TMath::Power(h_mc1_reco->GetBinError(i),2);
+	    e = e - TMath::Power(h_mc1_bbBkg_reco->GetBinError(i),2);
+	    if (e<0) e = 0.0;
+	    h_mc1_reco->SetBinError(i,TMath::Sqrt(e));
 	  }
-	  for (int i=0; i<=h_mc1_matrix->GetNbinsX()+1; i++) {
-	    for (int j=0; j<=h_mc1_matrix->GetNbinsY()+1; j++) {
-	      h_mc1_matrix->SetBinError(i, j, w*h_mc1_matrix->GetBinError(i, j));
-	    }
+	  for (int i=0; i<=h_mc2_reco->GetNbinsX()+1; i++) {
+	    double c = h_mc2_reco->GetBinContent(i);
+	    c = c - h_mc2_bbBkg_reco->GetBinContent(i);
+	    if (c<0) c = 0.0;
+	    h_mc2_reco->SetBinContent(i,c);
+	    double e = TMath::Power(h_mc2_reco->GetBinError(i),2);
+	    e = e - TMath::Power(h_mc2_bbBkg_reco->GetBinError(i),2);
+	    if (e<0) e = 0.0;
+	    h_mc2_reco->SetBinError(i,TMath::Sqrt(e));
 	  }
 	}
 
-        if (bbBkg) {
-          h_mc1_reco->Add(h_mc1_bbBkg_reco, -1.);
-          h_mc2_reco->Add(h_mc2_bbBkg_reco, -1.);
-        }
         if (bbSig) {
 	  h_mc1_reco = h_mc1_bbSig_reco;
 	  h_mc2_reco = h_mc2_bbSig_reco;
