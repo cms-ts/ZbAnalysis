@@ -261,6 +261,8 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
 
+  TH1::SetDefaultSumw2();
+
   h_gen_weights     =   fs->make < TH1F > ("h_gen_weights",      "h_gen_weights", 2, 0, 2);
   h_gen2_weights    =   fs->make < TH1F > ("h_gen2_weights",     "h_gen2_weights", 2, 0, 2);
 

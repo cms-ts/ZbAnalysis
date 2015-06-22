@@ -170,8 +170,11 @@ ZbDumper::ZbDumper(const edm::ParameterSet& iConfig) {
    pcut_             = iConfig.getUntrackedParameter <bool> ("pcut", false);   
    useDeltaR_        = iConfig.getUntrackedParameter <bool> ("useDeltaR", false);
    numB_             = iConfig.getUntrackedParameter <double> ("numB", 0);
+
    //now do what ever initialization is needed
    edm::Service < TFileService > fs;
+
+   TH1::SetDefaultSumw2();
 
    w_first_jet_pt    = fs->make < TH2F > ("w_first_jet_pt",    "w_first_jet_pt;P_t [GeV]", 50, 30., 700., 50, 30., 700.);
    w_first_jet_eta   = fs->make < TH2F > ("w_first_jet_eta",   "w_first_jet_eta;Eta", 16, -2.5, 2.5,16, -2.5, 2.5);

@@ -1103,6 +1103,8 @@ ZbAnalyzer::ZbAnalyzer (const edm::ParameterSet & iConfig) {
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
 
+  TH1::SetDefaultSumw2();
+
   h_jetmultiplicity =   fs->make < TH1F > ("h_jetmultiplicity", "h_jetmultiplicity;N_jets", 8, 0.5, 8.5);
 
   h_pu_weights =        fs->make < TH1F > ("h_pu_weights",      "h_pu_weights;PU weight", 10, 0, 10);
