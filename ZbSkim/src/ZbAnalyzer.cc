@@ -3822,7 +3822,7 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
       }
     }
     if (Nb > 1) {
-      if (!ist && isMC && fabs(vect_bjets[1].partonFlavour()) == 5) {
+      if (!ist && isMC && fabs(vect_bjets[0].partonFlavour()) == 5) {
         b_BJP_sub->Fill (discrBJP_sub, MyWeight*scalFac_b);
         b_JBP_sub->Fill (discrJBP_sub, MyWeight*scalFac_b);
         b_BJP_2D->Fill (discrBJP, discrBJP_sub, MyWeight*scalFac_b);
