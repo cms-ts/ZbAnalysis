@@ -557,8 +557,6 @@ if (numB==1) bbBkg = true;
 	  }
 	}
 
-        if (bbBkg)  h_mc1bb->Scale(fScal);
-
 	if (useFitResults) {
 	  int use_c1_t=1;
 	  if (title.find("JBP")==string::npos) use_c1_t=0;
@@ -611,13 +609,6 @@ if (numB==1) bbBkg = true;
 	  }
 	}
 
-	if (doBkg) {
-	  h_data->Add(h_mcO, -1.);
-	  h_data->Add(h_mcD, -1.);
-	  h_data->Add(h_mc2, -1.);
-          if (bbBkg) h_data->Add(h_mc1bb, -1.);
-	}
-
 	if (h_mc1b) h_mc1->Add(h_mc1b, -1.);
 	if (h_mc1c) h_mc1->Add(h_mc1c, -1.);
 	if (h_mc1t) h_mc1->Add(h_mc1t, -1.);
@@ -629,6 +620,15 @@ if (numB==1) bbBkg = true;
 	  if (h_mc1t) e = e - TMath::Power(h_mc1t->GetBinError(i),2);
           if (bbBkg || bbSig) e = e - TMath::Power(h_mc1bb->GetBinError(i),2);
 	  h_mc1->SetBinError(i, TMath::Sqrt(e));
+	}
+
+        if (bbBkg) h_mc1bb->Scale(fScal);
+
+	if (doBkg) {
+	  h_data->Add(h_mcO, -1.);
+	  h_data->Add(h_mcD, -1.);
+	  h_data->Add(h_mc2, -1.);
+          if (bbBkg) h_data->Add(h_mc1bb, -1.);
 	}
 
 	if (doBkg) {
