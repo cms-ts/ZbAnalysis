@@ -818,6 +818,20 @@ if (numB==2) bbSig = true;
           }
 	}
 
+	if (unfold==0) {
+	  h_data = fixrange(h_data, numB);
+	  h_data_b = fixrange(h_data_b, numB);
+	}
+	h_mc1 = fixrange(h_mc1, numB);
+ 	h_mc1b_b = fixrange(h_mc1b_b, numB);
+        if (bbBkg || bbSig) h_mc1bb = fixrange(h_mc1bb, numB);
+	h_mcg = fixrange(h_mcg, numB);
+	h_mcg_b = fixrange(h_mcg_b, numB);
+	h_mcg1 = fixrange(h_mcg1, numB);
+ 	h_mcg1_b = fixrange(h_mcg1_b, numB);
+	h_mcg2 = fixrange(h_mcg2, numB);
+	h_mcg2_b = fixrange(h_mcg2_b, numB);
+
 	h_data->Scale(1./Lumi2012, "width");
 	h_data_b->Scale(1./Lumi2012, "width");
 	h_mc1->Scale(1./Lumi2012, "width");
@@ -843,20 +857,6 @@ if (numB==2) bbSig = true;
 	  h_mcg1_b->Scale(100.);
 	  h_mcg2_b->Scale(100.);
 	}
-
-	if (unfold==0) {
-	  h_data = fixrange(h_data, numB);
-	  h_data_b = fixrange(h_data_b, numB);
-	}
-	h_mc1 = fixrange(h_mc1, numB);
- 	h_mc1b_b = fixrange(h_mc1b_b, numB);
-        if (bbBkg || bbSig) h_mc1bb = fixrange(h_mc1bb, numB);
-	h_mcg = fixrange(h_mcg, numB);
-	h_mcg_b = fixrange(h_mcg_b, numB);
-	h_mcg1 = fixrange(h_mcg1, numB);
- 	h_mcg1_b = fixrange(h_mcg1_b, numB);
-	h_mcg2 = fixrange(h_mcg2, numB);
-	h_mcg2_b = fixrange(h_mcg2_b, numB);
 
 	TCanvas* c1 = new TCanvas("c", "c", 800, 600);
 	c1->cd();
