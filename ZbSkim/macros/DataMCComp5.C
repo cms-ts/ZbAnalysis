@@ -339,37 +339,6 @@ if (numB==2) {
       mc13->cd(("demoEleMuo"+postfix).c_str());
       TH1F* h_mc13_fit = (TH1F*)gDirectory->Get(title_fit.c_str());
 
-      h_data->Sumw2();
-      h_data_fit->Sumw2();
-
-      h_mc1->Sumw2();
-      h_mc2->Sumw2();
-      h_mc3->Sumw2();
-      h_mc4->Sumw2();
-//    h_mc5->Sumw2();
-      h_mc6->Sumw2();
-      h_mc7->Sumw2();
-      h_mc8->Sumw2();
-      h_mc9->Sumw2();
-      h_mc10->Sumw2();
-      h_mc11->Sumw2();
-      h_mc12->Sumw2();
-      h_mc13->Sumw2();
-
-      h_mc1_fit->Sumw2();
-      h_mc2_fit->Sumw2();
-      h_mc3_fit->Sumw2();
-      h_mc4_fit->Sumw2();
-//    h_mc5_fit->Sumw2();
-      h_mc6_fit->Sumw2();
-      h_mc7_fit->Sumw2();
-      h_mc8_fit->Sumw2();
-      h_mc9_fit->Sumw2();
-      h_mc10_fit->Sumw2();
-      h_mc11_fit->Sumw2();
-      h_mc12_fit->Sumw2();
-      h_mc13_fit->Sumw2();
-
       if (irun==10) {
         norm1 = norm1 + 0.1*enorm1;
         norm2 = norm2 + 0.1*enorm2;

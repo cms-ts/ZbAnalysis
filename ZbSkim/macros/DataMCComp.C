@@ -437,74 +437,54 @@ if (numB==1) bbBkg = true;
 	h_mc12 = fixrange(h_mc12, numB);
 	h_mc13 = fixrange(h_mc13, numB);
 
-	h_data -> Sumw2();
-
-	h_mc1 -> Sumw2();
 	h_mc1 -> SetLineColor(kBlack);
 	h_mc1 -> SetFillColor(kYellow-4);
 	//h_mc1 -> SetFillStyle(3004);
 
 	if (h_mc1b) {
-	  h_mc1b -> Sumw2();
 	  h_mc1b->SetLineColor(kBlack);
 	  h_mc1b->SetFillColor(kYellow-4);
 	  h_mc1b->SetFillStyle(3254);
 	}
 	if (h_mc1c) {
-	  h_mc1c -> Sumw2();
 	  h_mc1c->SetLineColor(kBlack);
 	  h_mc1c->SetFillColor(kOrange);
 	  h_mc1c->SetFillStyle(3245);
 	}
 	if (h_mc1t) {
-	  h_mc1t -> Sumw2();
 	  h_mc1t->SetLineColor(kBlack);
 	  h_mc1t->SetFillColor(kOrange-4);
 	  //h_mc1t->SetFillStyle(3004);
 	}
         if (bbBkg || bbSig) {
-          h_mc1bb->Sumw2();
           h_mc1bb->SetLineColor(kBlack);
           h_mc1bb->SetFillColor(kYellow+2);
           h_mc1bb->SetFillStyle(3254);
 	}
 
-	h_mc2 -> Sumw2();
 	h_mc2 -> SetLineColor(kBlack);
 	h_mc2 -> SetFillColor(kBlue);
 	//h_mc2 -> SetFillStyle(3004);
 
-	h_mc3 -> Sumw2();
 	h_mc3 -> SetLineColor(kBlack);
 	h_mc3 -> SetFillColor(kGray+2);
 	//h_mc3 -> SetFillStyle(3004);
 
-	h_mc4 -> Sumw2();
 	h_mc4 -> SetLineColor(kBlack);
 	h_mc4 -> SetFillColor(kGray+3);
 	//h_mc4 -> SetFillStyle(3004);
 
-//	h_mc5 -> Sumw2();
 //	h_mc5 -> SetLineColor(kBlack);
 //	h_mc5 -> SetFillColor(kGray+3);
 //	//h_mc5 -> SetFillStyle(3004);
 
-	h_mc6 -> Sumw2();
 	h_mc6 -> SetLineColor(kBlack);
 	h_mc6 -> SetFillColor(kRed+2);
 	//h_mc6 -> SetFillStyle(3004);
 
-	h_mc7 -> Sumw2();
 	h_mc7 -> SetLineColor(kBlack);
 	h_mc7 -> SetFillColor(kGray);
 	//h_mc7 -> SetFillStyle(3004);
-
-	h_mc8->Sumw2();
-	h_mc9->Sumw2();
-	h_mc10->Sumw2();
-	h_mc11->Sumw2();
-	h_mc12->Sumw2();
-	h_mc13->Sumw2();
 
 	if (irun==10) {
 	  norm1 = norm1 + 0.1*enorm1;
@@ -527,17 +507,6 @@ if (numB==1) bbBkg = true;
 	if (h_mc1c) h_mc1c->Scale(norm1);
 	if (h_mc1t) h_mc1t->Scale(norm1);
 	if (bbBkg || bbSig) h_mc1bb->Scale(norm1);
-
-	if (useDY==3) {
-	  double w = TMath::Sqrt(12132.9);
-	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	    h_mc1->SetBinError(i, w*h_mc1->GetBinError(i));
-	    if (h_mc1b) h_mc1b->SetBinError(i, w*h_mc1b->GetBinError(i));
-	    if (h_mc1c) h_mc1c->SetBinError(i, w*h_mc1c->GetBinError(i));
-	    if (h_mc1t) h_mc1t->SetBinError(i, w*h_mc1t->GetBinError(i));
-	    if (bbBkg || bbSig) h_mc1bb->SetBinError(i, w*h_mc1bb->GetBinError(i));
-	  }
-	}
 
 	h_mc2->Scale(norm2);
 	h_mc3->Scale(norm3);
@@ -686,22 +655,18 @@ if (numB==1) bbBkg = true;
           if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
 
 	  h_mc1 = (TH1F*)gDirectory->Get(title.c_str());
-	  h_mc1->Sumw2();
 	  h_mc1 = fixrange(h_mc1, numB);
 
 	  TH1F* h_mc1b_tmp = h_mc1b;
 
 	  h_mc1b = (TH1F*)gDirectory->Get(("b"+title.substr(1)).c_str());
-	  if (h_mc1b) h_mc1b->Sumw2();
 	  if (h_mc1b) h_mc1b = fixrange(h_mc1b, numB);
 
 	  h_mc1c = (TH1F*)gDirectory->Get(("c"+title.substr(1)).c_str());
-          if (h_mc1c) h_mc1c->Sumw2();
 	  if (h_mc1c) h_mc1c = fixrange(h_mc1c, numB);
 
           if (bbBkg) {
             h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title.substr(1)).c_str());
-            if (h_mc1bb) h_mc1bb->Sumw2();
 	    if (h_mc1bb) h_mc1bb = fixrange(h_mc1bb, numB);
             if (h_mc1bb && h_mc1b) {
 	      h_mc1b->Add(h_mc1bb, -1.);
@@ -715,7 +680,6 @@ if (numB==1) bbBkg = true;
 
           if (bbSig) {
             h_mc1bb = (TH1F*)gDirectory->Get(("bbSig"+title.substr(1)).c_str());
-            h_mc1bb->Sumw2();
 	    h_mc1bb = fixrange(h_mc1bb, numB);
           }
 
@@ -802,11 +766,9 @@ if (numB==1) bbBkg = true;
           h_mc1->SetFillColor(kYellow-4);
 
 	  xval = xval / h_mc1->Integral(0,h_mc1->GetNbinsX()+1);
-	  h_mc1->Sumw2();
 	  h_mc1->Scale(xval);
 
 	  xvalc = xvalc / h_mc1c->Integral(0,h_mc1c->GetNbinsX()+1);
-	  h_mc1c->Sumw2();
 	  h_mc1c->Scale(xvalc);
    	}
 

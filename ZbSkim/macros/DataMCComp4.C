@@ -317,7 +317,6 @@ if (numB==2) bbSig = true;
           if (bbSig) h_mc2_bbSig_reco   = (TH1F*)gDirectory->Get(("bbSig"+title_b.substr(1)).c_str());
 	}
 
-	h_data_reco->Sumw2();
 	h_mc1_truth->Sumw2();
 	h_mc1_reco->Sumw2();
         if (bbBkg) h_mc1_bbBkg_reco->Sumw2();

@@ -234,18 +234,6 @@ if (numB==2) {
 	  h_mcg3 = (TH1F*)h_mcg3->Clone();
 	}
 
-	h_mc1->Sumw2();
-	h_mcg->Sumw2();
-	h_mcg1->Sumw2();
-	h_mcg2->Sumw2();
-	h_mcg3->Sumw2();
-
-	h_mc1b_b->Sumw2();
-	h_mcg_b->Sumw2();
-	h_mcg1_b->Sumw2();
-	h_mcg2_b->Sumw2();
-	h_mcg3_b->Sumw2();
-
 	h_mc1b_b->Scale(c_b);
 	for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
 	  double e = TMath::Power(h_mc1b_b->GetBinError(i),2);

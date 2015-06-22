@@ -520,50 +520,6 @@ if (numB==2) bbSig = true;
           h_mc13 = (TH1F*)h_mc13->Clone();
         }
 
-	if (unfold==0) {
-	  h_data->Sumw2();
-	  h_data_b->Sumw2();
-	}
-
-	h_mc1->Sumw2();
-	if (h_mc1t) h_mc1t->Sumw2();
-	h_mcg->Sumw2();
-	h_mcg1->Sumw2();
-	h_mcg2->Sumw2();
-	h_mc2->Sumw2();
-	h_mc3->Sumw2();
-	h_mc4->Sumw2();
-//	h_mc5->Sumw2();
-	h_mc6->Sumw2();
-	h_mc7->Sumw2();
-	h_mc8->Sumw2();
-	h_mc9->Sumw2();
-	h_mc10->Sumw2();
-	h_mc11->Sumw2();
-	h_mc12->Sumw2();
-	h_mc13->Sumw2();
-
-	h_mc1_b->Sumw2();
-	if (h_mc1b_b) h_mc1b_b->Sumw2();
-	if (h_mc1c_b) h_mc1c_b->Sumw2();
-	if (h_mc1t_b) h_mc1t_b->Sumw2();
-        if (bbBkg || bbSig) h_mc1bb->Sumw2();
-	h_mcg_b->Sumw2();
-	h_mcg1_b->Sumw2();
-	h_mcg2_b->Sumw2();
-	h_mc2_b->Sumw2();
-	h_mc3_b->Sumw2();
-	h_mc4_b->Sumw2();
-//	h_mc5_b->Sumw2();
-	h_mc6_b->Sumw2();
-	h_mc7_b->Sumw2();
-	h_mc8_b->Sumw2();
-	h_mc9_b->Sumw2();
-	h_mc10_b->Sumw2();
-	h_mc11_b->Sumw2();
-	h_mc12_b->Sumw2();
-	h_mc13_b->Sumw2();
-
 	if (irun==10) {
 	  norm1 = norm1 + 0.1*enorm1;
 	  norm1_1 = norm1_1 + 0.1*enorm1_1;
@@ -620,17 +576,6 @@ if (numB==2) bbSig = true;
 	h_mc11_b->Scale(norm11);
 	h_mc12_b->Scale(norm12);
 	h_mc13_b->Scale(norm13);
-
-	if (useDY==3) {
-	  double w = TMath::Sqrt(12132.9);
-	  for (int i=0; i<=h_mc1->GetNbinsX()+1; i++) {
-	    h_mc1->SetBinError(i, w*h_mc1->GetBinError(i));
-	    if (h_mc1b_b) h_mc1b_b->SetBinError(i, w*h_mc1b_b->GetBinError(i));
-	    if (h_mc1c_b) h_mc1c_b->SetBinError(i, w*h_mc1c_b->GetBinError(i));
-	    if (h_mc1t_b) h_mc1t_b->SetBinError(i, w*h_mc1t_b->GetBinError(i));
-	    if (bbBkg || bbSig) h_mc1bb->SetBinError(i, w*h_mc1bb->GetBinError(i));
-	  }
-	}
 
         TH1F* h_mcO = (TH1F*)h_mc8->Clone("h_mcO");
 	h_mcO->Reset();
@@ -733,19 +678,15 @@ if (numB==2) bbSig = true;
           if (ilepton==3) mc1->cd(("demoEleMuo"+postfix).c_str());
 
 	  h_mc1_b = (TH1F*)gDirectory->Get(title_b.c_str());
-	  h_mc1_b->Sumw2();
 
 	  TH1F* h_mc1b_b_tmp = h_mc1b_b;
 
 	  h_mc1b_b = (TH1F*)gDirectory->Get(("b"+title_b.substr(1)).c_str());
-	  if (h_mc1b_b) h_mc1b_b->Sumw2();
 
 	  h_mc1c_b = (TH1F*)gDirectory->Get(("c"+title_b.substr(1)).c_str());
-          if (h_mc1c_b) h_mc1c_b->Sumw2();
 
           if (bbBkg) {
             h_mc1bb = (TH1F*)gDirectory->Get(("bbBkg"+title_b.substr(1)).c_str());
-            if (h_mc1bb) h_mc1bb->Sumw2();
             if (h_mc1bb && h_mc1b_b) {
 	      h_mc1b_b->Add(h_mc1bb, -1.);
               for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {

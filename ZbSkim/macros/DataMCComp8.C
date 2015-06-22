@@ -201,16 +201,6 @@ if (numB==2) {
 	TH1F* h_mcg3 = (TH1F*)w_mcg3[0]->Clone();
 	TH1F* h_mcg3_b = (TH1F*)w_mcg3_b[0]->Clone();
 
-	h_mcg->Sumw2();
-	h_mcg1->Sumw2();
-	h_mcg2->Sumw2();
-	h_mcg3->Sumw2();
-
-	h_mcg_b->Sumw2();
-	h_mcg1_b->Sumw2();
-	h_mcg2_b->Sumw2();
-	h_mcg3_b->Sumw2();
-
 	for (int i=0;i<=h_mcg->GetNbinsX()+1;i++) {
 	  double val = 0.0;
 	  if (w_mcg[0]->GetBinContent(i)*w_mcg[1]->GetBinContent(i) != 0) {
