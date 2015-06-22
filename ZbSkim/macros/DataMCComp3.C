@@ -196,11 +196,6 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	if (ilepton==2&&itype==2) mc2->cd(("demoMuoBtag"+genPostfix).c_str());
 	TH1F* h_gen = (TH1F*)gDirectory->Get(title.c_str());
 
-	h_reco->Sumw2();
-	if (bbBkg) h_reco_bbBkg->Sumw2();
-	if (bbSig) h_reco_bbSig->Sumw2();
-	h_gen->Sumw2();
-
 	if (useDY==3) {
 	  double Lumi2012=0;
 	  if (ilepton==1) Lumi2012 = Lumi2012_ele;
