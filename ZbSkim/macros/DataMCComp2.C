@@ -406,15 +406,13 @@ if (numB==2) bbSig = true;
 	TH1F* h_mcg = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-        bool cdmcg1 = false;
-
-	if (ilepton==1) cdmcg1 = mcg1->cd(("demoEleGen"+genPostfix).c_str());
-	if (ilepton==2) cdmcg1 = mcg1->cd(("demoMuoGen"+genPostfix).c_str());
+	if (ilepton==1) mcg1->cd(("demoEleGen"+genPostfix).c_str());
+	if (ilepton==2) mcg1->cd(("demoMuoGen"+genPostfix).c_str());
 	TH1F* h_mcg1 = (TH1F*)gDirectory->Get(title.c_str());
 	TH1F* h_mcg1_b = (TH1F*)gDirectory->Get(title_b.c_str());
 
-        if (!h_mcg1 || !cdmcg1) h_mcg1 = (TH1F*)h_mcg->Clone();
-	if (!h_mcg1_b || !cdmcg1) h_mcg1_b = (TH1F*)h_mcg_b->Clone();
+        if (!h_mcg1) h_mcg1 = (TH1F*)h_mcg->Clone();
+	if (!h_mcg1_b) h_mcg1_b = (TH1F*)h_mcg_b->Clone();
 
 	if (ilepton==1) mcg2->cd(("demoEleGen"+genPostfix).c_str());
 	if (ilepton==2) mcg2->cd(("demoMuoGen"+genPostfix).c_str());
