@@ -2783,13 +2783,13 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 // MadGraph
 	float N1b = 31313.60;
 	float N2b = 2561.60;
-	float w1b = 0.921469;
-	float w2b = 1.156080;
+	float w1b = 0.898136;
+	float w2b = 1.185000;
 // MadGraph+aMC@NLO
 //	float N1b = 2.99977813000000000e+08;
 //	float N2b = 2.69826035000000000e+07;
-//	float w1b = 0.783613;
-//	float w2b = 0.757166;
+//	float w1b = 0.852622;
+//	float w2b = 0.842971;
 	if (Nb == 1) {
 	  if (findBjet(vect_jets, vect_bjets)) {
 	    MyWeight = MyWeight * w2b * (N1b+N2b)/(w1b*N1b+w2b*N2b);
@@ -2809,13 +2809,13 @@ void ZbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup) {
 // MadGraph
 	float N1b = 31260.50;
 	float N2b = 2485.13;
-	float w1b = 0.907324;
-	float wb2 = 1.162920;
+	float w1b = 0.885228;
+	float wb2 = 1.182360;
 // MadGraph+aMC@NLO
 //	float N1b = 2.99029034000000000e+08;
 //	float N2b = 2.80242896250000000e+07;
-//	float w1b = 0.781105;
-//	float w2b = 0.803881;
+//	float w1b = 0.837129;
+//	float w2b = 0.822508;
 	if (Nb == 1) {
 	  if (findBjet(vect_jets, vect_bjets)) {
 	    MyWeight = MyWeight * w2b * (N1b+N2b)/(w1b*N1b+w2b*N2b);
