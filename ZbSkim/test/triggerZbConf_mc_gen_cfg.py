@@ -758,52 +758,6 @@ process.demoMuoPur2b = cms.EDProducer('ZbAnalyzer',
         pcut = cms.untracked.bool(True),
         numB = cms.untracked.double(2)
 )
-process.demoEleDR = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileupMC  = cms.untracked.string("S10"),
-        pileupDT  = cms.untracked.string("ee"),
-        lepton  = cms.untracked.string("electron"),
-        useDeltaR = cms.untracked.bool(True)
-)
-process.demoEleDR1b = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileupMC  = cms.untracked.string("S10"),
-        pileupDT  = cms.untracked.string("ee"),
-        lepton  = cms.untracked.string("electron"),
-        useDeltaR = cms.untracked.bool(True),
-        numB = cms.untracked.double(1)
-)
-process.demoEleDR2b = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileupMC  = cms.untracked.string("S10"),
-        pileupDT  = cms.untracked.string("ee"),
-        lepton  = cms.untracked.string("electron"),
-        useDeltaR = cms.untracked.bool(True),
-        numB = cms.untracked.double(2)
-)
-process.demoMuoDR = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileupMC = cms.untracked.string("S10"),
-        pileupDT = cms.untracked.string("mm"),
-        lepton  = cms.untracked.string("muon"),
-        useDeltaR = cms.untracked.bool(True)
-)
-process.demoMuoDR1b = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileupMC = cms.untracked.string("S10"),
-        pileupDT = cms.untracked.string("mm"),
-        lepton  = cms.untracked.string("muon"),
-        useDeltaR = cms.untracked.bool(True),
-        numB = cms.untracked.double(1)
-)
-process.demoMuoDR2b = cms.EDProducer('ZbAnalyzer',
-        path = cms.untracked.string("."),
-        pileupMC = cms.untracked.string("S10"),
-        pileupDT = cms.untracked.string("mm"),
-        lepton  = cms.untracked.string("muon"),
-        useDeltaR = cms.untracked.bool(True),
-        numB = cms.untracked.double(2)
-)
 process.demoEleJerUp = cms.EDProducer('ZbAnalyzer',
         path = cms.untracked.string("."),
         pileupMC = cms.untracked.string("S10"),
@@ -977,20 +931,6 @@ process.demoEleDumpPur2b = cms.EDAnalyzer('ZbDumper',
         pcut = cms.untracked.bool(True),
         numB = cms.untracked.double(2)
 )
-process.demoEleDumpDR = cms.EDAnalyzer('ZbDumper',
-        lepton       = cms.untracked.string("electron"),
-        useDeltaR = cms.untracked.bool(True)
-)
-process.demoEleDumpDR1b = cms.EDAnalyzer('ZbDumper',
-        lepton       = cms.untracked.string("electron"),
-        useDeltaR = cms.untracked.bool(True),
-        numB = cms.untracked.double(1)
-)
-process.demoEleDumpDR2b = cms.EDAnalyzer('ZbDumper',
-        lepton       = cms.untracked.string("electron"),
-        useDeltaR = cms.untracked.bool(True),
-        numB = cms.untracked.double(2)
-)
 process.demoEleDumpJerUp = cms.EDAnalyzer('ZbDumper',
         lepton       = cms.untracked.string("electron"),
         JER     = cms.untracked.double(1)
@@ -1100,20 +1040,6 @@ process.demoMuoDumpPur2b = cms.EDAnalyzer('ZbDumper',
         pcut = cms.untracked.bool(True),
         numB = cms.untracked.double(2)
 )
-process.demoMuoDumpDR = cms.EDAnalyzer('ZbDumper',
-        lepton       = cms.untracked.string("muon"),
-        useDeltaR = cms.untracked.bool(True)
-)
-process.demoMuoDumpDR1b = cms.EDAnalyzer('ZbDumper',
-        lepton       = cms.untracked.string("muon"),
-        useDeltaR = cms.untracked.bool(True),
-        numB = cms.untracked.double(1)
-)
-process.demoMuoDumpDR2b = cms.EDAnalyzer('ZbDumper',
-        lepton       = cms.untracked.string("muon"),
-        useDeltaR = cms.untracked.bool(True),
-        numB = cms.untracked.double(2)
-)
 process.demoMuoDumpJerUp = cms.EDAnalyzer('ZbDumper',
         lepton       = cms.untracked.string("muon"),
         JER     = cms.untracked.double(1)
@@ -1176,26 +1102,22 @@ process.p = cms.Path(
    process.demoElePum * process.demoElePup *
    process.demoEleUp * process.demoEleDown *
    process.demoElePur *
-   process.demoEleDR *
    process.demoEleJerUp * process.demoEleJerDown *
    process.demoMuo *
    process.demoMuoBtag *
    process.demoMuoPum * process.demoMuoPup *
    process.demoMuoUp * process.demoMuoDown *
    process.demoMuoPur *
-   process.demoMuoDR *
    process.demoMuoJerUp * process.demoMuoJerDown *
    process.demoEleDump *
    process.demoEleDumpPup * process.demoEleDumpPum *
    process.demoEleDumpUp * process.demoEleDumpDown *
    process.demoEleDumpPur *
-   process.demoEleDumpDR *
    process.demoEleDumpJerUp * process.demoEleDumpJerDown *
    process.demoMuoDump *
    process.demoMuoDumpPup * process.demoMuoDumpPum *
    process.demoMuoDumpUp * process.demoMuoDumpDown *
    process.demoMuoDumpPur *
-   process.demoMuoDumpDR *
    process.demoMuoDumpJerUp * 
    process.demoMuoDumpJerDown *
    process.demoEleGen1b * process.demoMuoGen1b *
@@ -1204,26 +1126,22 @@ process.p = cms.Path(
    process.demoElePum1b * process.demoElePup1b *
    process.demoEleUp1b * process.demoEleDown1b *
    process.demoElePur1b *
-   process.demoEleDR1b *
    process.demoEleJerUp1b * process.demoEleJerDown1b *
    process.demoMuo1b *
    process.demoMuoBtag1b *
    process.demoMuoPum1b * process.demoMuoPup1b *
    process.demoMuoUp1b * process.demoMuoDown1b *
    process.demoMuoPur1b *
-   process.demoMuoDR1b *
    process.demoMuoJerUp1b * process.demoMuoJerDown1b *
    process.demoEleDump1b *
    process.demoEleDumpPup1b * process.demoEleDumpPum1b *
    process.demoEleDumpUp1b * process.demoEleDumpDown1b *
    process.demoEleDumpPur1b *
-   process.demoEleDumpDR1b *
    process.demoEleDumpJerUp1b * process.demoEleDumpJerDown1b *
    process.demoMuoDump1b *
    process.demoMuoDumpPup1b * process.demoMuoDumpPum1b *
    process.demoMuoDumpUp1b * process.demoMuoDumpDown1b *
    process.demoMuoDumpPur1b *
-   process.demoMuoDumpDR1b *
    process.demoMuoDumpJerUp1b *
    process.demoMuoDumpJerDown1b *  
    process.demoEleGen2b * process.demoMuoGen2b *
@@ -1232,26 +1150,22 @@ process.p = cms.Path(
    process.demoElePum2b * process.demoElePup2b *
    process.demoEleUp2b * process.demoEleDown2b *
    process.demoElePur2b *
-   process.demoEleDR2b *
    process.demoEleJerUp2b * process.demoEleJerDown2b *
    process.demoMuo2b *
    process.demoMuoBtag2b *
    process.demoMuoPum2b * process.demoMuoPup2b *
    process.demoMuoUp2b * process.demoMuoDown2b *
    process.demoMuoPur2b *
-   process.demoMuoDR2b *
    process.demoMuoJerUp2b * process.demoMuoJerDown2b *
    process.demoEleDump2b *
    process.demoEleDumpPup2b * process.demoEleDumpPum2b *
    process.demoEleDumpUp2b * process.demoEleDumpDown2b *
    process.demoEleDumpPur2b *
-   process.demoEleDumpDR2b *
    process.demoEleDumpJerUp2b * process.demoEleDumpJerDown2b *
    process.demoMuoDump2b *
    process.demoMuoDumpPup2b * process.demoMuoDumpPum2b *
    process.demoMuoDumpUp2b * process.demoMuoDumpDown2b *
    process.demoMuoDumpPur2b *
-   process.demoMuoDumpDR2b *
    process.demoMuoDumpJerUp2b *
    process.demoMuoDumpJerDown2b
    #process.dump

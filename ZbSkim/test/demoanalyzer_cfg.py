@@ -472,75 +472,6 @@ process.demoEleMuoPur2b = cms.EDProducer('ZbAnalyzer',
 	numB = cms.untracked.double(2)
 )
 
-process.demoEleDR = cms.EDProducer('ZbAnalyzer',
-	pileupMC  = cms.untracked.string("S10"),
-	pileupDT  = cms.untracked.string("ee"),
-	lepton  = cms.untracked.string("electron"),
-	useDeltaR = cms.untracked.bool(True)
-)
-
-process.demoEleDR1b = cms.EDProducer('ZbAnalyzer',
-        pileupMC  = cms.untracked.string("S10"),
-        pileupDT  = cms.untracked.string("ee"),
-        lepton  = cms.untracked.string("electron"),
-        useDeltaR = cms.untracked.bool(True),
-	numB = cms.untracked.double(1)
-)
-
-process.demoEleDR2b = cms.EDProducer('ZbAnalyzer',
-        pileupMC  = cms.untracked.string("S10"),
-        pileupDT  = cms.untracked.string("ee"),
-        lepton  = cms.untracked.string("electron"),
-        useDeltaR = cms.untracked.bool(True),
-	numB = cms.untracked.double(2)
-)
-
-process.demoMuoDR = cms.EDProducer('ZbAnalyzer',
-	pileupMC = cms.untracked.string("S10"),
-	pileupDT = cms.untracked.string("mm"),
-	lepton  = cms.untracked.string("muon"),
-	useDeltaR = cms.untracked.bool(True)
-)
-
-process.demoMuoDR1b = cms.EDProducer('ZbAnalyzer',
-        pileupMC = cms.untracked.string("S10"),
-        pileupDT = cms.untracked.string("mm"),
-        lepton  = cms.untracked.string("muon"),
-        useDeltaR = cms.untracked.bool(True),
-	numB = cms.untracked.double(1)
-)
-
-process.demoMuoDR2b = cms.EDProducer('ZbAnalyzer',
-        pileupMC = cms.untracked.string("S10"),
-        pileupDT = cms.untracked.string("mm"),
-        lepton  = cms.untracked.string("muon"),
-        useDeltaR = cms.untracked.bool(True),
-	numB = cms.untracked.double(2)
-)
-
-process.demoEleMuoDR = cms.EDProducer('ZbAnalyzer',
-	pileupMC  = cms.untracked.string("S10"),
-	pileupDT  = cms.untracked.string("em"),
-	lepton  = cms.untracked.string("electron+muon"),
-	useDeltaR = cms.untracked.bool(True)
-)
-
-process.demoEleMuoDR1b = cms.EDProducer('ZbAnalyzer',
-        pileupMC  = cms.untracked.string("S10"),
-        pileupDT  = cms.untracked.string("em"),
-        lepton  = cms.untracked.string("electron+muon"),
-        useDeltaR = cms.untracked.bool(True),
-	numB = cms.untracked.double(1)
-)
-
-process.demoEleMuoDR2b = cms.EDProducer('ZbAnalyzer',
-        pileupMC  = cms.untracked.string("S10"),
-        pileupDT  = cms.untracked.string("em"),
-        lepton  = cms.untracked.string("electron+muon"),
-        useDeltaR = cms.untracked.bool(True),
-	numB = cms.untracked.double(2)
-)
-
 process.demoEleJerUp = cms.EDProducer('ZbAnalyzer',
         pileupMC = cms.untracked.string("S10"),
         pileupDT = cms.untracked.string("ee"),
@@ -683,4 +614,33 @@ process.demoEleMuoJerDown2b = cms.EDProducer('ZbAnalyzer',
 process.TFileService = cms.Service("TFileService",
 	fileName = cms.string('ZbTree.root')
 )
-process.p = cms.Path(process.genBDW*process.demoEle*process.demoEle1b*process.demoEle2b*process.demoElePum*process.demoElePum1b*process.demoElePum2b*process.demoElePup*process.demoElePup1b*process.demoElePup2b*process.demoEleUp*process.demoEleUp1b*process.demoEleUp2b*process.demoEleDown*process.demoEleDown1b*process.demoEleDown2b*process.demoMuo*process.demoMuo1b*process.demoMuo2b*process.demoMuoPum*process.demoMuoPum1b*process.demoMuoPum2b*process.demoMuoPup*process.demoMuoPup1b*process.demoMuoPup2b*process.demoMuoUp*process.demoMuoUp1b*process.demoMuoUp2b*process.demoMuoDown*process.demoMuoDown1b*process.demoMuoDown2b*process.demoEleBtag*process.demoEleBtag1b*process.demoEleBtag2b*process.demoMuoBtag*process.demoMuoBtag1b*process.demoMuoBtag2b*process.demoEle2*process.demoMuo2*process.demoEleMuo*process.demoEleMuo1b*process.demoEleMuo2b*process.demoEleMuoUp*process.demoEleMuoUp1b*process.demoEleMuoUp2b*process.demoEleMuoDown*process.demoEleMuoDown1b*process.demoEleMuoDown2b*process.demoEleMuoPum*process.demoEleMuoPum1b*process.demoEleMuoPum2b*process.demoEleMuoPup*process.demoEleMuoPup1b*process.demoEleMuoPup2b*process.demoElePur*process.demoElePur1b*process.demoElePur2b*process.demoMuoPur*process.demoMuoPur1b*process.demoMuoPur2b*process.demoEleMuoPur*process.demoEleMuoPur1b*process.demoEleMuoPur2b*process.demoEleDR*process.demoEleDR1b*process.demoEleDR2b*process.demoMuoDR*process.demoMuoDR1b*process.demoMuoDR2b*process.demoEleMuoDR*process.demoEleMuoDR1b*process.demoEleMuoDR2b*process.demoEleJerUp*process.demoEleJerUp1b*process.demoEleJerUp2b*process.demoEleJerDown*process.demoEleJerDown1b*process.demoEleJerDown2b*process.demoMuoJerUp*process.demoMuoJerUp1b*process.demoMuoJerUp2b*process.demoMuoJerDown*process.demoMuoJerDown1b*process.demoMuoJerDown2b*process.demoEleMuoJerUp*process.demoEleMuoJerUp1b*process.demoEleMuoJerUp2b*process.demoEleMuoJerDown*process.demoEleMuoJerDown1b*process.demoEleMuoJerDown2b)
+process.p = cms.Path(
+process.genBDW*
+process.demoEle*process.demoEle1b*process.demoEle2b*
+process.demoElePum*process.demoElePum1b*process.demoElePum2b*
+process.demoElePup*process.demoElePup1b*process.demoElePup2b*
+process.demoEleUp*process.demoEleUp1b*process.demoEleUp2b*
+process.demoEleDown*process.demoEleDown1b*process.demoEleDown2b*
+process.demoMuo*process.demoMuo1b*process.demoMuo2b*
+process.demoMuoPum*process.demoMuoPum1b*process.demoMuoPum2b*
+process.demoMuoPup*process.demoMuoPup1b*process.demoMuoPup2b*
+process.demoMuoUp*process.demoMuoUp1b*process.demoMuoUp2b*
+process.demoMuoDown*process.demoMuoDown1b*process.demoMuoDown2b*
+process.demoEleBtag*process.demoEleBtag1b*process.demoEleBtag2b*
+process.demoMuoBtag*process.demoMuoBtag1b*process.demoMuoBtag2b*
+process.demoEle2*process.demoMuo2*
+process.demoEleMuo*process.demoEleMuo1b*process.demoEleMuo2b*
+process.demoEleMuoUp*process.demoEleMuoUp1b*process.demoEleMuoUp2b*
+process.demoEleMuoDown*process.demoEleMuoDown1b*process.demoEleMuoDown2b*
+process.demoEleMuoPum*process.demoEleMuoPum1b*process.demoEleMuoPum2b*
+process.demoEleMuoPup*process.demoEleMuoPup1b*process.demoEleMuoPup2b*
+process.demoElePur*process.demoElePur1b*process.demoElePur2b*
+process.demoMuoPur*process.demoMuoPur1b*process.demoMuoPur2b*
+process.demoEleMuoPur*process.demoEleMuoPur1b*process.demoEleMuoPur2b*
+process.demoEleJerUp*process.demoEleJerUp1b*process.demoEleJerUp2b*
+process.demoEleJerDown*process.demoEleJerDown1b*process.demoEleJerDown2b*
+process.demoMuoJerUp*process.demoMuoJerUp1b*process.demoMuoJerUp2b*
+process.demoMuoJerDown*process.demoMuoJerDown1b*process.demoMuoJerDown2b*
+process.demoEleMuoJerUp*process.demoEleMuoJerUp1b*process.demoEleMuoJerUp2b*
+process.demoEleMuoJerDown*process.demoEleMuoJerDown1b*process.demoEleMuoJerDown2b
+)
