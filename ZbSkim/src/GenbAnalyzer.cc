@@ -925,7 +925,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
       float N1b = 31260.50;
       float N2b = 2485.13;
       float w1b = 0.885228;
-      float wb2 = 1.182360;
+      float w2b = 1.182360;
 // MadGraph+aMC@NLO
 //      float N1b = 2.99066704000000000e+08;
 //      float N2b = 2.80502260625000000e+07;
