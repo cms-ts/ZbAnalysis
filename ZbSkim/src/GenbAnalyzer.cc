@@ -909,8 +909,8 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
       float w1b = 0.898136;
       float w2b = 1.185000;
 // MadGraph+aMC@NLO
-//      float N1b = 2.99977813000000000e+08;
-//      float N2b = 2.69826035000000000e+07;
+//      float N1b = 3.00179131500000000e+08;
+//      float N2b = 2.69809477500000000e+07;
 //      float w1b = 0.852622;
 //      float w2b = 0.842971;
       if (Nb == 1) {
@@ -927,8 +927,8 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
       float w1b = 0.885228;
       float wb2 = 1.182360;
 // MadGraph+aMC@NLO
-//      float N1b = 2.99029034000000000e+08;
-//      float N2b = 2.80242896250000000e+07;
+//      float N1b = 2.99066704000000000e+08;
+//      float N2b = 2.80502260625000000e+07;
 //      float w1b = 0.837129;
 //      float w2b = 0.822508;
       if (Nb == 1) {
