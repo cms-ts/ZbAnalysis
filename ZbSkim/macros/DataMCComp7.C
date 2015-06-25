@@ -1223,7 +1223,7 @@ if (numB==2) {
 	if (useSherpa) {
 	  t2->DrawLatex(0.15,0.15,"MadGraph 5FS / MadGraph 4FS");
 	} else {
-	  t2->DrawLatex(0.15,0.13,"MadGraph 5FS, normalized to  #sigma_{NNLO}");
+	  t2->DrawLatex(0.15,0.13,"MadGraph 5FS, normalized to #sigma_{NNLO}");
 	}
 
 	TLine *OLine2 = new TLine(h_M_tot->GetXaxis()->GetXmin(),1.,h_M_tot->GetXaxis()->GetXmax(),1.);
@@ -1356,7 +1356,7 @@ if (numB==2) {
 	if (useSherpa) {
 	  t3->DrawLatex(0.15,0.15,"Sherpa");
 	} else {
-	  t3->DrawLatex(0.15,0.13,"MadGraph 4FS, normalized to  #sigma_{LO}");
+	  t3->DrawLatex(0.15,0.13,"MadGraph 4FS, normalized to #sigma_{NLO}");
 	}
 
 	if (useSherpa) {
@@ -1479,7 +1479,7 @@ if (numB==2) {
 	t4->SetTextFont(42);
 	t4->SetLineWidth(2);
 	t4->SetNDC();
-	t4->DrawLatex(0.15,0.40,"Powheg, normalized to  #sigma_{NLO}");
+	t4->DrawLatex(0.15,0.40,"Powheg, normalized to #sigma_{NLO}");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	OLine4->SetLineColor(kBlue-4);
