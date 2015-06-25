@@ -2,6 +2,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
+#include "fixrange.C"
+
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
@@ -204,11 +206,17 @@ int itype = 0; // e_Z and e_Zb = e_Z_1 * e_Z_b
 	    h_reco->SetBinContent(i,c);
 	    double e = TMath::Power(h_reco->GetBinError(i),2);
 	    e = e - TMath::Power(h_reco_bbBkg->GetBinError(i),2);
+if (e<0) {
+cout << "e31 " << i << " " << h_reco->GetName() << " " << c << " " << e << endl;
+}
 	    if (e<0) e = 0.0;
 	    h_reco->SetBinError(i,TMath::Sqrt(e));
 	  }
 	}
 	if (bbSig) h_reco = h_reco_bbSig;
+
+	h_reco = fixrange(h_reco, numB);
+	h_gen = fixrange(h_gen, numB);
 
 	double N = 1.0;
 	double errN = 0.0;
