@@ -47,6 +47,13 @@ double Ngen_dy_3 = 7551580;
 double Xsec_dy_3 = 76.75; // LO
 double eXsec_dy_3 = 0;
 
+//////////////////////// DY Powheg 2
+
+double Ngen_dy_4_ee = 100*10000; // EE
+double Ngen_dy_4_mm = 100*10000; // MM
+double Xsec_dy_4 = 333.866; // NNLO
+double eXsec_dy_4 = 0;
+
 //////////////////////// TTbar
 
 double Ngen_tt = 6923750;

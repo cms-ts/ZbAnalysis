@@ -148,10 +148,7 @@ if (numB==2) {
 	mcg2[0] = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	mcg2[1] = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
 	if (useNewPowheg) {
-	  Ngen_dy_2_ee = 100*10000;
-	  Ngen_dy_2_mm = 100*10000;
-	  Xsec_dy_2 = 333.866;
-	  norm1_2 = ((Lumi2012 * Xsec_dy_2) / ((Ngen_dy_2_ee+Ngen_dy_2_mm)/2.));
+	  norm1_2 = ((Lumi2012 * Xsec_dy_4) / ((Ngen_dy_4_ee+Ngen_dy_4_mm)/2.));
 	  mcg2[0] = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_ele.root").c_str());
 	  mcg2[1] = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_muo.root").c_str());
 	}
