@@ -12,6 +12,7 @@
 #include "TSVDUnfold_local.h"
 
 #include "fixrange.C"
+#include "rebin.C"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
@@ -350,6 +351,12 @@ if (numB==2) bbSig = true;
 	h_mc1_matrix = fixrange(h_mc1_matrix, numB);
 	h_mc2_truth = fixrange(h_mc2_truth, numB);
 	h_mc2_reco = fixrange(h_mc2_reco, numB);
+
+	h_mc1_truth = rebin(h_mc1_truth, numB);
+	h_mc1_reco = rebin(h_mc1_reco, numB);
+	h_mc1_matrix = rebin(h_mc1_matrix, numB);
+	h_mc2_truth = rebin(h_mc2_truth, numB);
+	h_mc2_reco = rebin(h_mc2_reco, numB);
 
         if (irun==15) {
 	  TFile* data1=0;

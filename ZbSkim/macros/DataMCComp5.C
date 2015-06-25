@@ -2,6 +2,9 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
+#include "fixrange.C"
+#include "rebin.C"
+
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 //string path = "/gpfs/cms/users/lalicata/work/test/data";
 

@@ -3,6 +3,7 @@
 #include "LumiInfo_v14.h"
 
 #include "fixrange.C"
+#include "rebin.C"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
@@ -436,6 +437,25 @@ if (numB==1) bbBkg = true;
 	h_mc11 = fixrange(h_mc11, numB);
 	h_mc12 = fixrange(h_mc12, numB);
 	h_mc13 = fixrange(h_mc13, numB);
+
+	h_data = rebin(h_data, numB);
+	h_mc1 = rebin(h_mc1, numB);
+	if (h_mc1b) h_mc1b = rebin(h_mc1b, numB);
+	if (h_mc1c) h_mc1c = rebin(h_mc1c, numB);
+	if (h_mc1t) h_mc1t = rebin(h_mc1t, numB);
+	if (bbBkg || bbSig) h_mc1bb = rebin(h_mc1bb, numB);
+	h_mc2 = rebin(h_mc2, numB);
+	h_mc3 = rebin(h_mc3, numB);
+	h_mc4 = rebin(h_mc4, numB);
+//	h_mc5 = rebin(h_mc5, numB);
+	h_mc6 = rebin(h_mc6, numB);
+	h_mc7 = rebin(h_mc7, numB);
+	h_mc8 = rebin(h_mc8, numB);
+	h_mc9 = rebin(h_mc9, numB);
+	h_mc10 = rebin(h_mc10, numB);
+	h_mc11 = rebin(h_mc11, numB);
+	h_mc12 = rebin(h_mc12, numB);
+	h_mc13 = rebin(h_mc13, numB);
 
 	h_mc1 -> SetLineColor(kBlack);
 	h_mc1 -> SetFillColor(kYellow-4);

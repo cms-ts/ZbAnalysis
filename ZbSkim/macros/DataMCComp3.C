@@ -3,6 +3,7 @@
 #include "LumiInfo_v14.h"
 
 #include "fixrange.C"
+#include "rebin.C"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
@@ -217,6 +218,9 @@ cout << "e31 " << i << " " << h_reco->GetName() << " " << c << " " << e << endl;
 
 	h_reco = fixrange(h_reco, numB);
 	h_gen = fixrange(h_gen, numB);
+
+	h_reco = rebin(h_reco, numB);
+	h_gen = rebin(h_gen, numB);
 
 	double N = 1.0;
 	double errN = 0.0;

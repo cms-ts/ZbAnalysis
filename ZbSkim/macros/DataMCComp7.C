@@ -3,6 +3,7 @@
 #include "LumiInfo_v14.h"
 
 #include "fixrange.C"
+#include "rebin.C"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
@@ -244,6 +245,17 @@ if (numB==2) {
 	h_mcg3 = fixrange(h_mcg3, numB);
 	h_mcg2_b = fixrange(h_mcg2_b, numB);
 	h_mcg3_b = fixrange(h_mcg3_b, numB);
+
+	h_mc1 = rebin(h_mc1, numB);
+	h_mc1b_b = rebin(h_mc1b_b, numB);
+	h_mcg = rebin(h_mcg, numB);
+	h_mcg_b = rebin(h_mcg_b, numB);
+	h_mcg1 = rebin(h_mcg1, numB);
+	h_mcg1_b = rebin(h_mcg1_b, numB);
+	h_mcg2 = rebin(h_mcg2, numB);
+	h_mcg3 = rebin(h_mcg3, numB);
+	h_mcg2_b = rebin(h_mcg2_b, numB);
+	h_mcg3_b = rebin(h_mcg3_b, numB);
 
 	h_mc1b_b->Scale(c_b);
 	for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
