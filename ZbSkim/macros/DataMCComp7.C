@@ -266,13 +266,6 @@ if (numB==2) {
 	  h_mc1b_b->Divide(h_b);
 	}
 
-	h_data = fixrange(h_data, numB);
-	h_data_b = fixrange(h_data_b, numB);
-	for (int i=0;i<NMAX;i++) {
-	  if (h_data_scan[i]) h_data_scan[i] = fixrange(h_data_scan[i], numB);
-	  if (h_data_b_scan[i]) h_data_b_scan[i] = fixrange(h_data_b_scan[i], numB);
-	}
-
 	h_mc1 = fixrange(h_mc1, numB);
 	h_mc1b_b = fixrange(h_mc1b_b, numB);
 	h_mcg = fixrange(h_mcg, numB);

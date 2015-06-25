@@ -345,7 +345,6 @@ if (numB==2) bbSig = true;
 	  h_mc2_reco = h_mc2_bbSig_reco;
 	}
 
-	h_data_reco = fixrange(h_data_reco, numB);
 	h_mc1_truth = fixrange(h_mc1_truth, numB);
 	h_mc1_reco = fixrange(h_mc1_reco, numB);
 	h_mc1_matrix = fixrange(h_mc1_matrix, numB);

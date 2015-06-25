@@ -253,11 +253,6 @@ if (numB==2) {
 	  }
 	}
 
-	for (int i=0; i<2; i++) {
-	  w_data[i] = fixrange(w_data[i], numB);
-	  w_data_b[i] = fixrange(w_data_b[i], numB);
-	}
-
 	h_mcg = fixrange(h_mcg, numB);
 	h_mcg_b = fixrange(h_mcg_b, numB);
 	h_mcg1 = fixrange(h_mcg1, numB);
