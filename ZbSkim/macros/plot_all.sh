@@ -107,8 +107,8 @@ while [ $i -le 2 ]; do
   root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_ee\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_delta_phi_mm\",1,$i,0,0,$n\)
 
-  root -l -q -b DataMCComp.C+\($d,\"w_mass_mm_b\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_mass_ee_b\",1,$i,0,0,$n\)
+  root -l -q -b DataMCComp.C+\($d,\"w_mass_mm_b\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_ee_b\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_pt_Z_mm_b\",1,$i,0,0,$n\)
   root -l -q -b DataMCComp.C+\($d,\"w_y_Z_ee_b\",1,$i,0,0,$n\)
