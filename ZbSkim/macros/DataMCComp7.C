@@ -234,6 +234,17 @@ if (numB==2) {
 	  h_mcg3 = (TH1F*)h_mcg3->Clone();
 	}
 
+	h_mc1 = fixrange(h_mc1, numB);
+	h_mc1b_b = fixrange(h_mc1b_b, numB);
+	h_mcg = fixrange(h_mcg, numB);
+	h_mcg_b = fixrange(h_mcg_b, numB);
+	h_mcg1 = fixrange(h_mcg1, numB);
+	h_mcg1_b = fixrange(h_mcg1_b, numB);
+	h_mcg2 = fixrange(h_mcg2, numB);
+	h_mcg3 = fixrange(h_mcg3, numB);
+	h_mcg2_b = fixrange(h_mcg2_b, numB);
+	h_mcg3_b = fixrange(h_mcg3_b, numB);
+
 	h_mc1b_b->Scale(c_b);
 	for (int i=0; i<=h_mc1b_b->GetNbinsX()+1; i++) {
 	  double e = TMath::Power(h_mc1b_b->GetBinError(i),2);
@@ -265,17 +276,6 @@ if (numB==2) {
 	  h_mc1->Divide(h);
 	  h_mc1b_b->Divide(h_b);
 	}
-
-	h_mc1 = fixrange(h_mc1, numB);
-	h_mc1b_b = fixrange(h_mc1b_b, numB);
-	h_mcg = fixrange(h_mcg, numB);
-	h_mcg_b = fixrange(h_mcg_b, numB);
-	h_mcg1 = fixrange(h_mcg1, numB);
-	h_mcg1_b = fixrange(h_mcg1_b, numB);
-	h_mcg2 = fixrange(h_mcg2, numB);
-	h_mcg3 = fixrange(h_mcg3, numB);
-	h_mcg2_b = fixrange(h_mcg2_b, numB);
-	h_mcg3_b = fixrange(h_mcg3_b, numB);
 
 	h_mc1->Scale(norm1);
 	h_mcg->Scale(norm1);

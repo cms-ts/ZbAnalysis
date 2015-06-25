@@ -783,6 +783,20 @@ if (numB==2) bbSig = true;
           if (bbSig) h_data_b->Add(h_mc1b_b, -1.);
 	}
 
+	if (unfold==0) {
+	  h_data = fixrange(h_data, numB);
+	  h_data_b = fixrange(h_data_b, numB);
+	}
+	h_mc1 = fixrange(h_mc1, numB);
+ 	h_mc1b_b = fixrange(h_mc1b_b, numB);
+        if (bbBkg || bbSig) h_mc1bb = fixrange(h_mc1bb, numB);
+	h_mcg = fixrange(h_mcg, numB);
+	h_mcg_b = fixrange(h_mcg_b, numB);
+	h_mcg1 = fixrange(h_mcg1, numB);
+ 	h_mcg1_b = fixrange(h_mcg1_b, numB);
+	h_mcg2 = fixrange(h_mcg2, numB);
+	h_mcg2_b = fixrange(h_mcg2_b, numB);
+
 	TH1F *h_data_raw=0;
 	TH1F *h_data_b_raw=0;
 	if (unfold==0) {
@@ -833,20 +847,6 @@ if (numB==2) bbSig = true;
 	    h_mc1b_b->Divide(h_b);
           }
 	}
-
-	if (unfold==0) {
-	  h_data = fixrange(h_data, numB);
-	  h_data_b = fixrange(h_data_b, numB);
-	}
-	h_mc1 = fixrange(h_mc1, numB);
- 	h_mc1b_b = fixrange(h_mc1b_b, numB);
-        if (bbBkg || bbSig) h_mc1bb = fixrange(h_mc1bb, numB);
-	h_mcg = fixrange(h_mcg, numB);
-	h_mcg_b = fixrange(h_mcg_b, numB);
-	h_mcg1 = fixrange(h_mcg1, numB);
- 	h_mcg1_b = fixrange(h_mcg1_b, numB);
-	h_mcg2 = fixrange(h_mcg2, numB);
-	h_mcg2_b = fixrange(h_mcg2_b, numB);
 
 	h_data->Scale(1./Lumi2012, "width");
 	h_data_b->Scale(1./Lumi2012, "width");
