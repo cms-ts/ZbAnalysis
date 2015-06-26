@@ -1952,7 +1952,7 @@ if (numB==2) {
 	  h_data_b_tot->SetMarkerSize(0.7);
 	}
 	if (isratio==1) {
-	  h_data_b_tot->SetMarkerStyle(22);
+	  h_data_b_tot->SetMarkerStyle(26);
 	  h_data_b_tot->SetMarkerSize(0.9);
 	}
 	h_data_b_stat->GetYaxis()->SetTitleOffset(1.2);
@@ -1966,7 +1966,7 @@ if (numB==2) {
 	  h_data_b_stat->SetMarkerSize(0.7);
 	}
 	if (isratio==1) {
-	  h_data_b_stat->SetMarkerStyle(22);
+	  h_data_b_stat->SetMarkerStyle(26);
 	  h_data_b_stat->SetMarkerSize(0.9);
 	}
 	if (isratio==1) {
@@ -2170,7 +2170,7 @@ if (numB==2) {
 	  h_M_tot->SetMarkerSize(0.7);
 	}
 	if (isratio==1) {
-	  h_M_tot->SetMarkerStyle(22);
+	  h_M_tot->SetMarkerStyle(26);
 	  h_M_tot->SetMarkerSize(0.9);
 	}
 	h_M_tot->Draw("E1PX0");
@@ -2180,7 +2180,7 @@ if (numB==2) {
 	  h_M_stat->SetMarkerSize(0.7);
 	}
 	if (isratio==1) {
-	  h_M_stat->SetMarkerStyle(22);
+	  h_M_stat->SetMarkerStyle(26);
 	  h_M_stat->SetMarkerSize(0.9);
 	}
 	h_M_stat->Draw("E1PX0SAME");
@@ -2294,7 +2294,7 @@ if (numB==2) {
 	  h_S_tot->SetMarkerSize(0.7);
 	}
 	if (isratio==1) {
-	  h_S_tot->SetMarkerStyle(22);
+	  h_S_tot->SetMarkerStyle(26);
 	  h_S_tot->SetMarkerSize(0.9);
 	}
 	if (useSherpa) {
@@ -2313,7 +2313,7 @@ if (numB==2) {
 	  h_S_stat->SetMarkerSize(0.7);
 	}
 	if (isratio==1) {
-	  h_S_stat->SetMarkerStyle(22);
+	  h_S_stat->SetMarkerStyle(26);
 	  h_S_stat->SetMarkerSize(0.9);
 	}
 	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
@@ -2429,7 +2429,7 @@ if (numB==2) {
 	  h_P_tot->SetMarkerSize(0.7);
 	}
 	if (isratio==1) {
-	  h_P_tot->SetMarkerStyle(22);
+	  h_P_tot->SetMarkerStyle(26);
 	  h_P_tot->SetMarkerSize(0.9);
 	}
 	h_P_tot->Draw("E1PX0");
@@ -2439,7 +2439,7 @@ if (numB==2) {
 	  h_P_stat->SetMarkerSize(0.7);
 	}
 	if (isratio==1) {
-	  h_P_stat->SetMarkerStyle(22);
+	  h_P_stat->SetMarkerStyle(26);
 	  h_P_stat->SetMarkerSize(0.9);
 	}
 	h_P_stat->Draw("E1PX0SAME");
@@ -2548,7 +2548,7 @@ if (numB==2) {
 	    g_M3_stat->SetMarkerSize(0.7);
 	  }
 	  if (isratio==1) {
-	    g_M3_stat->SetMarkerStyle(22);
+	    g_M3_stat->SetMarkerStyle(26);
 	    g_M3_stat->SetMarkerSize(0.9);
 	  }
 	  g_M3_stat->SetMarkerColor(kBlack);
@@ -2557,7 +2557,7 @@ if (numB==2) {
 	    g_M3_tot->SetMarkerSize(0.7);
 	  }
 	  if (isratio==1) {
-	    g_M3_tot->SetMarkerStyle(22);
+	    g_M3_tot->SetMarkerStyle(26);
 	    g_M3_tot->SetMarkerSize(0.9);
 	  }
 	  g_M3_tot->SetMarkerColor(kBlack);
@@ -2570,7 +2570,7 @@ if (numB==2) {
 	    g_M3_tot->SetMarkerSize(0.7);
 	  }
 	  if (isratio==1) {
-	    g_M3_tot->SetMarkerStyle(22);
+	    g_M3_tot->SetMarkerStyle(26);
 	    g_M3_tot->SetMarkerSize(0.9);
 	  }
 	}
