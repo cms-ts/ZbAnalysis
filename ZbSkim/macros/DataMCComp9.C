@@ -292,7 +292,22 @@ if (numB==2) {
 	    h_mcg_b->SetMaximum(4*h_data_tot->GetMaximum());
           }
 	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b_tot->GetBinContent(h_data_b_tot->GetMinimumBin())));
-	  if (title=="w_DR_bb") h_mcg_b->SetMinimum(0.001);
+	  if (title=="w_DR_Zb_max") {
+	    h_mcg_b->SetMinimum(0.00005);
+	    h_mcg_b->SetMaximum(10.0);
+	  }
+	  if (title=="w_DR_Zb_min") {
+	    h_mcg_b->SetMinimum(0.0001);
+	    h_mcg_b->SetMaximum(10.0);
+	  }
+	  if (title=="w_DR_bb") {
+	    h_mcg_b->SetMinimum(0.0005);
+	    h_mcg_b->SetMaximum(1.0);
+	  }
+	  if (title=="w_Ht_b") {
+	    h_mcg_b->SetMinimum(0.00002);
+	    h_mcg_b->SetMaximum(0.01);
+	  }
 
 	  h_mcg_b->Draw("E0");
 	  h_mcg1_b->Draw("E0SAME");
