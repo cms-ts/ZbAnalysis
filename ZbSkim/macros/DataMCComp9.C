@@ -812,7 +812,7 @@ if (numB==2) {
 	g_M3_stat->Draw("E1PSAME");
 	g_M3_stat->Draw("E0PSAME");
 
-	TLine *OLinE2 = new TLine(h_P_tot->GetXaxis()->GetXmin(),0.93,h_P_tot->GetXaxis()->GetXmax(),0.93);
+	TLine *OLinE2 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	OLinE2->SetLineColor(kOrange+7);
 	OLinE2->SetLineWidth(2);
 	OLinE2->Draw();
