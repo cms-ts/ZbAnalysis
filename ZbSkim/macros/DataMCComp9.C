@@ -466,6 +466,9 @@ if (numB==2) {
 	    for (int i=0;i<=h_M->GetNbinsX()+1;i++) {
 	      h_M->SetBinError(i, h_M->GetBinContent(i)==0 ? 0 : h_M->GetBinError(i)/h_M->GetBinContent(i));
 	      h_M->SetBinContent(i,1.);
+	      h_M->SetBinContent(i,h_M_tot->GetBinContent(i));
+	      h_M_tot->SetBinContent(i,1.);
+	      h_M_stat->SetBinContent(i,1.);
 	    }
 	    h_M->Draw("E2SAME");
 	  }
@@ -525,6 +528,9 @@ if (numB==2) {
 	  for (int i=0;i<=h_M2->GetNbinsX()+1;i++) {
 	    h_M2->SetBinError(i, h_M2->GetBinContent(i)==0 ? 0 : h_M2->GetBinError(i)/h_M2->GetBinContent(i));
 	    h_M2->SetBinContent(i,1.);
+	    h_M2->SetBinContent(i,h_M_tot->GetBinContent(i));
+	    h_M_tot->SetBinContent(i,1.);
+	    h_M_stat->SetBinContent(i,1.);
 	  }
 	  h_M2->Draw("E2SAME");
 	}
@@ -541,8 +547,13 @@ if (numB==2) {
 	}
 
 	TLine *OLine2 = new TLine(h_M_tot->GetXaxis()->GetXmin(),1.,h_M_tot->GetXaxis()->GetXmax(),1.);
-	OLine2->SetLineColor(kGreen+2);
-	OLine2->SetLineWidth(2);
+	if (drawInclusive) {
+	  OLine2->SetLineColor(kGreen+2);
+	  OLine2->SetLineWidth(2);
+	} else {
+	  OLine2->SetLineColor(kBlack);
+	  OLine2->SetLineWidth(0);
+	}
 	OLine2->Draw();
 
 	c1->cd();
@@ -633,6 +644,9 @@ if (numB==2) {
 	    for (int i=0;i<=h_S->GetNbinsX()+1;i++) {
 	      h_S->SetBinError(i, h_S->GetBinContent(i)==0 ? 0 : h_S->GetBinError(i)/h_S->GetBinContent(i));
 	      h_S->SetBinContent(i,1.);
+	      h_S->SetBinContent(i,h_S_tot->GetBinContent(i));
+	      h_S_tot->SetBinContent(i,1.);
+	      h_S_stat->SetBinContent(i,1.);
 	    }
 	    if (useSherpa) h_S->Draw("E2SAME");
 	  }
@@ -692,6 +706,9 @@ if (numB==2) {
 	  for (int i=0;i<=h_S2->GetNbinsX()+1;i++) {
 	    h_S2->SetBinError(i, h_S2->GetBinContent(i)==0 ? 0 : h_S2->GetBinError(i)/h_S2->GetBinContent(i));
 	    h_S2->SetBinContent(i,1.);
+	    h_S2->SetBinContent(i,h_S_tot->GetBinContent(i));
+	    h_S_tot->SetBinContent(i,1.);
+	    h_S_stat->SetBinContent(i,1.);
 	  }
 	  h_S2->Draw("E2SAME");
 	}
@@ -709,8 +726,13 @@ if (numB==2) {
 
 	if (useSherpa) {
 	  TLine *OLine3 = new TLine(h_S_tot->GetXaxis()->GetXmin(),1.,h_S_tot->GetXaxis()->GetXmax(),1.);
-	  OLine3->SetLineColor(kMagenta-6);
-	  OLine3->SetLineWidth(2);
+	  if (drawInclusive) {
+	    OLine3->SetLineColor(kMagenta-6);
+	    OLine3->SetLineWidth(2);
+	  } else {
+	    OLine3->SetLineColor(kBlack);
+	    OLine3->SetLineWidth(0);
+	  }
 	  OLine3->Draw();
 	}
 
@@ -793,6 +815,9 @@ if (numB==2) {
 	    for (int i=0;i<=h_P->GetNbinsX()+1;i++) {
 	      h_P->SetBinError(i, h_P->GetBinContent(i)==0 ? 0 : h_P->GetBinError(i)/h_P->GetBinContent(i));
 	      h_P->SetBinContent(i,1.);
+	      h_P->SetBinContent(i,h_P_tot->GetBinContent(i));
+	      h_P_tot->SetBinContent(i,1.);
+	      h_P_stat->SetBinContent(i,1.);
 	    }
 	    h_P->Draw("E2SAME");
 	  }
@@ -852,6 +877,9 @@ if (numB==2) {
 	  for (int i=0;i<=h_P2->GetNbinsX()+1;i++) {
 	    h_P2->SetBinError(i, h_P2->GetBinContent(i)==0 ? 0 : h_P2->GetBinError(i)/h_P2->GetBinContent(i));
 	    h_P2->SetBinContent(i,1.);
+	    h_P2->SetBinContent(i,h_P_tot->GetBinContent(i));
+	    h_P_tot->SetBinContent(i,1.);
+	    h_P_stat->SetBinContent(i,1.);
 	  }
 	  h_P2->Draw("E2SAME");
 	}
@@ -864,8 +892,13 @@ if (numB==2) {
 	t4->DrawLatex(0.15,0.40,"Powheg, normalized to #sigma_{NLO}");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
-	OLine4->SetLineColor(kBlue-4);
-	OLine4->SetLineWidth(2);
+	if (drawInclusive) {
+	  OLine4->SetLineColor(kBlue-4);
+	  OLine4->SetLineWidth(2);
+	} else {
+	  OLine4->SetLineColor(kBlack);
+	  OLine4->SetLineWidth(0);
+	}
 	OLine4->Draw();
 
 	if (useSherpa) {
@@ -880,6 +913,9 @@ if (numB==2) {
 	    for (int i=0;i<=h_M->GetNbinsX()+1;i++) {
 	      h_M->SetBinError(i, h_M->GetBinContent(i)==0 ? 0 : h_M->GetBinError(i)/h_M->GetBinContent(i));
 	      h_M->SetBinContent(i,1.);
+	      h_M->SetBinContent(i,h_M_tot->GetBinContent(i));
+	      h_M_tot->SetBinContent(i,1.);
+	      h_M_stat->SetBinContent(i,1.);
 	    }
 	    h_M->Draw("E2SAME");
 	  }
@@ -971,13 +1007,21 @@ if (numB==2) {
 	  for (int i=0;i<=h_M3->GetNbinsX()+1;i++) {
 	    h_M3->SetBinError(i, h_M3->GetBinContent(i)==0 ? 0 : h_M3->GetBinError(i)/h_M3->GetBinContent(i));
 	    h_M3->SetBinContent(i,1.);
+	    h_M3->SetBinContent(i,h_M3_tot->GetBinContent(i));
+	    g_M3_tot->SetPoint(i,g_M3_tot->GetX()[i],1.);
+	    g_M3_stat->SetPoint(i,g_M3_stat->GetX()[i],1.);
 	  }
 	  h_M3->Draw("E2SAME");
 	}
 
 	TLine *OLine5 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
-	OLine5->SetLineColor(kOrange+7);
-	OLine5->SetLineWidth(2);
+	if (drawInclusive) {
+	  OLine5->SetLineColor(kOrange+7);
+	  OLine5->SetLineWidth(2);
+	} else {
+	  OLine5->SetLineColor(kBlack);
+	  OLine5->SetLineWidth(0);
+	}
 	OLine5->Draw();
 
 	c1->cd();
