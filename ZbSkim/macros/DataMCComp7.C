@@ -1526,7 +1526,9 @@ if (numB==2) {
 
 	if (useSherpa) {
 	  g_M3_stat->SetMarkerStyle(25);
+	  g_M3_stat->SetMarkerSize(0.7);
 	  g_M3_tot->SetMarkerStyle(25);
+	  g_M3_tot->SetMarkerSize(0.7);
 	} else {
 	  if (isratio==0) {
 	    g_M3_stat->SetMarkerStyle(24);
