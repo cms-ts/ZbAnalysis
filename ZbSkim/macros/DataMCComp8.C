@@ -2106,13 +2106,13 @@ if (numB==2) {
  	TLatex *latexLabel = 0;
 
 	if (isratio==0) {
-	  if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb") {
+	  if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_second_bjet_pt" || title_b=="w_first_bjet_eta_abs" || title_b=="w_second_bjet_eta_abs" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb") {
 	    latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
 	  }
 	  if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b") {
 	    latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
 	  }
-	  if (title_b=="w_first_bjet_eta" || title_b=="w_first_bjet_eta_abs") {
+	  if (title_b=="w_first_bjet_eta" || title_b=="w_second_bjet_eta") {
 	    latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
 	  }
 	}
