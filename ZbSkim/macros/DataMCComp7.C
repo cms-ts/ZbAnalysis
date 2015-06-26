@@ -1063,8 +1063,8 @@ if (numB==2) {
 	  if (drawInclusive) h_data_stat->Draw("E1PX0SAME");
 
 	  if (ilepton==1) {
-	    if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow ee)+j DATA","p");
-	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow ee)+b DATA","p");
+	    if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow ee)+j DATA","lp");
+	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow ee)+b DATA","lp");
 	    if (useMC) leg->AddEntry(h_mc1,"Z(#rightarrow ee) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow ee) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3,"Z(#rightarrow ee) MadGraph 4FS","l");
@@ -1072,8 +1072,8 @@ if (numB==2) {
 	    leg->AddEntry(h_mcg2,"Z(#rightarrow ee) Powheg","l");
 	  }
 	  if (ilepton==2){
-	    if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow #mu#mu)+j DATA","p");
-	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow #mu#mu)+b DATA","p");
+	    if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow #mu#mu)+j DATA","lp");
+	    leg->AddEntry(h_data_b_stat,"Z(#rightarrow #mu#mu)+b DATA","lp");
 	    if (useMC) leg->AddEntry(h_mc1,"Z(#rightarrow #mu#mu) MC","l");
 	    leg->AddEntry(h_mcg,"Z(#rightarrow #mu#mu) MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3,"Z(#rightarrow #mu#mu) MadGraph 4FS","l");
@@ -1084,7 +1084,7 @@ if (numB==2) {
 
 	if (isratio==1) {
 	  if (ilepton==1) {
-	    leg->AddEntry(h_data_b_stat,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] DATA","p");
+	    leg->AddEntry(h_data_b_stat,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] DATA","lp");
 	    if (useMC) leg->AddEntry(h_mc1b_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] MC","l");
 	    leg->AddEntry(h_mcg_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] MadGraph 4FS","l");
@@ -1092,7 +1092,7 @@ if (numB==2) {
 	    leg->AddEntry(h_mcg2_b,"[Z(#rightarrow ee)+b] / [Z(#rightarrow ee)+j] Powheg","l");
 	  }
 	  if (ilepton==2){
-	    leg->AddEntry(h_data_b_stat,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] DATA","p");
+	    leg->AddEntry(h_data_b_stat,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] DATA","lp");
 	    if (useMC) leg->AddEntry(h_mc1b_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] MC","l");
 	    leg->AddEntry(h_mcg_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] MadGraph 5FS","l");
 	    leg->AddEntry(h_mcg3_b,"[Z(#rightarrow #mu#mu)+b] / [Z(#rightarrow #mu#mu)+j] MadGraph 4FS","l");

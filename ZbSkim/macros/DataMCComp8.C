@@ -2083,8 +2083,8 @@ if (numB==2) {
 	  if (drawInclusive) h_data_tot->Draw("E1PX0SAME");
 	  if (drawInclusive) h_data_stat->Draw("E1PX0SAME");
 
-	  if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow ll)+j DATA","p");
-	  leg->AddEntry(h_data_b_stat,"Z(#rightarrow ll)+b DATA","p");
+	  if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow ll)+j DATA","lp");
+	  leg->AddEntry(h_data_b_stat,"Z(#rightarrow ll)+b DATA","lp");
 	  leg->AddEntry(h_mcg,"Z(#rightarrow ll) MadGraph 5FS","l");
 	  leg->AddEntry(h_mcg3,"Z(#rightarrow ll) MadGraph 4FS","l");
 	  if (useSherpa) leg->AddEntry(h_mcg1,"Z(#rightarrow ll) Sherpa","l");
@@ -2092,7 +2092,7 @@ if (numB==2) {
 	}
 
 	if (isratio==1) {
-	  leg->AddEntry(h_data_b_stat,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] DATA","p");
+	  leg->AddEntry(h_data_b_stat,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] DATA","lp");
 	  leg->AddEntry(h_mcg_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] MadGraph 5FS","l");
 	  leg->AddEntry(h_mcg3_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] MadGraph 4FS","l");
 	  if (useSherpa) leg->AddEntry(h_mcg1_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] Sherpa","l");
