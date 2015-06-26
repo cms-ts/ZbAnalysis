@@ -204,7 +204,8 @@ if (numB==2) {
 	h_mcg_b->SetMarkerColor(kGreen+2);
 	h_mcg_b->SetStats(0);
 	if (isratio==1) {
-	  h_mcg_b->Draw("E2");
+	  h_mcg_b->Draw("E0");
+	  h_mcg_b->Draw("E2SAME");
 	}
 
 	h_mcg1_b->SetLineColor(kMagenta-6);
@@ -212,6 +213,7 @@ if (numB==2) {
 	h_mcg1_b->SetFillColor(kMagenta-6);
 	h_mcg1_b->SetMarkerColor(kMagenta-6);
 	if (isratio==1) {
+	  h_mcg1_b->Draw("E0SAME");
 	  h_mcg1_b->Draw("E2SAME");
 	}
 
@@ -220,6 +222,7 @@ if (numB==2) {
 	h_mcg2_b->SetFillColor(kBlue-4);
 	h_mcg2_b->SetMarkerColor(kBlue-4);
 	if (isratio==1) {
+	  h_mcg2_b->Draw("E0SAME");
 	  h_mcg2_b->Draw("E2SAME");
 	}
 
@@ -228,6 +231,7 @@ if (numB==2) {
 	h_mcg3_b->SetFillColor(kOrange+7);
 	h_mcg3_b->SetMarkerColor(kOrange+7);
 	if (isratio==1) {
+	  h_mcg3_b->Draw("E0SAME");
 	  h_mcg3_b->Draw("E2SAME");
 	}
 
@@ -290,7 +294,12 @@ if (numB==2) {
 	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b_tot->GetBinContent(h_data_b_tot->GetMinimumBin())));
 	  if (title=="w_DR_bb") h_mcg_b->SetMinimum(0.001);
 
-	  h_mcg_b->Draw("E2");
+	  h_mcg_b->Draw("E0");
+	  h_mcg1_b->Draw("E0SAME");
+	  h_mcg2_b->Draw("E0SAME");
+	  h_mcg3_b->Draw("E0SAME");
+
+	  h_mcg_b->Draw("E2SAME");
 	  h_mcg1_b->Draw("E2SAME");
 	  h_mcg2_b->Draw("E2SAME");
 	  h_mcg3_b->Draw("E2SAME");
@@ -532,6 +541,8 @@ if (numB==2) {
 	    h_M_tot->SetBinContent(i,1.);
 	    h_M_stat->SetBinContent(i,1.);
 	  }
+	  h_M2->SetLineWidth(2);
+	  h_M2->Draw("E0SAME");
 	  h_M2->Draw("E2SAME");
 	}
 
@@ -710,6 +721,8 @@ if (numB==2) {
 	    h_S_tot->SetBinContent(i,1.);
 	    h_S_stat->SetBinContent(i,1.);
 	  }
+	  h_S2->SetLineWidth(2);
+	  h_S2->Draw("E0SAME");
 	  h_S2->Draw("E2SAME");
 	}
 
@@ -881,6 +894,8 @@ if (numB==2) {
 	    h_P_tot->SetBinContent(i,1.);
 	    h_P_stat->SetBinContent(i,1.);
 	  }
+	  h_P2->SetLineWidth(2);
+	  h_P2->Draw("E0SAME");
 	  h_P2->Draw("E2SAME");
 	}
 
@@ -1011,6 +1026,8 @@ if (numB==2) {
 	    g_M3_tot->SetPoint(i,g_M3_tot->GetX()[i],1.);
 	    g_M3_stat->SetPoint(i,g_M3_stat->GetX()[i],1.);
 	  }
+	  h_M3->SetLineWidth(2);
+	  h_M3->Draw("E0SAME");
 	  h_M3->Draw("E2SAME");
 	}
 
