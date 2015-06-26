@@ -366,6 +366,13 @@ if (numB==2) {
 	TH1F *h_M_tot = (TH1F*)h_mcg_b->Clone();
 	TH1F *h_M_stat = (TH1F*)h_mcg_b->Clone();
 
+	if (!drawInclusive) {
+	  for (int i=0;i<=h_M_tot->GetNbinsX()+1;i++) {
+	    h_M_tot->SetBinError(i,0.);
+	    h_M_stat->SetBinError(i,0.);
+	  }
+	}
+
 	h_M_tot->Divide(h_data_b_tot);
 	h_M_stat->Divide(h_data_b_stat);
 
@@ -421,9 +428,27 @@ if (numB==2) {
 	h_M_stat->Draw("E1PX0SAME");
 	h_M_stat->Draw("E0PX0SAME");
 
+	if (isratio==1) {
+	  if (!drawInclusive) {
+	    TH1F *h_M = (TH1F*)h_mcg_b->Clone();
+	    for (int i=0;i<=h_M->GetNbinsX()+1;i++) {
+	      h_M->SetBinError(i, h_M->GetBinContent(i)==0 ? 0 : h_M->GetBinError(i)/h_M->GetBinContent(i));
+	      h_M->SetBinContent(i,1.);
+	    }
+	    h_M->Draw("E2SAME");
+	  }
+	}
+
 	if (isratio==0) {
 	  TH1F *h_M2_tot= (TH1F*)h_mcg->Clone();
 	  TH1F *h_M2_stat= (TH1F*)h_mcg->Clone();
+
+	  if (!drawInclusive) {
+	    for (int i=0;i<=h_M2_tot->GetNbinsX()+1;i++) {
+	      h_M2_tot->SetBinError(i,0.);
+	      h_M2_stat->SetBinError(i,0.);
+	    }
+	  }
 
 	  h_M2_tot->Divide(h_data_tot);
 	  h_M2_stat->Divide(h_data_stat);
@@ -463,6 +488,15 @@ if (numB==2) {
 	  if (drawInclusive) g_M2_stat->Draw("E0PX0SAME");
 	}
 
+	if (!drawInclusive) {
+	  TH1F *h_M2 = (TH1F*)h_mcg_b->Clone();
+	  for (int i=0;i<=h_M2->GetNbinsX()+1;i++) {
+	    h_M2->SetBinError(i, h_M2->GetBinContent(i)==0 ? 0 : h_M2->GetBinError(i)/h_M2->GetBinContent(i));
+	    h_M2->SetBinContent(i,1.);
+	  }
+	  h_M2->Draw("E2SAME");
+	}
+
 	TLatex *t2 = new TLatex();
 	t2->SetTextSize(0.2);
 	t2->SetTextFont(42);
@@ -489,6 +523,13 @@ if (numB==2) {
 
 	TH1F *h_S_tot = (TH1F*)h_mcg1_b->Clone();
 	TH1F *h_S_stat = (TH1F*)h_mcg1_b->Clone();
+
+	if (!drawInclusive) {
+	  for (int i=0;i<=h_S_tot->GetNbinsX()+1;i++) {
+	    h_S_tot->SetBinError(i,0.);
+	    h_S_stat->SetBinError(i,0.);
+	  }
+	}
 
 	h_S_tot->Divide(h_data_b_tot);
 	h_S_stat->Divide(h_data_b_stat);
@@ -537,8 +578,8 @@ if (numB==2) {
 	  h_S_tot->Draw("E0PX0SAME");
 	} else {
 	  for (int i=0;i<=h_S_tot->GetNbinsX()+1;i++) {
-	    h_S_tot->SetBinContent(i, -999.);
-	    h_S_tot->SetBinError(i, 0.);
+	    h_S_tot->SetBinContent(i,-999.);
+	    h_S_tot->SetBinError(i,0.);
 	  }
 	  h_S_tot->Draw("E1PX0");
 	  h_S_tot->Draw("E0PX0SAME");
@@ -554,9 +595,27 @@ if (numB==2) {
 	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
 	if (useSherpa) h_S_stat->Draw("E0PX0SAME");
 
+	if (isratio==1) {
+	  if (!drawInclusive) {
+	    TH1F *h_S = (TH1F*)h_mcg1_b->Clone();
+	    for (int i=0;i<=h_S->GetNbinsX()+1;i++) {
+	      h_S->SetBinError(i, h_S->GetBinContent(i)==0 ? 0 : h_S->GetBinError(i)/h_S->GetBinContent(i));
+	      h_S->SetBinContent(i,1.);
+	    }
+	    if (useSherpa) h_S->Draw("E2SAME");
+	  }
+	}
+
 	if (isratio==0) {
 	  TH1F *h_S2_tot= (TH1F*)h_mcg1->Clone();
 	  TH1F *h_S2_stat= (TH1F*)h_mcg1->Clone();
+
+	  if (!drawInclusive) {
+	    for (int i=0;i<=h_S2_tot->GetNbinsX()+1;i++) {
+	      h_S2_tot->SetBinError(i,0.);
+	      h_S2_stat->SetBinError(i,0.);
+	    }
+	  }
 
 	  h_S2_tot->Divide(h_data_tot);
 	  h_S2_stat->Divide(h_data_stat);
@@ -596,6 +655,15 @@ if (numB==2) {
 	  if (useSherpa && drawInclusive) g_S2_stat->Draw("E0PX0SAME");
 	}
 
+	if (!drawInclusive) {
+	  TH1F *h_S2 = (TH1F*)h_mcg1_b->Clone();
+	  for (int i=0;i<=h_S2->GetNbinsX()+1;i++) {
+	    h_S2->SetBinError(i, h_S2->GetBinContent(i)==0 ? 0 : h_S2->GetBinError(i)/h_S2->GetBinContent(i));
+	    h_S2->SetBinContent(i,1.);
+	  }
+	  h_S2->Draw("E2SAME");
+	}
+
 	TLatex *t3 = new TLatex();
 	t3->SetTextSize(0.2);
 	t3->SetTextFont(42);
@@ -624,6 +692,13 @@ if (numB==2) {
 
 	TH1F *h_P_tot = (TH1F*)h_mcg2_b->Clone();
 	TH1F *h_P_stat = (TH1F*)h_mcg2_b->Clone();
+
+	if (!drawInclusive) {
+	  for (int i=0;i<=h_P_tot->GetNbinsX()+1;i++) {
+	    h_P_tot->SetBinError(i,0.);
+	    h_P_stat->SetBinError(i,0.);
+	  }
+	}
 
 	h_P_tot->Divide(h_data_b_tot);
 	h_P_stat->Divide(h_data_b_stat);
@@ -680,9 +755,27 @@ if (numB==2) {
 	h_P_stat->Draw("E1PX0SAME");
 	h_P_stat->Draw("E0PX0SAME");
 
+	if (isratio==1) {
+	  if (!drawInclusive) {
+	    TH1F *h_P = (TH1F*)h_mcg2_b->Clone();
+	    for (int i=0;i<=h_P->GetNbinsX()+1;i++) {
+	      h_P->SetBinError(i, h_P->GetBinContent(i)==0 ? 0 : h_P->GetBinError(i)/h_P->GetBinContent(i));
+	      h_P->SetBinContent(i,1.);
+	    }
+	    h_P->Draw("E2SAME");
+	  }
+	}
+
 	if (isratio==0) {
 	  TH1F *h_P2_tot= (TH1F*)h_mcg2->Clone();
 	  TH1F *h_P2_stat= (TH1F*)h_mcg2->Clone();
+
+	  if (!drawInclusive) {
+	    for (int i=0;i<=h_P2_tot->GetNbinsX()+1;i++) {
+	      h_P2_tot->SetBinError(i,0.);
+	      h_P2_stat->SetBinError(i,0.);
+	    }
+	  }
 
 	  h_P2_tot->Divide(h_data_tot);
 	  h_P2_stat->Divide(h_data_stat);
@@ -722,6 +815,15 @@ if (numB==2) {
 	  if (drawInclusive) g_P2_stat->Draw("E0PX0SAME");
 	}
 
+	if (!drawInclusive) {
+	  TH1F *h_P2 = (TH1F*)h_mcg2_b->Clone();
+	  for (int i=0;i<=h_P2->GetNbinsX()+1;i++) {
+	    h_P2->SetBinError(i, h_P2->GetBinContent(i)==0 ? 0 : h_P2->GetBinError(i)/h_P2->GetBinContent(i));
+	    h_P2->SetBinContent(i,1.);
+	  }
+	  h_P2->Draw("E2SAME");
+	}
+
 	TLatex *t4 = new TLatex();
 	t4->SetTextSize(0.13);
 	t4->SetTextFont(42);
@@ -740,8 +842,26 @@ if (numB==2) {
 	  pad3->cd();
 	}
 
+	if (isratio==1) {
+	  if (!drawInclusive) {
+	    TH1F *h_M = (TH1F*)h_mcg3_b->Clone();
+	    for (int i=0;i<=h_M->GetNbinsX()+1;i++) {
+	      h_M->SetBinError(i, h_M->GetBinContent(i)==0 ? 0 : h_M->GetBinError(i)/h_M->GetBinContent(i));
+	      h_M->SetBinContent(i,1.);
+	    }
+	    h_M->Draw("E2SAME");
+	  }
+	}
+
 	TH1F *h_M3_tot = (TH1F*)h_mcg3_b->Clone();
 	TH1F *h_M3_stat = (TH1F*)h_mcg3_b->Clone();
+
+	if (!drawInclusive) {
+	  for (int i=0;i<=h_M3_tot->GetNbinsX()+1;i++) {
+	    h_M3_tot->SetBinError(i,0.);
+	    h_M3_stat->SetBinError(i,0.);
+	  }
+	}
 
 	h_M3_tot->Divide(h_data_b_tot);
 	h_M3_stat->Divide(h_data_b_stat);
@@ -813,6 +933,15 @@ if (numB==2) {
 	g_M3_tot->Draw("E0PSAME");
 	g_M3_stat->Draw("E1PSAME");
 	g_M3_stat->Draw("E0PSAME");
+
+	if (!drawInclusive) {
+	  TH1F *h_M3 = (TH1F*)h_mcg3_b->Clone();
+	  for (int i=0;i<=h_M3->GetNbinsX()+1;i++) {
+	    h_M3->SetBinError(i, h_M3->GetBinContent(i)==0 ? 0 : h_M3->GetBinError(i)/h_M3->GetBinContent(i));
+	    h_M3->SetBinContent(i,1.);
+	  }
+	  h_M3->Draw("E2SAME");
+	}
 
 	TLine *OLinE2 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	OLinE2->SetLineColor(kOrange+7);
