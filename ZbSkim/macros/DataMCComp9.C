@@ -975,10 +975,10 @@ if (numB==2) {
 	  h_M3->Draw("E2SAME");
 	}
 
-	TLine *OLinE2 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
-	OLinE2->SetLineColor(kOrange+7);
-	OLinE2->SetLineWidth(2);
-	OLinE2->Draw();
+	TLine *OLine5 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
+	OLine5->SetLineColor(kOrange+7);
+	OLine5->SetLineWidth(2);
+	OLine5->Draw();
 
 	c1->cd();
 
