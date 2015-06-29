@@ -7,6 +7,7 @@ if [ ! -z "$1" ]; then
 fi
 
 ./merge.sh DYJetsToLL_gen $VERSION
+./merge.sh DYJetsToLL_gen_weights $VERSION
 
 ./merge.sh DYJetsToLL2_gen $VERSION
 

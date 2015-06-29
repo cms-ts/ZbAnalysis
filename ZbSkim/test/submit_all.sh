@@ -28,6 +28,11 @@ fi
 
 ./submit.sh DYJetsToLL $VERSION $CUT
 ./submit.sh DYJetsToLL2 $VERSION $CUT
+
+#./submit.sh DYJetsToLL_aMC $VERSION $CUT
+
+./submit.sh DYJets_sherpa $VERSION $CUT
+
 ./submit.sh QCD $VERSION $CUT
 ./submit.sh TTbar $VERSION $CUT
 ./submit.sh WW $VERSION $CUT

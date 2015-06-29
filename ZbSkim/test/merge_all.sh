@@ -25,6 +25,11 @@ fi
 
 ./merge.sh DYJetsToLL $VERSION
 ./merge.sh DYJetsToLL2 $VERSION
+
+./merge.sh DYJetsToLL_aMC $VERSION
+
+./merge.sh DYJets_sherpa $VERSION
+
 ./merge.sh QCD $VERSION
 ./merge.sh TTbar $VERSION
 ./merge.sh ZZ $VERSION
