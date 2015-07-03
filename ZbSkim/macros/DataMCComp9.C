@@ -1038,8 +1038,8 @@ if (numB==2) {
 	    h_M3->SetBinError(i, h_M3->GetBinContent(i)==0 ? 0 : h_M3->GetBinError(i)/h_M3->GetBinContent(i));
 	    h_M3->SetBinContent(i,1.);
 	    h_M3->SetBinContent(i,h_M3_tot->GetBinContent(i));
-	    g_M3_tot->SetPoint(i,g_M3_tot->GetX()[i],1.);
-	    g_M3_stat->SetPoint(i,g_M3_stat->GetX()[i],1.);
+	    g_M3_tot->SetPoint(i,g_M3_tot->GetX()[i],999.);
+	    g_M3_stat->SetPoint(i,g_M3_stat->GetX()[i],999.);
 	  }
 	  h_M3->SetLineWidth(2);
 	  h_M3->Draw("E0SAME");
