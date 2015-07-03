@@ -66,6 +66,8 @@
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/LHERunInfoProduct.h"
 #include "JetMETCorrections/Objects/interface/JetCorrector.h"
 #include "DataFormats/PatCandidates/interface/JetCorrFactors.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
@@ -92,8 +94,8 @@ private:
   virtual void produce (edm::Event &, const edm::EventSetup &);
   virtual void endJob ();
 
-  virtual void beginRun (edm::Run &, edm::EventSetup const &);
-  virtual void endRun (edm::Run &, edm::EventSetup const &);
+  virtual void beginRun (edm::Run const &, edm::EventSetup const &);
+  virtual void endRun (edm::Run const &, edm::EventSetup const &);
   virtual void beginLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
   virtual void endLuminosityBlock (edm::LuminosityBlock const &, edm::EventSetup const &);
 
@@ -263,8 +265,8 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
 
   TH1::SetDefaultSumw2();
 
-  h_gen_weights     =   fs->make < TH1F > ("h_gen_weights",      "h_gen_weights", 2, 0, 2);
-  h_gen2_weights    =   fs->make < TH1F > ("h_gen2_weights",     "h_gen2_weights", 2, 0, 2);
+  h_gen_weights     =   fs->make < TH1F > ("h_gen_weights",      "h_gen_weights", 4, 0, 4);
+  h_gen2_weights    =   fs->make < TH1F > ("h_gen2_weights",     "h_gen2_weights", 4, 0, 4);
 
   w_jetmultiplicity =   fs->make < TH1F > ("w_jetmultiplicity",  "w_jetmultiplicity;", 8, 0.5, 8.5);
   w_first_ele_pt =      fs->make < TH1F > ("w_first_ele_pt",     "w_first_ele_pt; [GeV]", 50, 0., 450.);
@@ -514,6 +516,7 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   if (iEvent.getByLabel ("generator", genEventInfoHandle)) {
 
+    std::vector<double> mcWeights = genEventInfoHandle->weights();
     double mcWeight = genEventInfoHandle->weight();
 
     h_gen_weights->Fill(0.5, 1.0);
@@ -523,16 +526,53 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   }
 
-  edm::Handle <std::vector<double>>  genEventInfoHandle2;
+  edm::Handle<LHEEventProduct> lheEventHandle;
 
-  if (iEvent.getByLabel ("GenBDWeight", genEventInfoHandle2)) {
+  if (iEvent.getByLabel ("externalLHEProducer", lheEventHandle)) {
 
-    double mcWeight2 = genEventInfoHandle2->empty() ? 1 : (*genEventInfoHandle2)[0];
+/*
+    <weightgroup combine="envelope" type="scale_variation">
+      <weight id="1001"> muR=0.10000E+01 muF=0.10000E+01 </weight>
+      <weight id="1002"> muR=0.10000E+01 muF=0.20000E+01 </weight>
+      <weight id="1003"> muR=0.10000E+01 muF=0.50000E+00 </weight>
+      <weight id="1004"> muR=0.20000E+01 muF=0.10000E+01 </weight>
+      <weight id="1005"> muR=0.20000E+01 muF=0.20000E+01 </weight>
+      <weight id="1006"> muR=0.20000E+01 muF=0.50000E+00 </weight>
+      <weight id="1007"> muR=0.50000E+00 muF=0.10000E+01 </weight>
+      <weight id="1008"> muR=0.50000E+00 muF=0.20000E+01 </weight>
+      <weight id="1009"> muR=0.50000E+00 muF=0.50000E+00 </weight>
+    </weightgroup>
+    <weightgroup combine="gaussian" type="PDF_variation">
+      <weight id="2001"> pdfset=260001 </weight>
+      <weight id="2002"> pdfset=260002 </weight>
+      <weight id="2003"> pdfset=260003 </weight>
+...
+      <weight id="2098"> pdfset=260098 </weight>
+      <weight id="2099"> pdfset=260099 </weight>
+      <weight id="2100"> pdfset=260100 </weight>
+    </weightgroup>
+*/
+
+    int whichWeight = 0;
+    double mcWeight2 = lheEventHandle->weights()[whichWeight].wgt/lheEventHandle->originalXWGTUP();
+
+    h_gen_weights->Fill(2.5, mcWeight2);
 
     MyWeight = MyWeight*mcWeight2;
 
   }
 
+  edm::Handle <std::vector<double>>  genEventInfoHandle2;
+
+  if (iEvent.getByLabel ("GenBDWeight", genEventInfoHandle2)) {
+
+    double mcWeight3 = genEventInfoHandle2->empty() ? 1 : (*genEventInfoHandle2)[0];
+
+    h_gen_weights->Fill(3.5, mcWeight3);
+
+    MyWeight = MyWeight*mcWeight3;
+
+  }
 
   // +++++++++ ELECTRONS
 
@@ -1315,11 +1355,26 @@ void GenbAnalyzer::endJob () {
 }
 
 // ------------ method called when starting to processes a run ------------
-void GenbAnalyzer::beginRun (edm::Run &, edm::EventSetup const &) {
+void GenbAnalyzer::beginRun (edm::Run const &, edm::EventSetup const &) {
 }
 
 // ------------ method called when ending the processing of a run ------------
-void GenbAnalyzer::endRun (edm::Run &, edm::EventSetup const &) {
+void GenbAnalyzer::endRun (edm::Run const & iRun, edm::EventSetup const &) {
+
+  edm::Handle<LHERunInfoProduct> run;
+  typedef std::vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
+
+  iRun.getByLabel ("externalLHEProducer", run);
+  LHERunInfoProduct myLHERunInfoProduct = *(run.product());
+
+  for (headers_const_iterator iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++){
+    std::cout << iter->tag() << std::endl;
+    std::vector<std::string> lines = iter->lines();
+    for (unsigned int iLine = 0; iLine<lines.size(); iLine++) {
+      std::cout << lines.at(iLine);
+    }
+  }
+
 }
 
 // ------------ method called when starting to processes a luminosity block ------------
