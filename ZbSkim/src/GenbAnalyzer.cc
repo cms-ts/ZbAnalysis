@@ -30,6 +30,7 @@
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/Run.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/ESHandle.h"
@@ -553,8 +554,9 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     </weightgroup>
 */
 
-    int whichWeight = 0;
-    double mcWeight2 = lheEventHandle->weights()[whichWeight].wgt/lheEventHandle->originalXWGTUP();
+    //int whichWeight = 1000;
+    //double mcWeight2 = lheEventHandle->weights()[whichWeight].wgt/lheEventHandle->originalXWGTUP();
+    double mcWeight2 = 1.0;
 
     h_gen_weights->Fill(2.5, mcWeight2);
 
@@ -1361,6 +1363,7 @@ void GenbAnalyzer::beginRun (edm::Run const &, edm::EventSetup const &) {
 // ------------ method called when ending the processing of a run ------------
 void GenbAnalyzer::endRun (edm::Run const & iRun, edm::EventSetup const &) {
 
+/*
   edm::Handle<LHERunInfoProduct> run;
   typedef std::vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
 
@@ -1374,6 +1377,7 @@ void GenbAnalyzer::endRun (edm::Run const & iRun, edm::EventSetup const &) {
       std::cout << lines.at(iLine);
     }
   }
+*/
 
 }
 
