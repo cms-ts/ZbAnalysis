@@ -21,16 +21,17 @@ double eXsec_dy = 0;
 
 //////////////////////// DY MadGraph_aMC@NLO + Pythia 8
 
-//double Ngen_dy_amc = 28944033; // DYJetsToLL_aMC
+//double Ngen_dy_amc = 28944033;
 // weights extracted from h_gen_weights->GetBinContent(2)
-double Ngen_dy_amc = 2.59285827584000000e+11; // DYJetsToLL_aMC
+double Ngen_dy_amc = 2.59285827584000000e+11;
 double Xsec_dy_amc = 3531.8; // NNLO
 double eXsec_dy_amc = 0;
 
 //////////////////////// DY Sherpa
 
-//double Ngen_dy_1 = 43915740.0 * (126489984 / 127014144.0); // DYJets_sherpa
-double Ngen_dy_1 = 43915740.0 * (126489984 / 127014144.0); // DYJets_sherpa_gen
+//double Ngen_dy_1 = 127014144;
+// weights extracted from h_gen_weights->GetBinContent(2)
+double Ngen_dy_1 = 4.37550931162109375e+07;
 double Xsec_dy_1 = 3503.71; // NNLO
 double eXsec_dy_1 = 0;
 
@@ -44,7 +45,7 @@ double eXsec_dy_2 = 0;
 //////////////////////// DY MadGraph 2
 
 double Ngen_dy_3 = 7551580;
-double Xsec_dy_3 = 3.0*20.3; // LO
+double Xsec_dy_3 = 3.0*20.3; // NLO
 double eXsec_dy_3 = 0.15*Xsec_dy_3;
 
 //////////////////////// DY Powheg 2
