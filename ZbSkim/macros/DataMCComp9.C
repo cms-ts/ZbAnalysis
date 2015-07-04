@@ -2,6 +2,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
+#include "CMS_lumi.C"
+
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
@@ -397,21 +399,40 @@ if (numB==2) {
  	TLatex *latexLabel = 0;
 
         if (isratio==0) {
-          if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_second_bjet_pt" || title_b=="w_first_bjet_eta_abs" || title_b=="w_second_bjet_eta_abs" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb") {
-            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
+          if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_second_bjet_pt" || title_b=="w_first_bjet_eta_abs" || title_b=="w_second_bjet_eta_abs" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb" ) {
+            //            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
+            latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.135, 0.51);
           }
-          if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b") {
-            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+          if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b" || title_b=="w_mass_Zj_b") {
+            //            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+            latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
           }
           if (title_b=="w_first_bjet_eta" || title_b=="w_second_bjet_eta") {
-            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+            //            latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+            latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
           }
         }
         if (isratio==1) {
-          latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
+          //          latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
+          latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.135, 0.85);
         }
 
 	if (latexLabel) latexLabel->Draw("same");
+
+    // New style from Gauthier, remove the corresponding title from the CMSPrel2 function
+    
+    writeExtraText = true;
+    lumi_8TeV  = "19.7 fb^{-1}";
+    int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
+    // second parameter in example_plot is iPos, which drives the position of the CMS logo in the plot
+    // iPos=11 : top-left, left-aligned
+    // iPos=33 : top-right, right-aligned
+    // iPos=22 : center, centered
+    // mode generally :
+    //   iPos = 10*(alignement 1/2/3) + position (1/2/3 = left/center/right)
+    int iPos = 0;
+    CMS_lumi(pad1,  iPeriod, iPos);
+    c1->cd();
 
 	TPad *pad2 = new TPad("pad2","pad2",0,0.29,1,0.4);
 	pad2->SetTopMargin(0);
@@ -567,9 +588,9 @@ if (numB==2) {
 	t2->SetLineWidth(2);
 	t2->SetNDC();
 	if (useSherpa) {
-	  t2->DrawLatex(0.15,0.7,"MadGraph 5FS / MadGraph 4FS");
+	  t2->DrawLatex(0.2,0.7,"MadGraph 5FS / MadGraph 4FS");
 	} else {
-	  t2->DrawLatex(0.15,0.13,"MadGraph 5FS, normalized to #sigma_{NNLO}");
+	  t2->DrawLatex(0.2,0.13,"MadGraph 5FS, normalized to #sigma_{NNLO}");
 	}
 
 	TLine *OLine2 = new TLine(h_M_tot->GetXaxis()->GetXmin(),1.,h_M_tot->GetXaxis()->GetXmax(),1.);
@@ -747,9 +768,9 @@ if (numB==2) {
 	t3->SetLineWidth(2);
 	t3->SetNDC();
 	if (useSherpa) {
-	  t3->DrawLatex(0.15,0.7,"Sherpa");
+	  t3->DrawLatex(0.2,0.7,"Sherpa");
 	} else {
-	  t3->DrawLatex(0.15,0.13,"MadGraph 4FS, normalized to #sigma_{NLO}");
+	  t3->DrawLatex(0.2,0.13,"MadGraph 4FS, normalized to #sigma_{NLO}");
 	}
 
 	if (useSherpa) {
@@ -919,7 +940,7 @@ if (numB==2) {
 	t4->SetTextFont(42);
 	t4->SetLineWidth(2);
 	t4->SetNDC();
-	t4->DrawLatex(0.15,0.40,"Powheg, normalized to #sigma_{NLO}");
+	t4->DrawLatex(0.2,0.40,"Powheg, normalized to #sigma_{NLO}");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	if (drawInclusive) {
@@ -1042,7 +1063,7 @@ if (numB==2) {
 	  for (int i=0; i<g_M3_tot->GetN(); i++) {
 	    g_M3_tot->SetPoint(i,g_M3_tot->GetX()[i],1.);
 	    g_M3_stat->SetPoint(i,g_M3_stat->GetX()[i],1.);
-	  }
+      }
 	  h_M3->SetLineWidth(2);
 	  h_M3->Draw("E0SAME");
 	  h_M3->Draw("E2SAME");
@@ -1063,6 +1084,10 @@ if (numB==2) {
 	if (isratio==1) {
 	  h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
 	}
+
+    h_mcg_b->GetYaxis()->SetTitleSize(0.05);
+    h_mcg_b->GetYaxis()->SetTitleOffset(0.8);
+    h_P_tot->GetXaxis()->SetTitleSize(0.15);
 
 	if (title_b=="w_first_jet_pt_b") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp_{T} [pb/GeV]");
@@ -1363,4 +1388,3 @@ if (numB==2) {
 
 	}
 }
-

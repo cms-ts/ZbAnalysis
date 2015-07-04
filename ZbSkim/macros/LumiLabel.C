@@ -168,3 +168,21 @@ TLatex * CMSFinal2 (Float_t Lumi, TString _decaychannel, int pos, double x, doub
   return latexLabel;
 }
 
+TLatex * CMSPrel2New (TString _decaychannel, double x, double y) {
+
+  _decaychannel = _decaychannel + "";
+  x = 1*x;
+  y = 1*y;
+
+  TLatex *latexLabel = new TLatex();
+  latexLabel->SetTextFont(43);
+  latexLabel->SetTextSize(16);
+  latexLabel->SetLineWidth(2);
+  latexLabel->SetNDC();
+
+  latexLabel->DrawLatex(x,y,_decaychannel);
+  latexLabel->DrawLatex(x,y-0.04,"anti-k_{T} (R = 0.5) jets");
+  latexLabel->DrawLatex(x,y-0.08,"p_{T}^{jet} > 30 GeV, |#eta^{jet}| < 2.4");
+
+  return latexLabel;
+}
