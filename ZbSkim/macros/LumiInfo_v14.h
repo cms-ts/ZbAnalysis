@@ -23,7 +23,7 @@ double eXsec_dy = 0;
 
 //double Ngen_dy_amc = 28944033;
 // weights extracted from h_gen_weights->GetBinContent(2)
-double Ngen_dy_amc = 2.59285827584000000e+11;
+double Ngen_dy_amc = 2.59285811200000000e+11;
 double Xsec_dy_amc = 3531.8; // NNLO
 double eXsec_dy_amc = 0;
 
@@ -31,7 +31,7 @@ double eXsec_dy_amc = 0;
 
 //double Ngen_dy_1 = 127014144;
 // weights extracted from h_gen_weights->GetBinContent(2)
-double Ngen_dy_1 = 4.37550931162109375e+07;
+double Ngen_dy_1 = 4.37323040000000000e+07; 
 double Xsec_dy_1 = 3503.71; // NNLO
 double eXsec_dy_1 = 0;
 
