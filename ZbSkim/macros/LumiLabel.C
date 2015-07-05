@@ -168,8 +168,9 @@ TLatex * CMSFinal2 (Float_t Lumi, TString _decaychannel, int pos, double x, doub
   return latexLabel;
 }
 
-TLatex * CMSPrel2New (TString _decaychannel, double x, double y) {
+TLatex * CMSPrel2New (Float_t Lumi, TString _decaychannel, double x, double y) {
 
+  Lumi = 1.0*Lumi;
   _decaychannel = _decaychannel + "";
   x = 1*x;
   y = 1*y;
