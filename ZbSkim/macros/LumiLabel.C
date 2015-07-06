@@ -1,6 +1,5 @@
 TLatex * CMSPrel (Float_t Lumi, TString _decaychannel) {
 
-  Lumi = 1.0*Lumi;
   _decaychannel = _decaychannel + "";
 
   TLatex * latexLabel = new TLatex ();
@@ -11,7 +10,7 @@ TLatex * CMSPrel (Float_t Lumi, TString _decaychannel) {
 
   latexLabel->DrawLatex (0.25, 0.35, "CMS Preliminary");
   //latexLabel->DrawLatex (0.25, 0.30, Form("#sqrt{s} = 8 TeV  #int Ldt = %.1f fb^{-1}", Lumi));
-  latexLabel->DrawLatex (0.25, 0.30, "19.8 fb^{-1} (8 TeV)");
+  latexLabel->DrawLatex (0.25, 0.30, Form("%.1f fb^{-1} (8 TeV)", Lumi));
   latexLabel->DrawLatex (0.25, 0.25, "anti-k_{T} (R = 0.5) PF Jets > 30 GeV");
   latexLabel->DrawLatex (0.25, 0.08, _decaychannel);
 
@@ -20,7 +19,6 @@ TLatex * CMSPrel (Float_t Lumi, TString _decaychannel) {
 
 TLatex * CMSPrel (Float_t Lumi, TString _decaychannel, double x, double y) {
 
-  Lumi = 1.0*Lumi;
   _decaychannel = _decaychannel + "";
   x = 1*x;
   y = 1*y;
@@ -39,7 +37,6 @@ TLatex * CMSPrel (Float_t Lumi, TString _decaychannel, double x, double y) {
 
 TLatex * CMSPrel2 (Float_t Lumi, TString _decaychannel, int pos, double x, double y) {
 
-  Lumi = 1.0*Lumi;
   _decaychannel = _decaychannel + "";
   x = 1*x;
   y = 1*y;
@@ -60,7 +57,7 @@ TLatex * CMSPrel2 (Float_t Lumi, TString _decaychannel, int pos, double x, doubl
   latexLabel2->SetNDC();
 
   latexLabel2->SetTextSize(20);
-  latexLabel2->DrawLatex(0.735,0.945,"19.8 fb^{-1} (8 TeV)");
+  latexLabel2->DrawLatex(0.735,0.945,Form("%.1f fb^{-1} (8 TeV)", Lumi));
 
   TLatex *latexLabel3 = new TLatex();
   latexLabel3->SetTextFont(43);
@@ -76,7 +73,6 @@ TLatex * CMSPrel2 (Float_t Lumi, TString _decaychannel, int pos, double x, doubl
 
 TLatex * CMSPrel3 (Float_t Lumi, TString _decaychannel, int pos, double x, double y) {
 
-  Lumi = 1.0*Lumi;
   _decaychannel = _decaychannel + "";
   x = 1*x;
   y = 1*y;
@@ -88,7 +84,7 @@ TLatex * CMSPrel3 (Float_t Lumi, TString _decaychannel, int pos, double x, doubl
   latexLabel->SetNDC();
 
   latexLabel->SetTextSize(20);
-  latexLabel->DrawLatex(0.735,0.945,"19.8 fb^{-1} (8 TeV)");
+  latexLabel->DrawLatex(0.735,0.945,Form("%.1f fb^{-1} (8 TeV)", Lumi));
 
   TLatex *latexLabel2 = new TLatex();
   latexLabel2->SetTextFont(43);
@@ -105,7 +101,6 @@ TLatex * CMSPrel3 (Float_t Lumi, TString _decaychannel, int pos, double x, doubl
 
 TLatex * CMSFinal (Float_t Lumi, TString _decaychannel, int pos, double x, double y) {
 
-  Lumi = 1.0*Lumi;
   _decaychannel = _decaychannel + "";
   x = 1*x;
   y = 1*y;
@@ -126,7 +121,7 @@ TLatex * CMSFinal (Float_t Lumi, TString _decaychannel, int pos, double x, doubl
   latexLabel2->SetNDC();
 
   latexLabel2->SetTextSize(20);
-  latexLabel2->DrawLatex(0.735,0.945,"19.8 fb^{-1} (8 TeV)");
+  latexLabel2->DrawLatex(0.735,0.945,Form("%.1f fb^{-1} (8 TeV)", Lumi));
  
   TLatex *latexLabel3 = new TLatex();
   latexLabel3->SetTextFont(43);
@@ -142,7 +137,6 @@ TLatex * CMSFinal (Float_t Lumi, TString _decaychannel, int pos, double x, doubl
 
 TLatex * CMSFinal2 (Float_t Lumi, TString _decaychannel, int pos, double x, double y) {
 
-  Lumi = 1.0*Lumi;
   _decaychannel = _decaychannel + "";
   x = 1*x;
   y = 1*y;
@@ -154,7 +148,7 @@ TLatex * CMSFinal2 (Float_t Lumi, TString _decaychannel, int pos, double x, doub
   latexLabel->SetNDC();
 
   latexLabel->SetTextSize(20);
-  latexLabel->DrawLatex(0.735,0.945,"19.8 fb^{-1} (8 TeV)");
+  latexLabel->DrawLatex(0.735,0.945,Form("%.1f fb^{-1} (8 TeV)", Lumi));
 
   TLatex *latexLabel2 = new TLatex();
   latexLabel2->SetTextFont(43);

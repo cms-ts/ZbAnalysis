@@ -418,7 +418,7 @@ if (numB==2) {
     // New style from Gauthier, remove the corresponding title from the CMSPrel2 function
     
     writeExtraText = true;
-    lumi_8TeV  = "19.8 fb^{-1}";
+    lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
     int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
     // second parameter in example_plot is iPos, which drives the position of the CMS logo in the plot
     // iPos=11 : top-left, left-aligned
