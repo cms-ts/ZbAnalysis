@@ -419,20 +419,20 @@ if (numB==2) {
 
 	if (latexLabel) latexLabel->Draw("same");
 
-    // New style from Gauthier, remove the corresponding title from the CMSPrel2 function
-    
-    writeExtraText = true;
-    lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
-    int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
-    // second parameter in example_plot is iPos, which drives the position of the CMS logo in the plot
-    // iPos=11 : top-left, left-aligned
-    // iPos=33 : top-right, right-aligned
-    // iPos=22 : center, centered
-    // mode generally :
-    //   iPos = 10*(alignement 1/2/3) + position (1/2/3 = left/center/right)
-    int iPos = 0;
-    CMS_lumi(pad1,  iPeriod, iPos);
-    c1->cd();
+        // New style from Gauthier
+
+        writeExtraText = true;
+        lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
+        int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
+        // second parameter drives the position of the CMS logo in the plot
+        // iPos=11 : top-left, left-aligned
+        // iPos=33 : top-right, right-aligned
+        // iPos=22 : center, centered
+        // mode generally :
+        // iPos = 10*(alignement 1/2/3) + position (1/2/3 = left/center/right)
+        int iPos = 0;
+        CMS_lumi(pad1,  iPeriod, iPos);
+        c1->cd();
 
 	TPad *pad2 = new TPad("pad2","pad2",0,0.29,1,0.4);
 	pad2->SetTopMargin(0);
@@ -1093,17 +1093,17 @@ if (numB==2) {
 	  h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
 	}
 
-    h_mcg_b->GetYaxis()->SetTitleSize(0.05);
-    h_mcg_b->GetYaxis()->SetTitleOffset(0.8);
-    h_P_tot->GetXaxis()->SetTitleSize(0.15);
+        h_mcg_b->GetYaxis()->SetTitleSize(0.05);
+        h_mcg_b->GetYaxis()->SetTitleOffset(0.8);
+        h_P_tot->GetXaxis()->SetTitleSize(0.15);
 
-    h_M_tot->GetYaxis()->SetTitleSize(0.28);
-    h_M_tot->GetYaxis()->SetTitleOffset(0.14);
-    h_M_tot->GetYaxis()->SetTitle("/ Data   ");
-    h_S_tot->GetYaxis()->SetTitleSize(0.28);
-    h_S_tot->GetYaxis()->SetTitleOffset(0.14);
-    h_S_tot->GetYaxis()->SetTitle("Theory");
-    h_P_tot->GetYaxis()->SetTitle("");
+        h_M_tot->GetYaxis()->SetTitleSize(0.28);
+        h_M_tot->GetYaxis()->SetTitleOffset(0.14);
+        h_M_tot->GetYaxis()->SetTitle("/ Data   ");
+        h_S_tot->GetYaxis()->SetTitleSize(0.28);
+        h_S_tot->GetYaxis()->SetTitleOffset(0.14);
+        h_S_tot->GetYaxis()->SetTitle("Theory");
+        h_P_tot->GetYaxis()->SetTitle("");
 
 	if (title_b=="w_first_jet_pt_b") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp_{T} [pb/GeV]");
