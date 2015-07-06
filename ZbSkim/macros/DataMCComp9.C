@@ -1085,6 +1085,14 @@ if (numB==2) {
     h_mcg_b->GetYaxis()->SetTitleOffset(0.8);
     h_P_tot->GetXaxis()->SetTitleSize(0.15);
 
+    h_M_tot->GetYaxis()->SetTitleSize(0.28);
+    h_M_tot->GetYaxis()->SetTitleOffset(0.14);
+    h_M_tot->GetYaxis()->SetTitle("/ Data    ");
+    h_S_tot->GetYaxis()->SetTitleSize(0.28);
+    h_S_tot->GetYaxis()->SetTitleOffset(0.14);
+    h_S_tot->GetYaxis()->SetTitle("Theory");
+    h_P_tot->GetYaxis()->SetTitle("");
+
 	if (title_b=="w_first_jet_pt_b") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp_{T} [pb/GeV]");
 	  h_P_tot->GetXaxis()->SetTitle("leading jet p_{T} [GeV/c]");
