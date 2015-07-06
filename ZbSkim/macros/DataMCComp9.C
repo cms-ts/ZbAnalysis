@@ -570,6 +570,10 @@ if (numB==2) {
 	      h_M_tot->SetBinContent(i,1.);
 	      h_M_stat->SetBinContent(i,1.);
 	    }
+	    if (title=="w_DR_bb") {
+	      h_M_tot->SetBinContent(1, -999.);
+	      h_M_stat->SetBinContent(1, -999.);
+	    }
 	    h_M2->SetLineWidth(2);
 	    h_M2->Draw("E0SAME");
 	    h_M2->Draw("E2SAME");
@@ -749,6 +753,10 @@ if (numB==2) {
 	      h_S_tot->SetBinContent(i,1.);
 	      h_S_stat->SetBinContent(i,1.);
 	    }
+	    if (title=="w_DR_bb") {
+	      h_S_tot->SetBinContent(1, -999.);
+	      h_S_stat->SetBinContent(1, -999.);
+	    }
 	    h_S2->SetLineWidth(2);
 	    h_S2->Draw("E0SAME");
 	    h_S2->Draw("E2SAME");
@@ -920,6 +928,10 @@ if (numB==2) {
 	      h_P_tot->SetBinContent(i,1.);
 	      h_P_stat->SetBinContent(i,1.);
 	    }
+	    if (title=="w_DR_bb") {
+	      h_P_tot->SetBinContent(1, -999.);
+	      h_P_stat->SetBinContent(1, -999.);
+	    }
 	    h_P2->SetLineWidth(2);
 	    h_P2->Draw("E0SAME");
 	    h_P2->Draw("E2SAME");
@@ -1052,6 +1064,10 @@ if (numB==2) {
 	    g_M3_tot->SetPoint(i,g_M3_tot->GetX()[i],1.);
 	    g_M3_stat->SetPoint(i,g_M3_stat->GetX()[i],1.);
           }
+	  if (title=="w_DR_bb") {
+	    g_M3_tot->SetPoint(0, g_M3_tot->GetX()[0], -999.);
+	    g_M3_stat->SetPoint(0, g_M3_stat->GetX()[0], -999.);
+	  }
 	  h_M3->SetLineWidth(2);
 	  h_M3->Draw("E0SAME");
 	  h_M3->Draw("E2SAME");
