@@ -467,10 +467,12 @@ if (numB==2) {
 	h_M_tot->GetXaxis()->SetTitleFont(42);
 	h_M_tot->GetXaxis()->SetTickLength(0.1);
 	h_M_tot->GetYaxis()->SetTitle("Theory / Data");
-	h_M_tot->GetYaxis()->SetNdivisions(013);
+	h_M_tot->GetYaxis()->SetNdivisions(205);
+	if (numB==2) h_M_tot->GetYaxis()->SetNdivisions(505);
 	h_M_tot->GetYaxis()->SetTitleSize(0.17);
 	h_M_tot->GetYaxis()->SetLabelSize(0.17);
-	h_M_tot->GetYaxis()->SetRangeUser(-0.2, 2.2);
+	h_M_tot->GetYaxis()->SetRangeUser(0.65, 1.35);
+	if (numB==2) h_M_tot->GetYaxis()->SetRangeUser(0.3, 1.7);
 	h_M_tot->GetYaxis()->SetTitleOffset(0.21);
 	h_M_tot->GetYaxis()->SetTickLength(0.02);
 
@@ -640,10 +642,12 @@ if (numB==2) {
 	h_S_tot->GetXaxis()->SetTitleFont(42);
 	h_S_tot->GetXaxis()->SetTickLength(0.1);
 	h_S_tot->GetYaxis()->SetTitle("Theory / Data");
-	h_S_tot->GetYaxis()->SetNdivisions(013);
+	h_S_tot->GetYaxis()->SetNdivisions(205);
+	if (numB==2) h_S_tot->GetYaxis()->SetNdivisions(505);
 	h_S_tot->GetYaxis()->SetTitleSize(0.17);
 	h_S_tot->GetYaxis()->SetLabelSize(0.17);
-	h_S_tot->GetYaxis()->SetRangeUser(-0.2, 2.2);
+	h_S_tot->GetYaxis()->SetRangeUser(0.65, 1.35);
+	if (numB==2) h_S_tot->GetYaxis()->SetRangeUser(0.3, 1.7);
 	h_S_tot->GetYaxis()->SetTitleOffset(0.21);
 	h_S_tot->GetYaxis()->SetTickLength(0.02);
 
@@ -825,10 +829,12 @@ if (numB==2) {
 	h_P_tot->GetXaxis()->SetTitleFont(42);
 	h_P_tot->GetXaxis()->SetTickLength(0.1);
 	h_P_tot->GetYaxis()->SetTitle("Theory / Data");
-	h_P_tot->GetYaxis()->SetNdivisions(013);
+	h_P_tot->GetYaxis()->SetNdivisions(205);
+	if (numB==2) h_P_tot->GetYaxis()->SetNdivisions(505);
 	h_P_tot->GetYaxis()->SetTitleSize(0.11);
 	h_P_tot->GetYaxis()->SetLabelSize(0.11);
-	h_P_tot->GetYaxis()->SetRangeUser(-0.2, 2.2);
+	h_P_tot->GetYaxis()->SetRangeUser(0.65, 1.35);
+	if (numB==2) h_P_tot->GetYaxis()->SetRangeUser(0.3, 1.7);
 	h_P_tot->GetYaxis()->SetTitleOffset(0.32);
 	h_P_tot->GetYaxis()->SetTickLength(0.02);
 
