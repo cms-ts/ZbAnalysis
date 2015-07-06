@@ -309,6 +309,10 @@ if (numB==2) {
 	  if (title=="w_Ht_b") {
 	    h_mcg_b->SetMinimum(0.00002);
 	    h_mcg_b->SetMaximum(0.01);
+	    if (numB==1) {
+	      h_mcg_b->SetMinimum(0.00005);
+	      h_mcg_b->SetMaximum(0.4);
+	    }
 	  }
 
 	  h_mcg_b->Draw("E0");
