@@ -1216,7 +1216,7 @@ if (numB==1) bbBkg = true;
 	  h_ratio->GetXaxis ()->SetTitle("MET [GeV/c]");
 	} else if (title=="w_MET_sign") {
 	  h_ratio->GetXaxis ()->SetTitle("MET Significance [GeV/c]");
-	} else if (title=="w_Ht") {
+	} else if (title=="w_Ht"||title=="w_Ht_b") {
 	  h_ratio->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
 	} else if (title=="w_mass_Zj_ee_b"||title=="w_mass_Zj_mm_b"||title=="w_mass_Zj_em_b") {
 	  h_ratio->GetXaxis ()->SetTitle("Zb invariant mass [GeV/c]");
