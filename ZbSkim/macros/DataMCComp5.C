@@ -2,6 +2,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
+#include "CMS_lumi.C"
+
 #include "fixrange.C"
 #include "rebin.C"
 
@@ -567,6 +569,9 @@ if (numB==2) {
         h_data->SetMarkerSize (1.0);
         h_data->SetTitle("");
         h_data->SetStats(0);
+        h_data->GetYaxis()->SetTitle("events");
+        h_data->GetYaxis()->SetTitleSize(0.045);
+        h_data->GetYaxis()->SetTitleOffset(0.7);
 
         h_mc2->Draw("HISTSAME");
         h_mc2->SetLineColor(kBlue);
@@ -595,10 +600,10 @@ if (numB==2) {
         h_ratio->GetXaxis()->SetTitleFont(42);
         h_ratio->GetYaxis()->SetTitle("ratio");
         h_ratio->GetYaxis()->SetNdivisions(505);
-        h_ratio->GetYaxis()->SetTitleSize(0.09);
+        h_ratio->GetYaxis()->SetTitleSize(0.10);
         h_ratio->GetYaxis()->SetLabelSize(0.08);
         h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
-        h_ratio->GetYaxis()->SetTitleOffset(0.4);
+        h_ratio->GetYaxis()->SetTitleOffset(0.3);
 
         h_ratio->SetMarkerStyle(20);
         h_ratio->SetMarkerColor(kBlack);
@@ -628,13 +633,23 @@ if (numB==2) {
 
 	leg->Draw();
 
-        TLatex *latexLabel = CMSPrel(Lumi2012/1000.,"",0.15,0.94);
-        latexLabel->Draw("same");
+        writeExtraText = true;
+        lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
+        int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
+        // second parameter drives the position of the CMS logo in the plot
+        // iPos=11 : top-left, left-aligned
+        // iPos=33 : top-right, right-aligned
+        // iPos=22 : center, centered
+        // mode generally :
+        // iPos = 10*(alignement 1/2/3) + position (1/2/3 = left/center/right)
+        int iPos = 0;
+        CMS_lumi(pad1,  iPeriod, iPos);
+        c1->cd();
 
         TLatex * lab = new TLatex ();
   	lab->SetTextSize (0.0275);
   	lab->SetTextFont (42);
-  	lab->DrawLatex (0.63, 0.65, bSel.c_str());
+  	lab->DrawLatex (0.73, 0.85, bSel.c_str());
 
         TLatex *fitLabel = new TLatex();
         fitLabel->SetTextSize(0.0275);
