@@ -2,6 +2,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
+#include "CMS_lumi.C"
+
 #include "fixrange.C"
 #include "rebin.C"
 
@@ -2101,23 +2103,34 @@ if (numB==2) {
 
 	leg->Draw();
 
-	c1->cd();
+        writeExtraText = true;
+        lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
+        int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
+        // second parameter drives the position of the CMS logo in the plot
+        // iPos=11 : top-left, left-aligned
+        // iPos=33 : top-right, right-aligned
+        // iPos=22 : center, centered
+        // mode generally :
+        // iPos = 10*(alignement 1/2/3) + position (1/2/3 = left/center/right)
+        int iPos = 0;
+        CMS_lumi(pad1,  iPeriod, iPos);
+        c1->cd();
 
  	TLatex *latexLabel = 0;
 
 	if (isratio==0) {
 	  if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_second_bjet_pt" || title_b=="w_first_bjet_eta_abs" || title_b=="w_second_bjet_eta_abs" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb") {
-	    latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.51);
+	    latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.135, 0.51);
 	  }
 	  if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b") {
-	    latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+	    latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
 	  }
 	  if (title_b=="w_first_bjet_eta" || title_b=="w_second_bjet_eta") {
-	    latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.68, 0.51);
+	    latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
 	  }
 	}
 	if (isratio==1) {
-	  latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ll selection", 0, 0.135, 0.85);
+	  latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.135, 0.85);
 	}
 
 	if (latexLabel) latexLabel->Draw("same");
@@ -2589,6 +2602,19 @@ if (numB==2) {
 	if (isratio==1) {
 	  h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
 	}
+
+        h_mcg_b->GetYaxis()->SetTitleSize(0.05);
+        h_mcg_b->GetYaxis()->SetTitleOffset(0.6);
+        h_P_tot->GetXaxis()->SetTitleSize(0.15);
+        h_P_tot->GetXaxis()->SetTitleOffset(0.85);
+
+        h_M_tot->GetYaxis()->SetTitleSize(0.28);
+        h_M_tot->GetYaxis()->SetTitleOffset(0.1);
+        h_M_tot->GetYaxis()->SetTitle("/ Data   ");
+        h_S_tot->GetYaxis()->SetTitleSize(0.28);
+        h_S_tot->GetYaxis()->SetTitleOffset(0.1);
+        h_S_tot->GetYaxis()->SetTitle("Theory");
+        h_P_tot->GetYaxis()->SetTitle("");
 
 	if (title_b=="w_first_jet_pt_b") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp_{T} [pb/GeV]");
