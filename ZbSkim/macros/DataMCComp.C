@@ -2,6 +2,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
+#include "CMS_lumi.C"
+
 #include "fixrange.C"
 #include "rebin.C"
 
@@ -1120,6 +1122,8 @@ if (numB==1) bbBkg = true;
 
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
+	hs->GetYaxis()->SetTitleSize(0.045);
+	hs->GetYaxis()->SetTitleOffset(0.7);
  	hs->GetXaxis()->SetLabelSize(0.08);
 	hs->GetXaxis()->SetTitleOffset(0.7);
 	hs->SetMinimum(8);
@@ -1294,10 +1298,10 @@ if (numB==1) bbBkg = true;
 	h_ratio->GetXaxis()->SetTitleFont(42);
 	h_ratio->GetYaxis()->SetTitle("Data/MC");
 	h_ratio->GetYaxis()->SetNdivisions(505);
-	h_ratio->GetYaxis()->SetTitleSize(0.09);
+	h_ratio->GetYaxis()->SetTitleSize(0.10);
 	h_ratio->GetYaxis()->SetLabelSize(0.08);
 	h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
-	h_ratio->GetYaxis()->SetTitleOffset(0.4);
+	h_ratio->GetYaxis()->SetTitleOffset(0.3);
 	h_ratio->Divide(ht);
 	h_ratio->SetMarkerStyle(20);
 	h_ratio->Draw("E0PX0");
@@ -1339,33 +1343,44 @@ if (numB==1) bbBkg = true;
 	OLine->Draw();
 
 	c1->cd();
-        //if (title.find("_b")!=string::npos && numB==0) bSel="Z + (#geq 1) b-jet";
-        //if ((title=="w_BJP"||title=="w_JBP") && numB==0) bSel="Z + (#geq 1) b-jet";
 
- 	TLatex *latexLabel = CMSPrel3 (Lumi2012/1000., "Z+(#geq 1)b-jet selection", 0, 0.6, 0.4);
+ 	TLatex *latexLabel = 0;
 
 	if (numB==0 && title.find("_b")==string::npos) {
           if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
-            if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 1, 0.44, 0.9);
-            if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 1, 0.44, 0.9);
+            if (ilepton ==1) latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ee selection", 0.44, 0.9);
+            if (ilepton ==2) latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow #mu#mu selection", 0.44, 0.9);
           }
           if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
-            if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 0, 0.135, 0.87);
-            if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 0, 0.135, 0.87);
+            if (ilepton ==1) latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ee selection", 0.135, 0.87);
+            if (ilepton ==2) latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow #mu#mu selection", 0.135, 0.87);
           }
         }
         if (numB==0 && title.find("_b")!=string::npos) {
           if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
-            if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
-            if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
+            if (ilepton ==1) latexLabel = CMSPrel2New ("Z+(#geq1)b-jet selection", 0.44, 0.9);
+            if (ilepton ==2) latexLabel = CMSPrel2New ("Z+(#geq1)b-jet selection", 0.44, 0.9);
           }
-          if (title=="w_mass_ee"||title=="w_mPrel2m" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
-            if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
-            if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
+          if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
+            if (ilepton ==1) latexLabel = CMSPrel2New ("Z+(#geq1)b-jet selection", 0.135, 0.87);
+            if (ilepton ==2) latexLabel = CMSPrel2New ("Z+(#geq1)b-jet selection", 0.135, 0.87);
           }
         }
 
-	latexLabel->Draw("same");
+	if (latexLabel) latexLabel->Draw("same");
+
+        writeExtraText = true;
+        lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
+        int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
+        // second parameter drives the position of the CMS logo in the plot
+        // iPos=11 : top-left, left-aligned
+        // iPos=33 : top-right, right-aligned
+        // iPos=22 : center, centered
+        // mode generally :
+        // iPos = 10*(alignement 1/2/3) + position (1/2/3 = left/center/right)
+        int iPos = 0;
+        CMS_lumi(pad1,  iPeriod, iPos);
+        c1->cd();
 
         TLatex * lab = new TLatex ();
         lab->SetTextSize (0.0275);
