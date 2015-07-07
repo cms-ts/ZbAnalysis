@@ -54,8 +54,6 @@ int useDY = 0; // use MadGraph DY
 int useWeights = 0; // do not use weights for numB=0
 //int useWeights = 1; // use weights for numB=0
 
-bool labelDone = false;
-
 string bSel=" ";
 string subdir="0";
 string postfix="";
@@ -1346,34 +1344,27 @@ if (numB==1) bbBkg = true;
 
  	TLatex *latexLabel = CMSPrel3 (Lumi2012/1000., "Z+(#geq 1)b-jet selection", 0, 0.6, 0.4);
 
-	  if (numB==0 && title.find("_b")==string::npos) {
-            if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
-              if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 1, 0.44, 0.9);
-              if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 1, 0.44, 0.9);
-              labelDone = true;
-            }
-            if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
-              if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 0, 0.135, 0.87);
-              if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 0, 0.135, 0.87);
-              labelDone = true;
-            }
+	if (numB==0 && title.find("_b")==string::npos) {
+          if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
+            if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 1, 0.44, 0.9);
+            if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 1, 0.44, 0.9);
           }
-          if (numB==0 && title.find("_b")!=string::npos) {
-            if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
-              if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
-              if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
-              labelDone = true;
-            }
-            if (title=="w_mass_ee"||title=="w_mPrel2m" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
-              if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
-              if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
-              labelDone = true;
-            }
+          if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
+            if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow ee selection", 0, 0.135, 0.87);
+            if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z/#gamma*#rightarrow #mu#mu selection", 0, 0.135, 0.87);
           }
-
-        if (!labelDone) {
-          latexLabel = CMSPrel3 (Lumi2012/1000., "Z+(#geq 1)b-jet selection", 0, 0.6, 0.4);
         }
+        if (numB==0 && title.find("_b")!=string::npos) {
+          if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
+            if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
+            if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 1, 0.44, 0.9);
+          }
+          if (title=="w_mass_ee"||title=="w_mPrel2m" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
+            if (ilepton ==1) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
+            if (ilepton ==2) latexLabel = CMSPrel2 (Lumi2012/1000., "Z+(#geq1)b-jet selection", 0, 0.135, 0.87);
+          }
+        }
+
 	latexLabel->Draw("same");
 
         TLatex * lab = new TLatex ();
