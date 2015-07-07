@@ -1,20 +1,4 @@
 
-TLatex * CMSPrel (Float_t Lumi, TString _decaychannel, double x, double y) {
-
-  _decaychannel = _decaychannel + "";
-
-  TLatex *latexLabel = new TLatex ();
-  latexLabel->SetTextSize (0.0275);
-  latexLabel->SetTextFont (42);
-  latexLabel->SetLineWidth (2);
-  latexLabel->SetNDC ();
-
-  latexLabel->DrawLatex (x, y, Form("CMS Preliminary            #sqrt{s} = 8 TeV #int Ldt = %.1f fb^{-1}", Lumi));
-  latexLabel->DrawLatex (x, y - 0.12, _decaychannel);
-
-  return latexLabel;
-}
-
 TLatex * CMSPrel2 (Float_t Lumi, TString _decaychannel, int pos, double x, double y) {
 
   _decaychannel = _decaychannel + "";
@@ -65,3 +49,4 @@ TLatex * CMSPrel2New (TString _decaychannel, double x, double y) {
 
   return latexLabel;
 }
+

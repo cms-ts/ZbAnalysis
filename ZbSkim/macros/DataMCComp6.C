@@ -2,6 +2,8 @@
 #include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
+#include "CMS_lumi.C"
+
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data/";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
 
@@ -243,10 +245,18 @@ if (numB==2) {
         pad1->Update();
         c1->Update();
 
+        writeExtraText = true;
+        lumi_8TeV  = Form("%.1f fb^{-1}", (Lumi2012_ele+Lumi2012_muon)/2./1000.);
+        int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
+        // second parameter drives the position of the CMS logo in the plot
+        // iPos=11 : top-left, left-aligned
+        // iPos=33 : top-right, right-aligned
+        // iPos=22 : center, centered
+        // mode generally :
+        // iPos = 10*(alignement 1/2/3) + position (1/2/3 = left/center/right)
+        int iPos = 0;
+        CMS_lumi(pad1,  iPeriod, iPos);
         c1->cd();
-
-        TLatex *latexLabel = CMSPrel((Lumi2012_ele+Lumi2012_muon)/2./1000.,"",0.15,0.94);
-        latexLabel->Draw("same");
 
         TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
         pad2->SetTopMargin(0);

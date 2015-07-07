@@ -419,8 +419,6 @@ if (numB==2) {
 
 	if (latexLabel) latexLabel->Draw("same");
 
-        // New style from Gauthier
-
         writeExtraText = true;
         lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
         int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
