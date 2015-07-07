@@ -71,7 +71,7 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX )
       lumiText += "8 TeV";
     }
    
-  cout << lumiText << endl;
+  //cout << lumiText << endl;
 
   TLatex latex;
   latex.SetNDC();
