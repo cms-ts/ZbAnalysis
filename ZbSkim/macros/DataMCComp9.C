@@ -1103,15 +1103,15 @@ if (numB==2) {
 	}
 
         h_mcg_b->GetYaxis()->SetTitleSize(0.05);
-        h_mcg_b->GetYaxis()->SetTitleOffset(0.8);
+        h_mcg_b->GetYaxis()->SetTitleOffset(0.6);
         h_P_tot->GetXaxis()->SetTitleSize(0.15);
         h_P_tot->GetXaxis()->SetTitleOffset(0.85);
 
         h_M_tot->GetYaxis()->SetTitleSize(0.28);
-        h_M_tot->GetYaxis()->SetTitleOffset(0.14);
+        h_M_tot->GetYaxis()->SetTitleOffset(0.1);
         h_M_tot->GetYaxis()->SetTitle("/ Data   ");
         h_S_tot->GetYaxis()->SetTitleSize(0.28);
-        h_S_tot->GetYaxis()->SetTitleOffset(0.14);
+        h_S_tot->GetYaxis()->SetTitleOffset(0.1);
         h_S_tot->GetYaxis()->SetTitle("Theory");
         h_P_tot->GetYaxis()->SetTitle("");
 
