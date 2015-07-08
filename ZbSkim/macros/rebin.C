@@ -133,6 +133,16 @@ TH1F* rebin(TH1F* old, int numB) {
     nbins[8] = 1;
     nbins[9] = 1;
     nbins[10] = 3;
+  } else if (numB==2 && name.find("A_")!=string::npos) {
+    nb = 8;
+    nbins[0] = 1;
+    nbins[1] = 1;
+    nbins[2] = 1;
+    nbins[3] = 1;
+    nbins[4] = 1;
+    nbins[5] = 1;
+    nbins[6] = 1;
+    nbins[7] = 3;
   } else {
     return old;
   }
@@ -302,6 +312,16 @@ TH2F* rebin(TH2F* old, int numB) {
     nbins[8] = 1;
     nbins[9] = 1;
     nbins[10] = 3;
+  } else if (numB==2 && name.find("A_")!=string::npos) {
+    nb = 8;
+    nbins[0] = 1;
+    nbins[1] = 1;
+    nbins[2] = 1;
+    nbins[3] = 1;
+    nbins[4] = 1;
+    nbins[5] = 1;
+    nbins[6] = 1;
+    nbins[7] = 3;
   } else {
     return old;
   }
