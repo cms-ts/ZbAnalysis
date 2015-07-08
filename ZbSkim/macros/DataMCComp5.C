@@ -37,7 +37,8 @@ int useFitResults=1;  // use fit results for c_t
 //int useEleMuo = 0; // use MC or fit results for c_t
 int useEleMuo = 1; // use e-mu fit results for c_t
 
-string bSel="Z + (#geq 1) b-jet";
+string bSel="Z + (#geq 1) jet";
+if (title.find("_b")!=string::npos) bSel="Z + (#geq 1) b-jet";
 string subdir="0";
 string postfix="";
 string dirbSel="";
