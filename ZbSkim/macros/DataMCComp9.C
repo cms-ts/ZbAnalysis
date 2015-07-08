@@ -1234,7 +1234,7 @@ if (numB==2) {
 	  }
 	} else if (title_b=="w_A_Zb") {
           h_mcg_b->GetYaxis()->SetTitle("d#sigma / d A_{Zbb} [pb]");
-          h_P_tot->GetXaxis()->SetTitle("A(Zb)");
+          h_P_tot->GetXaxis()->SetTitle("A(Zbb)");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d A_{Zbb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
