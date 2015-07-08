@@ -1,8 +1,8 @@
 #include "DataMCComp.h"
-#include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
 #include "CMS_lumi.C"
+#include "CMS_process.C"
 
 #include "fixrange.C"
 #include "rebin.C"

@@ -1,5 +1,4 @@
 #include "DataMCComp.h"
-#include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
 #include "RooUnfold.h"

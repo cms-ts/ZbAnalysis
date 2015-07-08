@@ -1,8 +1,8 @@
 #include "DataMCComp.h"
-#include "LumiLabel.C"
 #include "LumiInfo_v14.h"
 
 #include "CMS_lumi.C"
+#include "CMS_process.C"
 
 string path = "/gpfs/cms/users/candelis/work/ZbSkim/test/data";
 //string path = "/gpfs/cms/users/lalicata/work/test/data/";
@@ -398,26 +398,20 @@ if (numB==2) {
 
 	leg->Draw();
 
-	c1->cd();
-
- 	TLatex *latexLabel = 0;
-
         if (isratio==0) {
           if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_second_bjet_pt" || title_b=="w_first_bjet_eta_abs" || title_b=="w_second_bjet_eta_abs" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb" ) {
-            latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.135, 0.51);
+            CMS_process(pad1, "Z/#gamma*#rightarrow ll selection", 0.135, 0.51);
           }
           if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b" || title_b=="w_mass_Zj_b") {
-            latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
+            CMS_process(pad1, "Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
           }
           if (title_b=="w_first_bjet_eta" || title_b=="w_second_bjet_eta") {
-            latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
+            CMS_process(pad1, "Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
           }
         }
         if (isratio==1) {
-          latexLabel = CMSPrel2New ("Z/#gamma*#rightarrow ll selection", 0.135, 0.85);
+          CMS_process(pad1, "Z/#gamma*#rightarrow ll selection", 0.135, 0.85);
         }
-
-	if (latexLabel) latexLabel->Draw("same");
 
         writeExtraText = true;
         lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
