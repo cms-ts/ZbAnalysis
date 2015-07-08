@@ -2689,22 +2689,22 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_delta_phi_b") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{bZ} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi(bZ) [rad]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{Zb} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi(Zb) [rad]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta#phi_{Zb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_DR_Zb_min") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{min}_{bZ} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{min}(bZ) [rad]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{min}_{Zb} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{min}(Zb) [rad]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta R^{min}_{Zb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_DR_Zb_max") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{max}_{bZ} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{max}(bZ) [rad]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{max}_{Zb} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{max}(Zb) [rad]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta R^{max}_{Zb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
@@ -2735,6 +2735,13 @@ if (numB==2) {
 	  h_P_tot->GetXaxis()->SetTitle("M(bb) [GeV]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{bb} [%]");
+	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
+	  }
+	} else if (title_b=="w_A_Zb") {
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d A_{Zbb} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("A(Zbb)");
+	  if (isratio==1) {
+	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d A_{Zbb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	}
