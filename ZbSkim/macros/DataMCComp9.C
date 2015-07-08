@@ -398,21 +398,6 @@ if (numB==2) {
 
 	leg->Draw();
 
-        if (isratio==0) {
-          if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_second_bjet_pt" || title_b=="w_first_bjet_eta_abs" || title_b=="w_second_bjet_eta_abs" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb" ) {
-            CMS_process(pad1, "Z/#gamma*#rightarrow ll selection", 0.135, 0.51);
-          }
-          if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b" || title_b=="w_mass_Zj_b") {
-            CMS_process(pad1, "Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
-          }
-          if (title_b=="w_first_bjet_eta" || title_b=="w_second_bjet_eta") {
-            CMS_process(pad1, "Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
-          }
-        }
-        if (isratio==1) {
-          CMS_process(pad1, "Z/#gamma*#rightarrow ll selection", 0.135, 0.85);
-        }
-
         writeExtraText = true;
         lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
         int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
@@ -425,6 +410,21 @@ if (numB==2) {
         int iPos = 0;
         CMS_lumi(pad1,  iPeriod, iPos);
         c1->cd();
+
+        if (isratio==0) {
+          if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_second_bjet_pt" || title_b=="w_first_bjet_eta_abs" || title_b=="w_second_bjet_eta_abs" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb" ) {
+            CMS_process("Z/#gamma*#rightarrow ll selection", 0.135, 0.51);
+          }
+          if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b" || title_b=="w_mass_Zj_b") {
+            CMS_process("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
+          }
+          if (title_b=="w_first_bjet_eta" || title_b=="w_second_bjet_eta") {
+            CMS_process("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
+          }
+        }
+        if (isratio==1) {
+          CMS_process("Z/#gamma*#rightarrow ll selection", 0.135, 0.85);
+        }
 
 	TPad *pad2 = new TPad("pad2","pad2",0,0.29,1,0.4);
 	pad2->SetTopMargin(0);

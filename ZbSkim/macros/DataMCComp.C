@@ -1342,29 +1342,6 @@ if (numB==1) bbBkg = true;
 	OLine->SetLineWidth(2);
 	OLine->Draw();
 
-	c1->cd();
-
-	if (numB==0 && title.find("_b")==string::npos) {
-          if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
-            if (ilepton ==1) CMS_process(pad1, "Z/#gamma*#rightarrow ee selection", 0.44, 0.9);
-            if (ilepton ==2) CMS_process(pad1, "Z/#gamma*#rightarrow #mu#mu selection", 0.44, 0.9);
-          }
-          if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
-            if (ilepton ==1) CMS_process(pad1, "Z/#gamma*#rightarrow ee selection", 0.135, 0.87);
-            if (ilepton ==2) CMS_process(pad1, "Z/#gamma*#rightarrow #mu#mu selection", 0.135, 0.87);
-          }
-        }
-        if (numB==0 && title.find("_b")!=string::npos) {
-          if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
-            if (ilepton ==1) CMS_process(pad1, "Z+(#geq1)b-jet selection", 0.44, 0.9);
-            if (ilepton ==2) CMS_process(pad1, "Z+(#geq1)b-jet selection", 0.44, 0.9);
-          }
-          if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
-            if (ilepton ==1) CMS_process(pad1, "Z+(#geq1)b-jet selection", 0.135, 0.87);
-            if (ilepton ==2) CMS_process(pad1, "Z+(#geq1)b-jet selection", 0.135, 0.87);
-          }
-        }
-
         writeExtraText = true;
         lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
         int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
@@ -1377,6 +1354,27 @@ if (numB==1) bbBkg = true;
         int iPos = 0;
         CMS_lumi(pad1,  iPeriod, iPos);
         c1->cd();
+
+	if (numB==0 && title.find("_b")==string::npos) {
+          if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
+            if (ilepton ==1) CMS_process("Z/#gamma*#rightarrow ee selection", 0.44, 0.9);
+            if (ilepton ==2) CMS_process("Z/#gamma*#rightarrow #mu#mu selection", 0.44, 0.9);
+          }
+          if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
+            if (ilepton ==1) CMS_process("Z/#gamma*#rightarrow ee selection", 0.135, 0.87);
+            if (ilepton ==2) CMS_process("Z/#gamma*#rightarrow #mu#mu selection", 0.135, 0.87);
+          }
+        }
+        if (numB==0 && title.find("_b")!=string::npos) {
+          if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
+            if (ilepton ==1) CMS_process("Z+(#geq1)b-jet selection", 0.44, 0.9);
+            if (ilepton ==2) CMS_process("Z+(#geq1)b-jet selection", 0.44, 0.9);
+          }
+          if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
+            if (ilepton ==1) CMS_process("Z+(#geq1)b-jet selection", 0.135, 0.87);
+            if (ilepton ==2) CMS_process("Z+(#geq1)b-jet selection", 0.135, 0.87);
+          }
+        }
 
         TLatex * lab = new TLatex ();
         lab->SetTextSize (0.0275);
