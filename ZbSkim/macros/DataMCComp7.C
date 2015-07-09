@@ -1680,7 +1680,7 @@ if (numB==2) {
 	  leg->SetX1(0.12);
 	  leg->SetX2(0.38);
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{Zb} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi(Zb) [rad]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi_{Zb} [rad]");
 	  if (isratio==1) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta#phi_{Zb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
@@ -1689,7 +1689,7 @@ if (numB==2) {
 	  leg->SetX1(0.12);
 	  leg->SetX2(0.38);
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{bb} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi(bb) [rad]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi_{bb} [rad]");
 	  if (isratio==1) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta#phi_{Zb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
@@ -1698,7 +1698,7 @@ if (numB==2) {
 	  leg->SetX1(0.12);
 	  leg->SetX2(0.38);
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{min}_{Zb} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{min}(Zb) [rad]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{min}_{Zb} [rad]");
 	  if (isratio==1) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta R^{min}_{Zb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
@@ -1707,7 +1707,7 @@ if (numB==2) {
 	  leg->SetX1(0.12);
 	  leg->SetX2(0.38);
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{max}_{Zb} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{max}(Zb) [rad]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{max}_{Zb} [rad]");
 	  if (isratio==1) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta R^{max}_{Zb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
@@ -1716,7 +1716,7 @@ if (numB==2) {
 	  leg->SetX1(0.12);
 	  leg->SetX2(0.38);
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d#Delta R{bb} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta R(bb) [rad]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta R_{bb} [rad]");
 	  if (isratio==1) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta R_{bb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
@@ -1725,7 +1725,7 @@ if (numB==2) {
 	  leg->SetX1(0.12);
 	  leg->SetX2(0.38);
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d M_{Zbb} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("M(Zbb) [GeV]");
+	  h_P_tot->GetXaxis()->SetTitle("M_{Zbb} [GeV]");
 	  if (isratio==1) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{Zbb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
@@ -1734,7 +1734,7 @@ if (numB==2) {
 	  leg->SetX1(0.12);
 	  leg->SetX2(0.38);
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d M_{bb} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("M(bb) [GeV]");
+	  h_P_tot->GetXaxis()->SetTitle("M_{bb} [GeV]");
 	  if (isratio==1) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{bb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
@@ -1743,7 +1743,7 @@ if (numB==2) {
 	  leg->SetX1(0.12);
 	  leg->SetX2(0.38);
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d A_{Zbb} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("A(Zbb)");
+	  h_P_tot->GetXaxis()->SetTitle("A_{Zbb}");
 	  if (isratio==1) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d A_{Zbb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
