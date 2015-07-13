@@ -1200,7 +1200,7 @@ if (numB==1) bbBkg = true;
 	  h_ratio->GetXaxis ()->SetTitle("jet multiplicity");
 	} else if (title=="w_mass_ee"||title=="w_mass_mm"||title=="w_mass_em") {
 	  h_ratio->GetXaxis ()->SetTitle("invariant mass [GeV/c^{2}]");
-	} else if (title=="w_mass_ee_b"||title=="w_mass_mm_b"||title=="w_mass_em_B") {
+	} else if (title=="w_mass_ee_b"||title=="w_mass_mm_b"||title=="w_mass_em_b") {
 	  h_ratio->GetXaxis ()->SetTitle("invariant mass [GeV/c^{2}]");
 	} else if (title=="w_first_muon_pt") {
 	  h_ratio->GetXaxis ()->SetTitle("muon p_{T} [GeV/c]");

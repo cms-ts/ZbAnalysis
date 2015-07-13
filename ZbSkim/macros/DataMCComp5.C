@@ -616,9 +616,9 @@ if (numB==2) {
         OLine->SetLineWidth(1);
         OLine->Draw();
 
-        if (title=="w_mass_ee"||title=="w_mass_mm"||title=="w_mass_em") {
+        if (title=="w_mass_ee_wide"||title=="w_mass_mm_wide"||title=="w_mass_em_wide") {
           h_ratio->GetXaxis ()->SetTitle("invariant mass [GeV/c^{2}]");
-        } else if (title=="w_mass_ee_b"||title=="w_mass_mm_b"||title=="w_mass_em_B") {
+        } else if (title=="w_mass_ee_b_wide"||title=="w_mass_mm_b_wide"||title=="w_mass_em_b_wide") {
           h_ratio->GetXaxis ()->SetTitle("invariant mass [GeV/c^{2}]");
         } else if (title=="w_MET"||title=="w_MET_b") {
           h_ratio->GetXaxis ()->SetTitle("MET [GeV/c]");
