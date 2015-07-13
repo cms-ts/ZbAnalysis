@@ -1212,10 +1212,10 @@ if (numB==1) bbBkg = true;
 	  h_ratio->GetXaxis ()->SetTitle("Number of offline vertices");
 	} else if (title=="w_muon_pt") {
 	  h_ratio->GetXaxis ()->SetTitle("muon p_{T} [GeV/c]");
-	} else if (title=="w_MET") {
+	} else if (title=="w_MET"||title=="w_MET_b") {
 	  h_ratio->GetXaxis ()->SetTitle("MET [GeV/c]");
-	} else if (title=="w_MET_sign") {
-	  h_ratio->GetXaxis ()->SetTitle("MET Significance [GeV/c]");
+	} else if (title=="w_MET_sign"||title=="w_MET_sign_b") {
+	  h_ratio->GetXaxis ()->SetTitle("MET Significance");
 	} else if (title=="w_Ht"||title=="w_Ht_b") {
 	  h_ratio->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
 	} else if (title=="w_mass_Zj_ee_b"||title=="w_mass_Zj_mm_b"||title=="w_mass_Zj_em_b") {
