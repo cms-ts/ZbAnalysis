@@ -616,6 +616,16 @@ if (numB==2) {
         OLine->SetLineWidth(1);
         OLine->Draw();
 
+        if (title=="w_mass_ee"||title=="w_mass_mm"||title=="w_mass_em") {
+          h_ratio->GetXaxis ()->SetTitle("invariant mass [GeV/c^{2}]");
+        } else if (title=="w_mass_ee_b"||title=="w_mass_mm_b"||title=="w_mass_em_B") {
+          h_ratio->GetXaxis ()->SetTitle("invariant mass [GeV/c^{2}]");
+        } else if (title=="w_MET"||title=="w_MET_b") {
+          h_ratio->GetXaxis ()->SetTitle("MET [GeV/c]");
+        } else if (title=="w_MET_sign"||title=="w_MET_sign_b") {
+          h_ratio->GetXaxis ()->SetTitle("MET Significance");
+        }
+
         c1->cd();
 
 	TLegend *leg;

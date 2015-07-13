@@ -1200,6 +1200,8 @@ if (numB==1) bbBkg = true;
 	  h_ratio->GetXaxis ()->SetTitle("jet multiplicity");
 	} else if (title=="w_mass_ee"||title=="w_mass_mm"||title=="w_mass_em") {
 	  h_ratio->GetXaxis ()->SetTitle("invariant mass [GeV/c^{2}]");
+	} else if (title=="w_mass_ee_b"||title=="w_mass_mm_b"||title=="w_mass_em_B") {
+	  h_ratio->GetXaxis ()->SetTitle("invariant mass [GeV/c^{2}]");
 	} else if (title=="w_first_muon_pt") {
 	  h_ratio->GetXaxis ()->SetTitle("muon p_{T} [GeV/c]");
 	} else if (title=="w_first_ele_pt") {
@@ -1218,10 +1220,10 @@ if (numB==1) bbBkg = true;
 	  h_ratio->GetXaxis ()->SetTitle("MET Significance");
 	} else if (title=="w_Ht"||title=="w_Ht_b") {
 	  h_ratio->GetXaxis ()->SetTitle("H_{T} [GeV/c]");
-	} else if (title=="w_mass_Zj_ee_b"||title=="w_mass_Zj_mm_b"||title=="w_mass_Zj_em_b") {
-	  h_ratio->GetXaxis ()->SetTitle("Zb invariant mass [GeV/c]");
 	} else if (title=="w_mass_Zj_ee"||title=="w_mass_Zj_mm"||title=="w_mass_Zj_em") {
 	  h_ratio->GetXaxis ()->SetTitle("Zj invariant mass [GeV/c]");
+	} else if (title=="w_mass_Zj_ee_b"||title=="w_mass_Zj_mm_b"||title=="w_mass_Zj_em_b") {
+	  h_ratio->GetXaxis ()->SetTitle("Zb invariant mass [GeV/c]");
 	} else if (title=="w_pt_Z_ee"||title=="w_pt_Z_mm"||title=="w_pt_Z_em") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_y_Z_ee_b"||title=="w_y_Z_mm_b"||title=="w_y_Z_em_b") {
