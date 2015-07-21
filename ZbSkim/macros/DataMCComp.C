@@ -1122,7 +1122,8 @@ if (numB==1) bbBkg = true;
 
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
-	hs->GetYaxis()->SetTitleSize(0.045);
+	hs->GetYaxis()->SetTitleSize(0.05);
+ 	hs->GetYaxis()->SetLabelSize(0.045);
 	hs->GetYaxis()->SetTitleOffset(0.7);
  	hs->GetXaxis()->SetLabelSize(0.08);
 	hs->GetXaxis()->SetTitleOffset(0.7);
@@ -1294,16 +1295,16 @@ if (numB==1) bbBkg = true;
 	  h_ratio->GetXaxis ()->SetTitle("Tracks multiplicity at SV");
 	}
 	h_ratio->GetXaxis()->SetTitleOffset(0.9);
- 	h_ratio->GetXaxis()->SetTitleSize(0.1);
+ 	h_ratio->GetXaxis()->SetTitleSize(0.11);
 	h_ratio->GetXaxis()->SetLabelFont(42);
- 	h_ratio->GetXaxis()->SetLabelSize(0.08);
+ 	h_ratio->GetXaxis()->SetLabelSize(0.10);
 	h_ratio->GetXaxis()->SetTitleFont(42);
 	h_ratio->GetYaxis()->SetTitle("Data/MC");
 	h_ratio->GetYaxis()->SetNdivisions(505);
-	h_ratio->GetYaxis()->SetTitleSize(0.10);
-	h_ratio->GetYaxis()->SetLabelSize(0.08);
+	h_ratio->GetYaxis()->SetTitleSize(0.11);
+	h_ratio->GetYaxis()->SetLabelSize(0.10);
 	h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
-	h_ratio->GetYaxis()->SetTitleOffset(0.3);
+	h_ratio->GetYaxis()->SetTitleOffset(0.33);
 	h_ratio->Divide(ht);
 	h_ratio->SetMarkerStyle(20);
 	h_ratio->Draw("E0PX0");
@@ -1385,7 +1386,7 @@ if (numB==1) bbBkg = true;
 
 	if (doFit) {
 	  TLatex *fitLabel = new TLatex();
-	  fitLabel->SetTextSize(0.0275);
+	  fitLabel->SetTextSize(0.035);
 	  fitLabel->SetTextFont(42);
 	  fitLabel->SetLineWidth(2);
 	  fitLabel->SetNDC();
@@ -1411,15 +1412,15 @@ if (numB==1) bbBkg = true;
 	    float f_uds = 100*h_mc_fit0->Integral(0,h_mc_fit0->GetNbinsX()+1)/(h_mc_fit0->Integral(0,h_mc_fit0->GetNbinsX()+1)+h_mc_fit1->Integral(0,h_mc_fit1->GetNbinsX()+1)+h_mc_fit2->Integral(0,h_mc_fit2->GetNbinsX()+1));
 	    float ef_uds = f_uds*(fitter->GetParError(0)/fitter->GetParameter(0));
 	    sprintf(buff, "f_{uds} = %4.1f #pm %3.1f %%", f_uds, ef_uds);
-	    fitLabel->DrawLatex(0.49, 0.48, buff);
+	    fitLabel->DrawLatex(0.46, 0.48, buff);
 	    float f_b = 100*h_mc_fit1->Integral(0,h_mc_fit1->GetNbinsX()+1)/(h_mc_fit0->Integral(0,h_mc_fit0->GetNbinsX()+1)+h_mc_fit1->Integral(0,h_mc_fit1->GetNbinsX()+1)+h_mc_fit2->Integral(0,h_mc_fit2->GetNbinsX()+1));
 	    float ef_b = f_b*(fitter->GetParError(1)/fitter->GetParameter(1));
 	    sprintf(buff, "f_{b}   = %4.1f #pm %3.1f %%", f_b, ef_b);
-	    fitLabel->DrawLatex(0.49, 0.43, buff);
+	    fitLabel->DrawLatex(0.46, 0.43, buff);
 	    float f_c = 100*h_mc_fit2->Integral(0,h_mc_fit2->GetNbinsX()+1)/(h_mc_fit0->Integral(0,h_mc_fit0->GetNbinsX()+1)+h_mc_fit1->Integral(0,h_mc_fit1->GetNbinsX()+1)+h_mc_fit2->Integral(0,h_mc_fit2->GetNbinsX()+1));
 	    float ef_c = f_c*(fitter->GetParError(2)/fitter->GetParameter(2));
 	    sprintf(buff, "f_{c}   = %4.1f #pm %3.1f %%", f_c, ef_c);
-	    fitLabel->DrawLatex(0.49, 0.38, buff);
+	    fitLabel->DrawLatex(0.46, 0.38, buff);
 	  }
           if (doFit==4) {
             sprintf(buff, "c_{bb} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
