@@ -16,7 +16,7 @@ double Lumi_2012D_22Jan = 7318.000;
 //////////////////////// DY MadGraph
 
 double Ngen_dy = 30459503;
-double Xsec_dy = 3503.71; // NNLO
+double Xsec_dy = 3531.8; // NNLO
 double eXsec_dy = 0;
 
 //////////////////////// DY MadGraph_aMC@NLO + Pythia 8
