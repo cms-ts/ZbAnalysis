@@ -1138,13 +1138,13 @@ if (numB==1) bbBkg = true;
 	TLegend *leg;
 	if (doBkg) {
 	  if (h_mc1c && h_mc1b && (bbBkg || bbSig)) {
-	    leg = new TLegend(0.65, 0.714, 0.91, 0.88);
+	    leg = new TLegend(0.65, 0.640, 0.91, 0.88);
 	  } else if (h_mc1c && h_mc1b) {
-	    leg = new TLegend(0.65, 0.747, 0.91, 0.88);
+	    leg = new TLegend(0.65, 0.640, 0.91, 0.88);
 	  } else if (h_mc1c || h_mc1b) {
-	    leg = new TLegend(0.65, 0.780, 0.91, 0.88);
+	    leg = new TLegend(0.65, 0.740, 0.91, 0.88);
 	  } else {
-	    leg = new TLegend(0.65, 0.813, 0.91, 0.88);
+	    leg = new TLegend(0.65, 0.780, 0.91, 0.88);
 	  }
 	} else {
           if (h_mc1c && h_mc1b && (bbBkg || bbSig)) {
