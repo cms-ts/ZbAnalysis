@@ -413,17 +413,27 @@ if (numB==2) {
 
         if (isratio==0) {
           if (title_b=="w_Ht_b" || title_b=="w_first_bjet_pt" || title_b=="w_second_bjet_pt" || title_b=="w_first_bjet_eta_abs" || title_b=="w_second_bjet_eta_abs" || title_b=="w_pt_Z_b" || title_b=="w_DR_bb" || title_b=="w_bb_mass" || title_b=="w_Zbb_mass"|| title_b=="w_DR_Zb_min"|| title_b=="w_DR_Zb_max"|| title_b=="w_A_Zb" ) {
-            CMS_process("Z/#gamma*#rightarrow ll selection", 0.135, 0.51);
+            //CMS_process("Z/#gamma*#rightarrow ll selection", 0.135, 0.51);
+            if (numB==0) CMS_process("Z/#gamma* + at least 1 b jet", 0.135, 0.51);
+            if (numB==1) CMS_process("Z/#gamma* + exactly b jet", 0.135, 0.51);
+            if (numB==2) CMS_process("Z/#gamma* + at least 2 b jets", 0.135, 0.51);
           }
           if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b" || title_b=="w_mass_Zj_b") {
-            CMS_process("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
+            //CMS_process("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
+            if (numB==0) CMS_process("Z/#gamma* + at least 1 b jet", 0.68, 0.51);
+            if (numB==1) CMS_process("Z/#gamma* + exactly b jet", 0.68, 0.51);
+            if (numB==2) CMS_process("Z/#gamma* + at least 2 b jets", 0.68, 0.51);
           }
           if (title_b=="w_first_bjet_eta" || title_b=="w_second_bjet_eta") {
-            CMS_process("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
+            //CMS_process("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
+            if (numB==0) CMS_process("Z/#gamma* + at least 1 b jet", 0.68, 0.51);
+            if (numB==1) CMS_process("Z/#gamma* + exactly b jet", 0.68, 0.51);
+            if (numB==2) CMS_process("Z/#gamma* + at least 2 b jets", 0.68, 0.51);
           }
         }
         if (isratio==1) {
-          CMS_process("Z/#gamma*#rightarrow ll selection", 0.135, 0.85);
+          //CMS_process("Z/#gamma*#rightarrow ll selection", 0.135, 0.85);
+          CMS_process("Z/#gamma* + at least 1 b jet", 0.135, 0.85);
         }
 
 	TPad *pad2 = new TPad("pad2","pad2",0,0.29,1,0.4);
