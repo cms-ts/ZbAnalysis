@@ -522,6 +522,10 @@ if (numB==2) bbSig = true;
 
 	int dosys = 0; // default 0 -> 0=stat, 1=stat+sys, 2=sys only
 	if (irun==7) dosys = 1;
+	if (imode==1) dosys = 1;
+	if (imode==2) dosys = 1;
+	if (imode==3) dosys = 1;
+	if (imode==4) dosys = 0;
 	if (imode==5) dosys = 1;
 	if (imode==6) dosys = 1;
 	if (imode==7) dosys = 1;
