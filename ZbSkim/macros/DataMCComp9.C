@@ -580,9 +580,9 @@ if (numB==2) {
 	t2->SetLineWidth(2);
 	t2->SetNDC();
 	if (useSherpa) {
-	  t2->DrawLatex(0.2,0.7,"MadGraph 5FS + Pythia6, normalized to #sigma_{NNLO} / MadGraph 4FS + Pythia6, normalized to #sigma_{NLO}");
+	  t2->DrawLatex(0.15,0.7,"MadGraph 5FS + Pythia6, normalized to #sigma_{NNLO} / MadGraph 4FS + Pythia6, normalized to #sigma_{NLO}");
 	} else {
-	  t2->DrawLatex(0.2,0.13,"MadGraph 5FS + Pythia6, normalized to  #sigma_{NNLO}");
+	  t2->DrawLatex(0.15,0.13,"MadGraph 5FS + Pythia6, normalized to  #sigma_{NNLO}");
 	}
 
 	TLine *OLine2 = new TLine(h_M_tot->GetXaxis()->GetXmin(),1.,h_M_tot->GetXaxis()->GetXmax(),1.);
@@ -766,9 +766,9 @@ if (numB==2) {
 	t3->SetLineWidth(2);
 	t3->SetNDC();
 	if (useSherpa) {
-	  t3->DrawLatex(0.2,0.7,"Sherpa, normalized to #sigma_{NNLO}");
+	  t3->DrawLatex(0.15,0.7,"Sherpa, normalized to #sigma_{NNLO}");
 	} else {
-	  t3->DrawLatex(0.2,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}");
+	  t3->DrawLatex(0.15,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}");
 	}
 
 	if (useSherpa) {
@@ -787,7 +787,7 @@ if (numB==2) {
 
 	TPad *pad4 = new TPad("pad4","pad4",0,0.0,1,0.18);
 	pad4->SetTopMargin(0);
-	pad4->SetBottomMargin(0.3);
+	pad4->SetBottomMargin(0.35);
 	pad4->Draw();
 	pad4->cd();
 
@@ -943,7 +943,7 @@ if (numB==2) {
 	t4->SetTextFont(42);
 	t4->SetLineWidth(2);
 	t4->SetNDC();
-	t4->DrawLatex(0.2,0.40,"Powheg + Pythia6, normalized to #sigma_{NLO}");
+	t4->DrawLatex(0.15,0.43,"Powheg + Pythia6, normalized to #sigma_{NLO}");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	if (drawInclusive) {
@@ -1091,8 +1091,10 @@ if (numB==2) {
 
         h_mcg_b->GetYaxis()->SetTitleSize(0.05);
         h_mcg_b->GetYaxis()->SetTitleOffset(0.6);
-        h_P_tot->GetXaxis()->SetTitleSize(0.15);
-        h_P_tot->GetXaxis()->SetTitleOffset(0.85);
+        h_P_tot->GetXaxis()->SetTitleSize(0.17);
+        h_P_tot->GetXaxis()->SetTitleOffset(0.92);
+        h_P_tot->GetXaxis()->SetLabelOffset(0.03);
+        h_P_tot->GetXaxis()->SetTickLength(0.07);
 
         h_M_tot->GetYaxis()->SetTitleSize(0.28);
         h_M_tot->GetYaxis()->SetTitleOffset(0.1);
