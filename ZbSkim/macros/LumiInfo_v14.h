@@ -32,7 +32,7 @@ double eXsec_dy_amc = 0;
 //double Ngen_dy_1 = 127014144;
 // weights extracted from h_gen_weights->GetBinContent(2)
 double Ngen_dy_1 = 4.37323040000000000e+07; 
-double Xsec_dy_1 = 3503.71; // NNLO
+double Xsec_dy_1 = 3531.8; // NNLO
 double eXsec_dy_1 = 0;
 
 //////////////////////// DY Powheg
