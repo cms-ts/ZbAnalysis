@@ -275,10 +275,10 @@ if (numB==2) {
 
         TLegend *leg = NULL;
         if (isratio==0) {
-	  leg = new TLegend(0.64, 0.590, 0.88, 0.88);
+	  leg = new TLegend(0.613, 0.590, 0.883, 0.880);
         }
         if (isratio) {
-          leg = new TLegend(0.52, 0.510, 0.90, 0.88);
+          leg = new TLegend(0.475, 0.590, 0.895, 0.880);
         }
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
@@ -382,10 +382,13 @@ if (numB==2) {
 
 	  if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow ll)+j DATA","lp");
 	  leg->AddEntry(h_data_b_stat,"Z(#rightarrow ll)+b DATA","lp");
-	  leg->AddEntry(h_mcg,"Z(#rightarrow ll) MadGraph 5FS","lf");
-	  leg->AddEntry(h_mcg3,"Z(#rightarrow ll) MadGraph 4FS","lf");
+	  if (drawInclusive) leg->AddEntry(h_mcg,"Z(#rightarrow ll) MadGraph 5FS","lf");
+	  leg->AddEntry(h_mcg_b,"Z(#rightarrow ll)+b MadGraph 5FS","lf");
+	  if (drawInclusive) leg->AddEntry(h_mcg3,"Z(#rightarrow ll) MadGraph 4FS","lf");
+	  leg->AddEntry(h_mcg3_b,"Z(#rightarrow ll)+b MadGraph 4FS","lf");
 	  if (useSherpa) leg->AddEntry(h_mcg1,"Z(#rightarrow ll) Sherpa","lf");
-	  leg->AddEntry(h_mcg2,"Z(#rightarrow ll) Powheg","lf");
+	  if (drawInclusive) leg->AddEntry(h_mcg2,"Z(#rightarrow ll) Powheg","lf");
+	  leg->AddEntry(h_mcg2_b,"Z(#rightarrow ll)+b Powheg","lf");
 	}
 
 	if (isratio==1) {
