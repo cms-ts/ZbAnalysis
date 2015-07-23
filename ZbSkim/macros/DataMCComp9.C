@@ -1093,8 +1093,13 @@ if (numB==2) {
         h_mcg_b->GetYaxis()->SetTitleOffset(0.6);
         h_P_tot->GetXaxis()->SetTitleSize(0.165);
         h_P_tot->GetXaxis()->SetTitleOffset(0.92);
-        h_P_tot->GetXaxis()->SetLabelOffset(0.02);
         h_P_tot->GetXaxis()->SetTickLength(0.07);
+
+        h_mcg_b->GetYaxis()->SetLabelSize(0.036);
+        h_M_tot->GetYaxis()->SetLabelSize(0.19);
+        h_S_tot->GetYaxis()->SetLabelSize(0.19);
+        h_P_tot->GetYaxis()->SetLabelSize(0.12);
+        h_P_tot->GetXaxis()->SetLabelOffset(0.02);
 
         h_M_tot->GetYaxis()->SetTitleSize(0.28);
         h_M_tot->GetYaxis()->SetTitleOffset(0.1);
