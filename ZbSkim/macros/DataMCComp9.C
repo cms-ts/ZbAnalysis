@@ -273,13 +273,7 @@ if (numB==2) {
 	  h_data_b_stat->Draw("E1PX0SAME");
 	}
 
-        TLegend *leg = NULL;
-        if (isratio==0) {
-	  leg = new TLegend(0.613, 0.590, 0.883, 0.880);
-        }
-        if (isratio) {
-          leg = new TLegend(0.475, 0.590, 0.895, 0.880);
-        }
+        TLegend *leg = new TLegend(0.613, 0.590, 0.883, 0.880);
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
@@ -379,25 +373,13 @@ if (numB==2) {
 	  h_data_stat->SetMarkerSize (0.7);
 	  if (drawInclusive) h_data_tot->Draw("E1PX0SAME");
 	  if (drawInclusive) h_data_stat->Draw("E1PX0SAME");
-
-	  if (drawInclusive) leg->AddEntry(h_data_stat,"Z(#rightarrow ll)+j DATA","lp");
-	  leg->AddEntry(h_data_b_stat,"Z(#rightarrow ll)+b DATA","lp");
-	  if (drawInclusive) leg->AddEntry(h_mcg,"Z(#rightarrow ll) MadGraph 5FS","lf");
-	  leg->AddEntry(h_mcg_b,"Z(#rightarrow ll)+b MadGraph 5FS","lf");
-	  if (drawInclusive) leg->AddEntry(h_mcg3,"Z(#rightarrow ll) MadGraph 4FS","lf");
-	  leg->AddEntry(h_mcg3_b,"Z(#rightarrow ll)+b MadGraph 4FS","lf");
-	  if (useSherpa) leg->AddEntry(h_mcg1,"Z(#rightarrow ll) Sherpa","lf");
-	  if (drawInclusive) leg->AddEntry(h_mcg2,"Z(#rightarrow ll) Powheg","lf");
-	  leg->AddEntry(h_mcg2_b,"Z(#rightarrow ll)+b Powheg","lf");
 	}
 
-	if (isratio==1) {
-	  leg->AddEntry(h_data_b_stat,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] DATA","lp");
-	  leg->AddEntry(h_mcg_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] MadGraph 5FS","lf");
-	  leg->AddEntry(h_mcg3_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] MadGraph 4FS","lf");
-	  if (useSherpa) leg->AddEntry(h_mcg1_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] Sherpa","lf");
-	  leg->AddEntry(h_mcg2_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] Powheg","lf");
-	}
+	leg->AddEntry(h_data_b_stat,"DATA","lp");
+	leg->AddEntry(h_mcg_b,"MadGraph 5FS + Pythia6","lf");
+	leg->AddEntry(h_mcg3_b,"MadGraph 4FS + Pythia6","lf");
+	if (useSherpa) leg->AddEntry(h_mcg1_b,"Sherpa","lf");
+	leg->AddEntry(h_mcg2_b,"Powheg + Pythia6","lf");
 
 	leg->Draw();
 
@@ -598,9 +580,9 @@ if (numB==2) {
 	t2->SetLineWidth(2);
 	t2->SetNDC();
 	if (useSherpa) {
-	  t2->DrawLatex(0.2,0.7,"MadGraph 5FS / MadGraph 4FS");
+	  t2->DrawLatex(0.2,0.7,"MadGraph 5FS + Pythia6, normalized to #sigma_{NNLO} / MadGraph 4FS + Pythia6, normalized to #sigma_{NLO}");
 	} else {
-	  t2->DrawLatex(0.2,0.13,"MadGraph 5FS, normalized to #sigma_{NNLO}");
+	  t2->DrawLatex(0.2,0.13,"MadGraph 5FS + Pythia6, normalized to  #sigma_{NNLO}");
 	}
 
 	TLine *OLine2 = new TLine(h_M_tot->GetXaxis()->GetXmin(),1.,h_M_tot->GetXaxis()->GetXmax(),1.);
@@ -784,9 +766,9 @@ if (numB==2) {
 	t3->SetLineWidth(2);
 	t3->SetNDC();
 	if (useSherpa) {
-	  t3->DrawLatex(0.2,0.7,"Sherpa");
+	  t3->DrawLatex(0.2,0.7,"Sherpa, normalized to #sigma_{NNLO}");
 	} else {
-	  t3->DrawLatex(0.2,0.13,"MadGraph 4FS, normalized to #sigma_{NLO}");
+	  t3->DrawLatex(0.2,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}");
 	}
 
 	if (useSherpa) {
@@ -961,7 +943,7 @@ if (numB==2) {
 	t4->SetTextFont(42);
 	t4->SetLineWidth(2);
 	t4->SetNDC();
-	t4->DrawLatex(0.2,0.40,"Powheg, normalized to #sigma_{NLO}");
+	t4->DrawLatex(0.2,0.40,"Powheg + Pythia6, normalized to #sigma_{NLO}");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	if (drawInclusive) {
