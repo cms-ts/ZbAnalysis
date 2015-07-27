@@ -1137,8 +1137,10 @@ if (numB==1) bbBkg = true;
 
 	TLegend *leg;
 	if (doBkg) {
-	  if (h_mc1c && h_mc1b && (bbBkg || bbSig)) {
+	  if (h_mc1c && h_mc1b && bbBkg) {
 	    leg = new TLegend(0.65, 0.640, 0.91, 0.88);
+	  } else if (h_mc1c && h_mc1b && bbSig) {
+	    leg = new TLegend(0.65, 0.800, 0.91, 0.88);
 	  } else if (h_mc1c && h_mc1b) {
 	    leg = new TLegend(0.65, 0.640, 0.91, 0.88);
 	  } else if (h_mc1c || h_mc1b) {
@@ -1147,8 +1149,10 @@ if (numB==1) bbBkg = true;
 	    leg = new TLegend(0.65, 0.780, 0.91, 0.88);
 	  }
 	} else {
-          if (h_mc1c && h_mc1b && (bbBkg || bbSig)) {
+          if (h_mc1c && h_mc1b && bbBkg) {
             leg = new TLegend(0.65, 0.547, 0.91, 0.88);
+          } else if (h_mc1c && h_mc1b && bbSig) {
+            leg = new TLegend(0.65, 0.577, 0.91, 0.88);
 	  } else if (h_mc1c && h_mc1b) {
 	    leg = new TLegend(0.65, 0.580, 0.91, 0.88);
 	  } else if (h_mc1c || h_mc1b) {
@@ -1166,15 +1170,29 @@ if (numB==1) bbBkg = true;
 	if (ilepton==2) leg->AddEntry(h_data,"Data","p");
 	if (ilepton==3) leg->AddEntry(h_data,"Data","p");
 
-	if (h_mc1c && h_mc1b) {
-	  leg->AddEntry(h_mc1,"Z+udsg-jets","f");
-	} else {
-	  leg->AddEntry(h_mc1,"Z+jets","f");
+	if (!bbSig) {
+	  if (h_mc1c && h_mc1b) {
+	    leg->AddEntry(h_mc1,"Z+udsg-jets","f");
+	  } else {
+	    leg->AddEntry(h_mc1,"Z+jets","f");
+	  }
+	  if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
+	  if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
 	}
-	if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
-	if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
+	if (bbSig) {
+	  if (!doBkg) {
+	    if (h_mc1c && h_mc1b) {
+	      leg->AddEntry(h_mc1,"Z+udsg-jets","f");
+	    } else {
+	      leg->AddEntry(h_mc1,"Z+jets","f");
+	    }
+	    if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
+	    if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
+	  }
+	  leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
+	}
 	if (!doBkg) {
-          if (bbBkg || bbSig) leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
+          if (bbBkg) leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
 	  leg->AddEntry(h_mc2,"t#bar{t}","f");
 	  leg->AddEntry(h_mcD,"Dibosons","f");
 	  leg->AddEntry(h_mcO,"Others","f");
