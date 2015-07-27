@@ -1140,7 +1140,7 @@ if (numB==1) bbBkg = true;
 	  if (h_mc1c && h_mc1b && bbBkg) {
 	    leg = new TLegend(0.65, 0.640, 0.91, 0.88);
 	  } else if (h_mc1c && h_mc1b && bbSig) {
-	    leg = new TLegend(0.65, 0.800, 0.91, 0.88);
+	    leg = new TLegend(0.65, 0.760, 0.91, 0.88);
 	  } else if (h_mc1c && h_mc1b) {
 	    leg = new TLegend(0.65, 0.640, 0.91, 0.88);
 	  } else if (h_mc1c || h_mc1b) {
