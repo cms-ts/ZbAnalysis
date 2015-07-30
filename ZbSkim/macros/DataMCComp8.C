@@ -2725,14 +2725,14 @@ if (numB==2) {
 	  }
 	} else if (title_b=="w_Zbb_mass") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{Zbb} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("M_{Zbb} [GeV]");
+	  h_P_tot->GetXaxis()->SetTitle("M_{Zbb} [GeV/c^{2}]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{Zbb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_bb_mass") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{bb} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("M_{bb} [GeV]");
+	  h_P_tot->GetXaxis()->SetTitle("M_{bb} [GeV/c^{2}]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{bb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
