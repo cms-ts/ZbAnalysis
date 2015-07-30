@@ -1288,13 +1288,13 @@ if (numB==1) bbBkg = true;
 	} else if (title=="w_JBP"||title=="w_JBP_mass"){
 	  h_ratio->GetXaxis ()->SetTitle("Jet Probability Discriminator");
 	} else if (title=="w_first_bjet_pt") {
-	  h_ratio->GetXaxis ()->SetTitle("leading b-jet p_{T}");
+	  h_ratio->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
 	} else if (title=="w_first_bjet_eta") {
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet #eta");
 	} else if (title=="w_first_bjet_eta_abs") {
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet |#eta|");
 	} else if (title=="w_second_bjet_pt") {
-	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet p_{T}");
+	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet p_{T} [GeV/c]");
 	} else if (title=="w_second_bjet_eta") {
 	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet #eta");
 	} else if (title=="w_second_bjet_eta_abs") {
