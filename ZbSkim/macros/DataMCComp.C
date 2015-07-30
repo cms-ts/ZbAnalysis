@@ -1281,7 +1281,7 @@ if (numB==1) bbBkg = true;
           h_ratio->GetXaxis ()->SetTitle("m(bb) [GeV/c^{2}]");
         } else if (title=="w_eebb_mass"||title=="w_mmbb_mass"||title=="w_embb_mass") {
           h_ratio->GetXaxis ()->SetTitle("m(Zbb) [GeV/c^{2}]");
-        } else if (title=="SVTX_mass_jet"||title=="SVTX_mass_trk"||title=="SVTX_mass") {
+        } else if (title=="w_SVTX_mass_jet"||title=="w_SVTX_mass_trk"||title=="w_SVTX_mass") {
 	  h_ratio->GetXaxis ()->SetTitle("SV mass [GeV/c^{2}]");
 	} else if (title=="w_BJP"||title=="w_BJP0"||title=="w_BJP1"||title=="w_BJP2"||title=="w_BJP_mass"){
 	  h_ratio->GetXaxis ()->SetTitle("Jet B Probability Discriminator");
