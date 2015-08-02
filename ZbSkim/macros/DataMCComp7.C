@@ -1685,13 +1685,11 @@ if (numB==2) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta#phi_{Zb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
-	} else if (title_b=="w_delta_phi_2b") {
-	  leg->SetX1(0.12);
-	  leg->SetX2(0.38);
-	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{bb} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi_{bb} [rad]");
+	} else if (title_b=="w_mass_Zj_ee_b" || title_b=="w_mass_Zj_mm_b") {
+	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / dM_{Zj} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("M(Zj) [GeV^{2}]");
 	  if (isratio==1) {
-	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta#phi_{Zb} [%]");
+	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / dM_{Zj} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_DR_eeb_min" || title_b=="w_DR_mmb_min") {
@@ -1710,6 +1708,15 @@ if (numB==2) {
 	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{max}_{Zb} [rad]");
 	  if (isratio==1) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta R^{max}_{Zb} [%]");
+	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
+	  }
+	} else if (title_b=="w_delta_phi_2b") {
+	  leg->SetX1(0.12);
+	  leg->SetX2(0.38);
+	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{bb} [pb]");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi_{bb} [rad]");
+	  if (isratio==1) {
+	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d#Delta#phi_{Zb} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_DR_bb") {
