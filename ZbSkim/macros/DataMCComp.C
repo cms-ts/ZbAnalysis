@@ -40,6 +40,12 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
 
 }
 
+#ifdef PAPER
+void DataMCCompP(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0, int numB=0) {
+  DataMCComp(irun, title, plot, ilepton, doBkg, doFit, numB);
+}
+#endif
+
 void DataMCComp(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0, int numB=0) {
 
 //int useFitResults=0; // use MC predictions for c_t
@@ -150,6 +156,10 @@ if (numB==2) {
   dirbSel = "_2b";
   bSel = "Z + (#geq 2) b-jet";
 }
+
+#ifdef PAPER
+bSel = "";
+#endif
 
 if (numB==1) bbBkg = true;
 
@@ -1062,6 +1072,18 @@ if (numB==1) bbBkg = true;
           h_mc_fit0->Scale(fitter->GetParameter(0));
         }
 
+#ifdef PAPER
+	h_data->Scale(1., "width");
+
+	h_mcO->Scale(1., "width");
+	h_mcD->Scale(1., "width");
+	h_mc2->Scale(1., "width");
+	if (h_mc1bb) h_mc1bb->Scale(1., "width");
+	if (h_mc1b) h_mc1b->Scale(1., "width");
+	if (h_mc1c) h_mc1c->Scale(1., "width");
+	h_mc1->Scale(1., "width");
+#endif
+
 	TH1F *ht = (TH1F*)h_mc1->Clone("ht");
 	ht->Reset();
 	if (!doBkg) {
@@ -1122,12 +1144,20 @@ if (numB==1) bbBkg = true;
 
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
+#ifdef PAPER
+	hs->GetYaxis()->SetTitle("Events / GeV");
+#endif
 	hs->GetYaxis()->SetTitleSize(0.05);
  	hs->GetYaxis()->SetLabelSize(0.045);
 	hs->GetYaxis()->SetTitleOffset(0.7);
  	hs->GetXaxis()->SetLabelSize(0.08);
 	hs->GetXaxis()->SetTitleOffset(0.7);
 	hs->SetMinimum(8);
+#ifdef PAPER
+	hs->SetMinimum(0.5);
+	hs->SetMaximum(1.2*hs->GetMaximum());
+	if (title=="w_SVTX_mass") hs->SetMinimum(5);
+#endif
 
 	h_data->Draw("EPX0SAMES");
 	h_data->SetMarkerColor(kBlack);
@@ -1312,7 +1342,21 @@ if (numB==1) bbBkg = true;
 	} else if (title=="w_SV_NTracks") {
 	  h_ratio->GetXaxis ()->SetTitle("Tracks multiplicity at SV");
 	}
+#ifdef PAPER
+	string tmp = h_ratio->GetXaxis()->GetTitle();
+	if (tmp.find("/c")!=string::npos) {
+	  tmp.erase(tmp.find("/c"), 2);
+	  h_ratio->GetXaxis ()->SetTitle(tmp.c_str());
+	}
+	if (tmp.find("/c^{2}")!=string::npos) {
+	  tmp.erase(tmp.find("/c^{2}"), 6);
+	  h_ratio->GetXaxis ()->SetTitle(tmp.c_str());
+	}
+#endif
 	h_ratio->GetXaxis()->SetTitleOffset(0.9);
+#ifdef PAPER
+	h_ratio->GetXaxis()->SetTitleOffset(1.1);
+#endif
  	h_ratio->GetXaxis()->SetTitleSize(0.11);
 	h_ratio->GetXaxis()->SetLabelFont(42);
  	h_ratio->GetXaxis()->SetLabelSize(0.10);
@@ -1362,6 +1406,19 @@ if (numB==1) bbBkg = true;
 	OLine->SetLineColor(kRed);
 	OLine->SetLineWidth(2);
 	OLine->Draw();
+
+#ifdef PAPER
+	if (title=="w_bjetmultiplicity_exc") {
+	  hs->GetXaxis()->SetRangeUser(0.5, 4.5);
+	  hs->SetMinimum(0.01);
+	  hs->SetMaximum(100000);
+	  hs->GetYaxis()->SetTitle("Events");
+	  h_ratio->GetXaxis()->SetRangeUser(0.5, 4.5);
+	  h_ratio->GetXaxis()->SetNdivisions(105);
+	  h_ratio->GetXaxis()->SetTitle("b-jet multiplicity");
+	  OLine->SetX2(4.5);
+	}
+#endif
 
         writeExtraText = true;
         lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
@@ -1454,6 +1511,10 @@ if (numB==1) bbBkg = true;
 //	if (useDY==1) subdir = subdir + "_sherpa";
 //	if (useDY==2) version = version + "_powheg";
 //	if (useDY==3) version = version + "_aMC@NLO";
+
+#ifdef PAPER
+	path = path + "/paper/";
+#endif
 
 	if (plot) {
 	  if (doBkg) title = title + "_doBkg";
