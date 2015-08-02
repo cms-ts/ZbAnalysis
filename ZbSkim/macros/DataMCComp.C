@@ -1311,6 +1311,8 @@ if (numB==1) bbBkg = true;
           h_ratio->GetXaxis ()->SetTitle("#Delta R(Zb) min [rad]");
         } else if (title=="w_DR_eeb_max"||title=="w_DR_mmb_max"||title=="w_DR_emb_max") {
           h_ratio->GetXaxis ()->SetTitle("#Delta R(Zb) max [rad]");
+	} else if (title=="w_A_eeb"||title=="w_A_mmb") {
+	  h_ratio->GetXaxis ()->SetTitle("A_{Zbb}");
         } else if (title=="w_bb_mass") {
           h_ratio->GetXaxis ()->SetTitle("m(bb) [GeV/c^{2}]");
         } else if (title=="w_eebb_mass"||title=="w_mmbb_mass"||title=="w_embb_mass") {

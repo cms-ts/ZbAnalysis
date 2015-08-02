@@ -670,6 +670,8 @@ if (numB==2) bbSig = true;
           tmp->GetXaxis()->SetTitle("#Delta R(Zb) min [rad]");
         } else if (title=="w_DR_eeb_max" || title=="w_DR_mmb_max") {
           tmp->GetXaxis()->SetTitle("#Delta R(Zb) max [rad]");
+        } else if (title=="w_A_eeb"||title=="w_A_mmb") {
+          tmp->GetXaxis()->SetTitle("A_{Zbb}");
         } else if (title=="w_bb_mass") {
           tmp->GetXaxis()->SetTitle("m(bb) [GeV/c^{2}]");
         } else if (title=="w_eebb_mass" || title=="w_mmbb_mass") {
