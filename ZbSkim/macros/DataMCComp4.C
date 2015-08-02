@@ -650,6 +650,12 @@ if (numB==2) bbSig = true;
 	  tmp->GetXaxis()->SetTitle("leading b-jet #eta");
 	} else if (title=="w_first_bjet_eta_abs") {
 	  tmp->GetXaxis()->SetTitle("leading b-jet |#eta|");
+	} else if (title=="w_second_bjet_pt") {
+	  tmp->GetXaxis()->SetTitle("subleading b-jet p_{T} [GeV/c]");
+	} else if (title=="w_second_bjet_eta") {
+	  tmp->GetXaxis()->SetTitle("subleading b-jet #eta");
+	} else if (title=="w_second_bjet_eta_abs") {
+	  tmp->GetXaxis()->SetTitle("subleading b-jet |#eta|");
 	} else if (title=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b") {
 	  tmp->GetXaxis()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_delta_phi_ee_b"||title=="w_delta_phi_mm_b") {
