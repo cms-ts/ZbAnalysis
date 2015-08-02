@@ -1687,7 +1687,7 @@ if (numB==2) {
 	  }
 	} else if (title_b=="w_mass_Zj_ee_b" || title_b=="w_mass_Zj_mm_b") {
 	  h_mc1b_b->GetYaxis()->SetTitle("d#sigma / dM_{Zj} [pb]");
-	  h_P_tot->GetXaxis()->SetTitle("M(Zj) [GeV^{2}]");
+	  h_P_tot->GetXaxis()->SetTitle("M(Zj) [GeV/c^{2}]");
 	  if (isratio==1) {
 	    h_mc1b_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / dM_{Zj} [%]");
 	    h_mc1b_b->GetYaxis()->SetRangeUser(0, 20);
