@@ -1280,6 +1280,8 @@ if (numB==1) bbBkg = true;
 	} else if (title=="w_y_Z_ee_b"||title=="w_y_Z_mm_b"||title=="w_y_Z_em_b") {
           h_ratio->GetXaxis ()->SetTitle("y_{Z}");
         } else if (title=="w_bjetmultiplicity") {
+	  h_ratio->GetXaxis ()->SetTitle("jet multiplicity");
+        } else if (title=="w_bjetmultiplicity_exc") {
 	  h_ratio->GetXaxis ()->SetTitle("b-jet multiplicity");
 	} else if (title=="w_first_jet_pt_b") {
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
