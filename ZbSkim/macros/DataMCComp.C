@@ -40,14 +40,6 @@ void fcn(int& npar, double* gin, double& fun, double* par, int iflag) {
 
 }
 
-// #define PAPER
-
-#ifdef PAPER
-void DataMCCompP(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0, int numB=0) {
-  DataMCComp(irun, title, plot, ilepton, doBkg, doFit, numB);
-}
-#endif
-
 void DataMCComp(int irun=0, string title="", int plot=0, int ilepton=1, int doBkg=0, int doFit=0, int numB=0) {
 
 //int useFitResults=0; // use MC predictions for c_t
