@@ -1346,12 +1346,12 @@ if (numB==1) bbBkg = true;
 	}
 #ifdef PAPER
 	string tmp = h_ratio->GetXaxis()->GetTitle();
-	if (tmp.find("/c")!=string::npos) {
-	  tmp.erase(tmp.find("/c"), 2);
-	  h_ratio->GetXaxis ()->SetTitle(tmp.c_str());
-	}
 	if (tmp.find("/c^{2}")!=string::npos) {
 	  tmp.erase(tmp.find("/c^{2}"), 6);
+	  h_ratio->GetXaxis ()->SetTitle(tmp.c_str());
+	}
+	if (tmp.find("/c")!=string::npos) {
+	  tmp.erase(tmp.find("/c"), 2);
 	  h_ratio->GetXaxis ()->SetTitle(tmp.c_str());
 	}
 #endif
