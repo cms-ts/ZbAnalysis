@@ -1432,21 +1432,21 @@ if (numB==1) bbBkg = true;
         c1->cd();
 
 	if (numB==0 && title.find("_b")==string::npos) {
-          if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
+          if (title=="w_jetmultiplicity") {
             if (ilepton ==1) CMS_process("Z/#gamma*#rightarrow ee selection", 0.44, 0.9);
             if (ilepton ==2) CMS_process("Z/#gamma*#rightarrow #mu#mu selection", 0.44, 0.9);
           }
-          if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
+          if (title=="w_mass_ee" || title=="w_mass_mm") {
             if (ilepton ==1) CMS_process("Z/#gamma*#rightarrow ee selection", 0.135, 0.87);
             if (ilepton ==2) CMS_process("Z/#gamma*#rightarrow #mu#mu selection", 0.135, 0.87);
           }
         }
         if (numB==0 && title.find("_b")!=string::npos) {
-          if (title=="w_bjetmultiplicity" || title=="w_jetmultiplicity") {
-            if (ilepton ==1) CMS_process("Z+(#geq1)b-jet selection", 0.44, 0.9);
-            if (ilepton ==2) CMS_process("Z+(#geq1)b-jet selection", 0.44, 0.9);
+          if (title=="w_bjetmultiplicity" || title=="w_bjetmultiplicity_exc") {
+            if (ilepton ==1) CMS_process("Z+(#geq1)b-jet selection", 0.34, 0.87);
+            if (ilepton ==2) CMS_process("Z+(#geq1)b-jet selection", 0.34, 0.87);
           }
-          if (title=="w_mass_ee"||title=="w_mass_mm" || title=="w_mass_ee_b"||title=="w_mass_mm_b") {
+          if (title=="w_mass_ee_b" || title=="w_mass_mm_b") {
             if (ilepton ==1) CMS_process("Z+(#geq1)b-jet selection", 0.135, 0.87);
             if (ilepton ==2) CMS_process("Z+(#geq1)b-jet selection", 0.135, 0.87);
           }
