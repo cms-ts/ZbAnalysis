@@ -1151,6 +1151,10 @@ if (numB==1) bbBkg = true;
 	hs->SetMinimum(0.5);
 	hs->SetMaximum(1.2*hs->GetMaximum());
 	if (title=="w_SVTX_mass") hs->SetMinimum(5);
+	if (title.find("w_mass_")!=string::npos) {
+	  hs->SetMaximum(1.5*hs->GetMaximum());
+	  hs->SetMinimum(8);
+	}
 #endif
 
 	h_data->Draw("EPX0SAMES");
@@ -1349,6 +1353,12 @@ if (numB==1) bbBkg = true;
 	if (tmp.find("/c")!=string::npos) {
 	  tmp.erase(tmp.find("/c"), 2);
 	  h_ratio->GetXaxis ()->SetTitle(tmp.c_str());
+	}
+	if (title.find("w_mass_ee")!=string::npos) {
+	  h_ratio->GetXaxis()->SetTitle("dielectron invariant mass [GeV]");
+	}
+	if (title.find("w_mass_mm")!=string::npos) {
+	  h_ratio->GetXaxis()->SetTitle("dimuon invariant mass [GeV]");
 	}
 #endif
 	h_ratio->GetXaxis()->SetTitleOffset(0.9);
