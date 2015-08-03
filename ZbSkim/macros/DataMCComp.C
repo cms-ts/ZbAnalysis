@@ -1441,6 +1441,7 @@ if (numB==1) bbBkg = true;
         CMS_lumi(pad1,  iPeriod, iPos);
         c1->cd();
 
+#ifndef PAPER
 	if (numB==0 && title.find("_b")==string::npos) {
           if (title=="w_jetmultiplicity") {
             if (ilepton ==1) CMS_process("Z/#gamma*#rightarrow ee selection", 0.44, 0.9);
@@ -1461,6 +1462,7 @@ if (numB==1) bbBkg = true;
             if (ilepton ==2) CMS_process("Z+(#geq1)b-jet selection", 0.135, 0.87);
           }
         }
+#endif
 
         TLatex * lab = new TLatex ();
         lab->SetTextSize (0.0275);
