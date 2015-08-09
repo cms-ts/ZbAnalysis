@@ -1535,42 +1535,35 @@ if (numB==2) {
 	//g_M3_stat->SetMarkerSize(0.7);
 
 	if (useSherpa) {
-	  g_M3_stat->SetMarkerStyle(25);
-	  g_M3_stat->SetMarkerSize(0.7);
-	  g_M3_tot->SetMarkerStyle(25);
-	  g_M3_tot->SetMarkerSize(0.7);
+	  if (isratio==0) {
+	    g_M3_stat->SetMarkerStyle(25);
+	    g_M3_stat->SetMarkerSize(0.7);
+	    g_M3_tot->SetMarkerStyle(25);
+	    g_M3_tot->SetMarkerSize(0.7);
+	  }
+	  if (isratio==1) {
+	    g_M3_stat->SetMarkerStyle(25);
+	    g_M3_stat->SetMarkerSize(0.7);
+	    g_M3_tot->SetMarkerStyle(25);
+	    g_M3_tot->SetMarkerSize(0.7);
+	  }
 	} else {
 	  if (isratio==0) {
 	    g_M3_stat->SetMarkerStyle(24);
 	    g_M3_stat->SetMarkerSize(0.7);
+	    g_M3_tot->SetMarkerStyle(24);
+	    g_M3_tot->SetMarkerSize(0.7);
 	  }
 	  if (isratio==1) {
 	    g_M3_stat->SetMarkerStyle(26);
 	    g_M3_stat->SetMarkerSize(0.9);
+	    g_M3_tot->SetMarkerStyle(26);
+	    g_M3_tot->SetMarkerSize(0.9);
 	  }
 	  g_M3_stat->SetMarkerColor(kBlack);
-	  if (isratio==0) {
-	    g_M3_tot->SetMarkerStyle(24);
-	    g_M3_tot->SetMarkerSize(0.7);
-	  }
-	  if (isratio==1) {
-	    g_M3_tot->SetMarkerStyle(26);
-	    g_M3_tot->SetMarkerSize(0.9);
-	  }
 	  g_M3_tot->SetMarkerColor(kBlack);
 	}
-	if (useSherpa) {
-	  g_M3_tot->SetMarkerStyle(25);
-	} else {
-	  if (isratio==0) {
-	    g_M3_tot->SetMarkerStyle(24);
-	    g_M3_tot->SetMarkerSize(0.7);
-	  }
-	  if (isratio==1) {
-	    g_M3_tot->SetMarkerStyle(26);
-	    g_M3_tot->SetMarkerSize(0.9);
-	  }
-	}
+
 	g_M3_tot->Draw("E1P");
 	g_M3_tot->Draw("E0PSAME");
 	g_M3_stat->Draw("E1PSAME");
