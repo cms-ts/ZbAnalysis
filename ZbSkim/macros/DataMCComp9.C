@@ -498,7 +498,7 @@ if (numB==2) {
 	  if (!drawInclusive) {
 	    TH1F *h_M = (TH1F*)h_mcg_b->Clone();
 	    for (int i=0;i<=h_M->GetNbinsX()+1;i++) {
-	      h_M->SetBinError(i, h_M->GetBinContent(i)==0 ? 0 : h_M->GetBinError(i)/h_M->GetBinContent(i));
+	      h_M->SetBinError(i,h_M->GetBinContent(i)==0 ? 0 : h_M->GetBinError(i)/h_M->GetBinContent(i));
 	      h_M->SetBinContent(i,h_M_tot->GetBinContent(i));
 	      h_M_tot->SetBinContent(i,1.);
 	      h_M_tot->SetBinError(i,h_data_b_tot->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_tot->GetBinContent(i));
@@ -561,7 +561,7 @@ if (numB==2) {
 	  if (!drawInclusive) {
 	    TH1F *h_M2 = (TH1F*)h_mcg_b->Clone();
 	    for (int i=0;i<=h_M2->GetNbinsX()+1;i++) {
-	      h_M2->SetBinError(i, h_M2->GetBinContent(i)==0 ? 0 : h_M2->GetBinError(i)/h_M2->GetBinContent(i));
+	      h_M2->SetBinError(i,h_M2->GetBinContent(i)==0 ? 0 : h_M2->GetBinError(i)/h_M2->GetBinContent(i));
 	      h_M2->SetBinContent(i,h_M_tot->GetBinContent(i));
 	      h_M_tot->SetBinContent(i,1.);
 	      h_M_tot->SetBinError(i,h_data_b_tot->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_tot->GetBinContent(i));
@@ -688,7 +688,7 @@ if (numB==2) {
 	  if (!drawInclusive) {
 	    TH1F *h_S = (TH1F*)h_mcg1_b->Clone();
 	    for (int i=0;i<=h_S->GetNbinsX()+1;i++) {
-	      h_S->SetBinError(i, h_S->GetBinContent(i)==0 ? 0 : h_S->GetBinError(i)/h_S->GetBinContent(i));
+	      h_S->SetBinError(i,h_S->GetBinContent(i)==0 ? 0 : h_S->GetBinError(i)/h_S->GetBinContent(i));
 	      h_S->SetBinContent(i,h_S_tot->GetBinContent(i));
 	      h_S_tot->SetBinContent(i,1.);
 	      h_S_tot->SetBinError(i,h_data_b_tot->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_tot->GetBinContent(i));
@@ -751,7 +751,7 @@ if (numB==2) {
 	  if (!drawInclusive) {
 	    TH1F *h_S2 = (TH1F*)h_mcg1_b->Clone();
 	    for (int i=0;i<=h_S2->GetNbinsX()+1;i++) {
-	      h_S2->SetBinError(i, h_S2->GetBinContent(i)==0 ? 0 : h_S2->GetBinError(i)/h_S2->GetBinContent(i));
+	      h_S2->SetBinError(i,h_S2->GetBinContent(i)==0 ? 0 : h_S2->GetBinError(i)/h_S2->GetBinContent(i));
 	      h_S2->SetBinContent(i,h_S_tot->GetBinContent(i));
 	      h_S_tot->SetBinContent(i,1.);
 	      h_S_tot->SetBinError(i,h_data_b_tot->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_tot->GetBinContent(i));
@@ -870,7 +870,7 @@ if (numB==2) {
 	  if (!drawInclusive) {
 	    TH1F *h_P = (TH1F*)h_mcg2_b->Clone();
 	    for (int i=0;i<=h_P->GetNbinsX()+1;i++) {
-	      h_P->SetBinError(i, h_P->GetBinContent(i)==0 ? 0 : h_P->GetBinError(i)/h_P->GetBinContent(i));
+	      h_P->SetBinError(i,h_P->GetBinContent(i)==0 ? 0 : h_P->GetBinError(i)/h_P->GetBinContent(i));
 	      h_P->SetBinContent(i,h_P_tot->GetBinContent(i));
 	      h_P_tot->SetBinContent(i,1.);
 	      h_P_tot->SetBinError(i,h_data_b_tot->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_tot->GetBinContent(i));
@@ -933,7 +933,7 @@ if (numB==2) {
 	  if (!drawInclusive) {
 	    TH1F *h_P2 = (TH1F*)h_mcg2_b->Clone();
 	    for (int i=0;i<=h_P2->GetNbinsX()+1;i++) {
-	      h_P2->SetBinError(i, h_P2->GetBinContent(i)==0 ? 0 : h_P2->GetBinError(i)/h_P2->GetBinContent(i));
+	      h_P2->SetBinError(i,h_P2->GetBinContent(i)==0 ? 0 : h_P2->GetBinError(i)/h_P2->GetBinContent(i));
 	      h_P2->SetBinContent(i,h_P_tot->GetBinContent(i));
 	      h_P_tot->SetBinContent(i,1.);
 	      h_P_tot->SetBinError(i,h_data_b_tot->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_tot->GetBinContent(i));
@@ -977,7 +977,7 @@ if (numB==2) {
 	  if (!drawInclusive) {
 	    TH1F *h_M = (TH1F*)h_mcg3_b->Clone();
 	    for (int i=0;i<=h_M->GetNbinsX()+1;i++) {
-	      h_M->SetBinError(i, h_M->GetBinContent(i)==0 ? 0 : h_M->GetBinError(i)/h_M->GetBinContent(i));
+	      h_M->SetBinError(i,h_M->GetBinContent(i)==0 ? 0 : h_M->GetBinError(i)/h_M->GetBinContent(i));
 	      h_M->SetBinContent(i,h_M_tot->GetBinContent(i));
 	      h_M_tot->SetBinContent(i,1.);
 	      h_M_tot->SetBinError(i,h_data_b_tot->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_tot->GetBinContent(i));
@@ -1064,8 +1064,8 @@ if (numB==2) {
 	if (!drawInclusive) {
 	  TH1F *h_M3 = (TH1F*)h_mcg3_b->Clone();
 	  for (int i=0;i<=h_M3->GetNbinsX()+1;i++) {
-	    h_M3->SetBinError(i, h_M3->GetBinContent(i)==0 ? 0 : h_M3->GetBinError(i)/h_M3->GetBinContent(i));
-	    h_M3->SetBinContent(i, h_M3_tot->GetBinContent(i));
+	    h_M3->SetBinError(i,h_M3->GetBinContent(i)==0 ? 0 : h_M3->GetBinError(i)/h_M3->GetBinContent(i));
+	    h_M3->SetBinContent(i,h_M3_tot->GetBinContent(i));
 	  }
 	  for (int i=0; i<g_M3_tot->GetN(); i++) {
 	    g_M3_tot->SetPoint(i,g_M3_tot->GetX()[i],1.);
@@ -1074,8 +1074,8 @@ if (numB==2) {
 	    g_M3_stat->SetPointError(i,0.,h_data_b_stat->GetBinContent(i+1)==0 ? 0 : h_data_b_stat->GetBinError(i+1)/h_data_b_stat->GetBinContent(i+1));
           }
 	  if (title=="w_DR_bb") {
-	    g_M3_tot->SetPoint(0, g_M3_tot->GetX()[0], -999.);
-	    g_M3_stat->SetPoint(0, g_M3_stat->GetX()[0], -999.);
+	    g_M3_tot->SetPoint(0,g_M3_tot->GetX()[0], -999.);
+	    g_M3_stat->SetPoint(0,g_M3_stat->GetX()[0], -999.);
 	  }
 	  h_M3->SetLineWidth(2);
 	  h_M3->Draw("E2SAME");
