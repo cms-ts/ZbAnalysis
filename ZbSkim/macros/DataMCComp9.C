@@ -249,10 +249,14 @@ if (numB==2) {
         if (isratio==0) {
           h_data_b_tot->SetMarkerStyle(24);
           h_data_b_tot->SetMarkerSize(0.7);
+          h_data_b_stat->SetMarkerStyle(24);
+          h_data_b_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_data_b_tot->SetMarkerStyle(26);
           h_data_b_tot->SetMarkerSize(0.9);
+          h_data_b_stat->SetMarkerStyle(26);
+          h_data_b_stat->SetMarkerSize(0.9);
         }
 	h_data_b_stat->GetYaxis()->SetTitleOffset(1.2);
 	h_data_b_stat->GetXaxis()->SetTitleOffset(1.3);
@@ -260,14 +264,6 @@ if (numB==2) {
 	h_data_b_stat->SetLineColor(kBlack);
 	//h_data_b_stat->SetMarkerSize(0.7);
 	h_data_b_stat->SetStats(0);
-        if (isratio==0) {
-          h_data_b_stat->SetMarkerStyle(24);
-          h_data_b_stat->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_data_b_stat->SetMarkerStyle(26);
-          h_data_b_stat->SetMarkerSize(0.9);
-        }
 	if (isratio==1) {
 	  h_data_b_tot->Draw("E1PX0SAME");
 	  h_data_b_stat->Draw("E1PX0SAME");
@@ -371,8 +367,10 @@ if (numB==2) {
 	  h_data_stat->SetMarkerColor(kBlack);
 	  h_data_stat->SetMarkerStyle(20);
 	  h_data_stat->SetMarkerSize (0.7);
-	  if (drawInclusive) h_data_tot->Draw("E1PX0SAME");
-	  if (drawInclusive) h_data_stat->Draw("E1PX0SAME");
+	  if (drawInclusive) {
+	    h_data_tot->Draw("E1PX0SAME");
+	    h_data_stat->Draw("E1PX0SAME");
+	  }
 	}
 
 	leg->AddEntry(h_data_b_stat,"DATA","lp");
@@ -469,21 +467,17 @@ if (numB==2) {
         if (isratio==0) {
           h_M_tot->SetMarkerStyle(24);
           h_M_tot->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_M_tot->SetMarkerStyle(26);
-          h_M_tot->SetMarkerSize(0.9);
-        }
-	h_M_tot->Draw("E1PX0");
-	h_M_tot->Draw("E0PX0SAME");
-        if (isratio==0) {
           h_M_stat->SetMarkerStyle(24);
           h_M_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
+          h_M_tot->SetMarkerStyle(26);
+          h_M_tot->SetMarkerSize(0.9);
           h_M_stat->SetMarkerStyle(26);
           h_M_stat->SetMarkerSize(0.9);
         }
+	h_M_tot->Draw("E1PX0");
+	h_M_tot->Draw("E0PX0SAME");
 	h_M_stat->Draw("E1PX0SAME");
 	h_M_stat->Draw("E0PX0SAME");
 
@@ -538,11 +532,13 @@ if (numB==2) {
 	  g_M2_stat->SetMarkerSize(0.7);
 
 	  g_M2_tot->SetMarkerStyle(20);
-	  if (drawInclusive) g_M2_tot->Draw("E1PX0SAME");
-	  if (drawInclusive) g_M2_tot->Draw("E0PX0SAME");
 	  g_M2_stat->SetMarkerStyle(20);
-	  if (drawInclusive) g_M2_stat->Draw("E1PX0SAME");
-	  if (drawInclusive) g_M2_stat->Draw("E0PX0SAME");
+	  if (drawInclusive) {
+	    g_M2_tot->Draw("E1PX0SAME");
+	    g_M2_tot->Draw("E0PX0SAME");
+	    g_M2_stat->Draw("E1PX0SAME");
+	    g_M2_stat->Draw("E0PX0SAME");
+	  }
 
 	  if (!drawInclusive) {
 	    TH1F *h_M = (TH1F*)h_mcg_b->Clone();
@@ -636,14 +632,20 @@ if (numB==2) {
         if (isratio==0) {
           h_S_tot->SetMarkerStyle(24);
           h_S_tot->SetMarkerSize(0.7);
+          h_S_stat->SetMarkerStyle(24);
+          h_S_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
           h_S_tot->SetMarkerStyle(26);
           h_S_tot->SetMarkerSize(0.9);
+          h_S_stat->SetMarkerStyle(26);
+          h_S_stat->SetMarkerSize(0.9);
         }
 	if (useSherpa) {
 	  h_S_tot->Draw("E1PX0");
 	  h_S_tot->Draw("E0PX0SAME");
+	  h_S_stat->Draw("E1PX0SAME");
+	  h_S_stat->Draw("E0PX0SAME");
 	} else {
 	  for (int i=0;i<=h_S_tot->GetNbinsX()+1;i++) {
 	    h_S_tot->SetBinContent(i,-999.);
@@ -652,16 +654,6 @@ if (numB==2) {
 	  h_S_tot->Draw("E1PX0");
 	  h_S_tot->Draw("E0PX0SAME");
 	}
-        if (isratio==0) {
-          h_S_stat->SetMarkerStyle(24);
-          h_S_stat->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_S_stat->SetMarkerStyle(26);
-          h_S_stat->SetMarkerSize(0.9);
-        }
-	if (useSherpa) h_S_stat->Draw("E1PX0SAME");
-	if (useSherpa) h_S_stat->Draw("E0PX0SAME");
 
 	if (isratio==1) {
 	  if (!drawInclusive) {
@@ -674,8 +666,10 @@ if (numB==2) {
 	      h_S_stat->SetBinContent(i,1.);
 	      h_S_stat->SetBinError(i,h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_stat->GetBinError(i)/h_data_b_stat->GetBinContent(i));
 	    }
-	    if (useSherpa) h_S->Draw("E2SAME");
-	    if (useSherpa) h_S->Draw("E0SAME");
+	    if (useSherpa) {
+	      h_S->Draw("E2SAME");
+	      h_S->Draw("E0SAME");
+	    }
 	  }
 	}
 
@@ -714,11 +708,13 @@ if (numB==2) {
 	  g_S2_stat->SetMarkerSize(0.7);
 
 	  g_S2_tot->SetMarkerStyle(20);
-	  if (useSherpa && drawInclusive) g_S2_tot->Draw("E1PX0SAME");
-	  if (useSherpa && drawInclusive) g_S2_tot->Draw("E0PX0SAME");
 	  g_S2_stat->SetMarkerStyle(20);
-	  if (useSherpa && drawInclusive) g_S2_stat->Draw("E1PX0SAME");
-	  if (useSherpa && drawInclusive) g_S2_stat->Draw("E0PX0SAME");
+	  if (useSherpa && drawInclusive) {
+	    g_S2_tot->Draw("E1PX0SAME");
+	    g_S2_tot->Draw("E0PX0SAME");
+	    g_S2_stat->Draw("E1PX0SAME");
+	    g_S2_stat->Draw("E0PX0SAME");
+	  }
 
 	  if (!drawInclusive) {
 	    TH1F *h_S = (TH1F*)h_mcg1_b->Clone();
@@ -813,21 +809,17 @@ if (numB==2) {
         if (isratio==0) {
           h_P_tot->SetMarkerStyle(24);
           h_P_tot->SetMarkerSize(0.7);
-        }
-        if (isratio==1) {
-          h_P_tot->SetMarkerStyle(26);
-          h_P_tot->SetMarkerSize(0.9);
-        }
-	h_P_tot->Draw("E1PX0");
-	h_P_tot->Draw("E0PX0SAME");
-        if (isratio==0) {
           h_P_stat->SetMarkerStyle(24);
           h_P_stat->SetMarkerSize(0.7);
         }
         if (isratio==1) {
+          h_P_tot->SetMarkerStyle(26);
+          h_P_tot->SetMarkerSize(0.9);
           h_P_stat->SetMarkerStyle(26);
           h_P_stat->SetMarkerSize(0.9);
         }
+	h_P_tot->Draw("E1PX0");
+	h_P_tot->Draw("E0PX0SAME");
 	h_P_stat->Draw("E1PX0SAME");
 	h_P_stat->Draw("E0PX0SAME");
 
@@ -882,11 +874,13 @@ if (numB==2) {
 	  g_P2_stat->SetMarkerSize(0.7);
 
 	  g_P2_tot->SetMarkerStyle(20);
-	  if (drawInclusive) g_P2_tot->Draw("E1PX0SAME");
-	  if (drawInclusive) g_P2_tot->Draw("E0PX0SAME");
 	  g_P2_stat->SetMarkerStyle(20);
-	  if (drawInclusive) g_P2_stat->Draw("E1PX0SAME");
-	  if (drawInclusive) g_P2_stat->Draw("E0PX0SAME");
+	  if (drawInclusive) {
+	    g_P2_tot->Draw("E1PX0SAME");
+	    g_P2_tot->Draw("E0PX0SAME");
+	    g_P2_stat->Draw("E1PX0SAME");
+	    g_P2_stat->Draw("E0PX0SAME");
+	  }
 
 	  if (!drawInclusive) {
 	    TH1F *h_P = (TH1F*)h_mcg2_b->Clone();
