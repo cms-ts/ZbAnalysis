@@ -1109,6 +1109,7 @@ if (numB==2) {
         h_P_tot->GetXaxis()->SetTitleSize(0.165);
         h_P_tot->GetXaxis()->SetTitleOffset(0.92);
         h_P_tot->GetXaxis()->SetTickLength(0.07);
+        h_P_tot->GetYaxis()->SetTickLength(0.03);
 
         h_mcg_b->GetYaxis()->SetLabelSize(0.036);
         h_M_tot->GetYaxis()->SetLabelSize(0.19);
