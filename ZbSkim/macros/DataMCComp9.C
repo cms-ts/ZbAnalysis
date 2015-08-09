@@ -745,7 +745,6 @@ if (numB==2) {
 	    TH1F *h_S2 = (TH1F*)h_mcg1_b->Clone();
 	    for (int i=0;i<=h_S2->GetNbinsX()+1;i++) {
 	      h_S2->SetBinError(i, h_S2->GetBinContent(i)==0 ? 0 : h_S2->GetBinError(i)/h_S2->GetBinContent(i));
-	      h_S2->SetBinContent(i,1.);
 	      h_S2->SetBinContent(i,h_S_tot->GetBinContent(i));
 	      h_S_tot->SetBinContent(i,1.);
 	      h_S_stat->SetBinContent(i,1.);
