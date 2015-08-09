@@ -2596,6 +2596,8 @@ if (numB==2) {
         h_mcg_b->GetYaxis()->SetTitleOffset(0.6);
         h_P_tot->GetXaxis()->SetTitleSize(0.15);
         h_P_tot->GetXaxis()->SetTitleOffset(0.85);
+	h_P_tot->GetXaxis()->SetTickLength(0.07);
+	h_P_tot->GetYaxis()->SetTickLength(0.03);
 
         h_M_tot->GetYaxis()->SetTitleSize(0.28);
         h_M_tot->GetYaxis()->SetTitleOffset(0.1);
