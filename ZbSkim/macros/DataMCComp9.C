@@ -584,8 +584,8 @@ if (numB==2) {
 	t2->SetLineWidth(2);
 	t2->SetNDC();
 	if (useSherpa) {
-	  t2->DrawLatex(0.15,0.7,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}");
-	  t2->DrawLatex(0.15,0.13,"MadGraph 5FS + Pythia6, normalized to  #sigma_{NNLO}");
+	  t2->DrawLatex(0.15,0.7,"MadGraph 5FS + Pythia6, normalized to  #sigma_{NNLO}");
+	  t2->DrawLatex(0.15,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}");
 	} else {
 	  t2->DrawLatex(0.15,0.13,"MadGraph 5FS + Pythia6, normalized to  #sigma_{NNLO}");
 	}
