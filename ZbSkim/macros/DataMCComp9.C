@@ -916,10 +916,10 @@ if (numB==2) {
 
 	if (isratio==1) {
 	  if (!drawInclusive) {
-	    TH1F *h_M = (TH1F*)h_mcg3_b->Clone();
-	    for (int i=0;i<=h_M->GetNbinsX()+1;i++) {
-	      h_M->SetBinError(i,h_M->GetBinContent(i)==0 ? 0 : h_M->GetBinError(i)/h_M->GetBinContent(i));
-	      h_M->SetBinContent(i,h_M_tot->GetBinContent(i));
+	    TH1F *h_M3 = (TH1F*)h_mcg3_b->Clone();
+	    for (int i=0;i<=h_M3->GetNbinsX()+1;i++) {
+	      h_M3->SetBinError(i,h_M3->GetBinContent(i)==0 ? 0 : h_M3->GetBinError(i)/h_M3->GetBinContent(i));
+	      h_M3->SetBinContent(i,h_M_tot->GetBinContent(i));
 	      h_M_tot->SetBinContent(i,1.);
 	      h_M_tot->SetBinError(i,h_data_b_tot->GetBinContent(i)==0 ? 0 : h_data_b_tot->GetBinError(i)/h_data_b_tot->GetBinContent(i));
 	      h_M_stat->SetBinContent(i,1.);
