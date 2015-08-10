@@ -244,7 +244,6 @@ if (numB==2) {
 	h_data_b_tot->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_tot->SetMarkerColor(kRed+1);
 	h_data_b_tot->SetLineColor(kRed+1);
-	//h_data_b_tot->SetMarkerSize(0.7);
 	h_data_b_tot->SetStats(0);
         if (isratio==0) {
           h_data_b_tot->SetMarkerStyle(24);
@@ -262,7 +261,6 @@ if (numB==2) {
 	h_data_b_stat->GetXaxis()->SetTitleOffset(1.3);
 	h_data_b_stat->SetMarkerColor(kBlack);
 	h_data_b_stat->SetLineColor(kBlack);
-	//h_data_b_stat->SetMarkerSize(0.7);
 	h_data_b_stat->SetStats(0);
 	if (isratio==1) {
 	  h_data_b_tot->Draw("E1PX0SAME");
@@ -457,12 +455,10 @@ if (numB==2) {
 	h_M_tot->SetMarkerColor(kRed+1);
 	h_M_tot->SetLineColor(kRed+1);
 	h_M_tot->SetLineWidth(1);
-	//h_M_tot->SetMarkerSize(0.7);
 	h_M_stat->GetXaxis()->SetTitleOffset(0.7);
 	h_M_stat->SetMarkerColor(kBlack);
 	h_M_stat->SetLineColor(kBlack);
 	h_M_stat->SetLineWidth(1);
-	//h_M_stat->SetMarkerSize(0.7);
 
         if (isratio==0) {
           h_M_tot->SetMarkerStyle(24);
@@ -573,10 +569,9 @@ if (numB==2) {
 	}
 
 	TLine *OLine2 = new TLine(h_M_tot->GetXaxis()->GetXmin(),1.,h_M_tot->GetXaxis()->GetXmax(),1.);
-	if (drawInclusive) {
-	  OLine2->SetLineColor(kGreen+2);
-	  OLine2->SetLineWidth(2);
-	} else {
+	OLine2->SetLineColor(kGreen+2);
+	OLine2->SetLineWidth(2);
+	if (!drawInclusive) {
 	  OLine2->SetLineColor(kBlack);
 	  OLine2->SetLineWidth(0);
 	}
@@ -622,12 +617,10 @@ if (numB==2) {
 	h_S_tot->SetMarkerColor(kRed+1);
 	h_S_tot->SetLineColor(kRed+1);
 	h_S_tot->SetLineWidth(1);
-	//h_S_tot->SetMarkerSize(0.7);
 	h_S_stat->GetXaxis()->SetTitleOffset(0.7);
 	h_S_stat->SetMarkerColor(kBlack);
 	h_S_stat->SetLineColor(kBlack);
 	h_S_stat->SetLineWidth(1);
-	//h_S_stat->SetMarkerSize(0.7);
 
         if (isratio==0) {
           h_S_tot->SetMarkerStyle(24);
@@ -749,10 +742,9 @@ if (numB==2) {
 
 	if (useSherpa) {
 	  TLine *OLine3 = new TLine(h_S_tot->GetXaxis()->GetXmin(),1.,h_S_tot->GetXaxis()->GetXmax(),1.);
-	  if (drawInclusive) {
-	    OLine3->SetLineColor(kMagenta-6);
-	    OLine3->SetLineWidth(2);
-	  } else {
+	  OLine3->SetLineColor(kMagenta-6);
+	  OLine3->SetLineWidth(2);
+	  if (!drawInclusive) {
 	    OLine3->SetLineColor(kBlack);
 	    OLine3->SetLineWidth(0);
 	  }
@@ -799,12 +791,10 @@ if (numB==2) {
 	h_P_tot->SetMarkerColor(kRed+1);
 	h_P_tot->SetLineColor(kRed+1);
 	h_P_tot->SetLineWidth(1);
-	//h_P_tot->SetMarkerSize(0.7);
 	h_P_stat->GetXaxis()->SetTitleOffset(0.7);
 	h_P_stat->SetMarkerColor(kBlack);
 	h_P_stat->SetLineColor(kBlack);
 	h_P_stat->SetLineWidth(1);
-	//h_P_stat->SetMarkerSize(0.7);
 
         if (isratio==0) {
           h_P_tot->SetMarkerStyle(24);
@@ -910,10 +900,9 @@ if (numB==2) {
 	t4->DrawLatex(0.15,0.43,"Powheg + Pythia6, normalized to #sigma_{NLO}");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
-	if (drawInclusive) {
-	  OLine4->SetLineColor(kBlue-4);
-	  OLine4->SetLineWidth(2);
-	} else {
+	OLine4->SetLineColor(kBlue-4);
+	OLine4->SetLineWidth(2);
+	if (!drawInclusive) {
 	  OLine4->SetLineColor(kBlack);
 	  OLine4->SetLineWidth(0);
 	}
@@ -964,25 +953,31 @@ if (numB==2) {
 	g_M3_tot->SetMarkerColor(kRed+1);
 	g_M3_tot->SetLineColor(kRed+1);
 	g_M3_tot->SetLineWidth(1);
-	//g_M3_tot->SetMarkerSize(0.7);
 	g_M3_stat->GetXaxis()->SetTitleOffset(0.7);
 	g_M3_stat->SetMarkerColor(kBlack);
 	g_M3_stat->SetLineColor(kBlack);
 	g_M3_stat->SetLineWidth(1);
-	//g_M3_stat->SetMarkerSize(0.7);
 
 	if (useSherpa) {
           if (isratio==0) {
-	    g_M3_stat->SetMarkerStyle(24);
+	    g_M3_stat->SetMarkerStyle(25);
 	    g_M3_stat->SetMarkerSize(0.7);
-	    g_M3_tot->SetMarkerStyle(24);
+	    g_M3_tot->SetMarkerStyle(25);
 	    g_M3_tot->SetMarkerSize(0.7);
+	    if (!drawInclusive) {
+	      g_M3_stat->SetMarkerStyle(24);
+	      g_M3_tot->SetMarkerStyle(24);
+	    }
           }
           if (isratio==1) {
-	    g_M3_stat->SetMarkerStyle(26);
+	    g_M3_stat->SetMarkerStyle(25);
 	    g_M3_stat->SetMarkerSize(0.7);
-	    g_M3_tot->SetMarkerStyle(26);
+	    g_M3_tot->SetMarkerStyle(25);
 	    g_M3_tot->SetMarkerSize(0.7);
+	    if (!drawInclusive) {
+	      g_M3_stat->SetMarkerStyle(26);
+	      g_M3_tot->SetMarkerStyle(26);
+	    }
           }
 	} else {
           if (isratio==0) {
@@ -1017,7 +1012,7 @@ if (numB==2) {
 	    g_M3_tot->SetPointError(i,0.,h_data_b_tot->GetBinContent(i+1)==0 ? 0 : h_data_b_tot->GetBinError(i+1)/h_data_b_tot->GetBinContent(i+1));
 	    g_M3_stat->SetPoint(i,g_M3_stat->GetX()[i],1.);
 	    g_M3_stat->SetPointError(i,0.,h_data_b_stat->GetBinContent(i+1)==0 ? 0 : h_data_b_stat->GetBinError(i+1)/h_data_b_stat->GetBinContent(i+1));
-          }
+	  }
 	  if (title=="w_DR_bb") {
 	    g_M3_tot->SetPoint(0,g_M3_tot->GetX()[0], -999.);
 	    g_M3_stat->SetPoint(0,g_M3_stat->GetX()[0], -999.);
@@ -1028,10 +1023,9 @@ if (numB==2) {
 	}
 
 	TLine *OLine5 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
-	if (drawInclusive) {
-	  OLine5->SetLineColor(kOrange+7);
-	  OLine5->SetLineWidth(2);
-	} else {
+	OLine5->SetLineColor(kOrange+7);
+	OLine5->SetLineWidth(2);
+	if (!drawInclusive) {
 	  OLine5->SetLineColor(kBlack);
 	  OLine5->SetLineWidth(0);
 	}
