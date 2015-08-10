@@ -925,6 +925,8 @@ if (numB==2) {
 	      h_M_stat->SetBinContent(i,1.);
 	      h_M_stat->SetBinError(i,h_data_b_stat->GetBinContent(i)==0 ? 0 : h_data_b_stat->GetBinError(i)/h_data_b_stat->GetBinContent(i));
 	    }
+	    h_M3->Draw("E2SAME");
+	    h_M3->Draw("E0SAME");
 	  }
 	}
 
