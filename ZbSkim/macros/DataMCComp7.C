@@ -1173,7 +1173,6 @@ if (numB==2) {
 	}
 	h_M_tot->Draw("E1PX0");
 	h_M_tot->Draw("E0PX0SAME");
-
 	h_M_stat->Draw("E1PX0SAME");
 	h_M_stat->Draw("E0PX0SAME");
 
