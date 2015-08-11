@@ -622,6 +622,15 @@ if (numB==2) {
 	h_S_stat->SetLineColor(kBlack);
 	h_S_stat->SetLineWidth(1);
 
+	if (!useSherpa) {
+	  for (int i=0;i<=h_S_tot->GetNbinsX()+1;i++) {
+	    h_S_tot->SetBinContent(i,-999.);
+	    h_S_tot->SetBinError(i,0.);
+	    h_S_stat->SetBinContent(i,-999.);
+	    h_S_stat->SetBinError(i,0.);
+	  }
+	}
+
         if (isratio==0) {
           h_S_tot->SetMarkerStyle(24);
           h_S_tot->SetMarkerSize(0.7);
@@ -634,19 +643,10 @@ if (numB==2) {
           h_S_stat->SetMarkerStyle(26);
           h_S_stat->SetMarkerSize(0.9);
         }
-	if (useSherpa) {
-	  h_S_tot->Draw("E1PX0");
-	  h_S_tot->Draw("E0PX0SAME");
-	  h_S_stat->Draw("E1PX0SAME");
-	  h_S_stat->Draw("E0PX0SAME");
-	} else {
-	  for (int i=0;i<=h_S_tot->GetNbinsX()+1;i++) {
-	    h_S_tot->SetBinContent(i,-999.);
-	    h_S_tot->SetBinError(i,0.);
-	  }
-	  h_S_tot->Draw("E1PX0");
-	  h_S_tot->Draw("E0PX0SAME");
-	}
+	h_S_tot->Draw("E1PX0");
+	h_S_tot->Draw("E0PX0SAME");
+	h_S_stat->Draw("E1PX0SAME");
+	h_S_stat->Draw("E0PX0SAME");
 
 	if (isratio==1) {
 	  if (!drawInclusive) {
@@ -724,8 +724,10 @@ if (numB==2) {
 	      h_S_stat->SetBinContent(1, -999.);
 	    }
 	    h_S->SetLineWidth(2);
-	    h_S->Draw("E2SAME");
-	    h_S->Draw("E0SAME");
+	    if (useSherpa) {
+	      h_S->Draw("E2SAME");
+	      h_S->Draw("E0SAME");
+	    }
 	  }
 	}
 
@@ -961,47 +963,37 @@ if (numB==2) {
 	g_M3_stat->SetLineWidth(1);
 
 	if (useSherpa) {
-          if (isratio==0) {
-	    g_M3_stat->SetMarkerStyle(25);
-	    g_M3_stat->SetMarkerSize(0.7);
-	    g_M3_tot->SetMarkerStyle(25);
-	    g_M3_tot->SetMarkerSize(0.7);
-	    if (!drawInclusive) {
-	      g_M3_stat->SetMarkerStyle(24);
-	      g_M3_tot->SetMarkerStyle(24);
-	    }
-          }
-          if (isratio==1) {
-	    g_M3_stat->SetMarkerStyle(25);
-	    g_M3_stat->SetMarkerSize(0.7);
-	    g_M3_tot->SetMarkerStyle(25);
-	    g_M3_tot->SetMarkerSize(0.7);
-	    if (!drawInclusive) {
-	      g_M3_stat->SetMarkerStyle(26);
-	      g_M3_tot->SetMarkerStyle(26);
-	    }
-          }
+	  g_M3_stat->SetMarkerStyle(25);
+	  g_M3_stat->SetMarkerSize(0.7);
+	  g_M3_tot->SetMarkerStyle(25);
+	  g_M3_tot->SetMarkerSize(0.7);
+	  if (!drawInclusive) {
+	    g_M3_stat->SetMarkerStyle(24);
+	    g_M3_tot->SetMarkerStyle(24);
+	  }
 	} else {
-          if (isratio==0) {
+	  if (isratio==0) {
             g_M3_stat->SetMarkerStyle(24);
             g_M3_stat->SetMarkerSize(0.7);
             g_M3_tot->SetMarkerStyle(24);
             g_M3_tot->SetMarkerSize(0.7);
-          }
-          if (isratio==1) {
+	  }
+	  if (isratio==1) {
             g_M3_stat->SetMarkerStyle(26);
             g_M3_stat->SetMarkerSize(0.9);
             g_M3_tot->SetMarkerStyle(26);
             g_M3_tot->SetMarkerSize(0.9);
-          }
+	  }
 	  g_M3_stat->SetMarkerColor(kBlack);
 	  g_M3_tot->SetMarkerColor(kBlack);
 	}
 
-	g_M3_tot->Draw("E1P");
-	g_M3_tot->Draw("E0PSAME");
-	g_M3_stat->Draw("E1PSAME");
-	g_M3_stat->Draw("E0PSAME");
+	if (drawInclusive) {
+	  g_M3_tot->Draw("E1P");
+	  g_M3_tot->Draw("E0PSAME");
+	  g_M3_stat->Draw("E1PSAME");
+	  g_M3_stat->Draw("E0PSAME");
+	}
 
 	if (!drawInclusive) {
 	  TH1F *h_M3 = (TH1F*)h_mcg3_b->Clone();
