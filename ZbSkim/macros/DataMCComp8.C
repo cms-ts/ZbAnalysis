@@ -485,7 +485,7 @@ if (numB==2) {
 
 	  string tmp;
 
-	  if (isratio==0 && drawInclusive) {
+	  if (isratio==0 && numB==0) {
 	    getline(in, tmp);
 	    getline(in, tmp);
 	    getline(in, tmp);
