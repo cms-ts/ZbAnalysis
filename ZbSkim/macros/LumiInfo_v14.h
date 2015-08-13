@@ -55,6 +55,16 @@ double Ngen_dy_4_mm = 100*10000; // MM
 double Xsec_dy_4 = 333.866; // NNLO
 double eXsec_dy_4 = 0;
 
+//////////////////////// DY Powheg MiNLO
+
+//double Ngen_dy_5_ee = 40*25000; // EE
+//double Ngen_dy_5_mm = 40*25000; // MM
+// weights extracted from h_gen_weights->GetBinContent(2)
+double Ngen_dy_5_ee = 1.17808870400000000e+09; // EE
+double Ngen_dy_5_mm = 1.17592755200000000e+09; // MM
+double Xsec_dy_5 = 1156.41; // NNLO
+double eXsec_dy_5 = 0;
+
 //////////////////////// TTbar
 
 double Ngen_tt = 6923750;
