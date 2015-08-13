@@ -100,8 +100,12 @@ void DataMCComp8(string title="", int plot=0, int isratio=1, int numB=0) {
 int useSherpa=0;
 //int useSherpa=1; // use Sherpa MC prediction
 
+int useMadGraphAMC=0;
+//int useMadGraphAMC=1; // use MadGraph-aMC@NLO MC prediction
+
 //int useNewPowheg=0;
 int useNewPowheg=1; // use new Powheg MC prediction
+//int useNewPowheg=2; // use new Powheg MiNLO MC prediction
 
 //int drawInclusive=0;
 int drawInclusive=1; // do plot the "inclusive" histogram
@@ -128,7 +132,7 @@ if (numB==2) {
 	  gROOT->GetColor(kRed)->SetAlpha(0.5);
 	  gROOT->GetColor(kGreen+2)->SetAlpha(0.5);
 	  gROOT->GetColor(kMagenta-6)->SetAlpha(0.5);
-	  if (!useSherpa) gROOT->GetColor(kMagenta-6)->SetAlpha(0.0);
+	  if (!useSherpa && !useMadGraphAMC) gROOT->GetColor(kMagenta-6)->SetAlpha(0.0);
 	  gROOT->GetColor(kBlue-4)->SetAlpha(0.5);
 	  gROOT->GetColor(kOrange+7)->SetAlpha(0.5);
 	}
@@ -146,13 +150,22 @@ if (numB==2) {
 
 	TFile *mcg = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_gen.root").c_str());
 	TFile *mcg1 = TFile::Open((path + "/" + version + "/" + "DYJets_sherpa_gen.root").c_str());
+	if (useMadGraphAMC) {
+	  norm1_1 = ((Lumi2012 * Xsec_dy_amc) / Ngen_dy_amc);
+	  mcg1 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL_aMC_gen.root").c_str());
+	}
 	TFile *mcg2[2];
 	mcg2[0] = TFile::Open((path + "/" + version + "/" + "DYToEE_powheg_gen.root").c_str());
 	mcg2[1] = TFile::Open((path + "/" + version + "/" + "DYToMuMu_powheg_gen.root").c_str());
-	if (useNewPowheg) {
+	if (useNewPowheg==1) {
 	  norm1_2 = ((Lumi2012 * Xsec_dy_4) / ((Ngen_dy_4_ee+Ngen_dy_4_mm)/2.));
 	  mcg2[0] = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_ele.root").c_str());
 	  mcg2[1] = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg/data/" + version + "/" + "powheg_muo.root").c_str());
+	}
+	if (useNewPowheg==2) {
+	  norm1_2 = ((Lumi2012 * Xsec_dy_5) / ((Ngen_dy_5_ee+Ngen_dy_5_mm)/2.));
+	  mcg2[0] = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg_minlo/data/" + version + "/" + "powheg_minlo_ele.root").c_str());
+	  mcg2[1] = TFile::Open(("/gpfs/cms/users/candelis/work/ZbSkim/powheg_minlo/data/" + version + "/" + "powheg_minlo_muo.root").c_str());
 	}
 	TFile *mcg3 = TFile::Open((path + "/" + version + "/" + "DYJetsToLL2_gen.root").c_str());
 
@@ -1972,10 +1985,18 @@ if (numB==2) {
 
 	TLegend *leg = NULL;
 	if (isratio==0) {
-	  leg = new TLegend(0.64, 0.590, 0.88, 0.88);
+	  if (!useSherpa && !useMadGraphAMC) {
+	    leg = new TLegend(0.64, 0.590, 0.883, 0.880);
+	  } else {
+	    leg = new TLegend(0.58, 0.520, 0.890, 0.880);
+	  }
 	}
 	if (isratio) {
-	  leg = new TLegend(0.52, 0.510, 0.90, 0.88);
+	  if (!useSherpa && !useMadGraphAMC) {
+	    leg = new TLegend(0.52, 0.510, 0.900, 0.880);
+	  } else {
+	    leg = new TLegend(0.44, 0.420, 0.900, 0.880);
+	  }
 	}
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
@@ -2086,7 +2107,9 @@ if (numB==2) {
 	  leg->AddEntry(h_mcg,"Z(#rightarrow ll) MadGraph 5FS","l");
 	  leg->AddEntry(h_mcg3,"Z(#rightarrow ll) MadGraph 4FS","l");
 	  if (useSherpa) leg->AddEntry(h_mcg1,"Z(#rightarrow ll) Sherpa","l");
-	  leg->AddEntry(h_mcg2,"Z(#rightarrow ll) Powheg","l");
+	  if (useMadGraphAMC) leg->AddEntry(h_mcg1,"Z(#rightarrow ll) MadGraph-aMC@NLO","l");
+	  if (useNewPowheg!=2) leg->AddEntry(h_mcg2,"Z(#rightarrow ll) Powheg","l");
+	  if (useNewPowheg==2) leg->AddEntry(h_mcg2,"Z(#rightarrow ll) Powheg MiNLO","l");
 	}
 
 	if (isratio==1) {
@@ -2094,7 +2117,9 @@ if (numB==2) {
 	  leg->AddEntry(h_mcg_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] MadGraph 5FS","l");
 	  leg->AddEntry(h_mcg3_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] MadGraph 4FS","l");
 	  if (useSherpa) leg->AddEntry(h_mcg1_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] Sherpa","l");
-	  leg->AddEntry(h_mcg2_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] Powheg","l");
+	  if (useMadGraphAMC) leg->AddEntry(h_mcg1_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] MadGraph-aMC@NLO","l");
+	  if (useNewPowheg!=2) leg->AddEntry(h_mcg2_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] Powheg","l");
+	  if (useNewPowheg==2) leg->AddEntry(h_mcg2_b,"[Z(#rightarrow ll)+b] / [Z(#rightarrow ll)+j] Powheg MiNLO","l");
 	}
 
 	leg->Draw();
@@ -2234,8 +2259,9 @@ if (numB==2) {
 	t2->SetTextFont(42);
 	t2->SetLineWidth(2);
 	t2->SetNDC();
-	if (useSherpa) {
-	  t2->DrawLatex(0.15,0.7,"MadGraph 5FS / MadGraph 4FS");
+	if (useSherpa || useMadGraphAMC) {
+	  t2->DrawLatex(0.15,0.7,"MadGraph 4FS, normalized to #sigma_{NLO}");
+	  t2->DrawLatex(0.15,0.13,"MadGraph 5FS, normalized to #sigma_{NNLO}");
 	} else {
 	  t2->DrawLatex(0.15,0.13,"MadGraph 5FS, normalized to #sigma_{NNLO}");
 	}
@@ -2288,7 +2314,7 @@ if (numB==2) {
 	h_S_stat->SetLineColor(kBlack);
 	h_S_stat->SetLineWidth(1);
 
-	if (!useSherpa) {
+	if (!useSherpa && !useMadGraphAMC) {
 	  for (int i=0;i<=h_S_tot->GetNbinsX()+1;i++) {
 	    h_S_tot->SetBinContent(i, -999.);
 	    h_S_tot->SetBinError(i, 0.);
@@ -2350,7 +2376,7 @@ if (numB==2) {
 
 	  g_S2_tot->SetMarkerStyle(20);
 	  g_S2_stat->SetMarkerStyle(20);
-	  if (useSherpa && drawInclusive) {
+	  if ((useSherpa || useMadGraphAMC) && drawInclusive) {
 	    g_S2_tot->Draw("E1PX0SAME");
 	    g_S2_tot->Draw("E0PX0SAME");
 	    g_S2_stat->Draw("E1PX0SAME");
@@ -2366,10 +2392,11 @@ if (numB==2) {
 	if (useSherpa) {
 	  t3->DrawLatex(0.15,0.7,"Sherpa");
 	} else {
-	  t3->DrawLatex(0.15,0.13,"MadGraph 4FS, normalized to #sigma_{NLO}");
+	  if (useMadGraphAMC==0) t3->DrawLatex(0.15,0.13,"MadGraph 4FS, normalized to #sigma_{NLO}");
+	  if (useMadGraphAMC==1) t3->DrawLatex(0.15,0.13,"MadGraph-aMC@NLO, normalized to #sigma_{NLO}");
 	}
 
-	if (useSherpa) {
+	if (useSherpa || useMadGraphAMC) {
 	  TLine *OLine3 = new TLine(h_S_tot->GetXaxis()->GetXmin(),1.,h_S_tot->GetXaxis()->GetXmax(),1.);
 	  OLine3->SetLineColor(kMagenta-6);
 	  OLine3->SetLineWidth(2);
@@ -2485,14 +2512,15 @@ if (numB==2) {
 	t4->SetTextFont(42);
 	t4->SetLineWidth(2);
 	t4->SetNDC();
-	t4->DrawLatex(0.15,0.40,"Powheg, normalized to #sigma_{NLO}");
+	if (useNewPowheg!=2) t4->DrawLatex(0.15,0.40,"Powheg, normalized to #sigma_{NLO}");
+	if (useNewPowheg==2) t4->DrawLatex(0.15,0.40,"Powheg MiNLO, normalized to #sigma_{NLO}");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	OLine4->SetLineColor(kBlue-4);
 	OLine4->SetLineWidth(2);
 	OLine4->Draw();
 
-	if (useSherpa) {
+	if (useSherpa || useMadGraphAMC) {
 	  pad2->cd();
 	} else {
 	  pad3->cd();
@@ -2528,7 +2556,7 @@ if (numB==2) {
 	g_M3_stat->SetLineColor(kBlack);
 	g_M3_stat->SetLineWidth(1);
 
-	if (useSherpa) {
+	if (useSherpa || useMadGraphAMC) {
 	  g_M3_stat->SetMarkerStyle(25);
 	  g_M3_stat->SetMarkerSize(0.7);
 	  g_M3_tot->SetMarkerStyle(25);

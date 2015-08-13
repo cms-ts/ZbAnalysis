@@ -12,6 +12,13 @@ void DataMCComp9(string title="", int plot=0, int isratio=1, int numB=0) {
 int useSherpa=0;
 //int useSherpa=1; // use Sherpa MC prediction
 
+int useMadGraphAMC=0;
+//int useMadGraphAMC=1; // use MadGraph-aMC@NLO MC prediction
+
+//int useNewPowheg=0;
+int useNewPowheg=1; // use new Powheg MC prediction
+//int useNewPowheg=2; // use new Powheg MiNLO MC prediction
+
 int drawInclusive=0;
 //int drawInclusive=1; // do plot the "inclusive" histogram
 
@@ -37,7 +44,7 @@ if (numB==2) {
 	  gROOT->GetColor(kRed)->SetAlpha(0.5);
 	  gROOT->GetColor(kGreen+2)->SetAlpha(0.5);
 	  gROOT->GetColor(kMagenta-6)->SetAlpha(0.5);
-	  if (!useSherpa) gROOT->GetColor(kMagenta-6)->SetAlpha(0.0);
+	  if (!useSherpa && !useMadGraphAMC) gROOT->GetColor(kMagenta-6)->SetAlpha(0.0);
 	  gROOT->GetColor(kBlue-4)->SetAlpha(0.5);
 	  gROOT->GetColor(kOrange+7)->SetAlpha(0.5);
 	}
@@ -267,7 +274,12 @@ if (numB==2) {
 	  h_data_b_stat->Draw("E1PX0SAME");
 	}
 
-        TLegend *leg = new TLegend(0.613, 0.590, 0.883, 0.880);
+        TLegend *leg = NULL;
+	if (!useSherpa && !useMadGraphAMC) {
+	  leg = new TLegend(0.613, 0.590, 0.883, 0.880);
+	} else {
+	  leg = new TLegend(0.503, 0.500, 0.890, 0.880);
+	}
 	leg->SetBorderSize(0);
 	leg->SetEntrySeparation(0.01);
 	leg->SetFillColor(0);
@@ -375,7 +387,9 @@ if (numB==2) {
 	leg->AddEntry(h_mcg_b,"MadGraph 5FS + Pythia6","lf");
 	leg->AddEntry(h_mcg3_b,"MadGraph 4FS + Pythia6","lf");
 	if (useSherpa) leg->AddEntry(h_mcg1_b,"Sherpa","lf");
-	leg->AddEntry(h_mcg2_b,"Powheg + Pythia6","lf");
+	if (useMadGraphAMC) leg->AddEntry(h_mcg1_b,"MadGraph-aMC@NLO + Pythia8","lf");
+	if (useNewPowheg!=2) leg->AddEntry(h_mcg2_b,"Powheg + Pythia6","lf");
+	if (useNewPowheg==2) leg->AddEntry(h_mcg2_b,"Powheg MiNLO + Pythia8","lf");
 
 	leg->Draw();
 
@@ -545,7 +559,7 @@ if (numB==2) {
 	t2->SetTextFont(42);
 	t2->SetLineWidth(2);
 	t2->SetNDC();
-	if (useSherpa) {
+	if (useSherpa || useMadGraphAMC) {
 	  t2->DrawLatex(0.15,0.7,"MadGraph 5FS + Pythia6, normalized to  #sigma_{NNLO}");
 	  t2->DrawLatex(0.15,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}");
 	} else {
@@ -606,7 +620,7 @@ if (numB==2) {
 	h_S_stat->SetLineColor(kBlack);
 	h_S_stat->SetLineWidth(1);
 
-	if (!useSherpa) {
+	if (!useSherpa && !useMadGraphAMC) {
 	  for (int i=0;i<=h_S_tot->GetNbinsX()+1;i++) {
 	    h_S_tot->SetBinContent(i,-999.);
 	    h_S_tot->SetBinError(i,0.);
@@ -668,7 +682,7 @@ if (numB==2) {
 
 	  g_S2_tot->SetMarkerStyle(20);
 	  g_S2_stat->SetMarkerStyle(20);
-	  if (useSherpa && drawInclusive) {
+	  if ((useSherpa || useMadGraphAMC) && drawInclusive) {
 	    g_S2_tot->Draw("E1PX0SAME");
 	    g_S2_tot->Draw("E0PX0SAME");
 	    g_S2_stat->Draw("E1PX0SAME");
@@ -691,7 +705,7 @@ if (numB==2) {
 	    h_S_stat->SetBinContent(1, -999.);
 	  }
 	  h_S->SetLineWidth(2);
-	  if (useSherpa) {
+	  if (useSherpa || useMadGraphAMC) {
 	    h_S->Draw("E2SAME");
 	    h_S->Draw("E0SAME");
 	  }
@@ -705,10 +719,11 @@ if (numB==2) {
 	if (useSherpa) {
 	  t3->DrawLatex(0.15,0.7,"Sherpa, normalized to  #sigma_{NNLO}");
 	} else {
-	  t3->DrawLatex(0.15,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}");
+	  if (useMadGraphAMC==0) t3->DrawLatex(0.15,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}");
+	  if (useMadGraphAMC==1) t3->DrawLatex(0.15,0.13,"MadGraph-aMC@NLO + Pythia8, normalized to  #sigma_{NLO}");
 	}
 
-	if (useSherpa) {
+	if (useSherpa || useMadGraphAMC) {
 	  TLine *OLine3 = new TLine(h_S_tot->GetXaxis()->GetXmin(),1.,h_S_tot->GetXaxis()->GetXmax(),1.);
 	  OLine3->SetLineColor(kMagenta-6);
 	  OLine3->SetLineWidth(2);
@@ -849,7 +864,8 @@ if (numB==2) {
 	t4->SetTextFont(42);
 	t4->SetLineWidth(2);
 	t4->SetNDC();
-	t4->DrawLatex(0.15,0.43,"Powheg + Pythia6, normalized to #sigma_{NLO}");
+	if (useNewPowheg!=2) t4->DrawLatex(0.15,0.43,"Powheg + Pythia6, normalized to #sigma_{NLO}");
+	if (useNewPowheg==2) t4->DrawLatex(0.15,0.43,"Powheg MiNLO + Pythia8, normalized to #sigma_{NLO}");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	OLine4->SetLineColor(kBlue-4);
@@ -860,7 +876,7 @@ if (numB==2) {
 	}
 	OLine4->Draw();
 
-	if (useSherpa) {
+	if (useSherpa || useMadGraphAMC) {
 	  pad2->cd();
 	} else {
 	  pad3->cd();
