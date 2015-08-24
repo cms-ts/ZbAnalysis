@@ -24,7 +24,7 @@ double eXsec_dy = 0;
 //double Ngen_dy_amc = 28944033;
 // weights extracted from h_gen_weights->GetBinContent(2)
 double Ngen_dy_amc = 2.59285811200000000e+11;
-double Xsec_dy_amc = 3424.0; // NNLO
+double Xsec_dy_amc = 3424.0; // native
 double eXsec_dy_amc = 0;
 
 //////////////////////// DY Sherpa
@@ -39,7 +39,7 @@ double eXsec_dy_1 = 0;
 
 double Ngen_dy_2_ee = 3297045; // EE
 double Ngen_dy_2_mm = 3283850; // MM
-double Xsec_dy_2 = 5745.25/3.0; // NNLO
+double Xsec_dy_2 = 5745.25/3.0; // native
 double eXsec_dy_2 = 0;
 
 //////////////////////// DY MadGraph 2
@@ -52,7 +52,7 @@ double eXsec_dy_3 = 0.15*Xsec_dy_3;
 
 double Ngen_dy_4_ee = 100*10000; // EE
 double Ngen_dy_4_mm = 100*10000; // MM
-double Xsec_dy_4 = 333.866; // NNLO
+double Xsec_dy_4 = 333.866; // native
 double eXsec_dy_4 = 0;
 
 //////////////////////// DY Powheg MiNLO
@@ -62,7 +62,7 @@ double eXsec_dy_4 = 0;
 // weights extracted from h_gen_weights->GetBinContent(2)
 double Ngen_dy_5_ee = 1.17808870400000000e+09; // EE
 double Ngen_dy_5_mm = 1.17592755200000000e+09; // MM
-double Xsec_dy_5 = 1156.41; // NNLO
+double Xsec_dy_5 = 1156.41; // native
 double eXsec_dy_5 = 0;
 
 //////////////////////// TTbar
