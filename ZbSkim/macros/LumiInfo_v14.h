@@ -24,7 +24,7 @@ double eXsec_dy = 0;
 //double Ngen_dy_amc = 28944033;
 // weights extracted from h_gen_weights->GetBinContent(2)
 double Ngen_dy_amc = 2.59285811200000000e+11;
-double Xsec_dy_amc = 3531.8; // NNLO
+double Xsec_dy_amc = 3424.0; // NNLO
 double eXsec_dy_amc = 0;
 
 //////////////////////// DY Sherpa
