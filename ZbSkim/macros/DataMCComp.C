@@ -570,6 +570,9 @@ if (numB==1) bbBkg = true;
 
 	h_mcD -> SetLineColor(kBlack);
         h_mcD -> SetFillColor(kBlue-2);
+#ifdef PAPER
+	h_mcD -> SetFillColor(kGreen+2);
+#endif
         //h_mcD -> SetFillStyle(3004);
 
         if (bbBkg || bbSig) {
