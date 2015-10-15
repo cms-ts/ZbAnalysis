@@ -159,38 +159,6 @@ if (numB==2) {
 	  h_mcg3 = (TH1F*)h_mcg3_b->Clone();
 	}
 
-/*
-	if (!drawInclusive) {
-	  for (int i=0;i<=h_mcg->GetNbinsX()+1;i++) {
-	    double val = 0.;
-	    val = TMath::Power(h_mcg->GetBinError(i),2);
-	    val = val + TMath::Power(h_mcg->GetBinContent(i)*eXsec_dy/Xsec_dy,2);
-	    h_mcg->SetBinError(i, TMath::Sqrt(val));
-	    val = TMath::Power(h_mcg_b->GetBinError(i),2);
-	    val = val + TMath::Power(h_mcg_b->GetBinContent(i)*eXsec_dy/Xsec_dy,2);
-	    h_mcg_b->SetBinError(i, TMath::Sqrt(val));
-	    val = TMath::Power(h_mcg1->GetBinError(i),2);
-	    val = val + TMath::Power(h_mcg1->GetBinContent(i)*eXsec_dy_1/Xsec_dy_1,2);
-	    h_mcg1->SetBinError(i, TMath::Sqrt(val));
-	    val = TMath::Power(h_mcg1_b->GetBinError(i),2);
-	    val = val + TMath::Power(h_mcg1_b->GetBinContent(i)*eXsec_dy_1/Xsec_dy_1,2);
-	    h_mcg1_b->SetBinError(i, TMath::Sqrt(val));
-	    val = TMath::Power(h_mcg2->GetBinError(i),2);
-	    val = val + TMath::Power(h_mcg2->GetBinContent(i)*eXsec_dy_2/Xsec_dy_2,2);
-	    h_mcg2->SetBinError(i, TMath::Sqrt(val));
-	    val = TMath::Power(h_mcg2_b->GetBinError(i),2);
-	    val = val + TMath::Power(h_mcg2_b->GetBinContent(i)*eXsec_dy_2/Xsec_dy_2,2);
-	    h_mcg2_b->SetBinError(i, TMath::Sqrt(val));
-	    val = TMath::Power(h_mcg3->GetBinError(i),2);
-	    val = val + TMath::Power(h_mcg3->GetBinContent(i)*eXsec_dy_3/Xsec_dy_3,2);
-	    h_mcg3->SetBinError(i, TMath::Sqrt(val));
-	    val = TMath::Power(h_mcg3_b->GetBinError(i),2);
-	    val = val + TMath::Power(h_mcg3_b->GetBinContent(i)*eXsec_dy_3/Xsec_dy_3,2);
-	    h_mcg3_b->SetBinError(i, TMath::Sqrt(val));
-	  }
-	}
-*/
-
 	TCanvas* c1 = new TCanvas("c", "c", 10, 10, 800, 600);
 	c1->cd();
 
