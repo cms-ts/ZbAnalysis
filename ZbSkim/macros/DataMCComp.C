@@ -1432,6 +1432,9 @@ if (numB==1) bbBkg = true;
 #endif
 
         writeExtraText = true;
+#ifdef PAPER
+        writeExtraText = false;
+#endif
         lumi_8TeV  = Form("%.1f fb^{-1}", Lumi2012/1000.);
         int iPeriod = 2;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
         // second parameter drives the position of the CMS logo in the plot
