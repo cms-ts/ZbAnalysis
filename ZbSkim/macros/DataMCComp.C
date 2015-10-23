@@ -143,12 +143,20 @@ if (irun==19) {            // irun==19 => templates from MadGraph aMC@NLO
 if (numB==1) {
   postfix = postfix + "1b";
   dirbSel = "_1b";
+#ifdef PAPER
+  bSel = "Z + (= 1) b jet";
+#else
   bSel = "Z + (= 1) b-jet";
+#endif
 }
 if (numB==2) {
   postfix = postfix + "2b";
   dirbSel = "_2b";
+#ifdef PAPER
+  bSel = "Z + (#geq 2) b jet";
+#else
   bSel = "Z + (#geq 2) b-jet";
+#endif
 }
 
 #ifdef PAPER
@@ -1203,27 +1211,53 @@ if (numB==1) bbBkg = true;
 
 	if (!bbSig) {
 	  if (h_mc1c && h_mc1b) {
+#ifdef PAPER
+	    leg->AddEntry(h_mc1,"Z+udsg jets","f");
+#else
 	    leg->AddEntry(h_mc1,"Z+udsg-jets","f");
+#endif
 	  } else {
 	    leg->AddEntry(h_mc1,"Z+jets","f");
 	  }
+#ifdef PAPER
+	  if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c jets","f");
+	  if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b jets","f");
+#else
 	  if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
 	  if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
+#endif
 	}
 	if (bbSig) {
 	  if (!doBkg) {
 	    if (h_mc1c && h_mc1b) {
+#ifdef PAPER
+	      leg->AddEntry(h_mc1,"Z+udsg jets","f");
+#else
 	      leg->AddEntry(h_mc1,"Z+udsg-jets","f");
+#endif
 	    } else {
 	      leg->AddEntry(h_mc1,"Z+jets","f");
 	    }
+#ifdef PAPER
+	    if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c jets","f");
+	    if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b jets","f");
+#else
 	    if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
 	    if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
+#endif
 	  }
+#ifdef PAPER
+	  leg->AddEntry(h_mc1bb,"Z+bb jets","f");
+#else
 	  leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
+#endif
 	}
 	if (!doBkg) {
+#ifdef PAPER
+          if (bbBkg) leg->AddEntry(h_mc1bb,"Z+bb jets","f");
+#else
           if (bbBkg) leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
+#endif
 	  leg->AddEntry(h_mc2,"t#bar{t}","f");
 	  leg->AddEntry(h_mcD,"Dibosons","f");
 	  leg->AddEntry(h_mcO,"Others","f");
@@ -1281,21 +1315,53 @@ if (numB==1) bbBkg = true;
         } else if (title=="w_bjetmultiplicity") {
 	  h_ratio->GetXaxis ()->SetTitle("jet multiplicity");
         } else if (title=="w_bjetmultiplicity_exc") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("b jet multiplicity");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("b-jet multiplicity");
+#endif
 	} else if (title=="w_first_jet_pt_b") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("leading b jet p_{T} [GeV/c]");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
+#endif
 	} else if (title=="w_first_jet_eta_b") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("leading b jet #eta");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet #eta");
+#endif
 	} else if (title=="w_second_jet_pt_b") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("subleading b jet p_{T} [GeV/c]");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet p_{T} [GeV/c]");
+#endif
 	} else if (title=="w_second_jet_eta_b") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("subleading b jet #eta");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet #eta");
+#endif
 	} else if (title=="w_third_jet_pt_b") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("subsubleading b jet p_{T} [GeV/c]");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("subsubleading b-jet p_{T} [GeV/c]");
+#endif
 	} else if (title=="w_third_jet_eta_b") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("subsubleading b jet #eta");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("subsubleading b-jet #eta");
+#endif
 	} else if (title=="w_mass_ee_b"||title=="w_mm_mass_b"||title=="w_em_mass_b") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("Z mass + (#geq 1 b jet) [GeV/c^{2}]");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("Z mass + (#geq 1 b-jet) [GeV/c^{2}]");
+#endif
 	} else if (title=="w_pt_Z_ee_b"||title=="w_pt_Z_mm_b"||title=="w_pt_Z_em_b") {
 	  h_ratio->GetXaxis ()->SetTitle("Z boson p_{T} [GeV/c]");
 	} else if (title=="w_delta_phi_ee"||title=="w_delta_phi_mm"||title=="w_delta_phi_em") {
@@ -1323,17 +1389,41 @@ if (numB==1) bbBkg = true;
 	} else if (title=="w_JBP"||title=="w_JBP_mass"){
 	  h_ratio->GetXaxis ()->SetTitle("Jet Probability Discriminator");
 	} else if (title=="w_first_bjet_pt") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("leading b jet p_{T} [GeV/c]");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet p_{T} [GeV/c]");
+#endif
 	} else if (title=="w_first_bjet_eta") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("leading b jet #eta");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet #eta");
+#endif
 	} else if (title=="w_first_bjet_eta_abs") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("leading b jet |#eta|");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("leading b-jet |#eta|");
+#endif
 	} else if (title=="w_second_bjet_pt") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("subleading b jet p_{T} [GeV/c]");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet p_{T} [GeV/c]");
+#endif
 	} else if (title=="w_second_bjet_eta") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("subleading b jet #eta");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet #eta");
+#endif
 	} else if (title=="w_second_bjet_eta_abs") {
+#ifdef PAPER
+	  h_ratio->GetXaxis ()->SetTitle("subleading b jet |#eta|");
+#else
 	  h_ratio->GetXaxis ()->SetTitle("subleading b-jet |#eta|");
+#endif
 	} else if (title=="w_flightd") {
 	  h_ratio->GetXaxis ()->SetTitle("L_{xy} [cm]");
 	} else if (title=="w_flightd_sig") {
@@ -1426,7 +1516,7 @@ if (numB==1) bbBkg = true;
 	  hs->GetYaxis()->SetTitle("Events");
 	  h_ratio->GetXaxis()->SetRangeUser(0.5, 4.5);
 	  h_ratio->GetXaxis()->SetNdivisions(105);
-	  h_ratio->GetXaxis()->SetTitle("b-jet multiplicity");
+	  h_ratio->GetXaxis()->SetTitle("b jet multiplicity");
 	  OLine->SetX2(4.5);
 	}
 #endif
