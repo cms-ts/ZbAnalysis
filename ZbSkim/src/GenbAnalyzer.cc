@@ -150,6 +150,7 @@ private:
   std::string path_;
   double numB_;
   bool rivet_;
+  int whichWeight_;
 
   edm::LumiReWeighting LumiWeights_;
 
@@ -260,6 +261,8 @@ GenbAnalyzer::GenbAnalyzer (const edm::ParameterSet & iConfig) {
   numB_ =  iConfig.getUntrackedParameter <double> ("numB", 0);
 
   rivet_  = iConfig.getUntrackedParameter < bool > ("rivet", false);
+
+  whichWeight_ = iConfig.getUntrackedParameter < int > ("whichWeight", 0);
 
   // now do what ever initialization is needed
   edm::Service < TFileService > fs;
@@ -554,9 +557,10 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     </weightgroup>
 */
 
-    //int whichWeight = 1000;
-    //double mcWeight2 = lheEventHandle->weights()[whichWeight].wgt/lheEventHandle->originalXWGTUP();
     double mcWeight2 = 1.0;
+    if (whichWeight_!=0) {
+//      mcWeight2 = lheEventHandle->weights()[whichWeight_].wgt/lheEventHandle->originalXWGTUP();
+    }
 
     h_gen_weights->Fill(2.5, mcWeight2);
 
