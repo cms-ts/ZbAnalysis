@@ -516,19 +516,23 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
 
   if (rivet_) MyWeight = 1.0;
 
+  double mcWeight1 = 1.0;
+
   edm::Handle<GenEventInfoProduct> genEventInfoHandle;
 
   if (iEvent.getByLabel ("generator", genEventInfoHandle)) {
 
     std::vector<double> mcWeights = genEventInfoHandle->weights();
-    double mcWeight = genEventInfoHandle->weight();
+    mcWeight1 = genEventInfoHandle->weight();
 
     h_gen_weights->Fill(0.5, 1.0);
-    h_gen_weights->Fill(1.5, mcWeight);
+    h_gen_weights->Fill(1.5, mcWeight1);
 
-    MyWeight = MyWeight*mcWeight;
+    MyWeight = MyWeight*mcWeight1;
 
   }
+
+  double mcWeight2 = 1.0;
 
   edm::Handle<LHEEventProduct> lheEventHandle;
 
@@ -557,22 +561,23 @@ void GenbAnalyzer::produce (edm::Event & iEvent, const edm::EventSetup & iSetup)
     </weightgroup>
 */
 
-    double mcWeight2 = 1.0;
     if (whichWeight_!=0) {
 //      mcWeight2 = lheEventHandle->weights()[whichWeight_].wgt/lheEventHandle->originalXWGTUP();
     }
 
-    h_gen_weights->Fill(2.5, mcWeight2);
+    h_gen_weights->Fill(2.5, mcWeight1*mcWeight2);
 
     MyWeight = MyWeight*mcWeight2;
 
   }
 
+  double mcWeight3 = 1.0;
+
   edm::Handle <std::vector<double>>  genEventInfoHandle2;
 
   if (iEvent.getByLabel ("GenBDWeight", genEventInfoHandle2)) {
 
-    double mcWeight3 = genEventInfoHandle2->empty() ? 1 : (*genEventInfoHandle2)[0];
+    mcWeight3 = genEventInfoHandle2->empty() ? 1 : (*genEventInfoHandle2)[0];
 
     h_gen_weights->Fill(3.5, mcWeight3);
 
