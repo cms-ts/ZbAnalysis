@@ -65,6 +65,16 @@ double Ngen_dy_5_mm = 1.17592755200000000e+09; // MM
 double Xsec_dy_5 = 1156.41; // native
 double eXsec_dy_5 = 0;
 
+//////////////////////// DY Powheg MiNLO (high stat)
+
+//double Ngen_dy_6_ee = 43306326; // EE
+//double Ngen_dy_6_mm = 43868125; // MM
+// weights extracted from h_gen_weights->GetBinContent(2)
+double Ngen_dy_6_ee = 5.09581189120000000e+10; // EE
+double Ngen_dy_6_mm = 5.16465623040000000e+10; // MM
+double Xsec_dy_6 = 1156.41; // native
+double eXsec_dy_6 = 0;
+
 //////////////////////// TTbar
 
 double Ngen_tt = 6923750;
