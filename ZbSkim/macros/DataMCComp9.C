@@ -14,13 +14,18 @@ int useSherpa=0;
 
 int useMadGraphAMC=0;
 //int useMadGraphAMC=1; // use MadGraph-aMC@NLO MC prediction
+//int useMadGraphAMC=2; // use MadGraph-aMC@NLO MC prediction (high stat)
 
 //int useNewPowheg=0;
 int useNewPowheg=1; // use new Powheg MC prediction
 //int useNewPowheg=2; // use new Powheg MiNLO MC prediction
+//int useNewPowheg=3; // use new Powheg MiNLO MC prediction (high stat)
 
 int drawInclusive=0;
 //int drawInclusive=1; // do plot the "inclusive" histogram
+
+int drawTheoryErrors=0;
+//int drawTheoryErrors=1; // add PDF+alpha_s & scale errors on MC predictions
 
 string subdir="0";
 string postfix="";
@@ -32,6 +37,7 @@ if (numB==1) {
   dirbSel="_1b";
   bSel="Z + (= 1) b jet";
   drawInclusive = 0;
+  drawTheoryErrors = 0;
 }
 if (numB==2) {
   postfix = postfix + "2b";
@@ -148,6 +154,117 @@ if (numB==2) {
 	h_mcg3_b->SetDirectory(0);
 
 	file->Close();
+
+	TProfile* h_mcg1_b_1 = 0;
+	TGraphAsymmErrors* h_mcg1_b_2 = 0;
+	TGraphAsymmErrors* h_mcg1_b_3 = 0;
+	TProfile* h_mcg2_b_1 = 0;
+	TGraphAsymmErrors* h_mcg2_b_2 = 0;
+	TGraphAsymmErrors* h_mcg2_b_3 = 0;
+
+	if (drawTheoryErrors && useMadGraphAMC) {
+	  string tmp1 = title_b;
+	  if (title_b=="w_DR_Zb_min") tmp1 = "w_DRb_min";
+	  if (title_b=="w_DR_Zb_max") tmp1 = "w_DRb_max";
+	  if (title_b=="w_A_Zb") tmp1 = "w_Ab";
+	  if (title_b=="w_Zbb_mass") tmp1 = "wbb_mass";
+	  if (isratio==1) tmp1 = tmp1 + "_ratio";
+	  string tmp2 = "Graph_from_"+tmp1;
+	  if (useMadGraphAMC==1) {
+	    if (numB==0) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/peri/m5_amc/pdf/incl/merge.root");
+	    if (numB==2) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/peri/m5_amc/pdf/2b/merge.root");
+	    file->cd("demoGen");
+	    h_mcg1_b_1 = (TProfile*)gDirectory->Get(tmp1.c_str())->Clone();
+	    h_mcg1_b_1->SetDirectory(0);
+	    file->Close();
+	  }
+	  if (useMadGraphAMC==2) {
+	    if (numB==0) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/madgraph_amc_new/data_nnpdf30_nlo_nf_5_pdfas_0b/merge.root");
+	    if (numB==2) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/madgraph_amc_new/data_nnpdf30_nlo_nf_5_pdfas_2b/merge.root");
+	    file->cd("demoGen");
+	    h_mcg1_b_1 = (TProfile*)gDirectory->Get(tmp1.c_str())->Clone();
+	    h_mcg1_b_1->SetDirectory(0);
+	    file->Close();
+	  }
+	  if (useMadGraphAMC==1) {
+// NOT AVAILABLE
+	  }
+	  if (useMadGraphAMC==2) {
+	    if (numB==0) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/madgraph_amc_new/data_alpha_s_0b/merge.root");
+	    if (numB==2) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/madgraph_amc_new/data_alpha_s_2b/merge.root");
+	    file->cd("demoGen");
+	    h_mcg1_b_2 = (TGraphAsymmErrors*)gDirectory->Get(tmp2.c_str())->Clone();
+	    file->Close();
+	  }
+	  if (useMadGraphAMC==1) {
+	    if (numB==0) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/peri/m5_amc/scala/incl/merge.root");
+	    if (numB==2) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/peri/m5_amc/scala/2b/merge.root");
+	    file->cd("demoGen");
+	    h_mcg1_b_3 = (TGraphAsymmErrors*)gDirectory->Get(tmp2.c_str())->Clone();
+	    file->Close();
+	  }
+	  if (useMadGraphAMC==2) {
+	    if (numB==0) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/madgraph_amc_new/data_scale_0b/merge.root");
+	    if (numB==2) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/madgraph_amc_new/data_scale_2b/merge.root");
+	    file->cd("demoGen");
+	    h_mcg1_b_3 = (TGraphAsymmErrors*)gDirectory->Get(tmp2.c_str())->Clone();
+	    file->Close();
+	  }
+	}
+
+	if (drawTheoryErrors && useNewPowheg>=2) {
+	  string tmp1 = title_b;
+	  if (title_b=="w_DR_Zb_min") tmp1 = "w_DRb_min";
+	  if (title_b=="w_DR_Zb_max") tmp1 = "w_DRb_max";
+	  if (title_b=="w_A_Zb") tmp1 = "w_Ab";
+	  if (title_b=="w_Zbb_mass") tmp1 = "wbb_mass";
+	  if (isratio==1) tmp1 = tmp1 + "_ratio";
+	  string tmp2 = "Graph_from_"+tmp1;
+	  if (useNewPowheg==2) {
+	    if (numB==0) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/peri/powheg/nnpdf/pdf/incl/merge.root");
+	    if (numB==2) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/peri/powheg/nnpdf/pdf/2b/merge.root");
+	    file->cd("demoGen");
+	    h_mcg2_b_1 = (TProfile*)gDirectory->Get(tmp1.c_str())->Clone();
+	    h_mcg2_b_1->SetDirectory(0);
+	    file->Close();
+	  }
+	  if (useNewPowheg==3) {
+	    if (numB==0) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/powheg_minlo_new/data_nnpdf30_nlo_as_0118_0b/merge.root");
+	    if (numB==2) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/powheg_minlo_new/data_nnpdf30_nlo_as_0118_2b/merge.root");
+	    file->cd("demoGen");
+	    h_mcg2_b_1 = (TProfile*)gDirectory->Get(tmp1.c_str())->Clone();
+	    h_mcg2_b_1->SetDirectory(0);
+	    file->Close();
+	  }
+	  if (useNewPowheg==2) {
+	    if (numB==0) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/peri/powheg/nnpdf/alpha/incl/merge.root");
+	    if (numB==2) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/peri/powheg/nnpdf/alpha/2b/merge.root");
+	    file->cd("demoGen");
+	    h_mcg2_b_2 = (TGraphAsymmErrors*)gDirectory->Get(tmp2.c_str())->Clone();
+	    file->Close();
+	  }
+	  if (useNewPowheg==3) {
+	    if (numB==0) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/powheg_minlo_new/data_alpha_s_0b/merge.root");
+	    if (numB==2) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/powheg_minlo_new/data_alpha_s_2b/merge.root");
+	    file->cd("demoGen");
+	    h_mcg2_b_2 = (TGraphAsymmErrors*)gDirectory->Get(tmp2.c_str())->Clone();
+	    file->Close();
+	  }
+	  if (useNewPowheg==2) {
+	    if (numB==0) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/peri/powheg/scala/incl/merge.root");
+	    if (numB==2) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/peri/powheg/scala/2b/merge.root");
+	    file->cd("demoGen");
+	    h_mcg2_b_3 = (TGraphAsymmErrors*)gDirectory->Get(tmp2.c_str())->Clone();
+	    file->Close();
+	  }
+	  if (useNewPowheg==3) {
+	    if (numB==0) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/powheg_minlo_new/data_scale_0b/merge.root");
+	    if (numB==2) file = TFile::Open("/gpfs/cms/users/candelis/work/ZbSkim/powheg_minlo_new/data_scale_2b/merge.root");
+	    file->cd("demoGen");
+	    h_mcg2_b_3 = (TGraphAsymmErrors*)gDirectory->Get(tmp2.c_str())->Clone();
+	    file->Close();
+	  }
+	}
 
 	if (!drawInclusive) {
 	  h_data_tot = (TH1F*)h_data_b_tot->Clone();
@@ -356,8 +473,8 @@ if (numB==2) {
 	leg->AddEntry(h_mcg3_b,"MadGraph 4FS + Pythia6","lf");
 	if (useSherpa) leg->AddEntry(h_mcg1_b,"Sherpa","lf");
 	if (useMadGraphAMC) leg->AddEntry(h_mcg1_b,"MadGraph-aMC@NLO + Pythia8","lf");
-	if (useNewPowheg!=2) leg->AddEntry(h_mcg2_b,"Powheg + Pythia6","lf");
-	if (useNewPowheg==2) leg->AddEntry(h_mcg2_b,"Powheg MiNLO + Pythia8","lf");
+	if (useNewPowheg<=1) leg->AddEntry(h_mcg2_b,"Powheg + Pythia6","lf");
+	if (useNewPowheg>=2) leg->AddEntry(h_mcg2_b,"Powheg MiNLO + Pythia8","lf");
 
 	leg->Draw();
 
@@ -518,8 +635,11 @@ if (numB==2) {
 	    h_M_stat->SetBinContent(1, -999.);
 	  }
 	  h_M->SetLineWidth(2);
-	  h_M->Draw("E2SAME");
-	  h_M->Draw("E0SAME");
+//	  h_M->Draw("E2SAME");
+//	  h_M->Draw("E0SAME");
+	  TGraphAsymmErrors *g_M = new TGraphAsymmErrors(h_M);
+	  g_M->Draw("PZ0");
+	  g_M->Draw("20");
 	}
 
 	TLatex *t2 = new TLatex();
@@ -576,6 +696,7 @@ if (numB==2) {
 	h_S_tot->GetYaxis()->SetTitleSize(0.17);
 	h_S_tot->GetYaxis()->SetLabelSize(0.17);
 	h_S_tot->GetYaxis()->SetRangeUser(0.65, 1.35);
+	if (useMadGraphAMC) h_S_tot->GetYaxis()->SetRangeUser(-0.15, 2.15);
 	if (numB==2) h_S_tot->GetYaxis()->SetRangeUser(0.3, 1.7);
 	h_S_tot->GetYaxis()->SetTitleOffset(0.21);
 	h_S_tot->GetYaxis()->SetTickLength(0.02);
@@ -674,8 +795,35 @@ if (numB==2) {
 	  }
 	  h_S->SetLineWidth(2);
 	  if (useSherpa || useMadGraphAMC) {
-	    h_S->Draw("E2SAME");
-	    h_S->Draw("E0SAME");
+//	    h_S->Draw("E2SAME");
+//	    h_S->Draw("E0SAME");
+	    TGraphAsymmErrors *g_S = new TGraphAsymmErrors(h_S);
+	    g_S->Draw("PZ0");
+	    g_S->Draw("20");
+	    if (drawTheoryErrors && useMadGraphAMC) {
+	      TGraphAsymmErrors* g_S_th = 0;
+	      g_S_th = (TGraphAsymmErrors*)g_S->Clone();
+	      for (int i=0; i<g_S_th->GetN(); i++) {
+	        double eylow = g_S_th->GetEYlow()[i]*h_data_b_tot->GetBinContent(i+1);
+	        double eyhigh = g_S_th->GetEYhigh()[i]*h_data_b_tot->GetBinContent(i+1);
+	        if (h_mcg1_b_1) {
+	          eylow = TMath::Sqrt(TMath::Power(eylow,2)+TMath::Power(h_mcg1_b_1->GetBinError(i+1),2));
+	          eyhigh = TMath::Sqrt(TMath::Power(eyhigh,2)+TMath::Power(h_mcg1_b_1->GetBinError(i+1),2));
+	        }
+	        if (h_mcg1_b_2) {
+	          eylow = TMath::Sqrt(TMath::Power(eylow,2)+TMath::Power(h_mcg1_b_2->GetEYlow()[i],2));
+	          eyhigh = TMath::Sqrt(TMath::Power(eyhigh,2)+TMath::Power(h_mcg1_b_2->GetEYhigh()[i],2));
+	        }
+	        if (h_mcg1_b_3) {
+	          eylow = TMath::Sqrt(TMath::Power(eylow,2)+TMath::Power(h_mcg1_b_3->GetEYlow()[i],2));
+	          eyhigh = TMath::Sqrt(TMath::Power(eyhigh,2)+TMath::Power(h_mcg1_b_3->GetEYhigh()[i],2));
+	        }
+	        g_S_th->SetPointEYlow(i, h_data_b_tot->GetBinContent(i+1)==0 ? 0 : eylow/h_data_b_tot->GetBinContent(i+1));
+	        g_S_th->SetPointEYhigh(i, h_data_b_tot->GetBinContent(i+1)==0 ? 0 : eyhigh/h_data_b_tot->GetBinContent(i+1));
+	      }
+	      g_S_th->Draw("PZ0");
+	      g_S_th->Draw("20");
+	    }
 	  }
 	}
 
@@ -735,6 +883,7 @@ if (numB==2) {
 	h_P_tot->GetYaxis()->SetTitleSize(0.11);
 	h_P_tot->GetYaxis()->SetLabelSize(0.11);
 	h_P_tot->GetYaxis()->SetRangeUser(0.65, 1.35);
+	if (useNewPowheg>=2) h_P_tot->GetYaxis()->SetRangeUser(-0.15, 2.15);
 	if (numB==2) h_P_tot->GetYaxis()->SetRangeUser(0.3, 1.7);
 	h_P_tot->GetYaxis()->SetTitleOffset(0.32);
 	h_P_tot->GetYaxis()->SetTickLength(0.02);
@@ -823,8 +972,35 @@ if (numB==2) {
 	    h_P_stat->SetBinContent(1, -999.);
 	  }
 	  h_P->SetLineWidth(2);
-	  h_P->Draw("E2SAME");
-	  h_P->Draw("E0SAME");
+//	  h_P->Draw("E2SAME");
+//	  h_P->Draw("E0SAME");
+	  TGraphAsymmErrors *g_P = new TGraphAsymmErrors(h_P);
+	  g_P->Draw("PZ0");
+	  g_P->Draw("20");
+	  if (drawTheoryErrors && useNewPowheg>=2) {
+	    TGraphAsymmErrors* g_P_th = 0;
+	    g_P_th = (TGraphAsymmErrors*)g_P->Clone();
+	    for (int i=0; i<g_P_th->GetN(); i++) {
+	      double eylow = g_P_th->GetEYlow()[i]*h_data_b_tot->GetBinContent(i+1);
+	      double eyhigh = g_P_th->GetEYhigh()[i]*h_data_b_tot->GetBinContent(i+1);
+	      if (h_mcg2_b_1) {
+	        eylow = TMath::Sqrt(TMath::Power(eylow,2)+TMath::Power(h_mcg2_b_1->GetBinError(i+1),2));
+	        eyhigh = TMath::Sqrt(TMath::Power(eyhigh,2)+TMath::Power(h_mcg2_b_1->GetBinError(i+1),2));
+	      }
+	      if (h_mcg2_b_2) {
+	        eylow = TMath::Sqrt(TMath::Power(eylow,2)+TMath::Power(h_mcg2_b_2->GetEYlow()[i],2));
+	        eyhigh = TMath::Sqrt(TMath::Power(eyhigh,2)+TMath::Power(h_mcg2_b_2->GetEYhigh()[i],2));
+	      }
+	      if (h_mcg2_b_3) {
+	        eylow = TMath::Sqrt(TMath::Power(eylow,2)+TMath::Power(h_mcg2_b_3->GetEYlow()[i],2));
+	        eyhigh = TMath::Sqrt(TMath::Power(eyhigh,2)+TMath::Power(h_mcg2_b_3->GetEYhigh()[i],2));
+	      }
+	      g_P_th->SetPointEYlow(i, h_data_b_tot->GetBinContent(i+1)==0 ? 0 : eylow/h_data_b_tot->GetBinContent(i+1));
+	      g_P_th->SetPointEYhigh(i, h_data_b_tot->GetBinContent(i+1)==0 ? 0 : eyhigh/h_data_b_tot->GetBinContent(i+1));
+	    }
+	    g_P_th->Draw("PZ0");
+	    g_P_th->Draw("20");
+	  }
 	}
 
 	TLatex *t4 = new TLatex();
@@ -832,8 +1008,8 @@ if (numB==2) {
 	t4->SetTextFont(42);
 	t4->SetLineWidth(2);
 	t4->SetNDC();
-	if (useNewPowheg!=2) t4->DrawLatex(0.15,0.43,"Powheg + Pythia6, normalized to #sigma_{NLO}");
-	if (useNewPowheg==2) t4->DrawLatex(0.15,0.43,"Powheg MiNLO + Pythia8, normalized to #sigma_{NLO}");
+	if (useNewPowheg<=1) t4->DrawLatex(0.15,0.43,"Powheg + Pythia6, normalized to #sigma_{NLO}");
+	if (useNewPowheg>=2) t4->DrawLatex(0.15,0.43,"Powheg MiNLO + Pythia8, normalized to #sigma_{NLO}");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	OLine4->SetLineColor(kBlue-4);
@@ -930,8 +1106,11 @@ if (numB==2) {
 	    g_M3_stat->SetPoint(0,g_M3_stat->GetX()[0], -999.);
 	  }
 	  h_M3->SetLineWidth(2);
-	  h_M3->Draw("E2SAME");
-	  h_M3->Draw("E0SAME");
+//	  h_M3->Draw("E2SAME");
+//	  h_M3->Draw("E0SAME");
+	  TGraphAsymmErrors *g_M3 = new TGraphAsymmErrors(h_M3);
+	  g_M3->Draw("PZ0");
+	  g_M3->Draw("20");
 	}
 
 	TLine *OLine5 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
