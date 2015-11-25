@@ -105,9 +105,9 @@ int useMadGraphAMC=0;
 //int useMadGraphAMC=2; // use MadGraph-aMC@NLO MC prediction (high stat)
 
 //int useNewPowheg=0;
-//int useNewPowheg=1; // use new Powheg MC prediction
+int useNewPowheg=1; // use new Powheg MC prediction
 //int useNewPowheg=2; // use new Powheg MiNLO MC prediction
-int useNewPowheg=3; // use new Powheg MiNLO MC prediction (high stat)
+//int useNewPowheg=3; // use new Powheg MiNLO MC prediction (high stat)
 
 //int drawInclusive=0;
 int drawInclusive=1; // do plot the "inclusive" histogram
