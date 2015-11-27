@@ -2706,7 +2706,7 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_mass_Zj_b") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dM_{Zj} [pb]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dM_{Zj} [pb/GeV]");
 	  h_P_tot->GetXaxis()->SetTitle("M(Zj) [GeV/c^{2}]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / dM_{Zj} [%]");
@@ -2741,14 +2741,14 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_Zbb_mass") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{Zbb} [pb]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{Zbb} [pb/GeV]");
 	  h_P_tot->GetXaxis()->SetTitle("M_{Zbb} [GeV/c^{2}]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{Zbb} [%]");
 	    h_mcg_b->GetYaxis()->SetRangeUser(0, 20);
 	  }
 	} else if (title_b=="w_bb_mass") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{bb} [pb]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{bb} [pb/GeV]");
 	  h_P_tot->GetXaxis()->SetTitle("M_{bb} [GeV/c^{2}]");
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("d[#sigma(Z+b) / #sigma(Z+j)] / d M_{bb} [%]");
