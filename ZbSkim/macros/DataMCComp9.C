@@ -391,6 +391,10 @@ if (numB==2) {
 	    h_mcg_b->SetMinimum(0.0005);
 	    h_mcg_b->SetMaximum(2.0);
 	  }
+	  if (title=="w_delta_phi_2b") {
+	    h_mcg_b->SetMinimum(0.009);
+	    h_mcg_b->SetMaximum(1.0);
+	  }
 	  if (title=="w_Ht_b") {
 	    h_mcg_b->SetMinimum(0.00002);
 	    h_mcg_b->SetMaximum(0.01);
