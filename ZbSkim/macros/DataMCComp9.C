@@ -549,7 +549,7 @@ if (numB==2) {
 	h_M_tot->GetYaxis()->SetRangeUser(0.65, 1.35);
 	if (numB==2) h_M_tot->GetYaxis()->SetRangeUser(0.3, 1.7);
 	h_M_tot->GetYaxis()->SetTitleOffset(0.21);
-	h_M_tot->GetYaxis()->SetTickLength(0.02);
+	h_M_tot->GetYaxis()->SetTickLength(0.01);
 
 	h_M_tot->SetMarkerColor(kRed+1);
 	h_M_tot->SetLineColor(kRed+1);
@@ -699,7 +699,7 @@ if (numB==2) {
 	if (useMadGraphAMC) h_S_tot->GetYaxis()->SetRangeUser(-0.15, 2.15);
 	if (numB==2) h_S_tot->GetYaxis()->SetRangeUser(0.3, 1.7);
 	h_S_tot->GetYaxis()->SetTitleOffset(0.21);
-	h_S_tot->GetYaxis()->SetTickLength(0.02);
+	h_S_tot->GetYaxis()->SetTickLength(0.01);
 
 	h_S_tot->SetMarkerColor(kRed+1);
 	h_S_tot->SetLineColor(kRed+1);
@@ -886,7 +886,7 @@ if (numB==2) {
 	if (useNewPowheg>=2) h_P_tot->GetYaxis()->SetRangeUser(-0.15, 2.15);
 	if (numB==2) h_P_tot->GetYaxis()->SetRangeUser(0.3, 1.7);
 	h_P_tot->GetYaxis()->SetTitleOffset(0.32);
-	h_P_tot->GetYaxis()->SetTickLength(0.02);
+	h_P_tot->GetYaxis()->SetTickLength(0.008);
 
 	h_P_tot->SetMarkerColor(kRed+1);
 	h_P_tot->SetLineColor(kRed+1);
@@ -1132,8 +1132,9 @@ if (numB==2) {
         h_mcg_b->GetYaxis()->SetTitleOffset(0.6);
         h_P_tot->GetXaxis()->SetTitleSize(0.165);
         h_P_tot->GetXaxis()->SetTitleOffset(0.92);
-        h_P_tot->GetXaxis()->SetTickLength(0.07);
-        h_P_tot->GetYaxis()->SetTickLength(0.03);
+
+	h_mcg_b->GetYaxis()->SetTickLength(0.01);
+	h_mcg_b->GetXaxis()->SetTickLength(0.025);
 
         h_mcg_b->GetYaxis()->SetLabelSize(0.036);
         h_M_tot->GetYaxis()->SetLabelSize(0.19);
