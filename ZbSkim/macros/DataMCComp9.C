@@ -384,7 +384,7 @@ if (numB==2) {
 	    h_mcg_b->SetMaximum(10.0);
 	  }
 	  if (title=="w_DR_Zb_min") {
-	    h_mcg_b->SetMinimum(0.0001);
+	    h_mcg_b->SetMinimum(0.0005);
 	    h_mcg_b->SetMaximum(10.0);
 	  }
 	  if (title=="w_DR_bb") {
