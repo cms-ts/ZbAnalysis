@@ -1130,7 +1130,12 @@ if (numB==1) bbBkg = true;
 	  hs->Add(h_mc1);
 	}
 
-        TCanvas* c1 = new TCanvas("c","c",10,10,800,600);
+        TCanvas* c1 = 0;
+#ifdef PAPER
+	c1 = new TCanvas("c","c",10,10,600,600);
+#else
+	c1 = new TCanvas("c","c",10,10,800,600);
+#endif
 	c1->cd();
 
 	TPad *pad1 = new TPad("pad1","pad1",0.0,0.3,1.0,1.0);
@@ -1155,6 +1160,9 @@ if (numB==1) bbBkg = true;
 	hs->GetYaxis()->SetTitleSize(0.05);
  	hs->GetYaxis()->SetLabelSize(0.045);
 	hs->GetYaxis()->SetTitleOffset(0.7);
+#ifdef PAPER
+	hs->GetYaxis()->SetTitleOffset(1.0);
+#endif
  	hs->GetXaxis()->SetLabelSize(0.08);
 	hs->GetXaxis()->SetTitleOffset(0.7);
 	hs->SetMinimum(8);
@@ -1193,7 +1201,11 @@ if (numB==1) bbBkg = true;
           } else if (h_mc1c && h_mc1b && bbSig) {
             leg = new TLegend(0.65, 0.577, 0.91, 0.88);
 	  } else if (h_mc1c && h_mc1b) {
+#ifdef PAPER
+	    leg = new TLegend(0.66, 0.520, 0.94, 0.88);
+#else
 	    leg = new TLegend(0.65, 0.580, 0.91, 0.88);
+#endif
 	  } else if (h_mc1c || h_mc1b) {
 	    leg = new TLegend(0.65, 0.613, 0.91, 0.88);
 	  } else {
@@ -1447,11 +1459,19 @@ if (numB==1) bbBkg = true;
 	  tmp.erase(tmp.find("/c"), 2);
 	  h_ratio->GetXaxis ()->SetTitle(tmp.c_str());
 	}
+	if (tmp.find("[")!=string::npos) {
+	  tmp.replace(tmp.find("["), 1,"(");
+	  h_ratio->GetXaxis ()->SetTitle(tmp.c_str());
+	}
+	if (tmp.find("]")!=string::npos) {
+	  tmp.replace(tmp.find("]"), 1, ")");
+	  h_ratio->GetXaxis ()->SetTitle(tmp.c_str());
+	}
 	if (title.find("w_mass_ee")!=string::npos) {
-	  h_ratio->GetXaxis()->SetTitle("dielectron invariant mass [GeV]");
+	  h_ratio->GetXaxis()->SetTitle("dielectron invariant mass (GeV)");
 	}
 	if (title.find("w_mass_mm")!=string::npos) {
-	  h_ratio->GetXaxis()->SetTitle("dimuon invariant mass [GeV]");
+	  h_ratio->GetXaxis()->SetTitle("dimuon invariant mass (GeV)");
 	}
 #endif
 	h_ratio->GetXaxis()->SetTitleOffset(0.9);
@@ -1468,6 +1488,9 @@ if (numB==1) bbBkg = true;
 	h_ratio->GetYaxis()->SetLabelSize(0.10);
 	h_ratio->GetYaxis()->SetRangeUser(0.5, 1.5);
 	h_ratio->GetYaxis()->SetTitleOffset(0.33);
+#ifdef PAPER
+	h_ratio->GetYaxis()->SetTitleOffset(0.47);
+#endif
 	h_ratio->Divide(ht);
 	h_ratio->SetMarkerStyle(20);
 	h_ratio->Draw("E0PX0");
@@ -1585,11 +1608,22 @@ if (numB==1) bbBkg = true;
 	  }
 	  if (doFit==3) {
 	    sprintf(buff, "c_{uds} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
+#ifdef PAPER
+	    fitLabel->DrawLatex(0.15, 0.48, buff);
+#else
 	    fitLabel->DrawLatex(0.19, 0.48, buff);
+#endif
 	    sprintf(buff, "c_{b}   = %5.3f #pm %5.3f", fitter->GetParameter(1), fitter->GetParError(1));
+#ifdef PAPER
+	    fitLabel->DrawLatex(0.15, 0.43, buff);
+#else
 	    fitLabel->DrawLatex(0.19, 0.43, buff);
+#endif
 	    sprintf(buff, "c_{c}   = %5.3f #pm %5.3f", fitter->GetParameter(2), fitter->GetParError(2));
+	    fitLabel->DrawLatex(0.15, 0.38, buff);
+#else
 	    fitLabel->DrawLatex(0.19, 0.38, buff);
+#endif
 	    float f_uds = 100*h_mc_fit0->Integral(0,h_mc_fit0->GetNbinsX()+1)/(h_mc_fit0->Integral(0,h_mc_fit0->GetNbinsX()+1)+h_mc_fit1->Integral(0,h_mc_fit1->GetNbinsX()+1)+h_mc_fit2->Integral(0,h_mc_fit2->GetNbinsX()+1));
 	    float ef_uds = f_uds*(fitter->GetParError(0)/fitter->GetParameter(0));
 	    sprintf(buff, "f_{uds} = %4.1f #pm %3.1f %%", f_uds, ef_uds);
@@ -1605,7 +1639,11 @@ if (numB==1) bbBkg = true;
 	  }
           if (doFit==4) {
             sprintf(buff, "c_{bb} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
+#ifdef PAPER
+            fitLabel->DrawLatex(0.20, 0.48, buff);
+#else
             fitLabel->DrawLatex(0.68, 0.48, buff);
+#endif
           }
           if (doFit==5) {
             sprintf(buff, "c_{b} = %5.3f #pm %5.3f", fitter->GetParameter(0), fitter->GetParError(0));
