@@ -1620,6 +1620,7 @@ if (numB==1) bbBkg = true;
 	    fitLabel->DrawLatex(0.19, 0.43, buff);
 #endif
 	    sprintf(buff, "c_{c}   = %5.3f #pm %5.3f", fitter->GetParameter(2), fitter->GetParError(2));
+#ifdef PAPER
 	    fitLabel->DrawLatex(0.15, 0.38, buff);
 #else
 	    fitLabel->DrawLatex(0.19, 0.38, buff);
