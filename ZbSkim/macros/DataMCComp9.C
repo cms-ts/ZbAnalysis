@@ -276,7 +276,7 @@ if (numB==2) {
 	  h_mcg3 = (TH1F*)h_mcg3_b->Clone();
 	}
 
-	TCanvas* c1 = new TCanvas("c", "c", 10, 10, 800, 600);
+	TCanvas* c1 = new TCanvas("c", "c", 10, 10, 600, 600);
 	c1->cd();
 
 	h_mcg_b->SetTitle("");
@@ -361,7 +361,7 @@ if (numB==2) {
 
         TLegend *leg = NULL;
 	if (!useSherpa && !useMadGraphAMC) {
-	  leg = new TLegend(0.613, 0.590, 0.883, 0.880);
+	  leg = new TLegend(0.550, 0.550, 0.897, 0.880);
 	} else {
 	  leg = new TLegend(0.503, 0.500, 0.890, 0.880);
 	}
@@ -504,7 +504,7 @@ if (numB==2) {
           }
           if (title_b=="w_delta_phi_b" || title_b=="w_delta_phi_2b" || title_b=="w_mass_Zj_b") {
             //CMS_process("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
-            if (numB==0) CMS_process("Z/#gamma* + at least 1 b jet", 0.68, 0.51);
+            if (numB==0) CMS_process("Z/#gamma* + at least 1 b jet", 0.60, 0.51);
             if (numB==1) CMS_process("Z/#gamma* + exactly b jet", 0.68, 0.51);
             if (numB==2) CMS_process("Z/#gamma* + at least 2 b jets", 0.68, 0.51);
           }
@@ -1133,24 +1133,26 @@ if (numB==2) {
 	}
 
         h_mcg_b->GetYaxis()->SetTitleSize(0.05);
-        h_mcg_b->GetYaxis()->SetTitleOffset(0.6);
-        h_P_tot->GetXaxis()->SetTitleSize(0.165);
+        h_mcg_b->GetYaxis()->SetTitleOffset(0.9);
+        h_P_tot->GetXaxis()->SetTitleSize(0.16);
         h_P_tot->GetXaxis()->SetTitleOffset(0.92);
 
 	h_mcg_b->GetYaxis()->SetTickLength(0.01);
 	h_mcg_b->GetXaxis()->SetTickLength(0.025);
 
-        h_mcg_b->GetYaxis()->SetLabelSize(0.036);
-        h_M_tot->GetYaxis()->SetLabelSize(0.19);
-        h_S_tot->GetYaxis()->SetLabelSize(0.19);
-        h_P_tot->GetYaxis()->SetLabelSize(0.12);
+        h_mcg_b->GetYaxis()->SetLabelSize(0.045);
+        h_M_tot->GetYaxis()->SetLabelSize(0.2);
+        h_S_tot->GetYaxis()->SetLabelSize(0.2);
+        h_P_tot->GetYaxis()->SetLabelSize(0.13);
+
+        h_P_tot->GetXaxis()->SetLabelSize(0.13);
         h_P_tot->GetXaxis()->SetLabelOffset(0.02);
 
         h_M_tot->GetYaxis()->SetTitleSize(0.28);
-        h_M_tot->GetYaxis()->SetTitleOffset(0.1);
+        h_M_tot->GetYaxis()->SetTitleOffset(0.17);
         h_M_tot->GetYaxis()->SetTitle("/ Data   ");
         h_S_tot->GetYaxis()->SetTitleSize(0.28);
-        h_S_tot->GetYaxis()->SetTitleOffset(0.1);
+        h_S_tot->GetYaxis()->SetTitleOffset(0.17);
         h_S_tot->GetYaxis()->SetTitle("Theory");
         h_P_tot->GetYaxis()->SetTitle("");
 
