@@ -389,7 +389,7 @@ if (numB==2) {
 	  }
 	  if (title=="w_DR_bb") {
 	    h_mcg_b->SetMinimum(0.0005);
-	    h_mcg_b->SetMaximum(2.0);
+	    h_mcg_b->SetMaximum(5.0);
 	  }
 	  if (title=="w_delta_phi_2b") {
 	    h_mcg_b->SetMinimum(0.009);
@@ -506,7 +506,7 @@ if (numB==2) {
             //CMS_process("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
             if (numB==0) CMS_process("Z/#gamma*(#rightarrow ll) + at least 1 b jet", 0.60, 0.51);
             if (numB==1) CMS_process("Z/#gamma*(#rightarrow ll) + exactly b jet", 0.68, 0.51);
-            if (numB==2) CMS_process("Z/#gamma*(#rightarrow ll) + at least 2 b jets", 0.68, 0.51);
+            if (numB==2) CMS_process("Z/#gamma*(#rightarrow ll) + at least 2 b jets", 0.135, 0.51);
           }
           if (title_b=="w_first_bjet_eta" || title_b=="w_second_bjet_eta") {
             //CMS_process("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
@@ -515,10 +515,15 @@ if (numB==2) {
             if (numB==2) CMS_process("Z/#gamma*(#rightarrow ll) + at least 2 b jets", 0.68, 0.51);
           }
         }
-        if (isratio==1) {
-          //CMS_process("Z/#gamma*#rightarrow ll selection", 0.135, 0.85);
-          CMS_process("Z/#gamma* + at least 1 b jet", 0.135, 0.85);
-        }
+	if (isratio==1) {
+	  if (title_b=="w_delta_phi_b") {
+            //CMS_process("Z/#gamma*#rightarrow ll selection", 0.135, 0.51);
+            CMS_process("Z/#gamma*(#rightarrow ll) + at least 1 b jet", 0.135, 0.51);
+	  } else {
+            //CMS_process("Z/#gamma*#rightarrow ll selection", 0.135, 0.85);
+            CMS_process("Z/#gamma*(#rightarrow ll) + at least 1 b jet", 0.135, 0.85);
+	  }
+	}
 
 	TPad *pad2 = new TPad("pad2","pad2",0,0.29,1,0.4);
 	pad2->SetTopMargin(0);
