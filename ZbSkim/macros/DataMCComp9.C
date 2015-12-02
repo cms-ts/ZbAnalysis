@@ -846,7 +846,7 @@ if (numB==2) {
 	  t3->DrawLatex(0.15,0.7,"Sherpa, normalized to  #sigma_{NNLO}");
 	} else {
 	  if (useMadGraphAMC==0) t3->DrawLatex(0.15,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}");
-	  if (useMadGraphAMC==1) t3->DrawLatex(0.15,0.13,"MadGraph-aMC@NLO + Pythia8, normalized to  #sigma_{NLO}");
+	  if (useMadGraphAMC>=1) t3->DrawLatex(0.15,0.13,"MadGraph-aMC@NLO + Pythia8, normalized to  #sigma_{NLO}");
 	}
 
 	if (useSherpa || useMadGraphAMC) {
