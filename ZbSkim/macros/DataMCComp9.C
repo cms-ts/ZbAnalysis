@@ -510,9 +510,9 @@ if (numB==2) {
           }
           if (title_b=="w_first_bjet_eta" || title_b=="w_second_bjet_eta") {
             //CMS_process("Z/#gamma*#rightarrow ll selection", 0.68, 0.51);
-            if (numB==0) CMS_process("Z/#gamma*(#rightarrow ll) + at least 1 b jet", 0.68, 0.51);
-            if (numB==1) CMS_process("Z/#gamma*(#rightarrow ll) + exactly b jet", 0.68, 0.51);
-            if (numB==2) CMS_process("Z/#gamma*(#rightarrow ll) + at least 2 b jets", 0.68, 0.51);
+            if (numB==0) CMS_process("Z/#gamma*(#rightarrow ll) + at least 1 b jet", 0.48, 0.51);
+            if (numB==1) CMS_process("Z/#gamma*(#rightarrow ll) + exactly b jet", 0.48, 0.51);
+            if (numB==2) CMS_process("Z/#gamma*(#rightarrow ll) + at least 2 b jets", 0.48, 0.51);
           }
         }
 	if (isratio==1) {
