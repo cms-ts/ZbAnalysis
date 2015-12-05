@@ -46,7 +46,7 @@ double eXsec_dy_2 = 0;
 
 double Ngen_dy_3 = 7551580;
 double Xsec_dy_3 = 3.0*20.3; // NLO
-double eXsec_dy_3 = 0.15*Xsec_dy_3;
+double eXsec_dy_3 = 0;
 
 //////////////////////// DY Powheg 2
 
