@@ -27,6 +27,26 @@ double Ngen_dy_amc = 2.59285811200000000e+11;
 double Xsec_dy_amc = 3424.0; // native
 double eXsec_dy_amc = 0;
 
+//////////////////////// DY MadGraph_aMC@NLO + Pythia 8 (high stat)
+
+//double Ngen_dy_amc_0 = 98207845;
+// weights extracted from h_gen_weights->GetBinContent(2)
+double Ngen_dy_amc_0 = 3.29965862912000000e+11;
+double Xsec_dy_amc_0 = 2882.0; // native
+double eXsec_dy_amc_0 = 0;
+
+//double Ngen_dy_amc_1 = 97131635;
+// weights extracted from h_gen_weights->GetBinContent(2)
+double Ngen_dy_amc_1 = 2.09490558976000000e+11;
+double Xsec_dy_amc_1 = 450.3; // native
+double eXsec_dy_amc_1 = 0;
+
+//double Ngen_dy_amc_2 = 38619865;
+// weights extracted from h_gen_weights->GetBinContent(2)
+double Ngen_dy_amc_2 = 4.35118653440000000e+10;
+double Xsec_dy_amc_2 = 147.6; // native
+double eXsec_dy_amc_2 = 0;
+
 //////////////////////// DY Sherpa
 
 //double Ngen_dy_1 = 127014144;
