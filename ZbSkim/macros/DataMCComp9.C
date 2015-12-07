@@ -12,20 +12,20 @@ void DataMCComp9(string title="", int plot=0, int isratio=1, int numB=0) {
 int useSherpa=0;
 //int useSherpa=1; // use Sherpa MC prediction
 
-int useMadGraphAMC=0;
+//int useMadGraphAMC=0;
 //int useMadGraphAMC=1; // use MadGraph-aMC@NLO MC prediction
-//int useMadGraphAMC=2; // use MadGraph-aMC@NLO MC prediction (high stat)
+int useMadGraphAMC=2; // use MadGraph-aMC@NLO MC prediction (high stat)
 
 //int useNewPowheg=0;
-int useNewPowheg=1; // use new Powheg MC prediction
+//int useNewPowheg=1; // use new Powheg MC prediction
 //int useNewPowheg=2; // use new Powheg MiNLO MC prediction
-//int useNewPowheg=3; // use new Powheg MiNLO MC prediction (high stat)
+int useNewPowheg=3; // use new Powheg MiNLO MC prediction (high stat)
 
 int drawInclusive=0;
 //int drawInclusive=1; // do plot the "inclusive" histogram
 
-int drawTheoryErrors=0;
-//int drawTheoryErrors=1; // add PDF+alpha_s & scale errors on MC predictions
+//int drawTheoryErrors=0;
+int drawTheoryErrors=1; // add PDF+alpha_s & scale errors on MC predictions
 
 string subdir="0";
 string postfix="";
