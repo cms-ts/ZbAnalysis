@@ -1115,6 +1115,22 @@ if (numB==1) bbBkg = true;
 	  hs->Add(h_mcO);
 	  hs->Add(h_mcD);
 	  hs->Add(h_mc2);
+#ifdef PAPER
+	  if (bbSig) {
+	    hs->Add(h_mc1);
+	    if (h_mc1c) hs->Add(h_mc1c);
+	    if (h_mc1b) hs->Add(h_mc1b);
+	  }
+          if (bbBkg) hs->Add(h_mc1bb);
+	}
+        if (bbSig) {
+	  hs->Add(h_mc1bb);
+	} else {
+	  hs->Add(h_mc1);
+	  if (h_mc1c) hs->Add(h_mc1c);
+	  if (h_mc1b) hs->Add(h_mc1b);
+	}
+#else
           if (bbBkg) hs->Add(h_mc1bb);
 	  if (bbSig) {
 	    if (h_mc1b) hs->Add(h_mc1b);
@@ -1129,6 +1145,7 @@ if (numB==1) bbBkg = true;
 	  if (h_mc1c) hs->Add(h_mc1c);
 	  hs->Add(h_mc1);
 	}
+#endif
 
         TCanvas* c1 = 0;
 #ifdef PAPER
@@ -1221,55 +1238,53 @@ if (numB==1) bbBkg = true;
 	if (ilepton==2) leg->AddEntry(h_data,"Data","p");
 	if (ilepton==3) leg->AddEntry(h_data,"Data","p");
 
-	if (!bbSig) {
-	  if (h_mc1c && h_mc1b) {
 #ifdef PAPER
+	if (!bbSig) {
+	  if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b jets","f");
+	  if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c jets","f");
+	  if (h_mc1c && h_mc1b) {
 	    leg->AddEntry(h_mc1,"Z+udsg jets","f");
-#else
-	    leg->AddEntry(h_mc1,"Z+udsg-jets","f");
-#endif
 	  } else {
 	    leg->AddEntry(h_mc1,"Z+jets","f");
 	  }
-#ifdef PAPER
-	  if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c jets","f");
-	  if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b jets","f");
+	}
+	if (bbSig) {
+	  if (!doBkg) {
+	    if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b jets","f");
+	    if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c jets","f");
+	    if (h_mc1c && h_mc1b) {
+	      leg->AddEntry(h_mc1,"Z+udsg jets","f");
+	    } else {
+	      leg->AddEntry(h_mc1,"Z+jets","f");
+	    }
+	  }
+	  leg->AddEntry(h_mc1bb,"Z+bb jets","f");
+	}
 #else
+	if (!bbSig) {
+	  if (h_mc1c && h_mc1b) {
+	    leg->AddEntry(h_mc1,"Z+udsg-jets","f");
+	  } else {
+	    leg->AddEntry(h_mc1,"Z+jets","f");
+	  }
 	  if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
 	  if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
-#endif
 	}
 	if (bbSig) {
 	  if (!doBkg) {
 	    if (h_mc1c && h_mc1b) {
-#ifdef PAPER
-	      leg->AddEntry(h_mc1,"Z+udsg jets","f");
-#else
 	      leg->AddEntry(h_mc1,"Z+udsg-jets","f");
-#endif
 	    } else {
 	      leg->AddEntry(h_mc1,"Z+jets","f");
 	    }
-#ifdef PAPER
-	    if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c jets","f");
-	    if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b jets","f");
-#else
 	    if (h_mc1c) leg->AddEntry(h_mc1c,"Z+c-jets","f");
 	    if (h_mc1b) leg->AddEntry(h_mc1b,"Z+b-jets","f");
-#endif
 	  }
-#ifdef PAPER
-	  leg->AddEntry(h_mc1bb,"Z+bb jets","f");
-#else
 	  leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
-#endif
 	}
-	if (!doBkg) {
-#ifdef PAPER
-          if (bbBkg) leg->AddEntry(h_mc1bb,"Z+bb jets","f");
-#else
-          if (bbBkg) leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
 #endif
+	if (!doBkg) {
+          if (bbBkg) leg->AddEntry(h_mc1bb,"Z+bb-jets","f");
 	  leg->AddEntry(h_mc2,"t#bar{t}","f");
 	  leg->AddEntry(h_mcD,"Dibosons","f");
 	  leg->AddEntry(h_mcO,"Others","f");
