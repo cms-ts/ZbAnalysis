@@ -1171,9 +1171,6 @@ if (numB==1) bbBkg = true;
 
 	hs->Draw("HIST");
 	hs->GetYaxis()->SetTitle("Events");
-#ifdef PAPER
-	hs->GetYaxis()->SetTitle("Events / GeV");
-#endif
 	hs->GetYaxis()->SetTitleSize(0.05);
  	hs->GetYaxis()->SetLabelSize(0.045);
 	hs->GetYaxis()->SetTitleOffset(0.7);
