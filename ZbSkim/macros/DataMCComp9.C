@@ -373,27 +373,31 @@ if (numB==2) {
 	if (isratio==0) {
 	  pad1->SetLogy();
 
-	  if (title=="w_delta_phi" || title_b=="w_first_bjet_eta" || title_b=="w_first_bjet_eta_abs") {
+	  if (title_b=="w_first_bjet_eta" || title_b=="w_first_bjet_eta_abs") {
             h_mcg_b->SetMaximum(18*h_data_tot->GetMaximum());
           } else {
 	    h_mcg_b->SetMaximum(4*h_data_tot->GetMaximum());
           }
 	  h_mcg_b->SetMinimum(TMath::Max(0.000002,0.25*h_data_b_tot->GetBinContent(h_data_b_tot->GetMinimumBin())));
 	  if (title=="w_DR_Zb_max") {
-	    h_mcg_b->SetMinimum(0.00005);
-	    h_mcg_b->SetMaximum(10.0);
+	    h_mcg_b->SetMinimum(0.00009);
+	    h_mcg_b->SetMaximum(80.0);
 	  }
 	  if (title=="w_DR_Zb_min") {
-	    h_mcg_b->SetMinimum(0.0005);
-	    h_mcg_b->SetMaximum(10.0);
+	    h_mcg_b->SetMinimum(0.0003);
+	    h_mcg_b->SetMaximum(30.0);
 	  }
 	  if (title=="w_DR_bb") {
 	    h_mcg_b->SetMinimum(0.0005);
-	    h_mcg_b->SetMaximum(5.0);
+	    h_mcg_b->SetMaximum(15.0);
+	  }
+	  if (title=="w_delta_phi") {
+	    h_mcg_b->SetMinimum(0.08);
+	    h_mcg_b->SetMaximum(100.0);
 	  }
 	  if (title=="w_delta_phi_2b") {
-	    h_mcg_b->SetMinimum(0.009);
-	    h_mcg_b->SetMaximum(1.0);
+	    h_mcg_b->SetMinimum(0.011);
+	    h_mcg_b->SetMaximum(1.3);
 	  }
 	  if (title=="w_Ht_b") {
 	    h_mcg_b->SetMinimum(0.00002);
@@ -401,6 +405,12 @@ if (numB==2) {
 	    if (numB==1) {
 	      h_mcg_b->SetMinimum(0.00005);
 	      h_mcg_b->SetMaximum(0.4);
+	    }
+	  }
+	  if (title=="w_pt_Z_b") {
+	    if (numB==2) {
+	      h_mcg_b->SetMinimum(0.00008);
+	      h_mcg_b->SetMaximum(0.015);
 	    }
 	  }
 
@@ -1211,7 +1221,7 @@ if (numB==2) {
           if (drawInclusive) h_P_tot->GetXaxis()->SetTitle("leading jet |#eta|");
           if (isratio==1) {
             h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d|#eta^{b}|] / [d#sigma(Z+j) / d|#eta^{b}|] (%)");
-            h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
+            h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 12);
           }
 	} else if (title_b=="w_second_bjet_eta_abs") {
           h_mcg_b->GetYaxis()->SetTitle("d#sigma / d|#eta^{b}| (pb)");
