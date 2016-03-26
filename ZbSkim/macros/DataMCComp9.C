@@ -482,7 +482,7 @@ if (numB==2) {
 	  }
 	}
 
-	leg->AddEntry(h_data_b_stat,"DATA","lp");
+	leg->AddEntry(h_data_b_stat,"Data","lp");
 	leg->AddEntry(h_mcg_b,"MadGraph 5FS + Pythia6","lf");
 	leg->AddEntry(h_mcg3_b,"MadGraph 4FS + Pythia6","lf");
 	if (useSherpa) leg->AddEntry(h_mcg1_b,"Sherpa","lf");

@@ -1183,7 +1183,10 @@ if (numB==1) bbBkg = true;
 #ifdef PAPER
 	hs->SetMinimum(0.5);
 	hs->SetMaximum(1.2*hs->GetMaximum());
-	if (title=="w_SVTX_mass") hs->SetMinimum(5);
+	if (title=="w_SVTX_mass") {
+	  hs->SetMaximum(1.6*hs->GetMaximum());
+	  hs->SetMinimum(5);
+	}
 	if (title.find("w_mass_")!=string::npos) {
 	  hs->SetMaximum(1.5*hs->GetMaximum());
 	  hs->SetMinimum(8);
@@ -1480,10 +1483,10 @@ if (numB==1) bbBkg = true;
 	  h_ratio->GetXaxis ()->SetTitle(tmp.c_str());
 	}
 	if (title.find("w_mass_ee")!=string::npos) {
-	  h_ratio->GetXaxis()->SetTitle("dielectron invariant mass (GeV)");
+	  h_ratio->GetXaxis()->SetTitle("Dielectron invariant mass (GeV)");
 	}
 	if (title.find("w_mass_mm")!=string::npos) {
-	  h_ratio->GetXaxis()->SetTitle("dimuon invariant mass (GeV)");
+	  h_ratio->GetXaxis()->SetTitle("Dimuon invariant mass (GeV)");
 	}
 #endif
 	h_ratio->GetXaxis()->SetTitleOffset(0.9);
@@ -1572,7 +1575,30 @@ if (numB==1) bbBkg = true;
         CMS_lumi(pad1,  iPeriod, iPos);
         c1->cd();
 
-#ifndef PAPER
+#ifdef PAPER
+	if (numB==0) {
+	  TLatex *latexLabel = new TLatex();
+	  latexLabel->SetTextFont(43);
+	  latexLabel->SetTextSize(20);
+	  latexLabel->SetLineWidth(2);
+	  latexLabel->SetNDC();
+	  if (title=="w_SVTX_mass") {
+	    if (ilepton==1) latexLabel->DrawLatex(0.15,0.88,"electron channel");
+	    if (ilepton==2) latexLabel->DrawLatex(0.15,0.88,"muon channel");
+	  }
+	  if (title=="w_bjetmultiplicity_exc") {
+	    if (ilepton==1) latexLabel->DrawLatex(0.15,0.88,"electron channel");
+	    if (ilepton==2) latexLabel->DrawLatex(0.15,0.88,"muon channel");
+	  }
+	  if (title.find("w_mass_ee")!=string::npos) {
+	    if (ilepton==1) latexLabel->DrawLatex(0.15,0.88,"electron channel");
+	  }
+	  if (title.find("w_mass_mm")!=string::npos) {
+	    if (ilepton==2) latexLabel->DrawLatex(0.15,0.88,"muon channel");
+	  }
+	  latexLabel->Draw("same");
+	}
+#else
 	if (numB==0 && title.find("_b")==string::npos) {
           if (title=="w_jetmultiplicity") {
             if (ilepton ==1) CMS_process("Z/#gamma*#rightarrow ee selection", 0.44, 0.9);
