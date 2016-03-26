@@ -18,8 +18,8 @@ int useMadGraphAMC=2; // use MadGraph-aMC@NLO MC prediction (high stat)
 
 //int useNewPowheg=0;
 //int useNewPowheg=1; // use new Powheg MC prediction
-//int useNewPowheg=2; // use new Powheg MiNLO MC prediction
-int useNewPowheg=3; // use new Powheg MiNLO MC prediction (high stat)
+//int useNewPowheg=2; // use new Powheg MINLO MC prediction
+int useNewPowheg=3; // use new Powheg MINLO MC prediction (high stat)
 
 int drawInclusive=0;
 //int drawInclusive=1; // do plot the "inclusive" histogram
@@ -488,7 +488,7 @@ if (numB==2) {
 	if (useSherpa) leg->AddEntry(h_mcg1_b,"Sherpa","lf");
 	if (useMadGraphAMC) leg->AddEntry(h_mcg1_b,"MadGraph-aMC@NLO + Pythia8","lf");
 	if (useNewPowheg<=1) leg->AddEntry(h_mcg2_b,"Powheg + Pythia6","lf");
-	if (useNewPowheg>=2) leg->AddEntry(h_mcg2_b,"Powheg MiNLO + Pythia8","lf");
+	if (useNewPowheg>=2) leg->AddEntry(h_mcg2_b,"Powheg MINLO + Pythia8","lf");
 
 	leg->Draw();
 
@@ -1026,7 +1026,7 @@ if (numB==2) {
 	t4->SetLineWidth(2);
 	t4->SetNDC();
 	if (useNewPowheg<=1) t4->DrawLatex(0.15,0.43,"Powheg + Pythia6, normalized to #sigma_{NLO}");
-	if (useNewPowheg>=2) t4->DrawLatex(0.15,0.43,"Powheg MiNLO + Pythia8, normalized to #sigma_{NLO}");
+	if (useNewPowheg>=2) t4->DrawLatex(0.15,0.43,"Powheg MINLO + Pythia8, normalized to #sigma_{NLO}");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	OLine4->SetLineColor(kBlue-4);
