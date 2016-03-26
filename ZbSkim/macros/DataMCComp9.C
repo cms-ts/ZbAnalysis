@@ -1188,7 +1188,7 @@ if (numB==2) {
 	  h_P_tot->GetXaxis()->SetTitle("leading b jet p_{T} (GeV)");
 	  if (drawInclusive) h_P_tot->GetXaxis()->SetTitle("leading jet p_{T} (GeV)");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / dp^{b}_{T}] / [d#sigma(Z+j) / dp^{b}_{T}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / dp^{b}_{T}] / [d#sigma(Z+j) / dp^{j}_{T}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
 	  }
 	} else if (title_b=="w_second_bjet_pt") {
@@ -1196,7 +1196,7 @@ if (numB==2) {
 	  h_P_tot->GetXaxis()->SetTitle("subleading b jet p_{T} (GeV)");
 	  if (drawInclusive) h_P_tot->GetXaxis()->SetTitle("subleading jet p_{T} (GeV)");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / dp^{b}_{T}] / [d#sigma(Z+j) / dp^{b}_{T}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / dp^{b}_{T}] / [d#sigma(Z+j) / dp^{j}_{T}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
 	  }
 	} else if (title_b=="w_first_bjet_eta") {
@@ -1204,7 +1204,7 @@ if (numB==2) {
 	  h_P_tot->GetXaxis()->SetTitle("leading b jet #eta");
 	  if (drawInclusive) h_P_tot->GetXaxis()->SetTitle("leading jet #eta");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) /d#eta^{b}] / [d#sigma(Z+j) / d#eta^{b}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) /d#eta^{b}] / [d#sigma(Z+j) / d#eta^{j}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
 	  }
 	} else if (title_b=="w_second_bjet_eta") {
@@ -1212,7 +1212,7 @@ if (numB==2) {
 	  h_P_tot->GetXaxis()->SetTitle("subleading b jet #eta");
 	  if (drawInclusive) h_P_tot->GetXaxis()->SetTitle("subleading jet #eta");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#eta^{b}] / [d#sigma(Z+j) / d#eta^{b}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#eta^{b}] / [d#sigma(Z+j) / d#eta^{j}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
 	  }
 	} else if (title_b=="w_first_bjet_eta_abs") {
@@ -1220,7 +1220,7 @@ if (numB==2) {
           h_P_tot->GetXaxis()->SetTitle("leading b jet |#eta|");
           if (drawInclusive) h_P_tot->GetXaxis()->SetTitle("leading jet |#eta|");
           if (isratio==1) {
-            h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d|#eta^{b}|] / [d#sigma(Z+j) / d|#eta^{b}|] (%)");
+            h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d|#eta^{b}|] / [d#sigma(Z+j) / d|#eta^{j}|] (%)");
             h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 12);
           }
 	} else if (title_b=="w_second_bjet_eta_abs") {
@@ -1228,7 +1228,7 @@ if (numB==2) {
           h_P_tot->GetXaxis()->SetTitle("subleading b jet |#eta|");
           if (drawInclusive) h_P_tot->GetXaxis()->SetTitle("subleading jet |#eta|");
           if (isratio==1) {
-            h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d|#eta^{b}|] / [d#sigma(Z+j) / d|#eta^{b}|] (%)");
+            h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d|#eta^{b}|] / [d#sigma(Z+j) / d|#eta^{j}|] (%)");
             h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
           }
         } else if (title_b=="w_pt_Z_b") {
@@ -1246,10 +1246,10 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
 	  }
 	} else if (title_b=="w_delta_phi_b") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{Zb} (pb)");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi_{Zb} [rad]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{Zb} (pb/rad)");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi_{Zb} (rad)");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta#phi_{Zb}] / [d#sigma(Z+j) / d#Delta#phi_{Zb}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta#phi_{Zb}] / [d#sigma(Z+j) / d#Delta#phi_{Zj}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
 	  }
 	} else if (title_b=="w_mass_Zj_b") {
@@ -1261,52 +1261,52 @@ if (numB==2) {
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
 	  }
 	} else if (title_b=="w_DR_Zb_min") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{min}_{Zb} (pb)");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{min}_{Zb} [rad]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{min}_{Zb} (pb/rad)");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{min}_{Zb} (rad)");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta R^{min}_{Zb}] / [d#sigma(Z+j) / d#Delta R^{min}_{Zb}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta R^{min}_{Zb}] / [d#sigma(Z+j) / d#Delta R^{min}_{Zj}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
 	  }
 	} else if (title_b=="w_DR_Zb_max") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{max}_{Zb} (pb)");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{max}_{Zb} [rad]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{max}_{Zb} (pb/rad)");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta R^{max}_{Zb} (rad)");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta R^{max}_{Zb}] / [d#sigma(Z+j) / d#Delta R^{max}_{Zb}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta R^{max}_{Zb}] / [d#sigma(Z+j) / d#Delta R^{max}_{Zj}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
 	  }
 	} else if (title_b=="w_delta_phi_2b") {
-	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{bb} (pb)");
-	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi_{bb} [rad]");
+	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{bb} (pb/rad)");
+	  h_P_tot->GetXaxis()->SetTitle("#Delta#phi_{bb} (rad)");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta#phi_{bb}] / [d#sigma(Z+j) / d#Delta#phi_{bb}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta#phi_{bb}] / [d#sigma(Z+j) / d#Delta#phi_{jj}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
 	  }
 	} else if (title_b=="w_DR_bb") {
-          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d #Delta R_{bb} (pb)");
-          h_P_tot->GetXaxis()->SetTitle("#Delta R_{bb} [rad]");
+          h_mcg_b->GetYaxis()->SetTitle("d#sigma / d #Delta R_{bb} (pb/rad)");
+          h_P_tot->GetXaxis()->SetTitle("#Delta R_{bb} (rad)");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta R_{bb}] / [d#sigma(Z+j) / d#Delta R_{bb}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta R_{bb}] / [d#sigma(Z+j) / d#Delta R_{jj}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
 	  }
 	} else if (title_b=="w_Zbb_mass") {
           h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{Zbb} (pb/GeV)");
           h_P_tot->GetXaxis()->SetTitle("M_{Zbb} (GeV)");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d M_{Zbb}] / [d#sigma(Z+j) / d M_{Zbb}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d M_{Zbb}] / [d#sigma(Z+j) / d M_{Zjj}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
 	  }
 	} else if (title_b=="w_bb_mass") {
           h_mcg_b->GetYaxis()->SetTitle("d#sigma / d M_{bb} (pb/GeV)");
           h_P_tot->GetXaxis()->SetTitle("M_{bb} (GeV)");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d M_{bb}] / [d#sigma(Z+j) / d M_{bb}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d M_{bb}] / [d#sigma(Z+j) / d M_{jj}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
 	  }
 	} else if (title_b=="w_A_Zb") {
           h_mcg_b->GetYaxis()->SetTitle("d#sigma / d A_{Zbb} (pb)");
           h_P_tot->GetXaxis()->SetTitle("A_{Zbb}");
 	  if (isratio==1) {
-	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d A_{Zbb}] / [d#sigma(Z+j) / d A_{Zbb}] (%)");
+	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d A_{Zbb}] / [d#sigma(Z+j) / d A_{Zjj}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
 	  }
         }
