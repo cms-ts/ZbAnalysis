@@ -1549,7 +1549,7 @@ if (numB==1) bbBkg = true;
 #ifdef PAPER
 	if (title=="w_bjetmultiplicity_exc") {
 	  hs->GetXaxis()->SetRangeUser(0.5, 4.5);
-	  hs->SetMinimum(0.01);
+	  hs->SetMinimum(0.5);
 	  hs->SetMaximum(100000);
 	  hs->GetYaxis()->SetTitle("Events");
 	  h_ratio->GetXaxis()->SetRangeUser(0.5, 4.5);
