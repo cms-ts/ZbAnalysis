@@ -667,10 +667,10 @@ if (numB==2) {
 	t2->SetLineWidth(2);
 	t2->SetNDC();
 	if (useSherpa || useMadGraphAMC) {
-	  t2->DrawLatex(0.15,0.7,"MadGraph 5FS + Pythia6, normalized to  #sigma_{NNLO}");
-	  t2->DrawLatex(0.15,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}");
+	  t2->DrawLatex(0.12,0.7,"MadGraph 5FS + Pythia6, normalized to  #sigma_{NNLO}, stat. uncertainty only");
+	  t2->DrawLatex(0.12,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}, stat. uncertainty only");
 	} else {
-	  t2->DrawLatex(0.15,0.13,"MadGraph 5FS + Pythia6, normalized to  #sigma_{NNLO}");
+	  t2->DrawLatex(0.12,0.13,"MadGraph 5FS + Pythia6, normalized to  #sigma_{NNLO}, stat. uncertainty only");
 	}
 
 	TLine *OLine2 = new TLine(h_M_tot->GetXaxis()->GetXmin(),1.,h_M_tot->GetXaxis()->GetXmax(),1.);
@@ -851,10 +851,10 @@ if (numB==2) {
 	t3->SetLineWidth(2);
 	t3->SetNDC();
 	if (useSherpa) {
-	  t3->DrawLatex(0.15,0.7,"Sherpa, normalized to  #sigma_{NNLO}");
+	  t3->DrawLatex(0.15,0.7,"Sherpa, normalized to  #sigma_{NNLO}, stat. uncertainty only");
 	} else {
-	  if (useMadGraphAMC==0) t3->DrawLatex(0.15,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}");
-	  if (useMadGraphAMC>=1) t3->DrawLatex(0.15,0.13,"MadGraph-aMC@NLO + Pythia8, normalized to  #sigma_{NLO}");
+	  if (useMadGraphAMC==0) t3->DrawLatex(0.12,0.13,"MadGraph 4FS + Pythia6, normalized to  #sigma_{NLO}, stat. uncertainty only");
+	  if (useMadGraphAMC>=1) t3->DrawLatex(0.12,0.13,"MadGraph-aMC@NLO + Pythia8, normalized to  #sigma_{NLO}, stat. + syst. uncertainties only");
 	}
 
 	if (useSherpa || useMadGraphAMC) {
@@ -1025,8 +1025,8 @@ if (numB==2) {
 	t4->SetTextFont(42);
 	t4->SetLineWidth(2);
 	t4->SetNDC();
-	if (useNewPowheg<=1) t4->DrawLatex(0.15,0.43,"Powheg + Pythia6, normalized to #sigma_{NLO}");
-	if (useNewPowheg>=2) t4->DrawLatex(0.15,0.43,"Powheg MINLO + Pythia8, normalized to #sigma_{NLO}");
+	if (useNewPowheg<=1) t4->DrawLatex(0.12,0.44,"Powheg + Pythia6, normalized to #sigma_{NLO}, stat. uncertainty only");
+	if (useNewPowheg>=2) t4->DrawLatex(0.12,0.44,"Powheg MINLO + Pythia8, normalized to #sigma_{NLO}, stat. +syst. uncertainties only");
 
 	TLine *OLine4 = new TLine(h_P_tot->GetXaxis()->GetXmin(),1.,h_P_tot->GetXaxis()->GetXmax(),1.);
 	OLine4->SetLineColor(kBlue-4);
@@ -1190,6 +1190,7 @@ if (numB==2) {
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / dp^{b}_{T}] / [d#sigma(Z+j) / dp^{j}_{T}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
+	    h_P_tot->GetXaxis()->SetTitle("leading (b/j) jet p_{T} (GeV)");
 	  }
 	} else if (title_b=="w_second_bjet_pt") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp^{b}_{T} (pb/GeV)");
@@ -1198,6 +1199,7 @@ if (numB==2) {
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / dp^{b}_{T}] / [d#sigma(Z+j) / dp^{j}_{T}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
+	    h_P_tot->GetXaxis()->SetTitle("subleading (b/j) jet p_{T} (GeV)");
 	  }
 	} else if (title_b=="w_first_bjet_eta") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#eta^{b} (pb)");
@@ -1206,6 +1208,7 @@ if (numB==2) {
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) /d#eta^{b}] / [d#sigma(Z+j) / d#eta^{j}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
+	    h_P_tot->GetXaxis()->SetTitle("leading (b/j) jet #eta");
 	  }
 	} else if (title_b=="w_second_bjet_eta") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#eta^{b} (pb)");
@@ -1214,6 +1217,7 @@ if (numB==2) {
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#eta^{b}] / [d#sigma(Z+j) / d#eta^{j}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
+	    h_P_tot->GetXaxis()->SetTitle("subleading (b/j) jet #eta");
 	  }
 	} else if (title_b=="w_first_bjet_eta_abs") {
           h_mcg_b->GetYaxis()->SetTitle("d#sigma / d|#eta^{b}| (pb)");
@@ -1222,6 +1226,7 @@ if (numB==2) {
           if (isratio==1) {
             h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d|#eta^{b}|] / [d#sigma(Z+j) / d|#eta^{j}|] (%)");
             h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 12);
+            h_P_tot->GetXaxis()->SetTitle("leading (b/j) jet |#eta|");
           }
 	} else if (title_b=="w_second_bjet_eta_abs") {
           h_mcg_b->GetYaxis()->SetTitle("d#sigma / d|#eta^{b}| (pb)");
@@ -1230,6 +1235,7 @@ if (numB==2) {
           if (isratio==1) {
             h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d|#eta^{b}|] / [d#sigma(Z+j) / d|#eta^{j}|] (%)");
             h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 10);
+            h_P_tot->GetXaxis()->SetTitle("subleading (b/j) jet |#eta|");
           }
         } else if (title_b=="w_pt_Z_b") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dp^{Z}_{T} (pb/GeV)");
@@ -1251,6 +1257,7 @@ if (numB==2) {
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta#phi_{Zb}] / [d#sigma(Z+j) / d#Delta#phi_{Zj}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
+	    h_P_tot->GetXaxis()->SetTitle("#Delta#phi_{Z(b/j)} (rad)");
 	  }
 	} else if (title_b=="w_mass_Zj_b") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / dM_{Zj} (pb/GeV)");
@@ -1266,6 +1273,7 @@ if (numB==2) {
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta R^{min}_{Zb}] / [d#sigma(Z+j) / d#Delta R^{min}_{Zj}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
+	    h_P_tot->GetXaxis()->SetTitle("#Delta R^{min}_{Z(b/j)} (rad)");
 	  }
 	} else if (title_b=="w_DR_Zb_max") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta R^{max}_{Zb} (pb/rad)");
@@ -1273,6 +1281,7 @@ if (numB==2) {
 	  if (isratio==1) {
 	    h_mcg_b->GetYaxis()->SetTitle("[d#sigma(Z+b) / d#Delta R^{max}_{Zb}] / [d#sigma(Z+j) / d#Delta R^{max}_{Zj}] (%)");
 	    h_mcg_b->GetYaxis()->SetRangeUser(-0.5, 20);
+	    h_P_tot->GetXaxis()->SetTitle("#Delta R^{max}_{Z(b/j)} (rad)");
 	  }
 	} else if (title_b=="w_delta_phi_2b") {
 	  h_mcg_b->GetYaxis()->SetTitle("d#sigma / d#Delta#phi_{bb} (pb/rad)");
