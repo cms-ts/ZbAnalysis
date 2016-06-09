@@ -1320,6 +1320,139 @@ if (numB==2) {
 	  }
         }
 
+#if 0
+
+plot=0;
+
+double i0=0.0;
+double ei0=0.0;
+for (int i=0;i<=h_data_b_stat->GetNbinsX()+1;i++) {
+  i0=i0+h_data_b_stat->GetBinContent(i)*h_data_b_stat->GetBinWidth(i);
+  ei0=TMath::Sqrt(TMath::Power(ei0,2)+TMath::Power(h_data_b_stat->GetBinError(i)*h_data_b_stat->GetBinWidth(i),2));
+}
+
+cout << endl;
+cout << "Data:                       " << i0 << " +- " << ei0 << endl;
+cout << endl;
+
+double i1=0.0;
+double ei1=0.0;
+for (int i=0;i<=h_mcg_b->GetNbinsX()+1;i++) {
+  i1=i1+h_mcg_b->GetBinContent(i)*h_mcg_b->GetBinWidth(i);
+  ei1=TMath::Sqrt(TMath::Power(ei1,2)+TMath::Power(h_mcg_b->GetBinError(i)*h_mcg_b->GetBinWidth(i),2));
+}
+cout << "MadGraph 5FS + Pythia6:     " << i1 << " +- " << ei1 << endl;
+cout << endl;
+
+double i2=0.0;
+double ei2=0.0;
+for (int i=0;i<=h_mcg3_b->GetNbinsX()+1;i++) {
+  i2=i2+h_mcg3_b->GetBinContent(i)*h_mcg3_b->GetBinWidth(i);
+  ei2=TMath::Sqrt(TMath::Power(ei2,2)+TMath::Power(h_mcg3_b->GetBinError(i)*h_mcg3_b->GetBinWidth(i),2));
+}
+cout << "MadGraph 4FS + Pythia6:     " << i2 << " +- " << ei2 << endl;
+cout << endl;
+
+double i3=0.0;
+double i3_1=0.0;
+double i3_2=0.0;
+double i3_3=0.0;
+double ei3=0.0;
+double ei3_1=0.0;
+double ei3_2a=0.0;
+double ei3_2b=0.0;
+double ei3_3a=0.0;
+double ei3_3b=0.0;
+double ei3_4a=0.0;
+double ei3_4b=0.0;
+for (int i=0;i<=h_mcg1_b->GetNbinsX()+1;i++) {
+  i3=i3+h_mcg1_b->GetBinContent(i)*h_mcg1_b->GetBinWidth(i);
+  ei3=TMath::Sqrt(TMath::Power(ei3,2)+TMath::Power(h_mcg1_b->GetBinError(i)*h_mcg1_b->GetBinWidth(i),2));
+  i3_1=i3_1+h_mcg1_b_1->GetBinContent(i)*h_mcg1_b_1->GetBinWidth(i);
+  ei3_1=TMath::Sqrt(TMath::Power(ei3_1,2)+TMath::Power(h_mcg1_b_1->GetBinError(i)*h_mcg1_b->GetBinWidth(i),2));
+}
+for (int i=0;i<h_mcg1_b_2->GetN();i++) {
+  i3_2=i3_2+h_mcg1_b_2->GetY()[i]*h_mcg1_b->GetBinWidth(i);
+  ei3_2a=ei3_2a+h_mcg1_b_2->GetEYhigh()[i]*h_mcg1_b->GetBinWidth(i);
+  ei3_2b=ei3_2b+h_mcg1_b_2->GetEYlow()[i]*h_mcg1_b->GetBinWidth(i);
+  i3_3=i3_3+h_mcg1_b_3->GetY()[i]*h_mcg1_b->GetBinWidth(i);
+  ei3_3a=ei3_3a+h_mcg1_b_3->GetEYhigh()[i]*h_mcg1_b->GetBinWidth(i);
+  ei3_3b=ei3_3b+h_mcg1_b_3->GetEYlow()[i]*h_mcg1_b->GetBinWidth(i);
+}
+ei3_1=ei3_1*(i3/i3_1);
+ei3_2a=ei3_2a*(i3/i3_2);
+ei3_2b=ei3_2b*(i3/i3_2);
+ei3_3a=ei3_3a*(i3/i3_3);
+ei3_3b=ei3_3b*(i3/i3_3);
+i3_1=i3;
+i3_2=i3;
+i3_3=i3;
+ei3_4a=TMath::Sqrt(TMath::Power(ei3_1,2)+TMath::Power(ei3_2a,2)+TMath::Power(ei3_3a,2));
+ei3_4b=TMath::Sqrt(TMath::Power(ei3_1,2)+TMath::Power(ei3_2b,2)+TMath::Power(ei3_3b,2));
+if (useMadGraphAMC) {
+cout << "MadGraph-aMC@NLO + Pythia8 (stat):    " << i3 << " +- " << ei3 << endl;
+cout << "MadGraph-aMC@NLO + Pythia8 (pdf):     " << i3_1 << " +- " << ei3_1 << endl;
+cout << "MadGraph-aMC@NLO + Pythia8 (alpha_s): " << i3_2 << " + " << ei3_2a << " - " << ei3_2b << endl;
+cout << "MadGraph-aMC@NLO + Pythia8 (scale):   " << i3_3 << " + " << ei3_3a << " - " << ei3_3b  << endl;
+cout << "MadGraph-aMC@NLO + Pythia8 (theory):  " << i3 << " + " << ei3_4a << " - " << ei3_4b  << endl;
+cout << endl;
+}
+
+double i4=0.0;
+double i4_1=0.0;
+double i4_2=0.0;
+double i4_3=0.0;
+double ei4=0.0;
+double ei4_1=0.0;
+double ei4_2a=0.0;
+double ei4_2b=0.0;
+double ei4_3a=0.0;
+double ei4_3b=0.0;
+double ei4_4a=0.0;
+double ei4_4b=0.0;
+for (int i=0;i<=h_mcg2_b->GetNbinsX()+1;i++) {
+  i4=i4+h_mcg2_b->GetBinContent(i)*h_mcg2_b->GetBinWidth(i);
+  ei4=TMath::Sqrt(TMath::Power(ei4,2)+TMath::Power(h_mcg2_b->GetBinError(i)*h_mcg2_b->GetBinWidth(i),2));
+  i4_1=i4_1+h_mcg2_b_1->GetBinContent(i)*h_mcg2_b_1->GetBinWidth(i);
+  ei4_1=TMath::Sqrt(TMath::Power(ei4_1,2)+TMath::Power(h_mcg2_b_1->GetBinError(i)*h_mcg2_b->GetBinWidth(i),2));
+}
+for (int i=0;i<h_mcg2_b_2->GetN();i++) {
+  i4_2=i4_2+h_mcg2_b_2->GetY()[i]*h_mcg2_b->GetBinWidth(i);
+  ei4_2a=ei4_2a+h_mcg2_b_2->GetEYhigh()[i]*h_mcg2_b->GetBinWidth(i);
+  ei4_2b=ei4_2b+h_mcg2_b_2->GetEYlow()[i]*h_mcg2_b->GetBinWidth(i);
+  i4_3=i4_3+h_mcg2_b_3->GetY()[i]*h_mcg2_b->GetBinWidth(i);
+  ei4_3a=ei4_3a+h_mcg2_b_3->GetEYhigh()[i]*h_mcg2_b->GetBinWidth(i);
+  ei4_3b=ei4_3b+h_mcg2_b_3->GetEYlow()[i]*h_mcg2_b->GetBinWidth(i);
+}
+ei4_1=ei4_1*(i4/i4_1);
+ei4_2a=ei4_2a*(i4/i4_2);
+ei4_2b=ei4_2b*(i4/i4_2);
+ei4_3a=ei4_3a*(i4/i4_3);
+ei4_3b=ei4_3b*(i4/i4_3);
+i4_1=i4;
+i4_2=i4;
+i4_3=i4;
+ei4_4a=TMath::Sqrt(TMath::Power(ei4_1,2)+TMath::Power(ei4_2a,2)+TMath::Power(ei4_3a,2));
+ei4_4b=TMath::Sqrt(TMath::Power(ei4_1,2)+TMath::Power(ei4_2b,2)+TMath::Power(ei4_3b,2));
+if (useNewPowheg<=1) {
+cout << "Powheg + Pythia6 (stat):              " << i4 << " +- " << ei4 << endl;
+cout << "Powheg + Pythia6 (pdf):               " << i4_1 << " +- " << ei4_1 << endl;
+cout << "Powheg + Pythia6 (alpha_s):           " << i4_2 << " + " << ei4_2a << " - " << ei4_2b << endl;
+cout << "Powheg + Pythia6:(scale)              " << i4_3 << " + " << ei4_3b << " - " << ei4_3b << endl;
+cout << "Powheg + Pythia6:(theory)             " << i4 << " + " << ei4_4a << " - " << ei4_4b << endl;
+cout << endl;
+}
+if (useNewPowheg>=2) {
+cout << "Powheg MINLO + Pythia8 (stat):        " << i4 << " +- " << ei4 << endl;
+cout << "Powheg MINLO + Pythia8 (pdf):         " << i4_1 << " +- " << ei4_1 << endl;
+cout << "Powheg MINLO + Pythia8 (alpha_s):     " << i4_2 << " + " << ei4_2a << " - " << ei4_2b << endl;
+cout << "Powheg MINLO + Pythia8 (scale):       " << i4_3 << " + " << ei4_3a << " - " << ei4_3b << endl;
+cout << "Powheg MINLO + Pythia8 (theory):      " << i4 << " + " << ei4_4a << " - " << ei4_4b << endl;
+cout << endl;
+}
+
+#endif
+
 	if (plot) {
 	  ofstream out, out1, out2;
 	  if (isratio==0) {
